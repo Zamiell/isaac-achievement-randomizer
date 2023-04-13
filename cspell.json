@@ -22,5 +22,5 @@
     "pnpm-lock.yaml",
     "yarn.lock"
   ],
-  "words": []
+  "words": ["randomizer", "unlockable"]
 }
