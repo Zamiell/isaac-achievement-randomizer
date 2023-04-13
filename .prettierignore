@@ -1,0 +1,17 @@
+# Compiled output
+dist
+
+# Package manager lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# XML files created by Basement Renovator
+mod/content/rooms/**/*.xml
+mod/content/luarooms/**/*.xml
+mod/resources/rooms/**/*.xml
+mod/resources/luarooms/**/*.xml
+customStages/**/*.xml
+
+# XML files created by the animation editor
+mod/resources/**/*.anm2

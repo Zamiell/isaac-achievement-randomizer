@@ -1,0 +1,24 @@
+{
+  "name": "isaac-achievement-randomizer",
+  "version": "0.0.0",
+  "description": "A mod for The Binding of Isaac: Repentance.",
+  "keywords": [
+    "isaac",
+    "mod",
+    "rebirth",
+    "afterbirth",
+    "repentance"
+  ],
+  "license": "GPL-3.0",
+  "type": "commonjs",
+  "dependencies": {
+    "isaac-typescript-definitions": "^13.0.11",
+    "isaacscript": "^3.6.45",
+    "isaacscript-common": "^30.11.1",
+    "isaacscript-lint": "^4.16.9",
+    "isaacscript-spell": "^1.2.39",
+    "isaacscript-tsconfig": "^4.0.0",
+    "typescript": "^5.0.4",
+    "typescript-to-lua": "^1.14.0"
+  }
+}
