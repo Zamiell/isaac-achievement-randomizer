@@ -1,0 +1,4 @@
+TODO:
+- add timer for speedruns
+- fill in dead sea scrolls `menuProvider` functions for saving with ISC
+- disable the stupid dead sea scrolls animation

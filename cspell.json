@@ -13,6 +13,7 @@
     "*.stb",
     "*.wav",
     ".git/**",
+    ".yarn/**",
     "dist/**",
     "mod/main.lua",
     "mod/content/rooms/**",
@@ -22,5 +23,13 @@
     "pnpm-lock.yaml",
     "yarn.lock"
   ],
-  "words": ["randomizer", "unlockable"]
+  "words": [
+    "deadseascrolls",
+    "dssmenucore",
+    "Keybind",
+    "menusettings",
+    "randomizer",
+    "strset",
+    "unlockable"
+  ]
 }

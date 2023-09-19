@@ -1,17 +1,11 @@
-import { ModCallback } from "isaac-typescript-definitions";
+import { MOD_NAME } from "./constants";
+import { initDeadSeaScrolls } from "./deadSeaScrolls";
 
-const MOD_NAME = "isaac-achievement-randomizer";
-
-main();
-
-function main() {
+export function main(): void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const mod = RegisterMod(MOD_NAME, 1);
 
-  mod.AddCallback(ModCallback.POST_PLAYER_INIT, postPlayerInit);
-
   Isaac.DebugString(`${MOD_NAME} initialized.`);
-}
 
-function postPlayerInit() {
-  Isaac.DebugString("Callback fired: POST_PLAYER_INIT");
+  initDeadSeaScrolls();
 }
