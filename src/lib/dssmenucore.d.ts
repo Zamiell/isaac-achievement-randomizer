@@ -10,9 +10,9 @@ interface DSSMod extends Mod {
   menuBuzzerButton: unknown;
 }
 
-export function DSSInitializerFunction(
+export function init(
   this: void,
   dssModName: string,
   dssCoreVersion: number,
-  menuProvider: unknown,
+  v: unknown,
 ): DSSMod;

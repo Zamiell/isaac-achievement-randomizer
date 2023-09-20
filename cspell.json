@@ -24,11 +24,15 @@
     "yarn.lock"
   ],
   "words": [
+    "BOMBDROP",
+    "camelcased",
     "deadseascrolls",
+    "dpad",
     "dssmenucore",
+    "ERRORBUZZ",
     "Keybind",
-    "menusettings",
     "randomizer",
+    "STAGETYPE",
     "strset",
     "unlockable"
   ]

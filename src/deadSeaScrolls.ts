@@ -1,6 +1,5 @@
-import { todo } from "isaacscript-common";
 import { MOD_NAME } from "./constants";
-import { DSSInitializerFunction } from "./lib/dssmenucore";
+import { init } from "./lib/dssmenucore";
 
 interface DeadSeaScrollsMenuSettings {
   Run: () => void;
@@ -19,71 +18,30 @@ declare const DeadSeaScrollsMenu: {
   ) => void;
 };
 
-function loadSaveData() {
-  return {
-    MenuPalette: 1,
-  };
-}
-
-function storeSaveData() {
-  todo();
-}
-
-const menuProvider = {
-  SaveSaveData: () => {},
-  GetPaletteSetting: () => {},
-  SavePaletteSetting: () => {},
-  GetHudOffsetSetting: () => {},
-  SaveHudOffsetSetting: () => {},
-  GetGamepadToggleSetting: () => {},
-  SaveGamepadToggleSetting: () => {},
-  GetMenuKeybindSetting: () => {},
-  SaveMenuKeybindSetting: () => {},
-  GetMenuHintSetting: () => {},
-  SaveMenuHintSetting: () => {},
-  GetMenuBuzzerSetting: () => {},
-  SaveMenuBuzzerSetting: () => {},
-  GetMenusNotified: () => {},
-  SaveMenusNotified: () => {},
-  GetMenusPoppedUp: () => {},
-  SaveMenusPoppedUp: () => {},
-};
+// eslint-disable-next-line isaacscript/require-v-registration
+const v = {};
 
 export function initDeadSeaScrolls(): void {
-  const DSSMod = DSSInitializerFunction(`${MOD_NAME}-DSS`, 1, menuProvider);
+  const DSSMod = init(`${MOD_NAME}-DSS`, 1, v);
 
   const directory = {
     main: {
-      title: "achievements",
+      title: "randomizer", // Must be lowercase. "achievement randomizer" is too long.
       buttons: [
-        /*
-        {
-          str: "arbitrary switch",
-          choices: ["on", "off"],
-          setting: 1,
-          variable: "arbitraryChoiceOption",
-
-          load: () => {},
-          store: () => {},
-          tooltip: {
-            strset: ["which do you", "prefer?"],
-          },
-        },
-        */
-
-        /*
-        DSSMod.gamepadToggleButton,
-        DSSMod.menuKeybindButton,
-        // DSSMod.paletteButton,
-        DSSMod.menuHintButton,
-        DSSMod.menuBuzzerButton,
-        */
-
-        // Resume Game
-
         // Menu Settings
         { str: "resume game", action: "resume" },
-        { str: "menu settings", dest: "menusettings" },
+        { str: "menu settings", dest: "settings" },
+      ],
+    },
+
+    settings: {
+      title: "settings",
+      buttons: [
+        DSSMod.gamepadToggleButton,
+        DSSMod.menuKeybindButton,
+        DSSMod.paletteButton,
+        DSSMod.menuHintButton,
+        DSSMod.menuBuzzerButton,
       ],
     },
   };
