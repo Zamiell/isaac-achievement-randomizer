@@ -38,12 +38,12 @@ export class CheckErrors extends ModFeature {
   // 2
   @Callback(ModCallback.POST_RENDER)
   postRender(): void {
-    // Don't draw error text on top of Mod Config Menu.
+    // Don't draw on top of Mod Config Menu.
     if (ModConfigMenu !== undefined && ModConfigMenu.IsVisible) {
       return;
     }
 
-    // Don't draw error text on top of Dead Sea Scrolls.
+    // Don't draw on top of Dead Sea Scrolls.
     if (DeadSeaScrollsMenu !== undefined && DeadSeaScrollsMenu.IsOpen()) {
       return;
     }

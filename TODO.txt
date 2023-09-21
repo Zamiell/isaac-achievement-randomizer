@@ -2,3 +2,19 @@ TODO:
 - add timer for speedruns
 - disable the stupid dead sea scrolls animation
 - Achievement List tooltip should display X / X
+
+- get rid of SET_DROPS_NOT_IN_OTHER_POOLS and replace with breakfast if not unlocked
+- breakfast is always unlocked
+
+- stop pausing inputs while in a room with enemies
+
+- error message for unlocked character
+
+- remove clicker
+- challenge detection
+
+- unlock paths
+- unlock pickups (hearts, etc)
+  - https://bindingofisaacrebirth.fandom.com/wiki/Hearts
+
+- hard mode check

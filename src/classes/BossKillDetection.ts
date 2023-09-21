@@ -77,5 +77,6 @@ export class BossKillDetection extends ModFeature {
   accomplishedObjective(_characterObjective: CharacterObjective): void {
     const player = Isaac.GetPlayer();
     const _character = player.GetPlayerType();
+    // TODO
   }
 }

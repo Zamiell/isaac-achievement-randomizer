@@ -5,6 +5,7 @@ import {
   isRandomizerEnabled,
   startRandomizer,
 } from "./classes/AchievementTracker";
+import { MAX_SEED, MIN_SEED } from "./consoleCommands";
 import { MOD_NAME } from "./constants";
 import { init } from "./lib/dssmenucore";
 import { mod } from "./mod";
@@ -19,7 +20,7 @@ export function initDeadSeaScrolls(): void {
 
   const directory = {
     main: {
-      title: "randomizer menu", // Must be lowercase.
+      title: "randomizer menu",
       buttons: [
         {
           str: "current seed:",
@@ -122,7 +123,45 @@ export function initDeadSeaScrolls(): void {
       title: "specific seed",
       buttons: [
         {
-          str: "a",
+          str: "open the console and type the",
+          fSize: 1,
+          noSel: true,
+        },
+        {
+          str: "following command:",
+          fSize: 1,
+          noSel: true,
+        },
+        {
+          str: "",
+          fSize: 1,
+          noSel: true,
+        },
+        {
+          str: "achievementrandomizer 12345",
+          fSize: 1,
+          noSel: true,
+          clr: 3,
+        },
+        {
+          str: "",
+          fSize: 1,
+          noSel: true,
+        },
+        {
+          str: 'where "12345" is the seed that you',
+          fSize: 1,
+          noSel: true,
+        },
+        {
+          str: `want to use. (it must be between ${MIN_SEED} and`,
+          fSize: 1,
+          noSel: true,
+        },
+        {
+          str: `${MAX_SEED}.)`,
+          fSize: 1,
+          noSel: true,
         },
       ],
     },

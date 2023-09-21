@@ -1,4 +1,7 @@
-import type { TrinketType } from "isaac-typescript-definitions";
+import type {
+  CollectibleType,
+  TrinketType,
+} from "isaac-typescript-definitions";
 import { PlayerType } from "isaac-typescript-definitions";
 import { ModFeature, getRandomSeed, log, restart } from "isaacscript-common";
 
@@ -42,6 +45,13 @@ export function endRandomizer(): void {
   // TODO: empty persistent variables
 
   restart(STARTING_CHARACTER);
+}
+
+export function isCollectibleTypeUnlocked(
+  _collectibleType: CollectibleType,
+): boolean {
+  // TODO
+  return true;
 }
 
 export function getUnlockedTrinketTypes(): ReadonlySet<TrinketType> {

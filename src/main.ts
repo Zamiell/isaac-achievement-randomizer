@@ -9,6 +9,8 @@ import { AchievementTracker } from "./classes/AchievementTracker";
 import { BossKillDetection } from "./classes/BossKillDetection";
 import { CheckErrors } from "./classes/CheckErrors";
 import { ItemPoolRemoval } from "./classes/ItemPoolRemoval";
+import { StartingRoomInfo } from "./classes/StartingRoomInfo";
+import { initConsoleCommands } from "./consoleCommands";
 import { IS_DEV, MOD_NAME } from "./constants";
 import { initDeadSeaScrolls } from "./deadSeaScrolls";
 import { debugFunction, hotkey1Function } from "./debugCode";
@@ -19,6 +21,7 @@ const MOD_FEATURES = [
   BossKillDetection,
   CheckErrors,
   ItemPoolRemoval,
+  StartingRoomInfo,
 ] as const;
 
 export function main(): void {
@@ -38,4 +41,5 @@ export function main(): void {
 
   initDeadSeaScrolls();
   initModFeatures(mod, MOD_FEATURES);
+  initConsoleCommands();
 }

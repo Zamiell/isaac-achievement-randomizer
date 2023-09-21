@@ -1,6 +1,14 @@
 # isaac-achievement-randomizer
 
-isaac-achievement-randomizer is a mod for _[The Binding of Isaac: Repentance](https://store.steampowered.com/app/1426300/The_Binding_of_Isaac_Repentance/)_, written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacScript](https://isaacscript.github.io/) framework.
+Achievement Randomizer is a mod for _[The Binding of Isaac: Repentance](https://store.steampowered.com/app/1426300/The_Binding_of_Isaac_Repentance/)_.
+
+It requires that you are on a fully-unlocked save file, but then gives you the experience of playing through the game from scratch, unlocking each item one by one, but in a randomized way. And it will track all of your deaths and time taken along the way! For more details about how it works, see [the documentation](docs/about.md).
+
+Achievement Randomizer is written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacScript](https://isaacscript.github.io/) framework.
+
+## Discord
+
+For questions about playing the mod, or reporting bugs, or if you want to help develop the mod, contact us in the [Isaac Streaking Discord server](https://discord.gg/GwhUeQjHTF). (Discord is a voice and text chat application that allows anyone to create a hosted server. We use one such server as the primary hub of communication for Isaac streaking.)
 
 ## How To Play
 

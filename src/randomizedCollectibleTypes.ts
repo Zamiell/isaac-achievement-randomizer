@@ -1,6 +1,10 @@
 import { CollectibleType, ItemConfigTag } from "isaac-typescript-definitions";
-import { ReadonlySet, combineSets } from "isaacscript-common";
-import { mod } from "../mod";
+import {
+  NUM_VANILLA_CHALLENGES,
+  ReadonlySet,
+  combineSets,
+} from "isaacscript-common";
+import { mod } from "./mod";
 
 /** This does not include any quest items (e.g. The Polaroid, The Negative, Key Piece 1, etc.). */
 const SET_DROPS_NOT_IN_OTHER_POOLS = new ReadonlySet([
@@ -55,3 +59,5 @@ export function getRandomizedCollectibleTypes(): readonly CollectibleType[] {
   lazyInitRandomizedCollectibleTypes();
   return randomizedCollectibleTypes;
 }
+
+Isaac.DebugString(`GETTING HERE - ${NUM_VANILLA_CHALLENGES}`);

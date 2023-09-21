@@ -4,11 +4,13 @@ import {
   setLogFunctionsGlobal,
   setTracebackFunctionsGlobal,
 } from "isaacscript-common";
+import { startRandomizer } from "./classes/AchievementTracker";
 import { mod } from "./mod";
 
 /** Currently, F2 is set to execute this function. */
 function debugCode(_params?: string) {
   // Add code here.
+  startRandomizer(undefined);
 }
 
 /** Hotkey 1 is bound to F2. */
