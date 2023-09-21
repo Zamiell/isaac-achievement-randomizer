@@ -21,31 +21,61 @@ Thus, this mod locks almost every collectible and trinket behind custom achievem
 
 ## Achievement List
 
+### Hard Mode
+
+All achievements must be completed on hard mode. (Playing this mod on normal mode or on non-Greedier Greed Mode will automatically restart the run with the correct difficultly.)
+
 ### Character-Based Achievements
 
 Each character will unlock something upon defeating the following bosses/objectives:
 
-- Mom
-- It Lives
-- Isaac
-- Blue Baby
-- Satan
-- The Lamb
-- Mega Satan
-- Boss Rush
-- Hush
-- Ultra Greed
-- Delirium
-- Mother
-- The Beast
+1. Mom
+2. It Lives
+3. Isaac
+4. Blue Baby
+5. Satan
+6. The Lamb
+7. Mega Satan
+8. Boss Rush
+9. Hush
+10. Ultra Greed
+11. Delirium
+12. Mom's Heart (in Mausoleum/Gehenna)
+13. Mother
+14. Dogma
+15. The Beast
 
-There are 13 objectives in total. Each objective must be accomplished in hard mode. Thus, since there are 34 main characters, there are 34 x 13 = 442 character-based achievements.
+Additionally, each character other than The Lost and Tainted Lost will unlock something upon clearing the following floors without taking damage:
+
+1. Basement 1 / Cellar 1 / Burning Basement 1
+2. Basement 2 / Cellar 2 / Burning Basement 2
+3. Caves 1 / Catacombs 1 / Flooded Caves 1
+4. Caves 2 / Catacombs 2 / Flooded Caves 2
+5. Depths 1 / Necropolis 1 / Dank Depths 1
+6. Depths 2 / Necropolis 2 / Dank Depths 2
+7. Womb 1 / Utero 1 / Scarred Womb 1
+8. Womb 2 / Utero 2 / Scarred Womb 2
+9. Cathedral / Sheol
+10. The Chest / Dark Room
+11. Downpour 1 / Dross 1
+12. Downpour 2 / Dross 2
+13. Mines 1 / Ashpit 1
+14. Mines 2 / Ashpit 2
+15. Mausoleum 1 / Gehenna 1
+16. Mausoleum 2 / Gehenna 2
+17. Corpse 1
+18. Corpse 2
+
+- There are 15 boss objectives and 18 floor objectives, which makes 33 in total.
+- Thus, since there are 34 main characters and The Lost & Tainted Lost do not have floor achievements, there are 34 x 33 - 18 x 2 = 1086 character-based achievements.
 
 ### Challenge-Based Achievements
 
-There is one achievement for each challenge. Thus, there are 46 challenge-based achievements.
+There is one achievement for each challenge. Thus, there are 45 challenge-based achievements.
 
 ### Other Achievements
+
+The following achievements from the original game are retained:
 
 - Digging the grave in the Dark Room that normally unlocks The Forgotten.
 
@@ -85,16 +115,19 @@ Every collectible in the game is locked behind a random achievement, with the fo
   - Broken Shovel (#550)
   - Broken Shovel (#551)
   - Mom's Shovel (#552)
-  - Dad's Note (#668)
-  - Dogma (#633)
   - Knife Piece 1 (#626)
   - Knife Piece 2 (#627)
+  - Dogma (#633)
+  - Dad's Note (#668)
 - Special non-obtainable collectibles:
   - Book of Belial Birthright (#59)
   - Broken Glass Cannon (#474)
   - Damocles (Passive) (#656)
   - Recall (#714)
   - Hold (#715)
+- Banned collectibles in this mod:
+  - Plan C (#475) (would break the difficult boss achievements)
+  - Clicker (#482) (would break the character achievements)
 
 ## Trinkets <!-- 5.350 -->
 
@@ -141,9 +174,6 @@ Only pennies start as being unlocked. Every other coin in the game is locked beh
 
 Only normal bomb pickups start as being unlocked. Every other bomb pickup in the game is locked behind a random achievement. Bombs are always unlocked in the following order:
 
-- Troll Bomb (5.40.3) (only from bomb pickups, not normal Troll Bombs)
-- Mega Troll Bomb (5.40.5) (only from bomb pickups, not normal Mega Troll Bombs)
-- Golden Troll Bomb (5.40.6)
 - Double Bomb (5.40.2)
 - Golden Bomb (5.40.4)
 

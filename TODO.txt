@@ -18,3 +18,6 @@ TODO:
   - https://bindingofisaacrebirth.fandom.com/wiki/Hearts
 
 - hard mode check
+
+- revival items unlock once all character related achievements are completed
+  - Lazarus Rags + Judas' Shadow + Ankh + Missing Poster

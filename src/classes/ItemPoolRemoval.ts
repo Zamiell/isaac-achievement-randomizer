@@ -1,26 +1,43 @@
+import type {
+  PillColor,
+  PillEffect,
+  TrinketType,
+} from "isaac-typescript-definitions";
 import {
-  BombSubType,
   CoinSubType,
   CollectibleType,
   ModCallback,
   PickupVariant,
-  TrinketType,
 } from "isaac-typescript-definitions";
 import {
   Callback,
   CallbackCustom,
+  FIRST_PILL_COLOR,
   ModCallbackCustom,
   ModFeature,
   game,
+  getNormalPillColorFromHorse,
   getRandomSetElement,
+  isGoldPill,
+  isHorsePill,
+  removeCollectibleFromPools,
   setCollectibleSubType,
 } from "isaacscript-common";
 import { mod } from "../mod";
-import { getRandomizedCollectibleTypes } from "../randomizedCollectibleTypes";
 import {
+  BANNED_COLLECTIBLE_TYPES,
+  getRandomizedCollectibleTypes,
+} from "../randomizedCollectibleTypes";
+import {
+  anyPillEffectsUnlocked,
+  getUnlockedPillEffects,
   getUnlockedTrinketTypes,
   isCollectibleTypeUnlocked,
+  isGoldPillUnlocked,
+  isHorsePillsUnlocked,
+  isPillEffectUnlocked,
   isRandomizerEnabled,
+  isTrinketTypeUnlocked,
 } from "./AchievementTracker";
 
 export class ItemPoolRemoval extends ModFeature {
@@ -28,6 +45,7 @@ export class ItemPoolRemoval extends ModFeature {
    * Set items are unlockable, but they will show up even if they are removed from pools. Replace
    * them with Breakfast.
    */
+  // 34, 100
   @Callback(ModCallback.POST_PICKUP_INIT, PickupVariant.COLLECTIBLE)
   postPickupInitCollectible(pickup: EntityPickup): void {
     if (!isRandomizerEnabled()) {
@@ -40,6 +58,25 @@ export class ItemPoolRemoval extends ModFeature {
     }
   }
 
+  // 65
+  @Callback(ModCallback.GET_PILL_EFFECT)
+  getPillEffect(
+    pillEffect: PillEffect,
+    _pillColor: PillColor,
+  ): PillEffect | undefined {
+    if (!isPillEffectUnlocked(pillEffect)) {
+      const pillEffects = getUnlockedPillEffects();
+
+      // If there are no unlocked pill effects, the pill will be replaced with a coin in the
+      // `POST_PICKUP_SELECTION_FILTER` callback.
+      return pillEffects.size === 0
+        ? undefined
+        : getRandomSetElement(pillEffects);
+    }
+
+    return undefined;
+  }
+
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
   postGameStartedReorderedFalse(): void {
     if (!isRandomizerEnabled()) {
@@ -50,26 +87,45 @@ export class ItemPoolRemoval extends ModFeature {
     const randomizedCollectibleTypes = getRandomizedCollectibleTypes();
 
     for (const collectibleType of randomizedCollectibleTypes) {
-      itemPool.RemoveCollectible(collectibleType);
+      if (!isCollectibleTypeUnlocked(collectibleType)) {
+        itemPool.RemoveCollectible(collectibleType);
+      }
     }
 
     const trinketArray = mod.getTrinketArray();
     for (const trinketType of trinketArray) {
-      if (trinketType !== TrinketType.BABY_BENDER) {
+      if (!isTrinketTypeUnlocked(trinketType)) {
         itemPool.RemoveTrinket(trinketType);
       }
     }
+
+    removeCollectibleFromPools(...BANNED_COLLECTIBLE_TYPES);
   }
 
-  @Callback(ModCallback.POST_PICKUP_SELECTION)
+  @CallbackCustom(
+    ModCallbackCustom.POST_PICKUP_SELECTION_FILTER,
+    PickupVariant.PILL, // 70
+  )
   postPickupSelection(
     _pickup: EntityPickup,
-    variant: PickupVariant,
+    _variant: PickupVariant,
     subType: int,
-  ): undefined {
-    if (variant === PickupVariant.BOMB && subType === BombSubType.TROLL) {
-      Isaac.DebugString("GETTING HERE");
+  ): [PickupVariant, int] | undefined {
+    if (!anyPillEffectsUnlocked()) {
+      return [PickupVariant.COIN, CoinSubType.PENNY];
     }
+
+    const pillColor = subType as PillColor;
+
+    if (isGoldPill(pillColor) && !isGoldPillUnlocked()) {
+      return [PickupVariant.PILL, FIRST_PILL_COLOR];
+    }
+
+    if (isHorsePill(pillColor) && !isHorsePillsUnlocked()) {
+      const normalPillColor = getNormalPillColorFromHorse(pillColor);
+      return [PickupVariant.PILL, normalPillColor];
+    }
+
     return undefined;
   }
 
@@ -81,7 +137,7 @@ export class ItemPoolRemoval extends ModFeature {
    */
   @CallbackCustom(
     ModCallbackCustom.POST_PICKUP_SELECTION_FILTER,
-    PickupVariant.TRINKET,
+    PickupVariant.TRINKET, // 350
   )
   postPickupSelectionTrinket(
     _pickup: EntityPickup,

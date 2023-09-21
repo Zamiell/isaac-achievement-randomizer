@@ -3957,7 +3957,7 @@ __metadata:
   dependencies:
     isaac-typescript-definitions: ^17.0.1
     isaacscript: ^3.11.0
-    isaacscript-common: ^39.1.0
+    isaacscript-common: ^39.2.0
     isaacscript-lint: ^5.10.0
     isaacscript-spell: ^1.4.0
     isaacscript-tsconfig: ^4.0.0
@@ -3982,12 +3982,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common@npm:^39.1.0":
-  version: 39.1.0
-  resolution: "isaacscript-common@npm:39.1.0"
+"isaacscript-common@npm:^39.2.0":
+  version: 39.2.0
+  resolution: "isaacscript-common@npm:39.2.0"
   dependencies:
     isaac-typescript-definitions: ^17.0.1
-  checksum: 5258695c8e379bebbd6e2114e476b9192b43c3b04ccf6511565b718c621e4894e226875f1768ecec91b49c82634a45541c31601c5e4d43a6577134d9f00de759
+  checksum: bd8235c954638d2e5ae428158d45beb0eb7a8f7b10d77d4948b2c7e8ab4de2bbe3420120a1ad7ff9c7ee3dbbe74aca8e6fa8d6c5a6ef9b2f3bc9f49ac472c2aa
   languageName: node
   linkType: hard
 

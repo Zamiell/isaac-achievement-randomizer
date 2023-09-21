@@ -1,36 +1,57 @@
 import { CollectibleType, ItemConfigTag } from "isaac-typescript-definitions";
-import {
-  NUM_VANILLA_CHALLENGES,
-  ReadonlySet,
-  combineSets,
-} from "isaacscript-common";
+import { ReadonlySet, combineSets } from "isaacscript-common";
 import { mod } from "./mod";
 
-/** This does not include any quest items (e.g. The Polaroid, The Negative, Key Piece 1, etc.). */
-const SET_DROPS_NOT_IN_OTHER_POOLS = new ReadonlySet([
-  // This is technically in the "shellGame" pool, but that pool is not implemented.
-  CollectibleType.SKATOLE, // 9
+const TREASURE_ROOM_EXCEPTIONS = new ReadonlySet<CollectibleType>([
+  // TODO
+]);
 
-  CollectibleType.DOLLAR, // 18
+const BOSS_ROOM_EXCEPTIONS = new ReadonlySet<CollectibleType>([
+  CollectibleType.BREAKFAST, // 25
+  CollectibleType.WOODEN_SPOON, // 27
+  CollectibleType.WIRE_COAT_HANGER, // 32
+  CollectibleType.PENTAGRAM, // 51
+  CollectibleType.MOMS_UNDERWEAR, // 29
+]);
 
-  // This is in Greed Mode pools and the Baby Shop, which we don't consider for this purpose.
-  CollectibleType.CUBE_OF_MEAT, // 73
+/**
+ * We arbitrarily pick the worst 5 Devil Room collectibles. These are the same as the ones with the
+ * in-game quality of 0, with the exception of Pound of Flesh (which is swapped with Plan C).
+ */
+const DEVIL_ROOM_EXCEPTIONS = new ReadonlySet<CollectibleType>([
+  CollectibleType.QUARTER, // 74
+  CollectibleType.BLOOD_RIGHTS, // 186
+  CollectibleType.MISSING_PAGE_2, // 262
+  CollectibleType.SHADE, // 468
+  CollectibleType.POUND_OF_FLESH, // 672
+]);
 
-  // This is in the Crane Game pool, which we don't consider for this purpose.
-  CollectibleType.SMALL_ROCK, // 90
+/**
+ * We arbitrarily pick the worst 5 Angel Room collectibles. There are no collectibles in the Angel
+ * Room pool that are quality 0. The ones that are quality 1 are all fairly useful.
+ *
+ * Gamonymous chose these because they are only defensive.
+ */
+const ANGEL_ROOM_EXCEPTIONS = new ReadonlySet<CollectibleType>([
+  CollectibleType.GUARDIAN_ANGEL, // 112
+  CollectibleType.STIGMATA, // 138
+  CollectibleType.HOLY_GRAIL, // 184
+  CollectibleType.PRAYER_CARD, // 146
+  CollectibleType.SWORN_PROTECTOR, // 363
+]);
 
-  CollectibleType.PONY, // 130
+const NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS =
+  new ReadonlySet<CollectibleType>([
+    CollectibleType.BOOK_OF_BELIAL_BIRTHRIGHT, // 59
+    CollectibleType.BROKEN_GLASS_CANNON, // 474
+    CollectibleType.DAMOCLES_PASSIVE, // 656
+    CollectibleType.RECALL, // 714
+    CollectibleType.HOLD, // 715
+  ]);
 
-  // This is in Greed Mode pools, which we don't consider for this purpose.
-  CollectibleType.LUMP_OF_COAL, // 132
-
-  CollectibleType.WHITE_PONY, // 181
-
-  // This is in Greed Mode pools and the Baby Shop, which we don't consider for this purpose.
-  CollectibleType.BALL_OF_BANDAGES, // 207
-
-  CollectibleType.HEAD_OF_KRAMPUS, // 293
-  CollectibleType.REDEMPTION, // 673
+export const BANNED_COLLECTIBLE_TYPES = new ReadonlySet<CollectibleType>([
+  CollectibleType.PLAN_C, // 475
+  CollectibleType.CLICKER, // 482
 ]);
 
 const randomizedCollectibleTypes: CollectibleType[] = [];
@@ -43,8 +64,13 @@ function lazyInitRandomizedCollectibleTypes() {
 
   const questCollectibleTypes = mod.getCollectiblesWithTag(ItemConfigTag.QUEST);
   const blacklistedCollectibleTypes = combineSets(
+    TREASURE_ROOM_EXCEPTIONS,
+    BOSS_ROOM_EXCEPTIONS,
+    DEVIL_ROOM_EXCEPTIONS,
+    ANGEL_ROOM_EXCEPTIONS,
     questCollectibleTypes,
-    SET_DROPS_NOT_IN_OTHER_POOLS,
+    NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS,
+    BANNED_COLLECTIBLE_TYPES,
   );
 
   const collectibleArray = mod.getCollectibleArray();
@@ -59,5 +85,3 @@ export function getRandomizedCollectibleTypes(): readonly CollectibleType[] {
   lazyInitRandomizedCollectibleTypes();
   return randomizedCollectibleTypes;
 }
-
-Isaac.DebugString(`GETTING HERE - ${NUM_VANILLA_CHALLENGES}`);

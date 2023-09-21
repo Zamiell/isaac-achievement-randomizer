@@ -1,5 +1,6 @@
 import type {
   CollectibleType,
+  PillEffect,
   TrinketType,
 } from "isaac-typescript-definitions";
 import { PlayerType } from "isaac-typescript-definitions";
@@ -54,6 +55,37 @@ export function isCollectibleTypeUnlocked(
   return true;
 }
 
+export function isTrinketTypeUnlocked(_trinketType: TrinketType): boolean {
+  // TODO
+  return false;
+}
+
 export function getUnlockedTrinketTypes(): ReadonlySet<TrinketType> {
+  // TODO
   return new Set();
+}
+
+export function anyPillEffectsUnlocked(): boolean {
+  // TODO
+  return false;
+}
+
+export function isPillEffectUnlocked(_pillEffect: PillEffect): boolean {
+  // TODO
+  return false;
+}
+
+export function getUnlockedPillEffects(): ReadonlySet<PillEffect> {
+  // TODO
+  return new Set();
+}
+
+export function isGoldPillUnlocked(): boolean {
+  // TODO
+  return false;
+}
+
+export function isHorsePillsUnlocked(): boolean {
+  // TODO
+  return false;
 }
