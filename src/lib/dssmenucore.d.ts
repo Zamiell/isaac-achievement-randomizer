@@ -1,3 +1,11 @@
+export function init(
+  this: void,
+  dssModName: string,
+  dssCoreVersion: number,
+  v: unknown,
+): DSSMod;
+
+// ts-prune-ignore-next
 interface DSSMod extends Mod {
   runMenu: () => void;
   openMenu: () => void;
@@ -9,10 +17,3 @@ interface DSSMod extends Mod {
   menuHintButton: unknown;
   menuBuzzerButton: unknown;
 }
-
-export function init(
-  this: void,
-  dssModName: string,
-  dssCoreVersion: number,
-  v: unknown,
-): DSSMod;

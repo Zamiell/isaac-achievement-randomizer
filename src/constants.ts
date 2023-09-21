@@ -5,6 +5,7 @@ export const MOD_NAME = "Achievement Randomizer";
 export const IS_DEV = true as boolean;
 
 /** These are challenges that can be done without any collectibles or trinkets unlocked. */
+// ts-prune-ignore-next
 export const EASY_CHALLENGES = [
   Challenge.HIGH_BROW, // 2
   Challenge.DARKNESS_FALLS, // 4
