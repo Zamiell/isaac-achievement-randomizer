@@ -16,6 +16,7 @@ import {
 } from "isaac-typescript-definitions";
 import { ModFeature, getRandomSeed, log, restart } from "isaacscript-common";
 import type { CharacterObjective } from "../../enums/CharacterObjective";
+import type { UnlockablePath } from "../../enums/UnlockablePath";
 
 const STARTING_CHARACTER = PlayerType.ISAAC;
 
@@ -67,6 +68,15 @@ export function addAchievement(_characterObjective: CharacterObjective): void {
   const player = Isaac.GetPlayer();
   const _character = player.GetPlayerType();
   // TODO
+}
+
+// --------------
+// Path functions
+// --------------
+
+export function isPathUnlocked(_unlockablePath: UnlockablePath): boolean {
+  // TODO
+  return false;
 }
 
 // ---------------------

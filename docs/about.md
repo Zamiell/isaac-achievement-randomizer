@@ -169,30 +169,12 @@ Every card/rune in the game is locked behind a random achievement (except for Ru
 - Gold pills are locked behind a random achievement.
 - Horse pills are locked behind a random achievement.
 
-## Hearts <!-- 5.10 -->
+## Other Pickups
 
-Only half red heart pickups start as being unlocked. Every other heart pickup in the game is locked behind a random achievement.
-
-## Coins <!-- 5.20 -->
-
-Only pennies start as being unlocked. Every other coin in the game is locked behind a random achievement.
-
-## Bombs <!-- 5.40 -->
-
-Only normal bomb pickups start as being unlocked. Every other bomb pickup in the game is locked behind a random achievement.
-
-## Keys <!-- 5.30 -->
-
-Only normal key pickups start as being unlocked. Every other key pickup in the game is locked behind a random achievement. Keys are always unlocked in the following order:
-
-## Batteries <!-- 5.90 -->
-
-Every battery type in the game is locked behind a random achievement. If no batteries are unlocked, batteries will be converted to pennies.
-
-## Sacks <!-- 5.69 -->
-
-Every sack type in the game is locked behind a random achievement. If no sack are unlocked, sacks will be converted to pennies.
-
-## Chests
-
-Only normal chests start as being unlocked. Every other chest type in the game is locked behind a random achievement.
+- Only half red heart pickups start as being unlocked. Every other heart pickup in the game is locked behind a random achievement.
+- Only pennies start as being unlocked. Every other coin in the game is locked behind a random achievement.
+- Only normal bomb pickups start as being unlocked. Every other bomb pickup in the game is locked behind a random achievement.
+- Only normal key pickups start as being unlocked. Every other key pickup in the game is locked behind a random achievement.
+- Every battery type in the game is locked behind a random achievement. If no batteries are unlocked, batteries will be converted to pennies.
+- Every sack type in the game is locked behind a random achievement. If no sack are unlocked, sacks will be converted to pennies.
+- Only normal chests start as being unlocked. Every other chest type in the game is locked behind a random achievement.
