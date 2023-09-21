@@ -1,5 +1,4 @@
 import {
-  getRoomSubType,
   log,
   logAndPrint,
   setLogFunctionsGlobal,
@@ -10,7 +9,6 @@ import { mod } from "./mod";
 /** Currently, F2 is set to execute this function. */
 function debugCode(_params?: string) {
   // Add code here.
-  print(getRoomSubType());
 }
 
 /** Hotkey 1 is bound to F2. */

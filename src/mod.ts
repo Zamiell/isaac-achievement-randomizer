@@ -3,6 +3,7 @@ import { MOD_NAME } from "./constants";
 
 const FEATURES = [
   ISCFeature.EXTRA_CONSOLE_COMMANDS,
+  ISCFeature.MODDED_ELEMENT_SETS,
   ISCFeature.SAVE_DATA_MANAGER,
 ] as const;
 

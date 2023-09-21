@@ -1,4 +1,8 @@
-/** 14 in total. */
+/**
+ * - 13 in total.
+ * - 26 for normal node + hard mode.
+ * - 34 characters = 884.
+ */
 export enum CharacterObjective {
   MOM,
   IT_LIVES,
@@ -14,5 +18,3 @@ export enum CharacterObjective {
   MOTHER,
   THE_BEAST,
 }
-
-// 34 characters = 476 unlocks.
