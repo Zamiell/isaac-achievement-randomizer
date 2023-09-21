@@ -1,5 +1,6 @@
 import { MOD_NAME } from "./constants";
 import { init } from "./lib/dssmenucore";
+import { mod } from "./mod";
 
 interface DeadSeaScrollsMenuSettings {
   Run: () => void;
@@ -18,19 +19,64 @@ declare const DeadSeaScrollsMenu: {
   ) => void;
 };
 
-// eslint-disable-next-line isaacscript/require-v-registration
-const v = {};
+const v = {
+  persistent: {},
+};
 
 export function initDeadSeaScrolls(): void {
-  const DSSMod = init(`${MOD_NAME}-DSS`, 1, v);
+  mod.saveDataManager("deadSeaScrolls", v);
+  const DSSMod = init(`${MOD_NAME}-DSS`, 1, v.persistent);
 
   const directory = {
     main: {
-      title: "randomizer", // Must be lowercase. "achievement randomizer" is too long.
+      title: "randomizer menu", // Must be lowercase.
       buttons: [
-        // Menu Settings
-        { str: "resume game", action: "resume" },
-        { str: "menu settings", dest: "settings" },
+        {
+          str: "current seed:",
+          noSel: true,
+        },
+        {
+          str: "[disabled]",
+          noSel: true,
+        },
+        {
+          str: "",
+          noSel: true,
+        },
+        {
+          str: "achievement list",
+          dest: "achievements",
+          tooltip: {
+            strSet: ["see the", "unlocks you", "have yet", "to complete"],
+          },
+        },
+        {
+          str: "stats",
+          dest: "stats",
+          tooltip: {
+            strSet: [
+              "see stats",
+              "about your",
+              "current",
+              "randomizer",
+              "playthrough",
+            ],
+          },
+        },
+        {
+          str: "menu settings",
+          dest: "settings",
+          tooltip: {
+            strSet: ["customize the", "menu hotkey", "and other", "settings"],
+          },
+        },
+        {
+          str: "resume game",
+          action: "resume",
+          tooltip: {
+            strSet: ["close this", "menu and", "return to the", "game"],
+          },
+        },
       ],
     },
 
@@ -42,6 +88,24 @@ export function initDeadSeaScrolls(): void {
         DSSMod.paletteButton,
         DSSMod.menuHintButton,
         DSSMod.menuBuzzerButton,
+      ],
+    },
+
+    achievements: {
+      title: "achievements",
+    },
+
+    stats: {
+      title: "stats",
+      buttons: [
+        {
+          str: "time: 0",
+          noSel: true,
+        },
+        {
+          str: "deaths: 0",
+          noSel: true,
+        },
       ],
     },
   };
@@ -64,5 +128,6 @@ export function initDeadSeaScrolls(): void {
     Directory: directory,
     DirectoryKey: directoryKey,
   };
-  DeadSeaScrollsMenu.AddMenu("Achievement Randomizer", settings);
+
+  DeadSeaScrollsMenu.AddMenu(MOD_NAME, settings);
 }
