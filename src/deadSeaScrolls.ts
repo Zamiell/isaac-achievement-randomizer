@@ -1,23 +1,7 @@
+import { assertDefined } from "isaacscript-common";
 import { MOD_NAME } from "./constants";
 import { init } from "./lib/dssmenucore";
 import { mod } from "./mod";
-
-interface DeadSeaScrollsMenuSettings {
-  Run: () => void;
-  Open: () => void;
-  Close: () => void;
-  UseSubMenu: boolean;
-  Directory: unknown;
-  DirectoryKey: unknown;
-}
-
-declare const DeadSeaScrollsMenu: {
-  AddMenu: (
-    this: void,
-    name: string,
-    settings: DeadSeaScrollsMenuSettings,
-  ) => void;
-};
 
 const v = {
   persistent: {},
@@ -129,5 +113,9 @@ export function initDeadSeaScrolls(): void {
     DirectoryKey: directoryKey,
   };
 
+  assertDefined(
+    DeadSeaScrollsMenu,
+    "Dead Sea Scrolls failed to initialize the global variable.",
+  );
   DeadSeaScrollsMenu.AddMenu(MOD_NAME, settings);
 }

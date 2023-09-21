@@ -8,6 +8,7 @@ import {
   inBeastRoom,
 } from "isaacscript-common";
 import { CharacterObjective } from "../enums/CharacterObjective";
+import { isRandomizerEnabled } from "./AchievementTracker";
 
 const CHARACTER_OBJECTIVE_TO_BOSS_ID = new ReadonlyMap<
   BossID,
@@ -31,6 +32,10 @@ const CHARACTER_OBJECTIVE_TO_BOSS_ID = new ReadonlyMap<
 export class BossKillDetection extends ModFeature {
   @Callback(ModCallback.PRE_SPAWN_CLEAR_AWARD)
   preSpawnClearAward(): boolean | undefined {
+    if (!isRandomizerEnabled()) {
+      return;
+    }
+
     const room = game.GetRoom();
     const roomType = room.GetType();
 

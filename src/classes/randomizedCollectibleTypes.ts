@@ -1,8 +1,6 @@
 import { CollectibleType, ItemConfigTag } from "isaac-typescript-definitions";
 import { ReadonlySet, combineSets } from "isaacscript-common";
-import { mod } from "./mod";
-
-const QUEST_COLLECTIBLE_TYPES = mod.getCollectiblesWithTag(ItemConfigTag.QUEST);
+import { mod } from "../mod";
 
 /** This does not include any quest items (e.g. The Polaroid, The Negative, Key Piece 1, etc.). */
 const SET_DROPS_NOT_IN_OTHER_POOLS = new ReadonlySet([
@@ -31,14 +29,29 @@ const SET_DROPS_NOT_IN_OTHER_POOLS = new ReadonlySet([
   CollectibleType.REDEMPTION, // 673
 ]);
 
-const BLACKLISTED_COLLECTIBLES: ReadonlySet<CollectibleType> = combineSets(
-  QUEST_COLLECTIBLE_TYPES,
-  SET_DROPS_NOT_IN_OTHER_POOLS,
-);
+const randomizedCollectibleTypes: CollectibleType[] = [];
 
-const COLLECTIBLE_ARRAY = mod.getCollectibleArray();
+/** We cannot use the `getCollectibleArray` function until at least one callback has fired. */
+function lazyInitRandomizedCollectibleTypes() {
+  if (randomizedCollectibleTypes.length > 0) {
+    return;
+  }
 
-export const RANDOMIZED_COLLECTIBLE_TYPES: readonly CollectibleType[] =
-  COLLECTIBLE_ARRAY.filter(
-    (collectibleType) => !BLACKLISTED_COLLECTIBLES.has(collectibleType),
+  const questCollectibleTypes = mod.getCollectiblesWithTag(ItemConfigTag.QUEST);
+  const blacklistedCollectibleTypes = combineSets(
+    questCollectibleTypes,
+    SET_DROPS_NOT_IN_OTHER_POOLS,
   );
+
+  const collectibleArray = mod.getCollectibleArray();
+  for (const collectibleType of collectibleArray) {
+    if (!blacklistedCollectibleTypes.has(collectibleType)) {
+      randomizedCollectibleTypes.push(collectibleType);
+    }
+  }
+}
+
+export function getRandomizedCollectibleTypes(): readonly CollectibleType[] {
+  lazyInitRandomizedCollectibleTypes();
+  return randomizedCollectibleTypes;
+}

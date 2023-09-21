@@ -1,1 +1,1 @@
-export const MOD_NAME = "isaac-achievement-randomizer";
+export const MOD_NAME = "Achievement Randomizer";
