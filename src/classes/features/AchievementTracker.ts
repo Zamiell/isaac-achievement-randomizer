@@ -1,10 +1,19 @@
 import type {
+  BatterySubType,
   CardType,
   CollectibleType,
   PillEffect,
+  SackSubType,
   TrinketType,
 } from "isaac-typescript-definitions";
-import { PlayerType } from "isaac-typescript-definitions";
+import {
+  BombSubType,
+  CoinSubType,
+  HeartSubType,
+  KeySubType,
+  PickupVariant,
+  PlayerType,
+} from "isaac-typescript-definitions";
 import { ModFeature, getRandomSeed, log, restart } from "isaacscript-common";
 
 const STARTING_CHARACTER = PlayerType.ISAAC;
@@ -123,5 +132,119 @@ export function isGoldPillUnlocked(): boolean {
 
 export function isHorsePillsUnlocked(): boolean {
   // TODO
+  return false;
+}
+
+// ----------------------
+// Other pickup functions
+// ----------------------
+
+export function isHeartSubTypeUnlocked(heartSubType: HeartSubType): boolean {
+  // Half red hearts are always unlocked.
+  if (heartSubType === HeartSubType.HALF) {
+    return true;
+  }
+
+  // TODO
+  // - Red Heart (5.10.1)
+  // - Soul Heart (5.10.3)
+  // - Eternal Heart (5.10.4)
+  // - Double Heart (5.10.5)
+  // - Black Heart (5.10.6)
+  // - Gold Heart (5.10.7)
+  // - Half Soul Heart (5.10.8)
+  // - Scared Heart (5.10.9)
+  // - Blended Heart (5.10.10)
+  // - Bone Heart (5.10.11)
+  // - Rotten Heart (5.10.12)
+  return false;
+}
+
+export function isCoinSubTypeUnlocked(coinSubType: CoinSubType): boolean {
+  // Pennies hearts always start out as being unlocked.
+  if (coinSubType === CoinSubType.PENNY) {
+    return true;
+  }
+
+  // TODO
+  // - Nickel (5.20.2)
+  // - Dime (5.20.3)
+  // - Double Penny (5.20.4)
+  // - Lucky Penny (5.20.5)
+  // - Sticky Nickel (5.20.6)
+  // - Golden Penny (5.20.7)
+  return false;
+}
+
+export function isBombSubTypeUnlocked(bombSubType: BombSubType): boolean {
+  // Normal bomb drops always start out as being unlocked.
+  if (bombSubType === BombSubType.NORMAL) {
+    return true;
+  }
+
+  // TODO
+  // - Double Bomb (5.40.2)
+  // - (Troll Bombs are 5.40.3.)
+  // - Golden Bomb (5.40.4)
+  // - (Mega Troll Bombs are 5.40.5.)
+  // - (Golden Troll Bombs are 5.40.6.)
+  // - (Giga Bombs are 5.40.7.)
+  return false;
+}
+
+export function isKeySubTypeUnlocked(keySubType: KeySubType): boolean {
+  // Normal key drops always start out as being unlocked.
+  if (keySubType === KeySubType.NORMAL) {
+    return true;
+  }
+
+  // TODO
+  // - Golden Key (5.30.2)
+  // - Key Ring (5.30.3)
+  // - Charged Key (5.30.4)
+  return false;
+}
+
+export function isBatterySubTypeUnlocked(
+  _batterySubType: BatterySubType,
+): boolean {
+  // TODO
+  // - Micro Battery (5.90.2)
+  // - Lil' Battery (5.90.1)
+  // - Mega Battery (5.90.3)
+  // - Golden Battery (5.90.4)
+  return false;
+}
+
+export function isSackSubTypeUnlocked(_sackSubType: SackSubType): boolean {
+  // TODO
+  // - Grab Bag (5.69.1)
+  // - Black Sack (5.69.2)
+  return false;
+}
+
+export function isChestVariantUnlocked(pickupVariant: PickupVariant): boolean {
+  // Normal chests always start out as being unlocked.
+  if (pickupVariant === PickupVariant.CHEST) {
+    return true;
+  }
+
+  // Other types of chests do not randomly spawn.
+  if (
+    pickupVariant === PickupVariant.OLD_CHEST || // 55
+    pickupVariant === PickupVariant.MOMS_CHEST // 390
+  ) {
+    return true;
+  }
+
+  // - Locked Chest (5.60)
+  // - Red Chest (5.360)
+  // - Bomb Chest (5.51)
+  // - Eternal Chest (5.53)
+  // - Spiked Chest (5.52)
+  // - Mimic Chest (5.54)
+  // - Wooden Chest (5.56)
+  // - Mega Chest (5.57)
+  // - Haunted Chest (5.58)
   return false;
 }

@@ -1,12 +1,18 @@
 import type {
+  BatterySubType,
   PillColor,
   PillEffect,
+  SackSubType,
   TrinketType,
 } from "isaac-typescript-definitions";
 import {
+  BombSubType,
   CardType,
+  ChestSubType,
   CoinSubType,
   CollectibleType,
+  HeartSubType,
+  KeySubType,
   ModCallback,
   PickupVariant,
 } from "isaac-typescript-definitions";
@@ -20,6 +26,7 @@ import {
   getNormalPillColorFromHorse,
   getRandomArrayElement,
   getRandomSetElement,
+  isChestVariant,
   isGoldPill,
   isHorsePill,
   isRune,
@@ -39,50 +46,23 @@ import {
   getUnlockedCardTypes,
   getUnlockedPillEffects,
   getUnlockedTrinketTypes,
+  isBatterySubTypeUnlocked,
+  isBombSubTypeUnlocked,
   isCardTypeUnlocked,
+  isChestVariantUnlocked,
+  isCoinSubTypeUnlocked,
   isCollectibleTypeUnlocked,
   isGoldPillUnlocked,
+  isHeartSubTypeUnlocked,
   isHorsePillsUnlocked,
+  isKeySubTypeUnlocked,
   isPillEffectUnlocked,
+  isSackSubTypeUnlocked,
   isTrinketTypeUnlocked,
 } from "./AchievementTracker";
 
-export class ItemPoolRemoval extends RandomizerModFeature {
-  /**
-   * Set items are unlockable, but they will show up even if they are removed from pools. Replace
-   * them with Breakfast.
-   */
-  // 34, 100
-  @Callback(ModCallback.POST_PICKUP_INIT, PickupVariant.COLLECTIBLE)
-  postPickupInitCollectible(pickup: EntityPickup): void {
-    const collectible = pickup as EntityPickupCollectible;
-    if (!isCollectibleTypeUnlocked(collectible.SubType)) {
-      setCollectibleSubType(collectible, CollectibleType.BREAKFAST);
-    }
-  }
-
-  // 65
-  @Callback(ModCallback.GET_PILL_EFFECT)
-  getPillEffect(
-    pillEffect: PillEffect,
-    _pillColor: PillColor,
-  ): PillEffect | undefined {
-    if (isPillEffectUnlocked(pillEffect)) {
-      return undefined;
-    }
-
-    const unlockedPillEffects = getUnlockedPillEffects();
-
-    // If there are no unlocked pill effects, the pill will be replaced with a coin in the
-    // `POST_PICKUP_SELECTION_FILTER` callback.
-    if (unlockedPillEffects.size === 0) {
-      return undefined;
-    }
-
-    return getRandomSetElement(unlockedPillEffects);
-  }
-
-  // 65
+export class PickupRemoval extends RandomizerModFeature {
+  // 20
   @Callback(ModCallback.GET_CARD)
   getCard(
     _rng: RNG,
@@ -134,6 +114,56 @@ export class ItemPoolRemoval extends RandomizerModFeature {
     return getRandomSetElement(cardTypesToUse);
   }
 
+  /**
+   * Set items are unlockable, but they will show up even if they are removed from pools. Replace
+   * them with Breakfast.
+   */
+  // 34, 100
+  @Callback(ModCallback.POST_PICKUP_INIT, PickupVariant.COLLECTIBLE)
+  postPickupInitCollectible(pickup: EntityPickup): void {
+    const collectible = pickup as EntityPickupCollectible;
+    if (!isCollectibleTypeUnlocked(collectible.SubType)) {
+      setCollectibleSubType(collectible, CollectibleType.BREAKFAST);
+    }
+  }
+
+  // 37
+  @Callback(ModCallback.POST_PICKUP_SELECTION)
+  postPickupSelection(
+    _pickup: EntityPickup,
+    pickupVariant: PickupVariant,
+    _subType: int,
+  ): [PickupVariant, int] | undefined {
+    if (!isChestVariant(pickupVariant)) {
+      return undefined;
+    }
+
+    return isChestVariantUnlocked(pickupVariant)
+      ? undefined
+      : [PickupVariant.CHEST, ChestSubType.CLOSED];
+  }
+
+  // 65
+  @Callback(ModCallback.GET_PILL_EFFECT)
+  getPillEffect(
+    pillEffect: PillEffect,
+    _pillColor: PillColor,
+  ): PillEffect | undefined {
+    if (isPillEffectUnlocked(pillEffect)) {
+      return undefined;
+    }
+
+    const unlockedPillEffects = getUnlockedPillEffects();
+
+    // If there are no unlocked pill effects, the pill will be replaced with a coin in the
+    // `POST_PICKUP_SELECTION_FILTER` callback.
+    if (unlockedPillEffects.size === 0) {
+      return undefined;
+    }
+
+    return getRandomSetElement(unlockedPillEffects);
+  }
+
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
   postGameStartedReorderedFalse(): void {
     const itemPool = game.GetItemPool();
@@ -157,11 +187,91 @@ export class ItemPoolRemoval extends RandomizerModFeature {
 
   @CallbackCustom(
     ModCallbackCustom.POST_PICKUP_SELECTION_FILTER,
+    PickupVariant.HEART, // 10
+  )
+  postPickupSelectionHeart(
+    _pickup: EntityPickup,
+    _pickupVariant: PickupVariant,
+    subType: int,
+  ): [PickupVariant, int] | undefined {
+    const heartSubType = subType as HeartSubType;
+
+    return isHeartSubTypeUnlocked(heartSubType)
+      ? undefined
+      : [PickupVariant.HEART, HeartSubType.HALF];
+  }
+
+  @CallbackCustom(
+    ModCallbackCustom.POST_PICKUP_SELECTION_FILTER,
+    PickupVariant.COIN, // 20
+  )
+  postPickupSelectionCoin(
+    _pickup: EntityPickup,
+    _pickupVariant: PickupVariant,
+    subType: int,
+  ): [PickupVariant, int] | undefined {
+    const coinSubType = subType as CoinSubType;
+
+    return isCoinSubTypeUnlocked(coinSubType)
+      ? undefined
+      : [PickupVariant.COIN, CoinSubType.PENNY];
+  }
+
+  @CallbackCustom(
+    ModCallbackCustom.POST_PICKUP_SELECTION_FILTER,
+    PickupVariant.KEY, // 30
+  )
+  postPickupSelectionKey(
+    _pickup: EntityPickup,
+    _pickupVariant: PickupVariant,
+    subType: int,
+  ): [PickupVariant, int] | undefined {
+    const keySubType = subType as KeySubType;
+
+    return isKeySubTypeUnlocked(keySubType)
+      ? undefined
+      : [PickupVariant.KEY, KeySubType.NORMAL];
+  }
+
+  @CallbackCustom(
+    ModCallbackCustom.POST_PICKUP_SELECTION_FILTER,
+    PickupVariant.BOMB, // 40
+  )
+  postPickupSelectionBomb(
+    _pickup: EntityPickup,
+    _pickupVariant: PickupVariant,
+    subType: int,
+  ): [PickupVariant, int] | undefined {
+    const bombSubType = subType as BombSubType;
+
+    return isBombSubTypeUnlocked(bombSubType)
+      ? undefined
+      : [PickupVariant.BOMB, BombSubType.NORMAL];
+  }
+
+  @CallbackCustom(
+    ModCallbackCustom.POST_PICKUP_SELECTION_FILTER,
+    PickupVariant.SACK, // 69
+  )
+  postPickupSelectionSack(
+    _pickup: EntityPickup,
+    _pickupVariant: PickupVariant,
+    subType: int,
+  ): [PickupVariant, int] | undefined {
+    const sackSubType = subType as SackSubType;
+
+    return isSackSubTypeUnlocked(sackSubType)
+      ? undefined
+      : [PickupVariant.COIN, CoinSubType.PENNY];
+  }
+
+  @CallbackCustom(
+    ModCallbackCustom.POST_PICKUP_SELECTION_FILTER,
     PickupVariant.PILL, // 70
   )
   postPickupSelectionPill(
     _pickup: EntityPickup,
-    _variant: PickupVariant,
+    _pickupVariant: PickupVariant,
     subType: int,
   ): [PickupVariant, int] | undefined {
     if (!anyPillEffectsUnlocked()) {
@@ -184,11 +294,27 @@ export class ItemPoolRemoval extends RandomizerModFeature {
 
   @CallbackCustom(
     ModCallbackCustom.POST_PICKUP_SELECTION_FILTER,
+    PickupVariant.LIL_BATTERY, // 90
+  )
+  postPickupSelectionLilBattery(
+    _pickup: EntityPickup,
+    _pickupVariant: PickupVariant,
+    subType: int,
+  ): [PickupVariant, int] | undefined {
+    const batterySubType = subType as BatterySubType;
+
+    return isBatterySubTypeUnlocked(batterySubType)
+      ? undefined
+      : [PickupVariant.COIN, CoinSubType.PENNY];
+  }
+
+  @CallbackCustom(
+    ModCallbackCustom.POST_PICKUP_SELECTION_FILTER,
     PickupVariant.TAROT_CARD, // 300
   )
   postPickupSelectionTarotCard(
     _pickup: EntityPickup,
-    _variant: PickupVariant,
+    _pickupVariant: PickupVariant,
     subType: int,
   ): [PickupVariant, int] | undefined {
     if (!anyCardTypesUnlocked()) {
@@ -217,10 +343,11 @@ export class ItemPoolRemoval extends RandomizerModFeature {
   )
   postPickupSelectionTrinket(
     _pickup: EntityPickup,
-    _variant: PickupVariant,
+    _pickupVariant: PickupVariant,
     subType: int,
   ): [PickupVariant, int] | undefined {
     const trinketType = subType as TrinketType;
+
     const unlockedTrinketTypes = getUnlockedTrinketTypes();
     if (unlockedTrinketTypes.has(trinketType)) {
       return undefined;

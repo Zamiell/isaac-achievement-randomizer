@@ -8,7 +8,7 @@ import {
 import { AchievementTracker } from "./classes/features/AchievementTracker";
 import { BossKillDetection } from "./classes/features/BossKillDetection";
 import { CheckErrors } from "./classes/features/CheckErrors";
-import { ItemPoolRemoval } from "./classes/features/ItemPoolRemoval";
+import { PickupRemoval } from "./classes/features/PickupRemoval";
 import { StartingRoomInfo } from "./classes/features/StartingRoomInfo";
 import { initConsoleCommands } from "./consoleCommands";
 import { IS_DEV, MOD_NAME } from "./constants";
@@ -20,7 +20,7 @@ const MOD_FEATURES = [
   AchievementTracker,
   BossKillDetection,
   CheckErrors,
-  ItemPoolRemoval,
+  PickupRemoval,
   StartingRoomInfo,
 ] as const;
 

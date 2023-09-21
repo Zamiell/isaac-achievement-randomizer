@@ -21,3 +21,5 @@ TODO:
   - Lazarus Rags + Judas' Shadow + Ankh + Missing Poster
 
 - automatically restart run in normal mode
+
+- mutual character logic for unlocks (e.g. if the forgotten unlocks Magdalene, make sure it's not magdalene who unlocks forgotten)

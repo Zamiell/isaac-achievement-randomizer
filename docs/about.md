@@ -170,72 +170,28 @@ Every card/rune in the game is locked behind a random achievement (except for Ru
 
 ## Hearts <!-- 5.10 -->
 
-Only half red heart pickups start as being unlocked. Every other heart pickup in the game is locked behind a random achievement. Hearts are always unlocked in the following order:
-
-- Red Heart (5.10.1)
-- Scared Heart (5.10.9)
-- Gold Heart (5.10.7)
-- Rotten Heart (5.10.12)
-- Double Heart (5.10.5)
-- Half Soul Heart (5.10.8)
-- Soul Heart (5.10.3)
-- Blended Heart (5.10.10)
-- Black Heart (5.10.6)
-- Bone Heart (5.10.11)
-- Eternal Heart (5.10.4)
+Only half red heart pickups start as being unlocked. Every other heart pickup in the game is locked behind a random achievement.
 
 ## Coins <!-- 5.20 -->
 
-Only pennies start as being unlocked. Every other coin in the game is locked behind a random achievement. Coins are always unlocked in the following order:
-
-- Sticky Nickel (5.20.6)
-- Double Penny (5.20.4)
-- Nickle (5.20.2)
-- Dime (5.20.3)
-- Lucky Penny (5.20.5)
-- Golden Penny (5.20.7)
+Only pennies start as being unlocked. Every other coin in the game is locked behind a random achievement.
 
 ## Bombs <!-- 5.40 -->
 
-Only normal bomb pickups start as being unlocked. Every other bomb pickup in the game is locked behind a random achievement. Bombs are always unlocked in the following order:
-
-- Double Bomb (5.40.2)
-- Golden Bomb (5.40.4)
+Only normal bomb pickups start as being unlocked. Every other bomb pickup in the game is locked behind a random achievement.
 
 ## Keys <!-- 5.30 -->
 
 Only normal key pickups start as being unlocked. Every other key pickup in the game is locked behind a random achievement. Keys are always unlocked in the following order:
 
-- Key Ring (5.30.3)
-- Charged Key (5.30.4)
-- Golden Key (5.30.2)
-
 ## Batteries <!-- 5.90 -->
 
-Every battery type in the game is locked behind a random achievement. If no batteries are unlocked, batteries will be converted to pennies. Batteries are always unlocked in the following order:
-
-- Micro Battery (5.90.2)
-- Lil' Battery (5.90.1)
-- Mega Battery (5.90.3)
-- Golden Battery (5.90.4)
+Every battery type in the game is locked behind a random achievement. If no batteries are unlocked, batteries will be converted to pennies.
 
 ## Sacks <!-- 5.69 -->
 
-Every sack type in the game is locked behind a random achievement. If no sack are unlocked, sacks will be converted to pennies. Sacks are always unlocked in the following order:
-
-- Grab Bag (5.69.1)
-- Black Sack (5.69.2)
+Every sack type in the game is locked behind a random achievement. If no sack are unlocked, sacks will be converted to pennies.
 
 ## Chests
 
-Only normal chests start as being unlocked. Every other chest type in the game is locked behind a random achievement. Chests are always unlocked in the following order:
-
-- Spiked Chest (5.52)
-- Mimic Chest (5.54)
-- Haunted Chest (5.58)
-- Locked Chest (5.60)
-- Red Chest (5.360)
-- Bomb Chest (5.51)
-- Eternal Chest (5.53)
-- Wooden Chest (5.56)
-- Mega Chest (5.57)
+Only normal chests start as being unlocked. Every other chest type in the game is locked behind a random achievement.
