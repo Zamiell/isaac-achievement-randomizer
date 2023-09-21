@@ -15,6 +15,7 @@ import {
   PlayerType,
 } from "isaac-typescript-definitions";
 import { ModFeature, getRandomSeed, log, restart } from "isaacscript-common";
+import type { CharacterObjective } from "../../enums/CharacterObjective";
 
 const STARTING_CHARACTER = PlayerType.ISAAC;
 
@@ -60,6 +61,12 @@ export function endRandomizer(): void {
   // TODO: empty persistent variables
 
   restart(STARTING_CHARACTER);
+}
+
+export function addAchievement(_characterObjective: CharacterObjective): void {
+  const player = Isaac.GetPlayer();
+  const _character = player.GetPlayerType();
+  // TODO
 }
 
 // ---------------------

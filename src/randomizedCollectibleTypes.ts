@@ -60,6 +60,7 @@ const NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS =
 export const BANNED_COLLECTIBLE_TYPES = new ReadonlySet<CollectibleType>([
   CollectibleType.PLAN_C, // 475
   CollectibleType.CLICKER, // 482
+  CollectibleType.R_KEY, // 636
 ]);
 
 const randomizedCollectibleTypes: CollectibleType[] = [];

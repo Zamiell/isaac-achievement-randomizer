@@ -61,6 +61,7 @@ import {
   isTrinketTypeUnlocked,
 } from "./AchievementTracker";
 
+/** This feature handles removing all of the pickups from the game that are not unlocked yet. */
 export class PickupRemoval extends RandomizerModFeature {
   // 20
   @Callback(ModCallback.GET_CARD)

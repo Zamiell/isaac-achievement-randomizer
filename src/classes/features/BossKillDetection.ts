@@ -8,6 +8,7 @@ import {
 } from "isaacscript-common";
 import { CharacterObjective } from "../../enums/CharacterObjective";
 import { RandomizerModFeature } from "../RandomizerModFeature";
+import { addAchievement } from "./AchievementTracker";
 
 const CHARACTER_OBJECTIVE_TO_BOSS_ID = new ReadonlyMap<
   BossID,
@@ -20,12 +21,14 @@ const CHARACTER_OBJECTIVE_TO_BOSS_ID = new ReadonlyMap<
   [BossID.SATAN, CharacterObjective.SATAN],
   [BossID.THE_LAMB, CharacterObjective.THE_LAMB],
   [BossID.MEGA_SATAN, CharacterObjective.MEGA_SATAN],
-  // There is no Boss ID for the Boss Rush.
+  // There is no boss ID for the Boss Rush (it has a separate room type).
   [BossID.HUSH, CharacterObjective.HUSH],
   [BossID.ULTRA_GREED, CharacterObjective.ULTRA_GREED],
   [BossID.DELIRIUM, CharacterObjective.DELIRIUM],
+  [BossID.MAUSOLEUM_MOMS_HEART, CharacterObjective.MOMS_HEART_ALT],
   [BossID.MOTHER, CharacterObjective.MOTHER],
-  // The Beast does not have its own boss room.
+  [BossID.DOGMA, CharacterObjective.DOGMA],
+  // There is no boss ID for The Beast (it does not have its own boss room).
 ]);
 
 export class BossKillDetection extends RandomizerModFeature {
@@ -40,7 +43,7 @@ export class BossKillDetection extends RandomizerModFeature {
         const bossID = getRoomSubType() as BossID;
         const characterObjective = CHARACTER_OBJECTIVE_TO_BOSS_ID.get(bossID);
         if (characterObjective !== undefined) {
-          this.accomplishedObjective(characterObjective);
+          addAchievement(characterObjective);
         }
 
         break;
@@ -49,7 +52,7 @@ export class BossKillDetection extends RandomizerModFeature {
       // 16
       case RoomType.DUNGEON: {
         if (inBeastRoom()) {
-          this.accomplishedObjective(CharacterObjective.THE_BEAST);
+          addAchievement(CharacterObjective.THE_BEAST);
         }
 
         break;
@@ -57,7 +60,7 @@ export class BossKillDetection extends RandomizerModFeature {
 
       // 17
       case RoomType.BOSS_RUSH: {
-        this.accomplishedObjective(CharacterObjective.BOSS_RUSH);
+        addAchievement(CharacterObjective.BOSS_RUSH);
         break;
       }
 
@@ -67,11 +70,5 @@ export class BossKillDetection extends RandomizerModFeature {
     }
 
     return undefined;
-  }
-
-  accomplishedObjective(_characterObjective: CharacterObjective): void {
-    const player = Isaac.GetPlayer();
-    const _character = player.GetPlayerType();
-    // TODO
   }
 }

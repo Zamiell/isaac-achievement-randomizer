@@ -153,6 +153,7 @@ Every collectible in the game is locked behind a random achievement, with the fo
 - Banned collectibles in this mod:
   - Plan C (#475) (would break the difficult boss achievements)
   - Clicker (#482) (would break the character achievements)
+  - R Key (#636) (would break the difficult boss achievements)
 
 ## Trinkets <!-- 5.350 -->
 
