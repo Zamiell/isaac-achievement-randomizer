@@ -17,7 +17,7 @@ export function hotkey1Function(): void {
   debugCode();
 }
 
-/** Executed either from the "debug" console command. */
+/** Executed from the "debug" console command. */
 export function debugFunction(params?: string): void {
   setLogFunctionsGlobal();
   setTracebackFunctionsGlobal();

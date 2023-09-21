@@ -4,7 +4,7 @@ import { ModFeature } from "isaacscript-common";
 const v = {
   persistent: {
     /** If `null`, the randomizer is not enabled. */
-    seed: null as Seed | null,
+    seed: 12_345 as Seed | null, // TODO
   },
 };
 

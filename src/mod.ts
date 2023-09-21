@@ -2,7 +2,10 @@ import { ISCFeature, upgradeMod } from "isaacscript-common";
 import { MOD_NAME } from "./constants";
 
 const FEATURES = [
+  ISCFeature.CUSTOM_HOTKEYS,
   ISCFeature.EXTRA_CONSOLE_COMMANDS,
+  ISCFeature.FADE_IN_REMOVER,
+  ISCFeature.FAST_RESET,
   ISCFeature.ITEM_POOL_DETECTION,
   ISCFeature.MODDED_ELEMENT_DETECTION,
   ISCFeature.MODDED_ELEMENT_SETS,
