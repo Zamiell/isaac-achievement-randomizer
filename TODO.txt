@@ -1,3 +1,4 @@
 TODO:
 - add timer for speedruns
 - disable the stupid dead sea scrolls animation
+- Achievement List tooltip should display X / X

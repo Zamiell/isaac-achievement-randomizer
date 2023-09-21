@@ -1154,9 +1154,9 @@ function dssmenucore.init(DSSModName, v)
             -- Horizontal alignment is handled by text when it is drawn, vertical alignment is
             -- handled by main generator.
             local xOff = (
-                (tab.hAlign == 0 and tab.len / -2)
-                or (tab.hAlign == 1 and tab.len * -1)
-                or 0
+                    (tab.hAlign == 0 and tab.len / -2)
+                    or (tab.hAlign == 1 and tab.len * -1)
+                    or 0
                 ) +
                 ((tab.parentWidth or 82) * tab.hAlign)
             if tab.hAlign == -2 then
@@ -1282,6 +1282,7 @@ function dssmenucore.init(DSSModName, v)
 
             for i, drawing in ipairs(tab.set) do
                 drawing.pos = drawing.pos
+
                 if DSSMod.drawMenu(tbl, drawing) then -- returns true if cutoff
                     return true
                 end
@@ -2760,14 +2761,14 @@ function dssmenucore.init(DSSModName, v)
             local roomHasDanger = false
             for _, entity in pairs(Isaac.GetRoomEntities()) do
                 if (
-                    entity:IsActiveEnemy()
-                    and not entity:HasEntityFlags(EntityFlag.FLAG_FRIENDLY)
-                    and not entity:GetData().DSSMenuSafe
+                        entity:IsActiveEnemy()
+                        and not entity:HasEntityFlags(EntityFlag.FLAG_FRIENDLY)
+                        and not entity:GetData().DSSMenuSafe
                     )
                     or
                     (
-                    entity.Type == EntityType.ENTITY_PROJECTILE
-                    and entity:ToProjectile().ProjectileFlags & ProjectileFlags.CANT_HIT_PLAYER == 0
+                        entity.Type == EntityType.ENTITY_PROJECTILE
+                        and entity:ToProjectile().ProjectileFlags & ProjectileFlags.CANT_HIT_PLAYER == 0
                     )
                     or entity.Type == EntityType.ENTITY_BOMBDROP
                 then
@@ -3383,7 +3384,7 @@ function dssmenucore.init(DSSModName, v)
     end
 
     --if MenuProvider.IsMenuCore() then
-        InitializeMenuCore()
+    InitializeMenuCore()
     --end
 
     return DSSMod

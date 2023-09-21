@@ -1,4 +1,10 @@
 import { assertDefined } from "isaacscript-common";
+import {
+  endRandomizer,
+  getRandomizerSeed,
+  isRandomizerEnabled,
+  startRandomizer,
+} from "./classes/AchievementTracker";
 import { MOD_NAME } from "./constants";
 import { init } from "./lib/dssmenucore";
 import { mod } from "./mod";
@@ -20,8 +26,19 @@ export function initDeadSeaScrolls(): void {
           noSel: true,
         },
         {
-          str: "[disabled]",
+          str: "",
+          colorSelect: true,
           noSel: true,
+
+          /** @noSelf */
+          update: (button: DeadSeaScrollsButton) => {
+            const randomizerSeed = getRandomizerSeed();
+
+            button.str =
+              randomizerSeed === undefined
+                ? "[disabled]"
+                : randomizerSeed.toString();
+          },
         },
         {
           str: "",
@@ -31,8 +48,9 @@ export function initDeadSeaScrolls(): void {
           str: "achievement list",
           dest: "achievements",
           tooltip: {
-            strSet: ["see the", "unlocks you", "have yet", "to complete"],
+            strSet: ["see the", "unlocks you", "have yet", "to complete."],
           },
+          displayIf: () => isRandomizerEnabled(),
         },
         {
           str: "stats",
@@ -43,35 +61,69 @@ export function initDeadSeaScrolls(): void {
               "about your",
               "current",
               "randomizer",
-              "playthrough",
+              "playthrough.",
             ],
           },
+          displayIf: () => isRandomizerEnabled(),
+        },
+        {
+          str: "start randomizer",
+          dest: "start",
+          tooltip: {
+            strSet: ["turn the", " randomizer", "on."],
+          },
+          displayIf: () => !isRandomizerEnabled(),
+        },
+        {
+          str: "end randomizer",
+          func: () => {
+            endRandomizer();
+          },
+          tooltip: {
+            strSet: ["turn the", " randomizer", "off."],
+          },
+          displayIf: () => isRandomizerEnabled(),
         },
         {
           str: "menu settings",
           dest: "settings",
           tooltip: {
-            strSet: ["customize the", "menu hotkey", "and other", "settings"],
+            strSet: ["customize the", "menu hotkey", "and other", "settings."],
           },
         },
         {
           str: "resume game",
           action: "resume",
           tooltip: {
-            strSet: ["close this", "menu and", "return to the", "game"],
+            strSet: ["close this", "menu and", "return to the", "game."],
           },
         },
       ],
     },
 
-    settings: {
-      title: "settings",
+    start: {
+      title: "start",
       buttons: [
-        DSSMod.gamepadToggleButton,
-        DSSMod.menuKeybindButton,
-        DSSMod.paletteButton,
-        DSSMod.menuHintButton,
-        DSSMod.menuBuzzerButton,
+        {
+          str: "use random seed",
+          func: (_item: unknown, menuObj: DeadSeaScrollsMenuSettings) => {
+            startRandomizer(undefined);
+            menuObj.Close();
+          },
+        },
+        {
+          str: "use specific seed",
+          dest: "specificSeed",
+        },
+      ],
+    },
+
+    specificSeed: {
+      title: "specific seed",
+      buttons: [
+        {
+          str: "a",
+        },
       ],
     },
 
@@ -90,6 +142,17 @@ export function initDeadSeaScrolls(): void {
           str: "deaths: 0",
           noSel: true,
         },
+      ],
+    },
+
+    settings: {
+      title: "settings",
+      buttons: [
+        DSSMod.gamepadToggleButton,
+        DSSMod.menuKeybindButton,
+        DSSMod.paletteButton,
+        DSSMod.menuHintButton,
+        DSSMod.menuBuzzerButton,
       ],
     },
   };
@@ -117,5 +180,6 @@ export function initDeadSeaScrolls(): void {
     DeadSeaScrollsMenu,
     "Dead Sea Scrolls failed to initialize the global variable.",
   );
+
   DeadSeaScrollsMenu.AddMenu(MOD_NAME, settings);
 }
