@@ -6,24 +6,23 @@ This page explains how the Achievement Randomizer mod works.
 
 <br>
 
-## Design
+## Design Principles
 
 This mod **does not** simply randomize all of the vanilla achievements. This is for several reasons:
 
 1. [Other mods](https://steamcommunity.com/sharedfiles/filedetails/?id=2838967057) have already done that.
 1. Some of the vanilla achievements do not make sense in the context of a player trying to "beat the game" in the least amount of death possible, like `The Scissors - Die 100 times` or `Mr. Resetter! - Reset 7 times in a row`. (This would make the minimum amount of deaths always be 100.)
-1. Some achievements do not make sense in the context of a player trying to "beat the game" in the fastest time possible, like `Dedication - Participate in 31 Daily Challenges`. (This would make the minimum amount of time always be 31 days.)
-1. Some achievements are arbitrary conditions and are not very fun to play, like `They will charge you up... for a small fee - Donate to Battery Bums until they pay out with an item 5 times`. (If you are not lucky enough to get this achievement during your streak, the most consistent strategy is to reset as Tainted Keeper in Greed Mode until you see a Battery Bum in the shop. This is "busywork" and is not skill-based in any way.)
+1. Some vanilla achievements do not make sense in the context of a player trying to "beat the game" in the fastest time possible, like `Dedication - Participate in 31 Daily Challenges`. (This would make the minimum amount of time always be 31 days.)
+1. Some vanilla achievements are arbitrary conditions and are not very fun to play, like `They will charge you up... for a small fee - Donate to Battery Bums until they pay out with an item 5 times`. (If you are not lucky enough to get this achievement during your streak, the most consistent strategy is to reset as Tainted Keeper in Greed Mode until you see a Battery Bum in the shop. This is "busywork" and is not skill-based in any way.)
+1. Many things are not gated behind vanilla achievements and it would be fun if they were (e.g. soul hearts, locked chests).
 
-Thus, this mod locks almost every collectible and trinket behind custom achievements that actually represent meaningful accomplishments inside of the game.
+Thus, this mod locks almost everything behind custom achievements that actually represent meaningful accomplishments inside of the game.
 
 <br>
 
 ## Achievement List
 
-### Hard Mode
-
-All achievements must be completed on hard mode. (Playing this mod on normal mode or on non-Greedier Greed Mode will automatically restart the run with the correct difficultly.)
+Note that all achievements must be completed on hard mode. (Playing this mod on normal mode or on non-Greedier Greed Mode will automatically restart the run with the correct difficultly.)
 
 ### Character-Based Achievements
 
@@ -66,8 +65,9 @@ Additionally, each character other than The Lost and Tainted Lost will unlock so
 17. Corpse 1
 18. Corpse 2
 
+- There are 34 main characters.
 - There are 15 boss objectives and 18 floor objectives, which makes 33 in total.
-- Thus, since there are 34 main characters and The Lost & Tainted Lost do not have floor achievements, there are 34 x 33 - 18 x 2 = 1086 character-based achievements.
+- Thus, since the Lost & Tainted Lost do not have floor achievements, there are 34 x 33 - 18 x 2 = 1086 character-based achievements.
 
 ### Challenge-Based Achievements
 
@@ -85,7 +85,7 @@ The following achievements from the original game are retained:
 
 ### Characters
 
-The first character unlocked will be Isaac. All other characters start off locked.
+The first character unlocked will always be Isaac. All other characters start off locked.
 
 ### Challenges
 
@@ -93,22 +93,41 @@ All challenges start off locked.
 
 ### Paths
 
-- TODO
-- Defeating Mom for the first time ends the game, similar to how the vanilla game works.
-- The achievement for killing Mom on Isaac is always to unlock Cathedral.
-- One character unlock is guaranteed to be from one of the easy challenges.
-- Each character is guaranteed to have?
+- The following floors start off locked and are inaccessible:
+  - The Chest
+  - The Dark Room
+  - Blue Womb
+  - The Void
+  - Repentance floors
+  - The Ascent
+- Additionally, the Mega Satan room starts off locked and is inaccessible.
+- Isaac is guaranteed to unlock both The Chest & Dark Room from one of his easier achievements.
+- The rest of the floors can be randomly unlocked from any achievement.
 
 ### Collectibles <!-- 5.100 -->
 
 Every collectible in the game is locked behind a random achievement, with the following exceptions:
 
-- One item for every stat:
+- 5 basic items from the Boss Room Pool:
   - Breakfast (25) (HP)
   - Wooden Spoon (#27) (speed)
   - Wire Coat Hanger (#32) (tears)
   - Pentagram (#51) (damage)
   - Mom's Underwear (#29) (range)
+- 5 basic items from the Devil Room Pool:
+  - Quarter (#74)
+  - Blood Rights (#186)
+  - Missing Page 2 (#262)
+  - Shade (#468)
+  - Pound of Flesh (#672)
+- 5 basic items from the Angel Room Pool:
+  - Guardian Angel (#112)
+  - Stigmata (#138)
+  - Prayer Card (#146)
+  - Holy Grail (#184)
+  - Sworn Protector (#363)
+- 1 basic item from the Secret Room Pool:
+  - Raw Liver (#16)
 - Quest collectibles (except for The Polaroid and the Negative):
   - Key Piece 1 (#238)
   - Key Piece 2 (#239)
@@ -133,15 +152,15 @@ Every collectible in the game is locked behind a random achievement, with the fo
 
 Every trinket in the game is locked behind a random achievement. If no trinkets are unlocked, trinkets will be converted to pennies.
 
+## Cards & Runes <!-- 5.300 -->
+
+Every card/rune in the game is locked behind a random achievement (except for Rune Shard, which will never spawn). If no cards/runes are unlocked, cards/runes will be converted to pennies.
+
 ## Pills <!-- 5.70 -->
 
 - Every pill effect in the game is locked behind a random achievement. If no pill effects are unlocked, pills will be converted to pennies.
 - Gold pills are locked behind a random achievement.
 - Horse pills are locked behind a random achievement.
-
-## Cards <!-- 5.300 -->
-
-Every card in the game is locked behind a random achievement. If no cards are unlocked, cards will be converted to pennies.
 
 ## Hearts <!-- 5.10 -->
 

@@ -4,7 +4,7 @@ import {
   getRandomizerSeed,
   isRandomizerEnabled,
   startRandomizer,
-} from "./classes/AchievementTracker";
+} from "./classes/features/AchievementTracker";
 import { MAX_SEED, MIN_SEED } from "./consoleCommands";
 import { MOD_NAME } from "./constants";
 import { init } from "./lib/dssmenucore";

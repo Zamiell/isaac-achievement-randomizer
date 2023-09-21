@@ -1,4 +1,4 @@
-import { startRandomizer } from "./classes/AchievementTracker";
+import { startRandomizer } from "./classes/features/AchievementTracker";
 import { mod } from "./mod";
 
 export const MIN_SEED = 1;

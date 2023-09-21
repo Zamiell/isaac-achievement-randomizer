@@ -3,17 +3,17 @@ import {
   Callback,
   KColorDefault,
   K_COLORS,
-  ModFeature,
   fonts,
   game,
   inStartingRoom,
   onFirstFloor,
 } from "isaacscript-common";
+import { RandomizerModFeature } from "../RandomizerModFeature";
 import { getRandomizerSeed } from "./AchievementTracker";
 
 const FONT = fonts.teamMeatFont10;
 
-export class StartingRoomInfo extends ModFeature {
+export class StartingRoomInfo extends RandomizerModFeature {
   @Callback(ModCallback.POST_RENDER)
   postRender(): void {
     const seed = getRandomizerSeed();

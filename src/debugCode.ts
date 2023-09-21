@@ -4,7 +4,7 @@ import {
   setLogFunctionsGlobal,
   setTracebackFunctionsGlobal,
 } from "isaacscript-common";
-import { startRandomizer } from "./classes/AchievementTracker";
+import { startRandomizer } from "./classes/features/AchievementTracker";
 import { mod } from "./mod";
 
 /** Currently, F2 is set to execute this function. */

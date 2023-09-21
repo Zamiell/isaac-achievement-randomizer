@@ -1,14 +1,13 @@
 import { BossID, ModCallback, RoomType } from "isaac-typescript-definitions";
 import {
   Callback,
-  ModFeature,
   ReadonlyMap,
   game,
   getRoomSubType,
   inBeastRoom,
 } from "isaacscript-common";
-import { CharacterObjective } from "../enums/CharacterObjective";
-import { isRandomizerEnabled } from "./AchievementTracker";
+import { CharacterObjective } from "../../enums/CharacterObjective";
+import { RandomizerModFeature } from "../RandomizerModFeature";
 
 const CHARACTER_OBJECTIVE_TO_BOSS_ID = new ReadonlyMap<
   BossID,
@@ -29,13 +28,9 @@ const CHARACTER_OBJECTIVE_TO_BOSS_ID = new ReadonlyMap<
   // The Beast does not have its own boss room.
 ]);
 
-export class BossKillDetection extends ModFeature {
+export class BossKillDetection extends RandomizerModFeature {
   @Callback(ModCallback.PRE_SPAWN_CLEAR_AWARD)
   preSpawnClearAward(): boolean | undefined {
-    if (!isRandomizerEnabled()) {
-      return;
-    }
-
     const room = game.GetRoom();
     const roomType = room.GetType();
 

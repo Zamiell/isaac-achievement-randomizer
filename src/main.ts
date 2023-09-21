@@ -5,11 +5,11 @@ import {
   setLogFunctionsGlobal,
   setTracebackFunctionsGlobal,
 } from "isaacscript-common";
-import { AchievementTracker } from "./classes/AchievementTracker";
-import { BossKillDetection } from "./classes/BossKillDetection";
-import { CheckErrors } from "./classes/CheckErrors";
-import { ItemPoolRemoval } from "./classes/ItemPoolRemoval";
-import { StartingRoomInfo } from "./classes/StartingRoomInfo";
+import { AchievementTracker } from "./classes/features/AchievementTracker";
+import { BossKillDetection } from "./classes/features/BossKillDetection";
+import { CheckErrors } from "./classes/features/CheckErrors";
+import { ItemPoolRemoval } from "./classes/features/ItemPoolRemoval";
+import { StartingRoomInfo } from "./classes/features/StartingRoomInfo";
 import { initConsoleCommands } from "./consoleCommands";
 import { IS_DEV, MOD_NAME } from "./constants";
 import { initDeadSeaScrolls } from "./deadSeaScrolls";

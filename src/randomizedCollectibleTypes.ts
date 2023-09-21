@@ -35,9 +35,13 @@ const DEVIL_ROOM_EXCEPTIONS = new ReadonlySet<CollectibleType>([
 const ANGEL_ROOM_EXCEPTIONS = new ReadonlySet<CollectibleType>([
   CollectibleType.GUARDIAN_ANGEL, // 112
   CollectibleType.STIGMATA, // 138
-  CollectibleType.HOLY_GRAIL, // 184
   CollectibleType.PRAYER_CARD, // 146
+  CollectibleType.HOLY_GRAIL, // 184
   CollectibleType.SWORN_PROTECTOR, // 363
+]);
+
+const SECRET_ROOM_EXCEPTIONS = new ReadonlySet<CollectibleType>([
+  CollectibleType.RAW_LIVER, // 16
 ]);
 
 const NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS =
@@ -68,6 +72,7 @@ function lazyInitRandomizedCollectibleTypes() {
     BOSS_ROOM_EXCEPTIONS,
     DEVIL_ROOM_EXCEPTIONS,
     ANGEL_ROOM_EXCEPTIONS,
+    SECRET_ROOM_EXCEPTIONS,
     questCollectibleTypes,
     NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS,
     BANNED_COLLECTIBLE_TYPES,

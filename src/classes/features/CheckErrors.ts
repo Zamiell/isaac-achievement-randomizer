@@ -14,8 +14,8 @@ import {
   isRepentance,
   log,
 } from "isaacscript-common";
-import { MOD_NAME } from "../constants";
-import { mod } from "../mod";
+import { MOD_NAME } from "../../constants";
+import { mod } from "../../mod";
 
 const INCOMPLETE_SAVE_COLLECTIBLE_TO_CHECK = CollectibleType.DEATH_CERTIFICATE;
 const INCOMPLETE_SAVE_ITEM_POOL_TO_CHECK = ItemPoolType.SECRET;
@@ -32,6 +32,7 @@ const v = {
   },
 };
 
+/** This does not extend from `RandomizerModFeature` because we need to always do the checks. */
 export class CheckErrors extends ModFeature {
   v = v;
 

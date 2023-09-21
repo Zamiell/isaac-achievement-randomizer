@@ -1,4 +1,5 @@
 import type {
+  CardType,
   CollectibleType,
   PillEffect,
   TrinketType,
@@ -18,6 +19,10 @@ const v = {
 export class AchievementTracker extends ModFeature {
   v = v;
 }
+
+// --------------
+// Core functions
+// --------------
 
 export function isRandomizerEnabled(): boolean {
   return v.persistent.seed !== null;
@@ -48,12 +53,20 @@ export function endRandomizer(): void {
   restart(STARTING_CHARACTER);
 }
 
+// ---------------------
+// Collectible functions
+// ---------------------
+
 export function isCollectibleTypeUnlocked(
   _collectibleType: CollectibleType,
 ): boolean {
   // TODO
   return true;
 }
+
+// -----------------
+// Trinket functions
+// -----------------
 
 export function isTrinketTypeUnlocked(_trinketType: TrinketType): boolean {
   // TODO
@@ -64,6 +77,29 @@ export function getUnlockedTrinketTypes(): ReadonlySet<TrinketType> {
   // TODO
   return new Set();
 }
+
+// --------------
+// Card functions
+// --------------
+
+export function anyCardTypesUnlocked(): boolean {
+  // TODO
+  return false;
+}
+
+export function isCardTypeUnlocked(_cardType: CardType): boolean {
+  // TODO
+  return false;
+}
+
+export function getUnlockedCardTypes(): ReadonlySet<CardType> {
+  // TODO
+  return new Set();
+}
+
+// --------------
+// Pill functions
+// --------------
 
 export function anyPillEffectsUnlocked(): boolean {
   // TODO
