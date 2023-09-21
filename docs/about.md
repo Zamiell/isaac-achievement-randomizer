@@ -108,25 +108,31 @@ All challenges start off locked.
 
 Every collectible in the game is locked behind a random achievement, with the following exceptions:
 
-- 5 basic items from the Boss Room Pool:
+- 5 basic items from the Treasure Room pool:
+  - &lt;3 (#15)
+  - The Poop (#36)
+  - Bucket of Lard (#129)
+  - Maggy's Bow (#312)
+  - Thunder Thighs (#314)
+- 5 basic items from the Boss Room pool:
   - Breakfast (25) (HP)
   - Wooden Spoon (#27) (speed)
   - Wire Coat Hanger (#32) (tears)
   - Pentagram (#51) (damage)
   - Mom's Underwear (#29) (range)
-- 5 basic items from the Devil Room Pool:
+- 5 basic items from the Devil Room pool:
   - Quarter (#74)
   - Blood Rights (#186)
   - Missing Page 2 (#262)
   - Shade (#468)
   - Pound of Flesh (#672)
-- 5 basic items from the Angel Room Pool:
+- 5 basic items from the Angel Room pool:
   - Guardian Angel (#112)
   - Stigmata (#138)
   - Prayer Card (#146)
   - Holy Grail (#184)
   - Sworn Protector (#363)
-- 1 basic item from the Secret Room Pool:
+- 1 basic item from the Secret Room pool:
   - Raw Liver (#16)
 - Quest collectibles (except for The Polaroid and the Negative):
   - Key Piece 1 (#238)

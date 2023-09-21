@@ -5,9 +5,9 @@ import { mod } from "./mod";
 const TREASURE_ROOM_EXCEPTIONS = new ReadonlySet<CollectibleType>([
   CollectibleType.HEART, // 15
   CollectibleType.POOP, // 36
-  CollectibleType.THUNDER_THIGHS, // 314
   CollectibleType.BUCKET_OF_LARD, // 129
   CollectibleType.MAGGYS_BOW, // 312
+  CollectibleType.THUNDER_THIGHS, // 314
 ]);
 
 const BOSS_ROOM_EXCEPTIONS = new ReadonlySet<CollectibleType>([
