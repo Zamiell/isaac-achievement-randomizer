@@ -1,8 +1,11 @@
 import {
   CallbackPriority,
+  Challenge,
   CollectibleType,
+  Difficulty,
   ItemPoolType,
   ModCallback,
+  PlayerType,
 } from "isaac-typescript-definitions";
 import {
   Callback,
@@ -10,12 +13,21 @@ import {
   ModCallbackCustom,
   ModFeature,
   PriorityCallbackCustom,
+  emptyRoomGridEntities,
+  game,
+  getCharacterName,
   getCollectibleName,
   isRepentance,
   log,
+  removeAllDoors,
 } from "isaacscript-common";
 import { MOD_NAME } from "../../constants";
 import { mod } from "../../mod";
+import {
+  isChallengeUnlocked,
+  isCharacterUnlocked,
+  isRandomizerEnabled,
+} from "./AchievementTracker";
 
 const INCOMPLETE_SAVE_COLLECTIBLE_TO_CHECK = CollectibleType.DEATH_CERTIFICATE;
 const INCOMPLETE_SAVE_ITEM_POOL_TO_CHECK = ItemPoolType.SECRET;
@@ -29,8 +41,15 @@ const v = {
     afterbirthPlus: false,
     incompleteSave: false,
     otherModsEnabled: false,
+    wrongDifficulty: false,
+    lockedCharacter: false,
+    lockedChallenge: false,
   },
 };
+
+function hasErrors(): boolean {
+  return Object.values(v.run).includes(true);
+}
 
 /** This does not extend from `RandomizerModFeature` because we need to always do the checks. */
 export class CheckErrors extends ModFeature {
@@ -61,6 +80,17 @@ export class CheckErrors extends ModFeature {
       this.drawErrorText(
         `You have illegal mods enabled.\n\nMake sure that ${MOD_NAME} is the only mod enabled in your mod list and then completely close and re-open the game.`,
       );
+    } else if (v.run.wrongDifficulty) {
+      this.drawErrorText(
+        `You are only allowed to play ${MOD_NAME} on hard mode.`,
+      );
+    } else if (v.run.lockedCharacter) {
+      const player = Isaac.GetPlayer();
+      const character = player.GetPlayerType();
+      const characterName = getCharacterName(character);
+      this.drawErrorText(`You have not unlocked ${characterName} yet.`);
+    } else if (v.run.lockedChallenge) {
+      this.drawErrorText("You have not unlocked this challenge yet.");
     }
   }
 
@@ -103,6 +133,14 @@ export class CheckErrors extends ModFeature {
     checkAfterbirthPlus();
     checkIncompleteSave();
     checkOtherModsEnabled();
+    checkDifficulty();
+    checkCharacterUnlocked();
+    checkChallengeUnlocked();
+
+    if (hasErrors()) {
+      removeAllDoors();
+      emptyRoomGridEntities(); // For Greed Mode.
+    }
   }
 }
 
@@ -150,5 +188,54 @@ function checkOtherModsEnabled() {
   if (StageAPI !== undefined) {
     log("Error: StageAPI detected.");
     v.run.otherModsEnabled = true;
+  }
+}
+
+function checkDifficulty() {
+  if (!isRandomizerEnabled()) {
+    return;
+  }
+
+  if (
+    game.Difficulty === Difficulty.NORMAL ||
+    game.Difficulty === Difficulty.GREED
+  ) {
+    log(
+      `Error: Wrong difficulty detected: ${Difficulty[game.Difficulty]} (${
+        game.Difficulty
+      })`,
+    );
+    v.run.wrongDifficulty = true;
+  }
+}
+
+function checkCharacterUnlocked() {
+  if (!isRandomizerEnabled()) {
+    return;
+  }
+
+  const player = Isaac.GetPlayer();
+  const character = player.GetPlayerType();
+
+  if (!isCharacterUnlocked(character)) {
+    log(
+      `Error: Locked character detected: ${PlayerType[character]} (${character})`,
+    );
+    v.run.lockedCharacter = true;
+  }
+}
+
+function checkChallengeUnlocked() {
+  if (!isRandomizerEnabled()) {
+    return;
+  }
+
+  const challenge = Isaac.GetChallenge();
+
+  if (!isChallengeUnlocked(challenge)) {
+    log(
+      `Error: Locked challenge detected: ${Challenge[challenge]} (${challenge})`,
+    );
+    v.run.lockedChallenge = true;
   }
 }

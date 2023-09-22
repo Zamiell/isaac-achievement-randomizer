@@ -8,6 +8,7 @@ import type {
 } from "isaac-typescript-definitions";
 import {
   BombSubType,
+  Challenge,
   CoinSubType,
   HeartSubType,
   KeySubType,
@@ -71,11 +72,38 @@ export function addAchievement(_characterObjective: CharacterObjective): void {
   // TODO
 }
 
+// -------------------
+// Character functions
+// -------------------
+
+export function isCharacterUnlocked(character: PlayerType): boolean {
+  // Isaac is always unlocked.
+  if (character === PlayerType.ISAAC) {
+    return true;
+  }
+
+  // TODO
+  return false;
+}
+
 // --------------
 // Path functions
 // --------------
 
 export function isPathUnlocked(_unlockablePath: UnlockablePath): boolean {
+  // TODO
+  return false;
+}
+
+// -------------------
+// Challenge functions
+// -------------------
+
+export function isChallengeUnlocked(challenge: Challenge): boolean {
+  if (challenge === Challenge.NULL) {
+    return true;
+  }
+
   // TODO
   return false;
 }

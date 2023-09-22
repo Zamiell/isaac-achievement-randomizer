@@ -6,6 +6,7 @@ import {
   fonts,
   game,
   inStartingRoom,
+  isGreedMode,
   onFirstFloor,
 } from "isaacscript-common";
 import { RandomizerModFeature } from "../RandomizerModFeature";
@@ -21,7 +22,10 @@ export class StartingRoomInfo extends RandomizerModFeature {
       return;
     }
 
-    // Don't draw when the game is paused.
+    if (isGreedMode()) {
+      return;
+    }
+
     const isPaused = game.IsPaused();
     if (isPaused) {
       return;
@@ -32,12 +36,10 @@ export class StartingRoomInfo extends RandomizerModFeature {
       return;
     }
 
-    // Don't draw on top of Mod Config Menu.
     if (ModConfigMenu !== undefined && ModConfigMenu.IsVisible) {
       return;
     }
 
-    // Don't draw on top of Dead Sea Scrolls.
     if (DeadSeaScrollsMenu !== undefined && DeadSeaScrollsMenu.IsOpen()) {
       return;
     }

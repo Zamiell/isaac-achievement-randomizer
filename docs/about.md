@@ -22,7 +22,7 @@ Thus, this mod locks almost everything behind custom achievements that actually 
 
 ## Achievement List
 
-Note that all achievements must be completed on hard mode. (Playing this mod on normal mode or on non-Greedier Greed Mode will automatically restart the run with the correct difficultly.)
+Note that all achievements must be completed on hard mode.
 
 ### Character-Based Achievements
 
