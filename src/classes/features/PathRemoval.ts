@@ -1,7 +1,12 @@
 import {
+  CollectibleType,
   EffectVariant,
+  EntityType,
+  GridEntityType,
   LevelStage,
   ModCallback,
+  PickupVariant,
+  TrapdoorVariant,
 } from "isaac-typescript-definitions";
 import {
   Callback,
@@ -15,6 +20,7 @@ import {
   onRepentanceStage,
   onStage,
   removeDoor,
+  removeGridEntity,
 } from "isaacscript-common";
 import { UnlockablePath } from "../../enums/UnlockablePath";
 import { RandomizerModFeature } from "../RandomizerModFeature";
@@ -26,6 +32,17 @@ export class PathRemoval extends RandomizerModFeature {
   preSpawnClearAward(): boolean | undefined {
     this.checkPathDoors();
     return undefined;
+  }
+
+  @CallbackCustom(
+    ModCallbackCustom.POST_GRID_ENTITY_UPDATE,
+    GridEntityType.TRAPDOOR,
+    TrapdoorVariant.VOID_PORTAL,
+  )
+  postGridEntityUpdateVoidPortal(gridEntity: GridEntity): void {
+    if (!isPathUnlocked(UnlockablePath.THE_VOID)) {
+      removeGridEntity(gridEntity, false);
+    }
   }
 
   @CallbackCustom(ModCallbackCustom.POST_NEW_ROOM_REORDERED)
@@ -88,5 +105,48 @@ export class PathRemoval extends RandomizerModFeature {
         effect.Visible = false;
       }
     }
+  }
+
+  @CallbackCustom(
+    ModCallbackCustom.PRE_ENTITY_SPAWN_FILTER,
+    EntityType.PICKUP,
+    PickupVariant.COLLECTIBLE,
+  )
+  preEntitySpawnCollectible(
+    _entityType: EntityType,
+    _variant: int,
+    subType: int,
+    _position: Vector,
+    _velocity: Vector,
+    _spawner: Entity | undefined,
+    initSeed: int,
+  ): [EntityType, int, int, int] | undefined {
+    const collectibleType = subType as CollectibleType;
+
+    if (
+      collectibleType === CollectibleType.POLAROID &&
+      !isPathUnlocked(UnlockablePath.THE_CHEST)
+    ) {
+      return [
+        EntityType.PICKUP,
+        PickupVariant.COLLECTIBLE,
+        CollectibleType.NULL,
+        initSeed,
+      ];
+    }
+
+    if (
+      collectibleType === CollectibleType.NEGATIVE &&
+      !isPathUnlocked(UnlockablePath.DARK_ROOM)
+    ) {
+      return [
+        EntityType.PICKUP,
+        PickupVariant.COLLECTIBLE,
+        CollectibleType.NULL,
+        initSeed,
+      ];
+    }
+
+    return undefined;
   }
 }

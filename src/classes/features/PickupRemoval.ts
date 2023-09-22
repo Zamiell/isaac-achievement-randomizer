@@ -37,8 +37,8 @@ import {
 import { mod } from "../../mod";
 import {
   BANNED_COLLECTIBLE_TYPES,
-  getRandomizedCollectibleTypes,
-} from "../../randomizedCollectibleTypes";
+  UNLOCKABLE_COLLECTIBLE_TYPES,
+} from "../../unlockableCollectibleTypes";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   anyCardTypesUnlocked,
@@ -168,9 +168,8 @@ export class PickupRemoval extends RandomizerModFeature {
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
   postGameStartedReorderedFalse(): void {
     const itemPool = game.GetItemPool();
-    const randomizedCollectibleTypes = getRandomizedCollectibleTypes();
 
-    for (const collectibleType of randomizedCollectibleTypes) {
+    for (const collectibleType of UNLOCKABLE_COLLECTIBLE_TYPES) {
       if (!isCollectibleTypeUnlocked(collectibleType)) {
         itemPool.RemoveCollectible(collectibleType);
       }

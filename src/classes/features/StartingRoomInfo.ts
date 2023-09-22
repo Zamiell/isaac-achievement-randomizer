@@ -21,6 +21,12 @@ export class StartingRoomInfo extends RandomizerModFeature {
       return;
     }
 
+    // Don't draw when the game is paused.
+    const isPaused = game.IsPaused();
+    if (isPaused) {
+      return;
+    }
+
     const hud = game.GetHUD();
     if (!hud.IsVisible()) {
       return;

@@ -17,6 +17,7 @@ import {
 import { ModFeature, getRandomSeed, log, restart } from "isaacscript-common";
 import type { CharacterObjective } from "../../enums/CharacterObjective";
 import type { UnlockablePath } from "../../enums/UnlockablePath";
+import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTypes";
 
 const STARTING_CHARACTER = PlayerType.ISAAC;
 
@@ -84,10 +85,14 @@ export function isPathUnlocked(_unlockablePath: UnlockablePath): boolean {
 // ---------------------
 
 export function isCollectibleTypeUnlocked(
-  _collectibleType: CollectibleType,
+  collectibleType: CollectibleType,
 ): boolean {
+  if (ALWAYS_UNLOCKED_COLLECTIBLE_TYPES.has(collectibleType)) {
+    return true;
+  }
+
   // TODO
-  return true;
+  return false;
 }
 
 // -----------------
