@@ -3,20 +3,7 @@ TODO:
 
 - Achievement List tooltip should display X / X
 
-- stop pausing inputs while in a room with enemies
-
-- error message for unlocked character
-
-- remove clicker
-- challenge detection
-
-- unlock paths
-- unlock pickups (hearts, etc)
-  - https://bindingofisaacrebirth.fandom.com/wiki/Hearts
-
-- revival items unlock once all character related achievements are completed
-  - Lazarus Rags + Judas' Shadow + Ankh + Missing Poster
-
-- automatically restart run in normal mode
-
-- mutual character logic for unlocks (e.g. if the forgotten unlocks Magdalene, make sure it's not magdalene who unlocks forgotten)
+- unlock logic:
+  - revival items unlock once all character related achievements are completed
+    - Lazarus Rags + Judas' Shadow + Ankh + Missing Poster
+  - mutual character logic for unlocks (e.g. if the forgotten unlocks Magdalene, make sure it's not magdalene who unlocks forgotten)

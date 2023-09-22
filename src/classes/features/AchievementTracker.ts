@@ -15,7 +15,13 @@ import {
   PickupVariant,
   PlayerType,
 } from "isaac-typescript-definitions";
-import { ModFeature, getRandomSeed, log, restart } from "isaacscript-common";
+import {
+  DefaultMap,
+  ModFeature,
+  getRandomSeed,
+  log,
+  restart,
+} from "isaacscript-common";
 import type { CharacterObjective } from "../../enums/CharacterObjective";
 import type { UnlockablePath } from "../../enums/UnlockablePath";
 import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTypes";
@@ -26,6 +32,12 @@ const v = {
   persistent: {
     /** If `null`, the randomizer is not enabled. */
     seed: null as Seed | null,
+
+    completedCharacterObjectives: new DefaultMap<
+      PlayerType,
+      Set<CharacterObjective>
+    >(() => new Set()),
+    completedChallenges: new Set<Challenge>(),
   },
 };
 
@@ -66,9 +78,32 @@ export function endRandomizer(): void {
   restart(STARTING_CHARACTER);
 }
 
-export function addAchievement(_characterObjective: CharacterObjective): void {
+export function addAchievementCharacterObjective(
+  characterObjective: CharacterObjective,
+): void {
   const player = Isaac.GetPlayer();
-  const _character = player.GetPlayerType();
+  const character = player.GetPlayerType();
+  const characterObjectives =
+    v.persistent.completedCharacterObjectives.getAndSetDefault(character);
+
+  if (characterObjectives.has(characterObjective)) {
+    return;
+  }
+
+  characterObjectives.add(characterObjective);
+  // TODO
+}
+
+export function addAchievementChallenge(challenge: Challenge): void {
+  if (challenge === Challenge.NULL) {
+    return;
+  }
+
+  if (v.persistent.completedChallenges.has(challenge)) {
+    return;
+  }
+
+  v.persistent.completedChallenges.add(challenge);
   // TODO
 }
 

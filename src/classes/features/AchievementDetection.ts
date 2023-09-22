@@ -3,6 +3,7 @@ import {
   BossID,
   LevelStage,
   ModCallback,
+  PickupVariant,
   RoomType,
 } from "isaac-typescript-definitions";
 import {
@@ -19,7 +20,10 @@ import {
 } from "isaacscript-common";
 import { CharacterObjective } from "../../enums/CharacterObjective";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { addAchievement } from "./AchievementTracker";
+import {
+  addAchievementChallenge,
+  addAchievementCharacterObjective,
+} from "./AchievementTracker";
 
 const BOSS_ID_TO_CHARACTER_OBJECTIVE = new ReadonlyMap<
   BossID,
@@ -81,6 +85,12 @@ const v = {
 export class AchievementDetection extends RandomizerModFeature {
   v = v;
 
+  @Callback(ModCallback.POST_PICKUP_INIT, PickupVariant.TROPHY)
+  postPickupInitTrophy(): void {
+    const challenge = Isaac.GetChallenge();
+    addAchievementChallenge(challenge);
+  }
+
   // 70
   @Callback(ModCallback.PRE_SPAWN_CLEAR_AWARD)
   preSpawnClearAward(): boolean | undefined {
@@ -94,7 +104,7 @@ export class AchievementDetection extends RandomizerModFeature {
         const characterObjectiveBoss =
           BOSS_ID_TO_CHARACTER_OBJECTIVE.get(bossID);
         if (characterObjectiveBoss !== undefined) {
-          addAchievement(characterObjectiveBoss);
+          addAchievementCharacterObjective(characterObjectiveBoss);
         }
 
         if (!v.level.tookDamage) {
@@ -106,7 +116,7 @@ export class AchievementDetection extends RandomizerModFeature {
           const stage = level.GetStage();
           const characterObjectiveNoDamage = map.get(stage);
           if (characterObjectiveNoDamage !== undefined) {
-            addAchievement(characterObjectiveNoDamage);
+            addAchievementCharacterObjective(characterObjectiveNoDamage);
           }
         }
 
@@ -116,7 +126,7 @@ export class AchievementDetection extends RandomizerModFeature {
       // 16
       case RoomType.DUNGEON: {
         if (inBeastRoom()) {
-          addAchievement(CharacterObjective.THE_BEAST);
+          addAchievementCharacterObjective(CharacterObjective.THE_BEAST);
         }
 
         break;
@@ -124,7 +134,7 @@ export class AchievementDetection extends RandomizerModFeature {
 
       // 17
       case RoomType.BOSS_RUSH: {
-        addAchievement(CharacterObjective.BOSS_RUSH);
+        addAchievementCharacterObjective(CharacterObjective.BOSS_RUSH);
         break;
       }
 
