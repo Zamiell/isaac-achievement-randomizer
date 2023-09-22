@@ -9,8 +9,15 @@ import {
   isGreedMode,
   onFirstFloor,
 } from "isaacscript-common";
+import { convertSecondsToTimerValues } from "../../timer";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { getRandomizerSeed } from "./AchievementTracker";
+import {
+  NUM_TOTAL_ACHIEVEMENTS,
+  getNumAchievements,
+  getNumDeaths,
+  getRandomizerSeed,
+  getSecondsElapsed,
+} from "./AchievementTracker";
 
 const FONT = fonts.teamMeatFont10;
 
@@ -63,24 +70,33 @@ export class StartingRoomInfo extends RandomizerModFeature {
 
     this.drawCenteredText("Achievements:", topRightPosition);
     this.drawCenteredText(
-      "1 / 300",
+      `${getNumAchievements()} / ${NUM_TOTAL_ACHIEVEMENTS}`,
       topRightPosition.add(Vector(0, 30)),
       K_COLORS.Green,
     );
 
     this.drawCenteredText("Deaths:", bottomLeftPosition);
     this.drawCenteredText(
-      "0",
+      getNumDeaths().toString(),
       bottomLeftPosition.add(Vector(0, 30)),
       K_COLORS.Green,
     );
 
     this.drawCenteredText("Total time:", bottomRightPosition);
+    const seconds = getSecondsElapsed();
     this.drawCenteredText(
-      "01:01:01",
+      this.gameFramesToTimeString(seconds),
       bottomRightPosition.add(Vector(0, 30)),
       K_COLORS.Green,
     );
+  }
+
+  gameFramesToTimeString(seconds: int): string {
+    const { hours, minute1, minute2, second1, second2 } =
+      convertSecondsToTimerValues(seconds);
+    const paddedHours = hours < 10 ? `0${hours}` : hours.toString();
+
+    return `${paddedHours}:${minute1}${minute2}:${second1}${second2}`;
   }
 
   drawCenteredText(

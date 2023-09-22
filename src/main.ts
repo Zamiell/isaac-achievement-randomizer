@@ -13,6 +13,7 @@ import { PickupRemoval } from "./classes/features/PickupRemoval";
 import { PreventPause } from "./classes/features/PreventPause";
 import { PreventSaveAndQuit } from "./classes/features/PreventSaveAndQuit";
 import { StartingRoomInfo } from "./classes/features/StartingRoomInfo";
+import { Timer } from "./classes/features/Timer";
 import { initConsoleCommands } from "./consoleCommands";
 import { IS_DEV, MOD_NAME } from "./constants";
 import { initDeadSeaScrolls } from "./deadSeaScrolls";
@@ -28,6 +29,7 @@ const MOD_FEATURES = [
   PreventPause,
   PreventSaveAndQuit,
   StartingRoomInfo,
+  Timer,
 ] as const;
 
 export function main(): void {

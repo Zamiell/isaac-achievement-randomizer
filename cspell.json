@@ -36,6 +36,7 @@
     "randomizer",
     "STAGETYPE",
     "strset",
-    "unlockable"
+    "unlockable",
+    "Unpadded"
   ]
 }

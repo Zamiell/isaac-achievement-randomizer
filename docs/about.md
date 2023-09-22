@@ -199,7 +199,7 @@ Every card/rune in the game is locked behind a random achievement (except for Ru
 
 ### Dead Sea Scrolls Integration
 
-The mod comes with an in-game menu called _Dead Sea Scrolls_. (This is the same menu used in other mods like [Fiend Folio](https://steamcommunity.com/sharedfiles/filedetails/?id=2851063440).) You can open the menu by pressing `c` after starting a run.
+The mod comes with an in-game menu called _Dead Sea Scrolls_. (This is the same menu used in other mods, like [_Fiend Folio_](https://steamcommunity.com/sharedfiles/filedetails/?id=2851063440).) You can open the menu by pressing `c` after starting a run.
 
 The menu will show you how many achievements you have left in your streak.
 

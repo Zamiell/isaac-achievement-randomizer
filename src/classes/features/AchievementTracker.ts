@@ -17,7 +17,9 @@ import {
 } from "isaac-typescript-definitions";
 import {
   DefaultMap,
+  GAME_FRAMES_PER_SECOND,
   ModFeature,
+  game,
   getRandomSeed,
   log,
   restart,
@@ -28,16 +30,22 @@ import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTy
 
 const STARTING_CHARACTER = PlayerType.ISAAC;
 
+export const NUM_TOTAL_ACHIEVEMENTS = 1132;
+
 const v = {
   persistent: {
     /** If `null`, the randomizer is not enabled. */
     seed: null as Seed | null,
+
+    numDeaths: 0,
+    gameFramesElapsed: 0,
 
     completedCharacterObjectives: new DefaultMap<
       PlayerType,
       Set<CharacterObjective>
     >(() => new Set()),
     completedChallenges: new Set<Challenge>(),
+    numAchievements: 0,
   },
 };
 
@@ -78,6 +86,21 @@ export function endRandomizer(): void {
   restart(STARTING_CHARACTER);
 }
 
+export function getNumAchievements(): int {
+  return v.persistent.numAchievements;
+}
+
+export function getNumDeaths(): int {
+  return v.persistent.numDeaths;
+}
+
+export function getSecondsElapsed(): int {
+  const gameFrameCount = game.GetFrameCount();
+  const totalFrames = v.persistent.gameFramesElapsed + gameFrameCount;
+
+  return totalFrames / GAME_FRAMES_PER_SECOND;
+}
+
 export function addAchievementCharacterObjective(
   characterObjective: CharacterObjective,
 ): void {
@@ -91,6 +114,7 @@ export function addAchievementCharacterObjective(
   }
 
   characterObjectives.add(characterObjective);
+  v.persistent.numAchievements++;
   // TODO
 }
 
@@ -104,6 +128,7 @@ export function addAchievementChallenge(challenge: Challenge): void {
   }
 
   v.persistent.completedChallenges.add(challenge);
+  v.persistent.numAchievements++;
   // TODO
 }
 
