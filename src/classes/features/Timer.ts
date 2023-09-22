@@ -7,6 +7,8 @@ import { getSecondsElapsed } from "./AchievementTracker";
 export class Timer extends RandomizerModFeature {
   @Callback(ModCallback.POST_RENDER)
   postRender(): void {
+    // TODO: use option and early return
+
     const seconds = getSecondsElapsed();
     timerDraw(seconds);
   }
