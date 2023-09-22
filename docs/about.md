@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD033 -->
 
-Achievement Randomizer is a mod for _[The Binding of Isaac: Repentance](https://store.steampowered.com/app/1426300/The_Binding_of_Isaac_Repentance/)_ that gives you the experience of playing through the game from scratch, unlocking each item one by one in a randomized way.
+Achievement Randomizer is a mod for [_The Binding of Isaac: Repentance_](https://store.steampowered.com/app/1426300/The_Binding_of_Isaac_Repentance/) that gives you the experience of playing through the game from scratch, unlocking each item one by one in a randomized way.
 
 This page explains how it works.
 

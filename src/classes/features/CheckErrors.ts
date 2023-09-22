@@ -19,6 +19,7 @@ import {
   getCollectibleName,
   isRepentance,
   log,
+  onSetSeed,
   removeAllDoors,
 } from "isaacscript-common";
 import { MOD_NAME } from "../../constants";
@@ -42,6 +43,7 @@ const v = {
     incompleteSave: false,
     otherModsEnabled: false,
     wrongDifficulty: false,
+    onSetSeed: false,
     lockedCharacter: false,
     lockedChallenge: false,
   },
@@ -83,6 +85,10 @@ export class CheckErrors extends ModFeature {
     } else if (v.run.wrongDifficulty) {
       this.drawErrorText(
         `You are only allowed to play ${MOD_NAME} on hard mode.`,
+      );
+    } else if (v.run.onSetSeed) {
+      this.drawErrorText(
+        `You are only allowed to play ${MOD_NAME} on random seeds.`,
       );
     } else if (v.run.lockedCharacter) {
       const player = Isaac.GetPlayer();
@@ -134,6 +140,7 @@ export class CheckErrors extends ModFeature {
     checkIncompleteSave();
     checkOtherModsEnabled();
     checkDifficulty();
+    checkSetSeed();
     checkCharacterUnlocked();
     checkChallengeUnlocked();
 
@@ -205,6 +212,19 @@ function checkDifficulty() {
         game.Difficulty
       })`,
     );
+    v.run.wrongDifficulty = true;
+  }
+}
+
+function checkSetSeed() {
+  if (!isRandomizerEnabled()) {
+    return;
+  }
+
+  if (onSetSeed()) {
+    const seeds = game.GetSeeds();
+    const startSeedString = seeds.GetStartSeedString();
+    log(`Error: Set seed detected: ${startSeedString}`);
     v.run.wrongDifficulty = true;
   }
 }
