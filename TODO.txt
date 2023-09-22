@@ -1,10 +1,7 @@
 TODO:
 - add timer for speedruns
-- disable the stupid dead sea scrolls animation
-- Achievement List tooltip should display X / X
 
-- get rid of SET_DROPS_NOT_IN_OTHER_POOLS and replace with breakfast if not unlocked
-- breakfast is always unlocked
+- Achievement List tooltip should display X / X
 
 - stop pausing inputs while in a room with enemies
 

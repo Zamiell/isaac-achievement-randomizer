@@ -10,6 +10,8 @@ import { AchievementTracker } from "./classes/features/AchievementTracker";
 import { CheckErrors } from "./classes/features/CheckErrors";
 import { PathRemoval } from "./classes/features/PathRemoval";
 import { PickupRemoval } from "./classes/features/PickupRemoval";
+import { PreventPause } from "./classes/features/PreventPause";
+import { PreventSaveAndQuit } from "./classes/features/PreventSaveAndQuit";
 import { StartingRoomInfo } from "./classes/features/StartingRoomInfo";
 import { initConsoleCommands } from "./consoleCommands";
 import { IS_DEV, MOD_NAME } from "./constants";
@@ -23,6 +25,8 @@ const MOD_FEATURES = [
   CheckErrors,
   PathRemoval,
   PickupRemoval,
+  PreventPause,
+  PreventSaveAndQuit,
   StartingRoomInfo,
 ] as const;
 

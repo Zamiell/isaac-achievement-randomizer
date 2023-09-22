@@ -6,6 +6,12 @@ This page explains how the Achievement Randomizer mod works.
 
 <br>
 
+## Table of Contents
+
+1. [Design Principles](#design-principles)
+2. [Achievement List](#achievement-list)
+3. [Progression](#progression)
+
 ## Design Principles
 
 This mod **does not** simply randomize all of the vanilla achievements. This is for several reasons:
@@ -153,21 +159,21 @@ Every collectible in the game is locked behind a random achievement, with the fo
   - Clicker (#482) (would break the character achievements)
   - R Key (#636) (would break the difficult boss achievements)
 
-## Trinkets <!-- 5.350 -->
+### Trinkets <!-- 5.350 -->
 
 Every trinket in the game is locked behind a random achievement. If no trinkets are unlocked, trinkets will be converted to pennies.
 
-## Cards & Runes <!-- 5.300 -->
+### Cards & Runes <!-- 5.300 -->
 
 Every card/rune in the game is locked behind a random achievement (except for Rune Shard, which will never spawn). If no cards/runes are unlocked, cards/runes will be converted to pennies.
 
-## Pills <!-- 5.70 -->
+### Pills <!-- 5.70 -->
 
 - Every pill effect in the game is locked behind a random achievement. If no pill effects are unlocked, pills will be converted to pennies.
 - Gold pills are locked behind a random achievement.
 - Horse pills are locked behind a random achievement.
 
-## Other Pickups
+### Other Pickups
 
 - Only half red heart pickups start as being unlocked. Every other heart pickup in the game is locked behind a random achievement.
 - Only pennies start as being unlocked. Every other coin in the game is locked behind a random achievement.
@@ -176,3 +182,29 @@ Every card/rune in the game is locked behind a random achievement (except for Ru
 - Every battery type in the game is locked behind a random achievement. If no batteries are unlocked, batteries will be converted to pennies.
 - Every sack type in the game is locked behind a random achievement. If no sack are unlocked, sacks will be converted to pennies.
 - Only normal chests start as being unlocked. Every other chest type in the game is locked behind a random achievement.
+
+<br>
+
+## Other Features
+
+### Dead Sea Scrolls Integration
+
+The mod comes with an in-game menu called _Dead Sea Scrolls_. (This is the same menu used in other mods like [Fiend Folio](https://steamcommunity.com/sharedfiles/filedetails/?id=2851063440).) You can open the menu by pressing `c` after starting a run.
+
+The menu will show you how many achievements you have left in your streak.
+
+### Death Tracker
+
+The mod includes a death tracker. If you are a streaker, try to complete the randomizer with as few deaths as possible! (Starting a new run without finishing the previous run counts as a death.)
+
+### Timer
+
+The mod includes an on-screen timer, similar to the [Racing+](https://isaacracing.net/) mod. If you are a speedrunner, try to complete the randomizer as fast as possible! (Unlike the timer in Racing+, the timer in this mod tracks in-game time. Thus, the timer will be paused when the game is paused or when you are in the main menu.)
+
+### Pause Prevention
+
+The mod prevents you from pausing the game in uncleared rooms in order to prevent pause abuse. (This is a rule taken from the Isaac streaking community.)
+
+### Save & Quit Prevention
+
+The mod prevents you from using the save & quit feature of the game in order to prevent save & quit abuse. If you try to resume a game, the mod will restart you back at the beginning. (This is a rule taken from the Isaac streaking community.)

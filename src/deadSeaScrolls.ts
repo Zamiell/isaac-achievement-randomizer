@@ -86,8 +86,15 @@ export function initDeadSeaScrolls(): void {
           displayIf: () => isRandomizerEnabled(),
         },
         {
+          str: "randomizer settings",
+          dest: "randomizerSettings",
+          tooltip: {
+            strSet: ["customize the", "randomizer", "settings."],
+          },
+        },
+        {
           str: "menu settings",
-          dest: "settings",
+          dest: "menuSettings",
           tooltip: {
             strSet: ["customize the", "menu hotkey", "and other", "settings."],
           },
@@ -184,7 +191,7 @@ export function initDeadSeaScrolls(): void {
       ],
     },
 
-    settings: {
+    menuSettings: {
       title: "settings",
       buttons: [
         DSSMod.gamepadToggleButton,
