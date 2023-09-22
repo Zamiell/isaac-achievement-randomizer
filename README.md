@@ -12,6 +12,12 @@ Achievement Randomizer is written in [TypeScript](https://www.typescriptlang.org
 
 <br>
 
+## Credits
+
+The mod was designed by Zamiel and [Gamonymous](https://github.com/Rchardon).
+
+<br>
+
 ## Discord
 
 For questions about playing the mod, or reporting bugs, or if you want to help develop the mod, contact us in the [Isaac Streaking Discord server](https://discord.gg/GwhUeQjHTF). (Discord is a voice and text chat application that allows anyone to create a hosted server. We use one such server as the primary hub of communication for Isaac streaking.)
