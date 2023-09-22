@@ -11,6 +11,9 @@ This page explains how the Achievement Randomizer mod works.
 1. [Design Principles](#design-principles)
 2. [Achievement List](#achievement-list)
 3. [Progression](#progression)
+4. [Other Features](#other-features)
+
+<br>
 
 ## Design Principles
 
@@ -208,3 +211,5 @@ The mod prevents you from pausing the game in uncleared rooms in order to preven
 ### Save & Quit Prevention
 
 The mod prevents you from using the save & quit feature of the game in order to prevent save & quit abuse. If you try to resume a game, the mod will restart you back at the beginning. (This is a rule taken from the Isaac streaking community.)
+
+<br>
