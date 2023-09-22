@@ -5,10 +5,9 @@ import {
   setLogFunctionsGlobal,
   setTracebackFunctionsGlobal,
 } from "isaacscript-common";
+import { AchievementDetection } from "./classes/features/AchievementDetection";
 import { AchievementTracker } from "./classes/features/AchievementTracker";
-import { BossKillDetection } from "./classes/features/BossKillDetection";
 import { CheckErrors } from "./classes/features/CheckErrors";
-import { NoDamageDetection } from "./classes/features/NoDamageDetection";
 import { PathRemoval } from "./classes/features/PathRemoval";
 import { PickupRemoval } from "./classes/features/PickupRemoval";
 import { StartingRoomInfo } from "./classes/features/StartingRoomInfo";
@@ -19,10 +18,9 @@ import { debugFunction, hotkey1Function } from "./debugCode";
 import { mod } from "./mod";
 
 const MOD_FEATURES = [
+  AchievementDetection,
   AchievementTracker,
-  BossKillDetection,
   CheckErrors,
-  NoDamageDetection,
   PathRemoval,
   PickupRemoval,
   StartingRoomInfo,
