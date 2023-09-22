@@ -6,6 +6,8 @@ Achievement Randomizer is a mod for _[The Binding of Isaac: Repentance](https://
 
 The mod requires that you are on a fully-unlocked save file, but gives you the experience of playing through the game from scratch, unlocking each item one by one in a randomized way. And it will track all of your deaths and time taken along the way! For more details about how it works, see [the documentation](docs/about.md).
 
+Also see the [version history](docs/history.md) for the mod.
+
 Achievement Randomizer is written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacScript](https://isaacscript.github.io/) framework.
 
 <br>
