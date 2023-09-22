@@ -15,6 +15,7 @@ import {
   ModCallbackCustom,
   getBlueWombDoor,
   getEffects,
+  getMegaSatanDoor,
   getRepentanceDoor,
   getVoidDoor,
   onRepentanceStage,
@@ -54,6 +55,7 @@ export class PathRemoval extends RandomizerModFeature {
     this.checkRepentanceDoor();
     this.checkBlueWombDoor();
     this.checkVoidDoor();
+    this.checkMegaSatanDoor();
   }
 
   checkRepentanceDoor(): void {
@@ -93,6 +95,17 @@ export class PathRemoval extends RandomizerModFeature {
 
     if (!isPathUnlocked(UnlockablePath.THE_VOID)) {
       this.removeDoorAndSmoke(voidDoor);
+    }
+  }
+
+  checkMegaSatanDoor(): void {
+    const megaSatanDoor = getMegaSatanDoor();
+    if (megaSatanDoor === undefined) {
+      return;
+    }
+
+    if (!isPathUnlocked(UnlockablePath.MEGA_SATAN)) {
+      this.removeDoorAndSmoke(megaSatanDoor);
     }
   }
 

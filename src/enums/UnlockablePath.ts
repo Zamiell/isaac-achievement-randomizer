@@ -1,6 +1,7 @@
 export enum UnlockablePath {
   THE_CHEST,
   DARK_ROOM,
+  MEGA_SATAN,
   BLUE_WOMB,
   THE_VOID,
   REPENTANCE_FLOORS,
