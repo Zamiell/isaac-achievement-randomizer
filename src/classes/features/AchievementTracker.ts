@@ -26,7 +26,7 @@ import {
 } from "isaacscript-common";
 import type { CharacterObjective } from "../../enums/CharacterObjective";
 import type { UnlockablePath } from "../../enums/UnlockablePath";
-import type { Achievement } from "../../interfaces/Achievement";
+import type { Achievement } from "../../types/Achievement";
 import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTypes";
 
 const STARTING_CHARACTER = PlayerType.ISAAC;
