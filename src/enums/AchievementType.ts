@@ -1,0 +1,17 @@
+export enum AchievementType {
+  CHARACTER,
+  PATH,
+  CHALLENGE,
+  COLLECTIBLE,
+  TRINKET,
+  CARD,
+  PILL_EFFECT,
+  PILL,
+  HEART,
+  COIN,
+  BOMB,
+  KEY,
+  BATTERY,
+  SACK,
+  CHEST,
+}

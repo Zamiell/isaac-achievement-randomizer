@@ -13,7 +13,7 @@ import { convertSecondsToTimerValues } from "../../timer";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   NUM_TOTAL_ACHIEVEMENTS,
-  getNumAchievements,
+  getNumCompletedAchievements,
   getNumDeaths,
   getRandomizerSeed,
   getSecondsElapsed,
@@ -75,7 +75,7 @@ export class StartingRoomInfo extends RandomizerModFeature {
 
     this.drawCenteredText("Achievements:", topRightPosition);
     this.drawCenteredText(
-      `${getNumAchievements()} / ${NUM_TOTAL_ACHIEVEMENTS}`,
+      `${getNumCompletedAchievements()} / ${NUM_TOTAL_ACHIEVEMENTS}`,
       topRightPosition.add(Vector(0, 30)),
       K_COLORS.Green,
     );

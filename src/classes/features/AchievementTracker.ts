@@ -26,6 +26,7 @@ import {
 } from "isaacscript-common";
 import type { CharacterObjective } from "../../enums/CharacterObjective";
 import type { UnlockablePath } from "../../enums/UnlockablePath";
+import type { Achievement } from "../../interfaces/Achievement";
 import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTypes";
 
 const STARTING_CHARACTER = PlayerType.ISAAC;
@@ -40,12 +41,18 @@ const v = {
     numDeaths: 0,
     gameFramesElapsed: 0,
 
+    characterAchievements: new DefaultMap<
+      PlayerType,
+      Map<CharacterObjective, Achievement>
+    >(() => new Map()),
+    challengeAchievements: new Map<Challenge, Achievement>(),
+
     completedCharacterObjectives: new DefaultMap<
       PlayerType,
       Set<CharacterObjective>
     >(() => new Set()),
     completedChallenges: new Set<Challenge>(),
-    numAchievements: 0,
+    numCompletedAchievements: 0,
 
     config: {
       showTimer: false,
@@ -90,8 +97,8 @@ export function endRandomizer(): void {
   restart(STARTING_CHARACTER);
 }
 
-export function getNumAchievements(): int {
-  return v.persistent.numAchievements;
+export function getNumCompletedAchievements(): int {
+  return v.persistent.numCompletedAchievements;
 }
 
 export function getNumDeaths(): int {
@@ -118,7 +125,7 @@ export function addAchievementCharacterObjective(
   }
 
   characterObjectives.add(characterObjective);
-  v.persistent.numAchievements++;
+  v.persistent.numCompletedAchievements++;
   // TODO
 }
 
@@ -132,7 +139,7 @@ export function addAchievementChallenge(challenge: Challenge): void {
   }
 
   v.persistent.completedChallenges.add(challenge);
-  v.persistent.numAchievements++;
+  v.persistent.numCompletedAchievements++;
   // TODO
 }
 

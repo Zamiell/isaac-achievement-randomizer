@@ -5,6 +5,8 @@ TODO:
 
 - text on achievement to show what was unlocked
 
+- death tracker should detect non-finished runs where the player did not die, verify this works
+
 - unlock logic:
   - revival items unlock once all character related achievements are completed
     - Lazarus Rags + Judas' Shadow + Ankh + Missing Poster
@@ -14,3 +16,5 @@ TODO:
 
 - finish dead sea scrolls
   - Achievement List tooltip should display X / X
+
+- fix lucky penny softlock with Mega Mush

@@ -96,10 +96,6 @@ There are 1086 + 45 = 1131 achievements in total.
 
 The first character unlocked will always be Isaac. All other characters start off locked.
 
-### Challenges
-
-All challenges start off locked.
-
 ### Paths
 
 - The following floors start off locked and are inaccessible:
@@ -112,6 +108,10 @@ All challenges start off locked.
 - Additionally, the Mega Satan room starts off locked and is inaccessible.
 - Isaac is guaranteed to unlock both The Chest & Dark Room from one of his easier achievements.
 - The rest of the floors can be randomly unlocked from any achievement.
+
+### Challenges
+
+All challenges start off locked.
 
 ### Collectibles <!-- 5.100 -->
 
