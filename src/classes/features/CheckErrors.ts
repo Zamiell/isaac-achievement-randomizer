@@ -47,7 +47,7 @@ const v = {
   },
 };
 
-function hasErrors(): boolean {
+export function hasErrors(): boolean {
   return Object.values(v.run).includes(true);
 }
 

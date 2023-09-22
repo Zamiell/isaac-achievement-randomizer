@@ -11,7 +11,5 @@ TODO:
 
 - write runtime check for achievements matching
 
-- add timer for speedruns
-
 - finish dead sea scrolls
   - Achievement List tooltip should display X / X

@@ -46,6 +46,10 @@ const v = {
     >(() => new Set()),
     completedChallenges: new Set<Challenge>(),
     numAchievements: 0,
+
+    config: {
+      showTimer: false,
+    },
   },
 };
 
@@ -130,6 +134,14 @@ export function addAchievementChallenge(challenge: Challenge): void {
   v.persistent.completedChallenges.add(challenge);
   v.persistent.numAchievements++;
   // TODO
+}
+
+// ----------------
+// Config functions
+// ----------------
+
+export function shouldShowTimer(): boolean {
+  return v.persistent.config.showTimer;
 }
 
 // -------------------

@@ -8,6 +8,7 @@ import {
 import { AchievementDetection } from "./classes/features/AchievementDetection";
 import { AchievementTracker } from "./classes/features/AchievementTracker";
 import { CheckErrors } from "./classes/features/CheckErrors";
+import { EdenTMTrainer } from "./classes/features/EdenTMTrainer";
 import { PathRemoval } from "./classes/features/PathRemoval";
 import { PickupRemoval } from "./classes/features/PickupRemoval";
 import { PreventPause } from "./classes/features/PreventPause";
@@ -24,6 +25,7 @@ const MOD_FEATURES = [
   AchievementDetection,
   AchievementTracker,
   CheckErrors,
+  EdenTMTrainer,
   PathRemoval,
   PickupRemoval,
   PreventPause,

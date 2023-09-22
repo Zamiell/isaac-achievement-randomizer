@@ -18,6 +18,7 @@ import {
   getRandomizerSeed,
   getSecondsElapsed,
 } from "./AchievementTracker";
+import { hasErrors } from "./CheckErrors";
 
 const FONT = fonts.teamMeatFont10;
 
@@ -52,6 +53,10 @@ export class StartingRoomInfo extends RandomizerModFeature {
     }
 
     if (!inStartingRoom() || !onFirstFloor()) {
+      return;
+    }
+
+    if (hasErrors()) {
       return;
     }
 

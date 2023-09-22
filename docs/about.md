@@ -201,7 +201,7 @@ Every card/rune in the game is locked behind a random achievement (except for Ru
 
 The mod comes with an in-game menu called _Dead Sea Scrolls_. (This is the same menu used in other mods, like [_Fiend Folio_](https://steamcommunity.com/sharedfiles/filedetails/?id=2851063440).) You can open the menu by pressing `c` after starting a run.
 
-The menu will show you how many achievements you have left in your streak.
+The menu will show you how many achievements you have left in your streak and other information.
 
 ### Death Tracker
 
@@ -209,7 +209,13 @@ The mod includes a death tracker. If you are a streaker, try to complete the ran
 
 ### Timer
 
-The mod includes an on-screen timer, similar to the [Racing+](https://isaacracing.net/) mod. If you are a speedrunner, try to complete the randomizer as fast as possible! (Unlike the timer in Racing+, the timer in this mod tracks in-game time. Thus, the timer will be paused when the game is paused or when you are in the main menu.)
+The mod includes an on-screen timer, similar to the [Racing+](https://isaacracing.net/) mod. The timer starts off hidden by default, but you can enable it in the Dead Sea Scrolls menu. If you are a speedrunner, try to complete the randomizer as fast as possible!
+
+Unlike the timer in Racing+, the timer in this mod tracks in-game time. Thus, the timer will be paused when the game is paused or when you are in the main menu.
+
+### Eden TMTrainer Handling
+
+If Eden is randomly assigned TMTrainer, it will be taken away and a new passive item will be assigned. (This is a quality of life fix for a convention taken from the Isaac streaking community, because starting TMTrainer is unfair for streaking purposes.)
 
 ### Pause Prevention
 
