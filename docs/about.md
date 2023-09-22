@@ -116,11 +116,14 @@ All challenges start off locked.
 Every collectible in the game is locked behind a random achievement, with the following exceptions:
 
 - 8 collectibles from the Treasure Room pool (#0):
+  - Boom (#19)
   - Tiny Planet (#233)
+  - Best Bud (#274)
   - Isaac's Heart (#276)
   - Strange Attractor (#315)
-  - Curse of the Tower (#371)
   - Key Bum (#388)
+  - Linger Bean (#447)
+  - Hush (#470)
 - 5 collectibles from the Shop pool (#1):
   - Ladder (#60)
   - Fanny Pack (#204)
