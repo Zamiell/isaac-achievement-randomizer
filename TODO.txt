@@ -1,9 +1,17 @@
 TODO:
-- add timer for speedruns
 
-- Achievement List tooltip should display X / X
+- text on achievement to show what was unlocked
 
 - unlock logic:
   - revival items unlock once all character related achievements are completed
     - Lazarus Rags + Judas' Shadow + Ankh + Missing Poster
   - mutual character logic for unlocks (e.g. if the forgotten unlocks Magdalene, make sure it's not magdalene who unlocks forgotten)
+  - battery pack behind lil battery
+  - Bogo Bombs behind double bomb
+
+- write runtime check for achievements matching
+
+- add timer for speedruns
+
+- finish dead sea scrolls
+  - Achievement List tooltip should display X / X

@@ -2,14 +2,41 @@ import { CollectibleType } from "isaac-typescript-definitions";
 import { ReadonlySet } from "isaacscript-common";
 import { mod } from "./mod";
 
+// For the collectible exceptions:
+// - We choose the worst collectibles possible, with a few exceptions.
+// - We only select collectibles that are not in multiple pools (because we want there to only be N
+//   collectibles in each pool).
+// - We do not select collectibles that would be useless at the starting point in the randomizer.
+//   For example, Battery Pack would create coins.
+// - We do not select active items.
+
+/**
+ * For ItemPoolType.TREASURE (0).
+ *
+ * Unlike the other pools, we select 8 items in order to make the number of achievements exactly
+ * match what we need.
+ */
 const TREASURE_ROOM_EXCEPTIONS = [
+  CollectibleType.BOOM, // 19
   CollectibleType.TINY_PLANET, // 233
+  CollectibleType.BEST_BUD, // 274
   CollectibleType.ISAACS_HEART, // 276
   CollectibleType.STRANGE_ATTRACTOR, // 315
-  CollectibleType.CURSE_OF_THE_TOWER, // 371
   CollectibleType.KEY_BUM, // 388
+  CollectibleType.LINGER_BEAN, // 447
+  CollectibleType.HUSHY, // 470
 ] as const;
 
+/** For ItemPoolType.SHOP (1). */
+const SHOP_EXCEPTIONS = [
+  CollectibleType.LADDER, // 60
+  CollectibleType.FANNY_PACK, // 204
+  CollectibleType.PIGGY_BANK, // 227
+  CollectibleType.KING_BABY, // 472
+  CollectibleType.OPTIONS, // 670
+] as const;
+
+/** For ItemPoolType.BOSS (2). */
 const BOSS_ROOM_EXCEPTIONS = [
   CollectibleType.BREAKFAST, // 25
   CollectibleType.WOODEN_SPOON, // 27
@@ -18,10 +45,7 @@ const BOSS_ROOM_EXCEPTIONS = [
   CollectibleType.CAT_O_NINE_TAILS, // 165
 ] as const;
 
-/**
- * We arbitrarily pick the worst 5 Devil Room collectibles. These are the same as the ones with the
- * in-game quality of 0, with the exception of Pound of Flesh (which is swapped with Plan C).
- */
+/** For ItemPoolType.DEVIL (3). */
 const DEVIL_ROOM_EXCEPTIONS = [
   CollectibleType.QUARTER, // 74
   CollectibleType.MISSING_PAGE_2, // 262 (also in the Secret Room pool)
@@ -30,12 +54,7 @@ const DEVIL_ROOM_EXCEPTIONS = [
   CollectibleType.POUND_OF_FLESH, // 672
 ] as const;
 
-/**
- * We arbitrarily pick the worst 5 Angel Room collectibles. There are no collectibles in the Angel
- * Room pool that are quality 0. The ones that are quality 1 are all fairly useful.
- *
- * Gamonymous chose these because they are only defensive.
- */
+/** For ItemPoolType.ANGEL (4). */
 const ANGEL_ROOM_EXCEPTIONS = [
   CollectibleType.GUARDIAN_ANGEL, // 112
   CollectibleType.HOLY_GRAIL, // 184
@@ -75,6 +94,7 @@ export const BANNED_COLLECTIBLE_TYPES = [
 export const ALWAYS_UNLOCKED_COLLECTIBLE_TYPES =
   new ReadonlySet<CollectibleType>([
     ...TREASURE_ROOM_EXCEPTIONS,
+    ...SHOP_EXCEPTIONS,
     ...BOSS_ROOM_EXCEPTIONS,
     ...DEVIL_ROOM_EXCEPTIONS,
     ...ANGEL_ROOM_EXCEPTIONS,

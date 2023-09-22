@@ -80,13 +80,11 @@ Additionally, each character other than The Lost and Tainted Lost will unlock so
 
 ### Challenge-Based Achievements
 
-There is one achievement for each challenge. Thus, there are 45 challenge-based achievements.
+There is one achievement for completing each challenge. Thus, there are 45 challenge-based achievements.
 
-### Other Achievements
+### Total
 
-The following achievements from the original game are retained:
-
-- Digging the grave in the Dark Room that normally unlocks The Forgotten.
+There are 1086 + 45 = 1131 achievements in total.
 
 <br>
 
@@ -117,25 +115,31 @@ All challenges start off locked.
 
 Every collectible in the game is locked behind a random achievement, with the following exceptions:
 
-- 5 collectibles from the Treasure Room pool:
+- 8 collectibles from the Treasure Room pool (#0):
   - Tiny Planet (#233)
   - Isaac's Heart (#276)
   - Strange Attractor (#315)
   - Curse of the Tower (#371)
   - Key Bum (#388)
-- 5 collectibles from the Boss Room pool:
+- 5 collectibles from the Shop pool (#1):
+  - Ladder (#60)
+  - Fanny Pack (#204)
+  - Piggy Bank (#227)
+  - King Baby (#472)
+  - Options (#670)
+- 5 collectibles from the Boss Room pool (#2):
   - Breakfast (#25) (HP)
   - Wooden Spoon (#27) (speed)
   - Mom's Underwear (#29) (range)
   - Wire Coat Hanger (#32) (tears)
   - Cat-O-Nine-Tails (#165) (damage)
-- 5 collectibles from the Devil Room pool:
+- 5 collectibles from the Devil Room pool (#3):
   - Quarter (#74)
   - Blood Rights (#186)
   - Missing Page 2 (#262)
   - Shade (#468)
   - Pound of Flesh (#672)
-- 5 collectibles from the Angel Room pool:
+- 5 collectibles from the Angel Room pool (#4):
   - Guardian Angel (#112)
   - Stigmata (#138)
   - Prayer Card (#146)

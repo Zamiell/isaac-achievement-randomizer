@@ -12,6 +12,7 @@ import {
   CoinSubType,
   CollectibleType,
   HeartSubType,
+  ItemPoolType,
   KeySubType,
   ModCallback,
   PickupVariant,
@@ -26,11 +27,14 @@ import {
   getNormalPillColorFromHorse,
   getRandomArrayElement,
   getRandomSetElement,
+  isActiveCollectible,
   isChestVariant,
   isGoldPill,
   isHorsePill,
+  isQuality,
   isRune,
   isSuitCard,
+  logCollectibleTypes,
   removeCollectibleFromPools,
   setCollectibleSubType,
 } from "isaacscript-common";
@@ -167,6 +171,10 @@ export class PickupRemoval extends RandomizerModFeature {
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
   postGameStartedReorderedFalse(): void {
+    const a = mod.getCollectiblesInItemPool(ItemPoolType.TREASURE);
+    const b = a.filter((ct) => isQuality(ct, 0) && !isActiveCollectible(ct));
+    logCollectibleTypes(b);
+
     const itemPool = game.GetItemPool();
 
     for (const collectibleType of UNLOCKABLE_COLLECTIBLE_TYPES) {
