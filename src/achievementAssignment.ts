@@ -68,6 +68,11 @@ const EASY_OBJECTIVES = [
   CharacterObjective.NO_DAMAGE_WOMB_2,
 ] as const;
 
+const EASY_UNLOCKABLE_PATHS = [
+  UnlockablePath.THE_CHEST,
+  UnlockablePath.DARK_ROOM,
+] as const;
+
 export function getAchievementsForSeed(seed: Seed): Achievements {
   const rng = newRNG(seed);
 
@@ -85,10 +90,7 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
     PlayerType.ISAAC,
   );
   const easyObjectives = copyArray(EASY_OBJECTIVES);
-  for (const unlockablePath of [
-    UnlockablePath.THE_CHEST,
-    UnlockablePath.DARK_ROOM,
-  ]) {
+  for (const unlockablePath of EASY_UNLOCKABLE_PATHS) {
     const achievement = getAndRemovePathAchievement(
       achievements,
       unlockablePath,
@@ -100,8 +102,10 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
     isaacAchievements.set(randomEasyAchievement, achievement);
   }
 
-  // Pick the rest of the achievements.
+  // Pick the character achievements.
+  // TODO
 
+  // Pick the rest of the achievements.
   // TODO
 
   return { characterAchievements, challengeAchievements };
@@ -354,7 +358,7 @@ function getAllAchievements(): Achievement[] {
     }
   }
 
-  return [];
+  return achievements;
 }
 
 function getAndRemovePathAchievement(

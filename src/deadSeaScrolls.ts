@@ -145,7 +145,7 @@ export function initDeadSeaScrolls(): void {
           noSel: true,
         },
         {
-          str: "achievementrandomizer 12345",
+          str: "achievementRandomizer 12345",
           fSize: 1,
           noSel: true,
           clr: 3,

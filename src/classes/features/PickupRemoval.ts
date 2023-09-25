@@ -1,20 +1,21 @@
-import type {
-  BatterySubType,
-  PillColor,
-  PillEffect,
-  SackSubType,
-} from "isaac-typescript-definitions";
+import type { BatterySubType, SackSubType } from "isaac-typescript-definitions";
 import {
   BombSubType,
   CardType,
   ChestSubType,
   CoinSubType,
   CollectibleType,
+  EffectVariant,
   HeartSubType,
   KeySubType,
   ModCallback,
   PickupVariant,
+  PillColor,
+  PillEffect,
   PlayerType,
+  PocketItemSlot,
+  SoundEffect,
+  TrinketSlot,
   TrinketType,
 } from "isaac-typescript-definitions";
 import {
@@ -22,8 +23,11 @@ import {
   CallbackCustom,
   FIRST_PILL_COLOR,
   ModCallbackCustom,
+  VANILLA_COLLECTIBLE_TYPES,
   copySet,
   game,
+  getCharacterStartingCollectibleTypes,
+  getCharacterStartingTrinketType,
   getNormalPillColorFromHorse,
   getRandomArrayElement,
   getRandomSetElement,
@@ -32,10 +36,19 @@ import {
   isHorsePill,
   isRune,
   isSuitCard,
+  log,
+  removeAllEffects,
+  removeAllFamiliars,
+  removeAllPickups,
+  removeAllTears,
   removeCollectibleFromPools,
   removeTrinketFromPools,
   setCollectibleSubType,
+  setPlayerHealth,
+  sfxManager,
 } from "isaacscript-common";
+import { MOD_NAME } from "../../constants";
+import { mod } from "../../mod";
 import {
   BANNED_COLLECTIBLE_TYPES,
   UNLOCKABLE_COLLECTIBLE_TYPES,
@@ -174,6 +187,12 @@ export class PickupRemoval extends RandomizerModFeature {
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
   postGameStartedReorderedFalse(): void {
     const itemPool = game.GetItemPool();
+    const seeds = game.GetSeeds();
+    const startSeedString = seeds.GetStartSeedString();
+    const player = Isaac.GetPlayer();
+    const character = player.GetPlayerType();
+
+    log(`${MOD_NAME} started on seed: ${startSeedString}`);
 
     for (const collectibleType of UNLOCKABLE_COLLECTIBLE_TYPES) {
       if (!isCollectibleTypeUnlocked(collectibleType)) {
@@ -216,6 +235,87 @@ export class PickupRemoval extends RandomizerModFeature {
       TrinketType.MISSING_POSTER, // 23
       PlayerType.LOST,
     );
+
+    const startingCollectibleTypes =
+      getCharacterStartingCollectibleTypes(character);
+    for (const collectibleType of startingCollectibleTypes) {
+      if (
+        !isCollectibleTypeUnlocked(collectibleType) &&
+        // Make an exception for Bag of Crafting since the collectible to pickups effect will always
+        // be active on Tainted Cain. (Thus, the character cannot really function properly without
+        // Bag of Crafting.)
+        collectibleType !== CollectibleType.BAG_OF_CRAFTING
+      ) {
+        player.RemoveCollectible(collectibleType);
+      }
+    }
+
+    const startingTrinketType = getCharacterStartingTrinketType(character);
+    if (
+      startingTrinketType !== undefined &&
+      !isTrinketTypeUnlocked(startingTrinketType)
+    ) {
+      player.TryRemoveTrinket(startingTrinketType);
+    }
+
+    switch (character) {
+      // 0
+      case PlayerType.ISAAC: {
+        if (!isPillEffectUnlocked(PillEffect.FULL_HEALTH)) {
+          player.SetPill(PocketItemSlot.SLOT_1, PillColor.NULL);
+        }
+
+        break;
+      }
+
+      // 1
+      case PlayerType.MAGDALENE: {
+        if (!isPillEffectUnlocked(PillEffect.FULL_HEALTH)) {
+          player.SetPill(PocketItemSlot.SLOT_1, PillColor.NULL);
+        }
+
+        break;
+      }
+
+      // 7, 28
+      case PlayerType.AZAZEL:
+      case PlayerType.AZAZEL_B: {
+        if (!isCardTypeUnlocked(CardType.FOOL)) {
+          player.SetCard(PocketItemSlot.SLOT_1, CardType.NULL);
+        }
+
+        break;
+      }
+
+      // 8
+      case PlayerType.LAZARUS: {
+        if (!anyPillEffectsUnlocked()) {
+          player.SetPill(PocketItemSlot.SLOT_1, PillColor.NULL);
+        }
+
+        break;
+      }
+
+      // 9, 30
+      case PlayerType.EDEN:
+      case PlayerType.EDEN_B: {
+        this.emptyEdenInventory(player);
+        break;
+      }
+
+      // 31
+      case PlayerType.LOST_B: {
+        if (!isCardTypeUnlocked(CardType.HOLY)) {
+          player.SetCard(PocketItemSlot.SLOT_1, CardType.NULL);
+        }
+
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
   }
 
   conditionallyRemoveRevivalCollectible(
@@ -235,6 +335,45 @@ export class PickupRemoval extends RandomizerModFeature {
   ): void {
     if (!isAllCharacterAchievementsCompleted(character)) {
       itemPool.RemoveTrinket(trinketType);
+    }
+  }
+
+  emptyEdenInventory(player: EntityPlayer): void {
+    for (const collectibleType of VANILLA_COLLECTIBLE_TYPES) {
+      // We check for the presence of the collectible to avoid spamming the log.
+      if (player.HasCollectible(collectibleType)) {
+        player.RemoveCollectible(collectibleType);
+      }
+    }
+
+    const trinketType = player.GetTrinket(TrinketSlot.SLOT_1);
+    if (trinketType !== TrinketType.NULL) {
+      player.TryRemoveTrinket(trinketType);
+    }
+
+    const cardType = player.GetCard(PocketItemSlot.SLOT_1);
+    if (cardType !== CardType.NULL) {
+      player.SetCard(PocketItemSlot.SLOT_1, CardType.NULL);
+    }
+
+    const pillColor = player.GetPill(PocketItemSlot.SLOT_1);
+    if (pillColor !== PillColor.NULL) {
+      player.SetPill(PocketItemSlot.SLOT_1, PillColor.NULL);
+    }
+
+    // Some collectibles will spawn things in the room.
+    removeAllPickups();
+    removeAllTears();
+    removeAllFamiliars();
+    removeAllEffects(EffectVariant.BLOOD_EXPLOSION); // 2
+    removeAllEffects(EffectVariant.POOF_1); // 15
+    sfxManager.Stop(SoundEffect.MEAT_JUMPS); // 72
+    sfxManager.Stop(SoundEffect.TEARS_FIRE); // 153
+
+    // Some collectibles will add health.
+    const startingHealth = mod.getEdenStartingHealth(player);
+    if (startingHealth !== undefined) {
+      setPlayerHealth(player, startingHealth);
     }
   }
 

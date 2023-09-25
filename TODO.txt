@@ -8,11 +8,13 @@ TODO:
 - death tracker should detect non-finished runs where the player did not die, verify this works
 
 - unlock logic:
-  - revival items unlock once all character related achievements are completed
-    - Ankh (#161) + Judas' Shadow (#311) + Lazarus Rags (#332) + Mysterious Paper (#21) + Missing Poster (#23)
   - mutual character logic for unlocks (e.g. if the forgotten unlocks Magdalene, make sure it's not magdalene who unlocks forgotten)
   - battery pack behind lil battery
   - Bogo Bombs behind double bomb
 
 - finish dead sea scrolls
   - Achievement List tooltip should display X / X
+
+- recode eden
+- no eden items if eden is not unlocked
+- eden get 2 passives if no actives are unlocked

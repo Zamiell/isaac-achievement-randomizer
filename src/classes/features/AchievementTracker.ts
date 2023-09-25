@@ -30,6 +30,7 @@ import type { CharacterObjective } from "../../enums/CharacterObjective";
 import type { UnlockablePath } from "../../enums/UnlockablePath";
 import type { Achievement } from "../../types/Achievement";
 import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTypes";
+import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../unlockableTrinketTypes";
 
 const STARTING_CHARACTER = PlayerType.ISAAC;
 
@@ -172,7 +173,7 @@ export function isCharacterUnlocked(character: PlayerType): boolean {
   }
 
   // TODO
-  return false;
+  return true;
 }
 
 export function isAllCharacterAchievementsCompleted(
@@ -181,6 +182,10 @@ export function isAllCharacterAchievementsCompleted(
   const characterObjectives =
     v.persistent.completedCharacterObjectives.getAndSetDefault(character);
   return characterObjectives.size === CHARACTER_OBJECTIVES.length;
+}
+
+export function setCharacterUnlocked(_character: PlayerType): void {
+  // TODO
 }
 
 // --------------
@@ -224,7 +229,11 @@ export function isCollectibleTypeUnlocked(
 // Trinket functions
 // -----------------
 
-export function isTrinketTypeUnlocked(_trinketType: TrinketType): boolean {
+export function isTrinketTypeUnlocked(trinketType: TrinketType): boolean {
+  if (ALWAYS_UNLOCKED_TRINKET_TYPES.has(trinketType)) {
+    return true;
+  }
+
   // TODO
   return false;
 }

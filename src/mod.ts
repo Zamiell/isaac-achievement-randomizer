@@ -3,6 +3,7 @@ import { MOD_NAME } from "./constants";
 
 const FEATURES = [
   ISCFeature.CUSTOM_HOTKEYS,
+  ISCFeature.EDEN_STARTING_STATS_HEALTH,
   ISCFeature.EXTRA_CONSOLE_COMMANDS,
   ISCFeature.FADE_IN_REMOVER,
   ISCFeature.FAST_RESET,

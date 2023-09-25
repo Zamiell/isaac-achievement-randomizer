@@ -203,6 +203,12 @@ function checkDifficulty() {
     return;
   }
 
+  // Some challenges are on hard mode.
+  const challenge = Isaac.GetChallenge();
+  if (challenge !== Challenge.NULL) {
+    return;
+  }
+
   if (
     game.Difficulty === Difficulty.NORMAL ||
     game.Difficulty === Difficulty.GREED
@@ -225,7 +231,7 @@ function checkSetSeed() {
     const seeds = game.GetSeeds();
     const startSeedString = seeds.GetStartSeedString();
     log(`Error: Set seed detected: ${startSeedString}`);
-    v.run.wrongDifficulty = true;
+    /// v.run.onSetSeed = true;
   }
 }
 

@@ -78,7 +78,7 @@ Additionally, each character other than The Lost and Tainted Lost will unlock so
 
 - There are 34 main characters.
 - There are 15 boss objectives and 18 floor objectives, which makes 33 in total.
-- Thus, since the Lost & Tainted Lost do not have floor achievements, there are 34 x 33 - 18 x 2 = 1086 character-based achievements.
+- Thus, since The Lost & Tainted Lost do not have floor achievements, there are 34 x 33 - 18 x 2 = 1086 character-based achievements.
 
 ### Challenge-Based Achievements
 
@@ -94,7 +94,8 @@ There are 1086 + 45 = 1131 achievements in total.
 
 ### Characters
 
-The first character unlocked will always be Isaac. All other characters start off locked.
+- The first character unlocked will always be Isaac. All other characters start off locked.
+- Each character is guaranteed to unlock another random character.
 
 ### Paths
 
@@ -188,7 +189,7 @@ If no trinkets are unlocked, trinkets will be converted to pennies.
 
 Also note that:
 
-- Even if Mysterious Paper (#21) or Missing Poster (#23) are unlocked, they are removed from pools until all of the Lost achievements are completed.
+- Even if Mysterious Paper (#21) or Missing Poster (#23) are unlocked, they are removed from pools until all of The Lost achievements are completed.
 
 ### Cards & Runes <!-- 5.300 -->
 
