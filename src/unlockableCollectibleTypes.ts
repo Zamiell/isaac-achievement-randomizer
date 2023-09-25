@@ -90,6 +90,10 @@ export const BANNED_COLLECTIBLE_TYPES = [
   CollectibleType.R_KEY, // 636
 ] as const;
 
+export const BANNED_COLLECTIBLE_TYPES_SET = new ReadonlySet<CollectibleType>(
+  BANNED_COLLECTIBLE_TYPES,
+);
+
 export const ALWAYS_UNLOCKED_COLLECTIBLE_TYPES =
   new ReadonlySet<CollectibleType>([
     ...TREASURE_ROOM_EXCEPTIONS,

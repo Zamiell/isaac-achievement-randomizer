@@ -11,6 +11,7 @@ import {
   Challenge,
   CoinSubType,
   HeartSubType,
+  ItemConfigTag,
   KeySubType,
   PickupVariant,
   PlayerType,
@@ -19,10 +20,15 @@ import {
   DefaultMap,
   GAME_FRAMES_PER_SECOND,
   ModFeature,
+  collectibleHasTag,
+  filterMap,
   game,
   getChallengeName,
   getCharacterName,
   getRandomSeed,
+  isActiveCollectible,
+  isHiddenCollectible,
+  isPassiveOrFamiliarCollectible,
   log,
   restart,
 } from "isaacscript-common";
@@ -303,9 +309,12 @@ function findCharacterAchievement(
 // Path functions
 // --------------
 
-export function isPathUnlocked(_unlockablePath: UnlockablePath): boolean {
-  // TODO
-  return false;
+export function isPathUnlocked(unlockablePath: UnlockablePath): boolean {
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.PATH &&
+      achievement.unlockablePath === unlockablePath,
+  );
 }
 
 // -------------------
@@ -317,8 +326,11 @@ export function isChallengeUnlocked(challenge: Challenge): boolean {
     return true;
   }
 
-  // TODO
-  return false;
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.CHALLENGE &&
+      achievement.challenge === challenge,
+  );
 }
 
 // ---------------------
@@ -332,18 +344,41 @@ export function isCollectibleTypeUnlocked(
     return true;
   }
 
-  // TODO
-  return false;
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.COLLECTIBLE &&
+      achievement.collectibleType === collectibleType,
+  );
 }
 
 export function getUnlockedEdenActiveCollectibleTypes(): CollectibleType[] {
-  // TODO
-  return [];
+  const unlockedCollectibleTypes = getUnlockedCollectibleTypes();
+
+  return unlockedCollectibleTypes.filter(
+    (collectibleType) =>
+      !isHiddenCollectible(collectibleType) &&
+      !collectibleHasTag(collectibleType, ItemConfigTag.NO_EDEN) &&
+      isActiveCollectible(collectibleType),
+  );
 }
 
 export function getUnlockedEdenPassiveCollectibleTypes(): CollectibleType[] {
-  // TODO
-  return [];
+  const unlockedCollectibleTypes = getUnlockedCollectibleTypes();
+
+  return unlockedCollectibleTypes.filter(
+    (collectibleType) =>
+      !isHiddenCollectible(collectibleType) &&
+      !collectibleHasTag(collectibleType, ItemConfigTag.NO_EDEN) &&
+      isPassiveOrFamiliarCollectible(collectibleType),
+  );
+}
+
+function getUnlockedCollectibleTypes(): CollectibleType[] {
+  return filterMap(v.persistent.completedAchievements, (achievement) =>
+    achievement.type === AchievementType.COLLECTIBLE
+      ? achievement.collectibleType
+      : undefined,
+  );
 }
 
 // -----------------

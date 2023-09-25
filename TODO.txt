@@ -10,6 +10,12 @@ TODO:
 - finish dead sea scrolls
   - Achievement List tooltip should display X / X
 
-- unlock logic:
-  - battery pack behind lil battery
-  - Bogo Bombs behind double bomb
+- unlock logic for collectibles:
+  - Humbleing Bundle (#203) behind one of 2x coin/bomb/key
+  - Bogo Bombs (#250) behind double bomb
+  - Battery Pack (#603) behind Lil Battery
+  - Maggy's Bow (#312) behind
+- unlock logic for trinkets:
+  - Left Hand (#61) behind Red Chests
+  - Gilded Key (#159) behind Locked Chests
+  - Hollow Heart (#168) behind Bone Hearts

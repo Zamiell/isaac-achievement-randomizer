@@ -37,6 +37,7 @@ import {
   isRune,
   isSuitCard,
   log,
+  newRNG,
   removeAllEffects,
   removeAllFamiliars,
   removeAllPickups,
@@ -51,6 +52,7 @@ import { MOD_NAME } from "../../constants";
 import { mod } from "../../mod";
 import {
   BANNED_COLLECTIBLE_TYPES,
+  BANNED_COLLECTIBLE_TYPES_SET,
   UNLOCKABLE_COLLECTIBLE_TYPES,
 } from "../../unlockableCollectibleTypes";
 import {
@@ -62,12 +64,15 @@ import {
   anyCardTypesUnlocked,
   anyPillEffectsUnlocked,
   getUnlockedCardTypes,
+  getUnlockedEdenActiveCollectibleTypes,
+  getUnlockedEdenPassiveCollectibleTypes,
   getUnlockedPillEffects,
   getUnlockedTrinketTypes,
   isAllCharacterObjectivesCompleted,
   isBatterySubTypeUnlocked,
   isBombSubTypeUnlocked,
   isCardTypeUnlocked,
+  isCharacterUnlocked,
   isChestVariantUnlocked,
   isCoinSubTypeUnlocked,
   isCollectibleTypeUnlocked,
@@ -142,7 +147,11 @@ export class PickupRemoval extends RandomizerModFeature {
   @Callback(ModCallback.POST_PICKUP_INIT, PickupVariant.COLLECTIBLE)
   postPickupInitCollectible(pickup: EntityPickup): void {
     const collectible = pickup as EntityPickupCollectible;
-    if (!isCollectibleTypeUnlocked(collectible.SubType)) {
+    if (
+      !isCollectibleTypeUnlocked(collectible.SubType) ||
+      // Prevent e.g. Spindown Dice from producing banned collectibles.
+      BANNED_COLLECTIBLE_TYPES_SET.has(collectible.SubType)
+    ) {
       setCollectibleSubType(collectible, CollectibleType.BREAKFAST);
     }
   }
@@ -299,7 +308,10 @@ export class PickupRemoval extends RandomizerModFeature {
       // 9, 30
       case PlayerType.EDEN:
       case PlayerType.EDEN_B: {
+        // Eden may be randomly given collectibles that are not yet unlocked, so we remove all
+        // collectibles and then explicitly add two new ones.
         this.emptyEdenInventory(player);
+        this.addEdenRandomCollectibles(player);
         break;
       }
 
@@ -375,6 +387,37 @@ export class PickupRemoval extends RandomizerModFeature {
     if (startingHealth !== undefined) {
       setPlayerHealth(player, startingHealth);
     }
+  }
+
+  addEdenRandomCollectibles(player: EntityPlayer): void {
+    const character = player.GetPlayerType();
+    if (!isCharacterUnlocked(character)) {
+      return;
+    }
+
+    const seeds = game.GetSeeds();
+    const startSeed = seeds.GetStartSeed();
+    const rng = newRNG(startSeed);
+
+    const activeCollectibleTypes = getUnlockedEdenActiveCollectibleTypes();
+    const passiveCollectibleTypes = getUnlockedEdenPassiveCollectibleTypes();
+
+    const passiveCollectibleType = getRandomArrayElement(
+      passiveCollectibleTypes,
+      rng,
+    );
+
+    // If we do not have any active collectibles unlocked, default to giving Eden a second passive
+    // collectible.
+    const activeCollectibleType =
+      activeCollectibleTypes.length === 0
+        ? getRandomArrayElement(passiveCollectibleTypes, rng, [
+            passiveCollectibleType,
+          ])
+        : getRandomArrayElement(activeCollectibleTypes, rng);
+
+    player.AddCollectible(activeCollectibleType);
+    player.AddCollectible(passiveCollectibleType);
   }
 
   @CallbackCustom(
