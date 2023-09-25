@@ -12,10 +12,10 @@ import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 
 /**
- * For testing purposes, "HK1T 68P3" is a seed where Eden starts with TMTrainer (on both normal mode
+ * For testing purposes, "HK1T 68P3" is a seed where Eden starts with TMTRAINER (on both normal mode
  * and hard mode).
  */
-export class EdenTMTrainer extends RandomizerModFeature {
+export class EdenTMTRAINER extends RandomizerModFeature {
   @CallbackCustom(ModCallbackCustom.POST_PLAYER_INIT_FIRST)
   postPlayerInit(player: EntityPlayer): void {
     if (
@@ -25,11 +25,11 @@ export class EdenTMTrainer extends RandomizerModFeature {
       return;
     }
 
-    // When Eden starts with TMTrainer, it does not replace the active item, because that is given
+    // When Eden starts with TMTRAINER, it does not replace the active item, because that is given
     // first. Thus, we only have to worry about getting a new passive item.
     const seeds = game.GetSeeds();
     const startSeed = seeds.GetStartSeed();
-    const edenPassiveCollectibles = mod.getEdenPassiveCollectibles();
+    const edenPassiveCollectibles = mod.getEdenPassiveCollectibleTypes();
     const randomPassiveCollectibleType = getRandomSetElement(
       edenPassiveCollectibles,
       startSeed,
@@ -41,7 +41,7 @@ export class EdenTMTrainer extends RandomizerModFeature {
 
     const collectibleName = getCollectibleName(randomPassiveCollectibleType);
     log(
-      `Eden started with TMTrainer, so it was replaced with: ${collectibleName} (${randomPassiveCollectibleType})`,
+      `Eden started with TMTRAINER, so it was replaced with: ${collectibleName} (${randomPassiveCollectibleType})`,
     );
   }
 }

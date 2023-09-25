@@ -21,6 +21,7 @@ import {
   CallbackCustom,
   FIRST_PILL_COLOR,
   ModCallbackCustom,
+  VANILLA_TRINKET_TYPES,
   copySet,
   game,
   getNormalPillColorFromHorse,
@@ -34,7 +35,6 @@ import {
   removeCollectibleFromPools,
   setCollectibleSubType,
 } from "isaacscript-common";
-import { mod } from "../../mod";
 import {
   BANNED_COLLECTIBLE_TYPES,
   UNLOCKABLE_COLLECTIBLE_TYPES,
@@ -175,8 +175,7 @@ export class PickupRemoval extends RandomizerModFeature {
       }
     }
 
-    const trinketArray = mod.getTrinketArray();
-    for (const trinketType of trinketArray) {
+    for (const trinketType of VANILLA_TRINKET_TYPES) {
       if (!isTrinketTypeUnlocked(trinketType)) {
         itemPool.RemoveTrinket(trinketType);
       }

@@ -1,6 +1,5 @@
 import { CollectibleType } from "isaac-typescript-definitions";
-import { ReadonlySet } from "isaacscript-common";
-import { mod } from "./mod";
+import { ReadonlySet, VANILLA_COLLECTIBLE_TYPES } from "isaacscript-common";
 
 // For the collectible exceptions:
 // - We choose the worst collectibles possible, with a few exceptions.
@@ -103,10 +102,8 @@ export const ALWAYS_UNLOCKED_COLLECTIBLE_TYPES =
     ...BANNED_COLLECTIBLE_TYPES,
   ]);
 
-const VANILLA_COLLECTIBLE_ARRAY = mod.getVanillaCollectibleArray();
-
 export const UNLOCKABLE_COLLECTIBLE_TYPES: readonly CollectibleType[] =
-  VANILLA_COLLECTIBLE_ARRAY.filter(
+  VANILLA_COLLECTIBLE_TYPES.filter(
     (collectibleType) =>
       !ALWAYS_UNLOCKED_COLLECTIBLE_TYPES.has(collectibleType),
   );

@@ -22,8 +22,8 @@ interface CharacterAchievement {
 }
 
 interface PathAchievement {
-  type: AchievementType.CHARACTER;
-  path: UnlockablePath;
+  type: AchievementType.PATH;
+  unlockablePath: UnlockablePath;
 }
 
 interface ChallengeAchievement {

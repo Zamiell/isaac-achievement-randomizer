@@ -14,12 +14,12 @@
   "dependencies": {
     "isaac-typescript-definitions": "^17.0.4",
     "isaacscript": "^3.11.1",
-    "isaacscript-common": "^39.6.0",
-    "isaacscript-lint": "^5.10.0",
+    "isaacscript-common": "^41.0.0",
+    "isaacscript-lint": "^5.11.0",
     "isaacscript-spell": "^1.4.0",
     "isaacscript-tsconfig": "^4.0.0",
     "typescript": "^5.2.2",
-    "typescript-to-lua": "^1.19.2"
+    "typescript-to-lua": "^1.19.3"
   },
   "packageManager": "yarn@3.6.3"
 }

@@ -215,9 +215,9 @@ The mod includes an on-screen timer, similar to the [Racing+](https://isaacracin
 
 Unlike the timer in Racing+, the timer in this mod tracks in-game time. Thus, the timer will be paused when the game is paused or when you are in the main menu.
 
-### Eden TMTrainer Handling
+### Eden TMTRAINER Handling
 
-If Eden is randomly assigned TMTrainer, it will be taken away and a new passive item will be assigned. (This is a quality of life fix for a convention taken from the Isaac streaking community, because starting TMTrainer is unfair for streaking purposes.)
+If Eden is randomly assigned TMTRAINER, it will be taken away and a new passive item will be assigned. (This is a quality of life fix for a convention taken from the Isaac streaking community, because starting TMTRAINER is unfair for streaking purposes.)
 
 ### Pause Prevention
 
