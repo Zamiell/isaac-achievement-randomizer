@@ -40,6 +40,7 @@ import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { UnlockablePath } from "../../enums/UnlockablePath";
 import type { Achievement } from "../../types/Achievement";
+import { PillAchievementKind } from "../../types/Achievement";
 import type { Objective } from "../../types/Objective";
 import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTypes";
 import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../unlockableTrinketTypes";
@@ -390,13 +391,19 @@ export function isTrinketTypeUnlocked(trinketType: TrinketType): boolean {
     return true;
   }
 
-  // TODO
-  return false;
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.TRINKET &&
+      achievement.trinketType === trinketType,
+  );
 }
 
-export function getUnlockedTrinketTypes(): ReadonlySet<TrinketType> {
-  // TODO
-  return new Set();
+export function getUnlockedTrinketTypes(): TrinketType[] {
+  return filterMap(v.persistent.completedAchievements, (achievement) =>
+    achievement.type === AchievementType.TRINKET
+      ? achievement.trinketType
+      : undefined,
+  );
 }
 
 // --------------
@@ -404,18 +411,25 @@ export function getUnlockedTrinketTypes(): ReadonlySet<TrinketType> {
 // --------------
 
 export function anyCardTypesUnlocked(): boolean {
-  // TODO
-  return false;
+  return v.persistent.completedAchievements.some(
+    (achievement) => achievement.type === AchievementType.CARD,
+  );
 }
 
-export function isCardTypeUnlocked(_cardType: CardType): boolean {
-  // TODO
-  return false;
+export function isCardTypeUnlocked(cardType: CardType): boolean {
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.CARD &&
+      achievement.cardType === cardType,
+  );
 }
 
-export function getUnlockedCardTypes(): ReadonlySet<CardType> {
-  // TODO
-  return new Set();
+export function getUnlockedCardTypes(): CardType[] {
+  return filterMap(v.persistent.completedAchievements, (achievement) =>
+    achievement.type === AchievementType.CARD
+      ? achievement.cardType
+      : undefined,
+  );
 }
 
 // --------------
@@ -423,28 +437,41 @@ export function getUnlockedCardTypes(): ReadonlySet<CardType> {
 // --------------
 
 export function anyPillEffectsUnlocked(): boolean {
-  // TODO
-  return false;
+  return v.persistent.completedAchievements.some(
+    (achievement) => achievement.type === AchievementType.PILL_EFFECT,
+  );
 }
 
-export function isPillEffectUnlocked(_pillEffect: PillEffect): boolean {
-  // TODO
-  return false;
+export function isPillEffectUnlocked(pillEffect: PillEffect): boolean {
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.PILL_EFFECT &&
+      achievement.pillEffect === pillEffect,
+  );
 }
 
-export function getUnlockedPillEffects(): ReadonlySet<PillEffect> {
-  // TODO
-  return new Set();
+export function getUnlockedPillEffects(): PillEffect[] {
+  return filterMap(v.persistent.completedAchievements, (achievement) =>
+    achievement.type === AchievementType.PILL_EFFECT
+      ? achievement.pillEffect
+      : undefined,
+  );
 }
 
 export function isGoldPillUnlocked(): boolean {
-  // TODO
-  return false;
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.PILL &&
+      achievement.kind === PillAchievementKind.GOLD,
+  );
 }
 
 export function isHorsePillsUnlocked(): boolean {
-  // TODO
-  return false;
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.PILL &&
+      achievement.kind === PillAchievementKind.HORSE,
+  );
 }
 
 // ----------------------
@@ -457,8 +484,11 @@ export function isHeartSubTypeUnlocked(heartSubType: HeartSubType): boolean {
     return true;
   }
 
-  // TODO
-  return false;
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.HEART &&
+      achievement.heartSubType === heartSubType,
+  );
 }
 
 export function isCoinSubTypeUnlocked(coinSubType: CoinSubType): boolean {
@@ -467,8 +497,11 @@ export function isCoinSubTypeUnlocked(coinSubType: CoinSubType): boolean {
     return true;
   }
 
-  // TODO
-  return false;
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.COIN &&
+      achievement.coinSubType === coinSubType,
+  );
 }
 
 export function isBombSubTypeUnlocked(bombSubType: BombSubType): boolean {
@@ -477,8 +510,11 @@ export function isBombSubTypeUnlocked(bombSubType: BombSubType): boolean {
     return true;
   }
 
-  // TODO
-  return false;
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.BOMB &&
+      achievement.bombSubType === bombSubType,
+  );
 }
 
 export function isKeySubTypeUnlocked(keySubType: KeySubType): boolean {
@@ -487,23 +523,34 @@ export function isKeySubTypeUnlocked(keySubType: KeySubType): boolean {
     return true;
   }
 
-  // TODO
-  return false;
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.KEY &&
+      achievement.keySubType === keySubType,
+  );
 }
 
 export function isBatterySubTypeUnlocked(
-  _batterySubType: BatterySubType,
+  batterySubType: BatterySubType,
 ): boolean {
-  // TODO
-  return false;
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.BATTERY &&
+      achievement.batterySubType === batterySubType,
+  );
 }
 
-export function isSackSubTypeUnlocked(_sackSubType: SackSubType): boolean {
-  // TODO
-  return false;
+export function isSackSubTypeUnlocked(sackSubType: SackSubType): boolean {
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.SACK &&
+      achievement.sackSubType === sackSubType,
+  );
 }
 
-export function isChestVariantUnlocked(pickupVariant: PickupVariant): boolean {
+export function isChestPickupVariantUnlocked(
+  pickupVariant: PickupVariant,
+): boolean {
   // Normal chests always start out as being unlocked.
   if (pickupVariant === PickupVariant.CHEST) {
     return true;
@@ -517,6 +564,9 @@ export function isChestVariantUnlocked(pickupVariant: PickupVariant): boolean {
     return true;
   }
 
-  // TODO
-  return false;
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.CHEST &&
+      achievement.pickupVariant === pickupVariant,
+  );
 }

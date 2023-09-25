@@ -24,7 +24,6 @@ import {
   FIRST_PILL_COLOR,
   ModCallbackCustom,
   VANILLA_COLLECTIBLE_TYPES,
-  copySet,
   game,
   getCharacterStartingCollectibleTypes,
   getCharacterStartingTrinketType,
@@ -57,6 +56,7 @@ import {
 } from "../../unlockableCollectibleTypes";
 import {
   BANNED_TRINKET_TYPES,
+  BANNED_TRINKET_TYPES_SET,
   UNLOCKABLE_TRINKET_TYPES,
 } from "../../unlockableTrinketTypes";
 import { RandomizerModFeature } from "../RandomizerModFeature";
@@ -73,7 +73,7 @@ import {
   isBombSubTypeUnlocked,
   isCardTypeUnlocked,
   isCharacterUnlocked,
-  isChestVariantUnlocked,
+  isChestPickupVariantUnlocked,
   isCoinSubTypeUnlocked,
   isCollectibleTypeUnlocked,
   isGoldPillUnlocked,
@@ -104,11 +104,11 @@ export class PickupRemoval extends RandomizerModFeature {
 
     // If there are no unlocked card types, the card will be replaced with a coin in the
     // `POST_PICKUP_SELECTION_FILTER` callback.
-    if (unlockedCardTypes.size === 0) {
+    if (unlockedCardTypes.length === 0) {
       return undefined;
     }
 
-    const runeCardTypes = [...unlockedCardTypes].filter((unlockedCardType) =>
+    const runeCardTypes = unlockedCardTypes.filter((unlockedCardType) =>
       isRune(unlockedCardType),
     );
 
@@ -118,11 +118,11 @@ export class PickupRemoval extends RandomizerModFeature {
         : getRandomArrayElement(runeCardTypes);
     }
 
-    const playingCardTypes = [...unlockedCardTypes].filter((unlockedCardType) =>
+    const playingCardTypes = unlockedCardTypes.filter((unlockedCardType) =>
       isSuitCard(unlockedCardType),
     );
 
-    const cardTypesToUse = copySet(unlockedCardTypes);
+    const cardTypesToUse = new Set(unlockedCardTypes);
 
     if (!includePlayingCards) {
       for (const playingCardType of playingCardTypes) {
@@ -167,7 +167,7 @@ export class PickupRemoval extends RandomizerModFeature {
       return undefined;
     }
 
-    return isChestVariantUnlocked(pickupVariant)
+    return isChestPickupVariantUnlocked(pickupVariant)
       ? undefined
       : [PickupVariant.CHEST, ChestSubType.CLOSED];
   }
@@ -186,11 +186,11 @@ export class PickupRemoval extends RandomizerModFeature {
 
     // If there are no unlocked pill effects, the pill will be replaced with a coin in the
     // `POST_PICKUP_SELECTION_FILTER` callback.
-    if (unlockedPillEffects.size === 0) {
+    if (unlockedPillEffects.length === 0) {
       return undefined;
     }
 
-    return getRandomSetElement(unlockedPillEffects);
+    return getRandomArrayElement(unlockedPillEffects);
   }
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
@@ -262,7 +262,8 @@ export class PickupRemoval extends RandomizerModFeature {
     const startingTrinketType = getCharacterStartingTrinketType(character);
     if (
       startingTrinketType !== undefined &&
-      !isTrinketTypeUnlocked(startingTrinketType)
+      (!isTrinketTypeUnlocked(startingTrinketType) ||
+        BANNED_TRINKET_TYPES_SET.has(startingTrinketType))
     ) {
       player.TryRemoveTrinket(startingTrinketType);
     }
@@ -584,15 +585,15 @@ export class PickupRemoval extends RandomizerModFeature {
     const trinketType = subType as TrinketType;
 
     const unlockedTrinketTypes = getUnlockedTrinketTypes();
-    if (unlockedTrinketTypes.has(trinketType)) {
+    if (unlockedTrinketTypes.includes(trinketType)) {
       return undefined;
     }
 
-    if (unlockedTrinketTypes.size === 0) {
+    if (unlockedTrinketTypes.length === 0) {
       return [PickupVariant.COIN, CoinSubType.PENNY];
     }
 
-    const newTrinketType = getRandomSetElement(unlockedTrinketTypes);
+    const newTrinketType = getRandomArrayElement(unlockedTrinketTypes);
     return [PickupVariant.TRINKET, newTrinketType];
   }
 }
