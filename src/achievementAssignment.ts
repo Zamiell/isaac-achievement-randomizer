@@ -1,15 +1,38 @@
-import { CardType, Challenge, PlayerType } from "isaac-typescript-definitions";
+import type { Challenge } from "isaac-typescript-definitions";
 import {
+  BatterySubType,
+  BombSubType,
+  CardType,
+  CoinSubType,
+  HeartSubType,
+  KeySubType,
+  PickupVariant,
+  PlayerType,
+  SackSubType,
+} from "isaac-typescript-definitions";
+import {
+  CHEST_PICKUP_VARIANTS,
   DefaultMap,
   MAIN_CHARACTERS,
   VANILLA_CARD_TYPES,
+  VANILLA_PILL_EFFECTS,
   VANILLA_TRINKET_TYPES,
-  getEnumValues,
   newRNG,
 } from "isaacscript-common";
+import {
+  ACHIEVEMENT_TYPES,
+  BATTERY_SUB_TYPES,
+  BOMB_SUB_TYPES,
+  CHALLENGES,
+  COIN_SUB_TYPES,
+  HEART_SUB_TYPES,
+  KEY_SUB_TYPES,
+  PILL_ACHIEVEMENT_KINDS,
+  SACK_SUB_TYPES,
+  UNLOCKABLE_PATHS,
+} from "./cachedEnums";
 import { AchievementType } from "./enums/AchievementType";
 import type { CharacterObjective } from "./enums/CharacterObjective";
-import { UnlockablePath } from "./enums/UnlockablePath";
 import type { Achievement } from "./types/Achievement";
 import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./unlockableCollectibleTypes";
 
@@ -24,14 +47,6 @@ type CharacterAchievements = DefaultMap<
 >;
 
 type ChallengeAchievements = Map<Challenge, Achievement>;
-
-const ACHIEVEMENT_TYPES: readonly AchievementType[] =
-  getEnumValues(AchievementType);
-
-const UNLOCKABLE_PATHS: readonly UnlockablePath[] =
-  getEnumValues(UnlockablePath);
-
-const CHALLENGES: readonly Challenge[] = getEnumValues(Challenge);
 
 export function getAchievementsForSeed(seed: Seed): Achievements {
   const _rng = newRNG(seed);
@@ -138,38 +153,162 @@ function _getAllAchievements(): Achievement[] {
       }
 
       case AchievementType.PILL_EFFECT: {
+        for (const pillEffect of VANILLA_PILL_EFFECTS) {
+          const achievement: Achievement = {
+            type: AchievementType.PILL_EFFECT,
+            pillEffect,
+          };
+          achievements.push(achievement);
+        }
+
         break;
       }
 
       case AchievementType.PILL: {
+        for (const pillAchievementKind of PILL_ACHIEVEMENT_KINDS) {
+          const achievement: Achievement = {
+            type: AchievementType.PILL,
+            kind: pillAchievementKind,
+          };
+          achievements.push(achievement);
+        }
+
         break;
       }
 
       case AchievementType.HEART: {
+        for (const heartSubType of HEART_SUB_TYPES) {
+          if (
+            heartSubType === HeartSubType.NULL || // 0
+            heartSubType === HeartSubType.HALF // 2
+          ) {
+            continue;
+          }
+
+          const achievement: Achievement = {
+            type: AchievementType.HEART,
+            heartSubType,
+          };
+          achievements.push(achievement);
+        }
+
         break;
       }
 
       case AchievementType.COIN: {
+        for (const coinSubType of COIN_SUB_TYPES) {
+          if (
+            coinSubType === CoinSubType.NULL || // 0
+            coinSubType === CoinSubType.PENNY // 1
+          ) {
+            continue;
+          }
+
+          const achievement: Achievement = {
+            type: AchievementType.COIN,
+            coinSubType,
+          };
+          achievements.push(achievement);
+        }
+
         break;
       }
 
       case AchievementType.BOMB: {
+        for (const bombSubType of BOMB_SUB_TYPES) {
+          if (
+            bombSubType === BombSubType.NULL || // 0
+            bombSubType === BombSubType.NORMAL || // 1
+            bombSubType === BombSubType.TROLL || // 3
+            bombSubType === BombSubType.MEGA_TROLL || // 5
+            bombSubType === BombSubType.GOLDEN_TROLL || // 6
+            bombSubType === BombSubType.GIGA // 7
+          ) {
+            continue;
+          }
+
+          const achievement: Achievement = {
+            type: AchievementType.BOMB,
+            bombSubType,
+          };
+          achievements.push(achievement);
+        }
+
         break;
       }
 
       case AchievementType.KEY: {
+        for (const keySubType of KEY_SUB_TYPES) {
+          if (
+            keySubType === KeySubType.NULL || // 0
+            keySubType === KeySubType.NORMAL // 1
+          ) {
+            continue;
+          }
+
+          const achievement: Achievement = {
+            type: AchievementType.KEY,
+            keySubType,
+          };
+          achievements.push(achievement);
+        }
+
         break;
       }
 
       case AchievementType.BATTERY: {
+        for (const batterySubType of BATTERY_SUB_TYPES) {
+          if (
+            batterySubType === BatterySubType.NULL // 0
+          ) {
+            continue;
+          }
+
+          const achievement: Achievement = {
+            type: AchievementType.BATTERY,
+            batterySubType,
+          };
+          achievements.push(achievement);
+        }
+
         break;
       }
 
       case AchievementType.SACK: {
+        for (const sackSubType of SACK_SUB_TYPES) {
+          if (
+            sackSubType === SackSubType.NULL // 0
+          ) {
+            continue;
+          }
+
+          const achievement: Achievement = {
+            type: AchievementType.SACK,
+            sackSubType,
+          };
+          achievements.push(achievement);
+        }
+
         break;
       }
 
       case AchievementType.CHEST: {
+        for (const pickupVariant of CHEST_PICKUP_VARIANTS) {
+          if (
+            pickupVariant === PickupVariant.CHEST || // 50
+            pickupVariant === PickupVariant.OLD_CHEST || // 55
+            pickupVariant === PickupVariant.MOMS_CHEST // 390
+          ) {
+            continue;
+          }
+
+          const achievement: Achievement = {
+            type: AchievementType.CHEST,
+            pickupVariant,
+          };
+          achievements.push(achievement);
+        }
+
         break;
       }
     }

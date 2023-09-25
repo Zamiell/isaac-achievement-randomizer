@@ -56,7 +56,7 @@ interface PillAchievement {
   kind: PillAchievementKind;
 }
 
-enum PillAchievementKind {
+export enum PillAchievementKind {
   GOLD,
   HORSE,
 }
@@ -78,7 +78,7 @@ interface BombAchievement {
 
 interface KeyAchievement {
   type: AchievementType.KEY;
-  bombSubType: KeySubType;
+  keySubType: KeySubType;
 }
 
 interface BatteryAchievement {
@@ -88,7 +88,7 @@ interface BatteryAchievement {
 
 interface SackAchievement {
   type: AchievementType.SACK;
-  sacSubType: SackSubType;
+  sackSubType: SackSubType;
 }
 
 interface ChestAchievement {

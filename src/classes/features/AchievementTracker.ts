@@ -24,6 +24,7 @@ import {
   log,
   restart,
 } from "isaacscript-common";
+import { getAchievementsForSeed } from "../../achievementAssignment";
 import type { CharacterObjective } from "../../enums/CharacterObjective";
 import type { UnlockablePath } from "../../enums/UnlockablePath";
 import type { Achievement } from "../../types/Achievement";
@@ -84,15 +85,23 @@ export function startRandomizer(seed: Seed | undefined): void {
   v.persistent.seed = seed;
   log(`Set new seed: ${v.persistent.seed}`);
 
-  // TODO: set persistent variables
+  const { characterAchievements, challengeAchievements } =
+    getAchievementsForSeed(seed);
+
+  v.persistent.numDeaths = 0;
+  v.persistent.gameFramesElapsed = 0;
+  v.persistent.characterAchievements = characterAchievements;
+  v.persistent.challengeAchievements = challengeAchievements;
+  v.persistent.completedCharacterObjectives.clear();
+  v.persistent.completedChallenges.clear();
+  v.persistent.numCompletedAchievements = 0;
 
   restart(STARTING_CHARACTER);
 }
 
 export function endRandomizer(): void {
   v.persistent.seed = null;
-
-  // TODO: empty persistent variables
+  // (We only clear the other persistent variables when a new randomizer is initialized.)
 
   restart(STARTING_CHARACTER);
 }
@@ -366,14 +375,14 @@ export function isChestVariantUnlocked(pickupVariant: PickupVariant): boolean {
     return true;
   }
 
-  // - Locked Chest (5.60)
-  // - Red Chest (5.360)
   // - Bomb Chest (5.51)
-  // - Eternal Chest (5.53)
   // - Spiked Chest (5.52)
+  // - Eternal Chest (5.53)
   // - Mimic Chest (5.54)
   // - Wooden Chest (5.56)
   // - Mega Chest (5.57)
   // - Haunted Chest (5.58)
+  // - Locked Chest (5.60)
+  // - Red Chest (5.360)
   return false;
 }
