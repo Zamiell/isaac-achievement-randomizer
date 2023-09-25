@@ -94,7 +94,7 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
 
   if (achievements.length !== objectives.length) {
     error(
-      `There were ${achievements.length} achievements and ${objectives.length} objectives. These must exactly match.`,
+      `There were ${achievements.length} total achievements and ${objectives.length} total objectives. These must exactly match.`,
     );
   }
 
@@ -158,7 +158,23 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
   }
 
   // Now, do the rest of the unlocks with no restrictions.
-  // TODO
+  for (const achievement of achievements) {
+    const objective = getRandomArrayElementAndRemove(objectives, rng);
+
+    switch (objective.type) {
+      case ObjectiveType.CHARACTER: {
+        const thisCharacterAchievements =
+          characterAchievements.getAndSetDefault(objective.character);
+        thisCharacterAchievements.set(objective.kind, achievement);
+        break;
+      }
+
+      case ObjectiveType.CHALLENGE: {
+        challengeAchievements.set(objective.challenge, achievement);
+        break;
+      }
+    }
+  }
 
   return { characterAchievements, challengeAchievements };
 }
