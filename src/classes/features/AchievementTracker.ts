@@ -25,8 +25,8 @@ import {
   restart,
 } from "isaacscript-common";
 import { getAchievementsForSeed } from "../../achievementAssignment";
-import { CHARACTER_OBJECTIVES } from "../../cachedEnums";
-import type { CharacterObjective } from "../../enums/CharacterObjective";
+import { CHARACTER_OBJECTIVE_KINDS } from "../../cachedEnums";
+import type { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import type { UnlockablePath } from "../../enums/UnlockablePath";
 import type { Achievement } from "../../types/Achievement";
 import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTypes";
@@ -46,13 +46,13 @@ const v = {
 
     characterAchievements: new DefaultMap<
       PlayerType,
-      Map<CharacterObjective, Achievement>
+      Map<CharacterObjectiveKind, Achievement>
     >(() => new Map()),
     challengeAchievements: new Map<Challenge, Achievement>(),
 
     completedCharacterObjectives: new DefaultMap<
       PlayerType,
-      Set<CharacterObjective>
+      Set<CharacterObjectiveKind>
     >(() => new Set()),
     completedChallenges: new Set<Challenge>(),
     numCompletedAchievements: 0,
@@ -124,7 +124,7 @@ export function getSecondsElapsed(): int {
 }
 
 export function addAchievementCharacterObjective(
-  characterObjective: CharacterObjective,
+  characterObjective: CharacterObjectiveKind,
 ): void {
   const player = Isaac.GetPlayer();
   const character = player.GetPlayerType();
@@ -173,7 +173,7 @@ export function isCharacterUnlocked(character: PlayerType): boolean {
   }
 
   // TODO
-  return true;
+  return false;
 }
 
 export function isAllCharacterAchievementsCompleted(
@@ -181,7 +181,7 @@ export function isAllCharacterAchievementsCompleted(
 ): boolean {
   const characterObjectives =
     v.persistent.completedCharacterObjectives.getAndSetDefault(character);
-  return characterObjectives.size === CHARACTER_OBJECTIVES.length;
+  return characterObjectives.size === CHARACTER_OBJECTIVE_KINDS.length;
 }
 
 export function setCharacterUnlocked(_character: PlayerType): void {

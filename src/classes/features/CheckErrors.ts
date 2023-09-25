@@ -231,7 +231,7 @@ function checkSetSeed() {
     const seeds = game.GetSeeds();
     const startSeedString = seeds.GetStartSeedString();
     log(`Error: Set seed detected: ${startSeedString}`);
-    /// v.run.onSetSeed = true;
+    v.run.onSetSeed = true;
   }
 }
 

@@ -6,7 +6,10 @@ import {
   getCharacterName,
   getMapPartialMatch,
 } from "isaacscript-common";
-import { startRandomizer } from "./classes/features/AchievementTracker";
+import {
+  setCharacterUnlocked,
+  startRandomizer,
+} from "./classes/features/AchievementTracker";
 import { mod } from "./mod";
 
 export const MIN_SEED = 1;
@@ -43,7 +46,7 @@ function unlockChar(params: string) {
     return;
   }
 
-  let playerType: PlayerType;
+  let character: PlayerType;
   const num = tonumber(params) as PlayerType | undefined;
   if (num === undefined) {
     const match = getMapPartialMatch(params, CHARACTER_NAME_TO_TYPE_MAP);
@@ -52,16 +55,18 @@ function unlockChar(params: string) {
       return;
     }
 
-    playerType = match[1];
+    character = match[1];
   } else {
     if (num < FIRST_CHARACTER || num > LAST_VANILLA_CHARACTER) {
       print(`Invalid character number: ${num}`);
       return;
     }
 
-    playerType = num;
+    character = num;
   }
 
-  const _characterName = getCharacterName(playerType);
-  // TODO
+  setCharacterUnlocked(character);
+
+  const characterName = getCharacterName(character);
+  print(`Unlocked character: ${characterName} (${character})`);
 }

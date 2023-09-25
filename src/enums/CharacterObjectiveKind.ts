@@ -1,4 +1,4 @@
-export enum CharacterObjective {
+export enum CharacterObjectiveKind {
   MOM,
   IT_LIVES,
   ISAAC,

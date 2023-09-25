@@ -20,25 +20,31 @@ import {
   arrayRemoveIndexInPlace,
   assertDefined,
   copyArray,
+  getRandomArrayElement,
   getRandomArrayElementAndRemove,
   newRNG,
+  shuffleArray,
 } from "isaacscript-common";
 import {
   ACHIEVEMENT_TYPES,
   BATTERY_SUB_TYPES,
   BOMB_SUB_TYPES,
   CHALLENGES,
+  CHARACTER_OBJECTIVE_KINDS,
   COIN_SUB_TYPES,
   HEART_SUB_TYPES,
   KEY_SUB_TYPES,
+  OBJECTIVE_TYPES,
   PILL_ACHIEVEMENT_KINDS,
   SACK_SUB_TYPES,
   UNLOCKABLE_PATHS,
 } from "./cachedEnums";
 import { AchievementType } from "./enums/AchievementType";
-import { CharacterObjective } from "./enums/CharacterObjective";
+import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
+import { ObjectiveType } from "./enums/ObjectiveType";
 import { UnlockablePath } from "./enums/UnlockablePath";
 import type { Achievement } from "./types/Achievement";
+import type { CharacterObjective, Objective } from "./types/Objective";
 import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./unlockableCollectibleTypes";
 
 interface Achievements {
@@ -48,24 +54,24 @@ interface Achievements {
 
 type CharacterAchievements = DefaultMap<
   PlayerType,
-  Map<CharacterObjective, Achievement>
+  Map<CharacterObjectiveKind, Achievement>
 >;
 
 type ChallengeAchievements = Map<Challenge, Achievement>;
 
-const EASY_OBJECTIVES = [
-  CharacterObjective.MOM,
-  CharacterObjective.IT_LIVES,
-  CharacterObjective.ISAAC,
-  CharacterObjective.SATAN,
-  CharacterObjective.NO_DAMAGE_BASEMENT_1,
-  CharacterObjective.NO_DAMAGE_BASEMENT_2,
-  CharacterObjective.NO_DAMAGE_CAVES_1,
-  CharacterObjective.NO_DAMAGE_CAVES_2,
-  CharacterObjective.NO_DAMAGE_DEPTHS_1,
-  CharacterObjective.NO_DAMAGE_DEPTHS_2,
-  CharacterObjective.NO_DAMAGE_WOMB_1,
-  CharacterObjective.NO_DAMAGE_WOMB_2,
+const EASY_OBJECTIVE_KINDS = [
+  CharacterObjectiveKind.MOM,
+  CharacterObjectiveKind.IT_LIVES,
+  CharacterObjectiveKind.ISAAC,
+  CharacterObjectiveKind.SATAN,
+  CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1,
+  CharacterObjectiveKind.NO_DAMAGE_BASEMENT_2,
+  CharacterObjectiveKind.NO_DAMAGE_CAVES_1,
+  CharacterObjectiveKind.NO_DAMAGE_CAVES_2,
+  CharacterObjectiveKind.NO_DAMAGE_DEPTHS_1,
+  CharacterObjectiveKind.NO_DAMAGE_DEPTHS_2,
+  CharacterObjectiveKind.NO_DAMAGE_WOMB_1,
+  CharacterObjectiveKind.NO_DAMAGE_WOMB_2,
 ] as const;
 
 const EASY_UNLOCKABLE_PATHS = [
@@ -78,35 +84,84 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
 
   const characterAchievements = new DefaultMap<
     PlayerType,
-    Map<CharacterObjective, Achievement>
+    Map<CharacterObjectiveKind, Achievement>
   >(() => new Map());
-
   const challengeAchievements = new Map<Challenge, Achievement>();
 
   const achievements = getAllAchievements();
+  const objectives = getAllObjectives();
 
-  // The Polaroid and The Negative are guaranteed to be behind an easy objective for Isaac.
-  const isaacAchievements = characterAchievements.getAndSetDefault(
-    PlayerType.ISAAC,
-  );
-  const easyObjectives = copyArray(EASY_OBJECTIVES);
-  for (const unlockablePath of EASY_UNLOCKABLE_PATHS) {
-    const achievement = getAndRemovePathAchievement(
-      achievements,
-      unlockablePath,
+  if (achievements.length !== objectives.length) {
+    error(
+      `There were ${achievements.length} achievements and ${objectives.length} objectives. These must exactly match.`,
     );
-    const randomEasyAchievement = getRandomArrayElementAndRemove(
-      easyObjectives,
-      rng,
-    );
-    isaacAchievements.set(randomEasyAchievement, achievement);
   }
 
-  // Pick the character achievements.
-  // TODO
+  // The Polaroid and The Negative are guaranteed to be unlocked via an easy objective for Isaac.
+  const easyObjectiveKinds = copyArray(EASY_OBJECTIVE_KINDS);
+  for (const unlockablePath of EASY_UNLOCKABLE_PATHS) {
+    const achievement = getAndRemoveAchievement(
+      achievements,
+      AchievementType.PATH,
+      unlockablePath,
+    );
+    const randomEasyObjectiveKind = getRandomArrayElementAndRemove(
+      easyObjectiveKinds,
+      rng,
+    );
+    getAndRemoveCharacterObjective(
+      objectives,
+      PlayerType.ISAAC,
+      randomEasyObjectiveKind,
+    );
+    const isaacAchievements = characterAchievements.getAndSetDefault(
+      PlayerType.ISAAC,
+    );
+    isaacAchievements.set(randomEasyObjectiveKind, achievement);
+  }
+
+  // Each character is guaranteed to unlock another character.
+  let lastUnlockedCharacter = PlayerType.ISAAC;
+  const mainCharacters = shuffleArray(MAIN_CHARACTERS, rng);
+  for (const character of mainCharacters) {
+    if (character === PlayerType.ISAAC) {
+      continue;
+    }
+
+    const achievement = getAndRemoveAchievement(
+      achievements,
+      AchievementType.CHARACTER,
+      character,
+    );
+    const lastCharacterObjectives = objectives.filter(
+      (objective) =>
+        objective.type === ObjectiveType.CHARACTER &&
+        objective.character === lastUnlockedCharacter,
+    ) as CharacterObjective[];
+    const randomCharacterObjective = getRandomArrayElement(
+      lastCharacterObjectives,
+      rng,
+    );
+    getAndRemoveCharacterObjective(
+      objectives,
+      character,
+      randomCharacterObjective.kind,
+    );
+    const lastCharacterAchievements = characterAchievements.getAndSetDefault(
+      lastUnlockedCharacter,
+    );
+    lastCharacterAchievements.set(randomCharacterObjective.kind, achievement);
+
+    lastUnlockedCharacter = character;
+  }
 
   // Pick the rest of the achievements.
-  // TODO
+  /*
+  Isaac.DebugString(
+    `GETTING HERE - ${objectives.length} + ${achievements.length}`,
+  );
+  error("LOL");
+  */
 
   return { characterAchievements, challengeAchievements };
 }
@@ -361,26 +416,112 @@ function getAllAchievements(): Achievement[] {
   return achievements;
 }
 
-function getAndRemovePathAchievement(
-  achievements: Achievement[],
-  unlockablePath: UnlockablePath,
-): Achievement {
-  const index = achievements.findIndex(
-    (achievement) =>
-      achievement.type === AchievementType.PATH &&
-      achievement.unlockablePath === unlockablePath,
-  );
-  if (index === -1) {
-    error(`Failed to find path achievement: ${unlockablePath}`);
+function getAllObjectives(): Objective[] {
+  const objectives: Objective[] = [];
+
+  for (const objectiveType of OBJECTIVE_TYPES) {
+    switch (objectiveType) {
+      case ObjectiveType.CHARACTER: {
+        for (const character of MAIN_CHARACTERS) {
+          if (character === PlayerType.ISAAC) {
+            continue;
+          }
+
+          for (const characterObjectiveKind of CHARACTER_OBJECTIVE_KINDS) {
+            const objective: Objective = {
+              type: ObjectiveType.CHARACTER,
+              character,
+              kind: characterObjectiveKind,
+            };
+            objectives.push(objective);
+          }
+        }
+
+        break;
+      }
+
+      case ObjectiveType.CHALLENGE: {
+        for (const challenge of CHALLENGES) {
+          const objective: Objective = {
+            type: ObjectiveType.CHALLENGE,
+            challenge,
+          };
+          objectives.push(objective);
+        }
+
+        break;
+      }
+    }
   }
 
+  return objectives;
+}
+
+function getAndRemoveAchievement(
+  achievements: Achievement[],
+  type: AchievementType,
+  kind: int,
+): Achievement {
+  const index = getAchievementIndexMatchingType(achievements, type, kind);
   const achievement = achievements[index];
   assertDefined(
     achievement,
-    `Failed to find the path achievement at index: ${index}`,
+    `Failed to find the achievement at index: ${index}`,
   );
 
   arrayRemoveIndexInPlace(achievements, index);
 
   return achievement;
+}
+
+function getAchievementIndexMatchingType(
+  achievements: Achievement[],
+  type: AchievementType,
+  kind: int,
+): int {
+  let index: int;
+
+  switch (type) {
+    case AchievementType.PATH: {
+      index = achievements.findIndex(
+        (achievement) =>
+          achievement.type === AchievementType.PATH &&
+          achievement.unlockablePath === kind,
+      );
+      break;
+    }
+
+    default: {
+      return error(
+        `Unhandled matching logic for achievement type: ${AchievementType[type]}`,
+      );
+    }
+  }
+
+  if (index === -1) {
+    error(
+      `Failed to find achievement of type ${AchievementType[type]}: ${kind}`,
+    );
+  }
+
+  return index;
+}
+
+function getAndRemoveCharacterObjective(
+  objectives: Objective[],
+  character: PlayerType,
+  kind: CharacterObjectiveKind,
+): Objective {
+  const index = objectives.findIndex(
+    (objective) =>
+      objective.type === ObjectiveType.CHARACTER &&
+      objective.character === character &&
+      objective.kind === kind,
+  );
+  const objective = objectives[index];
+  assertDefined(objective, `Failed to find the objective at index: ${index}`);
+
+  arrayRemoveIndexInPlace(objectives, index);
+
+  return objective;
 }

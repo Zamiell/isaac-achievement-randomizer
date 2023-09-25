@@ -9,7 +9,8 @@ import {
 } from "isaac-typescript-definitions";
 import { getEnumValues } from "isaacscript-common";
 import { AchievementType } from "./enums/AchievementType";
-import { CharacterObjective } from "./enums/CharacterObjective";
+import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
+import { ObjectiveType } from "./enums/ObjectiveType";
 import { UnlockablePath } from "./enums/UnlockablePath";
 import { PillAchievementKind } from "./types/Achievement";
 
@@ -24,8 +25,8 @@ export const BOMB_SUB_TYPES: readonly BombSubType[] =
 
 export const CHALLENGES: readonly Challenge[] = getEnumValues(Challenge);
 
-export const CHARACTER_OBJECTIVES: readonly CharacterObjective[] =
-  getEnumValues(CharacterObjective);
+export const CHARACTER_OBJECTIVE_KINDS: readonly CharacterObjectiveKind[] =
+  getEnumValues(CharacterObjectiveKind);
 
 export const COIN_SUB_TYPES: readonly CoinSubType[] =
   getEnumValues(CoinSubType);
@@ -34,6 +35,9 @@ export const HEART_SUB_TYPES: readonly HeartSubType[] =
   getEnumValues(HeartSubType);
 
 export const KEY_SUB_TYPES: readonly KeySubType[] = getEnumValues(KeySubType);
+
+export const OBJECTIVE_TYPES: readonly ObjectiveType[] =
+  getEnumValues(ObjectiveType);
 
 export const PILL_ACHIEVEMENT_KINDS: readonly PillAchievementKind[] =
   getEnumValues(PillAchievementKind);
