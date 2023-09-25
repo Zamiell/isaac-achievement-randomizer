@@ -1,7 +1,5 @@
 TODO:
 
-- assign achievements
-
 - recode eden item giving
   - eden get 2 passives if no actives are unlocked
 

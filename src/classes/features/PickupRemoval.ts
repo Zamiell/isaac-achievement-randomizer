@@ -64,7 +64,7 @@ import {
   getUnlockedCardTypes,
   getUnlockedPillEffects,
   getUnlockedTrinketTypes,
-  isAllCharacterAchievementsCompleted,
+  isAllCharacterObjectivesCompleted,
   isBatterySubTypeUnlocked,
   isBombSubTypeUnlocked,
   isCardTypeUnlocked,
@@ -323,7 +323,7 @@ export class PickupRemoval extends RandomizerModFeature {
     collectibleType: CollectibleType,
     character: PlayerType,
   ): void {
-    if (!isAllCharacterAchievementsCompleted(character)) {
+    if (!isAllCharacterObjectivesCompleted(character)) {
       itemPool.RemoveCollectible(collectibleType);
     }
   }
@@ -333,7 +333,7 @@ export class PickupRemoval extends RandomizerModFeature {
     trinketType: TrinketType,
     character: PlayerType,
   ): void {
-    if (!isAllCharacterAchievementsCompleted(character)) {
+    if (!isAllCharacterObjectivesCompleted(character)) {
       itemPool.RemoveTrinket(trinketType);
     }
   }

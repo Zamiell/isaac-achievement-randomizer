@@ -20,15 +20,21 @@ import {
   GAME_FRAMES_PER_SECOND,
   ModFeature,
   game,
+  getChallengeName,
+  getCharacterName,
   getRandomSeed,
   log,
   restart,
 } from "isaacscript-common";
 import { getAchievementsForSeed } from "../../achievementAssignment";
+import { showNewAchievement } from "../../achievementUnlock";
 import { CHARACTER_OBJECTIVE_KINDS } from "../../cachedEnums";
-import type { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
+import { AchievementType } from "../../enums/AchievementType";
+import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
+import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { UnlockablePath } from "../../enums/UnlockablePath";
 import type { Achievement } from "../../types/Achievement";
+import type { Objective } from "../../types/Objective";
 import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTypes";
 import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../unlockableTrinketTypes";
 
@@ -50,12 +56,8 @@ const v = {
     >(() => new Map()),
     challengeAchievements: new Map<Challenge, Achievement>(),
 
-    completedCharacterObjectives: new DefaultMap<
-      PlayerType,
-      Set<CharacterObjectiveKind>
-    >(() => new Set()),
-    completedChallenges: new Set<Challenge>(),
-    numCompletedAchievements: 0,
+    completedAchievements: [] as Achievement[],
+    completedObjectives: [] as Objective[],
 
     config: {
       showTimer: false,
@@ -94,9 +96,8 @@ export function startRandomizer(seed: Seed | undefined): void {
   v.persistent.gameFramesElapsed = 0;
   v.persistent.characterAchievements = characterAchievements;
   v.persistent.challengeAchievements = challengeAchievements;
-  v.persistent.completedCharacterObjectives.clear();
-  v.persistent.completedChallenges.clear();
-  v.persistent.numCompletedAchievements = 0;
+  v.persistent.completedAchievements = [];
+  v.persistent.completedObjectives = [];
 
   restart(STARTING_CHARACTER);
 }
@@ -109,7 +110,7 @@ export function endRandomizer(): void {
 }
 
 export function getNumCompletedAchievements(): int {
-  return v.persistent.numCompletedAchievements;
+  return v.persistent.completedAchievements.length;
 }
 
 export function getNumDeaths(): int {
@@ -124,20 +125,44 @@ export function getSecondsElapsed(): int {
 }
 
 export function addAchievementCharacterObjective(
-  characterObjective: CharacterObjectiveKind,
+  character: PlayerType,
+  characterObjectiveKind: CharacterObjectiveKind,
 ): void {
-  const player = Isaac.GetPlayer();
-  const character = player.GetPlayerType();
-  const characterObjectives =
-    v.persistent.completedCharacterObjectives.getAndSetDefault(character);
-
-  if (characterObjectives.has(characterObjective)) {
+  if (hasCompletedCharacterObjective(character, characterObjectiveKind)) {
     return;
   }
 
-  characterObjectives.add(characterObjective);
-  v.persistent.numCompletedAchievements++;
-  // TODO
+  const thisCharacterAchievements =
+    v.persistent.characterAchievements.getAndSetDefault(character);
+  const achievement = thisCharacterAchievements.get(characterObjectiveKind);
+  if (achievement === undefined) {
+    const characterName = getCharacterName(character);
+    error(
+      `Failed to get the achievement for a character of ${characterName} for: CharacterObjectiveKind.${CharacterObjectiveKind[characterObjectiveKind]} (${characterObjectiveKind})`,
+    );
+  }
+  v.persistent.completedAchievements.push(achievement);
+
+  const objective: Objective = {
+    type: ObjectiveType.CHARACTER,
+    character,
+    kind: characterObjectiveKind,
+  };
+  v.persistent.completedObjectives.push(objective);
+
+  showNewAchievement(achievement);
+}
+
+function hasCompletedCharacterObjective(
+  character: PlayerType,
+  characterObjectiveKind: CharacterObjectiveKind,
+): boolean {
+  return v.persistent.completedObjectives.some(
+    (objective) =>
+      objective.type === ObjectiveType.CHARACTER &&
+      objective.character === character &&
+      objective.kind === characterObjectiveKind,
+  );
 }
 
 export function addAchievementChallenge(challenge: Challenge): void {
@@ -145,13 +170,34 @@ export function addAchievementChallenge(challenge: Challenge): void {
     return;
   }
 
-  if (v.persistent.completedChallenges.has(challenge)) {
+  if (hasCompletedChallengeObjective(challenge)) {
     return;
   }
 
-  v.persistent.completedChallenges.add(challenge);
-  v.persistent.numCompletedAchievements++;
-  // TODO
+  const achievement = v.persistent.challengeAchievements.get(challenge);
+  if (achievement === undefined) {
+    const challengeName = getChallengeName(challenge);
+    error(
+      `Failed to get the achievement for the challenge: ${challengeName} (${challenge})`,
+    );
+  }
+  v.persistent.completedAchievements.push(achievement);
+
+  const objective: Objective = {
+    type: ObjectiveType.CHALLENGE,
+    challenge,
+  };
+  v.persistent.completedObjectives.push(objective);
+
+  showNewAchievement(achievement);
+}
+
+function hasCompletedChallengeObjective(challenge: Challenge): boolean {
+  return v.persistent.completedObjectives.some(
+    (objective) =>
+      objective.type === ObjectiveType.CHALLENGE &&
+      objective.challenge === challenge,
+  );
 }
 
 // ----------------
@@ -172,20 +218,85 @@ export function isCharacterUnlocked(character: PlayerType): boolean {
     return true;
   }
 
-  // TODO
-  return false;
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.CHARACTER &&
+      achievement.character === character,
+  );
 }
 
-export function isAllCharacterAchievementsCompleted(
+export function isAllCharacterObjectivesCompleted(
   character: PlayerType,
 ): boolean {
-  const characterObjectives =
-    v.persistent.completedCharacterObjectives.getAndSetDefault(character);
-  return characterObjectives.size === CHARACTER_OBJECTIVE_KINDS.length;
+  const completedCharacterObjectives = v.persistent.completedObjectives.filter(
+    (objective) =>
+      objective.type === ObjectiveType.CHARACTER &&
+      objective.character === character,
+  );
+
+  return (
+    completedCharacterObjectives.length === CHARACTER_OBJECTIVE_KINDS.length
+  );
 }
 
-export function setCharacterUnlocked(_character: PlayerType): void {
-  // TODO
+/** Only used for debugging. */
+export function setCharacterUnlocked(character: PlayerType): void {
+  const objective = findCharacterAchievement(character);
+  if (objective === undefined) {
+    const characterName = getCharacterName(character);
+    error(
+      `Failed to find the achievement to unlock character: ${characterName}`,
+    );
+  }
+
+  switch (objective.type) {
+    case ObjectiveType.CHARACTER: {
+      addAchievementCharacterObjective(objective.character, objective.kind);
+      break;
+    }
+
+    case ObjectiveType.CHALLENGE: {
+      addAchievementChallenge(objective.challenge);
+      break;
+    }
+  }
+}
+
+function findCharacterAchievement(
+  character: PlayerType,
+): Objective | undefined {
+  for (const [thisCharacter, thisCharacterAchievements] of v.persistent
+    .characterAchievements) {
+    for (const [
+      characterObjectiveKind,
+      achievement,
+    ] of thisCharacterAchievements) {
+      if (
+        achievement.type === AchievementType.CHARACTER &&
+        achievement.character === character
+      ) {
+        return {
+          type: ObjectiveType.CHARACTER,
+          character: thisCharacter,
+          kind: characterObjectiveKind,
+        };
+      }
+    }
+  }
+
+  for (const [challenge, achievement] of v.persistent.challengeAchievements) {
+    if (
+      achievement.type === AchievementType.CHARACTER &&
+      achievement.character === character
+    ) {
+      return {
+        type: ObjectiveType.CHALLENGE,
+        challenge,
+      };
+    }
+  }
+
+  return undefined;
 }
 
 // --------------
@@ -223,6 +334,16 @@ export function isCollectibleTypeUnlocked(
 
   // TODO
   return false;
+}
+
+export function getUnlockedEdenActiveCollectibleTypes(): CollectibleType[] {
+  // TODO
+  return [];
+}
+
+export function getUnlockedEdenPassiveCollectibleTypes(): CollectibleType[] {
+  // TODO
+  return [];
 }
 
 // -----------------
