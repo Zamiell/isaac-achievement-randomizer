@@ -1,8 +1,8 @@
-import type { Challenge } from "isaac-typescript-definitions";
 import {
   BatterySubType,
   BombSubType,
   CardType,
+  Challenge,
   CoinSubType,
   HeartSubType,
   KeySubType,
@@ -16,12 +16,12 @@ import {
   MAIN_CHARACTERS,
   VANILLA_CARD_TYPES,
   VANILLA_PILL_EFFECTS,
-  VANILLA_TRINKET_TYPES,
   arrayRemoveIndexInPlace,
   assertDefined,
   copyArray,
   getRandomArrayElement,
   getRandomArrayElementAndRemove,
+  log,
   newRNG,
   shuffleArray,
 } from "isaacscript-common";
@@ -46,6 +46,7 @@ import { UnlockablePath } from "./enums/UnlockablePath";
 import type { Achievement } from "./types/Achievement";
 import type { CharacterObjective, Objective } from "./types/Objective";
 import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./unlockableCollectibleTypes";
+import { UNLOCKABLE_TRINKET_TYPES } from "./unlockableTrinketTypes";
 
 interface Achievements {
   characterAchievements: CharacterAchievements;
@@ -136,7 +137,8 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
     const lastCharacterObjectives = objectives.filter(
       (objective) =>
         objective.type === ObjectiveType.CHARACTER &&
-        objective.character === lastUnlockedCharacter,
+        objective.character === lastUnlockedCharacter &&
+        objective.kind < CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1,
     ) as CharacterObjective[];
     const randomCharacterObjective = getRandomArrayElement(
       lastCharacterObjectives,
@@ -155,13 +157,8 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
     lastUnlockedCharacter = character;
   }
 
-  // Pick the rest of the achievements.
-  /*
-  Isaac.DebugString(
-    `GETTING HERE - ${objectives.length} + ${achievements.length}`,
-  );
-  error("LOL");
-  */
+  // Now, do the rest of the unlocks with no restrictions.
+  // TODO
 
   return { characterAchievements, challengeAchievements };
 }
@@ -201,6 +198,10 @@ function getAllAchievements(): Achievement[] {
 
       case AchievementType.CHALLENGE: {
         for (const challenge of CHALLENGES) {
+          if (challenge === Challenge.NULL) {
+            continue;
+          }
+
           const achievement: Achievement = {
             type: AchievementType.CHALLENGE,
             challenge,
@@ -224,7 +225,7 @@ function getAllAchievements(): Achievement[] {
       }
 
       case AchievementType.TRINKET: {
-        for (const trinketType of VANILLA_TRINKET_TYPES) {
+        for (const trinketType of UNLOCKABLE_TRINKET_TYPES) {
           const achievement: Achievement = {
             type: AchievementType.TRINKET,
             trinketType,
@@ -416,6 +417,19 @@ function getAllAchievements(): Achievement[] {
   return achievements;
 }
 
+function _logAchievements(achievements: Achievement[]) {
+  log("Logging all achievements.");
+
+  for (const achievementType of ACHIEVEMENT_TYPES) {
+    const thisTypeAchievements = achievements.filter(
+      (achievement) => achievement.type === achievementType,
+    );
+    log(
+      `- ${AchievementType[achievementType]} - ${thisTypeAchievements.length}`,
+    );
+  }
+}
+
 function getAllObjectives(): Objective[] {
   const objectives: Objective[] = [];
 
@@ -423,11 +437,16 @@ function getAllObjectives(): Objective[] {
     switch (objectiveType) {
       case ObjectiveType.CHARACTER: {
         for (const character of MAIN_CHARACTERS) {
-          if (character === PlayerType.ISAAC) {
-            continue;
-          }
-
           for (const characterObjectiveKind of CHARACTER_OBJECTIVE_KINDS) {
+            if (
+              (character === PlayerType.LOST ||
+                character === PlayerType.LOST_B) &&
+              characterObjectiveKind >=
+                CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1
+            ) {
+              continue;
+            }
+
             const objective: Objective = {
               type: ObjectiveType.CHARACTER,
               character,
@@ -442,6 +461,10 @@ function getAllObjectives(): Objective[] {
 
       case ObjectiveType.CHALLENGE: {
         for (const challenge of CHALLENGES) {
+          if (challenge === Challenge.NULL) {
+            continue;
+          }
+
           const objective: Objective = {
             type: ObjectiveType.CHALLENGE,
             challenge,
@@ -455,6 +478,17 @@ function getAllObjectives(): Objective[] {
   }
 
   return objectives;
+}
+
+function _logObjectives(objectives: Objective[]) {
+  log("Logging all objectives.");
+
+  for (const objectiveType of OBJECTIVE_TYPES) {
+    const thisTypeObjectives = objectives.filter(
+      (objective) => objective.type === objectiveType,
+    );
+    log(`- ${ObjectiveType[objectiveType]} - ${thisTypeObjectives.length}`);
+  }
 }
 
 function getAndRemoveAchievement(
@@ -487,6 +521,15 @@ function getAchievementIndexMatchingType(
         (achievement) =>
           achievement.type === AchievementType.PATH &&
           achievement.unlockablePath === kind,
+      );
+      break;
+    }
+
+    case AchievementType.CHARACTER: {
+      index = achievements.findIndex(
+        (achievement) =>
+          achievement.type === AchievementType.CHARACTER &&
+          achievement.character === kind,
       );
       break;
     }

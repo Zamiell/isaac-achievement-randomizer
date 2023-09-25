@@ -25,7 +25,7 @@ import {
   addAchievementCharacterObjective,
 } from "./AchievementTracker";
 
-const BOSS_ID_TO_CHARACTER_OBJECTIVE = new ReadonlyMap<
+const BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND = new ReadonlyMap<
   BossID,
   CharacterObjectiveKind
 >([
@@ -46,7 +46,7 @@ const BOSS_ID_TO_CHARACTER_OBJECTIVE = new ReadonlyMap<
   // There is no boss ID for The Beast (it does not have its own boss room).
 ]);
 
-const STAGE_TO_CHARACTER_OBJECTIVE = new ReadonlyMap<
+const STAGE_TO_CHARACTER_OBJECTIVE_KIND = new ReadonlyMap<
   LevelStage,
   CharacterObjectiveKind
 >([
@@ -68,7 +68,7 @@ const STAGE_TO_CHARACTER_OBJECTIVE = new ReadonlyMap<
   ],
 ]);
 
-const STAGE_TO_CHARACTER_OBJECTIVE_REPENTANCE = new ReadonlyMap<
+const STAGE_TO_CHARACTER_OBJECTIVE_KIND_REPENTANCE = new ReadonlyMap<
   LevelStage,
   CharacterObjectiveKind
 >([
@@ -108,7 +108,7 @@ export class AchievementDetection extends RandomizerModFeature {
       case RoomType.BOSS: {
         const bossID = getRoomSubType() as BossID;
         const characterObjectiveBoss =
-          BOSS_ID_TO_CHARACTER_OBJECTIVE.get(bossID);
+          BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND.get(bossID);
         if (characterObjectiveBoss !== undefined) {
           addAchievementCharacterObjective(characterObjectiveBoss);
         }
@@ -116,8 +116,8 @@ export class AchievementDetection extends RandomizerModFeature {
         if (!v.level.tookDamage) {
           const repentanceStage = onRepentanceStage();
           const map = repentanceStage
-            ? STAGE_TO_CHARACTER_OBJECTIVE_REPENTANCE
-            : STAGE_TO_CHARACTER_OBJECTIVE;
+            ? STAGE_TO_CHARACTER_OBJECTIVE_KIND_REPENTANCE
+            : STAGE_TO_CHARACTER_OBJECTIVE_KIND;
           const level = game.GetLevel();
           const stage = level.GetStage();
           const characterObjectiveNoDamage = map.get(stage);
