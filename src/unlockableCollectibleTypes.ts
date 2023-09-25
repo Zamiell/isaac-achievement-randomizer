@@ -9,12 +9,7 @@ import { ReadonlySet, VANILLA_COLLECTIBLE_TYPES } from "isaacscript-common";
 //   For example, Battery Pack would create coins.
 // - We do not select active items.
 
-/**
- * For ItemPoolType.TREASURE (0).
- *
- * Unlike the other pools, we select 8 items in order to make the number of achievements exactly
- * match what we need.
- */
+/** For ItemPoolType.TREASURE (0). */
 const TREASURE_ROOM_EXCEPTIONS = [
   CollectibleType.BOOM, // 19
   CollectibleType.TINY_PLANET, // 233

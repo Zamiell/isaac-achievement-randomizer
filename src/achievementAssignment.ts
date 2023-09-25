@@ -17,6 +17,10 @@ import {
   VANILLA_CARD_TYPES,
   VANILLA_PILL_EFFECTS,
   VANILLA_TRINKET_TYPES,
+  arrayRemoveIndexInPlace,
+  assertDefined,
+  copyArray,
+  getRandomArrayElementAndRemove,
   newRNG,
 } from "isaacscript-common";
 import {
@@ -32,7 +36,8 @@ import {
   UNLOCKABLE_PATHS,
 } from "./cachedEnums";
 import { AchievementType } from "./enums/AchievementType";
-import type { CharacterObjective } from "./enums/CharacterObjective";
+import { CharacterObjective } from "./enums/CharacterObjective";
+import { UnlockablePath } from "./enums/UnlockablePath";
 import type { Achievement } from "./types/Achievement";
 import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./unlockableCollectibleTypes";
 
@@ -48,8 +53,23 @@ type CharacterAchievements = DefaultMap<
 
 type ChallengeAchievements = Map<Challenge, Achievement>;
 
+const EASY_OBJECTIVES = [
+  CharacterObjective.MOM,
+  CharacterObjective.IT_LIVES,
+  CharacterObjective.ISAAC,
+  CharacterObjective.SATAN,
+  CharacterObjective.NO_DAMAGE_BASEMENT_1,
+  CharacterObjective.NO_DAMAGE_BASEMENT_2,
+  CharacterObjective.NO_DAMAGE_CAVES_1,
+  CharacterObjective.NO_DAMAGE_CAVES_2,
+  CharacterObjective.NO_DAMAGE_DEPTHS_1,
+  CharacterObjective.NO_DAMAGE_DEPTHS_2,
+  CharacterObjective.NO_DAMAGE_WOMB_1,
+  CharacterObjective.NO_DAMAGE_WOMB_2,
+] as const;
+
 export function getAchievementsForSeed(seed: Seed): Achievements {
-  const _rng = newRNG(seed);
+  const rng = newRNG(seed);
 
   const characterAchievements = new DefaultMap<
     PlayerType,
@@ -58,16 +78,36 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
 
   const challengeAchievements = new Map<Challenge, Achievement>();
 
-  // Pick some achievements first.
-  // TODO
+  const achievements = getAllAchievements();
+
+  // The Polaroid and The Negative are guaranteed to be behind an easy objective for Isaac.
+  const isaacAchievements = characterAchievements.getAndSetDefault(
+    PlayerType.ISAAC,
+  );
+  const easyObjectives = copyArray(EASY_OBJECTIVES);
+  for (const unlockablePath of [
+    UnlockablePath.THE_CHEST,
+    UnlockablePath.DARK_ROOM,
+  ]) {
+    const achievement = getAndRemovePathAchievement(
+      achievements,
+      unlockablePath,
+    );
+    const randomEasyAchievement = getRandomArrayElementAndRemove(
+      easyObjectives,
+      rng,
+    );
+    isaacAchievements.set(randomEasyAchievement, achievement);
+  }
 
   // Pick the rest of the achievements.
+
   // TODO
 
   return { characterAchievements, challengeAchievements };
 }
 
-function _getAllAchievements(): Achievement[] {
+function getAllAchievements(): Achievement[] {
   const achievements: Achievement[] = [];
 
   for (const achievementType of ACHIEVEMENT_TYPES) {
@@ -315,4 +355,28 @@ function _getAllAchievements(): Achievement[] {
   }
 
   return [];
+}
+
+function getAndRemovePathAchievement(
+  achievements: Achievement[],
+  unlockablePath: UnlockablePath,
+): Achievement {
+  const index = achievements.findIndex(
+    (achievement) =>
+      achievement.type === AchievementType.PATH &&
+      achievement.unlockablePath === unlockablePath,
+  );
+  if (index === -1) {
+    error(`Failed to find path achievement: ${unlockablePath}`);
+  }
+
+  const achievement = achievements[index];
+  assertDefined(
+    achievement,
+    `Failed to find the path achievement at index: ${index}`,
+  );
+
+  arrayRemoveIndexInPlace(achievements, index);
+
+  return achievement;
 }

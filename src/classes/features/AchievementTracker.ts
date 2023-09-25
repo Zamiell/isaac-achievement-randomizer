@@ -25,6 +25,7 @@ import {
   restart,
 } from "isaacscript-common";
 import { getAchievementsForSeed } from "../../achievementAssignment";
+import { CHARACTER_OBJECTIVES } from "../../cachedEnums";
 import type { CharacterObjective } from "../../enums/CharacterObjective";
 import type { UnlockablePath } from "../../enums/UnlockablePath";
 import type { Achievement } from "../../types/Achievement";
@@ -174,6 +175,14 @@ export function isCharacterUnlocked(character: PlayerType): boolean {
   return false;
 }
 
+export function isAllCharacterAchievementsCompleted(
+  character: PlayerType,
+): boolean {
+  const characterObjectives =
+    v.persistent.completedCharacterObjectives.getAndSetDefault(character);
+  return characterObjectives.size === CHARACTER_OBJECTIVES.length;
+}
+
 // --------------
 // Path functions
 // --------------
@@ -284,17 +293,6 @@ export function isHeartSubTypeUnlocked(heartSubType: HeartSubType): boolean {
   }
 
   // TODO
-  // - Red Heart (5.10.1)
-  // - Soul Heart (5.10.3)
-  // - Eternal Heart (5.10.4)
-  // - Double Heart (5.10.5)
-  // - Black Heart (5.10.6)
-  // - Gold Heart (5.10.7)
-  // - Half Soul Heart (5.10.8)
-  // - Scared Heart (5.10.9)
-  // - Blended Heart (5.10.10)
-  // - Bone Heart (5.10.11)
-  // - Rotten Heart (5.10.12)
   return false;
 }
 
@@ -305,12 +303,6 @@ export function isCoinSubTypeUnlocked(coinSubType: CoinSubType): boolean {
   }
 
   // TODO
-  // - Nickel (5.20.2)
-  // - Dime (5.20.3)
-  // - Double Penny (5.20.4)
-  // - Lucky Penny (5.20.5)
-  // - Sticky Nickel (5.20.6)
-  // - Golden Penny (5.20.7)
   return false;
 }
 
@@ -321,12 +313,6 @@ export function isBombSubTypeUnlocked(bombSubType: BombSubType): boolean {
   }
 
   // TODO
-  // - Double Bomb (5.40.2)
-  // - (Troll Bombs are 5.40.3.)
-  // - Golden Bomb (5.40.4)
-  // - (Mega Troll Bombs are 5.40.5.)
-  // - (Golden Troll Bombs are 5.40.6.)
-  // - (Giga Bombs are 5.40.7.)
   return false;
 }
 
@@ -337,9 +323,6 @@ export function isKeySubTypeUnlocked(keySubType: KeySubType): boolean {
   }
 
   // TODO
-  // - Golden Key (5.30.2)
-  // - Key Ring (5.30.3)
-  // - Charged Key (5.30.4)
   return false;
 }
 
@@ -347,17 +330,11 @@ export function isBatterySubTypeUnlocked(
   _batterySubType: BatterySubType,
 ): boolean {
   // TODO
-  // - Micro Battery (5.90.2)
-  // - Lil' Battery (5.90.1)
-  // - Mega Battery (5.90.3)
-  // - Golden Battery (5.90.4)
   return false;
 }
 
 export function isSackSubTypeUnlocked(_sackSubType: SackSubType): boolean {
   // TODO
-  // - Grab Bag (5.69.1)
-  // - Black Sack (5.69.2)
   return false;
 }
 
@@ -375,14 +352,6 @@ export function isChestVariantUnlocked(pickupVariant: PickupVariant): boolean {
     return true;
   }
 
-  // - Bomb Chest (5.51)
-  // - Spiked Chest (5.52)
-  // - Eternal Chest (5.53)
-  // - Mimic Chest (5.54)
-  // - Wooden Chest (5.56)
-  // - Mega Chest (5.57)
-  // - Haunted Chest (5.58)
-  // - Locked Chest (5.60)
-  // - Red Chest (5.360)
+  // TODO
   return false;
 }

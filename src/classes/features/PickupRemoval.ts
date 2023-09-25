@@ -3,7 +3,6 @@ import type {
   PillColor,
   PillEffect,
   SackSubType,
-  TrinketType,
 } from "isaac-typescript-definitions";
 import {
   BombSubType,
@@ -15,13 +14,14 @@ import {
   KeySubType,
   ModCallback,
   PickupVariant,
+  PlayerType,
+  TrinketType,
 } from "isaac-typescript-definitions";
 import {
   Callback,
   CallbackCustom,
   FIRST_PILL_COLOR,
   ModCallbackCustom,
-  VANILLA_TRINKET_TYPES,
   copySet,
   game,
   getNormalPillColorFromHorse,
@@ -33,12 +33,17 @@ import {
   isRune,
   isSuitCard,
   removeCollectibleFromPools,
+  removeTrinketFromPools,
   setCollectibleSubType,
 } from "isaacscript-common";
 import {
   BANNED_COLLECTIBLE_TYPES,
   UNLOCKABLE_COLLECTIBLE_TYPES,
 } from "../../unlockableCollectibleTypes";
+import {
+  BANNED_TRINKET_TYPES,
+  UNLOCKABLE_TRINKET_TYPES,
+} from "../../unlockableTrinketTypes";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   anyCardTypesUnlocked,
@@ -46,6 +51,7 @@ import {
   getUnlockedCardTypes,
   getUnlockedPillEffects,
   getUnlockedTrinketTypes,
+  isAllCharacterAchievementsCompleted,
   isBatterySubTypeUnlocked,
   isBombSubTypeUnlocked,
   isCardTypeUnlocked,
@@ -175,13 +181,61 @@ export class PickupRemoval extends RandomizerModFeature {
       }
     }
 
-    for (const trinketType of VANILLA_TRINKET_TYPES) {
+    removeCollectibleFromPools(...BANNED_COLLECTIBLE_TYPES);
+
+    for (const trinketType of UNLOCKABLE_TRINKET_TYPES) {
       if (!isTrinketTypeUnlocked(trinketType)) {
         itemPool.RemoveTrinket(trinketType);
       }
     }
 
-    removeCollectibleFromPools(...BANNED_COLLECTIBLE_TYPES);
+    removeTrinketFromPools(...BANNED_TRINKET_TYPES);
+
+    this.conditionallyRemoveRevivalCollectible(
+      itemPool,
+      CollectibleType.ANKH, // 161
+      PlayerType.BLUE_BABY,
+    );
+    this.conditionallyRemoveRevivalCollectible(
+      itemPool,
+      CollectibleType.JUDAS_SHADOW, // 311
+      PlayerType.JUDAS,
+    );
+    this.conditionallyRemoveRevivalCollectible(
+      itemPool,
+      CollectibleType.LAZARUS_RAGS, // 332
+      PlayerType.JUDAS,
+    );
+    this.conditionallyRemoveRevivalTrinket(
+      itemPool,
+      TrinketType.MYSTERIOUS_PAPER, // 21
+      PlayerType.LOST,
+    );
+    this.conditionallyRemoveRevivalTrinket(
+      itemPool,
+      TrinketType.MISSING_POSTER, // 23
+      PlayerType.LOST,
+    );
+  }
+
+  conditionallyRemoveRevivalCollectible(
+    itemPool: ItemPool,
+    collectibleType: CollectibleType,
+    character: PlayerType,
+  ): void {
+    if (!isAllCharacterAchievementsCompleted(character)) {
+      itemPool.RemoveCollectible(collectibleType);
+    }
+  }
+
+  conditionallyRemoveRevivalTrinket(
+    itemPool: ItemPool,
+    trinketType: TrinketType,
+    character: PlayerType,
+  ): void {
+    if (!isAllCharacterAchievementsCompleted(character)) {
+      itemPool.RemoveTrinket(trinketType);
+    }
   }
 
   @CallbackCustom(

@@ -167,13 +167,28 @@ Every collectible in the game is locked behind a random achievement, with the fo
   - Recall (#714)
   - Hold (#715)
 - Banned collectibles in this mod:
-  - Plan C (#475) (would break the difficult boss achievements)
-  - Clicker (#482) (would break the character achievements)
-  - R Key (#636) (would break the difficult boss achievements)
+  - Plan C (#475) (would trivialize some difficult boss achievements)
+  - Clicker (#482) (would break harder character achievements)
+  - R Key (#636) (would trivialize some difficult achievements)
+
+Also note that:
+
+- Even if Ankh (#161) is unlocked, it is removed from pools until all of the Blue Baby achievements are completed.
+- Even if Judas' Shadow (#311) is unlocked, it is removed from pools until all of the Judas achievements are completed.
+- Even if Lazarus Rags (#332) is unlocked, it is removed from pools until all of the Lazarus achievements are completed.
 
 ### Trinkets <!-- 5.350 -->
 
-Every trinket in the game is locked behind a random achievement. If no trinkets are unlocked, trinkets will be converted to pennies.
+Every trinket in the game is locked behind a random achievement, with the following exceptions:
+
+- Banned trinkets in this mod:
+  - 'M (#138) (would break collectible achievements)
+
+If no trinkets are unlocked, trinkets will be converted to pennies.
+
+Also note that:
+
+- Even if Mysterious Paper (#21) or Missing Poster (#23) are unlocked, they are removed from pools until all of the Lost achievements are completed.
 
 ### Cards & Runes <!-- 5.300 -->
 
