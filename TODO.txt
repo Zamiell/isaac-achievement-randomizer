@@ -1,5 +1,10 @@
+TODO:
+
+- remove donation machines
+
 POTENTIAL TODO:
 
+- unlock all machines
 - see current unlocks in DSS
 
 - unlock logic for collectibles:
