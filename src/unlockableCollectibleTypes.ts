@@ -16,13 +16,13 @@ import { ReadonlySet, VANILLA_COLLECTIBLE_TYPES } from "isaacscript-common";
  * achievements exactly match what we need.
  */
 const TREASURE_ROOM_EXCEPTIONS = [
-  CollectibleType.BOOM, // 19
-  CollectibleType.BLACK_BEAN, // 180
+  CollectibleType.SACK_OF_PENNIES, // 94
+  CollectibleType.ABEL, // 188
+  CollectibleType.BALL_OF_TAR, // 231
   CollectibleType.TINY_PLANET, // 233
   CollectibleType.BEST_BUD, // 274
   CollectibleType.ISAACS_HEART, // 276
   CollectibleType.STRANGE_ATTRACTOR, // 315
-  CollectibleType.CAINS_OTHER_EYE, // 319
   CollectibleType.KEY_BUM, // 388
   CollectibleType.LINGER_BEAN, // 447
   CollectibleType.HUSHY, // 470

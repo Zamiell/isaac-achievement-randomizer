@@ -136,6 +136,13 @@ export class PickupRemoval extends RandomizerModFeature {
       }
     }
 
+    // If there are no unlocked card types that match the criteria for the callback, we explicitly
+    // replace it with a Rune Shard, which will be replaced in the `POST_PICKUP_SELECTION_FILTER`
+    // callback.
+    if (cardTypesToUse.size === 0) {
+      return CardType.RUNE_SHARD;
+    }
+
     return getRandomSetElement(cardTypesToUse);
   }
 
