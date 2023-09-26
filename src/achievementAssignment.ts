@@ -221,6 +221,57 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
     lastUnlockedCharacter = character;
   }
 
+  // The Fool Card must unlock before The Ascent.
+  {
+    const foolAchievement = getAndRemoveAchievement(
+      achievements,
+      AchievementType.CARD,
+      CardType.FOOL,
+    );
+    const basicCharacterObjectives = objectives.filter(
+      (objective) =>
+        objective.type === ObjectiveType.CHARACTER &&
+        BASIC_CHARACTER_OBJECTIVES.has(objective.kind),
+    ) as CharacterObjective[];
+    const randomBasicCharacterObjective = getRandomArrayElement(
+      basicCharacterObjectives,
+      rng,
+    );
+    removeCharacterObjective(
+      objectives,
+      randomBasicCharacterObjective.character,
+      randomBasicCharacterObjective.kind,
+    );
+
+    const thisCharacterAchievements = characterAchievements.getAndSetDefault(
+      randomBasicCharacterObjective.character,
+    );
+    if (thisCharacterAchievements.has(randomBasicCharacterObjective.kind)) {
+      const characterName = getCharacterName(
+        randomBasicCharacterObjective.character,
+      );
+      error(
+        `Failed to add the Fool achievement to ${characterName}: ${
+          CharacterObjectiveKind[randomBasicCharacterObjective.kind]
+        }`,
+      );
+    }
+
+    thisCharacterAchievements.set(
+      randomBasicCharacterObjective.kind,
+      foolAchievement,
+    );
+    if (VERBOSE) {
+      const characterName = getCharacterName(lastUnlockedCharacter);
+      log(
+        `Set Fool achievement on ${characterName} --> ${
+          CharacterObjectiveKind[randomBasicCharacterObjective.kind]
+        }`,
+      );
+      logAchievement(foolAchievement);
+    }
+  }
+
   // Now, do the rest of the unlocks with no restrictions.
   for (const achievement of achievements) {
     const objective = getRandomArrayElementAndRemove(objectives, rng);
