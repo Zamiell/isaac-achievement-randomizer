@@ -12,17 +12,15 @@ import { ReadonlySet, VANILLA_COLLECTIBLE_TYPES } from "isaacscript-common";
 /**
  * For ItemPoolType.TREASURE (0).
  *
- * Unlike the other pools, we select 8 collectibles instead of 5 in order to make the number of
+ * Unlike the other pools, we select 6 collectibles instead of 5 in order to make the number of
  * achievements exactly match what we need.
  */
 const TREASURE_ROOM_EXCEPTIONS = [
-  CollectibleType.BOOM, // 19
   CollectibleType.TINY_PLANET, // 233
   CollectibleType.BEST_BUD, // 274
   CollectibleType.ISAACS_HEART, // 276
   CollectibleType.STRANGE_ATTRACTOR, // 315
   CollectibleType.KEY_BUM, // 388
-  CollectibleType.LINGER_BEAN, // 447
   CollectibleType.HUSHY, // 470
 ] as const;
 

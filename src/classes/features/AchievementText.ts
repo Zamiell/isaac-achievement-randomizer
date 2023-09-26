@@ -219,6 +219,10 @@ function getPathName(unlockablePath: UnlockablePath): string {
       return "Mega Satan";
     }
 
+    case UnlockablePath.BOSS_RUSH: {
+      return "Boss Rush";
+    }
+
     case UnlockablePath.BLUE_WOMB: {
       return "Blue Womb";
     }
@@ -233,6 +237,10 @@ function getPathName(unlockablePath: UnlockablePath): string {
 
     case UnlockablePath.THE_ASCENT: {
       return "The Ascent";
+    }
+
+    case UnlockablePath.GREED_MODE: {
+      return "Greed Mode";
     }
   }
 }
@@ -291,10 +299,6 @@ export function getCharacterObjectiveKindName(
       return "Hush";
     }
 
-    case CharacterObjectiveKind.ULTRA_GREED: {
-      return "Ultra Greed";
-    }
-
     case CharacterObjectiveKind.DELIRIUM: {
       return "Delirium";
     }
@@ -313,6 +317,10 @@ export function getCharacterObjectiveKindName(
 
     case CharacterObjectiveKind.THE_BEAST: {
       return "The Beast";
+    }
+
+    case CharacterObjectiveKind.ULTRA_GREED: {
+      return "Ultra Greed";
     }
 
     case CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1: {

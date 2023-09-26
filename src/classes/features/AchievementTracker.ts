@@ -1,7 +1,6 @@
 import type {
   BatterySubType,
   CardType,
-  CollectibleType,
   PillEffect,
   SackSubType,
   TrinketType,
@@ -11,6 +10,7 @@ import {
   CallbackPriority,
   Challenge,
   CoinSubType,
+  CollectibleType,
   HeartSubType,
   ItemConfigTag,
   KeySubType,
@@ -383,7 +383,8 @@ export function getUnlockedEdenPassiveCollectibleTypes(): CollectibleType[] {
     (collectibleType) =>
       !isHiddenCollectible(collectibleType) &&
       !collectibleHasTag(collectibleType, ItemConfigTag.NO_EDEN) &&
-      isPassiveOrFamiliarCollectible(collectibleType),
+      isPassiveOrFamiliarCollectible(collectibleType) &&
+      collectibleType !== CollectibleType.TMTRAINER,
   );
 }
 

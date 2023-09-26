@@ -14,6 +14,7 @@ import {
   CHEST_PICKUP_VARIANTS,
   DefaultMap,
   MAIN_CHARACTERS,
+  ReadonlySet,
   VANILLA_CARD_TYPES,
   VANILLA_PILL_EFFECTS,
   arrayRemoveIndexInPlace,
@@ -85,6 +86,21 @@ const EASY_UNLOCKABLE_PATHS = [
   UnlockablePath.DARK_ROOM,
 ] as const;
 
+/**
+ * These consist of objectives that are from:
+ * 1) beating bosses
+ * 2) not gated behind an unlockable path (with the exception of The Chest / Dark Room, since those
+ *    are behind easy Isaac objectives)
+ */
+const BASIC_CHARACTER_OBJECTIVES = new ReadonlySet<CharacterObjectiveKind>([
+  CharacterObjectiveKind.MOM,
+  CharacterObjectiveKind.IT_LIVES,
+  CharacterObjectiveKind.ISAAC,
+  CharacterObjectiveKind.BLUE_BABY,
+  CharacterObjectiveKind.SATAN,
+  CharacterObjectiveKind.THE_LAMB,
+]);
+
 const NUM_CHARACTER_OBJECTIVE_KINDS_FOR_LOST = CHARACTER_OBJECTIVE_KINDS.filter(
   (characterObjectiveKind) =>
     characterObjectiveKind < CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1,
@@ -148,7 +164,7 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
     }
   }
 
-  // Each character is guaranteed to unlock another character.
+  // Each character is guaranteed to unlock another character from a non-advanced objective.
   let lastUnlockedCharacter = PlayerType.ISAAC;
   const mainCharacters = shuffleArray(MAIN_CHARACTERS, rng);
   for (const character of mainCharacters) {
@@ -165,7 +181,7 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
       (objective) =>
         objective.type === ObjectiveType.CHARACTER &&
         objective.character === lastUnlockedCharacter &&
-        objective.kind < CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1,
+        BASIC_CHARACTER_OBJECTIVES.has(objective.kind),
     ) as CharacterObjective[];
     const randomCharacterObjective = getRandomArrayElement(
       lastCharacterObjectives,

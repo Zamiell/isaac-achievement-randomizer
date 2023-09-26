@@ -1,7 +1,3 @@
-TODO:
-
-- need logic for bosses behind unlockable paths e.g. MOMS_HEART_ALT
-
 POTENTIAL TODO:
 
 - see current unlocks in DSS

@@ -11,7 +11,7 @@ This page explains how it works.
 ## Table of Contents
 
 1. [Design Principles](#design-principles)
-2. [Achievement List](#achievement-list)
+2. [Objective List](#objective-list)
 3. [Progression](#progression)
 4. [Other Features](#other-features)
 
@@ -31,11 +31,11 @@ Thus, this mod locks almost everything behind custom achievements that actually 
 
 <br>
 
-## Achievement List
+## Objective List
 
-Note that all achievements must be completed on hard mode.
+Note that all objectives must be completed on hard mode.
 
-### Character-Based Achievements
+### Character-Based Objectives
 
 Each character will unlock something upon defeating the following bosses/objectives:
 
@@ -78,15 +78,15 @@ Additionally, each character other than The Lost and Tainted Lost will unlock so
 
 - There are 34 main characters.
 - There are 15 boss objectives and 18 floor objectives, which makes 33 in total.
-- Thus, since The Lost & Tainted Lost do not have floor achievements, there are 34 x 33 - 18 x 2 = 1086 character-based achievements.
+- Thus, since The Lost & Tainted Lost do not have floor objectives, there are 34 x 33 - 18 x 2 = 1086 character-based objectives.
 
-### Challenge-Based Achievements
+### Challenge-Based Objectives
 
 There is one achievement for completing each challenge. Thus, there are 45 challenge-based achievements.
 
 ### Total
 
-There are 1086 + 45 = 1131 achievements in total.
+There are 1086 + 45 = 1131 objectives in total.
 
 <br>
 
@@ -99,16 +99,18 @@ There are 1086 + 45 = 1131 achievements in total.
 
 ### Paths
 
-- The following floors start off locked and are inaccessible:
+- The following places start off locked and are inaccessible:
   - The Chest
   - The Dark Room
+  - Mega Satan
+  - Boss Rush
   - Blue Womb
   - The Void
   - Repentance floors
   - The Ascent
-- Additionally, the Mega Satan room starts off locked and is inaccessible.
-- Isaac is guaranteed to unlock both The Chest & Dark Room from one of his easier achievements.
-- The rest of the floors can be randomly unlocked from any achievement.
+  - Greed Mode
+- Isaac is guaranteed to unlock both The Chest & Dark Room from one of his easier objectives.
+- The rest of the places can be randomly unlocked from any objective.
 
 ### Challenges
 
@@ -116,16 +118,14 @@ All challenges start off locked.
 
 ### Collectibles <!-- 5.100 -->
 
-Every collectible in the game is locked behind a random achievement, with the following exceptions:
+Every collectible in the game is locked behind a random objective, with the following exceptions:
 
-- 8 collectibles from the Treasure Room pool (#0):
-  - Boom (#19)
+- 7 collectibles from the Treasure Room pool (#0):
   - Tiny Planet (#233)
   - Best Bud (#274)
   - Isaac's Heart (#276)
   - Strange Attractor (#315)
   - Key Bum (#388)
-  - Linger Bean (#447)
   - Hush (#470)
 - 5 collectibles from the Shop pool (#1):
   - Ladder (#60)
@@ -168,48 +168,48 @@ Every collectible in the game is locked behind a random achievement, with the fo
   - Recall (#714)
   - Hold (#715)
 - Banned collectibles in this mod:
-  - Plan C (#475) (would trivialize some difficult boss achievements)
-  - Clicker (#482) (would break harder character achievements)
-  - R Key (#636) (would trivialize some difficult achievements)
+  - Plan C (#475) (would trivialize some difficult boss objectives)
+  - Clicker (#482) (would break harder character objectives)
+  - R Key (#636) (would trivialize some difficult objectives)
 
 Also note that:
 
-- Even if Ankh (#161) is unlocked, it is removed from pools until all of the Blue Baby achievements are completed.
-- Even if Judas' Shadow (#311) is unlocked, it is removed from pools until all of the Judas achievements are completed.
-- Even if Lazarus Rags (#332) is unlocked, it is removed from pools until all of the Lazarus achievements are completed.
+- Even if Ankh (#161) is unlocked, it is removed from pools until all of the Blue Baby objectives are completed.
+- Even if Judas' Shadow (#311) is unlocked, it is removed from pools until all of the Judas objectives are completed.
+- Even if Lazarus Rags (#332) is unlocked, it is removed from pools until all of the Lazarus objectives are completed.
 
 ### Trinkets <!-- 5.350 -->
 
-Every trinket in the game is locked behind a random achievement, with the following exceptions:
+Every trinket in the game is locked behind a random objective, with the following exceptions:
 
 - Banned trinkets in this mod:
-  - 'M (#138) (would break collectible achievements)
+  - 'M (#138) (would break collectible unlocks)
 
 If no trinkets are unlocked, trinkets will be converted to pennies.
 
 Also note that:
 
-- Even if Mysterious Paper (#21) or Missing Poster (#23) are unlocked, they are removed from pools until all of The Lost achievements are completed.
+- Even if Mysterious Paper (#21) or Missing Poster (#23) are unlocked, they are removed from pools until all of The Lost objectives are completed.
 
 ### Cards & Runes <!-- 5.300 -->
 
-Every card/rune in the game is locked behind a random achievement (except for Rune Shard, which will never spawn). If no cards/runes are unlocked, cards/runes will be converted to pennies.
+Every card/rune in the game is locked behind a random objective (except for Rune Shard, which will never spawn). If no cards/runes are unlocked, cards/runes will be converted to pennies.
 
 ### Pills <!-- 5.70 -->
 
-- Every pill effect in the game is locked behind a random achievement. If no pill effects are unlocked, pills will be converted to pennies.
-- Gold pills are locked behind a random achievement.
-- Horse pills are locked behind a random achievement.
+- Every pill effect in the game is locked behind a random objective. If no pill effects are unlocked, pills will be converted to pennies.
+- Gold pills are locked behind a random objective.
+- Horse pills are locked behind a random objective.
 
 ### Other Pickups
 
-- Only half red heart pickups start as being unlocked. Every other heart pickup in the game is locked behind a random achievement.
-- Only pennies start as being unlocked. Every other coin in the game is locked behind a random achievement.
-- Only normal bomb pickups start as being unlocked. Every other bomb pickup in the game is locked behind a random achievement.
-- Only normal key pickups start as being unlocked. Every other key pickup in the game is locked behind a random achievement.
-- Every battery type in the game is locked behind a random achievement. If no batteries are unlocked, batteries will be converted to pennies.
-- Every sack type in the game is locked behind a random achievement. If no sack are unlocked, sacks will be converted to pennies.
-- Only normal chests start as being unlocked. Every other chest type in the game is locked behind a random achievement.
+- Only half red heart pickups start as being unlocked. Every other heart pickup in the game is locked behind a random objective.
+- Only pennies start as being unlocked. Every other coin in the game is locked behind a random objective.
+- Only normal bomb pickups start as being unlocked. Every other bomb pickup in the game is locked behind a random objective.
+- Only normal key pickups start as being unlocked. Every other key pickup in the game is locked behind a random objective.
+- Every battery type in the game is locked behind a random objective. If no batteries are unlocked, batteries will be converted to pennies.
+- Every sack type in the game is locked behind a random objective. If no sack are unlocked, sacks will be converted to pennies.
+- Only normal chests start as being unlocked. Every other chest type in the game is locked behind a random objective.
 
 <br>
 
@@ -217,9 +217,9 @@ Every card/rune in the game is locked behind a random achievement (except for Ru
 
 ### Dead Sea Scrolls Integration
 
-The mod comes with an in-game menu called _Dead Sea Scrolls_. (This is the same menu used in other mods, like [_Fiend Folio_](https://steamcommunity.com/sharedfiles/filedetails/?id=2851063440).) You can open the menu by pressing `c` after starting a run.
+The mod comes with an in-game menu called _Dead Sea Scrolls_. (This is the same menu that is used in other mods, like [_Fiend Folio_](https://steamcommunity.com/sharedfiles/filedetails/?id=2851063440).) You can open the menu by pressing `c` after starting a run.
 
-The menu will show you how many achievements you have left in your streak and other information.
+The menu will show you how many objectives you have left in your streak and other information.
 
 ### Death Tracker
 
@@ -233,7 +233,7 @@ Unlike the timer in Racing+, the timer in this mod tracks in-game time. Thus, th
 
 ### Eden TMTRAINER Handling
 
-If Eden is randomly assigned TMTRAINER, it will be taken away and a new passive item will be assigned. (This is a quality of life fix for a convention taken from the Isaac streaking community, because starting TMTRAINER is unfair for streaking purposes.)
+In this mod, Eden can never start with TMTRAINER. (This is a quality of life fix for a convention taken from the Isaac streaking community, because starting TMTRAINER is unfair for streaking purposes. For example, a TMTRAINER collectible could have the effect of `when enemy dies --> spawn another enemy`, making the run impossible to complete.)
 
 ### Pause Prevention
 

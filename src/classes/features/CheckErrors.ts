@@ -23,10 +23,12 @@ import {
   removeAllDoors,
 } from "isaacscript-common";
 import { MOD_NAME } from "../../constants";
+import { UnlockablePath } from "../../enums/UnlockablePath";
 import { mod } from "../../mod";
 import {
   isChallengeUnlocked,
   isCharacterUnlocked,
+  isPathUnlocked,
   isRandomizerEnabled,
 } from "./AchievementTracker";
 
@@ -46,6 +48,7 @@ const v = {
     onSetSeed: false,
     lockedCharacter: false,
     lockedChallenge: false,
+    lockedMode: false,
   },
 };
 
@@ -95,6 +98,8 @@ export class CheckErrors extends ModFeature {
       this.drawErrorText(`You have not unlocked ${characterName} yet.`);
     } else if (v.run.lockedChallenge) {
       this.drawErrorText("You have not unlocked this challenge yet.");
+    } else if (v.run.lockedMode) {
+      this.drawErrorText("You have not unlocked Greed Mode yet.");
     }
   }
 
@@ -141,6 +146,7 @@ export class CheckErrors extends ModFeature {
     checkSetSeed();
     checkCharacterUnlocked();
     checkChallengeUnlocked();
+    checkModeUnlocked();
 
     if (hasErrors()) {
       removeAllDoors();
@@ -261,5 +267,19 @@ function checkChallengeUnlocked() {
       `Error: Locked challenge detected: ${Challenge[challenge]} (${challenge})`,
     );
     v.run.lockedChallenge = true;
+  }
+}
+
+function checkModeUnlocked() {
+  if (!isRandomizerEnabled()) {
+    return;
+  }
+
+  if (
+    game.Difficulty === Difficulty.GREEDIER &&
+    !isPathUnlocked(UnlockablePath.GREED_MODE)
+  ) {
+    log("Error: Locked Greed Mode detected.");
+    v.run.lockedMode = true;
   }
 }
