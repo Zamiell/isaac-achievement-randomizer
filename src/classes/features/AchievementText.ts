@@ -251,7 +251,7 @@ function getPillAchievementName(
   }
 }
 
-function getCharacterObjectiveKindName(
+export function getCharacterObjectiveKindName(
   characterObjectiveKind: CharacterObjectiveKind,
 ): string {
   switch (characterObjectiveKind) {

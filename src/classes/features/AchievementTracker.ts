@@ -220,7 +220,7 @@ export function addAchievementCharacterObjective(
   character: PlayerType,
   characterObjectiveKind: CharacterObjectiveKind,
 ): void {
-  if (hasCompletedCharacterObjective(character, characterObjectiveKind)) {
+  if (isCharacterObjectiveCompleted(character, characterObjectiveKind)) {
     return;
   }
 
@@ -245,24 +245,12 @@ export function addAchievementCharacterObjective(
   showNewAchievement(achievement);
 }
 
-function hasCompletedCharacterObjective(
-  character: PlayerType,
-  characterObjectiveKind: CharacterObjectiveKind,
-): boolean {
-  return v.persistent.completedObjectives.some(
-    (objective) =>
-      objective.type === ObjectiveType.CHARACTER &&
-      objective.character === character &&
-      objective.kind === characterObjectiveKind,
-  );
-}
-
 export function addAchievementChallenge(challenge: Challenge): void {
   if (challenge === Challenge.NULL) {
     return;
   }
 
-  if (hasCompletedChallengeObjective(challenge)) {
+  if (isChallengeObjectiveCompleted(challenge)) {
     return;
   }
 
@@ -282,14 +270,6 @@ export function addAchievementChallenge(challenge: Challenge): void {
   v.persistent.completedObjectives.push(objective);
 
   showNewAchievement(achievement);
-}
-
-function hasCompletedChallengeObjective(challenge: Challenge): boolean {
-  return v.persistent.completedObjectives.some(
-    (objective) =>
-      objective.type === ObjectiveType.CHALLENGE &&
-      objective.challenge === challenge,
-  );
 }
 
 // ----------------
@@ -317,6 +297,18 @@ export function isCharacterUnlocked(character: PlayerType): boolean {
   );
 }
 
+export function isCharacterObjectiveCompleted(
+  character: PlayerType,
+  characterObjectiveKind: CharacterObjectiveKind,
+): boolean {
+  return v.persistent.completedObjectives.some(
+    (objective) =>
+      objective.type === ObjectiveType.CHARACTER &&
+      objective.character === character &&
+      objective.kind === characterObjectiveKind,
+  );
+}
+
 export function isAllCharacterObjectivesCompleted(
   character: PlayerType,
 ): boolean {
@@ -329,118 +321,6 @@ export function isAllCharacterObjectivesCompleted(
   return (
     completedCharacterObjectives.length === CHARACTER_OBJECTIVE_KINDS.length
   );
-}
-
-/** Only used for debugging. */
-export function setCharacterUnlocked(character: PlayerType): void {
-  const objective = findObjectiveForCharacterAchievement(character);
-  if (objective === undefined) {
-    const characterName = getCharacterName(character);
-    error(`Failed to find the objective to unlock character: ${characterName}`);
-  }
-
-  switch (objective.type) {
-    case ObjectiveType.CHARACTER: {
-      addAchievementCharacterObjective(objective.character, objective.kind);
-      break;
-    }
-
-    case ObjectiveType.CHALLENGE: {
-      addAchievementChallenge(objective.challenge);
-      break;
-    }
-  }
-}
-
-function findObjectiveForCharacterAchievement(
-  character: PlayerType,
-): Objective | undefined {
-  for (const [thisCharacter, characterAchievements] of v.persistent
-    .characterAchievements) {
-    for (const [characterObjectiveKind, achievement] of characterAchievements) {
-      if (
-        achievement.type === AchievementType.CHARACTER &&
-        achievement.character === character
-      ) {
-        return {
-          type: ObjectiveType.CHARACTER,
-          character: thisCharacter,
-          kind: characterObjectiveKind,
-        };
-      }
-    }
-  }
-
-  for (const [challenge, achievement] of v.persistent.challengeAchievements) {
-    if (
-      achievement.type === AchievementType.CHARACTER &&
-      achievement.character === character
-    ) {
-      return {
-        type: ObjectiveType.CHALLENGE,
-        challenge,
-      };
-    }
-  }
-
-  return undefined;
-}
-
-/** Only used for debugging. */
-export function setCollectibleUnlocked(collectibleType: CollectibleType): void {
-  const objective = findObjectiveForCollectibleAchievement(collectibleType);
-  if (objective === undefined) {
-    const collectibleName = getCollectibleName(collectibleType);
-    error(
-      `Failed to find the objective to unlock character: ${collectibleName}`,
-    );
-  }
-
-  switch (objective.type) {
-    case ObjectiveType.CHARACTER: {
-      addAchievementCharacterObjective(objective.character, objective.kind);
-      break;
-    }
-
-    case ObjectiveType.CHALLENGE: {
-      addAchievementChallenge(objective.challenge);
-      break;
-    }
-  }
-}
-
-function findObjectiveForCollectibleAchievement(
-  collectibleType: CollectibleType,
-): Objective | undefined {
-  for (const [thisCharacter, characterAchievements] of v.persistent
-    .characterAchievements) {
-    for (const [characterObjectiveKind, achievement] of characterAchievements) {
-      if (
-        achievement.type === AchievementType.COLLECTIBLE &&
-        achievement.collectibleType === collectibleType
-      ) {
-        return {
-          type: ObjectiveType.CHARACTER,
-          character: thisCharacter,
-          kind: characterObjectiveKind,
-        };
-      }
-    }
-  }
-
-  for (const [challenge, achievement] of v.persistent.challengeAchievements) {
-    if (
-      achievement.type === AchievementType.COLLECTIBLE &&
-      achievement.collectibleType === collectibleType
-    ) {
-      return {
-        type: ObjectiveType.CHALLENGE,
-        challenge,
-      };
-    }
-  }
-
-  return undefined;
 }
 
 // --------------
@@ -468,6 +348,14 @@ export function isChallengeUnlocked(challenge: Challenge): boolean {
     (achievement) =>
       achievement.type === AchievementType.CHALLENGE &&
       achievement.challenge === challenge,
+  );
+}
+
+export function isChallengeObjectiveCompleted(challenge: Challenge): boolean {
+  return v.persistent.completedObjectives.some(
+    (objective) =>
+      objective.type === ObjectiveType.CHALLENGE &&
+      objective.challenge === challenge,
   );
 }
 
@@ -706,4 +594,120 @@ export function isChestPickupVariantUnlocked(
       achievement.type === AchievementType.CHEST &&
       achievement.pickupVariant === pickupVariant,
   );
+}
+
+// ---------------
+// Debug functions
+// ---------------
+
+/** Only used for debugging. */
+export function setCharacterUnlocked(character: PlayerType): void {
+  const objective = findObjectiveForCharacterAchievement(character);
+  if (objective === undefined) {
+    const characterName = getCharacterName(character);
+    error(`Failed to find the objective to unlock character: ${characterName}`);
+  }
+
+  switch (objective.type) {
+    case ObjectiveType.CHARACTER: {
+      addAchievementCharacterObjective(objective.character, objective.kind);
+      break;
+    }
+
+    case ObjectiveType.CHALLENGE: {
+      addAchievementChallenge(objective.challenge);
+      break;
+    }
+  }
+}
+
+function findObjectiveForCharacterAchievement(
+  character: PlayerType,
+): Objective | undefined {
+  for (const [thisCharacter, characterAchievements] of v.persistent
+    .characterAchievements) {
+    for (const [characterObjectiveKind, achievement] of characterAchievements) {
+      if (
+        achievement.type === AchievementType.CHARACTER &&
+        achievement.character === character
+      ) {
+        return {
+          type: ObjectiveType.CHARACTER,
+          character: thisCharacter,
+          kind: characterObjectiveKind,
+        };
+      }
+    }
+  }
+
+  for (const [challenge, achievement] of v.persistent.challengeAchievements) {
+    if (
+      achievement.type === AchievementType.CHARACTER &&
+      achievement.character === character
+    ) {
+      return {
+        type: ObjectiveType.CHALLENGE,
+        challenge,
+      };
+    }
+  }
+
+  return undefined;
+}
+
+/** Only used for debugging. */
+export function setCollectibleUnlocked(collectibleType: CollectibleType): void {
+  const objective = findObjectiveForCollectibleAchievement(collectibleType);
+  if (objective === undefined) {
+    const collectibleName = getCollectibleName(collectibleType);
+    error(
+      `Failed to find the objective to unlock character: ${collectibleName}`,
+    );
+  }
+
+  switch (objective.type) {
+    case ObjectiveType.CHARACTER: {
+      addAchievementCharacterObjective(objective.character, objective.kind);
+      break;
+    }
+
+    case ObjectiveType.CHALLENGE: {
+      addAchievementChallenge(objective.challenge);
+      break;
+    }
+  }
+}
+
+function findObjectiveForCollectibleAchievement(
+  collectibleType: CollectibleType,
+): Objective | undefined {
+  for (const [thisCharacter, characterAchievements] of v.persistent
+    .characterAchievements) {
+    for (const [characterObjectiveKind, achievement] of characterAchievements) {
+      if (
+        achievement.type === AchievementType.COLLECTIBLE &&
+        achievement.collectibleType === collectibleType
+      ) {
+        return {
+          type: ObjectiveType.CHARACTER,
+          character: thisCharacter,
+          kind: characterObjectiveKind,
+        };
+      }
+    }
+  }
+
+  for (const [challenge, achievement] of v.persistent.challengeAchievements) {
+    if (
+      achievement.type === AchievementType.COLLECTIBLE &&
+      achievement.collectibleType === collectibleType
+    ) {
+      return {
+        type: ObjectiveType.CHALLENGE,
+        challenge,
+      };
+    }
+  }
+
+  return undefined;
 }

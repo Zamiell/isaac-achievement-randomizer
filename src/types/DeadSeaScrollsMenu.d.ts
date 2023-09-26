@@ -34,6 +34,7 @@ interface DeadSeaScrollsMenu {
 
 interface DeadSeaScrollsButton {
   str: string;
+  dest?: string;
   noSel?: boolean;
   clr?: int;
   colorSelect?: boolean;

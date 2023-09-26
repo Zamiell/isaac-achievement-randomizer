@@ -1,7 +1,18 @@
-import { assertDefined, iRange, isOdd } from "isaacscript-common";
+import type { PlayerType } from "isaac-typescript-definitions";
+import { Challenge } from "isaac-typescript-definitions";
+import {
+  MAIN_CHARACTERS,
+  assertDefined,
+  getChallengeName,
+  getCharacterName,
+  iRange,
+  isOdd,
+} from "isaacscript-common";
 import { NUM_TOTAL_ACHIEVEMENTS } from "./achievementAssignment";
+import { CHALLENGES, CHARACTER_OBJECTIVE_KINDS } from "./cachedEnums";
 import {
   getAchievementText,
+  getCharacterObjectiveKindName,
   getObjectiveText,
 } from "./classes/features/AchievementText";
 import {
@@ -12,11 +23,14 @@ import {
   getNumDeaths,
   getRandomizerSeed,
   getTimeElapsed,
+  isChallengeUnlocked,
+  isCharacterObjectiveCompleted,
   isRandomizerEnabled,
   startRandomizer,
 } from "./classes/features/AchievementTracker";
 import { MAX_SEED, MIN_SEED } from "./consoleCommands";
 import { MOD_NAME } from "./constants";
+import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { init } from "./lib/dssmenucore";
 import { mod } from "./mod";
 
@@ -28,7 +42,7 @@ export function initDeadSeaScrolls(): void {
   mod.saveDataManager("deadSeaScrolls", v);
   const DSSMod = init(`${MOD_NAME}-DSS`, 1, v.persistent);
 
-  const directory = {
+  const directory: Record<string, unknown> = {
     main: {
       title: "randomizer menu",
       buttons: [
@@ -81,7 +95,15 @@ export function initDeadSeaScrolls(): void {
             endRandomizer();
           },
           tooltip: {
-            strSet: ["turn the", " randomizer", "off."],
+            strSet: [
+              "turn the",
+              " randomizer",
+              "off.",
+              "",
+              "(this will",
+              "delete your",
+              "progress.)",
+            ],
           },
           displayIf: () => isRandomizerEnabled(),
         },
@@ -175,13 +197,35 @@ export function initDeadSeaScrolls(): void {
     },
 
     recentAchievements: {
-      title: "recent achievements",
+      title: "recent ach.",
       noCursor: true,
       scroller: true,
+      fSize: 2,
 
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
         menu.buttons = getRecentAchievementsButtons();
+      },
+    },
+
+    characterAchievements: {
+      title: "character ach.",
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getCharacterButtons();
+      },
+    },
+
+    challengeAchievements: {
+      title: "challenge ach.",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getChallengeAchievementsButtons();
       },
     },
 
@@ -232,8 +276,24 @@ export function initDeadSeaScrolls(): void {
     },
   };
 
+  for (const character of MAIN_CHARACTERS) {
+    const characterName = getCharacterName(character).toLowerCase();
+
+    directory[`character${character}`] = {
+      title: characterName,
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getSpecificCharacterAchievementsButtons(character);
+      },
+    };
+  }
+
   const directoryKey = {
-    Item: directory.main,
+    Item: directory["main"],
     Main: "main",
     Idle: false,
     MaskAlpha: 1,
@@ -270,11 +330,9 @@ function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
     return [
       {
         str: "no achievements",
-        noSel: true,
       },
       {
         str: "unlocked yet",
-        noSel: true,
       },
     ];
   }
@@ -291,19 +349,19 @@ function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
 
     const objectiveText = getObjectiveText(objective);
 
+    buttons.push({
+      str: `${i + 1}.`,
+    });
+
     for (const [j, line] of objectiveText.entries()) {
-      const prefix = j === 0 ? `${i + 1}) ` : "";
       buttons.push({
-        str: prefix + line.toLowerCase(),
-        noSel: true,
+        str: line.toLowerCase(),
         clr: isOdd(j) ? 3 : 0,
-        fSize: 2,
       });
     }
 
     buttons.push({
       str: "",
-      noSel: true,
     });
 
     const achievementText = getAchievementText(achievement);
@@ -314,16 +372,96 @@ function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
 
       buttons.push({
         str,
-        noSel: true,
-        fSize: 2,
         clr: isOdd(j) ? 3 : 0,
       });
     }
 
     buttons.push({
       str: "",
-      noSel: true,
     });
+  }
+
+  return buttons;
+}
+
+function getCharacterButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const character of MAIN_CHARACTERS) {
+    const characterName = getCharacterName(character).toLowerCase();
+    buttons.push({
+      str: characterName,
+      dest: `character${character}`,
+    });
+  }
+
+  return buttons;
+}
+
+function getSpecificCharacterAchievementsButtons(
+  character: PlayerType,
+): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const characterObjectiveKind of CHARACTER_OBJECTIVE_KINDS) {
+    let objectiveName = getCharacterObjectiveKindName(
+      characterObjectiveKind,
+    ).toLowerCase();
+    if (characterObjectiveKind >= CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1) {
+      objectiveName = `no dmg. on floor ${objectiveName}`;
+    }
+
+    const completed = isCharacterObjectiveCompleted(
+      character,
+      characterObjectiveKind,
+    );
+    const completedText = completed ? "completed" : "x";
+
+    buttons.push(
+      {
+        str: objectiveName,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getChallengeAchievementsButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const challenge of CHALLENGES) {
+    if (challenge === Challenge.NULL) {
+      continue;
+    }
+
+    let challengeName = getChallengeName(challenge).toLowerCase();
+    if (challengeName.length > 19) {
+      challengeName = `${challengeName.slice(0, 19)}...`;
+    }
+
+    const completed = isChallengeUnlocked(challenge);
+    const completedText = completed ? "completed" : "x";
+
+    buttons.push(
+      {
+        str: `${challenge} - ${challengeName}`,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
   }
 
   return buttons;
