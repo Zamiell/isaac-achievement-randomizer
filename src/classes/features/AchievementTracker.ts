@@ -200,11 +200,10 @@ export function getSecondsElapsed(): int {
 
 export function getTimeElapsed(): string {
   const seconds = getSecondsElapsed();
-  const { hours, minute1, minute2, second1, second2 } =
+  const { hour1, hour2, minute1, minute2, second1, second2 } =
     convertSecondsToTimerValues(seconds);
-  const paddedHours = hours < 10 ? `0${hours}` : hours.toString();
 
-  return `${paddedHours}:${minute1}${minute2}:${second1}${second2}`;
+  return `${hour1}${hour2}:${minute1}${minute2}:${second1}${second2}`;
 }
 
 export function preForcedRestart(): void {

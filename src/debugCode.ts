@@ -4,11 +4,8 @@ import {
   setLogFunctionsGlobal,
   setTracebackFunctionsGlobal,
 } from "isaacscript-common";
-import { showNewAchievement } from "./classes/features/AchievementText";
 import { startRandomizer } from "./classes/features/AchievementTracker";
 import { unlockCharacter, unlockCollectible } from "./consoleCommands";
-import { AchievementType } from "./enums/AchievementType";
-import { UnlockablePath } from "./enums/UnlockablePath";
 import { mod } from "./mod";
 
 /** Currently, F2 is set to execute this function. */
@@ -28,11 +25,6 @@ export function hotkey1Function(): void {
 /** Hotkey 2 is bound to F3. */
 export function hotkey2Function(): void {
   logAndPrint("Hotkey 2 activated.");
-
-  showNewAchievement({
-    type: AchievementType.PATH,
-    unlockablePath: UnlockablePath.THE_CHEST,
-  });
 }
 
 /** Executed from the "debug" console command. */
