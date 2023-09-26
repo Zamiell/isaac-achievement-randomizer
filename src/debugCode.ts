@@ -8,7 +8,7 @@ import { startRandomizer } from "./classes/features/AchievementTracker";
 import { unlockCharacter, unlockCollectible } from "./consoleCommands";
 import { mod } from "./mod";
 
-/** Currently, F2 is set to execute this function. */
+/** Currently, F3 is set to execute this function. */
 function debugCode(_params?: string) {
   // Add code here.
   startRandomizer(undefined);
@@ -16,13 +16,13 @@ function debugCode(_params?: string) {
   unlockCollectible("Moms Knife");
 }
 
-/** Hotkey 1 is bound to F2. */
+/** Hotkey 1 is bound to F3. */
 export function hotkey1Function(): void {
   logAndPrint("Hotkey 1 activated.");
   debugCode();
 }
 
-/** Hotkey 2 is bound to F3. */
+/** Hotkey 2 is bound to F4. */
 export function hotkey2Function(): void {
   logAndPrint("Hotkey 2 activated.");
 }

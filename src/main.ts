@@ -48,8 +48,8 @@ export function main(): void {
     mod.removeFadeIn();
 
     mod.addConsoleCommand("d", debugFunction);
-    mod.setHotkey(Keyboard.F2, hotkey1Function);
-    mod.setHotkey(Keyboard.F3, hotkey2Function);
+    mod.setHotkey(Keyboard.F3, hotkey1Function);
+    mod.setHotkey(Keyboard.F4, hotkey2Function);
   }
 
   initDeadSeaScrolls();
