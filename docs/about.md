@@ -120,7 +120,7 @@ All challenges start off locked.
 
 Every collectible in the game is locked behind a random objective, with the following exceptions:
 
-- 9 collectibles from the Treasure Room pool (#0):
+- 10 collectibles from the Treasure Room pool (#0):
   - Boom (#19)
   - Black Bean (#180)
   - Tiny Planet (#233)
