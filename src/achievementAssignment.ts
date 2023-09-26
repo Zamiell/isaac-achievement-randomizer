@@ -737,6 +737,15 @@ function getAchievementIndexMatchingType(
       break;
     }
 
+    case AchievementType.CARD: {
+      index = achievements.findIndex(
+        (achievement) =>
+          achievement.type === AchievementType.CARD &&
+          achievement.cardType === kind,
+      );
+      break;
+    }
+
     default: {
       return error(
         `Unhandled matching logic for achievement type: ${AchievementType[type]}`,
