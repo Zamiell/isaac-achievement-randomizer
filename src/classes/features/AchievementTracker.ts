@@ -8,18 +8,22 @@ import type {
 } from "isaac-typescript-definitions";
 import {
   BombSubType,
+  CallbackPriority,
   Challenge,
   CoinSubType,
   HeartSubType,
   ItemConfigTag,
   KeySubType,
+  ModCallback,
   PickupVariant,
   PlayerType,
 } from "isaac-typescript-definitions";
 import {
+  Callback,
   DefaultMap,
   GAME_FRAMES_PER_SECOND,
   ModFeature,
+  PriorityCallback,
   collectibleHasTag,
   filterMap,
   game,
@@ -47,7 +51,9 @@ import { showNewAchievement } from "./AchievementText";
 
 const STARTING_CHARACTER = PlayerType.ISAAC;
 
-export const NUM_TOTAL_ACHIEVEMENTS = 1132;
+/** `isaacscript-common` uses `CallbackPriority.IMPORTANT` (-200). */
+const HIGHER_PRIORITY_THAN_ISAACSCRIPT_COMMON = (CallbackPriority.IMPORTANT -
+  1) as CallbackPriority;
 
 const v = {
   persistent: {
@@ -70,10 +76,64 @@ const v = {
       showTimer: false,
     },
   },
+
+  run: {
+    shouldIncrementTime: true,
+    shouldIncrementDeathCounter: true,
+  },
 };
 
+/** This does not extend from `RandomizerModFeature` to avoid a dependency cycle. */
 export class AchievementTracker extends ModFeature {
   v = v;
+
+  // 16
+  @Callback(ModCallback.POST_GAME_END)
+  postGameEnd(isGameOver: boolean): void {
+    if (v.persistent.seed === null) {
+      return;
+    }
+
+    if (!isGameOver) {
+      v.run.shouldIncrementDeathCounter = false;
+    }
+  }
+
+  /**
+   * We need this function to fire before the save data manager or else the `numDeaths` modification
+   * will never be written to disk.
+   */
+  // 17
+  @PriorityCallback(
+    ModCallback.PRE_GAME_EXIT,
+    HIGHER_PRIORITY_THAN_ISAACSCRIPT_COMMON,
+  )
+  preGameExit(): void {
+    if (v.persistent.seed === null) {
+      return;
+    }
+
+    this.incrementTime();
+    this.incrementDeathCounter();
+  }
+
+  incrementTime(): void {
+    if (!v.run.shouldIncrementTime) {
+      v.run.shouldIncrementTime = true;
+      return;
+    }
+
+    v.persistent.gameFramesElapsed += game.GetFrameCount();
+  }
+
+  incrementDeathCounter(): void {
+    if (!v.run.shouldIncrementDeathCounter) {
+      v.run.shouldIncrementDeathCounter = true;
+      return;
+    }
+
+    v.persistent.numDeaths++;
+  }
 }
 
 // --------------
@@ -106,6 +166,9 @@ export function startRandomizer(seed: Seed | undefined): void {
   v.persistent.completedAchievements = [];
   v.persistent.completedObjectives = [];
 
+  v.run.shouldIncrementTime = false;
+  v.run.shouldIncrementDeathCounter = false;
+
   restart(STARTING_CHARACTER);
 }
 
@@ -137,6 +200,11 @@ export function getSecondsElapsed(): int {
   const totalFrames = v.persistent.gameFramesElapsed + gameFrameCount;
 
   return totalFrames / GAME_FRAMES_PER_SECOND;
+}
+
+export function preForcedRestart(): void {
+  v.run.shouldIncrementTime = false;
+  v.run.shouldIncrementDeathCounter = false;
 }
 
 export function addAchievementCharacterObjective(

@@ -9,10 +9,10 @@ import {
   isGreedMode,
   onFirstFloor,
 } from "isaacscript-common";
+import { NUM_TOTAL_ACHIEVEMENTS } from "../../achievementAssignment";
 import { convertSecondsToTimerValues } from "../../timer";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
-  NUM_TOTAL_ACHIEVEMENTS,
   getNumCompletedAchievements,
   getNumDeaths,
   getRandomizerSeed,
@@ -80,7 +80,7 @@ export class StartingRoomInfo extends RandomizerModFeature {
       K_COLORS.Green,
     );
 
-    this.drawCenteredText("Deaths:", bottomLeftPosition);
+    this.drawCenteredText("Deaths/resets:", bottomLeftPosition);
     this.drawCenteredText(
       getNumDeaths().toString(),
       bottomLeftPosition.add(Vector(0, 30)),

@@ -90,6 +90,8 @@ const NUM_CHARACTER_OBJECTIVE_KINDS_FOR_LOST = CHARACTER_OBJECTIVE_KINDS.filter(
     characterObjectiveKind < CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1,
 ).length;
 
+export const NUM_TOTAL_ACHIEVEMENTS = getAllAchievements().length;
+
 export function getAchievementsForSeed(seed: Seed): Achievements {
   const rng = newRNG(seed);
 

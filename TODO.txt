@@ -1,8 +1,21 @@
 TODO:
 
+- timer toggle via DSS
+
 - need logic for bosses behind unlockable paths e.g. MOMS_HEART_ALT
 
 - death tracker should detect non-finished runs where the player did not die, verify this works
+
+- state tracking:
+  - death
+    - POST_GAME_END (true) - happens when the death animation finishes when death note appears on UI
+    - PRE_GAME_EXIT (false) - happens after pressing enter on death note UI to load new seed
+  - reset
+    - PRE_GAME_EXIT (false)
+  - win
+    - POST_GAME_END (false)
+    - PRE_GAME_EXIT (false)
+
 
 - finish dead sea scrolls
   - Achievement List tooltip should display X / X

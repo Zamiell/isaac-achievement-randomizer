@@ -11,10 +11,12 @@ import {
   ModCallbackCustom,
   anyPlayerHasCollectibleEffect,
   getCoins,
+  logError,
   restart,
 } from "isaacscript-common";
 import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
+import { preForcedRestart } from "./AchievementTracker";
 
 /**
  * In addition to preventing saving and quitting, this feature also fixes softlocks in the vanilla
@@ -46,6 +48,8 @@ export class PreventSaveAndQuit extends RandomizerModFeature {
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, true)
   postGameStartedReorderedTrue(): void {
     mod.runNextRenderFrame(() => {
+      logError("Illegal save and quit detected. Restarting the run.");
+      preForcedRestart();
       restart();
     });
   }
