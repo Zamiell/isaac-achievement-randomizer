@@ -739,9 +739,14 @@ function dssmenucore.init(DSSModName, v)
                 if module.height == nil then module.height = fontSpacers[module.size] end
 
                 local fullStr = module.str
-                if type(module.str) == "table" then
+                if type(fullStr) == "function" then
+                    fullStr = module.str()
+                end
+
+                if type(fullStr) == "table" then
+                    local array = fullStr;
                     fullStr = ''
-                    for _, val in ipairs(module.str) do
+                    for _, val in ipairs(array) do
                         fullStr = fullStr .. val.str
                     end
                 end

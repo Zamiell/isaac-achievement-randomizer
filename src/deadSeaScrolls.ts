@@ -1,6 +1,9 @@
 import { assertDefined } from "isaacscript-common";
+import { getAchievementText } from "./classes/features/AchievementText";
 import {
   endRandomizer,
+  getCompletedAchievements,
+  getNumCompletedAchievements,
   getRandomizerSeed,
   isRandomizerEnabled,
   startRandomizer,
@@ -47,7 +50,7 @@ export function initDeadSeaScrolls(): void {
         },
         {
           str: "achievement list",
-          dest: "achievements",
+          dest: "achievementList",
           tooltip: {
             strSet: ["see the", "unlocks you", "have yet", "to complete."],
           },
@@ -138,7 +141,7 @@ export function initDeadSeaScrolls(): void {
           noSel: true,
         },
         {
-          str: "achievementRandomizer 12345",
+          str: "achievementrandomizer 12345", // This must be lowercase.
           fSize: 1,
           noSel: true,
           clr: 3,
@@ -166,8 +169,72 @@ export function initDeadSeaScrolls(): void {
       ],
     },
 
-    achievements: {
-      title: "achievements",
+    achievementList: {
+      title: "achievement list",
+      buttons: [
+        {
+          str: "recent",
+          dest: "recentAchievements",
+        },
+        {
+          str: "",
+          noSel: true,
+        },
+        {
+          str: "character",
+          dest: "characterAchievements",
+        },
+        {
+          str: "challenge",
+          dest: "challengeAchievements",
+        },
+      ],
+    },
+
+    recentAchievements: {
+      title: "recent achievements",
+      buttons: [
+        {
+          str: "no achievements",
+          noSel: true,
+          displayIf: () => getNumCompletedAchievements() === 0,
+        },
+        {
+          str: "unlocked yet",
+          noSel: true,
+          displayIf: () => getNumCompletedAchievements() === 0,
+        },
+        {
+          str: () => getRecentAchievementText(1),
+          noSel: true,
+          displayIf: () => getNumCompletedAchievements() >= 1,
+        },
+        {
+          str: "",
+          noSel: true,
+          displayIf: () => getNumCompletedAchievements() >= 1,
+        },
+        {
+          str: () => getRecentAchievementText(2),
+          noSel: true,
+          displayIf: () => getNumCompletedAchievements() >= 2,
+        },
+        {
+          str: "",
+          noSel: true,
+          displayIf: () => getNumCompletedAchievements() >= 2,
+        },
+        {
+          str: () => getRecentAchievementText(3),
+          noSel: true,
+          displayIf: () => getNumCompletedAchievements() >= 3,
+        },
+        {
+          str: "",
+          noSel: true,
+          displayIf: () => getNumCompletedAchievements() >= 3,
+        },
+      ],
     },
 
     stats: {
@@ -221,4 +288,21 @@ export function initDeadSeaScrolls(): void {
   );
 
   DeadSeaScrollsMenu.AddMenu(MOD_NAME, settings);
+}
+
+function getRecentAchievementText(num: int) {
+  const prefix = `${num}) `;
+  const completedAchievements = getCompletedAchievements();
+  const index = num * -1;
+  const achievement = completedAchievements.at(index);
+  if (achievement === undefined) {
+    return `${prefix} n/a`;
+  }
+  const achievementText = getAchievementText(achievement);
+
+  return [
+    `${prefix} ${achievementText[0]} - ${achievementText[1].toLowerCase()}`,
+    "asdf",
+    "",
+  ];
 }

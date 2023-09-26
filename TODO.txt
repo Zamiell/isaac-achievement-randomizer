@@ -1,6 +1,6 @@
 TODO:
 
-- text on achievement to show what was unlocked
+- need logic for bosses behind unlockable paths e.g. MOMS_HEART_ALT
 
 - death tracker should detect non-finished runs where the player did not die, verify this works
 

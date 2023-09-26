@@ -116,6 +116,10 @@ export function endRandomizer(): void {
   restart(STARTING_CHARACTER);
 }
 
+export function getCompletedAchievements(): Achievement[] {
+  return v.persistent.completedAchievements;
+}
+
 export function getNumCompletedAchievements(): int {
   return v.persistent.completedAchievements.length;
 }
@@ -248,12 +252,10 @@ export function isAllCharacterObjectivesCompleted(
 
 /** Only used for debugging. */
 export function setCharacterUnlocked(character: PlayerType): void {
-  const objective = findCharacterAchievement(character);
+  const objective = findObjectiveForCharacterAchievement(character);
   if (objective === undefined) {
     const characterName = getCharacterName(character);
-    error(
-      `Failed to find the achievement to unlock character: ${characterName}`,
-    );
+    error(`Failed to find the objective to unlock character: ${characterName}`);
   }
 
   switch (objective.type) {
@@ -269,15 +271,12 @@ export function setCharacterUnlocked(character: PlayerType): void {
   }
 }
 
-function findCharacterAchievement(
+function findObjectiveForCharacterAchievement(
   character: PlayerType,
 ): Objective | undefined {
-  for (const [thisCharacter, thisCharacterAchievements] of v.persistent
+  for (const [thisCharacter, characterAchievements] of v.persistent
     .characterAchievements) {
-    for (const [
-      characterObjectiveKind,
-      achievement,
-    ] of thisCharacterAchievements) {
+    for (const [characterObjectiveKind, achievement] of characterAchievements) {
       if (
         achievement.type === AchievementType.CHARACTER &&
         achievement.character === character

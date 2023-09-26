@@ -19,6 +19,8 @@ import {
   arrayRemoveIndexInPlace,
   assertDefined,
   copyArray,
+  getChallengeName,
+  getCharacterName,
   getRandomArrayElement,
   getRandomArrayElementAndRemove,
   log,
@@ -39,6 +41,7 @@ import {
   SACK_SUB_TYPES,
   UNLOCKABLE_PATHS,
 } from "./cachedEnums";
+import { getAchievementText } from "./classes/features/AchievementText";
 import { AchievementType } from "./enums/AchievementType";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
@@ -60,6 +63,8 @@ type CharacterAchievements = DefaultMap<
 
 type ChallengeAchievements = Map<Challenge, Achievement>;
 
+const VERBOSE = false as boolean;
+
 const EASY_OBJECTIVE_KINDS = [
   CharacterObjectiveKind.MOM,
   CharacterObjectiveKind.IT_LIVES,
@@ -79,6 +84,11 @@ const EASY_UNLOCKABLE_PATHS = [
   UnlockablePath.THE_CHEST,
   UnlockablePath.DARK_ROOM,
 ] as const;
+
+const NUM_CHARACTER_OBJECTIVE_KINDS_FOR_LOST = CHARACTER_OBJECTIVE_KINDS.filter(
+  (characterObjectiveKind) =>
+    characterObjectiveKind < CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1,
+).length;
 
 export function getAchievementsForSeed(seed: Seed): Achievements {
   const rng = newRNG(seed);
@@ -110,15 +120,30 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
       easyObjectiveKinds,
       rng,
     );
-    getAndRemoveCharacterObjective(
+    removeCharacterObjective(
       objectives,
       PlayerType.ISAAC,
       randomEasyObjectiveKind,
     );
+
     const isaacAchievements = characterAchievements.getAndSetDefault(
       PlayerType.ISAAC,
     );
+    if (isaacAchievements.has(randomEasyObjectiveKind)) {
+      const characterName = getCharacterName(PlayerType.ISAAC);
+      error(
+        `Failed to add an easy achievement to ${characterName}: ${CharacterObjectiveKind[randomEasyObjectiveKind]}`,
+      );
+    }
+
     isaacAchievements.set(randomEasyObjectiveKind, achievement);
+    if (VERBOSE) {
+      const characterName = getCharacterName(PlayerType.ISAAC);
+      log(
+        `Set easy achievement on ${characterName} --> ${CharacterObjectiveKind[randomEasyObjectiveKind]}`,
+      );
+      logAchievement(achievement);
+    }
   }
 
   // Each character is guaranteed to unlock another character.
@@ -144,15 +169,34 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
       lastCharacterObjectives,
       rng,
     );
-    getAndRemoveCharacterObjective(
+    removeCharacterObjective(
       objectives,
-      character,
+      lastUnlockedCharacter,
       randomCharacterObjective.kind,
     );
+
     const lastCharacterAchievements = characterAchievements.getAndSetDefault(
       lastUnlockedCharacter,
     );
+    if (lastCharacterAchievements.has(randomCharacterObjective.kind)) {
+      const characterName = getCharacterName(lastUnlockedCharacter);
+      error(
+        `Failed to add a progressive character achievement to ${characterName}: ${
+          CharacterObjectiveKind[randomCharacterObjective.kind]
+        }`,
+      );
+    }
+
     lastCharacterAchievements.set(randomCharacterObjective.kind, achievement);
+    if (VERBOSE) {
+      const characterName = getCharacterName(lastUnlockedCharacter);
+      log(
+        `Set progressive character achievement on ${characterName} --> ${
+          CharacterObjectiveKind[randomCharacterObjective.kind]
+        }`,
+      );
+      logAchievement(achievement);
+    }
 
     lastUnlockedCharacter = character;
   }
@@ -165,18 +209,85 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
       case ObjectiveType.CHARACTER: {
         const thisCharacterAchievements =
           characterAchievements.getAndSetDefault(objective.character);
+        if (thisCharacterAchievements.has(objective.kind)) {
+          const characterName = getCharacterName(objective.character);
+          error(
+            `Failed to add an achievement to ${characterName}: ${
+              CharacterObjectiveKind[objective.kind]
+            }`,
+          );
+        }
+
         thisCharacterAchievements.set(objective.kind, achievement);
+        if (VERBOSE) {
+          const characterName = getCharacterName(lastUnlockedCharacter);
+          log(
+            `Set normal character achievement on ${characterName} --> ${
+              CharacterObjectiveKind[objective.kind]
+            }`,
+          );
+          logAchievement(achievement);
+        }
+
         break;
       }
 
       case ObjectiveType.CHALLENGE: {
+        if (challengeAchievements.has(objective.challenge)) {
+          const challengeName = getChallengeName(objective.challenge);
+          error(
+            `Failed to add an achievement to the challenge map: ${challengeName}`,
+          );
+        }
+
         challengeAchievements.set(objective.challenge, achievement);
+        if (VERBOSE) {
+          const challengeName = getChallengeName(objective.challenge);
+          log(`Set normal challenge achievement: ${challengeName}`);
+          logAchievement(achievement);
+        }
+
         break;
       }
     }
   }
 
-  return { characterAchievements, challengeAchievements };
+  const allAchievements: Achievements = {
+    characterAchievements,
+    challengeAchievements,
+  };
+  validateAchievements(allAchievements);
+
+  return allAchievements;
+}
+
+function validateAchievements(achievements: Achievements) {
+  const { characterAchievements, challengeAchievements } = achievements;
+
+  if (characterAchievements.size !== MAIN_CHARACTERS.length) {
+    error(
+      `The "characterAchievements" map had ${characterAchievements.size} elements but it needs ${MAIN_CHARACTERS.length} elements.`,
+    );
+  }
+  for (const [character, thisCharacterAchievements] of characterAchievements) {
+    const correctNumObjectives =
+      character === PlayerType.LOST || character === PlayerType.LOST_B
+        ? NUM_CHARACTER_OBJECTIVE_KINDS_FOR_LOST
+        : CHARACTER_OBJECTIVE_KINDS.length;
+    if (thisCharacterAchievements.size !== correctNumObjectives) {
+      const characterName = getCharacterName(character);
+      error(
+        `The "characterAchievements" map for ${characterName} had ${thisCharacterAchievements.size} elements but it needs ${correctNumObjectives} elements.`,
+      );
+    }
+  }
+  if (challengeAchievements.size !== CHALLENGES.length - 1) {
+    error(
+      `The "challengeAchievements" map had ${
+        challengeAchievements.size
+      } elements but it needs ${CHALLENGES.length - 1} elements.`,
+    );
+  }
 }
 
 function getAllAchievements(): Achievement[] {
@@ -446,6 +557,11 @@ function _logAchievements(achievements: Achievement[]) {
   }
 }
 
+function logAchievement(achievement: Achievement) {
+  const achievementText = getAchievementText(achievement);
+  log(`Achievement: ${achievementText[0]} - ${achievementText[1]}`);
+}
+
 function getAllObjectives(): Objective[] {
   const objectives: Objective[] = [];
 
@@ -566,11 +682,11 @@ function getAchievementIndexMatchingType(
   return index;
 }
 
-function getAndRemoveCharacterObjective(
+function removeCharacterObjective(
   objectives: Objective[],
   character: PlayerType,
   kind: CharacterObjectiveKind,
-): Objective {
+) {
   const index = objectives.findIndex(
     (objective) =>
       objective.type === ObjectiveType.CHARACTER &&
@@ -581,6 +697,4 @@ function getAndRemoveCharacterObjective(
   assertDefined(objective, `Failed to find the objective at index: ${index}`);
 
   arrayRemoveIndexInPlace(objectives, index);
-
-  return objective;
 }

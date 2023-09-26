@@ -109,7 +109,7 @@ export function showNewAchievement(achievement: Achievement): void {
   v.run.renderFrameSet = Isaac.GetFrameCount();
 }
 
-function getAchievementText(achievement: Achievement): [string, string] {
+export function getAchievementText(achievement: Achievement): [string, string] {
   switch (achievement.type) {
     case AchievementType.CHARACTER: {
       return ["character", getCharacterName(achievement.character)];
