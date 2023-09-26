@@ -29,6 +29,7 @@ import {
   game,
   getChallengeName,
   getCharacterName,
+  getCollectibleName,
   getRandomSeed,
   isActiveCollectible,
   isHiddenCollectible,
@@ -374,6 +375,63 @@ function findObjectiveForCharacterAchievement(
     if (
       achievement.type === AchievementType.CHARACTER &&
       achievement.character === character
+    ) {
+      return {
+        type: ObjectiveType.CHALLENGE,
+        challenge,
+      };
+    }
+  }
+
+  return undefined;
+}
+
+/** Only used for debugging. */
+export function setCollectibleUnlocked(collectibleType: CollectibleType): void {
+  const objective = findObjectiveForCollectibleAchievement(collectibleType);
+  if (objective === undefined) {
+    const collectibleName = getCollectibleName(collectibleType);
+    error(
+      `Failed to find the objective to unlock character: ${collectibleName}`,
+    );
+  }
+
+  switch (objective.type) {
+    case ObjectiveType.CHARACTER: {
+      addAchievementCharacterObjective(objective.character, objective.kind);
+      break;
+    }
+
+    case ObjectiveType.CHALLENGE: {
+      addAchievementChallenge(objective.challenge);
+      break;
+    }
+  }
+}
+
+function findObjectiveForCollectibleAchievement(
+  collectibleType: CollectibleType,
+): Objective | undefined {
+  for (const [thisCharacter, characterAchievements] of v.persistent
+    .characterAchievements) {
+    for (const [characterObjectiveKind, achievement] of characterAchievements) {
+      if (
+        achievement.type === AchievementType.COLLECTIBLE &&
+        achievement.collectibleType === collectibleType
+      ) {
+        return {
+          type: ObjectiveType.CHARACTER,
+          character: thisCharacter,
+          kind: characterObjectiveKind,
+        };
+      }
+    }
+  }
+
+  for (const [challenge, achievement] of v.persistent.challengeAchievements) {
+    if (
+      achievement.type === AchievementType.COLLECTIBLE &&
+      achievement.collectibleType === collectibleType
     ) {
       return {
         type: ObjectiveType.CHALLENGE,

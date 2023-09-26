@@ -1,4 +1,4 @@
-import { assertDefined } from "isaacscript-common";
+import { assertDefined, iRange, isOdd } from "isaacscript-common";
 import { NUM_TOTAL_ACHIEVEMENTS } from "./achievementAssignment";
 import {
   getAchievementText,
@@ -121,47 +121,33 @@ export function initDeadSeaScrolls(): void {
 
     specificSeed: {
       title: "specific seed",
+      noCursor: true,
+      fSize: 1,
       buttons: [
         {
           str: "open the console and type the",
-          fSize: 1,
-          noSel: true,
         },
         {
           str: "following command:",
-          fSize: 1,
-          noSel: true,
         },
         {
           str: "",
-          fSize: 1,
-          noSel: true,
         },
         {
           str: "achievementrandomizer 12345", // This must be lowercase.
-          fSize: 1,
-          noSel: true,
           clr: 3,
         },
         {
           str: "",
-          fSize: 1,
-          noSel: true,
         },
         {
           str: 'where "12345" is the seed that you',
-          fSize: 1,
-          noSel: true,
         },
         {
           str: `want to use. (it must be between ${MIN_SEED} and`,
-          fSize: 1,
-          noSel: true,
         },
         {
           str: `${MAX_SEED}.)`,
-          fSize: 1,
-          noSel: true,
         },
       ],
     },
@@ -190,97 +176,45 @@ export function initDeadSeaScrolls(): void {
 
     recentAchievements: {
       title: "recent achievements",
-      buttons: [
-        {
-          str: "no achievements",
-          noSel: true,
-          displayIf: () => getNumCompletedAchievements() === 0,
-        },
-        {
-          str: "unlocked yet",
-          noSel: true,
-          displayIf: () => getNumCompletedAchievements() === 0,
-        },
-        {
-          str: () => getRecentAchievementText(1, 1),
-          noSel: true,
-          displayIf: () => getNumCompletedAchievements() >= 1,
-        },
-        {
-          str: () => getRecentAchievementText(1, 2),
-          noSel: true,
-          displayIf: () => getNumCompletedAchievements() >= 1,
-        },
-        {
-          str: () => getRecentAchievementText(1, 3),
-          noSel: true,
-          displayIf: () => getNumCompletedAchievements() >= 1,
-        },
-        {
-          str: "",
-          noSel: true,
-          displayIf: () => getNumCompletedAchievements() >= 1,
-        },
-        {
-          str: () => getRecentAchievementText(2, 1),
-          noSel: true,
-          displayIf: () => getNumCompletedAchievements() >= 2,
-        },
-        {
-          str: "",
-          noSel: true,
-          displayIf: () => getNumCompletedAchievements() >= 2,
-        },
-        {
-          str: () => getRecentAchievementText(3, 1),
-          noSel: true,
-          displayIf: () => getNumCompletedAchievements() >= 3,
-        },
-        {
-          str: "",
-          noSel: true,
-          displayIf: () => getNumCompletedAchievements() >= 3,
-        },
-      ],
+      noCursor: true,
+      scroller: true,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getRecentAchievementsButtons();
+      },
     },
 
     stats: {
       title: "stats",
+      noCursor: true,
       buttons: [
         {
           str: "achievements:",
-          noSel: true,
         },
         {
           str: () =>
             `${getNumCompletedAchievements()} / ${NUM_TOTAL_ACHIEVEMENTS}`,
-          noSel: true,
           colorSelect: true,
         },
         {
           str: "",
-          noSel: true,
         },
         {
           str: "deaths:",
-          noSel: true,
         },
         {
           str: getNumDeaths,
-          noSel: true,
           colorSelect: true,
         },
         {
           str: "",
-          noSel: true,
         },
         {
           str: "total time:",
-          noSel: true,
         },
         {
           str: getTimeElapsed,
-          noSel: true,
           colorSelect: true,
         },
       ],
@@ -325,39 +259,72 @@ export function initDeadSeaScrolls(): void {
   DeadSeaScrollsMenu.AddMenu(MOD_NAME, settings);
 }
 
-function getRecentAchievementText(num: int, lineNum: 1 | 2 | 3 | 4): string {
-  const index = num * -1;
+function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
+  const completedAchievements = getCompletedAchievements();
+  completedAchievements.reverse();
 
-  switch (lineNum) {
-    case 1: {
-      const completedObjectives = getCompletedObjectives();
-      const objective = completedObjectives.at(index);
-      if (objective === undefined) {
-        error(`Failed to find the objective at index: ${index}`);
-      }
+  const completedObjectives = getCompletedObjectives();
+  completedObjectives.reverse();
 
-      const objectiveText = getObjectiveText(objective);
-      return objectiveText[0];
-    }
-
-    case 2: {
-      const completedAchievements = getCompletedAchievements();
-      const achievement = completedAchievements.at(index);
-      if (achievement === undefined) {
-        error(`Failed to find the achievement at index: ${index}`);
-      }
-      const achievementText = getAchievementText(achievement);
-      return `${num}) ${
-        achievementText[0]
-      } - ${achievementText[1].toLowerCase()}`;
-    }
-
-    case 3: {
-      return "todo";
-    }
-
-    case 4: {
-      return "todo";
-    }
+  if (completedAchievements.length === 0) {
+    return [
+      {
+        str: "no achievements",
+        noSel: true,
+      },
+      {
+        str: "unlocked yet",
+        noSel: true,
+      },
+    ];
   }
+
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const i of iRange(10)) {
+    const achievement = completedAchievements[i];
+    const objective = completedObjectives[i];
+
+    if (achievement === undefined || objective === undefined) {
+      continue;
+    }
+
+    const objectiveText = getObjectiveText(objective);
+
+    for (const [j, line] of objectiveText.entries()) {
+      const prefix = j === 0 ? `${i + 1}) ` : "";
+      buttons.push({
+        str: prefix + line.toLowerCase(),
+        noSel: true,
+        clr: isOdd(j) ? 3 : 0,
+        fSize: 2,
+      });
+    }
+
+    buttons.push({
+      str: "",
+      noSel: true,
+    });
+
+    const achievementText = getAchievementText(achievement);
+
+    for (const [j, line] of achievementText.entries()) {
+      const str =
+        j === 0 ? `unlocked ${line.toLowerCase()}:` : line.toLowerCase();
+
+      buttons.push({
+        str,
+        noSel: true,
+        fSize: 2,
+        clr: isOdd(j) ? 3 : 0,
+      });
+    }
+
+    buttons.push({
+      str: "",
+      noSel: true,
+    });
+  }
+
+  return buttons;
 }

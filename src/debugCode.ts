@@ -6,7 +6,7 @@ import {
 } from "isaacscript-common";
 import { showNewAchievement } from "./classes/features/AchievementText";
 import { startRandomizer } from "./classes/features/AchievementTracker";
-import { unlockChar } from "./consoleCommands";
+import { unlockCharacter, unlockCollectible } from "./consoleCommands";
 import { AchievementType } from "./enums/AchievementType";
 import { UnlockablePath } from "./enums/UnlockablePath";
 import { mod } from "./mod";
@@ -15,7 +15,8 @@ import { mod } from "./mod";
 function debugCode(_params?: string) {
   // Add code here.
   startRandomizer(undefined);
-  unlockChar("2");
+  unlockCharacter("2");
+  unlockCollectible("Moms Knife");
 }
 
 /** Hotkey 1 is bound to F2. */

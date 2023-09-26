@@ -27,8 +27,17 @@ interface DeadSeaScrollsPalette {
   [3]: [r: int, g: int, b: int];
 }
 
+interface DeadSeaScrollsMenu {
+  title: string;
+  buttons: DeadSeaScrollsButton[];
+}
+
 interface DeadSeaScrollsButton {
   str: string;
+  noSel?: boolean;
+  clr?: int;
+  colorSelect?: boolean;
+  fSize?: int;
 }
 
 declare const DeadSeaScrollsMenu: DeadSeaScrollsMenu | undefined;
