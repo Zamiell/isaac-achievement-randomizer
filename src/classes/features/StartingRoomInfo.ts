@@ -10,13 +10,12 @@ import {
   onFirstFloor,
 } from "isaacscript-common";
 import { NUM_TOTAL_ACHIEVEMENTS } from "../../achievementAssignment";
-import { convertSecondsToTimerValues } from "../../timer";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   getNumCompletedAchievements,
   getNumDeaths,
   getRandomizerSeed,
-  getSecondsElapsed,
+  getTimeElapsed,
 } from "./AchievementTracker";
 import { hasErrors } from "./CheckErrors";
 
@@ -88,20 +87,11 @@ export class StartingRoomInfo extends RandomizerModFeature {
     );
 
     this.drawCenteredText("Total time:", bottomRightPosition);
-    const seconds = getSecondsElapsed();
     this.drawCenteredText(
-      this.gameFramesToTimeString(seconds),
+      getTimeElapsed(),
       bottomRightPosition.add(Vector(0, 30)),
       K_COLORS.Green,
     );
-  }
-
-  gameFramesToTimeString(seconds: int): string {
-    const { hours, minute1, minute2, second1, second2 } =
-      convertSecondsToTimerValues(seconds);
-    const paddedHours = hours < 10 ? `0${hours}` : hours.toString();
-
-    return `${paddedHours}:${minute1}${minute2}:${second1}${second2}`;
   }
 
   drawCenteredText(

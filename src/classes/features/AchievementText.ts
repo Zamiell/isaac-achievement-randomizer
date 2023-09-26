@@ -116,7 +116,9 @@ export function showNewAchievement(achievement: Achievement): void {
   sfxManager.Play(SoundEffectCustom.GOLDEN_WALNUT);
 }
 
-export function getObjectiveText(objective: Objective): string {
+export function getObjectiveText(
+  objective: Objective,
+): [string, string, string, string] {
   switch (objective.type) {
     case ObjectiveType.CHARACTER: {
       const characterName = getCharacterName(objective.character);
@@ -125,13 +127,18 @@ export function getObjectiveText(objective: Objective): string {
       );
 
       return objective.kind < CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1
-        ? `Defeated ${characterObjectiveKindName} on: ${characterName}`
-        : `No damage on floor #${characterObjectiveKindName} on: ${characterName}`;
+        ? ["Defeated", characterObjectiveKindName, "on:", characterName]
+        : [
+            "No damage on",
+            `floor #${characterObjectiveKindName}`,
+            "on:",
+            characterName,
+          ];
     }
 
     case ObjectiveType.CHALLENGE: {
       const challengeName = getChallengeName(objective.challenge);
-      return `Completed challenge: ${challengeName}`;
+      return ["Completed challenge:", challengeName, "", ""];
     }
   }
 }

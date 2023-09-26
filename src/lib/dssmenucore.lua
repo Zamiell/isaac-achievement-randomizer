@@ -51,6 +51,19 @@ local dssmenucore = {}
 ---@field changelogsButton table<string, any>
 ---@field menuOpenToolTip table<string, any>
 
+local function tableToString(o)
+    if type(o) == 'table' then
+       local s = '{ '
+       for k,v in pairs(o) do
+          if type(k) ~= 'number' then k = '"'..k..'"' end
+          s = s .. '['..k..'] = ' .. tableToString(v) .. ','
+       end
+       return s .. '} '
+    else
+       return tostring(o)
+    end
+ end
+
 ---The function to initialize the Dead Sea Scrolls library, which will create a `DeadSeaScrollsMenu`
 ---global variable if it does not already exist.
 ---@param DSSModName string A string used as an identifier for your mod's menu. It should be unique.
@@ -816,7 +829,6 @@ function dssmenucore.init(DSSModName, v)
         end
 
         --buttons
-        local buttonSelection = item.buttonSelection
         if buttons then
             for i, btn in ipairs(buttons) do
                 if not btn.forceNoDisplay then
@@ -899,6 +911,7 @@ function dssmenucore.init(DSSModName, v)
                     or i == #dynamicSet.set
                     or drawing.fullRow
                     or (dynamicSet.set[i + 1] and dynamicSet.set[i + 1].fullRow) then
+
                     dynamicSet.height = dynamicSet.height + highestInRow
                     if buttonSelectionInRow then
                         selOff = dynamicSet.height - highestInRow / 2
@@ -1615,8 +1628,10 @@ function dssmenucore.init(DSSModName, v)
                 end
             end
 
-            button.selected = true
-            item.selectedButton = button
+            if not allNoSel then
+                button.selected = true
+                item.selectedButton = button
+            end
         end
 
         --pages
@@ -2031,7 +2046,7 @@ function dssmenucore.init(DSSModName, v)
                             panelPos,
                             active.Panel
                         )
-                        for _, drawing in ipairs(drawings) do
+                        for i, drawing in ipairs(drawings) do
                             DSSMod.drawMenu(tbl, drawing)
                         end
                     end

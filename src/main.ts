@@ -6,10 +6,7 @@ import {
   setTracebackFunctionsGlobal,
 } from "isaacscript-common";
 import { AchievementDetection } from "./classes/features/AchievementDetection";
-import {
-  AchievementText,
-  showNewAchievement,
-} from "./classes/features/AchievementText";
+import { AchievementText } from "./classes/features/AchievementText";
 import { AchievementTracker } from "./classes/features/AchievementTracker";
 import { CheckErrors } from "./classes/features/CheckErrors";
 import { EdenTMTRAINER } from "./classes/features/EdenTMTrainer";
@@ -22,9 +19,7 @@ import { Timer } from "./classes/features/Timer";
 import { initConsoleCommands } from "./consoleCommands";
 import { IS_DEV, MOD_NAME } from "./constants";
 import { initDeadSeaScrolls } from "./deadSeaScrolls";
-import { debugFunction, hotkey1Function } from "./debugCode";
-import { AchievementType } from "./enums/AchievementType";
-import { UnlockablePath } from "./enums/UnlockablePath";
+import { debugFunction, hotkey1Function, hotkey2Function } from "./debugCode";
 import { mod } from "./mod";
 
 const MOD_FEATURES = [
@@ -54,12 +49,7 @@ export function main(): void {
 
     mod.addConsoleCommand("d", debugFunction);
     mod.setHotkey(Keyboard.F2, hotkey1Function);
-    mod.setHotkey(Keyboard.F3, () => {
-      showNewAchievement({
-        type: AchievementType.PATH,
-        unlockablePath: UnlockablePath.THE_CHEST,
-      });
-    });
+    mod.setHotkey(Keyboard.F3, hotkey2Function);
   }
 
   initDeadSeaScrolls();

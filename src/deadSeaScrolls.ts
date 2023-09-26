@@ -1,4 +1,5 @@
 import { assertDefined } from "isaacscript-common";
+import { NUM_TOTAL_ACHIEVEMENTS } from "./achievementAssignment";
 import {
   getAchievementText,
   getObjectiveText,
@@ -8,7 +9,9 @@ import {
   getCompletedAchievements,
   getCompletedObjectives,
   getNumCompletedAchievements,
+  getNumDeaths,
   getRandomizerSeed,
+  getTimeElapsed,
   isRandomizerEnabled,
   startRandomizer,
 } from "./classes/features/AchievementTracker";
@@ -34,19 +37,9 @@ export function initDeadSeaScrolls(): void {
           noSel: true,
         },
         {
-          str: "",
+          str: () => getRandomizerSeed() ?? "[disabled]",
           colorSelect: true,
           noSel: true,
-
-          /** @noSelf */
-          update: (button: DeadSeaScrollsButton) => {
-            const randomizerSeed = getRandomizerSeed();
-
-            button.str =
-              randomizerSeed === undefined
-                ? "[disabled]"
-                : randomizerSeed.toString();
-          },
         },
         {
           str: "",
@@ -255,12 +248,40 @@ export function initDeadSeaScrolls(): void {
       title: "stats",
       buttons: [
         {
-          str: "time: 0",
+          str: "achievements:",
           noSel: true,
         },
         {
-          str: "deaths: 0",
+          str: () =>
+            `${getNumCompletedAchievements()} / ${NUM_TOTAL_ACHIEVEMENTS}`,
           noSel: true,
+          colorSelect: true,
+        },
+        {
+          str: "",
+          noSel: true,
+        },
+        {
+          str: "deaths:",
+          noSel: true,
+        },
+        {
+          str: getNumDeaths,
+          noSel: true,
+          colorSelect: true,
+        },
+        {
+          str: "",
+          noSel: true,
+        },
+        {
+          str: "total time:",
+          noSel: true,
+        },
+        {
+          str: getTimeElapsed,
+          noSel: true,
+          colorSelect: true,
         },
       ],
     },
@@ -304,7 +325,7 @@ export function initDeadSeaScrolls(): void {
   DeadSeaScrollsMenu.AddMenu(MOD_NAME, settings);
 }
 
-function getRecentAchievementText(num: int, lineNum: 1 | 2 | 3) {
+function getRecentAchievementText(num: int, lineNum: 1 | 2 | 3 | 4): string {
   const index = num * -1;
 
   switch (lineNum) {
@@ -315,8 +336,8 @@ function getRecentAchievementText(num: int, lineNum: 1 | 2 | 3) {
         error(`Failed to find the objective at index: ${index}`);
       }
 
-      const objectiveText = getObjectiveText(objective).toLowerCase();
-      return objectiveText;
+      const objectiveText = getObjectiveText(objective);
+      return objectiveText[0];
     }
 
     case 2: {
@@ -332,6 +353,10 @@ function getRecentAchievementText(num: int, lineNum: 1 | 2 | 3) {
     }
 
     case 3: {
+      return "todo";
+    }
+
+    case 4: {
       return "todo";
     }
   }

@@ -1,30 +1,20 @@
 TODO:
 
+- finish dead sea scrolls
+  - Achievement List tooltip should display X / X
+
 - timer toggle via DSS
 
 - need logic for bosses behind unlockable paths e.g. MOMS_HEART_ALT
 
-- death tracker should detect non-finished runs where the player did not die, verify this works
-
-- state tracking:
-  - death
-    - POST_GAME_END (true) - happens when the death animation finishes when death note appears on UI
-    - PRE_GAME_EXIT (false) - happens after pressing enter on death note UI to load new seed
-  - reset
-    - PRE_GAME_EXIT (false)
-  - win
-    - POST_GAME_END (false)
-    - PRE_GAME_EXIT (false)
-
-
-- finish dead sea scrolls
-  - Achievement List tooltip should display X / X
+POTENTIAL TODO:
 
 - unlock logic for collectibles:
   - Humbleing Bundle (#203) behind one of 2x coin/bomb/key
   - Bogo Bombs (#250) behind double bomb
   - Battery Pack (#603) behind Lil Battery
   - Maggy's Bow (#312) behind
+
 - unlock logic for trinkets:
   - Daemon's Tail (#22) behind black hearts
   - Left Hand (#61) behind Red Chests

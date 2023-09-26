@@ -42,6 +42,7 @@ import { AchievementType } from "../../enums/AchievementType";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { UnlockablePath } from "../../enums/UnlockablePath";
+import { convertSecondsToTimerValues } from "../../timer";
 import type { Achievement } from "../../types/Achievement";
 import { PillAchievementKind } from "../../types/Achievement";
 import type { Objective } from "../../types/Objective";
@@ -166,9 +167,7 @@ export function startRandomizer(seed: Seed | undefined): void {
   v.persistent.completedAchievements = [];
   v.persistent.completedObjectives = [];
 
-  v.run.shouldIncrementTime = false;
-  v.run.shouldIncrementDeathCounter = false;
-
+  preForcedRestart();
   restart(STARTING_CHARACTER);
 }
 
@@ -200,6 +199,15 @@ export function getSecondsElapsed(): int {
   const totalFrames = v.persistent.gameFramesElapsed + gameFrameCount;
 
   return totalFrames / GAME_FRAMES_PER_SECOND;
+}
+
+export function getTimeElapsed(): string {
+  const seconds = getSecondsElapsed();
+  const { hours, minute1, minute2, second1, second2 } =
+    convertSecondsToTimerValues(seconds);
+  const paddedHours = hours < 10 ? `0${hours}` : hours.toString();
+
+  return `${paddedHours}:${minute1}${minute2}:${second1}${second2}`;
 }
 
 export function preForcedRestart(): void {
