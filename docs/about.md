@@ -120,12 +120,16 @@ All challenges start off locked.
 
 Every collectible in the game is locked behind a random objective, with the following exceptions:
 
-- 7 collectibles from the Treasure Room pool (#0):
+- 9 collectibles from the Treasure Room pool (#0):
+  - Boom (#19)
+  - Black Bean (#180)
   - Tiny Planet (#233)
   - Best Bud (#274)
   - Isaac's Heart (#276)
   - Strange Attractor (#315)
+  - Cain's Other Eye (#319)
   - Key Bum (#388)
+  - Linger Bean (#447)
   - Hush (#470)
 - 5 collectibles from the Shop pool (#1):
   - Ladder (#60)

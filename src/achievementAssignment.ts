@@ -121,6 +121,7 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
   const objectives = getAllObjectives();
 
   if (achievements.length !== objectives.length) {
+    logAchievements(achievements);
     error(
       `There were ${achievements.length} total achievements and ${objectives.length} total objectives. These must exactly match.`,
     );
@@ -562,7 +563,7 @@ function getAllAchievements(): Achievement[] {
   return achievements;
 }
 
-function _logAchievements(achievements: Achievement[]) {
+function logAchievements(achievements: Achievement[]) {
   log("Logging all achievements.");
 
   for (const achievementType of ACHIEVEMENT_TYPES) {
