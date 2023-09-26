@@ -23,7 +23,7 @@ import {
   getNumDeaths,
   getRandomizerSeed,
   getTimeElapsed,
-  isChallengeUnlocked,
+  isChallengeObjectiveCompleted,
   isCharacterObjectiveCompleted,
   isRandomizerEnabled,
   startRandomizer,
@@ -187,11 +187,11 @@ export function initDeadSeaScrolls(): void {
         },
         {
           str: "character",
-          dest: "characterAchievements",
+          dest: "characterObjectives",
         },
         {
           str: "challenge",
-          dest: "challengeAchievements",
+          dest: "challengeObjectives",
         },
       ],
     },
@@ -208,8 +208,8 @@ export function initDeadSeaScrolls(): void {
       },
     },
 
-    characterAchievements: {
-      title: "character ach.",
+    characterObjectives: {
+      title: "character todo",
 
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
@@ -217,15 +217,15 @@ export function initDeadSeaScrolls(): void {
       },
     },
 
-    challengeAchievements: {
-      title: "challenge ach.",
+    challengeObjectives: {
+      title: "challenge todo",
       noCursor: true,
       scroller: true,
       fSize: 2,
 
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
-        menu.buttons = getChallengeAchievementsButtons();
+        menu.buttons = getChallengeObjectiveButtons();
       },
     },
 
@@ -240,6 +240,7 @@ export function initDeadSeaScrolls(): void {
           str: () =>
             `${getNumCompletedAchievements()} / ${NUM_TOTAL_ACHIEVEMENTS}`,
           colorSelect: true,
+          noSel: true,
         },
         {
           str: "",
@@ -250,6 +251,7 @@ export function initDeadSeaScrolls(): void {
         {
           str: getNumDeaths,
           colorSelect: true,
+          noSel: true,
         },
         {
           str: "",
@@ -260,6 +262,7 @@ export function initDeadSeaScrolls(): void {
         {
           str: getTimeElapsed,
           colorSelect: true,
+          noSel: true,
         },
       ],
     },
@@ -287,7 +290,7 @@ export function initDeadSeaScrolls(): void {
 
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
-        menu.buttons = getSpecificCharacterAchievementsButtons(character);
+        menu.buttons = getSpecificCharacterObjectiveButtons(character);
       },
     };
   }
@@ -332,7 +335,7 @@ function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
         str: "no achievements",
       },
       {
-        str: "unlocked yet",
+        str: "unlocked yet.",
       },
     ];
   }
@@ -398,7 +401,7 @@ function getCharacterButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
-function getSpecificCharacterAchievementsButtons(
+function getSpecificCharacterObjectiveButtons(
   character: PlayerType,
 ): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
@@ -434,7 +437,7 @@ function getSpecificCharacterAchievementsButtons(
   return buttons;
 }
 
-function getChallengeAchievementsButtons(): DeadSeaScrollsButton[] {
+function getChallengeObjectiveButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const challenge of CHALLENGES) {
@@ -447,7 +450,7 @@ function getChallengeAchievementsButtons(): DeadSeaScrollsButton[] {
       challengeName = `${challengeName.slice(0, 19)}...`;
     }
 
-    const completed = isChallengeUnlocked(challenge);
+    const completed = isChallengeObjectiveCompleted(challenge);
     const completedText = completed ? "completed" : "x";
 
     buttons.push(
