@@ -33,7 +33,6 @@ import {
   restart,
 } from "isaacscript-common";
 import { getAchievementsForSeed } from "../../achievementAssignment";
-import { showNewAchievement } from "../../achievementUnlock";
 import { CHARACTER_OBJECTIVE_KINDS } from "../../cachedEnums";
 import { AchievementType } from "../../enums/AchievementType";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
@@ -44,6 +43,7 @@ import { PillAchievementKind } from "../../types/Achievement";
 import type { Objective } from "../../types/Objective";
 import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTypes";
 import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../unlockableTrinketTypes";
+import { showNewAchievement } from "./AchievementText";
 
 const STARTING_CHARACTER = PlayerType.ISAAC;
 

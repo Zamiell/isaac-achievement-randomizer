@@ -51,7 +51,7 @@ interface PillEffectAchievement {
   pillEffect: PillEffect;
 }
 
-interface PillAchievement {
+export interface PillAchievement {
   type: AchievementType.PILL;
   kind: PillAchievementKind;
 }

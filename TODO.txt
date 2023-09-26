@@ -1,8 +1,5 @@
 TODO:
 
-- recode eden item giving
-  - eden get 2 passives if no actives are unlocked
-
 - text on achievement to show what was unlocked
 
 - death tracker should detect non-finished runs where the player did not die, verify this works
@@ -16,6 +13,7 @@ TODO:
   - Battery Pack (#603) behind Lil Battery
   - Maggy's Bow (#312) behind
 - unlock logic for trinkets:
+  - Daemon's Tail (#22) behind black hearts
   - Left Hand (#61) behind Red Chests
   - Gilded Key (#159) behind Locked Chests
   - Hollow Heart (#168) behind Bone Hearts

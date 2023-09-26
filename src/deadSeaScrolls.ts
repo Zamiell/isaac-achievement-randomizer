@@ -86,13 +86,6 @@ export function initDeadSeaScrolls(): void {
           displayIf: () => isRandomizerEnabled(),
         },
         {
-          str: "randomizer settings",
-          dest: "randomizerSettings",
-          tooltip: {
-            strSet: ["customize the", "randomizer", "settings."],
-          },
-        },
-        {
           str: "menu settings",
           dest: "menuSettings",
           tooltip: {
