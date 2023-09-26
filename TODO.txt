@@ -1,13 +1,10 @@
 TODO:
 
-- finish dead sea scrolls
-  - Achievement List tooltip should display X / X
-
-- timer toggle via DSS
-
 - need logic for bosses behind unlockable paths e.g. MOMS_HEART_ALT
 
 POTENTIAL TODO:
+
+- see current unlocks in DSS
 
 - unlock logic for collectibles:
   - Humbleing Bundle (#203) behind one of 2x coin/bomb/key

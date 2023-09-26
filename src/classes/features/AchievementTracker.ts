@@ -73,10 +73,6 @@ const v = {
 
     completedObjectives: [] as Objective[],
     completedAchievements: [] as Achievement[],
-
-    config: {
-      showTimer: false,
-    },
   },
 
   run: {
@@ -270,14 +266,6 @@ export function addAchievementChallenge(challenge: Challenge): void {
   v.persistent.completedObjectives.push(objective);
 
   showNewAchievement(achievement);
-}
-
-// ----------------
-// Config functions
-// ----------------
-
-export function shouldShowTimer(): boolean {
-  return v.persistent.config.showTimer;
 }
 
 // -------------------

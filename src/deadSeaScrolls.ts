@@ -34,9 +34,17 @@ import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { init } from "./lib/dssmenucore";
 import { mod } from "./mod";
 
+const DSS_CHOICES = ["disabled", "enabled"] as const;
+
 const v = {
-  persistent: {},
+  persistent: {
+    timer: 1, // Equal to the first DSS choice.
+  },
 };
+
+export function isTimerEnabled(): boolean {
+  return v.persistent.timer === 2;
+}
 
 export function initDeadSeaScrolls(): void {
   mod.saveDataManager("deadSeaScrolls", v);
@@ -90,6 +98,14 @@ export function initDeadSeaScrolls(): void {
           displayIf: () => !isRandomizerEnabled(),
         },
         {
+          str: "randomizer settings",
+          dest: "randomizerSettings",
+          tooltip: {
+            strSet: ["customize the", "timer", "and other", "settings."],
+          },
+          displayIf: () => isRandomizerEnabled(),
+        },
+        {
           str: "end randomizer",
           func: () => {
             endRandomizer();
@@ -105,6 +121,11 @@ export function initDeadSeaScrolls(): void {
               "progress.)",
             ],
           },
+          displayIf: () => isRandomizerEnabled(),
+        },
+        {
+          str: "",
+          noSel: true,
           displayIf: () => isRandomizerEnabled(),
         },
         {
@@ -263,6 +284,29 @@ export function initDeadSeaScrolls(): void {
           str: getTimeElapsed,
           colorSelect: true,
           noSel: true,
+        },
+      ],
+    },
+
+    randomizerSettings: {
+      title: "randomizer settings",
+      buttons: [
+        {
+          str: "timer",
+          choices: DSS_CHOICES,
+          setting: 1,
+          variable: "timer",
+
+          load: () => v.persistent.timer,
+
+          /** @noSelf */
+          store: (choiceIndex: int) => {
+            v.persistent.timer = choiceIndex;
+          },
+
+          tooltip: {
+            strSet: ["whether to", "show the", "timer beneath", "the stat ui."],
+          },
         },
       ],
     },
