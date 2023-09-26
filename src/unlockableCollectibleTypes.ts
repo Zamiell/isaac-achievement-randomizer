@@ -77,6 +77,10 @@ const QUEST_COLLECTIBLE_TYPES = [
   CollectibleType.DADS_NOTE, // 668
 ] as const;
 
+export const QUEST_COLLECTIBLE_TYPES_SET = new ReadonlySet<CollectibleType>(
+  QUEST_COLLECTIBLE_TYPES,
+);
+
 const NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS = [
   CollectibleType.BOOK_OF_BELIAL_BIRTHRIGHT, // 59
   CollectibleType.BROKEN_GLASS_CANNON, // 474
@@ -84,6 +88,9 @@ const NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS = [
   CollectibleType.RECALL, // 714
   CollectibleType.HOLD, // 715
 ] as const;
+
+export const NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS_SET =
+  new ReadonlySet<CollectibleType>(NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS);
 
 export const BANNED_COLLECTIBLE_TYPES = [
   CollectibleType.PLAN_C, // 475

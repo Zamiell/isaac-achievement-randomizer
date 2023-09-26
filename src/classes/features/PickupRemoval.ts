@@ -61,6 +61,8 @@ import { mod } from "../../mod";
 import {
   BANNED_COLLECTIBLE_TYPES,
   BANNED_COLLECTIBLE_TYPES_SET,
+  NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS_SET,
+  QUEST_COLLECTIBLE_TYPES_SET,
   UNLOCKABLE_COLLECTIBLE_TYPES,
 } from "../../unlockableCollectibleTypes";
 import {
@@ -237,7 +239,14 @@ export class PickupRemoval extends RandomizerModFeature {
           continue;
         }
 
-        if (!isCollectibleTypeUnlocked(newCollectibleType)) {
+        if (
+          !isCollectibleTypeUnlocked(newCollectibleType) ||
+          QUEST_COLLECTIBLE_TYPES_SET.has(newCollectibleType) ||
+          NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS_SET.has(
+            newCollectibleType,
+          ) ||
+          BANNED_COLLECTIBLE_TYPES_SET.has(newCollectibleType)
+        ) {
           continue;
         }
 
