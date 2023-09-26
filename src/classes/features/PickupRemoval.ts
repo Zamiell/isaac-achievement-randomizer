@@ -1,4 +1,9 @@
-import type { BatterySubType, SackSubType } from "isaac-typescript-definitions";
+import type {
+  ActiveSlot,
+  BatterySubType,
+  SackSubType,
+  UseFlag,
+} from "isaac-typescript-definitions";
 import {
   BombSubType,
   CardType,
@@ -12,6 +17,7 @@ import {
   PickupVariant,
   PillColor,
   PillEffect,
+  PlayerItemAnimation,
   PlayerType,
   PocketItemSlot,
   SoundEffect,
@@ -27,6 +33,7 @@ import {
   game,
   getCharacterStartingCollectibleTypes,
   getCharacterStartingTrinketType,
+  getCollectibles,
   getNormalPillColorFromHorse,
   getRandomArrayElement,
   getRandomSetElement,
@@ -35,6 +42,7 @@ import {
   isHorsePill,
   isRune,
   isSuitCard,
+  itemConfig,
   log,
   newRNG,
   removeAllEffects,
@@ -43,6 +51,7 @@ import {
   removeAllTears,
   removeCollectibleFromPools,
   removeTrinketFromPools,
+  setCollectibleEmpty,
   setCollectibleSubType,
   setPlayerHealth,
   sfxManager,
@@ -198,6 +207,56 @@ export class PickupRemoval extends RandomizerModFeature {
     }
 
     return getRandomArrayElement(unlockedPillEffects);
+  }
+
+  /**
+   * We have to code Spindown Dice from scratch so that it will skip over locked collectible types.
+   */
+  @Callback(ModCallback.PRE_USE_ITEM, CollectibleType.SPINDOWN_DICE)
+  preUseItemSpindownDice(
+    _collectibleType: CollectibleType,
+    _rng: RNG,
+    player: EntityPlayer,
+    _useFlags: BitFlags<UseFlag>,
+    _activeSlot: ActiveSlot,
+    _customVarData: int,
+  ): boolean | undefined {
+    for (const collectible of getCollectibles()) {
+      let newCollectibleType = collectible.SubType;
+
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-constant-condition
+      while (true) {
+        newCollectibleType--; // eslint-disable-line isaacscript/strict-enums
+
+        if (newCollectibleType === CollectibleType.NULL) {
+          break;
+        }
+
+        const itemConfigItem = itemConfig.GetCollectible(newCollectibleType);
+        if (itemConfigItem === undefined) {
+          continue;
+        }
+
+        if (!isCollectibleTypeUnlocked(newCollectibleType)) {
+          continue;
+        }
+
+        break;
+      }
+
+      if (newCollectibleType === CollectibleType.NULL) {
+        setCollectibleEmpty(collectible);
+      } else {
+        setCollectibleSubType(collectible, newCollectibleType);
+      }
+    }
+
+    player.AnimateCollectible(
+      CollectibleType.SPINDOWN_DICE,
+      PlayerItemAnimation.USE_ITEM,
+    );
+
+    return true;
   }
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
