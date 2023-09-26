@@ -122,7 +122,6 @@ Every collectible in the game is locked behind a random objective, with the foll
 
 - 10 collectibles from the Treasure Room pool (#0):
   - Sack of Pennies (#94)
-  - Abel (#188)
   - Ball of Tar (#231)
   - Tiny Planet (#233)
   - Best Bud (#274)
@@ -187,6 +186,7 @@ Also note that:
 Every trinket in the game is locked behind a random objective, with the following exceptions:
 
 - Banned trinkets in this mod:
+  - Karma (#85) (would be useless; see below)
   - 'M (#138) (would break collectible unlocks)
 
 If no trinkets are unlocked, trinkets will be converted to pennies.
@@ -234,6 +234,10 @@ The mod includes a death tracker. If you are a streaker, try to complete the ran
 The mod includes an on-screen timer, similar to the [Racing+](https://isaacracing.net/) mod. The timer starts off hidden by default, but you can enable it in the Dead Sea Scrolls menu. If you are a speedrunner, try to complete the randomizer as fast as possible!
 
 Unlike the timer in Racing+, the timer in this mod tracks in-game time. Thus, the timer will be paused when the game is paused or when you are in the main menu.
+
+### Donation Machine Removal
+
+The mod removed all Donation Machines from the game in order to increase the difficulty and prevent individual runs from influencing each other. (Additionally, the Karma trinket is removed from the game because it would serve no purpose.)
 
 ### Eden TMTRAINER Handling
 

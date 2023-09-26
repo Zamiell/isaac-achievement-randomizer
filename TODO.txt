@@ -1,6 +1,8 @@
 TODO:
 
 - remove donation machines
+- make sure fool card can work in Depths 2 if thing is unlocked
+- explicit spindown dice handling
 
 POTENTIAL TODO:
 

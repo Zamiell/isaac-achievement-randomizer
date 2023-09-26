@@ -66,6 +66,7 @@ type ChallengeAchievements = Map<Challenge, Achievement>;
 
 const VERBOSE = false as boolean;
 
+/** These are the objectives that The Polaroid and The Negative are gated behind. */
 const EASY_OBJECTIVE_KINDS = [
   CharacterObjectiveKind.MOM,
   CharacterObjectiveKind.IT_LIVES,

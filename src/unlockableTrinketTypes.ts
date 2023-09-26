@@ -2,6 +2,7 @@ import { TrinketType } from "isaac-typescript-definitions";
 import { ReadonlySet, VANILLA_TRINKET_TYPES } from "isaacscript-common";
 
 export const BANNED_TRINKET_TYPES = [
+  TrinketType.KARMA, // 85
   TrinketType.M, // 138
 ] as const;
 
