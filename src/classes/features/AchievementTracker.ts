@@ -518,8 +518,14 @@ export function isCoinSubTypeUnlocked(coinSubType: CoinSubType): boolean {
 }
 
 export function isBombSubTypeUnlocked(bombSubType: BombSubType): boolean {
-  // Normal bomb drops always start out as being unlocked.
-  if (bombSubType === BombSubType.NORMAL) {
+  // Normal bomb drops, all troll bombs, and Giga Bombs start out as being unlocked.
+  if (
+    bombSubType === BombSubType.NORMAL ||
+    bombSubType === BombSubType.TROLL ||
+    bombSubType === BombSubType.MEGA_TROLL ||
+    bombSubType === BombSubType.GOLDEN_TROLL ||
+    bombSubType === BombSubType.GIGA
+  ) {
     return true;
   }
 

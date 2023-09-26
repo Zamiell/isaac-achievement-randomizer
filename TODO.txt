@@ -1,7 +1,3 @@
-BUGS:
-
-- cellar room #767 - mega troll bombs got converted to normal bombs
-
 POTENTIAL TODO:
 
 - see current unlocks in DSS
