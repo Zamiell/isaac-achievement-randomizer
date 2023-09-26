@@ -40,7 +40,7 @@ function achievementRandomizer(params: string) {
   startRandomizer(seed);
 }
 
-function unlockChar(params: string) {
+export function unlockChar(params: string): void {
   if (params === "") {
     print("You must specify a character name or number.");
     return;

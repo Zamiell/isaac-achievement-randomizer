@@ -63,8 +63,8 @@ const v = {
     >(() => new Map()),
     challengeAchievements: new Map<Challenge, Achievement>(),
 
-    completedAchievements: [] as Achievement[],
     completedObjectives: [] as Objective[],
+    completedAchievements: [] as Achievement[],
 
     config: {
       showTimer: false,
@@ -114,6 +114,10 @@ export function endRandomizer(): void {
   // (We only clear the other persistent variables when a new randomizer is initialized.)
 
   restart(STARTING_CHARACTER);
+}
+
+export function getCompletedObjectives(): Objective[] {
+  return v.persistent.completedObjectives;
 }
 
 export function getCompletedAchievements(): Achievement[] {

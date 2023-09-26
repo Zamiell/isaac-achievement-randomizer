@@ -1,8 +1,12 @@
 import { assertDefined } from "isaacscript-common";
-import { getAchievementText } from "./classes/features/AchievementText";
+import {
+  getAchievementText,
+  getObjectiveText,
+} from "./classes/features/AchievementText";
 import {
   endRandomizer,
   getCompletedAchievements,
+  getCompletedObjectives,
   getNumCompletedAchievements,
   getRandomizerSeed,
   isRandomizerEnabled,
@@ -205,7 +209,17 @@ export function initDeadSeaScrolls(): void {
           displayIf: () => getNumCompletedAchievements() === 0,
         },
         {
-          str: () => getRecentAchievementText(1),
+          str: () => getRecentAchievementText(1, 1),
+          noSel: true,
+          displayIf: () => getNumCompletedAchievements() >= 1,
+        },
+        {
+          str: () => getRecentAchievementText(1, 2),
+          noSel: true,
+          displayIf: () => getNumCompletedAchievements() >= 1,
+        },
+        {
+          str: () => getRecentAchievementText(1, 3),
           noSel: true,
           displayIf: () => getNumCompletedAchievements() >= 1,
         },
@@ -215,7 +229,7 @@ export function initDeadSeaScrolls(): void {
           displayIf: () => getNumCompletedAchievements() >= 1,
         },
         {
-          str: () => getRecentAchievementText(2),
+          str: () => getRecentAchievementText(2, 1),
           noSel: true,
           displayIf: () => getNumCompletedAchievements() >= 2,
         },
@@ -225,7 +239,7 @@ export function initDeadSeaScrolls(): void {
           displayIf: () => getNumCompletedAchievements() >= 2,
         },
         {
-          str: () => getRecentAchievementText(3),
+          str: () => getRecentAchievementText(3, 1),
           noSel: true,
           displayIf: () => getNumCompletedAchievements() >= 3,
         },
@@ -290,19 +304,35 @@ export function initDeadSeaScrolls(): void {
   DeadSeaScrollsMenu.AddMenu(MOD_NAME, settings);
 }
 
-function getRecentAchievementText(num: int) {
-  const prefix = `${num}) `;
-  const completedAchievements = getCompletedAchievements();
+function getRecentAchievementText(num: int, lineNum: 1 | 2 | 3) {
   const index = num * -1;
-  const achievement = completedAchievements.at(index);
-  if (achievement === undefined) {
-    return `${prefix} n/a`;
-  }
-  const achievementText = getAchievementText(achievement);
 
-  return [
-    `${prefix} ${achievementText[0]} - ${achievementText[1].toLowerCase()}`,
-    "asdf",
-    "",
-  ];
+  switch (lineNum) {
+    case 1: {
+      const completedObjectives = getCompletedObjectives();
+      const objective = completedObjectives.at(index);
+      if (objective === undefined) {
+        error(`Failed to find the objective at index: ${index}`);
+      }
+
+      const objectiveText = getObjectiveText(objective).toLowerCase();
+      return objectiveText;
+    }
+
+    case 2: {
+      const completedAchievements = getCompletedAchievements();
+      const achievement = completedAchievements.at(index);
+      if (achievement === undefined) {
+        error(`Failed to find the achievement at index: ${index}`);
+      }
+      const achievementText = getAchievementText(achievement);
+      return `${num}) ${
+        achievementText[0]
+      } - ${achievementText[1].toLowerCase()}`;
+    }
+
+    case 3: {
+      return "todo";
+    }
+  }
 }
