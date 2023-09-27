@@ -253,7 +253,7 @@ export class PickupRemoval extends RandomizerModFeature {
         break;
       }
 
-      if (newCollectibleType === CollectibleType.NULL) {
+      if (newCollectibleType <= CollectibleType.NULL) {
         setCollectibleEmpty(collectible);
       } else {
         setCollectibleSubType(collectible, newCollectibleType);
