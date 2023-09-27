@@ -19,10 +19,10 @@ const TREASURE_ROOM_EXCEPTIONS = [
   CollectibleType.SACK_OF_PENNIES, // 94
   CollectibleType.BALL_OF_TAR, // 231
   CollectibleType.TINY_PLANET, // 233
-  CollectibleType.BEST_BUD, // 274
   CollectibleType.ISAACS_HEART, // 276
   CollectibleType.STRANGE_ATTRACTOR, // 315
   CollectibleType.KEY_BUM, // 388
+  CollectibleType.OBSESSED_FAN, // 426
   CollectibleType.LINGER_BEAN, // 447
   CollectibleType.HUSHY, // 470
 ] as const;

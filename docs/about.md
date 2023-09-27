@@ -124,10 +124,10 @@ Every collectible in the game is locked behind a random objective, with the foll
   - Sack of Pennies (#94)
   - Ball of Tar (#231)
   - Tiny Planet (#233)
-  - Best Bud (#274)
   - Isaac's Heart (#276)
   - Strange Attractor (#315)
   - Key Bum (#388)
+  - Obsessed Fan (#426)
   - Linger Bean (#447)
   - Hushy (#470)
 - 5 collectibles from the Shop pool (#1):
