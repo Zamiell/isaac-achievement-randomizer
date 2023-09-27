@@ -13,6 +13,7 @@ import { PathRemoval } from "./classes/features/PathRemoval";
 import { PickupRemoval } from "./classes/features/PickupRemoval";
 import { PreventPause } from "./classes/features/PreventPause";
 import { PreventSaveAndQuit } from "./classes/features/PreventSaveAndQuit";
+import { PreventVictoryLapPopup } from "./classes/features/PreventVictoryLapPopup";
 import { RemoveDonationMachines } from "./classes/features/RemoveDonationMachines";
 import { StartingRoomInfo } from "./classes/features/StartingRoomInfo";
 import { Timer } from "./classes/features/Timer";
@@ -31,6 +32,7 @@ const MOD_FEATURES = [
   PickupRemoval,
   PreventPause,
   PreventSaveAndQuit,
+  PreventVictoryLapPopup,
   RemoveDonationMachines,
   StartingRoomInfo,
   Timer,

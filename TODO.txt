@@ -1,3 +1,25 @@
+TODO:
+
+- get rid of key pieces when mega satan is not unlocked
+
+- new objectives:
+  - forgotten unlock sequence
+  - hold 99 coins
+  - find both secret rooms with first two bombs used on a floor
+  - reaching the drop condition for perfection
+  - buy all items from the shop
+  - sacrifice room teleport
+  - beat the game without touching any hearts/coins/bombs/keys/trinkets/cards/pills
+  - skip 3 deals in a row
+  - "steal a devil deal" by emptying your health and surviving in any way
+  - beat the game while holding Broken Shovel
+  - kill a boss with just bombs (no Dr. Fetus)
+  - kill a boss with just an orbital (no Gnawed Leaf)
+
+- new objectives maybe:
+  - survive on each boss in the game for 2 minutes without getting damaged (102 achievements)
+  - get a transformation
+
 POTENTIAL TODO:
 
 - unlock all machines

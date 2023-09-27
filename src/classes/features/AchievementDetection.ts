@@ -100,69 +100,7 @@ export class AchievementDetection extends RandomizerModFeature {
   // 70
   @Callback(ModCallback.PRE_SPAWN_CLEAR_AWARD)
   preSpawnClearAward(): boolean | undefined {
-    const room = game.GetRoom();
-    const roomType = room.GetType();
-    const player = Isaac.GetPlayer();
-    const character = player.GetPlayerType();
-
-    switch (roomType) {
-      // 5
-      case RoomType.BOSS: {
-        const bossID = getRoomSubType() as BossID;
-        const characterObjectiveKindBoss =
-          BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND.get(bossID);
-        if (characterObjectiveKindBoss !== undefined) {
-          addAchievementCharacterObjective(
-            character,
-            characterObjectiveKindBoss,
-          );
-        }
-
-        if (!v.level.tookDamage) {
-          const repentanceStage = onRepentanceStage();
-          const map = repentanceStage
-            ? STAGE_TO_CHARACTER_OBJECTIVE_KIND_REPENTANCE
-            : STAGE_TO_CHARACTER_OBJECTIVE_KIND;
-          const level = game.GetLevel();
-          const stage = level.GetStage();
-          const characterObjectiveKindNoDamage = map.get(stage);
-          if (characterObjectiveKindNoDamage !== undefined) {
-            addAchievementCharacterObjective(
-              character,
-              characterObjectiveKindNoDamage,
-            );
-          }
-        }
-
-        break;
-      }
-
-      // 16
-      case RoomType.DUNGEON: {
-        if (inBeastRoom()) {
-          addAchievementCharacterObjective(
-            character,
-            CharacterObjectiveKind.THE_BEAST,
-          );
-        }
-
-        break;
-      }
-
-      // 17
-      case RoomType.BOSS_RUSH: {
-        addAchievementCharacterObjective(
-          character,
-          CharacterObjectiveKind.BOSS_RUSH,
-        );
-        break;
-      }
-
-      default: {
-        break;
-      }
-    }
-
+    achievementDetectionPostRoomCleared();
     return undefined;
   }
 
@@ -182,5 +120,67 @@ export class AchievementDetection extends RandomizerModFeature {
 
     v.level.tookDamage = true;
     return undefined;
+  }
+}
+
+export function achievementDetectionPostRoomCleared(): void {
+  const room = game.GetRoom();
+  const roomType = room.GetType();
+  const player = Isaac.GetPlayer();
+  const character = player.GetPlayerType();
+
+  switch (roomType) {
+    // 5
+    case RoomType.BOSS: {
+      const bossID = getRoomSubType() as BossID;
+      const characterObjectiveKindBoss =
+        BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND.get(bossID);
+      if (characterObjectiveKindBoss !== undefined) {
+        addAchievementCharacterObjective(character, characterObjectiveKindBoss);
+      }
+
+      if (!v.level.tookDamage) {
+        const repentanceStage = onRepentanceStage();
+        const map = repentanceStage
+          ? STAGE_TO_CHARACTER_OBJECTIVE_KIND_REPENTANCE
+          : STAGE_TO_CHARACTER_OBJECTIVE_KIND;
+        const level = game.GetLevel();
+        const stage = level.GetStage();
+        const characterObjectiveKindNoDamage = map.get(stage);
+        if (characterObjectiveKindNoDamage !== undefined) {
+          addAchievementCharacterObjective(
+            character,
+            characterObjectiveKindNoDamage,
+          );
+        }
+      }
+
+      break;
+    }
+
+    // 16
+    case RoomType.DUNGEON: {
+      if (inBeastRoom()) {
+        addAchievementCharacterObjective(
+          character,
+          CharacterObjectiveKind.THE_BEAST,
+        );
+      }
+
+      break;
+    }
+
+    // 17
+    case RoomType.BOSS_RUSH: {
+      addAchievementCharacterObjective(
+        character,
+        CharacterObjectiveKind.BOSS_RUSH,
+      );
+      break;
+    }
+
+    default: {
+      break;
+    }
   }
 }

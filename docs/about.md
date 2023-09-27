@@ -251,6 +251,8 @@ The mod prevents you from pausing the game in uncleared rooms in order to preven
 
 The mod prevents you from using the save & quit feature of the game in order to prevent save & quit abuse. If you try to resume a game, the mod will restart you back at the beginning. (This is a rule taken from the Isaac streaking community.)
 
+Note that this will also prevent you from selecting the "Rerun" option from the main menu.
+
 ### Softlock Prevention
 
 Since saving & quitting is prevented, the mod will attempt to fix as many vanilla softlocks as possible. The following situations are fixed:
@@ -258,5 +260,9 @@ Since saving & quitting is prevented, the mod will attempt to fix as many vanill
 #### Mega Mush + Lucky Pennies
 
 Lucky Pennies are automatically converted to normal pennies while the Mega Mush effect is active.
+
+### Victory Lap Prevention
+
+Victory Laps are banned for the same reason that R Key is. As a quality of life fix, the Victory Lap popup will no longer appear after defeating The Lamb.
 
 <br>

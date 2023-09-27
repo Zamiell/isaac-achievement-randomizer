@@ -13,6 +13,7 @@ import {
   ModCallbackCustom,
   ModFeature,
   PriorityCallbackCustom,
+  anyEasterEggEnabled,
   emptyRoomGridEntities,
   game,
   getCharacterName,
@@ -20,6 +21,7 @@ import {
   isRepentance,
   log,
   onSetSeed,
+  onVictoryLap,
   removeAllDoors,
 } from "isaacscript-common";
 import { MOD_NAME } from "../../constants";
@@ -46,6 +48,8 @@ const v = {
     otherModsEnabled: false,
     wrongDifficulty: false,
     onSetSeed: false,
+    hasEasterEggs: false,
+    onVictoryLap: false,
     lockedCharacter: false,
     lockedChallenge: false,
     lockedMode: false,
@@ -90,6 +94,14 @@ export class CheckErrors extends ModFeature {
     } else if (v.run.onSetSeed) {
       this.drawErrorText(
         `You are only allowed to play ${MOD_NAME} on random seeds.`,
+      );
+    } else if (v.run.hasEasterEggs) {
+      this.drawErrorText(
+        `You are only allowed to play ${MOD_NAME} with all Easter Eggs disabled.`,
+      );
+    } else if (v.run.onVictoryLap) {
+      this.drawErrorText(
+        `You are not allowed to play ${MOD_NAME} on a Victory Lap.`,
       );
     } else if (v.run.lockedCharacter) {
       const player = Isaac.GetPlayer();
@@ -144,6 +156,8 @@ export class CheckErrors extends ModFeature {
     checkOtherModsEnabled();
     checkDifficulty();
     checkSetSeed();
+    checkEasterEggs();
+    checkVictoryLap();
     checkCharacterUnlocked();
     checkChallengeUnlocked();
     checkModeUnlocked();
@@ -236,6 +250,28 @@ function checkSetSeed() {
     const startSeedString = seeds.GetStartSeedString();
     log(`Error: Set seed detected: ${startSeedString}`);
     v.run.onSetSeed = true;
+  }
+}
+
+function checkEasterEggs() {
+  if (!isRandomizerEnabled()) {
+    return;
+  }
+
+  if (anyEasterEggEnabled()) {
+    log("Error: Easter Egg detected.");
+    v.run.hasEasterEggs = true;
+  }
+}
+
+function checkVictoryLap() {
+  if (!isRandomizerEnabled()) {
+    return;
+  }
+
+  if (onVictoryLap()) {
+    log("Error: Victory Lap detected.");
+    v.run.onVictoryLap = true;
   }
 }
 
