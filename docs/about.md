@@ -12,7 +12,7 @@ This page explains how it works.
 
 1. [Design Principles](#design-principles)
 2. [Objective List](#objective-list)
-3. [Progression](#progression)
+3. [Unlock List](#unlock-list)
 4. [Other Features](#other-features)
 
 <br>
@@ -90,7 +90,7 @@ There are 1086 + 45 = 1131 objectives in total.
 
 <br>
 
-## Progression
+## Unlock List
 
 ### Characters
 
@@ -110,7 +110,7 @@ There are 1086 + 45 = 1131 objectives in total.
   - The Ascent
   - Greed Mode
 - Isaac is guaranteed to unlock both The Chest & Dark Room from one of his easier objectives.
-- The rest of the places can be randomly unlocked from any objective.
+- The rest can be randomly unlocked from any objective.
 
 ### Challenges
 

@@ -82,6 +82,7 @@ const EASY_OBJECTIVE_KINDS = [
   CharacterObjectiveKind.NO_DAMAGE_WOMB_2,
 ] as const;
 
+/** These are the unlockable paths that are gated behind `EASY_OBJECTIVE_KINDS`. */
 const EASY_UNLOCKABLE_PATHS = [
   UnlockablePath.THE_CHEST,
   UnlockablePath.DARK_ROOM,
@@ -166,7 +167,7 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
     }
   }
 
-  // Each character is guaranteed to unlock another character from a non-advanced objective.
+  // Each character is guaranteed to unlock another character from a basic objective.
   let lastUnlockedCharacter = PlayerType.ISAAC;
   const mainCharacters = shuffleArray(MAIN_CHARACTERS, rng);
   for (const character of mainCharacters) {
