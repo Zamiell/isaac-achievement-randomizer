@@ -93,6 +93,7 @@ export const NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS_SET =
   new ReadonlySet<CollectibleType>(NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS);
 
 export const BANNED_COLLECTIBLE_TYPES = [
+  // D100 (283) / D4 (#284) seems to work correctly with reduced pools.
   CollectibleType.PLAN_C, // 475
   CollectibleType.CLICKER, // 482
   CollectibleType.R_KEY, // 636

@@ -6,6 +6,7 @@ import {
   LevelStage,
   ModCallback,
   PickupVariant,
+  RoomType,
   TrapdoorVariant,
 } from "isaac-typescript-definitions";
 import {
@@ -19,8 +20,10 @@ import {
   getMegaSatanDoor,
   getRepentanceDoor,
   getVoidDoor,
+  inRoomType,
   onRepentanceStage,
   onStage,
+  removeAllMatchingGridEntities,
   removeDoor,
   removeGridEntity,
 } from "isaacscript-common";
@@ -28,8 +31,16 @@ import { UnlockablePath } from "../../enums/UnlockablePath";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { isPathUnlocked } from "./AchievementTracker";
 
+const v = {
+  level: {
+    removedSacrificeRoomSpikes: false,
+  },
+};
+
 /** This feature handles removing all of the paths from the game that are not unlocked yet. */
 export class PathRemoval extends RandomizerModFeature {
+  v = v;
+
   @Callback(ModCallback.PRE_SPAWN_CLEAR_AWARD)
   preSpawnClearAward(): boolean | undefined {
     this.checkPathDoors();
@@ -50,6 +61,7 @@ export class PathRemoval extends RandomizerModFeature {
   @CallbackCustom(ModCallbackCustom.POST_NEW_ROOM_REORDERED)
   postNewRoomReordered(): void {
     this.checkPathDoors();
+    this.checkRemoveSacrificeRoomSpikes();
   }
 
   checkPathDoors(): void {
@@ -130,6 +142,20 @@ export class PathRemoval extends RandomizerModFeature {
       if (effect.Position.Distance(door.Position) < DISTANCE_OF_GRID_TILE) {
         effect.Visible = false;
       }
+    }
+  }
+
+  checkRemoveSacrificeRoomSpikes(): void {
+    if (v.level.removedSacrificeRoomSpikes && inRoomType(RoomType.SACRIFICE)) {
+      removeAllMatchingGridEntities(GridEntityType.SPIKES);
+    }
+  }
+
+  @CallbackCustom(ModCallbackCustom.POST_SACRIFICE)
+  postSacrifice(_player: EntityPlayer, numSacrifices: int): void {
+    if (numSacrifices >= 11 && !isPathUnlocked(UnlockablePath.DARK_ROOM)) {
+      removeAllMatchingGridEntities(GridEntityType.SPIKES);
+      v.level.removedSacrificeRoomSpikes = true;
     }
   }
 

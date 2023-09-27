@@ -78,7 +78,7 @@ Additionally, each character other than The Lost and Tainted Lost will unlock so
 
 - There are 34 main characters.
 - There are 15 boss objectives and 18 floor objectives, which makes 33 in total.
-- Thus, since The Lost & Tainted Lost do not have floor objectives, there are 34 x 33 - 18 x 2 = 1086 character-based objectives.
+- Thus, since The Lost & Tainted Lost do not have floor objectives, there are (34 - 2) x 33 = 1086 character-based objectives.
 
 ### Challenge-Based Objectives
 
