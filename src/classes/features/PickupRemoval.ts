@@ -230,7 +230,7 @@ export class PickupRemoval extends RandomizerModFeature {
       while (true) {
         newCollectibleType--; // eslint-disable-line isaacscript/strict-enums
 
-        if (newCollectibleType === CollectibleType.NULL) {
+        if (newCollectibleType <= CollectibleType.NULL) {
           break;
         }
 
