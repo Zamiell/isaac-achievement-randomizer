@@ -14,6 +14,7 @@ import {
   DISTANCE_OF_GRID_TILE,
   ModCallbackCustom,
   getBlueWombDoor,
+  getBossRushDoor,
   getEffects,
   getMegaSatanDoor,
   getRepentanceDoor,
@@ -56,6 +57,7 @@ export class PathRemoval extends RandomizerModFeature {
     this.checkBlueWombDoor();
     this.checkVoidDoor();
     this.checkMegaSatanDoor();
+    this.checkBossRushDoor();
   }
 
   checkRepentanceDoor(): void {
@@ -106,6 +108,17 @@ export class PathRemoval extends RandomizerModFeature {
 
     if (!isPathUnlocked(UnlockablePath.MEGA_SATAN)) {
       this.removeDoorAndSmoke(megaSatanDoor);
+    }
+  }
+
+  checkBossRushDoor(): void {
+    const bossRushDoor = getBossRushDoor();
+    if (bossRushDoor === undefined) {
+      return;
+    }
+
+    if (!isPathUnlocked(UnlockablePath.BOSS_RUSH)) {
+      this.removeDoorAndSmoke(bossRushDoor);
     }
   }
 
