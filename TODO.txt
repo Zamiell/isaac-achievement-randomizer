@@ -1,7 +1,5 @@
 TODO:
 
-- get rid of key pieces when mega satan is not unlocked
-
 - new objectives:
   - forgotten unlock sequence
   - hold 99 coins

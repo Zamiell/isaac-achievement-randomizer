@@ -99,10 +99,10 @@ There are 1086 + 45 = 1131 objectives in total.
 
 ### Paths
 
-- The following places start off locked and are inaccessible:
-  - The Chest
-  - The Dark Room
-  - Mega Satan
+- The following things start off locked and are inaccessible:
+  - The Polaroid + The Chest
+  - The Negative + The Dark Room
+  - Key Piece 1 + Key Piece 2 + Mega Satan
   - Boss Rush
   - Blue Womb
   - The Void

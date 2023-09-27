@@ -173,6 +173,19 @@ export class PathRemoval extends RandomizerModFeature {
       ];
     }
 
+    if (
+      (collectibleType === CollectibleType.KEY_PIECE_1 ||
+        collectibleType === CollectibleType.KEY_PIECE_2) &&
+      !isPathUnlocked(UnlockablePath.MEGA_SATAN)
+    ) {
+      return [
+        EntityType.PICKUP,
+        PickupVariant.COLLECTIBLE,
+        CollectibleType.NULL,
+        initSeed,
+      ];
+    }
+
     return undefined;
   }
 }
