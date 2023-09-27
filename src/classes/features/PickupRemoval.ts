@@ -224,6 +224,11 @@ export class PickupRemoval extends RandomizerModFeature {
     _customVarData: int,
   ): boolean | undefined {
     for (const collectible of getCollectibles()) {
+      // In vanilla, Spindown Dice is hardcoded to affect Dad's Note.
+      if (collectible.SubType === CollectibleType.DADS_NOTE) {
+        continue;
+      }
+
       let newCollectibleType = collectible.SubType;
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-constant-condition
