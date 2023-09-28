@@ -1,7 +1,6 @@
 import {
   BatterySubType,
   BombSubType,
-  BossID,
   Challenge,
   CoinSubType,
   HeartSubType,
@@ -23,8 +22,6 @@ export const BATTERY_SUB_TYPES: readonly BatterySubType[] =
 
 export const BOMB_SUB_TYPES: readonly BombSubType[] =
   getEnumValues(BombSubType);
-
-export const BOSS_IDS: readonly BossID[] = getEnumValues(BossID);
 
 export const CHALLENGES: readonly Challenge[] = getEnumValues(Challenge);
 

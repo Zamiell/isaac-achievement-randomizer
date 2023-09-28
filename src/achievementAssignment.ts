@@ -1,6 +1,7 @@
 import {
   BatterySubType,
   BombSubType,
+  BossID,
   CardType,
   Challenge,
   CoinSubType,
@@ -54,16 +55,13 @@ import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./unlockableCollectibleTypes";
 import { UNLOCKABLE_TRINKET_TYPES } from "./unlockableTrinketTypes";
 
 interface Achievements {
-  characterAchievements: CharacterAchievements;
-  challengeAchievements: ChallengeAchievements;
+  characterAchievements: DefaultMap<
+    PlayerType,
+    Map<CharacterObjectiveKind, Achievement>
+  >;
+  bossAchievements: Map<BossID, Achievement>;
+  challengeAchievements: Map<Challenge, Achievement>;
 }
-
-type CharacterAchievements = DefaultMap<
-  PlayerType,
-  Map<CharacterObjectiveKind, Achievement>
->;
-
-type ChallengeAchievements = Map<Challenge, Achievement>;
 
 const VERBOSE = false as boolean;
 
@@ -120,6 +118,7 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
     PlayerType,
     Map<CharacterObjectiveKind, Achievement>
   >(() => new Map());
+  const bossAchievements = new Map<BossID, Achievement>();
   const challengeAchievements = new Map<Challenge, Achievement>();
 
   const achievements = getAllAchievements();
@@ -307,6 +306,26 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
         break;
       }
 
+      case ObjectiveType.BOSS: {
+        if (bossAchievements.has(objective.bossID)) {
+          const bossIDName = `${BossID[objective.bossID]} (${
+            objective.bossID
+          })`;
+          error(`Failed to add an achievement to the boss map: ${bossIDName}`);
+        }
+
+        bossAchievements.set(objective.bossID, achievement);
+        if (VERBOSE) {
+          const bossIDName = `${BossID[objective.bossID]} (${
+            objective.bossID
+          })`;
+          log(`Set normal boss achievement: ${bossIDName}`);
+          logAchievement(achievement);
+        }
+
+        break;
+      }
+
       case ObjectiveType.CHALLENGE: {
         if (challengeAchievements.has(objective.challenge)) {
           const challengeName = getChallengeName(objective.challenge);
@@ -329,6 +348,7 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
 
   const allAchievements: Achievements = {
     characterAchievements,
+    bossAchievements,
     challengeAchievements,
   };
   validateAchievements(allAchievements);

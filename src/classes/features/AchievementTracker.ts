@@ -7,6 +7,7 @@ import type {
 } from "isaac-typescript-definitions";
 import {
   BombSubType,
+  BossID,
   CallbackPriority,
   Challenge,
   CoinSubType,
@@ -69,6 +70,7 @@ const v = {
       PlayerType,
       Map<CharacterObjectiveKind, Achievement>
     >(() => new Map()),
+    bossAchievements: new Map<BossID, Achievement>(),
     challengeAchievements: new Map<Challenge, Achievement>(),
 
     completedObjectives: [] as Objective[],
@@ -154,12 +156,13 @@ export function startRandomizer(seed: Seed | undefined): void {
   v.persistent.seed = seed;
   log(`Set new seed: ${v.persistent.seed}`);
 
-  const { characterAchievements, challengeAchievements } =
+  const { characterAchievements, bossAchievements, challengeAchievements } =
     getAchievementsForSeed(seed);
 
   v.persistent.numDeaths = 0;
   v.persistent.gameFramesElapsed = 0;
   v.persistent.characterAchievements = characterAchievements;
+  v.persistent.bossAchievements = bossAchievements;
   v.persistent.challengeAchievements = challengeAchievements;
   v.persistent.completedAchievements = [];
   v.persistent.completedObjectives = [];
@@ -234,6 +237,27 @@ export function addAchievementCharacterObjective(
     type: ObjectiveType.CHARACTER,
     character,
     kind: characterObjectiveKind,
+  };
+  v.persistent.completedObjectives.push(objective);
+
+  showNewAchievement(achievement);
+}
+
+export function addAchievementBoss(bossID: BossID): void {
+  if (isBossObjectiveCompleted(bossID)) {
+    return;
+  }
+
+  const achievement = v.persistent.bossAchievements.get(bossID);
+  if (achievement === undefined) {
+    const bossIDName = `${BossID[bossID]} (${bossID})`;
+    error(`Failed to get the achievement for boss: ${bossIDName}`);
+  }
+  v.persistent.completedAchievements.push(achievement);
+
+  const objective: Objective = {
+    type: ObjectiveType.BOSS,
+    bossID,
   };
   v.persistent.completedObjectives.push(objective);
 
@@ -335,6 +359,13 @@ export function isChallengeUnlocked(challenge: Challenge): boolean {
     (achievement) =>
       achievement.type === AchievementType.CHALLENGE &&
       achievement.challenge === challenge,
+  );
+}
+
+export function isBossObjectiveCompleted(bossID: BossID): boolean {
+  return v.persistent.completedObjectives.some(
+    (objective) =>
+      objective.type === ObjectiveType.BOSS && objective.bossID === bossID,
   );
 }
 
@@ -608,6 +639,11 @@ export function setCharacterUnlocked(character: PlayerType): void {
       break;
     }
 
+    case ObjectiveType.BOSS: {
+      addAchievementBoss(objective.bossID);
+      break;
+    }
+
     case ObjectiveType.CHALLENGE: {
       addAchievementChallenge(objective.challenge);
       break;
@@ -662,6 +698,11 @@ export function setCollectibleUnlocked(collectibleType: CollectibleType): void {
   switch (objective.type) {
     case ObjectiveType.CHARACTER: {
       addAchievementCharacterObjective(objective.character, objective.kind);
+      break;
+    }
+
+    case ObjectiveType.BOSS: {
+      addAchievementBoss(objective.bossID);
       break;
     }
 
