@@ -346,6 +346,17 @@ export function isPathUnlocked(unlockablePath: UnlockablePath): boolean {
   );
 }
 
+// --------------
+// Boss functions
+// --------------
+
+function isBossObjectiveCompleted(bossID: BossID): boolean {
+  return v.persistent.completedObjectives.some(
+    (objective) =>
+      objective.type === ObjectiveType.BOSS && objective.bossID === bossID,
+  );
+}
+
 // -------------------
 // Challenge functions
 // -------------------
@@ -359,13 +370,6 @@ export function isChallengeUnlocked(challenge: Challenge): boolean {
     (achievement) =>
       achievement.type === AchievementType.CHALLENGE &&
       achievement.challenge === challenge,
-  );
-}
-
-export function isBossObjectiveCompleted(bossID: BossID): boolean {
-  return v.persistent.completedObjectives.some(
-    (objective) =>
-      objective.type === ObjectiveType.BOSS && objective.bossID === bossID,
   );
 }
 

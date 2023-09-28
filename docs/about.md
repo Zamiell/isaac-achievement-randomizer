@@ -53,7 +53,7 @@ Each character will unlock something upon defeating/completing the following:
 12. Mother
 13. The Beast
 
-Additionally, each character other than The Lost and Tainted Lost will unlock something upon clearing the following floors without taking damage:
+Additionally, each character will unlock something upon clearing the following floors without getting hit:
 
 1. Basement 1 / Cellar 1 / Burning Basement 1
 2. Basement 2 / Cellar 2 / Burning Basement 2
@@ -76,7 +76,7 @@ Additionally, each character other than The Lost and Tainted Lost will unlock so
 
 - There are 34 main characters.
 - There are 13 boss objectives and 18 floor objectives, which makes 31 in total.
-- Thus, since The Lost & Tainted Lost do not have floor objectives, there are (34 - 2) x 31 = 992 character-based objectives.
+- Thus, there are 34 x 31 = 1054 character-based objectives.
 
 ### Boss-Based Objectives
 

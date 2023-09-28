@@ -84,11 +84,16 @@ const v = {
   level: {
     tookDamage: false,
   },
+
+  room: {
+    roomFrameHitTimerStarted: 0,
+  },
 };
 
 export class AchievementDetection extends RandomizerModFeature {
   v = v;
 
+  // 34, 370
   @Callback(ModCallback.POST_PICKUP_INIT, PickupVariant.TROPHY)
   postPickupInitTrophy(): void {
     const challenge = Isaac.GetChallenge();
@@ -118,6 +123,15 @@ export class AchievementDetection extends RandomizerModFeature {
 
     v.level.tookDamage = true;
     return undefined;
+  }
+
+  @CallbackCustom(ModCallbackCustom.POST_HOLY_MANTLE_REMOVED)
+  postHolyMantleRemoved(player: EntityPlayer): void {
+    if (!isFirstPlayer(player)) {
+      return;
+    }
+
+    v.level.tookDamage = true;
   }
 }
 

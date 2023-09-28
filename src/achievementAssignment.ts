@@ -102,11 +102,6 @@ const BASIC_CHARACTER_OBJECTIVES = new ReadonlySet<CharacterObjectiveKind>([
   CharacterObjectiveKind.THE_LAMB,
 ]);
 
-const NUM_CHARACTER_OBJECTIVE_KINDS_FOR_LOST = CHARACTER_OBJECTIVE_KINDS.filter(
-  (characterObjectiveKind) =>
-    characterObjectiveKind < CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1,
-).length;
-
 const ALL_BOSS_IDS = [...getAllBossesSet()] as const;
 
 export const NUM_TOTAL_ACHIEVEMENTS = getAllAchievements().length;
@@ -365,14 +360,10 @@ function validateAchievements(achievements: Achievements) {
     );
   }
   for (const [character, thisCharacterAchievements] of characterAchievements) {
-    const correctNumObjectives =
-      character === PlayerType.LOST || character === PlayerType.LOST_B
-        ? NUM_CHARACTER_OBJECTIVE_KINDS_FOR_LOST
-        : CHARACTER_OBJECTIVE_KINDS.length;
-    if (thisCharacterAchievements.size !== correctNumObjectives) {
+    if (thisCharacterAchievements.size !== CHARACTER_OBJECTIVE_KINDS.length) {
       const characterName = getCharacterName(character);
       error(
-        `The "characterAchievements" map for ${characterName} had ${thisCharacterAchievements.size} elements but it needs ${correctNumObjectives} elements.`,
+        `The "characterAchievements" map for ${characterName} had ${thisCharacterAchievements.size} elements but it needs ${CHARACTER_OBJECTIVE_KINDS.length} elements.`,
       );
     }
   }
@@ -665,15 +656,6 @@ function getAllObjectives(): Objective[] {
       case ObjectiveType.CHARACTER: {
         for (const character of MAIN_CHARACTERS) {
           for (const characterObjectiveKind of CHARACTER_OBJECTIVE_KINDS) {
-            if (
-              (character === PlayerType.LOST ||
-                character === PlayerType.LOST_B) &&
-              characterObjectiveKind >=
-                CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1
-            ) {
-              continue;
-            }
-
             const objective: Objective = {
               type: ObjectiveType.CHARACTER,
               character,
