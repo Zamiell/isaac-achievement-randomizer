@@ -44,10 +44,10 @@ import { CHARACTER_OBJECTIVE_KINDS } from "../../cachedEnums";
 import { AchievementType } from "../../enums/AchievementType";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
+import { OtherAchievementKind } from "../../enums/OtherAchievementKind";
 import type { UnlockablePath } from "../../enums/UnlockablePath";
 import { convertSecondsToTimerValues } from "../../timer";
 import type { Achievement } from "../../types/Achievement";
-import { OtherAchievementKind } from "../../types/Achievement";
 import type { Objective } from "../../types/Objective";
 import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTypes";
 import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../unlockableTrinketTypes";
@@ -640,6 +640,14 @@ export function isShopkeepersUnlocked(): boolean {
     (achievement) =>
       achievement.type === AchievementType.OTHER &&
       achievement.kind === OtherAchievementKind.SHOPKEEPERS,
+  );
+}
+
+export function isBedsUnlocked(): boolean {
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.OTHER &&
+      achievement.kind === OtherAchievementKind.BEDS,
   );
 }
 

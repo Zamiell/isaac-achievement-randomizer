@@ -12,8 +12,8 @@ import { getEnumValues } from "isaacscript-common";
 import { AchievementType } from "./enums/AchievementType";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
+import { OtherAchievementKind } from "./enums/OtherAchievementKind";
 import { UnlockablePath } from "./enums/UnlockablePath";
-import { OtherAchievementKind } from "./types/Achievement";
 
 export const ACHIEVEMENT_TYPES: readonly AchievementType[] =
   getEnumValues(AchievementType);

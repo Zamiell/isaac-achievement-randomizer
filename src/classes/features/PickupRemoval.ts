@@ -84,6 +84,7 @@ import {
   getUnlockedTrinketTypes,
   isAllCharacterObjectivesCompleted,
   isBatterySubTypeUnlocked,
+  isBedsUnlocked,
   isBombSubTypeUnlocked,
   isCardTypeUnlocked,
   isCharacterUnlocked,
@@ -718,5 +719,15 @@ export class PickupRemoval extends RandomizerModFeature {
 
     const newTrinketType = getRandomArrayElement(unlockedTrinketTypes);
     return [PickupVariant.TRINKET, newTrinketType];
+  }
+
+  @CallbackCustom(
+    ModCallbackCustom.POST_PICKUP_SELECTION_FILTER,
+    PickupVariant.BED, // 380
+  )
+  postPickupSelectionBed(): [PickupVariant, int] | undefined {
+    return isBedsUnlocked()
+      ? undefined
+      : [PickupVariant.COIN, CoinSubType.PENNY];
   }
 }

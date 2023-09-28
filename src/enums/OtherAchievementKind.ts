@@ -1,0 +1,9 @@
+export enum OtherAchievementKind {
+  SHOPKEEPERS,
+  BEDS,
+  GOLD_TRINKETS,
+  GOLD_PILLS,
+  HORSE_PILLS,
+  TINTED_ROCKS,
+  FOOLS_GOLD,
+}

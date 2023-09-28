@@ -120,7 +120,7 @@ All challenges start off locked.
 
 ### Collectibles <!-- 5.100 -->
 
-Every collectible in the game is locked behind a random objective, with the following exceptions:
+Every collectible in the game is locked, with the following exceptions:
 
 - 5 collectibles from the Boss Room pool (#2):
   - Breakfast (#25) (HP)
@@ -157,7 +157,7 @@ Also note that:
 
 ### Trinkets <!-- 5.350 -->
 
-Every trinket in the game is locked behind a random objective, with the following exceptions:
+Every trinket in the game is locked, with the following exceptions:
 
 - Banned trinkets in this mod:
   - Karma (#85) (would be useless; see below)
@@ -171,21 +171,22 @@ Also note that:
 
 ### Cards & Runes <!-- 5.300 -->
 
-Every card/rune in the game is locked behind a random objective (except for Rune Shard, which will never spawn). If no cards/runes are unlocked, they will be converted to pennies.
+Every card/rune in the game is locked (except for Rune Shard, which will never spawn). If no cards/runes are unlocked, they will be converted to pennies.
 
 ### Pill Effects <!-- 5.70 -->
 
-- Every pill effect in the game is locked behind a random objective. If no pill effects are unlocked, pills will be converted to pennies.
+- Every pill effect in the game is locked. If no pill effects are unlocked, pills will be converted to pennies.
 
 ### Other Pickups
 
-- Only half red heart pickups start as being unlocked. Every other heart pickup in the game is locked behind a random objective.
-- Only pennies start as being unlocked. Every other coin in the game is locked behind a random objective.
-- Only normal bomb pickups start as being unlocked. Every other bomb pickup in the game is locked behind a random objective.
-- Only normal key pickups start as being unlocked. Every other key pickup in the game is locked behind a random objective.
-- Every battery type in the game is locked behind a random objective. Non-unlocked batteries are converted to pennies.
-- Every sack type in the game is locked behind a random objective. Non-unlocked sacks are converted to pennies.
-- Only normal chests start as being unlocked. Every other chest type in the game is locked behind a random objective.
+- Only half red heart pickups start out unlocked. Every other heart pickup in the game is locked.
+- Only pennies start out unlocked. Every other coin in the game is locked.
+- Only normal bomb pickups start out unlocked. Every other bomb pickup in the game is locked.
+- Only normal key pickups start out unlocked. Every other key pickup in the game is locked.
+- Every battery type in the game is locked. Non-unlocked batteries are converted to pennies.
+- Every sack type in the game is locked. Non-unlocked sacks are converted to pennies.
+- Only normal chests start as being unlocked. Every other chest type in the game is locked.
+- Beds start as locked.
 
 ### Slots
 

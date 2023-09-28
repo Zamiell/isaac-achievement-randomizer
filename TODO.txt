@@ -1,5 +1,12 @@
 TODO:
-- missing 25 achievements
+- unlock:
+  - beds
+  - crawlspaces
+  - blue fireplaces
+  - gift plates
+  - super tinted rocks
+  - floor alts
+- missing 9 achievements
 
 - icon for not having taken damage on floor
   - gfx/crownoflight.anm2

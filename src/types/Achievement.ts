@@ -15,6 +15,7 @@ import type {
   TrinketType,
 } from "isaac-typescript-definitions";
 import type { AchievementType } from "../enums/AchievementType";
+import type { OtherAchievementKind } from "../enums/OtherAchievementKind";
 import type { UnlockablePath } from "../enums/UnlockablePath";
 
 interface CharacterAchievement {
@@ -95,15 +96,6 @@ interface SlotAchievement {
 interface OtherAchievement {
   type: AchievementType.OTHER;
   kind: OtherAchievementKind;
-}
-
-export enum OtherAchievementKind {
-  SHOPKEEPERS,
-  GOLD_TRINKETS,
-  GOLD_PILLS,
-  HORSE_PILLS,
-  TINTED_ROCKS,
-  FOOLS_GOLD,
 }
 
 export type Achievement =

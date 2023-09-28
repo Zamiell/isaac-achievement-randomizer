@@ -26,10 +26,10 @@ import { NUM_MINUTES_FOR_BOSS_OBJECTIVE } from "../../constants";
 import { AchievementType } from "../../enums/AchievementType";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
+import { OtherAchievementKind } from "../../enums/OtherAchievementKind";
 import { SoundEffectCustom } from "../../enums/SoundEffectCustom";
 import { UnlockablePath } from "../../enums/UnlockablePath";
 import type { Achievement } from "../../types/Achievement";
-import { OtherAchievementKind } from "../../types/Achievement";
 import type { Objective } from "../../types/Objective";
 
 const FONT = fonts.droid;
@@ -267,6 +267,10 @@ function getOtherAchievementName(
   switch (otherAchievementKind) {
     case OtherAchievementKind.SHOPKEEPERS: {
       return ["shop entity", "shopkeepers"];
+    }
+
+    case OtherAchievementKind.BEDS: {
+      return ["pickup", "beds"];
     }
 
     case OtherAchievementKind.GOLD_TRINKETS: {
