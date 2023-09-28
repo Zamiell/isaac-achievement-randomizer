@@ -75,14 +75,14 @@ const EASY_OBJECTIVE_KINDS = [
   CharacterObjectiveKind.IT_LIVES,
   CharacterObjectiveKind.ISAAC,
   CharacterObjectiveKind.SATAN,
-  CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1,
-  CharacterObjectiveKind.NO_DAMAGE_BASEMENT_2,
-  CharacterObjectiveKind.NO_DAMAGE_CAVES_1,
-  CharacterObjectiveKind.NO_DAMAGE_CAVES_2,
-  CharacterObjectiveKind.NO_DAMAGE_DEPTHS_1,
-  CharacterObjectiveKind.NO_DAMAGE_DEPTHS_2,
-  CharacterObjectiveKind.NO_DAMAGE_WOMB_1,
-  CharacterObjectiveKind.NO_DAMAGE_WOMB_2,
+  CharacterObjectiveKind.NO_HIT_BASEMENT_1,
+  CharacterObjectiveKind.NO_HIT_BASEMENT_2,
+  CharacterObjectiveKind.NO_HIT_CAVES_1,
+  CharacterObjectiveKind.NO_HIT_CAVES_2,
+  CharacterObjectiveKind.NO_HIT_DEPTHS_1,
+  CharacterObjectiveKind.NO_HIT_DEPTHS_2,
+  CharacterObjectiveKind.NO_HIT_WOMB_1,
+  CharacterObjectiveKind.NO_HIT_WOMB_2,
 ] as const;
 
 /** These are the unlockable paths that are gated behind `EASY_OBJECTIVE_KINDS`. */

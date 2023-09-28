@@ -52,41 +52,35 @@ const STAGE_TO_CHARACTER_OBJECTIVE_KIND = new ReadonlyMap<
   LevelStage,
   CharacterObjectiveKind
 >([
-  [LevelStage.BASEMENT_1, CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1],
-  [LevelStage.BASEMENT_2, CharacterObjectiveKind.NO_DAMAGE_BASEMENT_2],
-  [LevelStage.CAVES_1, CharacterObjectiveKind.NO_DAMAGE_CAVES_1],
-  [LevelStage.CAVES_2, CharacterObjectiveKind.NO_DAMAGE_CAVES_2],
-  [LevelStage.DEPTHS_1, CharacterObjectiveKind.NO_DAMAGE_DEPTHS_1],
-  [LevelStage.DEPTHS_2, CharacterObjectiveKind.NO_DAMAGE_DEPTHS_2],
-  [LevelStage.WOMB_1, CharacterObjectiveKind.NO_DAMAGE_WOMB_1],
-  [LevelStage.WOMB_2, CharacterObjectiveKind.NO_DAMAGE_WOMB_2],
-  [
-    LevelStage.SHEOL_CATHEDRAL,
-    CharacterObjectiveKind.NO_DAMAGE_SHEOL_CATHEDRAL,
-  ],
-  [
-    LevelStage.DARK_ROOM_CHEST,
-    CharacterObjectiveKind.NO_DAMAGE_DARK_ROOM_CHEST,
-  ],
+  [LevelStage.BASEMENT_1, CharacterObjectiveKind.NO_HIT_BASEMENT_1],
+  [LevelStage.BASEMENT_2, CharacterObjectiveKind.NO_HIT_BASEMENT_2],
+  [LevelStage.CAVES_1, CharacterObjectiveKind.NO_HIT_CAVES_1],
+  [LevelStage.CAVES_2, CharacterObjectiveKind.NO_HIT_CAVES_2],
+  [LevelStage.DEPTHS_1, CharacterObjectiveKind.NO_HIT_DEPTHS_1],
+  [LevelStage.DEPTHS_2, CharacterObjectiveKind.NO_HIT_DEPTHS_2],
+  [LevelStage.WOMB_1, CharacterObjectiveKind.NO_HIT_WOMB_1],
+  [LevelStage.WOMB_2, CharacterObjectiveKind.NO_HIT_WOMB_2],
+  [LevelStage.SHEOL_CATHEDRAL, CharacterObjectiveKind.NO_HIT_SHEOL_CATHEDRAL],
+  [LevelStage.DARK_ROOM_CHEST, CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST],
 ]);
 
 const STAGE_TO_CHARACTER_OBJECTIVE_KIND_REPENTANCE = new ReadonlyMap<
   LevelStage,
   CharacterObjectiveKind
 >([
-  [LevelStage.BASEMENT_1, CharacterObjectiveKind.NO_DAMAGE_DOWNPOUR_1],
-  [LevelStage.BASEMENT_2, CharacterObjectiveKind.NO_DAMAGE_DOWNPOUR_2],
-  [LevelStage.CAVES_1, CharacterObjectiveKind.NO_DAMAGE_MINES_1],
-  [LevelStage.CAVES_2, CharacterObjectiveKind.NO_DAMAGE_MINES_2],
-  [LevelStage.DEPTHS_1, CharacterObjectiveKind.NO_DAMAGE_MAUSOLEUM_1],
-  [LevelStage.DEPTHS_2, CharacterObjectiveKind.NO_DAMAGE_MAUSOLEUM_2],
-  [LevelStage.WOMB_1, CharacterObjectiveKind.NO_DAMAGE_CORPSE_1],
-  [LevelStage.WOMB_2, CharacterObjectiveKind.NO_DAMAGE_CORPSE_2],
+  [LevelStage.BASEMENT_1, CharacterObjectiveKind.NO_HIT_DOWNPOUR_1],
+  [LevelStage.BASEMENT_2, CharacterObjectiveKind.NO_HIT_DOWNPOUR_2],
+  [LevelStage.CAVES_1, CharacterObjectiveKind.NO_HIT_MINES_1],
+  [LevelStage.CAVES_2, CharacterObjectiveKind.NO_HIT_MINES_2],
+  [LevelStage.DEPTHS_1, CharacterObjectiveKind.NO_HIT_MAUSOLEUM_1],
+  [LevelStage.DEPTHS_2, CharacterObjectiveKind.NO_HIT_MAUSOLEUM_2],
+  [LevelStage.WOMB_1, CharacterObjectiveKind.NO_HIT_CORPSE_1],
+  [LevelStage.WOMB_2, CharacterObjectiveKind.NO_HIT_CORPSE_2],
 ]);
 
 const v = {
   level: {
-    tookDamage: false,
+    tookHit: false,
   },
 
   room: {
@@ -145,7 +139,7 @@ export class AchievementDetection extends RandomizerModFeature {
 
     const room = game.GetRoom();
 
-    v.level.tookDamage = true;
+    v.level.tookHit = true;
     v.room.tookDamageRoomFrame = room.GetFrameCount();
 
     return undefined;
@@ -159,7 +153,7 @@ export class AchievementDetection extends RandomizerModFeature {
 
     const room = game.GetRoom();
 
-    v.level.tookDamage = true;
+    v.level.tookHit = true;
     v.room.tookDamageRoomFrame = room.GetFrameCount();
   }
 }
@@ -180,14 +174,9 @@ export function achievementDetectionPostRoomCleared(): void {
         addAchievementCharacterObjective(character, characterObjectiveKindBoss);
       }
 
-      if (!v.level.tookDamage) {
-        const repentanceStage = onRepentanceStage();
-        const map = repentanceStage
-          ? STAGE_TO_CHARACTER_OBJECTIVE_KIND_REPENTANCE
-          : STAGE_TO_CHARACTER_OBJECTIVE_KIND;
-        const level = game.GetLevel();
-        const stage = level.GetStage();
-        const characterObjectiveKindNoDamage = map.get(stage);
+      if (!v.level.tookHit) {
+        const characterObjectiveKindNoDamage =
+          getCharacterObjectiveKindNoDamage();
         if (characterObjectiveKindNoDamage !== undefined) {
           addAchievementCharacterObjective(
             character,
@@ -226,10 +215,28 @@ export function achievementDetectionPostRoomCleared(): void {
   }
 }
 
+export function hasTakenHitOnFloor(): boolean {
+  return v.level.tookHit;
+}
+
 export function getSecondsSinceLastDamage(): int {
   const room = game.GetRoom();
   const roomFrameCount = room.GetFrameCount();
   const elapsedGameFrames = roomFrameCount - v.room.tookDamageRoomFrame;
 
   return elapsedGameFrames / GAME_FRAMES_PER_SECOND;
+}
+
+export function getCharacterObjectiveKindNoDamage():
+  | CharacterObjectiveKind
+  | undefined {
+  const repentanceStage = onRepentanceStage();
+  const stageToCharacterObjectiveKind = repentanceStage
+    ? STAGE_TO_CHARACTER_OBJECTIVE_KIND_REPENTANCE
+    : STAGE_TO_CHARACTER_OBJECTIVE_KIND;
+
+  const level = game.GetLevel();
+  const stage = level.GetStage();
+
+  return stageToCharacterObjectiveKind.get(stage);
 }

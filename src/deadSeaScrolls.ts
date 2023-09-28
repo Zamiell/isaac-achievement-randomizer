@@ -454,7 +454,7 @@ function getSpecificCharacterObjectiveButtons(
     let objectiveName = getCharacterObjectiveKindName(
       characterObjectiveKind,
     ).toLowerCase();
-    if (characterObjectiveKind >= CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1) {
+    if (characterObjectiveKind >= CharacterObjectiveKind.NO_HIT_BASEMENT_1) {
       objectiveName = `no dmg. on floor ${objectiveName}`;
     }
 

@@ -1,9 +1,5 @@
 TODO:
 
-- NO DAMAGE ACHIEVEMENTS ARE BUGGED
-
-- icon for not having taken damage on floor
-  - gfx/crownoflight.anm2
 - graph unlock
   - challenges can't be gated behind other challenges
   - repentance floors can't be behind mother

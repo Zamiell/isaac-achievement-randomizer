@@ -10,6 +10,7 @@ import { AchievementText } from "./classes/features/AchievementText";
 import { AchievementTracker } from "./classes/features/AchievementTracker";
 import { CheckErrors } from "./classes/features/CheckErrors";
 import { GridEntityRemoval } from "./classes/features/GridEntityRemoval";
+import { HitIcon } from "./classes/features/HitIcon";
 import { NPCRemoval } from "./classes/features/NPCRemoval";
 import { PathRemoval } from "./classes/features/PathRemoval";
 import { PickupRemoval } from "./classes/features/PickupRemoval";
@@ -33,6 +34,7 @@ const MOD_FEATURES = [
   AchievementTracker,
   CheckErrors,
   GridEntityRemoval,
+  HitIcon,
   NPCRemoval,
   PathRemoval,
   PickupRemoval,

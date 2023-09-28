@@ -74,9 +74,7 @@ Additionally, each character will unlock something upon clearing the following f
 17. Corpse 1
 18. Corpse 2
 
-- There are 34 main characters.
-- There are 13 boss objectives and 18 floor objectives, which makes 31 in total.
-- Thus, there are 34 x 31 = 1054 character-based objectives.
+A Crown of Light icon will appear next to the coin count UI when the "no hit" objective has not yet been accomplished for the particular character and floor combination.
 
 ### Boss-Based Objectives
 

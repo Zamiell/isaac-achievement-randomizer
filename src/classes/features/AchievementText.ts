@@ -132,7 +132,7 @@ export function getObjectiveText(objective: Objective): string[] {
         objective.kind,
       );
 
-      return objective.kind < CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1
+      return objective.kind < CharacterObjectiveKind.NO_HIT_BASEMENT_1
         ? ["Defeated", characterObjectiveKindName, "on", characterName]
         : [
             "No damage on",
@@ -475,75 +475,75 @@ export function getCharacterObjectiveKindName(
       return "Ultra Greed";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1: {
+    case CharacterObjectiveKind.NO_HIT_BASEMENT_1: {
       return "1";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_BASEMENT_2: {
+    case CharacterObjectiveKind.NO_HIT_BASEMENT_2: {
       return "2";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_CAVES_1: {
+    case CharacterObjectiveKind.NO_HIT_CAVES_1: {
       return "3";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_CAVES_2: {
+    case CharacterObjectiveKind.NO_HIT_CAVES_2: {
       return "4";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_DEPTHS_1: {
+    case CharacterObjectiveKind.NO_HIT_DEPTHS_1: {
       return "5";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_DEPTHS_2: {
+    case CharacterObjectiveKind.NO_HIT_DEPTHS_2: {
       return "6";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_WOMB_1: {
+    case CharacterObjectiveKind.NO_HIT_WOMB_1: {
       return "7";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_WOMB_2: {
+    case CharacterObjectiveKind.NO_HIT_WOMB_2: {
       return "8";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_SHEOL_CATHEDRAL: {
+    case CharacterObjectiveKind.NO_HIT_SHEOL_CATHEDRAL: {
       return "10";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_DARK_ROOM_CHEST: {
+    case CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST: {
       return "11";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_DOWNPOUR_1: {
+    case CharacterObjectiveKind.NO_HIT_DOWNPOUR_1: {
       return "1 (alt)";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_DOWNPOUR_2: {
+    case CharacterObjectiveKind.NO_HIT_DOWNPOUR_2: {
       return "2 (alt)";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_MINES_1: {
+    case CharacterObjectiveKind.NO_HIT_MINES_1: {
       return "3 (alt)";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_MINES_2: {
+    case CharacterObjectiveKind.NO_HIT_MINES_2: {
       return "4 (alt)";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_MAUSOLEUM_1: {
+    case CharacterObjectiveKind.NO_HIT_MAUSOLEUM_1: {
       return "5 (alt)";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_MAUSOLEUM_2: {
+    case CharacterObjectiveKind.NO_HIT_MAUSOLEUM_2: {
       return "6 (alt)";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_CORPSE_1: {
+    case CharacterObjectiveKind.NO_HIT_CORPSE_1: {
       return "7 (alt)";
     }
 
-    case CharacterObjectiveKind.NO_DAMAGE_CORPSE_2: {
+    case CharacterObjectiveKind.NO_HIT_CORPSE_2: {
       return "8 (alt)";
     }
   }
