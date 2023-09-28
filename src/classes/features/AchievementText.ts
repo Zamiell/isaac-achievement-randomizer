@@ -266,11 +266,15 @@ function getOtherAchievementName(
 ): [string, string] {
   switch (otherAchievementKind) {
     case OtherAchievementKind.SHOPKEEPERS: {
-      return ["shop entity", "shopkeepers"];
+      return ["entity", "shopkeepers"];
     }
 
     case OtherAchievementKind.BEDS: {
       return ["pickup", "beds"];
+    }
+
+    case OtherAchievementKind.BLUE_FIREPLACES: {
+      return ["entity", "blue fireplaces"];
     }
 
     case OtherAchievementKind.GOLD_TRINKETS: {

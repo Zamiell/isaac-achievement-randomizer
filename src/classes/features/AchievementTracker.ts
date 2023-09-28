@@ -651,6 +651,14 @@ export function isBedsUnlocked(): boolean {
   );
 }
 
+export function isBlueFiresUnlocked(): boolean {
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.OTHER &&
+      achievement.kind === OtherAchievementKind.BLUE_FIREPLACES,
+  );
+}
+
 export function isGoldTrinketsUnlocked(): boolean {
   return v.persistent.completedAchievements.some(
     (achievement) =>

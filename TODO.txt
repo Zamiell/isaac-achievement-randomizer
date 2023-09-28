@@ -1,7 +1,6 @@
 TODO:
 - unlock:
   - crawlspaces
-  - blue fireplaces
   - gift plates
   - super tinted rocks
   - floor alts
