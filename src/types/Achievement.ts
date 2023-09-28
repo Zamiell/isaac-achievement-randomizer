@@ -17,6 +17,7 @@ import type {
 import type { AchievementType } from "../enums/AchievementType";
 import type { OtherAchievementKind } from "../enums/OtherAchievementKind";
 import type { UnlockablePath } from "../enums/UnlockablePath";
+import type { UNLOCKABLE_GRID_ENTITY_TYPES } from "../unlockableGridEntityTypes";
 
 interface CharacterAchievement {
   type: AchievementType.CHARACTER;
@@ -93,6 +94,11 @@ interface SlotAchievement {
   slotVariant: SlotVariant;
 }
 
+interface GridEntityAchievement {
+  type: AchievementType.GRID_ENTITY;
+  gridEntityType: (typeof UNLOCKABLE_GRID_ENTITY_TYPES)[number];
+}
+
 interface OtherAchievement {
   type: AchievementType.OTHER;
   kind: OtherAchievementKind;
@@ -114,4 +120,5 @@ export type Achievement =
   | SackAchievement
   | ChestAchievement
   | SlotAchievement
+  | GridEntityAchievement
   | OtherAchievement;

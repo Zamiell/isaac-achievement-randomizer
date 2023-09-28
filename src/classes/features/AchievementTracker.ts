@@ -1,6 +1,7 @@
 import type {
   BatterySubType,
   CardType,
+  GridEntityType,
   PillEffect,
   SackSubType,
   TrinketType,
@@ -50,6 +51,7 @@ import { convertSecondsToTimerValues } from "../../timer";
 import type { Achievement } from "../../types/Achievement";
 import type { Objective } from "../../types/Objective";
 import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTypes";
+import { UNLOCKABLE_GRID_ENTITY_TYPES } from "../../unlockableGridEntityTypes";
 import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../unlockableTrinketTypes";
 import { showNewAchievement } from "./AchievementText";
 
@@ -628,6 +630,25 @@ export function isSlotVariantUnlocked(slotVariant: SlotVariant): boolean {
     (achievement) =>
       achievement.type === AchievementType.SLOT &&
       achievement.slotVariant === slotVariant,
+  );
+}
+
+// ---------------------
+// Grid entity functions
+// ---------------------
+
+export function isGridEntityTypeUnlocked(
+  gridEntityType: GridEntityType,
+): boolean {
+  // Ignore quest slots.
+  if (!UNLOCKABLE_GRID_ENTITY_TYPES.includes(gridEntityType)) {
+    return true;
+  }
+
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.GRID_ENTITY &&
+      achievement.gridEntityType === gridEntityType,
   );
 }
 

@@ -14,5 +14,6 @@ export enum AchievementType {
   SACK,
   CHEST,
   SLOT,
+  GRID_ENTITY,
   OTHER,
 }

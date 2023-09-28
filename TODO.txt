@@ -1,8 +1,5 @@
 TODO:
 - unlock:
-  - crawlspaces
-  - gift plates
-  - super tinted rocks
   - floor alts
 - missing 9 achievements
 

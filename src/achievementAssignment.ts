@@ -54,6 +54,7 @@ import { UnlockablePath } from "./enums/UnlockablePath";
 import type { Achievement } from "./types/Achievement";
 import type { CharacterObjective, Objective } from "./types/Objective";
 import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./unlockableCollectibleTypes";
+import { UNLOCKABLE_GRID_ENTITY_TYPES } from "./unlockableGridEntityTypes";
 import { UNLOCKABLE_TRINKET_TYPES } from "./unlockableTrinketTypes";
 
 interface Achievements {
@@ -629,6 +630,18 @@ function getAllAchievements(): Achievement[] {
           const achievement: Achievement = {
             type: AchievementType.SLOT,
             slotVariant,
+          };
+          achievements.push(achievement);
+        }
+
+        break;
+      }
+
+      case AchievementType.GRID_ENTITY: {
+        for (const gridEntityType of UNLOCKABLE_GRID_ENTITY_TYPES) {
+          const achievement: Achievement = {
+            type: AchievementType.GRID_ENTITY,
+            gridEntityType,
           };
           achievements.push(achievement);
         }

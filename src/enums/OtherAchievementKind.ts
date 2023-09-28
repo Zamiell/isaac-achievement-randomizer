@@ -5,7 +5,4 @@ export enum OtherAchievementKind {
   GOLD_TRINKETS,
   GOLD_PILLS,
   HORSE_PILLS,
-  TINTED_ROCKS,
-  SUPER_TINTED_ROCKS,
-  FOOLS_GOLD,
 }

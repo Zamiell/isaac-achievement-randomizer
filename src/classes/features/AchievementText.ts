@@ -1,4 +1,8 @@
-import { BossID, ModCallback } from "isaac-typescript-definitions";
+import {
+  BossID,
+  GridEntityType,
+  ModCallback,
+} from "isaac-typescript-definitions";
 import {
   Callback,
   ModFeature,
@@ -31,6 +35,7 @@ import { SoundEffectCustom } from "../../enums/SoundEffectCustom";
 import { UnlockablePath } from "../../enums/UnlockablePath";
 import type { Achievement } from "../../types/Achievement";
 import type { Objective } from "../../types/Objective";
+import type { UNLOCKABLE_GRID_ENTITY_TYPES } from "../../unlockableGridEntityTypes";
 
 const FONT = fonts.droid;
 const RENDER_FRAMES_BEFORE_FADE = RENDER_FRAMES_PER_SECOND * 2;
@@ -215,6 +220,10 @@ export function getAchievementText(achievement: Achievement): [string, string] {
       return ["slot", getSlotName(achievement.slotVariant)];
     }
 
+    case AchievementType.GRID_ENTITY: {
+      return ["grid entity", getGridEntityName(achievement.gridEntityType)];
+    }
+
     case AchievementType.OTHER: {
       return getOtherAchievementName(achievement.kind);
     }
@@ -261,6 +270,37 @@ function getPathName(unlockablePath: UnlockablePath): string {
   }
 }
 
+function getGridEntityName(
+  gridEntityType: (typeof UNLOCKABLE_GRID_ENTITY_TYPES)[number],
+): string {
+  switch (gridEntityType) {
+    // 4
+    case GridEntityType.ROCK_TINTED: {
+      return "tinted rocks";
+    }
+
+    // 18
+    case GridEntityType.CRAWL_SPACE: {
+      return "crawl spaces";
+    }
+
+    // 20
+    case GridEntityType.PRESSURE_PLATE: {
+      return "reward plates";
+    }
+
+    // 22
+    case GridEntityType.ROCK_SUPER_SPECIAL: {
+      return "super tinted rocks";
+    }
+
+    // 27
+    case GridEntityType.ROCK_GOLD: {
+      return "fool's gold rocks";
+    }
+  }
+}
+
 function getOtherAchievementName(
   otherAchievementKind: OtherAchievementKind,
 ): [string, string] {
@@ -287,18 +327,6 @@ function getOtherAchievementName(
 
     case OtherAchievementKind.HORSE_PILLS: {
       return ["pill type", "horse pills"];
-    }
-
-    case OtherAchievementKind.TINTED_ROCKS: {
-      return ["rock type", "tinted rocks"];
-    }
-
-    case OtherAchievementKind.SUPER_TINTED_ROCKS: {
-      return ["rock type", "super tinted rocks"];
-    }
-
-    case OtherAchievementKind.FOOLS_GOLD: {
-      return ["rock type", "fool's gold"];
     }
   }
 }
