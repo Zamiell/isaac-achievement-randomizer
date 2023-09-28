@@ -1,9 +1,5 @@
 TODO:
 - code:
-  SHOPKEEPERS,
-  GOLD_TRINKETS,
-  GOLD_PILLS,
-  HORSE_PILLS,
   TINTED_ROCKS,
   FOOLS_GOLD,
 - icon for not having taken damage on floor

@@ -648,6 +648,26 @@ export function isSlotVariantUnlocked(slotVariant: SlotVariant): boolean {
 }
 
 // ---------------
+// Other functions
+// ---------------
+
+export function isGoldTrinketsUnlocked(): boolean {
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.OTHER &&
+      achievement.kind === OtherAchievementKind.GOLD_TRINKETS,
+  );
+}
+
+export function isShopkeepersUnlocked(): boolean {
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.OTHER &&
+      achievement.kind === OtherAchievementKind.SHOPKEEPERS,
+  );
+}
+
+// ---------------
 // Debug functions
 // ---------------
 

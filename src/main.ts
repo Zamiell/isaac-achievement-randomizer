@@ -9,6 +9,7 @@ import { AchievementDetection } from "./classes/features/AchievementDetection";
 import { AchievementText } from "./classes/features/AchievementText";
 import { AchievementTracker } from "./classes/features/AchievementTracker";
 import { CheckErrors } from "./classes/features/CheckErrors";
+import { NPCRemoval } from "./classes/features/NPCRemoval";
 import { PathRemoval } from "./classes/features/PathRemoval";
 import { PickupRemoval } from "./classes/features/PickupRemoval";
 import { PreventPause } from "./classes/features/PreventPause";
@@ -29,6 +30,7 @@ const MOD_FEATURES = [
   AchievementText,
   AchievementTracker,
   CheckErrors,
+  NPCRemoval,
   PathRemoval,
   PickupRemoval,
   PreventPause,

@@ -34,11 +34,14 @@ import {
   getCharacterStartingCollectibleTypes,
   getCharacterStartingTrinketType,
   getCollectibles,
+  getGoldenTrinketType,
   getNormalPillColorFromHorse,
+  getNormalTrinketType,
   getRandomArrayElement,
   getRandomSetElement,
   isChestVariant,
   isGoldPill,
+  isGoldenTrinketType,
   isHorsePill,
   isRune,
   isSuitCard,
@@ -88,6 +91,7 @@ import {
   isCoinSubTypeUnlocked,
   isCollectibleTypeUnlocked,
   isGoldPillUnlocked,
+  isGoldTrinketsUnlocked,
   isHeartSubTypeUnlocked,
   isHorsePillsUnlocked,
   isKeySubTypeUnlocked,
@@ -441,18 +445,26 @@ export class PickupRemoval extends RandomizerModFeature {
     }
 
     const trinketType = player.GetTrinket(TrinketSlot.SLOT_1);
-    if (trinketType !== TrinketType.NULL) {
+    if (
+      trinketType !== TrinketType.NULL &&
+      (!isTrinketTypeUnlocked(trinketType) ||
+        (isGoldenTrinketType(trinketType) && !isGoldTrinketsUnlocked()))
+    ) {
       player.TryRemoveTrinket(trinketType);
     }
 
     const cardType = player.GetCard(PocketItemSlot.SLOT_1);
-    if (cardType !== CardType.NULL) {
+    if (cardType !== CardType.NULL && !isCardTypeUnlocked(cardType)) {
       player.SetCard(PocketItemSlot.SLOT_1, CardType.NULL);
     }
 
     const pillColor = player.GetPill(PocketItemSlot.SLOT_1);
     if (pillColor !== PillColor.NULL) {
-      player.SetPill(PocketItemSlot.SLOT_1, PillColor.NULL);
+      const itemPool = game.GetItemPool();
+      const pillEffect = itemPool.GetPillEffect(pillColor);
+      if (pillEffect !== -1 && !isPillEffectUnlocked(pillEffect)) {
+        player.SetPill(PocketItemSlot.SLOT_1, PillColor.NULL);
+      }
     }
 
     // Some collectibles will spawn things in the room.
@@ -666,12 +678,46 @@ export class PickupRemoval extends RandomizerModFeature {
     const trinketType = subType as TrinketType;
 
     const unlockedTrinketTypes = getUnlockedTrinketTypes();
-    if (unlockedTrinketTypes.includes(trinketType)) {
-      return undefined;
-    }
-
     if (unlockedTrinketTypes.length === 0) {
       return [PickupVariant.COIN, CoinSubType.PENNY];
+    }
+
+    return isGoldenTrinketType(trinketType)
+      ? this.postPickupSelectionGoldTrinket(trinketType, unlockedTrinketTypes)
+      : this.postPickupSelectionNormalTrinket(
+          trinketType,
+          unlockedTrinketTypes,
+        );
+  }
+
+  /** Convert gold trinkets to the corresponding non-gold version. */
+  postPickupSelectionGoldTrinket(
+    trinketType: TrinketType,
+    unlockedTrinketTypes: TrinketType[],
+  ): [PickupVariant, int] | undefined {
+    const normalizedTrinketType = getNormalTrinketType(trinketType);
+    const goldTrinketsUnlocked = isGoldTrinketsUnlocked();
+
+    if (unlockedTrinketTypes.includes(normalizedTrinketType)) {
+      return goldTrinketsUnlocked
+        ? undefined
+        : [PickupVariant.TRINKET, normalizedTrinketType];
+    }
+
+    const newTrinketType = getRandomArrayElement(unlockedTrinketTypes);
+    const trinketTypeToUse = goldTrinketsUnlocked
+      ? getGoldenTrinketType(newTrinketType)
+      : newTrinketType;
+
+    return [PickupVariant.TRINKET, trinketTypeToUse];
+  }
+
+  postPickupSelectionNormalTrinket(
+    trinketType: TrinketType,
+    unlockedTrinketTypes: TrinketType[],
+  ): [PickupVariant, int] | undefined {
+    if (unlockedTrinketTypes.includes(trinketType)) {
+      return undefined;
     }
 
     const newTrinketType = getRandomArrayElement(unlockedTrinketTypes);
