@@ -35,7 +35,7 @@ Thus, this mod locks almost everything behind custom achievements that actually 
 
 Note that all objectives must be completed on hard mode.
 
-### Character-Based Objectives
+### Character-Based Objectives (1054)
 
 Each character will unlock something upon defeating/completing the following:
 
@@ -76,15 +76,15 @@ Additionally, each character will unlock something upon clearing the following f
 
 A Crown of Light icon will appear next to the coin count UI when the "no hit" objective has not yet been accomplished for the particular character and floor combination.
 
-### Boss-Based Objectives
+### Boss-Based Objectives (100)
 
-There is one unlock for surviving for 2 minutes without taking damage for each boss. Thus, there are 100 boss-based objectives.
+There is one unlock for surviving for 2 minutes without taking damage for each boss.
 
-### Challenge-Based Objectives
+### Challenge-Based Objectives (45)
 
-There is one unlock for completing each challenge. Thus, there are 45 challenge-based objectives.
+There is one unlock for completing each challenge.
 
-### Total
+### Total Objectives
 
 There are 1054 + 100 + 45 = 1199 objectives in total.
 
@@ -92,12 +92,12 @@ There are 1054 + 100 + 45 = 1199 objectives in total.
 
 ## Unlock List
 
-### Characters
+### Characters (33)
 
 - The first character unlocked will always be Isaac. All other characters start off locked.
 - Each character is guaranteed to unlock another random character.
 
-### Paths
+### Paths (10)
 
 - The following things start off locked and are inaccessible:
   - The Polaroid + The Chest
@@ -113,7 +113,7 @@ There are 1054 + 100 + 45 = 1199 objectives in total.
 - Isaac is guaranteed to unlock both The Chest & Dark Room from one of his easier objectives.
 - The rest can be randomly unlocked from any objective.
 
-### Alternate Floors
+### Alternate Floors (11)
 
 - The following alternate floors start out locked:
   - Cellar
@@ -128,11 +128,11 @@ There are 1054 + 100 + 45 = 1199 objectives in total.
   - Ashpit
   - Gehenna
 
-### Challenges
+### Challenges (45)
 
 All challenges start off locked.
 
-### Collectibles <!-- 5.100 -->
+### Collectibles (697)
 
 Every collectible in the game is locked, with the following exceptions:
 
@@ -169,7 +169,7 @@ Also note that:
 - Even if Judas' Shadow (#311) is unlocked, it is removed from pools until all of the Judas objectives are completed.
 - Even if Lazarus Rags (#332) is unlocked, it is removed from pools until all of the Lazarus objectives are completed.
 
-### Trinkets <!-- 5.350 -->
+### Trinkets (186)
 
 Every trinket in the game is locked, with the following exceptions:
 
@@ -183,30 +183,30 @@ Also note that:
 
 - Even if Mysterious Paper (#21) or Missing Poster (#23) are unlocked, they are removed from pools until all of The Lost objectives are completed.
 
-### Cards & Runes <!-- 5.300 -->
+### Cards & Runes (96)
 
 Every card/rune in the game is locked (except for Rune Shard, which will never spawn). If no cards/runes are unlocked, they will be converted to pennies.
 
-### Pill Effects <!-- 5.70 -->
+### Pill Effects (50)
 
 - Every pill effect in the game is locked. If no pill effects are unlocked, pills will be converted to pennies.
 
-### Other Pickups
+### Other Pickups (37)
 
-- Only half red heart pickups start out unlocked. Every other heart pickup in the game is locked.
-- Only pennies start out unlocked. Every other coin in the game is locked.
-- Only normal bomb pickups start out unlocked. Every other bomb pickup in the game is locked.
-- Only normal key pickups start out unlocked. Every other key pickup in the game is locked.
-- Every battery type in the game is locked. Non-unlocked batteries are converted to pennies.
-- Every sack type in the game is locked. Non-unlocked sacks are converted to pennies.
-- Only normal chests start out unlocked. Every other chest type in the game is locked.
-- Beds start out locked.
+- Only half red heart pickups start out unlocked. Every other heart pickup in the game is locked. (11)
+- Only pennies start out unlocked. Every other coin in the game is locked. (6)
+- Only normal bomb pickups start out unlocked. Every other bomb pickup in the game is locked. (2)
+- Only normal key pickups start out unlocked. Every other key pickup in the game is locked. (3)
+- Every battery type in the game is locked. Non-unlocked batteries are converted to pennies. (4)
+- Every sack type in the game is locked. Non-unlocked sacks are converted to pennies. (2)
+- Only normal chests start out unlocked. Every other chest type in the game is locked. (9)
+- Beds start out locked. (1)
 
-### Slots
+### Slots (15)
 
 - Every slot entity (e.g. machines and beggars) is locked behind a random objective. Non-unlocked slot entities are converted to pennies, except for Dressing Tables, which are removed.
 
-### Grid Entities
+### Grid Entities (13)
 
 - The following grid entities start out locked:
   - Tinted Rocks (4.0)
@@ -223,7 +223,7 @@ Every card/rune in the game is locked (except for Rune Shard, which will never s
   - Super Tinted Rocks (22.0)
   - Fool's Gold Rocks (27.0)
 
-### Miscellaneous
+### Miscellaneous (5)
 
 - The following other things start out locked:
   - Shopkeepers
@@ -231,6 +231,10 @@ Every card/rune in the game is locked (except for Rune Shard, which will never s
   - Golden Trinkets
   - Gold Pills
   - Horse Pills
+
+### Total Unlocks
+
+There are 33 + 10 + 11 + 45 + 697 + 186 + 96 + 50 + 37 + 15 + 13 + 5 = 1198 unlocks in total.
 
 <br>
 
