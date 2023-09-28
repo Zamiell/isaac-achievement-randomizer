@@ -1,10 +1,13 @@
 TODO:
 
+- NO DAMAGE ACHIEVEMENTS ARE BUGGED
+
 - icon for not having taken damage on floor
   - gfx/crownoflight.anm2
 - graph unlock
   - challenges can't be gated behind other challenges
-  - e.g. repentance floors can't be behind mother
+  - repentance floors can't be behind mother
+  - alt floors rep after rep unlock
 
 NEW POTENTIAL OBJECTIVES:
 - would need 288 objectives to reduce no damage objectives by half

@@ -231,5 +231,5 @@ export function getSecondsSinceLastDamage(): int {
   const roomFrameCount = room.GetFrameCount();
   const elapsedGameFrames = roomFrameCount - v.room.tookDamageRoomFrame;
 
-  return elapsedGameFrames * GAME_FRAMES_PER_SECOND;
+  return elapsedGameFrames / GAME_FRAMES_PER_SECOND;
 }
