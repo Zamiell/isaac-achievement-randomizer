@@ -1,5 +1,6 @@
 import {
   GridEntityType,
+  PoopGridEntityVariant,
   PressurePlateVariant,
 } from "isaac-typescript-definitions";
 import {
@@ -71,6 +72,58 @@ export class GridEntityRemoval extends RandomizerModFeature {
       case RockAltType.BUCKET_DROSS: {
         break;
       }
+    }
+  }
+
+  // 14
+  @CallbackCustom(ModCallbackCustom.POST_GRID_ENTITY_INIT, GridEntityType.POOP)
+  postGridEntityInitPoop(gridEntity: GridEntity): void {
+    const gridEntityVariant = gridEntity.GetVariant() as PoopGridEntityVariant;
+
+    switch (gridEntityVariant) {
+      // 3
+      case PoopGridEntityVariant.GOLDEN: {
+        if (!isOtherAchievementsUnlocked(OtherAchievementKind.GOLDEN_POOP)) {
+          gridEntity.SetType(GridEntityType.ROCK);
+        }
+
+        break;
+      }
+
+      // 4
+      case PoopGridEntityVariant.RAINBOW: {
+        if (!isOtherAchievementsUnlocked(OtherAchievementKind.RAINBOW_POOP)) {
+          gridEntity.SetType(GridEntityType.ROCK);
+        }
+
+        break;
+      }
+
+      // 5
+      case PoopGridEntityVariant.BLACK: {
+        if (!isOtherAchievementsUnlocked(OtherAchievementKind.BLACK_POOP)) {
+          gridEntity.SetType(GridEntityType.ROCK);
+        }
+
+        break;
+      }
+
+      // 11
+      case PoopGridEntityVariant.CHARMING: {
+        if (!isOtherAchievementsUnlocked(OtherAchievementKind.CHARMING_POOP)) {
+          gridEntity.SetType(GridEntityType.ROCK);
+        }
+
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
+
+    if (!isPathUnlocked(UnlockablePath.THE_ASCENT)) {
+      gridEntity.SetType(GridEntityType.ROCK);
     }
   }
 

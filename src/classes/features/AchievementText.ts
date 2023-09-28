@@ -344,6 +344,22 @@ function getOtherAchievementName(
       return ["grid entity", "polyps"];
     }
 
+    case OtherAchievementKind.GOLDEN_POOP: {
+      return ["grid entity", "golden poop"];
+    }
+
+    case OtherAchievementKind.RAINBOW_POOP: {
+      return ["grid entity", "rainbow poop"];
+    }
+
+    case OtherAchievementKind.BLACK_POOP: {
+      return ["grid entity", "black poop"];
+    }
+
+    case OtherAchievementKind.CHARMING_POOP: {
+      return ["grid entity", "charming poop"];
+    }
+
     case OtherAchievementKind.REWARD_PLATES: {
       return ["grid entity", "reward plates"];
     }
