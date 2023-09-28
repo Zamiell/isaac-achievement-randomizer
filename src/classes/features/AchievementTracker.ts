@@ -640,7 +640,6 @@ export function isSlotVariantUnlocked(slotVariant: SlotVariant): boolean {
 export function isGridEntityTypeUnlocked(
   gridEntityType: GridEntityType,
 ): boolean {
-  // Ignore quest slots.
   if (!UNLOCKABLE_GRID_ENTITY_TYPES.includes(gridEntityType)) {
     return true;
   }

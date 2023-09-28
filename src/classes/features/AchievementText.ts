@@ -267,6 +267,10 @@ function getPathName(unlockablePath: UnlockablePath): string {
     case UnlockablePath.GREED_MODE: {
       return "Greed Mode";
     }
+
+    case UnlockablePath.BLACK_MARKETS: {
+      return "Black Markets";
+    }
   }
 }
 
@@ -282,11 +286,6 @@ function getGridEntityName(
     // 18
     case GridEntityType.CRAWL_SPACE: {
       return "crawl spaces";
-    }
-
-    // 20
-    case GridEntityType.PRESSURE_PLATE: {
-      return "reward plates";
     }
 
     // 22
@@ -305,12 +304,12 @@ function getOtherAchievementName(
   otherAchievementKind: OtherAchievementKind,
 ): [string, string] {
   switch (otherAchievementKind) {
-    case OtherAchievementKind.SHOPKEEPERS: {
-      return ["entity", "shopkeepers"];
-    }
-
     case OtherAchievementKind.BEDS: {
       return ["pickup", "beds"];
+    }
+
+    case OtherAchievementKind.SHOPKEEPERS: {
+      return ["entity", "shopkeepers"];
     }
 
     case OtherAchievementKind.BLUE_FIREPLACES: {
@@ -327,6 +326,26 @@ function getOtherAchievementName(
 
     case OtherAchievementKind.HORSE_PILLS: {
       return ["pill type", "horse pills"];
+    }
+
+    case OtherAchievementKind.URNS: {
+      return ["grid entity", "urns"];
+    }
+
+    case OtherAchievementKind.MUSHROOMS: {
+      return ["grid entity", "mushrooms"];
+    }
+
+    case OtherAchievementKind.SKULLS: {
+      return ["grid entity", "skulls"];
+    }
+
+    case OtherAchievementKind.POLYPS: {
+      return ["grid entity", "polyps"];
+    }
+
+    case OtherAchievementKind.REWARD_PLATES: {
+      return ["grid entity", "reward plates"];
     }
   }
 }

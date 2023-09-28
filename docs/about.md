@@ -111,6 +111,7 @@ There are 1054 + 100 + 45 = 1199 objectives in total.
   - Repentance floors
   - The Ascent
   - Greed Mode
+  - Black Markets
 - Isaac is guaranteed to unlock both The Chest & Dark Room from one of his easier objectives.
 - The rest can be randomly unlocked from any objective.
 
@@ -192,15 +193,27 @@ Every card/rune in the game is locked (except for Rune Shard, which will never s
 
 - Every slot entity (e.g. machines and beggars) is locked behind a random objective. Non-unlocked slot entities are converted to pennies, except for Dressing Tables, which are removed.
 
+### Grid Entities
+
+- The following grid entities start out locked:
+  - Tinted rocks (#4)
+  - Urns (#6)
+  - Mushrooms (#6)
+  - Skulls (#6)
+  - Polyps (#6)
+  - Crawlspaces (#18)
+  - Reward Plates (#20.1)
+  - Super tinted rocks (#22)
+  - Fool's Gold rocks (#27)
+
 ### Miscellaneous
 
-- The following things are also locked behind a random objective:
+- The following other things start out locked:
   - Shopkeepers
+  - Blue fireplaces
   - Golden trinkets
   - Gold pills
   - Horse pills
-  - Tinted rocks
-  - Fool's Gold rocks
 
 <br>
 

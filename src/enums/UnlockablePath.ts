@@ -8,4 +8,5 @@ export enum UnlockablePath {
   REPENTANCE_FLOORS,
   THE_ASCENT,
   GREED_MODE,
+  BLACK_MARKETS,
 }
