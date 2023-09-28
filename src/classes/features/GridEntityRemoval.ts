@@ -5,10 +5,11 @@ import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   isFoolsGoldUnlocked,
   isPathUnlocked,
+  isSuperTintedRocksUnlocked,
   isTintedRocksUnlocked,
 } from "./AchievementTracker";
 
-export class RockRemoval extends RandomizerModFeature {
+export class GridEntityRemoval extends RandomizerModFeature {
   // 4
   @CallbackCustom(
     ModCallbackCustom.POST_GRID_ENTITY_INIT,
@@ -16,6 +17,17 @@ export class RockRemoval extends RandomizerModFeature {
   )
   postGridEntityInitRockTinted(gridEntity: GridEntity): void {
     if (!isTintedRocksUnlocked()) {
+      gridEntity.SetType(GridEntityType.ROCK);
+    }
+  }
+
+  // 22
+  @CallbackCustom(
+    ModCallbackCustom.POST_GRID_ENTITY_INIT,
+    GridEntityType.ROCK_SUPER_SPECIAL,
+  )
+  postGridEntityInitRockSuperSpecial(gridEntity: GridEntity): void {
+    if (!isSuperTintedRocksUnlocked()) {
       gridEntity.SetType(GridEntityType.ROCK);
     }
   }

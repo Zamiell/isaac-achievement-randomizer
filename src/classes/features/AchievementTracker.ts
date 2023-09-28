@@ -683,6 +683,14 @@ export function isTintedRocksUnlocked(): boolean {
   );
 }
 
+export function isSuperTintedRocksUnlocked(): boolean {
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.OTHER &&
+      achievement.kind === OtherAchievementKind.SUPER_TINTED_ROCKS,
+  );
+}
+
 export function isFoolsGoldUnlocked(): boolean {
   return v.persistent.completedAchievements.some(
     (achievement) =>

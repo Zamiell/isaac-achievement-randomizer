@@ -289,6 +289,10 @@ function getOtherAchievementName(
       return ["rock type", "tinted rocks"];
     }
 
+    case OtherAchievementKind.SUPER_TINTED_ROCKS: {
+      return ["rock type", "super tinted rocks"];
+    }
+
     case OtherAchievementKind.FOOLS_GOLD: {
       return ["rock type", "fool's gold"];
     }

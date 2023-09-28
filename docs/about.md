@@ -185,8 +185,8 @@ Every card/rune in the game is locked (except for Rune Shard, which will never s
 - Only normal key pickups start out unlocked. Every other key pickup in the game is locked.
 - Every battery type in the game is locked. Non-unlocked batteries are converted to pennies.
 - Every sack type in the game is locked. Non-unlocked sacks are converted to pennies.
-- Only normal chests start as being unlocked. Every other chest type in the game is locked.
-- Beds start as locked.
+- Only normal chests start out unlocked. Every other chest type in the game is locked.
+- Beds start out locked.
 
 ### Slots
 
@@ -236,11 +236,13 @@ In this mod, Eden can never start with TMTRAINER. (This is a quality of life fix
 
 The mod prevents you from pausing the game in uncleared rooms in order to prevent pause abuse. (This is a rule taken from the Isaac streaking community.)
 
+If you are allowed to pause in a room with enemies, then you can think about the best movement patterns to defeat the enemies, and mentally prepare exactly what to do. This kind of thing goes against the spirit of the competition; players are intended to have to react instantly to new situations.
+
 ### Save & Quit Prevention
 
 The mod prevents you from using the save & quit feature of the game in order to prevent save & quit abuse. If you try to resume a game, the mod will restart you back at the beginning. (This is a rule taken from the Isaac streaking community.)
 
-Note that this will also prevent you from selecting the "Rerun" option from the main menu.
+If you are allowed to save & quit, then you can do things like prevent incoming damage, exploit Restock Machines, and reset enemy patterns. All of these things go against the spirit of the competition; players are intended to have to complete a room in one attempt and they should not get "do-overs" when they make movement mistakes.
 
 ### Softlock Prevention
 
@@ -252,6 +254,6 @@ Lucky Pennies are automatically converted to normal pennies while the Mega Mush 
 
 ### Victory Lap Prevention
 
-Victory Laps are banned for the same reason that R Key is. As a quality of life fix, the Victory Lap popup will no longer appear after defeating The Lamb.
+Victory Laps and the "Rerun" feature on the main menu are banned for the same reason that R Key is. As a quality of life fix, the Victory Lap popup will no longer appear after defeating The Lamb.
 
 <br>

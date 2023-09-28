@@ -1,6 +1,5 @@
 TODO:
 - unlock:
-  - beds
   - crawlspaces
   - blue fireplaces
   - gift plates
