@@ -459,12 +459,8 @@ export class PickupRemoval extends RandomizerModFeature {
     }
 
     const pillColor = player.GetPill(PocketItemSlot.SLOT_1);
-    if (pillColor !== PillColor.NULL) {
-      const itemPool = game.GetItemPool();
-      const pillEffect = itemPool.GetPillEffect(pillColor);
-      if (pillEffect !== -1 && !isPillEffectUnlocked(pillEffect)) {
-        player.SetPill(PocketItemSlot.SLOT_1, PillColor.NULL);
-      }
+    if (pillColor !== PillColor.NULL && !anyPillEffectsUnlocked()) {
+      player.SetPill(PocketItemSlot.SLOT_1, PillColor.NULL);
     }
 
     // Some collectibles will spawn things in the room.

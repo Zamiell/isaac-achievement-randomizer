@@ -16,6 +16,7 @@ import { PreventPause } from "./classes/features/PreventPause";
 import { PreventSaveAndQuit } from "./classes/features/PreventSaveAndQuit";
 import { PreventVictoryLapPopup } from "./classes/features/PreventVictoryLapPopup";
 import { RemoveDonationMachines } from "./classes/features/RemoveDonationMachines";
+import { RockRemoval } from "./classes/features/RockRemoval";
 import { SlotRemoval } from "./classes/features/SlotRemoval";
 import { StartingRoomInfo } from "./classes/features/StartingRoomInfo";
 import { Timer } from "./classes/features/Timer";
@@ -37,6 +38,7 @@ const MOD_FEATURES = [
   PreventSaveAndQuit,
   PreventVictoryLapPopup,
   RemoveDonationMachines,
+  RockRemoval,
   SlotRemoval,
   StartingRoomInfo,
   Timer,

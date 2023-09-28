@@ -507,22 +507,6 @@ export function getUnlockedPillEffects(): PillEffect[] {
   );
 }
 
-export function isGoldPillUnlocked(): boolean {
-  return v.persistent.completedAchievements.some(
-    (achievement) =>
-      achievement.type === AchievementType.OTHER &&
-      achievement.kind === OtherAchievementKind.GOLD_PILLS,
-  );
-}
-
-export function isHorsePillsUnlocked(): boolean {
-  return v.persistent.completedAchievements.some(
-    (achievement) =>
-      achievement.type === AchievementType.OTHER &&
-      achievement.kind === OtherAchievementKind.HORSE_PILLS,
-  );
-}
-
 // ----------------------
 // Other pickup functions
 // ----------------------
@@ -651,6 +635,14 @@ export function isSlotVariantUnlocked(slotVariant: SlotVariant): boolean {
 // Other functions
 // ---------------
 
+export function isShopkeepersUnlocked(): boolean {
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.OTHER &&
+      achievement.kind === OtherAchievementKind.SHOPKEEPERS,
+  );
+}
+
 export function isGoldTrinketsUnlocked(): boolean {
   return v.persistent.completedAchievements.some(
     (achievement) =>
@@ -659,11 +651,35 @@ export function isGoldTrinketsUnlocked(): boolean {
   );
 }
 
-export function isShopkeepersUnlocked(): boolean {
+export function isGoldPillUnlocked(): boolean {
   return v.persistent.completedAchievements.some(
     (achievement) =>
       achievement.type === AchievementType.OTHER &&
-      achievement.kind === OtherAchievementKind.SHOPKEEPERS,
+      achievement.kind === OtherAchievementKind.GOLD_PILLS,
+  );
+}
+
+export function isHorsePillsUnlocked(): boolean {
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.OTHER &&
+      achievement.kind === OtherAchievementKind.HORSE_PILLS,
+  );
+}
+
+export function isTintedRocksUnlocked(): boolean {
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.OTHER &&
+      achievement.kind === OtherAchievementKind.TINTED_ROCKS,
+  );
+}
+
+export function isFoolsGoldUnlocked(): boolean {
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.OTHER &&
+      achievement.kind === OtherAchievementKind.FOOLS_GOLD,
   );
 }
 
