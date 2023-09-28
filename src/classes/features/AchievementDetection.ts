@@ -9,6 +9,7 @@ import {
 import {
   Callback,
   CallbackCustom,
+  GAME_FRAMES_PER_SECOND,
   ModCallbackCustom,
   ReadonlyMap,
   game,
@@ -18,11 +19,14 @@ import {
   isSelfDamage,
   onRepentanceStage,
 } from "isaacscript-common";
+import { NUM_MINUTES_FOR_BOSS_OBJECTIVE } from "../../constants";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
+  addAchievementBoss,
   addAchievementChallenge,
   addAchievementCharacterObjective,
+  isBossObjectiveCompleted,
 } from "./AchievementTracker";
 
 const BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND = new ReadonlyMap<
@@ -86,12 +90,30 @@ const v = {
   },
 
   room: {
-    roomFrameHitTimerStarted: 0,
+    tookDamageRoomFrame: 0,
   },
 };
 
 export class AchievementDetection extends RandomizerModFeature {
   v = v;
+
+  @Callback(ModCallback.POST_UPDATE)
+  postUpdate(): void {
+    const room = game.GetRoom();
+    const bossID = room.GetBossID();
+    if (bossID === 0) {
+      return;
+    }
+
+    if (isBossObjectiveCompleted(bossID)) {
+      return;
+    }
+
+    const seconds = getSecondsSinceLastDamage();
+    if (seconds >= NUM_MINUTES_FOR_BOSS_OBJECTIVE * 60) {
+      addAchievementBoss(bossID);
+    }
+  }
 
   // 34, 370
   @Callback(ModCallback.POST_PICKUP_INIT, PickupVariant.TROPHY)
@@ -121,7 +143,11 @@ export class AchievementDetection extends RandomizerModFeature {
       return undefined;
     }
 
+    const room = game.GetRoom();
+
     v.level.tookDamage = true;
+    v.room.tookDamageRoomFrame = room.GetFrameCount();
+
     return undefined;
   }
 
@@ -131,7 +157,10 @@ export class AchievementDetection extends RandomizerModFeature {
       return;
     }
 
+    const room = game.GetRoom();
+
     v.level.tookDamage = true;
+    v.room.tookDamageRoomFrame = room.GetFrameCount();
   }
 }
 
@@ -195,4 +224,12 @@ export function achievementDetectionPostRoomCleared(): void {
       break;
     }
   }
+}
+
+export function getSecondsSinceLastDamage(): int {
+  const room = game.GetRoom();
+  const roomFrameCount = room.GetFrameCount();
+  const elapsedGameFrames = roomFrameCount - v.room.tookDamageRoomFrame;
+
+  return elapsedGameFrames * GAME_FRAMES_PER_SECOND;
 }

@@ -1,4 +1,10 @@
-import { assertDefined, game, getHUDOffsetVector } from "isaacscript-common";
+import {
+  DefaultMap,
+  assertDefined,
+  game,
+  getHUDOffsetVector,
+} from "isaacscript-common";
+import { TimerType } from "./enums/TimerType";
 import { newSprite } from "./sprite";
 
 class TimerSprites {
@@ -21,14 +27,17 @@ class TimerSprites {
 
 const DIGIT_LENGTH = 7.25;
 
-// Directly below the stat HUD.
-const STARTING_X = 19;
-const STARTING_Y = 198;
+const STARTING_COORDINATES = {
+  [TimerType.MAIN]: [19, 198], // Directly below the stat HUD.
+  [TimerType.NO_HIT]: [55, 79], // To the right of the speed stat.
+} as const satisfies Record<TimerType, readonly [int, int]>;
 
-const sprites = new TimerSprites();
+const spriteCollectionMap = new DefaultMap<int, TimerSprites>(
+  () => new TimerSprites(),
+);
 
 /** Should be called from the `POST_RENDER` callback. */
-export function timerDraw(seconds: int): void {
+export function timerDraw(timerType: TimerType, seconds: int): void {
   const hud = game.GetHUD();
   if (!hud.IsVisible()) {
     return;
@@ -42,15 +51,18 @@ export function timerDraw(seconds: int): void {
   }
 
   // Calculate the starting draw position. It will be directly below the stat HUD.
+  const [startingX, startingY] = STARTING_COORDINATES[timerType];
   const HUDOffsetVector = getHUDOffsetVector();
-  let x = STARTING_X + HUDOffsetVector.X;
-  const y = STARTING_Y + HUDOffsetVector.Y;
+  let x = startingX + HUDOffsetVector.X;
+  const y = startingY + HUDOffsetVector.Y;
 
   const hourAdjustment = 2;
   let hourAdjustment2 = 0;
 
   const { hour1, hour2, minute1, minute2, second1, second2 } =
     convertSecondsToTimerValues(seconds);
+
+  const sprites = spriteCollectionMap.getAndSetDefault(timerType);
 
   const positionClock = Vector(x + 34, y + 45);
   sprites.clock.Render(positionClock);
