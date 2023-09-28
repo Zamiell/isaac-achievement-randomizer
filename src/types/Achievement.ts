@@ -11,6 +11,7 @@ import type {
   PillEffect,
   PlayerType,
   SackSubType,
+  SlotVariant,
   TrinketType,
 } from "isaac-typescript-definitions";
 import type { AchievementType } from "../enums/AchievementType";
@@ -96,6 +97,11 @@ interface ChestAchievement {
   pickupVariant: PickupVariant;
 }
 
+interface SlotAchievement {
+  type: AchievementType.SLOT;
+  slotVariant: SlotVariant;
+}
+
 export type Achievement =
   | CharacterAchievement
   | PathAchievement
@@ -111,4 +117,5 @@ export type Achievement =
   | KeyAchievement
   | BatteryAchievement
   | SackAchievement
-  | ChestAchievement;
+  | ChestAchievement
+  | SlotAchievement;

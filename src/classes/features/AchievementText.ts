@@ -18,6 +18,7 @@ import {
   getPillEffectName,
   getSackName,
   getScreenBottomRightPos,
+  getSlotName,
   getTrinketName,
   sfxManager,
 } from "isaacscript-common";
@@ -212,6 +213,10 @@ export function getAchievementText(achievement: Achievement): [string, string] {
 
     case AchievementType.CHEST: {
       return ["chest", getChestName(achievement.pickupVariant)];
+    }
+
+    case AchievementType.SLOT: {
+      return ["slot", getSlotName(achievement.slotVariant)];
     }
   }
 }

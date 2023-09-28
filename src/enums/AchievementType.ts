@@ -14,4 +14,5 @@ export enum AchievementType {
   BATTERY,
   SACK,
   CHEST,
+  SLOT,
 }

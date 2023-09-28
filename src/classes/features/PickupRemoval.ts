@@ -158,62 +158,9 @@ export class PickupRemoval extends RandomizerModFeature {
   }
 
   /**
-   * Set items are unlockable, but they will show up even if they are removed from pools. Replace
-   * them with Breakfast.
-   */
-  // 34, 100
-  @Callback(ModCallback.POST_PICKUP_INIT, PickupVariant.COLLECTIBLE)
-  postPickupInitCollectible(pickup: EntityPickup): void {
-    const collectible = pickup as EntityPickupCollectible;
-    if (
-      !isCollectibleTypeUnlocked(collectible.SubType) ||
-      // Prevent e.g. Spindown Dice from producing banned collectibles.
-      BANNED_COLLECTIBLE_TYPES_SET.has(collectible.SubType)
-    ) {
-      setCollectibleSubType(collectible, CollectibleType.BREAKFAST);
-    }
-  }
-
-  // 37
-  @Callback(ModCallback.POST_PICKUP_SELECTION)
-  postPickupSelection(
-    _pickup: EntityPickup,
-    pickupVariant: PickupVariant,
-    _subType: int,
-  ): [PickupVariant, int] | undefined {
-    if (!isChestVariant(pickupVariant)) {
-      return undefined;
-    }
-
-    return isChestPickupVariantUnlocked(pickupVariant)
-      ? undefined
-      : [PickupVariant.CHEST, ChestSubType.CLOSED];
-  }
-
-  // 65
-  @Callback(ModCallback.GET_PILL_EFFECT)
-  getPillEffect(
-    pillEffect: PillEffect,
-    _pillColor: PillColor,
-  ): PillEffect | undefined {
-    if (isPillEffectUnlocked(pillEffect)) {
-      return undefined;
-    }
-
-    const unlockedPillEffects = getUnlockedPillEffects();
-
-    // If there are no unlocked pill effects, the pill will be replaced with a coin in the
-    // `POST_PICKUP_SELECTION_FILTER` callback.
-    if (unlockedPillEffects.length === 0) {
-      return undefined;
-    }
-
-    return getRandomArrayElement(unlockedPillEffects);
-  }
-
-  /**
    * We have to code Spindown Dice from scratch so that it will skip over locked collectible types.
    */
+  // 23, 723
   @Callback(ModCallback.PRE_USE_ITEM, CollectibleType.SPINDOWN_DICE)
   preUseItemSpindownDice(
     _collectibleType: CollectibleType,
@@ -271,6 +218,60 @@ export class PickupRemoval extends RandomizerModFeature {
     );
 
     return true;
+  }
+
+  /**
+   * Set items are unlockable, but they will show up even if they are removed from pools. Replace
+   * them with Breakfast.
+   */
+  // 34, 100
+  @Callback(ModCallback.POST_PICKUP_INIT, PickupVariant.COLLECTIBLE)
+  postPickupInitCollectible(pickup: EntityPickup): void {
+    const collectible = pickup as EntityPickupCollectible;
+    if (
+      !isCollectibleTypeUnlocked(collectible.SubType) ||
+      // Prevent e.g. Spindown Dice from producing banned collectibles.
+      BANNED_COLLECTIBLE_TYPES_SET.has(collectible.SubType)
+    ) {
+      setCollectibleSubType(collectible, CollectibleType.BREAKFAST);
+    }
+  }
+
+  // 37
+  @Callback(ModCallback.POST_PICKUP_SELECTION)
+  postPickupSelection(
+    _pickup: EntityPickup,
+    pickupVariant: PickupVariant,
+    _subType: int,
+  ): [PickupVariant, int] | undefined {
+    if (!isChestVariant(pickupVariant)) {
+      return undefined;
+    }
+
+    return isChestPickupVariantUnlocked(pickupVariant)
+      ? undefined
+      : [PickupVariant.CHEST, ChestSubType.CLOSED];
+  }
+
+  // 65
+  @Callback(ModCallback.GET_PILL_EFFECT)
+  getPillEffect(
+    pillEffect: PillEffect,
+    _pillColor: PillColor,
+  ): PillEffect | undefined {
+    if (isPillEffectUnlocked(pillEffect)) {
+      return undefined;
+    }
+
+    const unlockedPillEffects = getUnlockedPillEffects();
+
+    // If there are no unlocked pill effects, the pill will be replaced with a coin in the
+    // `POST_PICKUP_SELECTION_FILTER` callback.
+    if (unlockedPillEffects.length === 0) {
+      return undefined;
+    }
+
+    return getRandomArrayElement(unlockedPillEffects);
   }
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)

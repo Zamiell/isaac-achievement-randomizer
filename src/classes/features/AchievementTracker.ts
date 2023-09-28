@@ -18,6 +18,7 @@ import {
   ModCallback,
   PickupVariant,
   PlayerType,
+  SlotVariant,
 } from "isaac-typescript-definitions";
 import {
   Callback,
@@ -622,6 +623,27 @@ export function isChestPickupVariantUnlocked(
     (achievement) =>
       achievement.type === AchievementType.CHEST &&
       achievement.pickupVariant === pickupVariant,
+  );
+}
+
+// --------------
+// Slot functions
+// --------------
+
+export function isSlotVariantUnlocked(slotVariant: SlotVariant): boolean {
+  // Ignore quest slots.
+  if (
+    slotVariant === SlotVariant.DONATION_MACHINE ||
+    slotVariant === SlotVariant.GREED_DONATION_MACHINE ||
+    slotVariant === SlotVariant.ISAAC_SECRET
+  ) {
+    return true;
+  }
+
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.SLOT &&
+      achievement.slotVariant === slotVariant,
   );
 }
 

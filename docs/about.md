@@ -80,7 +80,7 @@ Additionally, each character will unlock something upon clearing the following f
 
 ### Boss-Based Objectives
 
-There is one unlock for surviving for 2 minutes without taking damage for each boss. Thus, there are ? boss-based objectives.
+There is one unlock for surviving for 2 minutes without taking damage for each boss. Thus, there are 100 boss-based objectives.
 
 ### Challenge-Based Objectives
 
@@ -88,7 +88,7 @@ There is one unlock for completing each challenge. Thus, there are 45 challenge-
 
 ### Total
 
-There are 1086 + ? + 45 = 1131 objectives in total.
+There are 1054 + 100 + 45 = 1199 objectives in total.
 
 <br>
 
@@ -191,7 +191,7 @@ Every trinket in the game is locked behind a random objective, with the followin
   - Karma (#85) (would be useless; see below)
   - 'M (#138) (would break collectible unlocks)
 
-If no trinkets are unlocked, trinkets will be converted to pennies.
+If no trinkets are unlocked, they will be converted to pennies.
 
 Also note that:
 
@@ -199,7 +199,7 @@ Also note that:
 
 ### Cards & Runes <!-- 5.300 -->
 
-Every card/rune in the game is locked behind a random objective (except for Rune Shard, which will never spawn). If no cards/runes are unlocked, cards/runes will be converted to pennies.
+Every card/rune in the game is locked behind a random objective (except for Rune Shard, which will never spawn). If no cards/runes are unlocked, they will be converted to pennies.
 
 ### Pills <!-- 5.70 -->
 
@@ -213,9 +213,13 @@ Every card/rune in the game is locked behind a random objective (except for Rune
 - Only pennies start as being unlocked. Every other coin in the game is locked behind a random objective.
 - Only normal bomb pickups start as being unlocked. Every other bomb pickup in the game is locked behind a random objective.
 - Only normal key pickups start as being unlocked. Every other key pickup in the game is locked behind a random objective.
-- Every battery type in the game is locked behind a random objective. If no batteries are unlocked, batteries will be converted to pennies.
-- Every sack type in the game is locked behind a random objective. If no sack are unlocked, sacks will be converted to pennies.
+- Every battery type in the game is locked behind a random objective. Non-unlocked batteries are converted to pennies.
+- Every sack type in the game is locked behind a random objective. Non-unlocked sacks are converted to pennies.
 - Only normal chests start as being unlocked. Every other chest type in the game is locked behind a random objective.
+
+### Slots
+
+- Every slot entity (e.g. machines and beggars) is locked behind a random objective. Non-unlocked slot entities are converted to pennies, except for Dressing Tables, which are removed.
 
 <br>
 
@@ -239,7 +243,9 @@ Unlike the timer in Racing+, the timer in this mod tracks in-game time. Thus, th
 
 ### Donation Machine Removal
 
-The mod removed all Donation Machines from the game in order to increase the difficulty and prevent individual runs from influencing each other. (Additionally, the Karma trinket is removed from the game because it would serve no purpose.)
+- The mod removed all Donation Machines from the game in order to increase the difficulty and prevent individual runs from influencing each other.
+- Greed Donation Machines are also removed because they serve no purpose in this mod.
+- Additionally, the Karma trinket is removed from the game because it would serve no purpose.
 
 ### Eden TMTRAINER Handling
 
