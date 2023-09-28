@@ -10,6 +10,7 @@ import {
   PickupVariant,
   PlayerType,
   SackSubType,
+  SlotVariant,
 } from "isaac-typescript-definitions";
 import {
   CHEST_PICKUP_VARIANTS,
@@ -42,6 +43,7 @@ import {
   OBJECTIVE_TYPES,
   PILL_ACHIEVEMENT_KINDS,
   SACK_SUB_TYPES,
+  SLOT_VARIANTS,
   UNLOCKABLE_PATHS,
 } from "./cachedEnums";
 import { getAchievementText } from "./classes/features/AchievementText";
@@ -618,6 +620,26 @@ function getAllAchievements(): Achievement[] {
           const achievement: Achievement = {
             type: AchievementType.CHEST,
             pickupVariant,
+          };
+          achievements.push(achievement);
+        }
+
+        break;
+      }
+
+      case AchievementType.SLOT: {
+        for (const slotVariant of SLOT_VARIANTS) {
+          if (
+            slotVariant === SlotVariant.DONATION_MACHINE ||
+            slotVariant === SlotVariant.GREED_DONATION_MACHINE ||
+            slotVariant === SlotVariant.ISAAC_SECRET
+          ) {
+            continue;
+          }
+
+          const achievement: Achievement = {
+            type: AchievementType.SLOT,
+            slotVariant,
           };
           achievements.push(achievement);
         }

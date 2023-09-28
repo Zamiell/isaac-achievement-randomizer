@@ -6,6 +6,7 @@ import {
   HeartSubType,
   KeySubType,
   SackSubType,
+  SlotVariant,
 } from "isaac-typescript-definitions";
 import { getEnumValues } from "isaacscript-common";
 import { AchievementType } from "./enums/AchievementType";
@@ -44,6 +45,8 @@ export const PILL_ACHIEVEMENT_KINDS: readonly PillAchievementKind[] =
 
 export const SACK_SUB_TYPES: readonly SackSubType[] =
   getEnumValues(SackSubType);
+
+export const SLOT_VARIANTS: readonly SlotVariant[] = getEnumValues(SlotVariant);
 
 export const UNLOCKABLE_PATHS: readonly UnlockablePath[] =
   getEnumValues(UnlockablePath);
