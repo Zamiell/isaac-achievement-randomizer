@@ -41,7 +41,7 @@ import {
   HEART_SUB_TYPES,
   KEY_SUB_TYPES,
   OBJECTIVE_TYPES,
-  PILL_ACHIEVEMENT_KINDS,
+  OTHER_ACHIEVEMENT_KINDS,
   SACK_SUB_TYPES,
   SLOT_VARIANTS,
   UNLOCKABLE_PATHS,
@@ -479,18 +479,6 @@ function getAllAchievements(): Achievement[] {
         break;
       }
 
-      case AchievementType.PILL: {
-        for (const pillAchievementKind of PILL_ACHIEVEMENT_KINDS) {
-          const achievement: Achievement = {
-            type: AchievementType.PILL,
-            kind: pillAchievementKind,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
       case AchievementType.HEART: {
         for (const heartSubType of HEART_SUB_TYPES) {
           if (
@@ -640,6 +628,18 @@ function getAllAchievements(): Achievement[] {
           const achievement: Achievement = {
             type: AchievementType.SLOT,
             slotVariant,
+          };
+          achievements.push(achievement);
+        }
+
+        break;
+      }
+
+      case AchievementType.OTHER: {
+        for (const otherAchievementKind of OTHER_ACHIEVEMENT_KINDS) {
+          const achievement: Achievement = {
+            type: AchievementType.OTHER,
+            kind: otherAchievementKind,
           };
           achievements.push(achievement);
         }

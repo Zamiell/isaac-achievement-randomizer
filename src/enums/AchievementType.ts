@@ -6,7 +6,6 @@ export enum AchievementType {
   TRINKET,
   CARD,
   PILL_EFFECT,
-  PILL,
   HEART,
   COIN,
   BOMB,
@@ -15,4 +14,5 @@ export enum AchievementType {
   SACK,
   CHEST,
   SLOT,
+  OTHER,
 }

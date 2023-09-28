@@ -52,16 +52,6 @@ interface PillEffectAchievement {
   pillEffect: PillEffect;
 }
 
-export interface PillAchievement {
-  type: AchievementType.PILL;
-  kind: PillAchievementKind;
-}
-
-export enum PillAchievementKind {
-  GOLD,
-  HORSE,
-}
-
 interface HeartAchievement {
   type: AchievementType.HEART;
   heartSubType: HeartSubType;
@@ -102,6 +92,20 @@ interface SlotAchievement {
   slotVariant: SlotVariant;
 }
 
+interface OtherAchievement {
+  type: AchievementType.OTHER;
+  kind: OtherAchievementKind;
+}
+
+export enum OtherAchievementKind {
+  SHOPKEEPERS,
+  GOLD_TRINKETS,
+  GOLD_PILLS,
+  HORSE_PILLS,
+  TINTED_ROCKS,
+  FOOLS_GOLD,
+}
+
 export type Achievement =
   | CharacterAchievement
   | PathAchievement
@@ -110,7 +114,6 @@ export type Achievement =
   | TrinketAchievement
   | CardAchievement
   | PillEffectAchievement
-  | PillAchievement
   | HeartAchievement
   | CoinAchievement
   | BombAchievement
@@ -118,4 +121,5 @@ export type Achievement =
   | BatteryAchievement
   | SackAchievement
   | ChestAchievement
-  | SlotAchievement;
+  | SlotAchievement
+  | OtherAchievement;

@@ -13,7 +13,7 @@ import { AchievementType } from "./enums/AchievementType";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { UnlockablePath } from "./enums/UnlockablePath";
-import { PillAchievementKind } from "./types/Achievement";
+import { OtherAchievementKind } from "./types/Achievement";
 
 export const ACHIEVEMENT_TYPES: readonly AchievementType[] =
   getEnumValues(AchievementType);
@@ -40,8 +40,8 @@ export const KEY_SUB_TYPES: readonly KeySubType[] = getEnumValues(KeySubType);
 export const OBJECTIVE_TYPES: readonly ObjectiveType[] =
   getEnumValues(ObjectiveType);
 
-export const PILL_ACHIEVEMENT_KINDS: readonly PillAchievementKind[] =
-  getEnumValues(PillAchievementKind);
+export const OTHER_ACHIEVEMENT_KINDS: readonly OtherAchievementKind[] =
+  getEnumValues(OtherAchievementKind);
 
 export const SACK_SUB_TYPES: readonly SackSubType[] =
   getEnumValues(SackSubType);

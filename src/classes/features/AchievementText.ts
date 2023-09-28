@@ -28,8 +28,8 @@ import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import { SoundEffectCustom } from "../../enums/SoundEffectCustom";
 import { UnlockablePath } from "../../enums/UnlockablePath";
-import type { Achievement, PillAchievement } from "../../types/Achievement";
-import { PillAchievementKind } from "../../types/Achievement";
+import type { Achievement } from "../../types/Achievement";
+import { OtherAchievementKind } from "../../types/Achievement";
 import type { Objective } from "../../types/Objective";
 
 const FONT = fonts.droid;
@@ -183,10 +183,6 @@ export function getAchievementText(achievement: Achievement): [string, string] {
       return ["pill effect", getPillEffectName(achievement.pillEffect)];
     }
 
-    case AchievementType.PILL: {
-      return getPillAchievementName(achievement);
-    }
-
     case AchievementType.HEART: {
       return ["heart", getHeartName(achievement.heartSubType)];
     }
@@ -217,6 +213,10 @@ export function getAchievementText(achievement: Achievement): [string, string] {
 
     case AchievementType.SLOT: {
       return ["slot", getSlotName(achievement.slotVariant)];
+    }
+
+    case AchievementType.OTHER: {
+      return getOtherAchievementName(achievement.kind);
     }
   }
 }
@@ -261,16 +261,32 @@ function getPathName(unlockablePath: UnlockablePath): string {
   }
 }
 
-function getPillAchievementName(
-  achievement: PillAchievement,
+function getOtherAchievementName(
+  otherAchievementKind: OtherAchievementKind,
 ): [string, string] {
-  switch (achievement.kind) {
-    case PillAchievementKind.GOLD: {
+  switch (otherAchievementKind) {
+    case OtherAchievementKind.SHOPKEEPERS: {
+      return ["shop entity", "shopkeepers"];
+    }
+
+    case OtherAchievementKind.GOLD_TRINKETS: {
+      return ["trinket type", "gold trinkets"];
+    }
+
+    case OtherAchievementKind.GOLD_PILLS: {
       return ["pill type", "gold pills"];
     }
 
-    case PillAchievementKind.HORSE: {
+    case OtherAchievementKind.HORSE_PILLS: {
       return ["pill type", "horse pills"];
+    }
+
+    case OtherAchievementKind.TINTED_ROCKS: {
+      return ["rock type", "tinted rocks"];
+    }
+
+    case OtherAchievementKind.FOOLS_GOLD: {
+      return ["rock type", "fool's gold"];
     }
   }
 }

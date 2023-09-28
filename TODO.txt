@@ -1,19 +1,23 @@
 TODO:
-- code boss objectives and test
+- code:
+  SHOPKEEPERS,
+  GOLD_TRINKETS,
+  GOLD_PILLS,
+  HORSE_PILLS,
+  TINTED_ROCKS,
+  FOOLS_GOLD,
 - icon for not having taken damage on floor
   - gfx/crownoflight.anm2
-- timer for damage countdown
 - graph unlock
   - challenges can't be gated behind other challenges
   - e.g. repentance floors can't be behind mother
-- unlock shopkeepers
 
 NEW POTENTIAL UNLOCKS:
 - 24 extra collectible types that do not need to start unlocked (9 + 5 + 5 + 5)
-- 15 slot variants (18 - 3 for DONATION_MACHINE, GREED_DONATION_MACHINE, ISAAC_SECRET)
 - 1 golden trinkets
 - 1 tinted rocks
 - 1 fool's gold
+- 1 unlock shopkeepers
 - = 42 potential unlocks
 
 NEW POTENTIAL OBJECTIVES:

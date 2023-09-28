@@ -47,7 +47,7 @@ import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { UnlockablePath } from "../../enums/UnlockablePath";
 import { convertSecondsToTimerValues } from "../../timer";
 import type { Achievement } from "../../types/Achievement";
-import { PillAchievementKind } from "../../types/Achievement";
+import { OtherAchievementKind } from "../../types/Achievement";
 import type { Objective } from "../../types/Objective";
 import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTypes";
 import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../unlockableTrinketTypes";
@@ -510,16 +510,16 @@ export function getUnlockedPillEffects(): PillEffect[] {
 export function isGoldPillUnlocked(): boolean {
   return v.persistent.completedAchievements.some(
     (achievement) =>
-      achievement.type === AchievementType.PILL &&
-      achievement.kind === PillAchievementKind.GOLD,
+      achievement.type === AchievementType.OTHER &&
+      achievement.kind === OtherAchievementKind.GOLD_PILLS,
   );
 }
 
 export function isHorsePillsUnlocked(): boolean {
   return v.persistent.completedAchievements.some(
     (achievement) =>
-      achievement.type === AchievementType.PILL &&
-      achievement.kind === PillAchievementKind.HORSE,
+      achievement.type === AchievementType.OTHER &&
+      achievement.kind === OtherAchievementKind.HORSE_PILLS,
   );
 }
 
