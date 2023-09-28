@@ -70,6 +70,7 @@ POTENTIAL TODO:
   - We Need to Go Deeper (#84) behind crawl spaces
   - Humbleing Bundle (#203) behind one of 2x coin/bomb/key
   - Bogo Bombs (#250) behind double bomb
+  - Dream Catcher (#566) behind all alt floors
   - Battery Pack (#603) behind Lil Battery
 
 - unlock logic for trinkets:

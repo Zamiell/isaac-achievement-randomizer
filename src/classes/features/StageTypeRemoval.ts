@@ -19,13 +19,15 @@ export class StageTypeRemoval extends RandomizerModFeature {
       return;
     }
 
-    // Reloading a stage will cause Dream Catcher, Maggy's Faith, and Hollow Heart to give extra
-    // health.
-    const player = Isaac.GetPlayer();
-    const playerHealth = getPlayerHealth(player);
     log(
       `Locked stage type detected (${stageType}). Going to the original version of the stage.`,
     );
+
+    // Reloading the stage will cause collectibles (Dream Catcher, Empty Heart) and trinkets
+    // (Maggy's Faith, Hollow Heart) to give extra health.
+    const player = Isaac.GetPlayer();
+    const playerHealth = getPlayerHealth(player);
+    player.AddEternalHearts(-1);
     goToStage(stage, StageType.ORIGINAL);
     setPlayerHealth(player, playerHealth);
   }
