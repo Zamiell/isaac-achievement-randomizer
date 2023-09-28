@@ -20,16 +20,20 @@ import {
   getMegaSatanDoor,
   getRepentanceDoor,
   getVoidDoor,
+  inCrawlSpace,
   inRoomType,
   onRepentanceStage,
   onStage,
   removeAllMatchingGridEntities,
   removeDoor,
   removeGridEntity,
+  spawnGridEntity,
 } from "isaacscript-common";
 import { UnlockablePath } from "../../enums/UnlockablePath";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { isPathUnlocked } from "./AchievementTracker";
+
+const GRID_INDEX_BLOCKING_LADDER_TO_BLACK_MARKET = 86;
 
 const v = {
   level: {
@@ -62,6 +66,7 @@ export class PathRemoval extends RandomizerModFeature {
   postNewRoomReordered(): void {
     this.checkPathDoors();
     this.checkRemoveSacrificeRoomSpikes();
+    this.checkBlackMarket();
   }
 
   checkPathDoors(): void {
@@ -148,6 +153,20 @@ export class PathRemoval extends RandomizerModFeature {
   checkRemoveSacrificeRoomSpikes(): void {
     if (v.level.removedSacrificeRoomSpikes && inRoomType(RoomType.SACRIFICE)) {
       removeAllMatchingGridEntities(GridEntityType.SPIKES);
+    }
+  }
+
+  /** A seed with a Black Market on the first floor: 1EVL K1Y8 */
+  checkBlackMarket(): void {
+    if (!inCrawlSpace()) {
+      return;
+    }
+
+    if (!isPathUnlocked(UnlockablePath.BLACK_MARKETS)) {
+      spawnGridEntity(
+        GridEntityType.BLOCK,
+        GRID_INDEX_BLOCKING_LADDER_TO_BLACK_MARKET,
+      );
     }
   }
 

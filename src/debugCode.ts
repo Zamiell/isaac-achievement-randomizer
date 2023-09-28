@@ -5,15 +5,12 @@ import {
   setTracebackFunctionsGlobal,
 } from "isaacscript-common";
 import { startRandomizer } from "./classes/features/AchievementTracker";
-import { unlockCharacter, unlockCollectible } from "./consoleCommands";
 import { mod } from "./mod";
 
 /** Currently, F3 is set to execute this function. */
 function debugCode(_params?: string) {
   // Add code here.
   startRandomizer(undefined);
-  unlockCharacter("2");
-  unlockCollectible("Moms Knife");
 }
 
 /** Hotkey 1 is bound to F3. */

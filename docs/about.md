@@ -196,7 +196,7 @@ Every card/rune in the game is locked (except for Rune Shard, which will never s
 ### Grid Entities
 
 - The following grid entities start out locked:
-  - Tinted rocks (4.0)
+  - Tinted Rocks (4.0)
   - Urns (6.0)
   - Mushrooms (6.0)
   - Skulls (6.0)
@@ -207,17 +207,17 @@ Every card/rune in the game is locked (except for Rune Shard, which will never s
   - Charming Poop (14.11)
   - Crawlspaces (18.0)
   - Reward Plates (20.1)
-  - Super tinted rocks (22.0)
-  - Fool's Gold rocks (27.0)
+  - Super Tinted Rocks (22.0)
+  - Fool's Gold Rocks (27.0)
 
 ### Miscellaneous
 
 - The following other things start out locked:
   - Shopkeepers
-  - Blue fireplaces
-  - Golden trinkets
-  - Gold pills
-  - Horse pills
+  - Blue Fireplaces
+  - Golden Trinkets
+  - Gold Pills
+  - Horse Pills
 
 <br>
 
