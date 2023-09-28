@@ -1,6 +1,11 @@
 TODO:
-- challenges can't be gated behind other challenges
-- e.g. repentance floors can't be behind mother
+- icon for not having taken damage on floor
+  - gfx/crownoflight.anm2
+- timer for damage countdown
+- graph unlock
+  - challenges can't be gated behind other challenges
+  - e.g. repentance floors can't be behind mother
+- unlock shopkeepers
 
 NEW POTENTIAL UNLOCKS:
 - 24 extra collectible types that do not need to start unlocked (9 + 5 + 5 + 5)
@@ -12,9 +17,10 @@ NEW POTENTIAL UNLOCKS:
 
 NEW POTENTIAL OBJECTIVES:
 - would need 288 objectives to reduce no damage objectives by half
-- survive on each boss in the game for 2 minutes without getting damaged (89 bosses + 16 mini-bosses + 2 angels = 107)
+- survive on each boss in the game for 2 minutes without getting damaged (100 bosses)
   - exclude non 1x1 rooms (except for Fred)
-  - exclude flying
+  - exclude holy mantle hits
+- survive for 2 minutes - 16 mini-bosses + 2 angels
 
 - forgotten unlock sequence
 - hold 99 coins

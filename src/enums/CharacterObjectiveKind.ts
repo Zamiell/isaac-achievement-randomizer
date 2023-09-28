@@ -10,9 +10,7 @@ export enum CharacterObjectiveKind {
   BOSS_RUSH,
   HUSH,
   DELIRIUM,
-  MOMS_HEART_ALT,
   MOTHER,
-  DOGMA,
   THE_BEAST,
   ULTRA_GREED,
 

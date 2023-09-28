@@ -37,7 +37,7 @@ Note that all objectives must be completed on hard mode.
 
 ### Character-Based Objectives
 
-Each character will unlock something upon defeating the following bosses/objectives:
+Each character will unlock something upon defeating/completing the following:
 
 1. Mom
 2. It Lives
@@ -50,10 +50,8 @@ Each character will unlock something upon defeating the following bosses/objecti
 9. Hush
 10. Ultra Greed
 11. Delirium
-12. Mom's Heart (in Mausoleum/Gehenna)
-13. Mother
-14. Dogma
-15. The Beast
+12. Mother
+13. The Beast
 
 Additionally, each character other than The Lost and Tainted Lost will unlock something upon clearing the following floors without taking damage:
 
@@ -77,16 +75,20 @@ Additionally, each character other than The Lost and Tainted Lost will unlock so
 18. Corpse 2
 
 - There are 34 main characters.
-- There are 15 boss objectives and 18 floor objectives, which makes 33 in total.
-- Thus, since The Lost & Tainted Lost do not have floor objectives, there are (34 - 2) x 33 = 1086 character-based objectives.
+- There are 13 boss objectives and 18 floor objectives, which makes 31 in total.
+- Thus, since The Lost & Tainted Lost do not have floor objectives, there are (34 - 2) x 31 = 992 character-based objectives.
+
+### Boss-Based Objectives
+
+There is one unlock for surviving for 2 minutes without taking damage for each boss. Thus, there are ? boss-based objectives.
 
 ### Challenge-Based Objectives
 
-There is one achievement for completing each challenge. Thus, there are 45 challenge-based achievements.
+There is one unlock for completing each challenge. Thus, there are 45 challenge-based objectives.
 
 ### Total
 
-There are 1086 + 45 = 1131 objectives in total.
+There are 1086 + ? + 45 = 1131 objectives in total.
 
 <br>
 

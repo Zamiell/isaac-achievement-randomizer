@@ -1,4 +1,4 @@
-import { ModCallback } from "isaac-typescript-definitions";
+import { BossID, ModCallback } from "isaac-typescript-definitions";
 import {
   Callback,
   ModFeature,
@@ -21,6 +21,7 @@ import {
   getTrinketName,
   sfxManager,
 } from "isaacscript-common";
+import { NUM_MINUTES_FOR_BOSS_OBJECTIVE } from "../../constants";
 import { AchievementType } from "../../enums/AchievementType";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
@@ -132,6 +133,16 @@ export function getObjectiveText(objective: Objective): string[] {
             "on",
             characterName,
           ];
+    }
+
+    case ObjectiveType.BOSS: {
+      return [
+        `Survive ${NUM_MINUTES_FOR_BOSS_OBJECTIVE}`,
+        "minutes without",
+        "getting hit",
+        "on",
+        BossID[objective.bossID],
+      ];
     }
 
     case ObjectiveType.CHALLENGE: {
@@ -303,16 +314,8 @@ export function getCharacterObjectiveKindName(
       return "Delirium";
     }
 
-    case CharacterObjectiveKind.MOMS_HEART_ALT: {
-      return "Mom's Heart (Alt)";
-    }
-
     case CharacterObjectiveKind.MOTHER: {
       return "Mother";
-    }
-
-    case CharacterObjectiveKind.DOGMA: {
-      return "Dogma";
     }
 
     case CharacterObjectiveKind.THE_BEAST: {

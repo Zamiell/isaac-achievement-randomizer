@@ -20,6 +20,7 @@ import {
   arrayRemoveIndexInPlace,
   assertDefined,
   copyArray,
+  getAllBossesSet,
   getChallengeName,
   getCharacterName,
   getRandomArrayElement,
@@ -107,6 +108,8 @@ const NUM_CHARACTER_OBJECTIVE_KINDS_FOR_LOST = CHARACTER_OBJECTIVE_KINDS.filter(
   (characterObjectiveKind) =>
     characterObjectiveKind < CharacterObjectiveKind.NO_DAMAGE_BASEMENT_1,
 ).length;
+
+const ALL_BOSS_IDS = [...getAllBossesSet()] as const;
 
 export const NUM_TOTAL_ACHIEVEMENTS = getAllAchievements().length;
 
@@ -658,6 +661,18 @@ function getAllObjectives(): Objective[] {
             };
             objectives.push(objective);
           }
+        }
+
+        break;
+      }
+
+      case ObjectiveType.BOSS: {
+        for (const bossID of ALL_BOSS_IDS) {
+          const objective: Objective = {
+            type: ObjectiveType.BOSS,
+            bossID,
+          };
+          objectives.push(objective);
         }
 
         break;
