@@ -122,40 +122,12 @@ All challenges start off locked.
 
 Every collectible in the game is locked behind a random objective, with the following exceptions:
 
-- 10 collectibles from the Treasure Room pool (#0):
-  - Sack of Pennies (#94)
-  - Ball of Tar (#231)
-  - Tiny Planet (#233)
-  - Isaac's Heart (#276)
-  - Strange Attractor (#315)
-  - Key Bum (#388)
-  - Obsessed Fan (#426)
-  - Linger Bean (#447)
-  - Hushy (#470)
-- 5 collectibles from the Shop pool (#1):
-  - Ladder (#60)
-  - Fanny Pack (#204)
-  - Piggy Bank (#227)
-  - King Baby (#472)
-  - Options (#670)
 - 5 collectibles from the Boss Room pool (#2):
   - Breakfast (#25) (HP)
   - Wooden Spoon (#27) (speed)
   - Mom's Underwear (#29) (range)
   - Wire Coat Hanger (#32) (tears)
   - Cat-O-Nine-Tails (#165) (damage)
-- 5 collectibles from the Devil Room pool (#3):
-  - Quarter (#74)
-  - Blood Rights (#186)
-  - Missing Page 2 (#262)
-  - Shade (#468)
-  - Pound of Flesh (#672)
-- 5 collectibles from the Angel Room pool (#4):
-  - Guardian Angel (#112)
-  - Stigmata (#138)
-  - Prayer Card (#146)
-  - Holy Grail (#184)
-  - Sworn Protector (#363)
 - Quest collectibles (except for The Polaroid and the Negative):
   - Key Piece 1 (#238)
   - Key Piece 2 (#239)
@@ -201,11 +173,9 @@ Also note that:
 
 Every card/rune in the game is locked behind a random objective (except for Rune Shard, which will never spawn). If no cards/runes are unlocked, they will be converted to pennies.
 
-### Pills <!-- 5.70 -->
+### Pill Effects <!-- 5.70 -->
 
 - Every pill effect in the game is locked behind a random objective. If no pill effects are unlocked, pills will be converted to pennies.
-- Gold pills are locked behind a random objective.
-- Horse pills are locked behind a random objective.
 
 ### Other Pickups
 
@@ -220,6 +190,16 @@ Every card/rune in the game is locked behind a random objective (except for Rune
 ### Slots
 
 - Every slot entity (e.g. machines and beggars) is locked behind a random objective. Non-unlocked slot entities are converted to pennies, except for Dressing Tables, which are removed.
+
+### Miscellaneous
+
+- The following things are also locked behind a random objective:
+  - Shopkeepers
+  - Golden trinkets
+  - Gold pills
+  - Horse pills
+  - Tinted rocks
+  - Fool's Gold rocks
 
 <br>
 

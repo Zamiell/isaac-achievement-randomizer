@@ -1,17 +1,11 @@
 TODO:
+- missing 25 achievements
+
 - icon for not having taken damage on floor
   - gfx/crownoflight.anm2
 - graph unlock
   - challenges can't be gated behind other challenges
   - e.g. repentance floors can't be behind mother
-
-NEW POTENTIAL UNLOCKS:
-- 24 extra collectible types that do not need to start unlocked (9 + 5 + 5 + 5)
-- 1 golden trinkets
-- 1 tinted rocks
-- 1 fool's gold
-- 1 unlock shopkeepers
-- = 42 potential unlocks
 
 NEW POTENTIAL OBJECTIVES:
 - would need 288 objectives to reduce no damage objectives by half
