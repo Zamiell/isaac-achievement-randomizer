@@ -1,11 +1,9 @@
 import { EntityType, FireplaceVariant } from "isaac-typescript-definitions";
 import { CallbackCustom, ModCallbackCustom } from "isaacscript-common";
 import { EffectVariantCustom } from "../../enums/EffectVariantCustom";
+import { OtherAchievementKind } from "../../enums/OtherAchievementKind";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import {
-  isBlueFiresUnlocked,
-  isShopkeepersUnlocked,
-} from "./AchievementTracker";
+import { isOtherAchievementsUnlocked } from "./AchievementTracker";
 
 export class NPCRemoval extends RandomizerModFeature {
   @CallbackCustom(
@@ -21,7 +19,7 @@ export class NPCRemoval extends RandomizerModFeature {
     _spawner: Entity | undefined,
     initSeed: Seed,
   ): [EntityType, int, int, int] | undefined {
-    return isShopkeepersUnlocked()
+    return isOtherAchievementsUnlocked(OtherAchievementKind.SHOPKEEPERS)
       ? undefined
       : [EntityType.EFFECT, EffectVariantCustom.INVISIBLE_EFFECT, 0, initSeed];
   }
@@ -40,7 +38,7 @@ export class NPCRemoval extends RandomizerModFeature {
     _spawner: Entity | undefined,
     initSeed: Seed,
   ): [EntityType, int, int, int] | undefined {
-    return isBlueFiresUnlocked()
+    return isOtherAchievementsUnlocked(OtherAchievementKind.BLUE_FIREPLACES)
       ? undefined
       : [EntityType.FIREPLACE, FireplaceVariant.NORMAL, 0, initSeed];
   }

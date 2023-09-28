@@ -44,7 +44,7 @@ import { CHARACTER_OBJECTIVE_KINDS } from "../../cachedEnums";
 import { AchievementType } from "../../enums/AchievementType";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
-import { OtherAchievementKind } from "../../enums/OtherAchievementKind";
+import type { OtherAchievementKind } from "../../enums/OtherAchievementKind";
 import type { UnlockablePath } from "../../enums/UnlockablePath";
 import { convertSecondsToTimerValues } from "../../timer";
 import type { Achievement } from "../../types/Achievement";
@@ -635,75 +635,13 @@ export function isSlotVariantUnlocked(slotVariant: SlotVariant): boolean {
 // Other functions
 // ---------------
 
-export function isShopkeepersUnlocked(): boolean {
+export function isOtherAchievementsUnlocked(
+  otherAchievementKind: OtherAchievementKind,
+): boolean {
   return v.persistent.completedAchievements.some(
     (achievement) =>
       achievement.type === AchievementType.OTHER &&
-      achievement.kind === OtherAchievementKind.SHOPKEEPERS,
-  );
-}
-
-export function isBedsUnlocked(): boolean {
-  return v.persistent.completedAchievements.some(
-    (achievement) =>
-      achievement.type === AchievementType.OTHER &&
-      achievement.kind === OtherAchievementKind.BEDS,
-  );
-}
-
-export function isBlueFiresUnlocked(): boolean {
-  return v.persistent.completedAchievements.some(
-    (achievement) =>
-      achievement.type === AchievementType.OTHER &&
-      achievement.kind === OtherAchievementKind.BLUE_FIREPLACES,
-  );
-}
-
-export function isGoldTrinketsUnlocked(): boolean {
-  return v.persistent.completedAchievements.some(
-    (achievement) =>
-      achievement.type === AchievementType.OTHER &&
-      achievement.kind === OtherAchievementKind.GOLD_TRINKETS,
-  );
-}
-
-export function isGoldPillUnlocked(): boolean {
-  return v.persistent.completedAchievements.some(
-    (achievement) =>
-      achievement.type === AchievementType.OTHER &&
-      achievement.kind === OtherAchievementKind.GOLD_PILLS,
-  );
-}
-
-export function isHorsePillsUnlocked(): boolean {
-  return v.persistent.completedAchievements.some(
-    (achievement) =>
-      achievement.type === AchievementType.OTHER &&
-      achievement.kind === OtherAchievementKind.HORSE_PILLS,
-  );
-}
-
-export function isTintedRocksUnlocked(): boolean {
-  return v.persistent.completedAchievements.some(
-    (achievement) =>
-      achievement.type === AchievementType.OTHER &&
-      achievement.kind === OtherAchievementKind.TINTED_ROCKS,
-  );
-}
-
-export function isSuperTintedRocksUnlocked(): boolean {
-  return v.persistent.completedAchievements.some(
-    (achievement) =>
-      achievement.type === AchievementType.OTHER &&
-      achievement.kind === OtherAchievementKind.SUPER_TINTED_ROCKS,
-  );
-}
-
-export function isFoolsGoldUnlocked(): boolean {
-  return v.persistent.completedAchievements.some(
-    (achievement) =>
-      achievement.type === AchievementType.OTHER &&
-      achievement.kind === OtherAchievementKind.FOOLS_GOLD,
+      achievement.kind === otherAchievementKind,
   );
 }
 

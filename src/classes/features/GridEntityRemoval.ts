@@ -1,12 +1,11 @@
 import { GridEntityType } from "isaac-typescript-definitions";
 import { CallbackCustom, ModCallbackCustom } from "isaacscript-common";
+import { OtherAchievementKind } from "../../enums/OtherAchievementKind";
 import { UnlockablePath } from "../../enums/UnlockablePath";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
-  isFoolsGoldUnlocked,
+  isOtherAchievementsUnlocked,
   isPathUnlocked,
-  isSuperTintedRocksUnlocked,
-  isTintedRocksUnlocked,
 } from "./AchievementTracker";
 
 export class GridEntityRemoval extends RandomizerModFeature {
@@ -16,7 +15,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
     GridEntityType.ROCK_TINTED,
   )
   postGridEntityInitRockTinted(gridEntity: GridEntity): void {
-    if (!isTintedRocksUnlocked()) {
+    if (!isOtherAchievementsUnlocked(OtherAchievementKind.TINTED_ROCKS)) {
       gridEntity.SetType(GridEntityType.ROCK);
     }
   }
@@ -27,7 +26,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
     GridEntityType.ROCK_SUPER_SPECIAL,
   )
   postGridEntityInitRockSuperSpecial(gridEntity: GridEntity): void {
-    if (!isSuperTintedRocksUnlocked()) {
+    if (!isOtherAchievementsUnlocked(OtherAchievementKind.SUPER_TINTED_ROCKS)) {
       gridEntity.SetType(GridEntityType.ROCK);
     }
   }
@@ -49,7 +48,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
     GridEntityType.ROCK_GOLD,
   )
   postGridEntityInitRockGold(gridEntity: GridEntity): void {
-    if (!isFoolsGoldUnlocked()) {
+    if (!isOtherAchievementsUnlocked(OtherAchievementKind.FOOLS_GOLD)) {
       gridEntity.SetType(GridEntityType.ROCK);
     }
   }
