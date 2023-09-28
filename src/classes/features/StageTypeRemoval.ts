@@ -2,8 +2,11 @@ import { LevelStage, StageType } from "isaac-typescript-definitions";
 import {
   CallbackCustom,
   ModCallbackCustom,
+  getPlayerHealth,
   goToStage,
   isGreedMode,
+  log,
+  setPlayerHealth,
 } from "isaacscript-common";
 import { AltFloor } from "../../enums/AltFloor";
 import { RandomizerModFeature } from "../RandomizerModFeature";
@@ -12,9 +15,19 @@ import { isAltFloorUnlocked } from "./AchievementTracker";
 export class StageTypeRemoval extends RandomizerModFeature {
   @CallbackCustom(ModCallbackCustom.POST_NEW_LEVEL_REORDERED)
   postNewLevelReordered(stage: LevelStage, stageType: StageType): void {
-    if (!isStageTypeUnlocked(stage, stageType)) {
-      goToStage(stage, StageType.ORIGINAL);
+    if (isStageTypeUnlocked(stage, stageType)) {
+      return;
     }
+
+    // Reloading a stage will cause Dream Catcher, Maggy's Faith, and Hollow Heart to give extra
+    // health.
+    const player = Isaac.GetPlayer();
+    const playerHealth = getPlayerHealth(player);
+    log(
+      `Locked stage type detected (${stageType}). Going to the original version of the stage.`,
+    );
+    goToStage(stage, StageType.ORIGINAL);
+    setPlayerHealth(player, playerHealth);
   }
 }
 

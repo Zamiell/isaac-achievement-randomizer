@@ -24,7 +24,7 @@ import {
   onVictoryLap,
   removeAllDoors,
 } from "isaacscript-common";
-import { MOD_NAME } from "../../constants";
+import { IS_DEV, MOD_NAME } from "../../constants";
 import { UnlockablePath } from "../../enums/UnlockablePath";
 import { mod } from "../../mod";
 import {
@@ -245,7 +245,7 @@ function checkSetSeed() {
     return;
   }
 
-  if (onSetSeed()) {
+  if (onSetSeed() && !IS_DEV) {
     const seeds = game.GetSeeds();
     const startSeedString = seeds.GetStartSeedString();
     log(`Error: Set seed detected: ${startSeedString}`);
