@@ -28,6 +28,7 @@ import {
 } from "isaacscript-common";
 import { NUM_MINUTES_FOR_BOSS_OBJECTIVE } from "../../constants";
 import { AchievementType } from "../../enums/AchievementType";
+import { AltFloor } from "../../enums/AltFloor";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import { OtherAchievementKind } from "../../enums/OtherAchievementKind";
@@ -168,6 +169,10 @@ export function getAchievementText(achievement: Achievement): [string, string] {
       return ["area", getPathName(achievement.unlockablePath)];
     }
 
+    case AchievementType.ALT_FLOOR: {
+      return ["floor", getAltFloorName(achievement.altFloor)];
+    }
+
     case AchievementType.CHALLENGE: {
       return ["challenge", getChallengeName(achievement.challenge)];
     }
@@ -270,6 +275,54 @@ function getPathName(unlockablePath: UnlockablePath): string {
 
     case UnlockablePath.BLACK_MARKETS: {
       return "Black Markets";
+    }
+  }
+}
+
+function getAltFloorName(altFloor: AltFloor): string {
+  switch (altFloor) {
+    case AltFloor.CELLAR: {
+      return "Cellar";
+    }
+
+    case AltFloor.BURNING_BASEMENT: {
+      return "Burning Basement";
+    }
+
+    case AltFloor.CATACOMBS: {
+      return "Catacombs";
+    }
+
+    case AltFloor.FLOODED_CAVES: {
+      return "Flooded Caves";
+    }
+
+    case AltFloor.NECROPOLIS: {
+      return "Necropolis";
+    }
+
+    case AltFloor.DANK_DEPTHS: {
+      return "Dank Depths";
+    }
+
+    case AltFloor.UTERO: {
+      return "Utero";
+    }
+
+    case AltFloor.SCARRED_WOMB: {
+      return "Scarred Womb";
+    }
+
+    case AltFloor.DROSS: {
+      return "Dross";
+    }
+
+    case AltFloor.ASHPIT: {
+      return "Ashpit";
+    }
+
+    case AltFloor.GEHENNA: {
+      return "Gehenna";
     }
   }
 }

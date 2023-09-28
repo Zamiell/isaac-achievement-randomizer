@@ -15,6 +15,7 @@ import type {
   TrinketType,
 } from "isaac-typescript-definitions";
 import type { AchievementType } from "../enums/AchievementType";
+import type { AltFloor } from "../enums/AltFloor";
 import type { OtherAchievementKind } from "../enums/OtherAchievementKind";
 import type { UnlockablePath } from "../enums/UnlockablePath";
 import type { UNLOCKABLE_GRID_ENTITY_TYPES } from "../unlockableGridEntityTypes";
@@ -27,6 +28,11 @@ interface CharacterAchievement {
 interface PathAchievement {
   type: AchievementType.PATH;
   unlockablePath: UnlockablePath;
+}
+
+interface AltFloorAchievement {
+  type: AchievementType.ALT_FLOOR;
+  altFloor: AltFloor;
 }
 
 interface ChallengeAchievement {
@@ -107,6 +113,7 @@ interface OtherAchievement {
 export type Achievement =
   | CharacterAchievement
   | PathAchievement
+  | AltFloorAchievement
   | ChallengeAchievement
   | CollectibleAchievement
   | TrinketAchievement

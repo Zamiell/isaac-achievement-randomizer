@@ -33,6 +33,7 @@ import {
 } from "isaacscript-common";
 import {
   ACHIEVEMENT_TYPES,
+  ALT_FLOORS,
   BATTERY_SUB_TYPES,
   BOMB_SUB_TYPES,
   CHALLENGES,
@@ -125,9 +126,12 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
   if (achievements.length !== objectives.length) {
     logAchievements(achievements);
     logObjectives(objectives);
-    error(
-      `There were ${achievements.length} total achievements and ${objectives.length} total objectives. These must exactly match.`,
-    );
+    let errorText = `There were ${achievements.length} total achievements and ${objectives.length} total objectives. You need `;
+    errorText +=
+      achievements.length > objectives.length
+        ? `${achievements.length - objectives.length} more objectives.`
+        : `${objectives.length - achievements.length} more achievements.`;
+    error(errorText);
   }
 
   // The Polaroid and The Negative are guaranteed to be unlocked via an easy objective for Isaac.
@@ -406,6 +410,18 @@ function getAllAchievements(): Achievement[] {
           const achievement: Achievement = {
             type: AchievementType.PATH,
             unlockablePath,
+          };
+          achievements.push(achievement);
+        }
+
+        break;
+      }
+
+      case AchievementType.ALT_FLOOR: {
+        for (const altFloor of ALT_FLOORS) {
+          const achievement: Achievement = {
+            type: AchievementType.ALT_FLOOR,
+            altFloor,
           };
           achievements.push(achievement);
         }

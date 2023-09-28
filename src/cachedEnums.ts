@@ -10,6 +10,7 @@ import {
 } from "isaac-typescript-definitions";
 import { getEnumValues } from "isaacscript-common";
 import { AchievementType } from "./enums/AchievementType";
+import { AltFloor } from "./enums/AltFloor";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { OtherAchievementKind } from "./enums/OtherAchievementKind";
@@ -17,6 +18,8 @@ import { UnlockablePath } from "./enums/UnlockablePath";
 
 export const ACHIEVEMENT_TYPES: readonly AchievementType[] =
   getEnumValues(AchievementType);
+
+export const ALT_FLOORS: readonly AltFloor[] = getEnumValues(AltFloor);
 
 export const BATTERY_SUB_TYPES: readonly BatterySubType[] =
   getEnumValues(BatterySubType);

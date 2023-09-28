@@ -20,7 +20,7 @@ import {
   getMegaSatanDoor,
   getRepentanceDoor,
   getVoidDoor,
-  inCrawlSpace,
+  inCrawlSpaceWithBlackMarketEntrance,
   inRoomType,
   onRepentanceStage,
   onStage,
@@ -158,13 +158,13 @@ export class PathRemoval extends RandomizerModFeature {
 
   /** A seed with a Black Market on the first floor: 1EVL K1Y8 */
   checkBlackMarket(): void {
-    if (!inCrawlSpace()) {
+    if (!inCrawlSpaceWithBlackMarketEntrance()) {
       return;
     }
 
     if (!isPathUnlocked(UnlockablePath.BLACK_MARKETS)) {
       spawnGridEntity(
-        GridEntityType.BLOCK,
+        GridEntityType.STATUE,
         GRID_INDEX_BLOCKING_LADDER_TO_BLACK_MARKET,
       );
     }

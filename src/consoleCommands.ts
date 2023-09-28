@@ -45,7 +45,7 @@ function achievementRandomizer(params: string) {
   startRandomizer(seed);
 }
 
-export function unlockCharacter(params: string): void {
+function unlockCharacter(params: string) {
   if (params === "") {
     print("You must specify a character name or number.");
     return;
@@ -76,7 +76,7 @@ export function unlockCharacter(params: string): void {
   print(`Unlocked character: ${characterName} (${character})`);
 }
 
-export function unlockCollectible(params: string): void {
+function unlockCollectible(params: string) {
   if (params === "") {
     print(
       "You must specify the collectible name or the number corresponding to the collectible type.",

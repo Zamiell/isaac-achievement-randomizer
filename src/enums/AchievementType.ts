@@ -1,6 +1,7 @@
 export enum AchievementType {
   CHARACTER,
   PATH,
+  ALT_FLOOR,
   CHALLENGE,
   COLLECTIBLE,
   TRINKET,

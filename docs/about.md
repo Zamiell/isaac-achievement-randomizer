@@ -115,6 +115,21 @@ There are 1054 + 100 + 45 = 1199 objectives in total.
 - Isaac is guaranteed to unlock both The Chest & Dark Room from one of his easier objectives.
 - The rest can be randomly unlocked from any objective.
 
+### Alternate Floors
+
+- The following alternate floors start out locked:
+  - Cellar
+  - Burning Basement
+  - Catacombs
+  - Flooded Caves
+  - Necropolis
+  - Dank Depths
+  - Utero
+  - Scarred Womb
+  - Dross
+  - Ashpit
+  - Gehenna
+
 ### Challenges
 
 All challenges start off locked.

@@ -43,6 +43,7 @@ import {
 import { getAchievementsForSeed } from "../../achievementAssignment";
 import { CHARACTER_OBJECTIVE_KINDS } from "../../cachedEnums";
 import { AchievementType } from "../../enums/AchievementType";
+import type { AltFloor } from "../../enums/AltFloor";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { OtherAchievementKind } from "../../enums/OtherAchievementKind";
@@ -357,6 +358,18 @@ export function isBossObjectiveCompleted(bossID: BossID): boolean {
   return v.persistent.completedObjectives.some(
     (objective) =>
       objective.type === ObjectiveType.BOSS && objective.bossID === bossID,
+  );
+}
+
+// -------------------
+// Alt floor functions
+// -------------------
+
+export function isAltFloorUnlocked(altFloor: AltFloor): boolean {
+  return v.persistent.completedAchievements.some(
+    (achievement) =>
+      achievement.type === AchievementType.ALT_FLOOR &&
+      achievement.altFloor === altFloor,
   );
 }
 
