@@ -813,14 +813,6 @@ export function isAltFloorUnlocked(altFloor: AltFloor): boolean {
   );
 }
 
-export function isAllAltFloorsUnlocked(): boolean {
-  const completedAchievements = v.persistent.completedAchievements.filter(
-    (achievement) => achievement.type === AchievementType.ALT_FLOOR,
-  );
-
-  return completedAchievements.length === ALT_FLOORS.length;
-}
-
 // ---------------------------------
 // Achievement - Challenge functions
 // ---------------------------------
