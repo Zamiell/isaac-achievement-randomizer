@@ -8,7 +8,7 @@ import {
   iRange,
   isOdd,
 } from "isaacscript-common";
-import { NUM_TOTAL_ACHIEVEMENTS } from "./achievementAssignment";
+import { ALL_ACHIEVEMENTS } from "./achievements";
 import { CHALLENGES, CHARACTER_OBJECTIVE_KINDS } from "./cachedEnums";
 import { getCharacterObjectiveKindName } from "./classes/features/AchievementText";
 import {
@@ -257,7 +257,7 @@ export function initDeadSeaScrolls(): void {
         },
         {
           str: () =>
-            `${getNumCompletedAchievements()} / ${NUM_TOTAL_ACHIEVEMENTS}`,
+            `${getNumCompletedAchievements()} / ${ALL_ACHIEVEMENTS.length}`,
           colorSelect: true,
           noSel: true,
         },
@@ -448,18 +448,13 @@ function getSpecificCharacterObjectiveButtons(
 ): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const characterObjectiveKind of CHARACTER_OBJECTIVE_KINDS) {
-    let objectiveName = getCharacterObjectiveKindName(
-      characterObjectiveKind,
-    ).toLowerCase();
-    if (characterObjectiveKind >= CharacterObjectiveKind.NO_HIT_BASEMENT_1) {
+  for (const kind of CHARACTER_OBJECTIVE_KINDS) {
+    let objectiveName = getCharacterObjectiveKindName(kind).toLowerCase();
+    if (kind >= CharacterObjectiveKind.NO_HIT_BASEMENT_1) {
       objectiveName = `no dmg. on floor ${objectiveName}`;
     }
 
-    const completed = isCharacterObjectiveCompleted(
-      character,
-      characterObjectiveKind,
-    );
+    const completed = isCharacterObjectiveCompleted(character, kind);
     const completedText = completed ? "completed" : "x";
 
     buttons.push(

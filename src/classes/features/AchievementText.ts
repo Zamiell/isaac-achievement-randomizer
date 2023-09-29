@@ -106,9 +106,9 @@ export function showNewAchievement(achievement: Achievement): void {
 }
 
 export function getCharacterObjectiveKindName(
-  characterObjectiveKind: CharacterObjectiveKind,
+  kind: CharacterObjectiveKind,
 ): string {
-  switch (characterObjectiveKind) {
+  switch (kind) {
     case CharacterObjectiveKind.MOM: {
       return "Mom";
     }

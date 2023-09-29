@@ -1,4 +1,5 @@
 TODO:
+- SWAP LOGIC
 - unlock logic:
   - swap blue womb and the void path unlocks
   - fool card before ascent

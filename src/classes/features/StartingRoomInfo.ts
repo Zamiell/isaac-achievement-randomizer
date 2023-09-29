@@ -9,7 +9,7 @@ import {
   isGreedMode,
   onFirstFloor,
 } from "isaacscript-common";
-import { NUM_TOTAL_ACHIEVEMENTS } from "../../achievementAssignment";
+import { ALL_ACHIEVEMENTS } from "../../achievements";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   getNumCompletedAchievements,
@@ -80,7 +80,7 @@ export class StartingRoomInfo extends RandomizerModFeature {
 
     this.drawCenteredText("Achievements:", topRightPosition);
     this.drawCenteredText(
-      `${getNumCompletedAchievements()} / ${NUM_TOTAL_ACHIEVEMENTS}`,
+      `${getNumCompletedAchievements()} / ${ALL_ACHIEVEMENTS.length}`,
       topRightPosition.add(Vector(0, 30)),
       K_COLORS.Green,
     );

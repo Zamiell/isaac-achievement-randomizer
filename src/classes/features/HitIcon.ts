@@ -13,7 +13,7 @@ import {
 } from "isaacscript-common";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
-  getCharacterObjectiveKindNoDamage,
+  getCharacterObjectiveKindNoHit,
   hasTakenHitOnFloor,
 } from "./AchievementDetection";
 import { isCharacterObjectiveCompleted } from "./AchievementTracker";
@@ -27,17 +27,15 @@ export class HitIcon extends RandomizerModFeature {
   // 2
   @Callback(ModCallback.POST_RENDER)
   postRender(): void {
-    const characterObjectiveKindNoDamage = getCharacterObjectiveKindNoDamage();
-    if (characterObjectiveKindNoDamage === undefined) {
+    const kindNoHit = getCharacterObjectiveKindNoHit();
+    if (kindNoHit === undefined) {
       return;
     }
 
     const player = Isaac.GetPlayer();
     const character = player.GetPlayerType();
 
-    if (
-      isCharacterObjectiveCompleted(character, characterObjectiveKindNoDamage)
-    ) {
+    if (isCharacterObjectiveCompleted(character, kindNoHit)) {
       return;
     }
 

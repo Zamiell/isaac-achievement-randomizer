@@ -14,7 +14,6 @@ import type {
   SlotVariant,
   TrinketType,
 } from "isaac-typescript-definitions";
-import { GridEntityType } from "isaac-typescript-definitions";
 import type { CompositionTypeSatisfiesEnum } from "isaacscript-common";
 import {
   getBatteryName,
@@ -31,12 +30,17 @@ import {
   getSackName,
   getSlotName,
   getTrinketName,
+  log,
 } from "isaacscript-common";
 import { AchievementType } from "../enums/AchievementType";
-import { AltFloor } from "../enums/AltFloor";
-import { OtherAchievementKind } from "../enums/OtherAchievementKind";
-import { UnlockablePath } from "../enums/UnlockablePath";
+import type { AltFloor } from "../enums/AltFloor";
+import { getAltFloorName } from "../enums/AltFloor";
+import type { OtherAchievementKind } from "../enums/OtherAchievementKind";
+import { getOtherAchievementName } from "../enums/OtherAchievementKind";
+import type { UnlockablePath } from "../enums/UnlockablePath";
+import { getPathName } from "../enums/UnlockablePath";
 import type { UNLOCKABLE_GRID_ENTITY_TYPES } from "../unlockableGridEntityTypes";
+import { getGridEntityName } from "../unlockableGridEntityTypes";
 
 interface CharacterAchievement {
   type: AchievementType.CHARACTER;
@@ -150,6 +154,38 @@ export type Achievement =
 
 type _Test = CompositionTypeSatisfiesEnum<Achievement, AchievementType>;
 
+export function getAchievement(
+  type: AchievementType.CHARACTER,
+  character: PlayerType,
+): CharacterAchievement;
+export function getAchievement(
+  type: AchievementType.PATH,
+  unlockablePath: UnlockablePath,
+): PathAchievement;
+export function getAchievement(type: AchievementType, arg: int): Achievement {
+  switch (type) {
+    case AchievementType.CHARACTER: {
+      return {
+        type,
+        character: arg,
+      };
+    }
+
+    case AchievementType.PATH: {
+      return {
+        type,
+        unlockablePath: arg,
+      };
+    }
+
+    default: {
+      return error(
+        `getAchievement missing logic for achievement type: ${AchievementType[type]}`,
+      );
+    }
+  }
+}
+
 export function getAchievementText(achievement: Achievement): [string, string] {
   switch (achievement.type) {
     case AchievementType.CHARACTER: {
@@ -226,186 +262,7 @@ export function getAchievementText(achievement: Achievement): [string, string] {
   }
 }
 
-function getPathName(unlockablePath: UnlockablePath): string {
-  switch (unlockablePath) {
-    case UnlockablePath.CHEST: {
-      return "The Chest";
-    }
-
-    case UnlockablePath.DARK_ROOM: {
-      return "Dark Room";
-    }
-
-    case UnlockablePath.MEGA_SATAN: {
-      return "Mega Satan";
-    }
-
-    case UnlockablePath.BOSS_RUSH: {
-      return "Boss Rush";
-    }
-
-    case UnlockablePath.BLUE_WOMB: {
-      return "Blue Womb";
-    }
-
-    case UnlockablePath.VOID: {
-      return "The Void";
-    }
-
-    case UnlockablePath.REPENTANCE_FLOORS: {
-      return "Repentance floors";
-    }
-
-    case UnlockablePath.THE_ASCENT: {
-      return "The Ascent";
-    }
-
-    case UnlockablePath.GREED_MODE: {
-      return "Greed Mode";
-    }
-
-    case UnlockablePath.BLACK_MARKETS: {
-      return "Black Markets";
-    }
-  }
-}
-
-function getAltFloorName(altFloor: AltFloor): string {
-  switch (altFloor) {
-    case AltFloor.CELLAR: {
-      return "Cellar";
-    }
-
-    case AltFloor.BURNING_BASEMENT: {
-      return "Burning Basement";
-    }
-
-    case AltFloor.CATACOMBS: {
-      return "Catacombs";
-    }
-
-    case AltFloor.FLOODED_CAVES: {
-      return "Flooded Caves";
-    }
-
-    case AltFloor.NECROPOLIS: {
-      return "Necropolis";
-    }
-
-    case AltFloor.DANK_DEPTHS: {
-      return "Dank Depths";
-    }
-
-    case AltFloor.UTERO: {
-      return "Utero";
-    }
-
-    case AltFloor.SCARRED_WOMB: {
-      return "Scarred Womb";
-    }
-
-    case AltFloor.DROSS: {
-      return "Dross";
-    }
-
-    case AltFloor.ASHPIT: {
-      return "Ashpit";
-    }
-
-    case AltFloor.GEHENNA: {
-      return "Gehenna";
-    }
-  }
-}
-
-function getGridEntityName(
-  gridEntityType: (typeof UNLOCKABLE_GRID_ENTITY_TYPES)[number],
-): string {
-  switch (gridEntityType) {
-    // 4
-    case GridEntityType.ROCK_TINTED: {
-      return "tinted rocks";
-    }
-
-    // 18
-    case GridEntityType.CRAWL_SPACE: {
-      return "crawl spaces";
-    }
-
-    // 22
-    case GridEntityType.ROCK_SUPER_SPECIAL: {
-      return "super tinted rocks";
-    }
-
-    // 27
-    case GridEntityType.ROCK_GOLD: {
-      return "fool's gold rocks";
-    }
-  }
-}
-
-function getOtherAchievementName(
-  otherAchievementKind: OtherAchievementKind,
-): [string, string] {
-  switch (otherAchievementKind) {
-    case OtherAchievementKind.BEDS: {
-      return ["pickup", "beds"];
-    }
-
-    case OtherAchievementKind.SHOPKEEPERS: {
-      return ["entity", "shopkeepers"];
-    }
-
-    case OtherAchievementKind.BLUE_FIREPLACES: {
-      return ["entity", "blue fireplaces"];
-    }
-
-    case OtherAchievementKind.GOLD_TRINKETS: {
-      return ["trinket type", "gold trinkets"];
-    }
-
-    case OtherAchievementKind.GOLD_PILLS: {
-      return ["pill type", "gold pills"];
-    }
-
-    case OtherAchievementKind.HORSE_PILLS: {
-      return ["pill type", "horse pills"];
-    }
-
-    case OtherAchievementKind.URNS: {
-      return ["grid entity", "urns"];
-    }
-
-    case OtherAchievementKind.MUSHROOMS: {
-      return ["grid entity", "mushrooms"];
-    }
-
-    case OtherAchievementKind.SKULLS: {
-      return ["grid entity", "skulls"];
-    }
-
-    case OtherAchievementKind.POLYPS: {
-      return ["grid entity", "polyps"];
-    }
-
-    case OtherAchievementKind.GOLDEN_POOP: {
-      return ["grid entity", "golden poop"];
-    }
-
-    case OtherAchievementKind.RAINBOW_POOP: {
-      return ["grid entity", "rainbow poop"];
-    }
-
-    case OtherAchievementKind.BLACK_POOP: {
-      return ["grid entity", "black poop"];
-    }
-
-    case OtherAchievementKind.CHARMING_POOP: {
-      return ["grid entity", "charming poop"];
-    }
-
-    case OtherAchievementKind.REWARD_PLATES: {
-      return ["grid entity", "reward plates"];
-    }
-  }
+export function logAchievement(achievement: Achievement): void {
+  const achievementText = getAchievementText(achievement);
+  log(`Achievement: ${achievementText[0]} - ${achievementText[1]}`);
 }

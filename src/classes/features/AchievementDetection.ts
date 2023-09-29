@@ -22,13 +22,10 @@ import {
 } from "isaacscript-common";
 import { NUM_MINUTES_FOR_BOSS_OBJECTIVE } from "../../constants";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
+import { ObjectiveType } from "../../enums/ObjectiveType";
+import { getObjective } from "../../types/Objective";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import {
-  addObjectiveBoss,
-  addObjectiveChallenge,
-  addObjectiveCharacter,
-  isBossObjectiveCompleted,
-} from "./AchievementTracker";
+import { addObjective, isBossObjectiveCompleted } from "./AchievementTracker";
 
 const BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND = new ReadonlyMap<
   BossID,
@@ -105,7 +102,8 @@ export class AchievementDetection extends RandomizerModFeature {
 
     const seconds = getSecondsSinceLastDamage();
     if (seconds >= NUM_MINUTES_FOR_BOSS_OBJECTIVE * 60) {
-      addObjectiveBoss(bossID);
+      const objective = getObjective(ObjectiveType.BOSS, bossID);
+      addObjective(objective);
     }
   }
 
@@ -113,7 +111,8 @@ export class AchievementDetection extends RandomizerModFeature {
   @Callback(ModCallback.POST_PICKUP_INIT, PickupVariant.TROPHY)
   postPickupInitTrophy(): void {
     const challenge = Isaac.GetChallenge();
-    addObjectiveChallenge(challenge);
+    const objective = getObjective(ObjectiveType.CHALLENGE, challenge);
+    addObjective(objective);
   }
 
   // 70
@@ -168,17 +167,25 @@ export function achievementDetectionPostRoomCleared(): void {
     // 5
     case RoomType.BOSS: {
       const bossID = getRoomSubType() as BossID;
-      const characterObjectiveKindBoss =
-        BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND.get(bossID);
-      if (characterObjectiveKindBoss !== undefined) {
-        addObjectiveCharacter(character, characterObjectiveKindBoss);
+      const kindBoss = BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND.get(bossID);
+      if (kindBoss !== undefined) {
+        const objective = getObjective(
+          ObjectiveType.CHARACTER,
+          character,
+          kindBoss,
+        );
+        addObjective(objective);
       }
 
       if (!v.level.tookHit) {
-        const characterObjectiveKindNoDamage =
-          getCharacterObjectiveKindNoDamage();
-        if (characterObjectiveKindNoDamage !== undefined) {
-          addObjectiveCharacter(character, characterObjectiveKindNoDamage);
+        const kindNoHit = getCharacterObjectiveKindNoHit();
+        if (kindNoHit !== undefined) {
+          const objective = getObjective(
+            ObjectiveType.CHARACTER,
+            character,
+            kindNoHit,
+          );
+          addObjective(objective);
         }
       }
 
@@ -188,7 +195,12 @@ export function achievementDetectionPostRoomCleared(): void {
     // 16
     case RoomType.DUNGEON: {
       if (inBeastRoom()) {
-        addObjectiveCharacter(character, CharacterObjectiveKind.THE_BEAST);
+        const objective = getObjective(
+          ObjectiveType.CHARACTER,
+          character,
+          CharacterObjectiveKind.THE_BEAST,
+        );
+        addObjective(objective);
       }
 
       break;
@@ -196,7 +208,12 @@ export function achievementDetectionPostRoomCleared(): void {
 
     // 17
     case RoomType.BOSS_RUSH: {
-      addObjectiveCharacter(character, CharacterObjectiveKind.BOSS_RUSH);
+      const objective = getObjective(
+        ObjectiveType.CHARACTER,
+        character,
+        CharacterObjectiveKind.BOSS_RUSH,
+      );
+      addObjective(objective);
       break;
     }
 
@@ -218,7 +235,7 @@ export function getSecondsSinceLastDamage(): int {
   return elapsedGameFrames / GAME_FRAMES_PER_SECOND;
 }
 
-export function getCharacterObjectiveKindNoDamage():
+export function getCharacterObjectiveKindNoHit():
   | CharacterObjectiveKind
   | undefined {
   const repentanceStage = onRepentanceStage();

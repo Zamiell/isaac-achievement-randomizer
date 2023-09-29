@@ -28,6 +28,7 @@ import { IS_DEV, MOD_NAME } from "./constants";
 import { initDeadSeaScrolls } from "./deadSeaScrolls";
 import { debugFunction, hotkey1Function, hotkey2Function } from "./debugCode";
 import { mod } from "./mod";
+import { validate } from "./validate";
 
 const MOD_FEATURES = [
   AchievementDetection,
@@ -52,6 +53,8 @@ const MOD_FEATURES = [
 
 export function main(): void {
   log(`${MOD_NAME} initialized.`);
+
+  validate();
 
   if (IS_DEV) {
     setLogFunctionsGlobal();

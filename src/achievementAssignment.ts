@@ -2,67 +2,29 @@
 // https://www.youtube.com/watch?v=vGIDzGvsrV8
 // We use "Random Fill" for this randomizer.
 
+import { PlayerType } from "isaac-typescript-definitions";
 import {
-  BatterySubType,
-  BombSubType,
-  BossID,
-  CardType,
-  Challenge,
-  CoinSubType,
-  HeartSubType,
-  KeySubType,
-  PickupVariant,
-  PlayerType,
-  SackSubType,
-  SlotVariant,
-} from "isaac-typescript-definitions";
-import {
-  CHEST_PICKUP_VARIANTS,
-  DefaultMap,
   MAIN_CHARACTERS,
   ReadonlySet,
-  VANILLA_CARD_TYPES,
-  VANILLA_PILL_EFFECTS,
   arrayRemoveIndexInPlace,
   assertDefined,
   copyArray,
-  getAllBossesSet,
-  getChallengeName,
-  getCharacterName,
   getRandomArrayElement,
   getRandomArrayElementAndRemove,
-  log,
   shuffleArray,
 } from "isaacscript-common";
-import {
-  ACHIEVEMENT_TYPES,
-  ALT_FLOORS,
-  BATTERY_SUB_TYPES,
-  BOMB_SUB_TYPES,
-  CHALLENGES,
-  CHARACTER_OBJECTIVE_KINDS,
-  COIN_SUB_TYPES,
-  HEART_SUB_TYPES,
-  KEY_SUB_TYPES,
-  OBJECTIVE_TYPES,
-  OTHER_ACHIEVEMENT_KINDS,
-  SACK_SUB_TYPES,
-  SLOT_VARIANTS,
-  UNLOCKABLE_PATHS,
-} from "./cachedEnums";
+import { ALL_ACHIEVEMENTS } from "./achievements";
 import { AchievementType } from "./enums/AchievementType";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { UnlockablePath } from "./enums/UnlockablePath";
-import type { Achievements } from "./interfaces/Achievements";
+import { ALL_OBJECTIVES } from "./objectives";
 import type { Achievement } from "./types/Achievement";
-import { getAchievementText } from "./types/Achievement";
+import { getAchievement, getAchievementText } from "./types/Achievement";
 import type { CharacterObjective, Objective } from "./types/Objective";
-import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./unlockableCollectibleTypes";
-import { UNLOCKABLE_GRID_ENTITY_TYPES } from "./unlockableGridEntityTypes";
-import { UNLOCKABLE_TRINKET_TYPES } from "./unlockableTrinketTypes";
-
-const VERBOSE = false as boolean;
+import { getObjective, getObjectiveText } from "./types/Objective";
+import type { ObjectiveID } from "./types/ObjectiveID";
+import { getObjectiveID } from "./types/ObjectiveID";
 
 /** These are the objectives that The Polaroid and The Negative are gated behind. */
 const EASY_OBJECTIVE_KINDS = [
@@ -101,69 +63,32 @@ const BASIC_CHARACTER_OBJECTIVES = new ReadonlySet<CharacterObjectiveKind>([
   CharacterObjectiveKind.THE_LAMB,
 ]);
 
-export const ALL_BOSS_IDS = [...getAllBossesSet()] as const;
+export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Achievement> {
+  // When an achievement/objective is assigned, it is added to the following map.
+  const objectiveToAchievementMap = new Map<ObjectiveID, Achievement>();
 
-export const NUM_TOTAL_ACHIEVEMENTS = getAllAchievements().length;
-
-export function getAchievementsForRNG(rng: RNG): Achievements {
-  // When an achievement/objective is assigned, it is added to the following maps.
-  const characterAchievements = new DefaultMap<
-    PlayerType,
-    Map<CharacterObjectiveKind, Achievement>
-  >(() => new Map());
-  const bossAchievements = new Map<BossID, Achievement>();
-  const challengeAchievements = new Map<Challenge, Achievement>();
-
-  const achievements = getAllAchievements();
-  const objectives = getAllObjectives();
-
-  if (achievements.length !== objectives.length) {
-    logAchievements(achievements);
-    logObjectives(objectives);
-    let errorText = `There were ${achievements.length} total achievements and ${objectives.length} total objectives. You need `;
-    errorText +=
-      achievements.length > objectives.length
-        ? `${achievements.length - objectives.length} more objectives.`
-        : `${objectives.length - achievements.length} more achievements.`;
-    error(errorText);
-  }
+  const achievements = copyArray(ALL_ACHIEVEMENTS);
+  const objectives = copyArray(ALL_OBJECTIVES);
 
   // The Polaroid and The Negative are guaranteed to be unlocked via an easy objective for Isaac.
   const easyObjectiveKinds = copyArray(EASY_OBJECTIVE_KINDS);
   for (const unlockablePath of EASY_UNLOCKABLE_PATHS) {
-    const achievement = getAndRemoveAchievement(
-      achievements,
-      AchievementType.PATH,
-      unlockablePath,
-    );
+    const achievement = getAchievement(AchievementType.PATH, unlockablePath);
+    removeAchievement(achievements, achievement);
+
     const randomEasyObjectiveKind = getRandomArrayElementAndRemove(
       easyObjectiveKinds,
       rng,
     );
-    removeCharacterObjective(
-      objectives,
+    const objective = getObjective(
+      ObjectiveType.CHARACTER,
       PlayerType.ISAAC,
       randomEasyObjectiveKind,
     );
+    removeObjective(objectives, objective);
 
-    const isaacAchievements = characterAchievements.getAndSetDefault(
-      PlayerType.ISAAC,
-    );
-    if (isaacAchievements.has(randomEasyObjectiveKind)) {
-      const characterName = getCharacterName(PlayerType.ISAAC);
-      error(
-        `Failed to add an easy achievement to ${characterName}: ${CharacterObjectiveKind[randomEasyObjectiveKind]}`,
-      );
-    }
-
-    isaacAchievements.set(randomEasyObjectiveKind, achievement);
-    if (VERBOSE) {
-      const characterName = getCharacterName(PlayerType.ISAAC);
-      log(
-        `Set easy achievement on ${characterName} --> ${CharacterObjectiveKind[randomEasyObjectiveKind]}`,
-      );
-      logAchievement(achievement);
-    }
+    const objectiveID = getObjectiveID(objective);
+    objectiveToAchievementMap.set(objectiveID, achievement);
   }
 
   // Each character is guaranteed to unlock another character from a basic objective.
@@ -174,49 +99,20 @@ export function getAchievementsForRNG(rng: RNG): Achievements {
       continue;
     }
 
-    const achievement = getAndRemoveAchievement(
-      achievements,
-      AchievementType.CHARACTER,
-      character,
-    );
+    const achievement = getAchievement(AchievementType.CHARACTER, character);
+    removeAchievement(achievements, achievement);
+
     const lastCharacterObjectives = objectives.filter(
       (objective) =>
         objective.type === ObjectiveType.CHARACTER &&
         objective.character === lastUnlockedCharacter &&
         BASIC_CHARACTER_OBJECTIVES.has(objective.kind),
     ) as CharacterObjective[];
-    const randomCharacterObjective = getRandomArrayElement(
-      lastCharacterObjectives,
-      rng,
-    );
-    removeCharacterObjective(
-      objectives,
-      lastUnlockedCharacter,
-      randomCharacterObjective.kind,
-    );
+    const objective = getRandomArrayElement(lastCharacterObjectives, rng);
+    removeObjective(objectives, objective);
 
-    const lastCharacterAchievements = characterAchievements.getAndSetDefault(
-      lastUnlockedCharacter,
-    );
-    if (lastCharacterAchievements.has(randomCharacterObjective.kind)) {
-      const characterName = getCharacterName(lastUnlockedCharacter);
-      error(
-        `Failed to add a progressive character achievement to ${characterName}: ${
-          CharacterObjectiveKind[randomCharacterObjective.kind]
-        }`,
-      );
-    }
-
-    lastCharacterAchievements.set(randomCharacterObjective.kind, achievement);
-    if (VERBOSE) {
-      const characterName = getCharacterName(lastUnlockedCharacter);
-      log(
-        `Set progressive character achievement on ${characterName} --> ${
-          CharacterObjectiveKind[randomCharacterObjective.kind]
-        }`,
-      );
-      logAchievement(achievement);
-    }
+    const objectiveID = getObjectiveID(objective);
+    objectiveToAchievementMap.set(objectiveID, achievement);
 
     lastUnlockedCharacter = character;
   }
@@ -224,520 +120,39 @@ export function getAchievementsForRNG(rng: RNG): Achievements {
   // Now, do the rest of the unlocks with no restrictions.
   for (const achievement of achievements) {
     const objective = getRandomArrayElementAndRemove(objectives, rng);
-
-    switch (objective.type) {
-      case ObjectiveType.CHARACTER: {
-        const achievementsMap = characterAchievements.getAndSetDefault(
-          objective.character,
-        );
-        if (achievementsMap.has(objective.kind)) {
-          const characterName = getCharacterName(objective.character);
-          error(
-            `Failed to add an achievement to ${characterName}: ${
-              CharacterObjectiveKind[objective.kind]
-            }`,
-          );
-        }
-
-        achievementsMap.set(objective.kind, achievement);
-        if (VERBOSE) {
-          const characterName = getCharacterName(lastUnlockedCharacter);
-          log(
-            `Set normal character achievement on ${characterName} --> ${
-              CharacterObjectiveKind[objective.kind]
-            }`,
-          );
-          logAchievement(achievement);
-        }
-
-        break;
-      }
-
-      case ObjectiveType.BOSS: {
-        if (bossAchievements.has(objective.bossID)) {
-          const bossIDName = `${BossID[objective.bossID]} (${
-            objective.bossID
-          })`;
-          error(`Failed to add an achievement to the boss map: ${bossIDName}`);
-        }
-
-        bossAchievements.set(objective.bossID, achievement);
-        if (VERBOSE) {
-          const bossIDName = `${BossID[objective.bossID]} (${
-            objective.bossID
-          })`;
-          log(`Set normal boss achievement: ${bossIDName}`);
-          logAchievement(achievement);
-        }
-
-        break;
-      }
-
-      case ObjectiveType.CHALLENGE: {
-        if (challengeAchievements.has(objective.challenge)) {
-          const challengeName = getChallengeName(objective.challenge);
-          error(
-            `Failed to add an achievement to the challenge map: ${challengeName}`,
-          );
-        }
-
-        challengeAchievements.set(objective.challenge, achievement);
-        if (VERBOSE) {
-          const challengeName = getChallengeName(objective.challenge);
-          log(`Set normal challenge achievement: ${challengeName}`);
-          logAchievement(achievement);
-        }
-
-        break;
-      }
-    }
+    const objectiveID = getObjectiveID(objective);
+    objectiveToAchievementMap.set(objectiveID, achievement);
   }
 
-  const allAchievements: Achievements = {
-    characterAchievements,
-    bossAchievements,
-    challengeAchievements,
-  };
-  validateAchievements(allAchievements);
-
-  return allAchievements;
+  return objectiveToAchievementMap;
 }
 
-function validateAchievements(achievements: Achievements) {
-  const { characterAchievements, challengeAchievements } = achievements;
-
-  if (characterAchievements.size !== MAIN_CHARACTERS.length) {
-    error(
-      `The "characterAchievements" map had ${characterAchievements.size} elements but it needs ${MAIN_CHARACTERS.length} elements.`,
-    );
-  }
-  for (const [character, achievementsMap] of characterAchievements) {
-    if (achievementsMap.size !== CHARACTER_OBJECTIVE_KINDS.length) {
-      const characterName = getCharacterName(character);
-      error(
-        `The "characterAchievements" map for ${characterName} had ${achievementsMap.size} elements but it needs ${CHARACTER_OBJECTIVE_KINDS.length} elements.`,
-      );
-    }
-  }
-  if (challengeAchievements.size !== CHALLENGES.length - 1) {
-    error(
-      `The "challengeAchievements" map had ${
-        challengeAchievements.size
-      } elements but it needs ${CHALLENGES.length - 1} elements.`,
-    );
-  }
-}
-
-function getAllAchievements(): Achievement[] {
-  const achievements: Achievement[] = [];
-
-  for (const achievementType of ACHIEVEMENT_TYPES) {
-    switch (achievementType) {
-      case AchievementType.CHARACTER: {
-        for (const character of MAIN_CHARACTERS) {
-          if (character === PlayerType.ISAAC) {
-            continue;
-          }
-
-          const achievement: Achievement = {
-            type: AchievementType.CHARACTER,
-            character,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
-      case AchievementType.PATH: {
-        for (const unlockablePath of UNLOCKABLE_PATHS) {
-          const achievement: Achievement = {
-            type: AchievementType.PATH,
-            unlockablePath,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
-      case AchievementType.ALT_FLOOR: {
-        for (const altFloor of ALT_FLOORS) {
-          const achievement: Achievement = {
-            type: AchievementType.ALT_FLOOR,
-            altFloor,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
-      case AchievementType.CHALLENGE: {
-        for (const challenge of CHALLENGES) {
-          if (challenge === Challenge.NULL) {
-            continue;
-          }
-
-          const achievement: Achievement = {
-            type: AchievementType.CHALLENGE,
-            challenge,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
-      case AchievementType.COLLECTIBLE: {
-        for (const collectibleType of UNLOCKABLE_COLLECTIBLE_TYPES) {
-          const achievement: Achievement = {
-            type: AchievementType.COLLECTIBLE,
-            collectibleType,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
-      case AchievementType.TRINKET: {
-        for (const trinketType of UNLOCKABLE_TRINKET_TYPES) {
-          const achievement: Achievement = {
-            type: AchievementType.TRINKET,
-            trinketType,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
-      case AchievementType.CARD: {
-        for (const cardType of VANILLA_CARD_TYPES) {
-          if (cardType === CardType.RUNE_SHARD) {
-            continue;
-          }
-
-          const achievement: Achievement = {
-            type: AchievementType.CARD,
-            cardType,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
-      case AchievementType.PILL_EFFECT: {
-        for (const pillEffect of VANILLA_PILL_EFFECTS) {
-          const achievement: Achievement = {
-            type: AchievementType.PILL_EFFECT,
-            pillEffect,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
-      case AchievementType.HEART: {
-        for (const heartSubType of HEART_SUB_TYPES) {
-          if (
-            heartSubType === HeartSubType.NULL || // 0
-            heartSubType === HeartSubType.HALF // 2
-          ) {
-            continue;
-          }
-
-          const achievement: Achievement = {
-            type: AchievementType.HEART,
-            heartSubType,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
-      case AchievementType.COIN: {
-        for (const coinSubType of COIN_SUB_TYPES) {
-          if (
-            coinSubType === CoinSubType.NULL || // 0
-            coinSubType === CoinSubType.PENNY // 1
-          ) {
-            continue;
-          }
-
-          const achievement: Achievement = {
-            type: AchievementType.COIN,
-            coinSubType,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
-      case AchievementType.BOMB: {
-        for (const bombSubType of BOMB_SUB_TYPES) {
-          if (
-            bombSubType === BombSubType.NULL || // 0
-            bombSubType === BombSubType.NORMAL || // 1
-            bombSubType === BombSubType.TROLL || // 3
-            bombSubType === BombSubType.MEGA_TROLL || // 5
-            bombSubType === BombSubType.GOLDEN_TROLL || // 6
-            bombSubType === BombSubType.GIGA // 7
-          ) {
-            continue;
-          }
-
-          const achievement: Achievement = {
-            type: AchievementType.BOMB,
-            bombSubType,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
-      case AchievementType.KEY: {
-        for (const keySubType of KEY_SUB_TYPES) {
-          if (
-            keySubType === KeySubType.NULL || // 0
-            keySubType === KeySubType.NORMAL // 1
-          ) {
-            continue;
-          }
-
-          const achievement: Achievement = {
-            type: AchievementType.KEY,
-            keySubType,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
-      case AchievementType.BATTERY: {
-        for (const batterySubType of BATTERY_SUB_TYPES) {
-          if (
-            batterySubType === BatterySubType.NULL // 0
-          ) {
-            continue;
-          }
-
-          const achievement: Achievement = {
-            type: AchievementType.BATTERY,
-            batterySubType,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
-      case AchievementType.SACK: {
-        for (const sackSubType of SACK_SUB_TYPES) {
-          if (
-            sackSubType === SackSubType.NULL // 0
-          ) {
-            continue;
-          }
-
-          const achievement: Achievement = {
-            type: AchievementType.SACK,
-            sackSubType,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
-      case AchievementType.CHEST: {
-        for (const pickupVariant of CHEST_PICKUP_VARIANTS) {
-          if (
-            pickupVariant === PickupVariant.CHEST || // 50
-            pickupVariant === PickupVariant.OLD_CHEST || // 55
-            pickupVariant === PickupVariant.MOMS_CHEST // 390
-          ) {
-            continue;
-          }
-
-          const achievement: Achievement = {
-            type: AchievementType.CHEST,
-            pickupVariant,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
-      case AchievementType.SLOT: {
-        for (const slotVariant of SLOT_VARIANTS) {
-          if (
-            slotVariant === SlotVariant.DONATION_MACHINE ||
-            slotVariant === SlotVariant.GREED_DONATION_MACHINE ||
-            slotVariant === SlotVariant.ISAAC_SECRET
-          ) {
-            continue;
-          }
-
-          const achievement: Achievement = {
-            type: AchievementType.SLOT,
-            slotVariant,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
-      case AchievementType.GRID_ENTITY: {
-        for (const gridEntityType of UNLOCKABLE_GRID_ENTITY_TYPES) {
-          const achievement: Achievement = {
-            type: AchievementType.GRID_ENTITY,
-            gridEntityType,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-
-      case AchievementType.OTHER: {
-        for (const otherAchievementKind of OTHER_ACHIEVEMENT_KINDS) {
-          const achievement: Achievement = {
-            type: AchievementType.OTHER,
-            kind: otherAchievementKind,
-          };
-          achievements.push(achievement);
-        }
-
-        break;
-      }
-    }
-  }
-
-  return achievements;
-}
-
-function logAchievements(achievements: Achievement[]) {
-  log(`Logging all achievements (${achievements.length}):`);
-
-  for (const achievementType of ACHIEVEMENT_TYPES) {
-    const thisTypeAchievements = achievements.filter(
-      (achievement) => achievement.type === achievementType,
-    );
-    log(
-      `- ${AchievementType[achievementType]} - ${thisTypeAchievements.length}`,
-    );
-  }
-}
-
-function logAchievement(achievement: Achievement) {
-  const achievementText = getAchievementText(achievement);
-  log(`Achievement: ${achievementText[0]} - ${achievementText[1]}`);
-}
-
-function getAllObjectives(): Objective[] {
-  const objectives: Objective[] = [];
-
-  for (const objectiveType of OBJECTIVE_TYPES) {
-    switch (objectiveType) {
-      case ObjectiveType.CHARACTER: {
-        for (const character of MAIN_CHARACTERS) {
-          for (const characterObjectiveKind of CHARACTER_OBJECTIVE_KINDS) {
-            const objective: Objective = {
-              type: ObjectiveType.CHARACTER,
-              character,
-              kind: characterObjectiveKind,
-            };
-            objectives.push(objective);
-          }
-        }
-
-        break;
-      }
-
-      case ObjectiveType.BOSS: {
-        for (const bossID of ALL_BOSS_IDS) {
-          const objective: Objective = {
-            type: ObjectiveType.BOSS,
-            bossID,
-          };
-          objectives.push(objective);
-        }
-
-        break;
-      }
-
-      case ObjectiveType.CHALLENGE: {
-        for (const challenge of CHALLENGES) {
-          if (challenge === Challenge.NULL) {
-            continue;
-          }
-
-          const objective: Objective = {
-            type: ObjectiveType.CHALLENGE,
-            challenge,
-          };
-          objectives.push(objective);
-        }
-
-        break;
-      }
-    }
-  }
-
-  return objectives;
-}
-
-function logObjectives(objectives: Objective[]) {
-  log(`Logging all objectives (${objectives.length}):`);
-
-  for (const objectiveType of OBJECTIVE_TYPES) {
-    const thisTypeObjectives = objectives.filter(
-      (objective) => objective.type === objectiveType,
-    );
-    log(`- ${ObjectiveType[objectiveType]} - ${thisTypeObjectives.length}`);
-  }
-}
-
-function getAndRemoveAchievement(
+function removeAchievement(
   achievements: Achievement[],
-  type: AchievementType,
-  kind: int,
-): Achievement {
-  const index = getAchievementIndexMatchingType(achievements, type, kind);
-  const achievement = achievements[index];
+  achievement: Achievement,
+) {
+  const index = getAchievementIndex(achievements, achievement);
+  const matchingAchievement = achievements[index];
   assertDefined(
-    achievement,
+    matchingAchievement,
     `Failed to find the achievement at index: ${index}`,
   );
 
   arrayRemoveIndexInPlace(achievements, index);
-
-  return achievement;
 }
 
-function getAchievementIndexMatchingType(
+function getAchievementIndex(
   achievements: Achievement[],
-  type: AchievementType,
-  kind: int,
+  achievementToMatch: Achievement,
 ): int {
   let index: int;
 
-  switch (type) {
+  switch (achievementToMatch.type) {
     case AchievementType.PATH: {
       index = achievements.findIndex(
         (achievement) =>
-          achievement.type === AchievementType.PATH &&
-          achievement.unlockablePath === kind,
+          achievement.type === achievementToMatch.type &&
+          achievement.unlockablePath === achievementToMatch.unlockablePath,
       );
       break;
     }
@@ -745,50 +160,70 @@ function getAchievementIndexMatchingType(
     case AchievementType.CHARACTER: {
       index = achievements.findIndex(
         (achievement) =>
-          achievement.type === AchievementType.CHARACTER &&
-          achievement.character === kind,
-      );
-      break;
-    }
-
-    case AchievementType.CARD: {
-      index = achievements.findIndex(
-        (achievement) =>
-          achievement.type === AchievementType.CARD &&
-          achievement.cardType === kind,
+          achievement.type === achievementToMatch.type &&
+          achievement.character === achievementToMatch.character,
       );
       break;
     }
 
     default: {
       return error(
-        `Unhandled matching logic for achievement type: ${AchievementType[type]}`,
+        `Unhandled matching logic for achievement type: ${
+          AchievementType[achievementToMatch.type]
+        }`,
       );
     }
   }
 
   if (index === -1) {
-    error(
-      `Failed to find achievement of type ${AchievementType[type]}: ${kind}`,
-    );
+    const text = getAchievementText(achievementToMatch);
+    error(`Failed to find the achievement in the array: ${text}`);
   }
 
   return index;
 }
 
-function removeCharacterObjective(
-  objectives: Objective[],
-  character: PlayerType,
-  kind: CharacterObjectiveKind,
-) {
-  const index = objectives.findIndex(
-    (objective) =>
-      objective.type === ObjectiveType.CHARACTER &&
-      objective.character === character &&
-      objective.kind === kind,
+function removeObjective(objectives: Objective[], objective: Objective) {
+  const index = getObjectiveIndex(objectives, objective);
+  const matchingObjective = objectives[index];
+  assertDefined(
+    matchingObjective,
+    `Failed to find the objective at index: ${index}`,
   );
-  const objective = objectives[index];
-  assertDefined(objective, `Failed to find the objective at index: ${index}`);
 
   arrayRemoveIndexInPlace(objectives, index);
+}
+
+function getObjectiveIndex(
+  objectives: Objective[],
+  objectiveToMatch: Objective,
+): int {
+  let index: int;
+
+  switch (objectiveToMatch.type) {
+    case ObjectiveType.CHARACTER: {
+      index = objectives.findIndex(
+        (objective) =>
+          objective.type === objectiveToMatch.type &&
+          objective.character === objectiveToMatch.character &&
+          objective.kind === objectiveToMatch.kind,
+      );
+      break;
+    }
+
+    default: {
+      return error(
+        `Unhandled matching logic for objective type: ${
+          ObjectiveType[objectiveToMatch.type]
+        }`,
+      );
+    }
+  }
+
+  if (index === -1) {
+    const text = getObjectiveText(objectiveToMatch);
+    error(`Failed to find the objective in the array: ${text}`);
+  }
+
+  return index;
 }
