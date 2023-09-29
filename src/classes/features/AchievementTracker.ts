@@ -101,7 +101,6 @@ const v = {
   },
 
   run: {
-    isEmulatingAchievements: false,
     shouldIncrementTime: true,
     shouldIncrementDeathCounter: true,
   },
@@ -168,10 +167,6 @@ export function isRandomizerEnabled(): boolean {
   return v.persistent.seed !== null;
 }
 
-export function isEmulatingAchievements(): boolean {
-  return v.run.isEmulatingAchievements;
-}
-
 export function getRandomizerSeed(): Seed | undefined {
   return v.persistent.seed ?? undefined;
 }
@@ -206,8 +201,6 @@ function startRandomizer2(seed: Seed | undefined) {
 
   const rng = newRNG(seed);
 
-  v.run.isEmulatingAchievements = true;
-
   let numAttempts = 0;
   let achievements: Achievements;
   do {
@@ -231,7 +224,6 @@ function startRandomizer2(seed: Seed | undefined) {
   // We need to clear out the completed arrays because they were filled by the validation emulation.
   v.persistent.completedAchievements = [];
   v.persistent.completedObjectives = [];
-  v.run.isEmulatingAchievements = false;
 
   preForcedRestart();
   restart(STARTING_CHARACTER);

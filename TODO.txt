@@ -2,13 +2,9 @@ TODO:
 - print spoiler log
 - test dogma no damage achievement
 - test the beast no damage achievement
-- void portal deletion
 
 - unlock logic:
   - swap blue womb and the void path unlocks
-  - repentance floors can't be behind mother
-  - repentance floors can't be behind no damage on alt floors
-  - repentance floors can't be behind rep alt floors
   - fool card before ascent
   - unlock logic for collectibles:
     - We Need to Go Deeper (#84) behind crawl spaces
@@ -24,7 +20,10 @@ TODO:
   - other unlock logic:
     - black markets behind crawl spaces
 
-NEW POTENTIAL OBJECTIVES:
+POTENTIAL TODO:
+- see current unlocks in DSS
+
+OTHER POTENTIAL OBJECTIVES:
 - would need 288 objectives to reduce no damage objectives by half
 - survive on each boss in the game for 2 minutes without getting damaged (100 bosses)
   - exclude non 1x1 rooms (except for Fred)
@@ -81,6 +80,3 @@ NEW POTENTIAL OBJECTIVES:
 - ✅ - T.Forgotten - Beat the game without picking up the body in an active room
 - X - T.Bethany - Reach the cap of 26 Lemegeton familiars
 - ✅ - T.Jacob - Beat the game without ever using Anima Sola
-
-POTENTIAL TODO:
-- see current unlocks in DSS
