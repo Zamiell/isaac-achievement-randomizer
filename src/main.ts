@@ -9,6 +9,7 @@ import { AchievementDetection } from "./classes/features/AchievementDetection";
 import { AchievementText } from "./classes/features/AchievementText";
 import { AchievementTracker } from "./classes/features/AchievementTracker";
 import { CheckErrors } from "./classes/features/CheckErrors";
+import { ForceFadedConsoleDisplay } from "./classes/features/ForceFadedConsoleDisplay";
 import { GridEntityRemoval } from "./classes/features/GridEntityRemoval";
 import { HitIcon } from "./classes/features/HitIcon";
 import { NPCRemoval } from "./classes/features/NPCRemoval";
@@ -18,6 +19,7 @@ import { PreventPause } from "./classes/features/PreventPause";
 import { PreventSaveAndQuit } from "./classes/features/PreventSaveAndQuit";
 import { PreventVictoryLapPopup } from "./classes/features/PreventVictoryLapPopup";
 import { RemoveDonationMachines } from "./classes/features/RemoveDonationMachines";
+import { SilenceMomDad } from "./classes/features/SilenceMomDad";
 import { SlotRemoval } from "./classes/features/SlotRemoval";
 import { StageTypeRemoval } from "./classes/features/StageTypeRemoval";
 import { StartingRoomInfo } from "./classes/features/StartingRoomInfo";
@@ -35,6 +37,7 @@ const MOD_FEATURES = [
   AchievementText,
   AchievementTracker,
   CheckErrors,
+  ForceFadedConsoleDisplay,
   GridEntityRemoval,
   HitIcon,
   NPCRemoval,
@@ -44,6 +47,7 @@ const MOD_FEATURES = [
   PreventSaveAndQuit,
   PreventVictoryLapPopup,
   RemoveDonationMachines,
+  SilenceMomDad,
   SlotRemoval,
   StageTypeRemoval,
   StartingRoomInfo,
