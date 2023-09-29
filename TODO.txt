@@ -1,6 +1,5 @@
 TODO:
-- SWAP LOGIC
-  - fool card behind The Ascent
+- n/a
 
 POTENTIAL TODO:
 - see current unlocks in DSS

@@ -1,13 +1,10 @@
-import type {
-  CardType,
-  PillEffect,
-  SackSubType,
-} from "isaac-typescript-definitions";
+import type { PillEffect, SackSubType } from "isaac-typescript-definitions";
 import {
   BatterySubType,
   BombSubType,
   BossID,
   CallbackPriority,
+  CardType,
   Challenge,
   CoinSubType,
   CollectibleType,
@@ -372,6 +369,14 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
               AchievementType.PATH,
               UnlockablePath.BLUE_WOMB,
             );
+          }
+
+          return undefined;
+        }
+
+        case UnlockablePath.ASCENT: {
+          if (!isCardTypeUnlocked(CardType.FOOL)) {
+            return getAchievement(AchievementType.CARD, CardType.FOOL);
           }
 
           return undefined;
