@@ -74,11 +74,13 @@ Additionally, each character will unlock something upon clearing the following f
 17. Corpse 1
 18. Corpse 2
 
-A Crown of Light icon will appear next to the coin count UI when the "no hit" objective has not yet been accomplished for the particular character and floor combination.
+> Tip: A Crown of Light icon will appear next to the coin count UI when the "no hit" objective has not yet been accomplished for the particular character and floor combination.
 
 ### Boss-Based Objectives (100)
 
 There is one unlock for surviving for 2 minutes without taking damage for each boss.
+
+> Tip: A timer will appear on the screen if a boss is in the room and the corresponding objective has not yet been accomplished.
 
 ### Challenge-Based Objectives (45)
 
