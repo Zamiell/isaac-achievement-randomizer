@@ -1,9 +1,28 @@
 TODO:
+- print spoiler log
+- test dogma no damage achievement
+- test the beast no damage achievement
+- void portal deletion
 
-- graph unlock
-  - challenges can't be gated behind other challenges
+- unlock logic:
+  - swap blue womb and the void path unlocks
   - repentance floors can't be behind mother
-  - alt floors rep after rep unlock
+  - repentance floors can't be behind no damage on alt floors
+  - repentance floors can't be behind rep alt floors
+  - fool card before ascent
+  - unlock logic for collectibles:
+    - We Need to Go Deeper (#84) behind crawl spaces
+    - Humbleing Bundle (#203) behind one of 2x coin/bomb/key
+    - Bogo Bombs (#250) behind double bomb
+    - Dream Catcher (#566) behind all alt floors
+    - Battery Pack (#603) behind Lil Battery
+  - unlock logic for trinkets:
+    - Daemon's Tail (#22) behind black hearts
+    - Left Hand (#61) behind Red Chests
+    - Gilded Key (#159) behind Locked Chests
+    - Hollow Heart (#168) behind Bone Hearts
+  - other unlock logic:
+    - black markets behind crawl spaces
 
 NEW POTENTIAL OBJECTIVES:
 - would need 288 objectives to reduce no damage objectives by half
@@ -65,20 +84,3 @@ NEW POTENTIAL OBJECTIVES:
 
 POTENTIAL TODO:
 - see current unlocks in DSS
-
-- unlock logic for collectibles:
-  - We Need to Go Deeper (#84) behind crawl spaces
-  - Humbleing Bundle (#203) behind one of 2x coin/bomb/key
-  - Bogo Bombs (#250) behind double bomb
-  - Dream Catcher (#566) behind all alt floors
-  - Battery Pack (#603) behind Lil Battery
-
-- unlock logic for trinkets:
-  - Daemon's Tail (#22) behind black hearts
-  - Left Hand (#61) behind Red Chests
-  - Gilded Key (#159) behind Locked Chests
-  - Hollow Heart (#168) behind Bone Hearts
-
-- other unlock logic:
-  - black markets behind crawl spaces
-  - dross/ashpit/gehenna behind repentance floors

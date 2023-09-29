@@ -10,11 +10,7 @@ import {
 } from "isaacscript-common";
 import { NUM_TOTAL_ACHIEVEMENTS } from "./achievementAssignment";
 import { CHALLENGES, CHARACTER_OBJECTIVE_KINDS } from "./cachedEnums";
-import {
-  getAchievementText,
-  getCharacterObjectiveKindName,
-  getObjectiveText,
-} from "./classes/features/AchievementText";
+import { getCharacterObjectiveKindName } from "./classes/features/AchievementText";
 import {
   endRandomizer,
   getCompletedAchievements,
@@ -33,6 +29,8 @@ import { MOD_NAME } from "./constants";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { init } from "./lib/dssmenucore";
 import { mod } from "./mod";
+import { getAchievementText } from "./types/Achievement";
+import { getObjectiveText } from "./types/Objective";
 
 const DSS_CHOICES = ["disabled", "enabled"] as const;
 

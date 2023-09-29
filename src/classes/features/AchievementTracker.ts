@@ -19,35 +19,50 @@ import {
   ModCallback,
   PickupVariant,
   PlayerType,
+  SeedEffect,
   SlotVariant,
 } from "isaac-typescript-definitions";
 import {
   Callback,
   DefaultMap,
   GAME_FRAMES_PER_SECOND,
+  KColorDefault,
+  MAIN_CHARACTERS,
   ModFeature,
   PriorityCallback,
+  VectorZero,
   collectibleHasTag,
   filterMap,
+  fonts,
   game,
   getChallengeName,
   getCharacterName,
   getCollectibleName,
   getRandomSeed,
+  getScreenBottomRightPos,
   isActiveCollectible,
   isHiddenCollectible,
   isPassiveOrFamiliarCollectible,
+  isRepentanceBoss,
   log,
+  newRNG,
+  newSprite,
   restart,
 } from "isaacscript-common";
-import { getAchievementsForSeed } from "../../achievementAssignment";
-import { CHARACTER_OBJECTIVE_KINDS } from "../../cachedEnums";
+import {
+  ALL_BOSS_IDS,
+  NUM_TOTAL_ACHIEVEMENTS,
+  getAchievementsForRNG,
+} from "../../achievementAssignment";
+import { CHALLENGES, CHARACTER_OBJECTIVE_KINDS } from "../../cachedEnums";
 import { AchievementType } from "../../enums/AchievementType";
 import type { AltFloor } from "../../enums/AltFloor";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { OtherAchievementKind } from "../../enums/OtherAchievementKind";
-import type { UnlockablePath } from "../../enums/UnlockablePath";
+import { UnlockablePath } from "../../enums/UnlockablePath";
+import type { Achievements } from "../../interfaces/Achievements";
+import { mod } from "../../mod";
 import { convertSecondsToTimerValues } from "../../timer";
 import type { Achievement } from "../../types/Achievement";
 import type { Objective } from "../../types/Objective";
@@ -57,6 +72,10 @@ import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../unlockableTrinketTypes";
 import { showNewAchievement } from "./AchievementText";
 
 const STARTING_CHARACTER = PlayerType.ISAAC;
+
+const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
+
+const FONT = fonts.droid;
 
 /** `isaacscript-common` uses `CallbackPriority.IMPORTANT` (-200). */
 const HIGHER_PRIORITY_THAN_ISAACSCRIPT_COMMON = (CallbackPriority.IMPORTANT -
@@ -82,6 +101,7 @@ const v = {
   },
 
   run: {
+    isEmulatingAchievements: false,
     shouldIncrementTime: true,
     shouldIncrementDeathCounter: true,
   },
@@ -148,11 +168,35 @@ export function isRandomizerEnabled(): boolean {
   return v.persistent.seed !== null;
 }
 
+export function isEmulatingAchievements(): boolean {
+  return v.run.isEmulatingAchievements;
+}
+
 export function getRandomizerSeed(): Seed | undefined {
   return v.persistent.seed ?? undefined;
 }
 
 export function startRandomizer(seed: Seed | undefined): void {
+  const seeds = game.GetSeeds();
+  seeds.AddSeedEffect(SeedEffect.NO_HUD);
+  BLACK_SPRITE.Render(VectorZero);
+
+  const bottomRightPos = getScreenBottomRightPos();
+  const position = bottomRightPos.mul(0.5);
+  const text = "Randomizing, please wait...";
+  const length = FONT.GetStringWidthUTF8(text);
+  FONT.DrawString(text, position.X - length / 2, position.Y, KColorDefault);
+
+  // We need to wait a frame for the text to be drawn to the screen.
+  mod.runNextRenderFrame(() => {
+    const seeds2 = game.GetSeeds();
+    seeds2.RemoveSeedEffect(SeedEffect.NO_HUD);
+
+    startRandomizer2(seed);
+  });
+}
+
+function startRandomizer2(seed: Seed | undefined) {
   if (seed === undefined) {
     seed = getRandomSeed();
   }
@@ -160,16 +204,34 @@ export function startRandomizer(seed: Seed | undefined): void {
   v.persistent.seed = seed;
   log(`Set new seed: ${v.persistent.seed}`);
 
-  const { characterAchievements, bossAchievements, challengeAchievements } =
-    getAchievementsForSeed(seed);
+  const rng = newRNG(seed);
 
-  v.persistent.numDeaths = 0;
-  v.persistent.gameFramesElapsed = 0;
-  v.persistent.characterAchievements = characterAchievements;
-  v.persistent.bossAchievements = bossAchievements;
-  v.persistent.challengeAchievements = challengeAchievements;
+  v.run.isEmulatingAchievements = true;
+
+  let numAttempts = 0;
+  let achievements: Achievements;
+  do {
+    achievements = getAchievementsForRNG(rng);
+
+    const { characterAchievements, bossAchievements, challengeAchievements } =
+      achievements;
+
+    v.persistent.numDeaths = 0;
+    v.persistent.gameFramesElapsed = 0;
+    v.persistent.characterAchievements = characterAchievements;
+    v.persistent.bossAchievements = bossAchievements;
+    v.persistent.challengeAchievements = challengeAchievements;
+    v.persistent.completedAchievements = [];
+    v.persistent.completedObjectives = [];
+
+    numAttempts++;
+    log(`Checking to see if seed ${seed} is beatable. Attempt: ${numAttempts}`);
+  } while (!isAchievementsBeatable());
+
+  // We need to clear out the completed arrays because they were filled by the validation emulation.
   v.persistent.completedAchievements = [];
   v.persistent.completedObjectives = [];
+  v.run.isEmulatingAchievements = false;
 
   preForcedRestart();
   restart(STARTING_CHARACTER);
@@ -218,13 +280,21 @@ export function preForcedRestart(): void {
   v.run.shouldIncrementDeathCounter = false;
 }
 
-export function addAchievementCharacterObjective(
+export function addObjectiveCharacter(
   character: PlayerType,
   characterObjectiveKind: CharacterObjectiveKind,
+  emulating = false,
 ): void {
   if (isCharacterObjectiveCompleted(character, characterObjectiveKind)) {
     return;
   }
+
+  const objective: Objective = {
+    type: ObjectiveType.CHARACTER,
+    character,
+    kind: characterObjectiveKind,
+  };
+  v.persistent.completedObjectives.push(objective);
 
   const thisCharacterAchievements =
     v.persistent.characterAchievements.getAndSetDefault(character);
@@ -235,29 +305,27 @@ export function addAchievementCharacterObjective(
       `Failed to get the achievement for a character of ${characterName} for: CharacterObjectiveKind.${CharacterObjectiveKind[characterObjectiveKind]} (${characterObjectiveKind})`,
     );
   }
-  v.persistent.completedAchievements.push(achievement);
 
-  const objective: Objective = {
-    type: ObjectiveType.CHARACTER,
-    character,
-    kind: characterObjectiveKind,
-  };
-  v.persistent.completedObjectives.push(objective);
+  const potentialNewAchievement = swapAchievementToPreventSoftlock(achievement);
+  if (potentialNewAchievement !== undefined) {
+    thisCharacterAchievements.set(
+      characterObjectiveKind,
+      potentialNewAchievement,
+    );
+  }
 
-  showNewAchievement(achievement);
+  const achievementToGrant = potentialNewAchievement ?? achievement;
+  v.persistent.completedAchievements.push(achievementToGrant);
+
+  if (!emulating) {
+    showNewAchievement(achievementToGrant);
+  }
 }
 
-export function addAchievementBoss(bossID: BossID): void {
+export function addObjectiveBoss(bossID: BossID, emulating = false): void {
   if (isBossObjectiveCompleted(bossID)) {
     return;
   }
-
-  const achievement = v.persistent.bossAchievements.get(bossID);
-  if (achievement === undefined) {
-    const bossIDName = `${BossID[bossID]} (${bossID})`;
-    error(`Failed to get the achievement for boss: ${bossIDName}`);
-  }
-  v.persistent.completedAchievements.push(achievement);
 
   const objective: Objective = {
     type: ObjectiveType.BOSS,
@@ -265,10 +333,29 @@ export function addAchievementBoss(bossID: BossID): void {
   };
   v.persistent.completedObjectives.push(objective);
 
-  showNewAchievement(achievement);
+  const achievement = v.persistent.bossAchievements.get(bossID);
+  if (achievement === undefined) {
+    const bossIDName = `${BossID[bossID]} (${bossID})`;
+    error(`Failed to get the achievement for boss: ${bossIDName}`);
+  }
+
+  const potentialNewAchievement = swapAchievementToPreventSoftlock(achievement);
+  if (potentialNewAchievement !== undefined) {
+    v.persistent.bossAchievements.set(bossID, potentialNewAchievement);
+  }
+
+  const achievementToGrant = potentialNewAchievement ?? achievement;
+  v.persistent.completedAchievements.push(achievementToGrant);
+
+  if (!emulating) {
+    showNewAchievement(achievementToGrant);
+  }
 }
 
-export function addAchievementChallenge(challenge: Challenge): void {
+export function addObjectiveChallenge(
+  challenge: Challenge,
+  emulating = false,
+): void {
   if (challenge === Challenge.NULL) {
     return;
   }
@@ -277,6 +364,12 @@ export function addAchievementChallenge(challenge: Challenge): void {
     return;
   }
 
+  const objective: Objective = {
+    type: ObjectiveType.CHALLENGE,
+    challenge,
+  };
+  v.persistent.completedObjectives.push(objective);
+
   const achievement = v.persistent.challengeAchievements.get(challenge);
   if (achievement === undefined) {
     const challengeName = getChallengeName(challenge);
@@ -284,15 +377,24 @@ export function addAchievementChallenge(challenge: Challenge): void {
       `Failed to get the achievement for the challenge: ${challengeName} (${challenge})`,
     );
   }
-  v.persistent.completedAchievements.push(achievement);
 
-  const objective: Objective = {
-    type: ObjectiveType.CHALLENGE,
-    challenge,
-  };
-  v.persistent.completedObjectives.push(objective);
+  const potentialNewAchievement = swapAchievementToPreventSoftlock(achievement);
+  if (potentialNewAchievement !== undefined) {
+    v.persistent.challengeAchievements.set(challenge, potentialNewAchievement);
+  }
 
-  showNewAchievement(achievement);
+  const achievementToGrant = potentialNewAchievement ?? achievement;
+  v.persistent.completedAchievements.push(achievementToGrant);
+
+  if (!emulating) {
+    showNewAchievement(achievementToGrant);
+  }
+}
+
+function swapAchievementToPreventSoftlock(
+  _achievement: Achievement,
+): Achievement | undefined {
+  return undefined;
 }
 
 // -------------------
@@ -692,17 +794,17 @@ export function setCharacterUnlocked(character: PlayerType): void {
 
   switch (objective.type) {
     case ObjectiveType.CHARACTER: {
-      addAchievementCharacterObjective(objective.character, objective.kind);
+      addObjectiveCharacter(objective.character, objective.kind);
       break;
     }
 
     case ObjectiveType.BOSS: {
-      addAchievementBoss(objective.bossID);
+      addObjectiveBoss(objective.bossID);
       break;
     }
 
     case ObjectiveType.CHALLENGE: {
-      addAchievementChallenge(objective.challenge);
+      addObjectiveChallenge(objective.challenge);
       break;
     }
   }
@@ -754,17 +856,17 @@ export function setCollectibleUnlocked(collectibleType: CollectibleType): void {
 
   switch (objective.type) {
     case ObjectiveType.CHARACTER: {
-      addAchievementCharacterObjective(objective.character, objective.kind);
+      addObjectiveCharacter(objective.character, objective.kind);
       break;
     }
 
     case ObjectiveType.BOSS: {
-      addAchievementBoss(objective.bossID);
+      addObjectiveBoss(objective.bossID);
       break;
     }
 
     case ObjectiveType.CHALLENGE: {
-      addAchievementChallenge(objective.challenge);
+      addObjectiveChallenge(objective.challenge);
       break;
     }
   }
@@ -802,4 +904,189 @@ function findObjectiveForCollectibleAchievement(
   }
 
   return undefined;
+}
+
+// ----------
+// Validation
+// ----------
+
+/** Emulate a player playing through this randomizer seed to see if every achievement can unlock. */
+function isAchievementsBeatable(): boolean {
+  while (v.persistent.completedAchievements.length < NUM_TOTAL_ACHIEVEMENTS) {
+    let unlockedSomething = false;
+
+    for (const character of MAIN_CHARACTERS) {
+      if (!isCharacterUnlocked(character)) {
+        continue;
+      }
+
+      for (const characterObjectiveKind of CHARACTER_OBJECTIVE_KINDS) {
+        if (
+          canGetToCharacterObjectiveKind(characterObjectiveKind) &&
+          !isCharacterObjectiveCompleted(character, characterObjectiveKind)
+        ) {
+          addObjectiveCharacter(character, characterObjectiveKind, true);
+          unlockedSomething = true;
+        }
+      }
+    }
+
+    for (const bossID of ALL_BOSS_IDS) {
+      if (canGetToBoss(bossID) && !isBossObjectiveCompleted(bossID)) {
+        addObjectiveBoss(bossID, true);
+        unlockedSomething = true;
+      }
+    }
+
+    for (const challenge of CHALLENGES) {
+      if (
+        challenge !== Challenge.NULL &&
+        isChallengeUnlocked(challenge) &&
+        !isChallengeObjectiveCompleted(challenge)
+      ) {
+        addObjectiveChallenge(challenge, true);
+        unlockedSomething = true;
+      }
+    }
+
+    if (!unlockedSomething) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function canGetToCharacterObjectiveKind(
+  characterObjectiveKind: CharacterObjectiveKind,
+): boolean {
+  switch (characterObjectiveKind) {
+    case CharacterObjectiveKind.MOM:
+    case CharacterObjectiveKind.IT_LIVES:
+    case CharacterObjectiveKind.ISAAC:
+    case CharacterObjectiveKind.SATAN: {
+      return true;
+    }
+
+    case CharacterObjectiveKind.BLUE_BABY: {
+      return isPathUnlocked(UnlockablePath.CHEST);
+    }
+
+    case CharacterObjectiveKind.THE_LAMB: {
+      return isPathUnlocked(UnlockablePath.DARK_ROOM);
+    }
+
+    case CharacterObjectiveKind.MEGA_SATAN: {
+      return isPathUnlocked(UnlockablePath.MEGA_SATAN);
+    }
+
+    case CharacterObjectiveKind.BOSS_RUSH: {
+      return isPathUnlocked(UnlockablePath.BOSS_RUSH);
+    }
+
+    case CharacterObjectiveKind.HUSH: {
+      return isPathUnlocked(UnlockablePath.BLUE_WOMB);
+    }
+
+    case CharacterObjectiveKind.DELIRIUM: {
+      return (
+        isPathUnlocked(UnlockablePath.BLUE_WOMB) &&
+        isPathUnlocked(UnlockablePath.VOID)
+      );
+    }
+
+    case CharacterObjectiveKind.MOTHER: {
+      return isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS);
+    }
+
+    case CharacterObjectiveKind.THE_BEAST: {
+      return isPathUnlocked(UnlockablePath.THE_ASCENT);
+    }
+
+    case CharacterObjectiveKind.ULTRA_GREED: {
+      return isPathUnlocked(UnlockablePath.GREED_MODE);
+    }
+
+    case CharacterObjectiveKind.NO_HIT_BASEMENT_1:
+    case CharacterObjectiveKind.NO_HIT_BASEMENT_2:
+    case CharacterObjectiveKind.NO_HIT_CAVES_1:
+    case CharacterObjectiveKind.NO_HIT_CAVES_2:
+    case CharacterObjectiveKind.NO_HIT_DEPTHS_1:
+    case CharacterObjectiveKind.NO_HIT_DEPTHS_2:
+    case CharacterObjectiveKind.NO_HIT_WOMB_1:
+    case CharacterObjectiveKind.NO_HIT_WOMB_2:
+    case CharacterObjectiveKind.NO_HIT_SHEOL_CATHEDRAL: {
+      return true;
+    }
+
+    case CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST: {
+      return (
+        isPathUnlocked(UnlockablePath.CHEST) ||
+        isPathUnlocked(UnlockablePath.DARK_ROOM)
+      );
+    }
+
+    case CharacterObjectiveKind.NO_HIT_DOWNPOUR_1:
+    case CharacterObjectiveKind.NO_HIT_DOWNPOUR_2:
+    case CharacterObjectiveKind.NO_HIT_MINES_1:
+    case CharacterObjectiveKind.NO_HIT_MINES_2:
+    case CharacterObjectiveKind.NO_HIT_MAUSOLEUM_1:
+    case CharacterObjectiveKind.NO_HIT_MAUSOLEUM_2:
+    case CharacterObjectiveKind.NO_HIT_CORPSE_1:
+    case CharacterObjectiveKind.NO_HIT_CORPSE_2: {
+      return isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS);
+    }
+  }
+}
+
+function canGetToBoss(bossID: BossID): boolean {
+  if (bossID === BossID.BLUE_BABY && !isPathUnlocked(UnlockablePath.CHEST)) {
+    return false;
+  }
+
+  if (bossID === BossID.LAMB && !isPathUnlocked(UnlockablePath.DARK_ROOM)) {
+    return false;
+  }
+
+  if (
+    bossID === BossID.MEGA_SATAN &&
+    !isPathUnlocked(UnlockablePath.MEGA_SATAN)
+  ) {
+    return false;
+  }
+
+  if (bossID === BossID.HUSH && !isPathUnlocked(UnlockablePath.BLUE_WOMB)) {
+    return false;
+  }
+
+  if (
+    bossID === BossID.DELIRIUM &&
+    (!isPathUnlocked(UnlockablePath.BLUE_WOMB) ||
+      !isPathUnlocked(UnlockablePath.VOID))
+  ) {
+    return false;
+  }
+
+  if (
+    isRepentanceBoss(bossID) &&
+    !isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS)
+  ) {
+    return false;
+  }
+
+  if (
+    (bossID === BossID.DOGMA || bossID === BossID.BEAST) &&
+    !isPathUnlocked(UnlockablePath.THE_ASCENT)
+  ) {
+    return false;
+  }
+
+  if (
+    bossID === BossID.ULTRA_GREED &&
+    !isPathUnlocked(UnlockablePath.GREED_MODE)
+  ) {
+    return false;
+  }
+
+  return true;
 }

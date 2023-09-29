@@ -57,7 +57,7 @@ export class PathRemoval extends RandomizerModFeature {
     TrapdoorVariant.VOID_PORTAL,
   )
   postGridEntityUpdateVoidPortal(gridEntity: GridEntity): void {
-    if (!isPathUnlocked(UnlockablePath.THE_VOID)) {
+    if (!isPathUnlocked(UnlockablePath.VOID)) {
       removeGridEntity(gridEntity, false);
     }
   }
@@ -112,7 +112,7 @@ export class PathRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (!isPathUnlocked(UnlockablePath.THE_VOID)) {
+    if (!isPathUnlocked(UnlockablePath.VOID)) {
       this.removeDoorAndSmoke(voidDoor);
     }
   }
@@ -196,7 +196,7 @@ export class PathRemoval extends RandomizerModFeature {
 
     if (
       collectibleType === CollectibleType.POLAROID &&
-      !isPathUnlocked(UnlockablePath.THE_CHEST)
+      !isPathUnlocked(UnlockablePath.CHEST)
     ) {
       return [
         EntityType.PICKUP,

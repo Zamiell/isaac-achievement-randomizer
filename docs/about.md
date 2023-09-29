@@ -95,7 +95,13 @@ There are 1054 + 100 + 45 = 1199 objectives in total.
 ### Characters (33)
 
 - The first character unlocked will always be Isaac. All other characters start off locked.
-- Each character is guaranteed to unlock another random character.
+- Each character is guaranteed to unlock another random character from the following objectives:
+  - Mom
+  - It Lives
+  - Isaac
+  - Blue Baby
+  - Satan
+  - The Lamb
 
 ### Paths (10)
 
@@ -289,5 +295,9 @@ Lucky Pennies are automatically converted to normal pennies while the Mega Mush 
 ### Victory Lap Prevention
 
 Victory Laps and the "Rerun" feature on the main menu are banned for the same reason that R Key is. As a quality of life fix, the Victory Lap popup will no longer appear after defeating The Lamb.
+
+### Void Portal Deletion
+
+The mod deletes all Void Portals outside of the Blue Womb. This is both a balance change (since it slightly increases the difficulty of Delirium) and a quality of life fix (since players can no longer accidentally enter a Void Portal and losing their streak).
 
 <br>

@@ -2257,10 +2257,13 @@ function dssmenucore.init(DSSModName, v)
             and stageType ~= StageType.STAGETYPE_REPENTANCE
             and stageType ~= StageType.STAGETYPE_REPENTANCE_B
             and not game:GetStateFlag(GameStateFlag.STATE_BACKWARDS_PATH)
+        local seeds = game:GetSeeds();
         if isCore
             and not isOpen
             and DeadSeaScrollsMenu.GetMenuHintSetting() == 1
-            and inFirstRoom then
+            and inFirstRoom
+            and not seeds:HasSeedEffect(SeedEffect.SEED_NO_HUD) then
+
             local keybind = DeadSeaScrollsMenu.GetMenuKeybindSetting()
             local keybindText = string.upper(inputButtonNames[keybind])
             local text = "Press [" .. keybindText .. "] to open Dead Sea Scrolls Menu"

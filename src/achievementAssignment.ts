@@ -1,3 +1,7 @@
+// Randomizer algorithms are discussed here:
+// https://www.youtube.com/watch?v=vGIDzGvsrV8
+// We use "Random Fill" for this randomizer.
+
 import {
   BatterySubType,
   BombSubType,
@@ -28,7 +32,6 @@ import {
   getRandomArrayElement,
   getRandomArrayElementAndRemove,
   log,
-  newRNG,
   shuffleArray,
 } from "isaacscript-common";
 import {
@@ -47,25 +50,17 @@ import {
   SLOT_VARIANTS,
   UNLOCKABLE_PATHS,
 } from "./cachedEnums";
-import { getAchievementText } from "./classes/features/AchievementText";
 import { AchievementType } from "./enums/AchievementType";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { UnlockablePath } from "./enums/UnlockablePath";
+import type { Achievements } from "./interfaces/Achievements";
 import type { Achievement } from "./types/Achievement";
+import { getAchievementText } from "./types/Achievement";
 import type { CharacterObjective, Objective } from "./types/Objective";
 import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./unlockableCollectibleTypes";
 import { UNLOCKABLE_GRID_ENTITY_TYPES } from "./unlockableGridEntityTypes";
 import { UNLOCKABLE_TRINKET_TYPES } from "./unlockableTrinketTypes";
-
-interface Achievements {
-  characterAchievements: DefaultMap<
-    PlayerType,
-    Map<CharacterObjectiveKind, Achievement>
-  >;
-  bossAchievements: Map<BossID, Achievement>;
-  challengeAchievements: Map<Challenge, Achievement>;
-}
 
 const VERBOSE = false as boolean;
 
@@ -87,7 +82,7 @@ const EASY_OBJECTIVE_KINDS = [
 
 /** These are the unlockable paths that are gated behind `EASY_OBJECTIVE_KINDS`. */
 const EASY_UNLOCKABLE_PATHS = [
-  UnlockablePath.THE_CHEST,
+  UnlockablePath.CHEST,
   UnlockablePath.DARK_ROOM,
 ] as const;
 
@@ -106,13 +101,12 @@ const BASIC_CHARACTER_OBJECTIVES = new ReadonlySet<CharacterObjectiveKind>([
   CharacterObjectiveKind.THE_LAMB,
 ]);
 
-const ALL_BOSS_IDS = [...getAllBossesSet()] as const;
+export const ALL_BOSS_IDS = [...getAllBossesSet()] as const;
 
 export const NUM_TOTAL_ACHIEVEMENTS = getAllAchievements().length;
 
-export function getAchievementsForSeed(seed: Seed): Achievements {
-  const rng = newRNG(seed);
-
+export function getAchievementsForRNG(rng: RNG): Achievements {
+  // When an achievement/objective is assigned, it is added to the following maps.
   const characterAchievements = new DefaultMap<
     PlayerType,
     Map<CharacterObjectiveKind, Achievement>
@@ -225,57 +219,6 @@ export function getAchievementsForSeed(seed: Seed): Achievements {
     }
 
     lastUnlockedCharacter = character;
-  }
-
-  // The Fool Card must unlock before The Ascent.
-  {
-    const foolAchievement = getAndRemoveAchievement(
-      achievements,
-      AchievementType.CARD,
-      CardType.FOOL,
-    );
-    const basicCharacterObjectives = objectives.filter(
-      (objective) =>
-        objective.type === ObjectiveType.CHARACTER &&
-        BASIC_CHARACTER_OBJECTIVES.has(objective.kind),
-    ) as CharacterObjective[];
-    const randomBasicCharacterObjective = getRandomArrayElement(
-      basicCharacterObjectives,
-      rng,
-    );
-    removeCharacterObjective(
-      objectives,
-      randomBasicCharacterObjective.character,
-      randomBasicCharacterObjective.kind,
-    );
-
-    const thisCharacterAchievements = characterAchievements.getAndSetDefault(
-      randomBasicCharacterObjective.character,
-    );
-    if (thisCharacterAchievements.has(randomBasicCharacterObjective.kind)) {
-      const characterName = getCharacterName(
-        randomBasicCharacterObjective.character,
-      );
-      error(
-        `Failed to add the Fool achievement to ${characterName}: ${
-          CharacterObjectiveKind[randomBasicCharacterObjective.kind]
-        }`,
-      );
-    }
-
-    thisCharacterAchievements.set(
-      randomBasicCharacterObjective.kind,
-      foolAchievement,
-    );
-    if (VERBOSE) {
-      const characterName = getCharacterName(lastUnlockedCharacter);
-      log(
-        `Set Fool achievement on ${characterName} --> ${
-          CharacterObjectiveKind[randomBasicCharacterObjective.kind]
-        }`,
-      );
-      logAchievement(foolAchievement);
-    }
   }
 
   // Now, do the rest of the unlocks with no restrictions.

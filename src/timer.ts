@@ -1,3 +1,4 @@
+import { SeedEffect } from "isaac-typescript-definitions";
 import {
   DefaultMap,
   assertDefined,
@@ -40,6 +41,12 @@ const spriteCollectionMap = new DefaultMap<int, TimerSprites>(
 export function timerDraw(timerType: TimerType, seconds: int): void {
   const hud = game.GetHUD();
   if (!hud.IsVisible()) {
+    return;
+  }
+
+  // The `HUD.IsVisible` method does not take into account `SeedEffect.NO_HUD`.
+  const seeds = game.GetSeeds();
+  if (seeds.HasSeedEffect(SeedEffect.NO_HUD)) {
     return;
   }
 

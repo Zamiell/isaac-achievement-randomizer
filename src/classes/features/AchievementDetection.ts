@@ -23,9 +23,9 @@ import { NUM_MINUTES_FOR_BOSS_OBJECTIVE } from "../../constants";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
-  addAchievementBoss,
-  addAchievementChallenge,
-  addAchievementCharacterObjective,
+  addObjectiveBoss,
+  addObjectiveChallenge,
+  addObjectiveCharacter,
   isBossObjectiveCompleted,
 } from "./AchievementTracker";
 
@@ -105,7 +105,7 @@ export class AchievementDetection extends RandomizerModFeature {
 
     const seconds = getSecondsSinceLastDamage();
     if (seconds >= NUM_MINUTES_FOR_BOSS_OBJECTIVE * 60) {
-      addAchievementBoss(bossID);
+      addObjectiveBoss(bossID);
     }
   }
 
@@ -113,7 +113,7 @@ export class AchievementDetection extends RandomizerModFeature {
   @Callback(ModCallback.POST_PICKUP_INIT, PickupVariant.TROPHY)
   postPickupInitTrophy(): void {
     const challenge = Isaac.GetChallenge();
-    addAchievementChallenge(challenge);
+    addObjectiveChallenge(challenge);
   }
 
   // 70
@@ -171,17 +171,14 @@ export function achievementDetectionPostRoomCleared(): void {
       const characterObjectiveKindBoss =
         BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND.get(bossID);
       if (characterObjectiveKindBoss !== undefined) {
-        addAchievementCharacterObjective(character, characterObjectiveKindBoss);
+        addObjectiveCharacter(character, characterObjectiveKindBoss);
       }
 
       if (!v.level.tookHit) {
         const characterObjectiveKindNoDamage =
           getCharacterObjectiveKindNoDamage();
         if (characterObjectiveKindNoDamage !== undefined) {
-          addAchievementCharacterObjective(
-            character,
-            characterObjectiveKindNoDamage,
-          );
+          addObjectiveCharacter(character, characterObjectiveKindNoDamage);
         }
       }
 
@@ -191,10 +188,7 @@ export function achievementDetectionPostRoomCleared(): void {
     // 16
     case RoomType.DUNGEON: {
       if (inBeastRoom()) {
-        addAchievementCharacterObjective(
-          character,
-          CharacterObjectiveKind.THE_BEAST,
-        );
+        addObjectiveCharacter(character, CharacterObjectiveKind.THE_BEAST);
       }
 
       break;
@@ -202,10 +196,7 @@ export function achievementDetectionPostRoomCleared(): void {
 
     // 17
     case RoomType.BOSS_RUSH: {
-      addAchievementCharacterObjective(
-        character,
-        CharacterObjectiveKind.BOSS_RUSH,
-      );
+      addObjectiveCharacter(character, CharacterObjectiveKind.BOSS_RUSH);
       break;
     }
 

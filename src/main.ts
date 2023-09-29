@@ -22,6 +22,7 @@ import { SlotRemoval } from "./classes/features/SlotRemoval";
 import { StageTypeRemoval } from "./classes/features/StageTypeRemoval";
 import { StartingRoomInfo } from "./classes/features/StartingRoomInfo";
 import { Timer } from "./classes/features/Timer";
+import { VoidPortalRemoval } from "./classes/features/VoidPortalRemoval";
 import { initConsoleCommands } from "./consoleCommands";
 import { IS_DEV, MOD_NAME } from "./constants";
 import { initDeadSeaScrolls } from "./deadSeaScrolls";
@@ -46,6 +47,7 @@ const MOD_FEATURES = [
   StageTypeRemoval,
   StartingRoomInfo,
   Timer,
+  VoidPortalRemoval,
 ] as const;
 
 export function main(): void {
