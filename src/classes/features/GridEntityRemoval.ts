@@ -38,6 +38,8 @@ export class GridEntityRemoval extends RandomizerModFeature {
     switch (rockAltType) {
       case RockAltType.URN: {
         if (!isOtherAchievementsUnlocked(OtherAchievementKind.URNS)) {
+          const sprite = gridEntity.GetSprite();
+          Isaac.DebugString(`GETTING HERE 1 - ${sprite.GetFilename()}`);
           gridEntity.SetType(GridEntityType.ROCK);
         }
 

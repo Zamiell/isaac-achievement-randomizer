@@ -144,7 +144,7 @@ All challenges start off locked.
 
 Every collectible in the game is locked, with the following exceptions:
 
-- 5 collectibles from the Boss Room pool (#2):
+- 5 collectibles from the Boss Room pool for each stat (#2):
   - Breakfast (#25) (HP)
   - Wooden Spoon (#27) (speed)
   - Mom's Underwear (#29) (range)
@@ -163,7 +163,7 @@ Every collectible in the game is locked, with the following exceptions:
 - Special non-obtainable collectibles:
   - Book of Belial Birthright (#59)
   - Broken Glass Cannon (#474)
-  - Damocles (Passive) (#656)
+  - Damocles Passive (#656)
   - Recall (#714)
   - Hold (#715)
 - Banned collectibles in this mod:
@@ -190,6 +190,7 @@ If no trinkets are unlocked, they will be converted to pennies.
 Also note that:
 
 - Even if Mysterious Paper (#21) or Missing Poster (#23) are unlocked, they are removed from pools until all of The Lost objectives are completed.
+- Even if Broken Ankh (#28) is unlocked, it is removed from pools until all of the Blue Baby objectives are completed.
 
 ### Cards & Runes (96)
 
@@ -301,5 +302,11 @@ Victory Laps and the "Rerun" feature on the main menu are banned for the same re
 ### Void Portal Deletion
 
 The mod deletes all Void Portals outside of the Blue Womb. This is both a balance change (since it slightly increases the difficulty of Delirium) and a quality of life fix (since players can no longer accidentally enter a Void Portal and lose their streak).
+
+### Other Miscellaneous Quality of Life Improvements
+
+- <!-- "ui_hearts.png" --> The heart UI sprites have been modified so that it is easier to see an empty heart container on a black background.
+- <!-- SilenceMomDad --> The audio clips of mom and dad on the Ascent are silenced.
+- <!-- ForceFadedConsoleDisplay --> The "faded console display" feature is automatically enabled in the "options.ini" file, which allows you to visually see when an error in the game happens.
 
 <br>

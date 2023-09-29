@@ -328,6 +328,11 @@ export class PickupRemoval extends RandomizerModFeature {
       TrinketType.MISSING_POSTER, // 23
       PlayerType.LOST,
     );
+    this.conditionallyRemoveRevivalTrinket(
+      itemPool,
+      TrinketType.BROKEN_ANKH, // 28
+      PlayerType.BLUE_BABY,
+    );
 
     const startingCollectibleTypes =
       getCharacterStartingCollectibleTypes(character);
