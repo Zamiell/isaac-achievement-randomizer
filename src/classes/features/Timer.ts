@@ -1,5 +1,5 @@
 import { ModCallback } from "isaac-typescript-definitions";
-import { Callback, game } from "isaacscript-common";
+import { Callback, getBossID } from "isaacscript-common";
 import { isTimerEnabled } from "../../deadSeaScrolls";
 import { TimerType } from "../../enums/TimerType";
 import { timerDraw } from "../../timer";
@@ -25,8 +25,7 @@ export class Timer extends RandomizerModFeature {
   }
 
   drawNoHitTimer(): void {
-    const room = game.GetRoom();
-    const bossID = room.GetBossID();
+    const bossID = getBossID();
     if (bossID === 0) {
       return;
     }

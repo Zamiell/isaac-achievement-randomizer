@@ -13,6 +13,7 @@ import {
   ModCallbackCustom,
   ReadonlyMap,
   game,
+  getBossID,
   getRoomSubType,
   inBeastRoom,
   isFirstPlayer,
@@ -93,8 +94,7 @@ export class AchievementDetection extends RandomizerModFeature {
 
   @Callback(ModCallback.POST_UPDATE)
   postUpdate(): void {
-    const room = game.GetRoom();
-    const bossID = room.GetBossID();
+    const bossID = getBossID();
     if (bossID === 0) {
       return;
     }

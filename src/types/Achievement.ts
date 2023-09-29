@@ -15,6 +15,7 @@ import type {
   TrinketType,
 } from "isaac-typescript-definitions";
 import { GridEntityType } from "isaac-typescript-definitions";
+import type { CompositionTypeSatisfiesEnum } from "isaacscript-common";
 import {
   getBatteryName,
   getBombName,
@@ -146,6 +147,8 @@ export type Achievement =
   | SlotAchievement
   | GridEntityAchievement
   | OtherAchievement;
+
+type _Test = CompositionTypeSatisfiesEnum<Achievement, AchievementType>;
 
 export function getAchievementText(achievement: Achievement): [string, string] {
   switch (achievement.type) {

@@ -1,7 +1,5 @@
 TODO:
 - print spoiler log
-- test dogma no damage achievement
-- test the beast no damage achievement
 
 - unlock logic:
   - swap blue womb and the void path unlocks

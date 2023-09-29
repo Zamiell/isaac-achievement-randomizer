@@ -1,5 +1,6 @@
 import type { Challenge, PlayerType } from "isaac-typescript-definitions";
 import { BossID } from "isaac-typescript-definitions";
+import type { CompositionTypeSatisfiesEnum } from "isaacscript-common";
 import { getChallengeName, getCharacterName } from "isaacscript-common";
 import { getCharacterObjectiveKindName } from "../classes/features/AchievementText";
 import { NUM_MINUTES_FOR_BOSS_OBJECTIVE } from "../constants";
@@ -23,6 +24,8 @@ interface ChallengeObjective {
 }
 
 export type Objective = CharacterObjective | BossObjective | ChallengeObjective;
+
+type _Test = CompositionTypeSatisfiesEnum<Objective, ObjectiveType>;
 
 export function getObjectiveText(objective: Objective): string[] {
   switch (objective.type) {

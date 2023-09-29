@@ -3811,7 +3811,7 @@ __metadata:
     "@total-typescript/ts-reset": ^0.5.1
     isaac-typescript-definitions: ^21.0.2
     isaacscript: ^3.11.1
-    isaacscript-common: ^51.6.0
+    isaacscript-common: ^51.8.0
     isaacscript-lint: ^5.11.0
     isaacscript-spell: ^1.4.0
     isaacscript-tsconfig: ^4.0.0
@@ -3836,12 +3836,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common@npm:^51.6.0":
-  version: 51.6.0
-  resolution: "isaacscript-common@npm:51.6.0"
+"isaacscript-common@npm:^51.8.0":
+  version: 51.8.0
+  resolution: "isaacscript-common@npm:51.8.0"
   dependencies:
     isaac-typescript-definitions: ^21.0.2
-  checksum: 60b3addab23542e5f7ab0deeb7d1c3bfc7b266231aad4260e0c5bc6a058f2e06804cb6713fcd93ed96543b12988cd2b47c8288be868dce9cc24eb870f152c84f
+  checksum: ca011826864b61786f1c264546860937193ff4e0419b7d4809c32e52bc0f47fd326ad44975d7f874ade79a806fb9072d8ddbae912fdf9330e8855327ba8a964c
   languageName: node
   linkType: hard
 
