@@ -271,6 +271,14 @@ export function preForcedRestart(): void {
 // -------------
 
 export function addObjective(objective: Objective, emulating = false): void {
+  const challenge = Isaac.GetChallenge();
+  if (
+    challenge !== Challenge.NULL &&
+    objective.type !== ObjectiveType.CHALLENGE
+  ) {
+    return;
+  }
+
   if (isObjectiveCompleted(objective)) {
     return;
   }
