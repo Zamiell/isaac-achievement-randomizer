@@ -203,19 +203,16 @@ function startRandomizer2(seed: Seed | undefined) {
 
   let numAttempts = 0;
   do {
-    v.persistent.numDeaths = 0;
-    v.persistent.gameFramesElapsed = 0;
-    v.persistent.objectiveToAchievementMap = getAchievementsForRNG(rng);
-    v.persistent.completedAchievements = [];
-    v.persistent.completedObjectives = [];
-
     numAttempts++;
+    v.persistent.objectiveToAchievementMap = getAchievementsForRNG(rng);
     log(
       `Checking to see if randomizer seed ${seed} is beatable. Attempt: ${numAttempts}`,
     );
   } while (!isAchievementsBeatable());
 
-  // We need to clear out the completed arrays because they were filled by the validation emulation.
+  // Reset the persistent variable relating to our streak.
+  v.persistent.numDeaths = 0;
+  v.persistent.gameFramesElapsed = 0;
   v.persistent.completedAchievements = [];
   v.persistent.completedObjectives = [];
 
@@ -271,12 +268,17 @@ export function preForcedRestart(): void {
 // -------------
 
 export function addObjective(objective: Objective, emulating = false): void {
-  const challenge = Isaac.GetChallenge();
-  if (
-    challenge !== Challenge.NULL &&
-    objective.type !== ObjectiveType.CHALLENGE
-  ) {
-    return;
+  // Prevent accomplishing non-challenge objectives while inside of a challenge.
+  if (!emulating) {
+    const challenge = Isaac.GetChallenge();
+    if (
+      (challenge === Challenge.NULL &&
+        objective.type === ObjectiveType.CHALLENGE) ||
+      (challenge !== Challenge.NULL &&
+        objective.type !== ObjectiveType.CHALLENGE)
+    ) {
+      return;
+    }
   }
 
   if (isObjectiveCompleted(objective)) {
@@ -779,6 +781,9 @@ function findObjectiveForCollectibleAchievement(
 
 /** Emulate a player playing through this randomizer seed to see if every achievement can unlock. */
 function isAchievementsBeatable(): boolean {
+  v.persistent.completedAchievements = [];
+  v.persistent.completedObjectives = [];
+
   while (v.persistent.completedAchievements.length < ALL_ACHIEVEMENTS.length) {
     let unlockedSomething = false;
 
