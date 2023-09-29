@@ -1,6 +1,4 @@
 TODO:
-- print spoiler log
-
 - unlock logic:
   - swap blue womb and the void path unlocks
   - fool card before ascent

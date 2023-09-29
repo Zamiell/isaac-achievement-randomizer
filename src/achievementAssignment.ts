@@ -227,9 +227,10 @@ export function getAchievementsForRNG(rng: RNG): Achievements {
 
     switch (objective.type) {
       case ObjectiveType.CHARACTER: {
-        const thisCharacterAchievements =
-          characterAchievements.getAndSetDefault(objective.character);
-        if (thisCharacterAchievements.has(objective.kind)) {
+        const achievementsMap = characterAchievements.getAndSetDefault(
+          objective.character,
+        );
+        if (achievementsMap.has(objective.kind)) {
           const characterName = getCharacterName(objective.character);
           error(
             `Failed to add an achievement to ${characterName}: ${
@@ -238,7 +239,7 @@ export function getAchievementsForRNG(rng: RNG): Achievements {
           );
         }
 
-        thisCharacterAchievements.set(objective.kind, achievement);
+        achievementsMap.set(objective.kind, achievement);
         if (VERBOSE) {
           const characterName = getCharacterName(lastUnlockedCharacter);
           log(
@@ -310,11 +311,11 @@ function validateAchievements(achievements: Achievements) {
       `The "characterAchievements" map had ${characterAchievements.size} elements but it needs ${MAIN_CHARACTERS.length} elements.`,
     );
   }
-  for (const [character, thisCharacterAchievements] of characterAchievements) {
-    if (thisCharacterAchievements.size !== CHARACTER_OBJECTIVE_KINDS.length) {
+  for (const [character, achievementsMap] of characterAchievements) {
+    if (achievementsMap.size !== CHARACTER_OBJECTIVE_KINDS.length) {
       const characterName = getCharacterName(character);
       error(
-        `The "characterAchievements" map for ${characterName} had ${thisCharacterAchievements.size} elements but it needs ${CHARACTER_OBJECTIVE_KINDS.length} elements.`,
+        `The "characterAchievements" map for ${characterName} had ${achievementsMap.size} elements but it needs ${CHARACTER_OBJECTIVE_KINDS.length} elements.`,
       );
     }
   }

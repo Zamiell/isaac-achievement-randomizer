@@ -45,6 +45,7 @@ import {
   isPassiveOrFamiliarCollectible,
   isRepentanceBoss,
   log,
+  logError,
   newRNG,
   newSprite,
   restart,
@@ -65,6 +66,7 @@ import type { Achievements } from "../../interfaces/Achievements";
 import { mod } from "../../mod";
 import { convertSecondsToTimerValues } from "../../timer";
 import type { Achievement } from "../../types/Achievement";
+import { getAchievementText } from "../../types/Achievement";
 import type { Objective } from "../../types/Objective";
 import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTypes";
 import { UNLOCKABLE_GRID_ENTITY_TYPES } from "../../unlockableGridEntityTypes";
@@ -197,7 +199,7 @@ function startRandomizer2(seed: Seed | undefined) {
   }
 
   v.persistent.seed = seed;
-  log(`Set new seed: ${v.persistent.seed}`);
+  log(`Set new randomizer seed: ${v.persistent.seed}`);
 
   const rng = newRNG(seed);
 
@@ -218,7 +220,9 @@ function startRandomizer2(seed: Seed | undefined) {
     v.persistent.completedObjectives = [];
 
     numAttempts++;
-    log(`Checking to see if seed ${seed} is beatable. Attempt: ${numAttempts}`);
+    log(
+      `Checking to see if randomizer seed ${seed} is beatable. Attempt: ${numAttempts}`,
+    );
   } while (!isAchievementsBeatable());
 
   // We need to clear out the completed arrays because they were filled by the validation emulation.
@@ -288,9 +292,9 @@ export function addObjectiveCharacter(
   };
   v.persistent.completedObjectives.push(objective);
 
-  const thisCharacterAchievements =
+  const achievementsMap =
     v.persistent.characterAchievements.getAndSetDefault(character);
-  const achievement = thisCharacterAchievements.get(characterObjectiveKind);
+  const achievement = achievementsMap.get(characterObjectiveKind);
   if (achievement === undefined) {
     const characterName = getCharacterName(character);
     error(
@@ -300,10 +304,7 @@ export function addObjectiveCharacter(
 
   const potentialNewAchievement = swapAchievementToPreventSoftlock(achievement);
   if (potentialNewAchievement !== undefined) {
-    thisCharacterAchievements.set(
-      characterObjectiveKind,
-      potentialNewAchievement,
-    );
+    achievementsMap.set(characterObjectiveKind, potentialNewAchievement);
   }
 
   const achievementToGrant = potentialNewAchievement ?? achievement;
@@ -386,7 +387,7 @@ export function addObjectiveChallenge(
 function swapAchievementToPreventSoftlock(
   _achievement: Achievement,
 ): Achievement | undefined {
-  return undefined;
+  // TODO
 }
 
 // -------------------
@@ -1081,4 +1082,55 @@ function canGetToBoss(bossID: BossID): boolean {
   }
 
   return true;
+}
+
+// -------
+// Logging
+// -------
+
+export function logSpoilerLog(): void {
+  if (v.persistent.seed === null) {
+    logError("The randomizer is not active, so you cannot make a spoiler log.");
+    return;
+  }
+
+  const line = "-".repeat(20);
+
+  log(line, false);
+  log(`Spoiler log for randomizer seed: ${v.persistent.seed}`, false);
+
+  log(line, false);
+  log("Character achievements:", false);
+  log(line, false);
+
+  for (const [character, achievementsMap] of v.persistent
+    .characterAchievements) {
+    for (const [characterObjectiveKind, achievement] of achievementsMap) {
+      const text = getAchievementText(achievement).join(" - ");
+      log(
+        `${character} - ${PlayerType[character]} - ${characterObjectiveKind} - ${CharacterObjectiveKind[characterObjectiveKind]} - ${text}`,
+        false,
+      );
+    }
+  }
+
+  log(line, false);
+  log("Boss achievements:", false);
+  log(line, false);
+
+  for (const [bossID, achievement] of v.persistent.bossAchievements) {
+    const text = getAchievementText(achievement).join(" - ");
+    log(`${bossID} - ${BossID[bossID]} - ${text}`, false);
+  }
+
+  log(line, false);
+  log("Challenge achievements:", false);
+  log(line, false);
+
+  for (const [challenge, achievement] of v.persistent.challengeAchievements) {
+    const text = getAchievementText(achievement).join(" - ");
+    log(`${challenge} - ${Challenge[challenge]} - ${text}`, false);
+  }
+
+  log(line, false);
 }

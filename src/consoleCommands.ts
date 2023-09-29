@@ -10,6 +10,7 @@ import {
   getMapPartialMatch,
 } from "isaacscript-common";
 import {
+  logSpoilerLog,
   setCharacterUnlocked,
   setCollectibleUnlocked,
   startRandomizer,
@@ -21,6 +22,7 @@ export const MAX_SEED = 4_294_967_295;
 
 export function initConsoleCommands(): void {
   mod.addConsoleCommand("achievementRandomizer", achievementRandomizer);
+  mod.addConsoleCommand("spoilerLog", spoilerLog);
   mod.addConsoleCommand("unlockCharacter", unlockCharacter);
   mod.addConsoleCommand("unlockCollectible", unlockCollectible);
 }
@@ -43,6 +45,10 @@ function achievementRandomizer(params: string) {
 
   const seed = seedNumber as Seed;
   startRandomizer(seed);
+}
+
+function spoilerLog(_params: string) {
+  logSpoilerLog();
 }
 
 function unlockCharacter(params: string) {
