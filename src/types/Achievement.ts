@@ -30,7 +30,6 @@ import {
   getSackName,
   getSlotName,
   getTrinketName,
-  log,
 } from "isaacscript-common";
 import { AchievementType } from "../enums/AchievementType";
 import type { AltFloor } from "../enums/AltFloor";
@@ -260,9 +259,4 @@ export function getAchievementText(achievement: Achievement): [string, string] {
       return getOtherAchievementName(achievement.kind);
     }
   }
-}
-
-export function logAchievement(achievement: Achievement): void {
-  const achievementText = getAchievementText(achievement);
-  log(`Achievement: ${achievementText[0]} - ${achievementText[1]}`);
 }
