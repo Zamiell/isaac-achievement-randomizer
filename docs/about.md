@@ -300,6 +300,6 @@ Victory Laps and the "Rerun" feature on the main menu are banned for the same re
 
 ### Void Portal Deletion
 
-The mod deletes all Void Portals outside of the Blue Womb. This is both a balance change (since it slightly increases the difficulty of Delirium) and a quality of life fix (since players can no longer accidentally enter a Void Portal and losing their streak).
+The mod deletes all Void Portals outside of the Blue Womb. This is both a balance change (since it slightly increases the difficulty of Delirium) and a quality of life fix (since players can no longer accidentally enter a Void Portal and lose their streak).
 
 <br>
