@@ -6,7 +6,7 @@ export enum UnlockablePath {
   BLUE_WOMB,
   VOID,
   REPENTANCE_FLOORS,
-  THE_ASCENT,
+  ASCENT,
   GREED_MODE,
   BLACK_MARKETS,
 }
@@ -41,7 +41,7 @@ export function getPathName(unlockablePath: UnlockablePath): string {
       return "Repentance floors";
     }
 
-    case UnlockablePath.THE_ASCENT: {
+    case UnlockablePath.ASCENT: {
       return "The Ascent";
     }
 

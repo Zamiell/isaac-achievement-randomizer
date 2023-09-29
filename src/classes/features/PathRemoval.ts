@@ -87,7 +87,7 @@ export class PathRemoval extends RandomizerModFeature {
     // leading to The Ascent.
     const unlockablePath =
       onStage(LevelStage.DEPTHS_2) && !onRepentanceStage()
-        ? UnlockablePath.THE_ASCENT
+        ? UnlockablePath.ASCENT
         : UnlockablePath.REPENTANCE_FLOORS;
 
     if (!isPathUnlocked(unlockablePath)) {

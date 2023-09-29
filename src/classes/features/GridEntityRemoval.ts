@@ -122,7 +122,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
       }
     }
 
-    if (!isPathUnlocked(UnlockablePath.THE_ASCENT)) {
+    if (!isPathUnlocked(UnlockablePath.ASCENT)) {
       gridEntity.SetType(GridEntityType.ROCK);
     }
   }
@@ -145,7 +145,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
     GridEntityType.ROCK_ALT_2,
   )
   postGridEntityInitRockAlt2(gridEntity: GridEntity): void {
-    if (!isPathUnlocked(UnlockablePath.THE_ASCENT)) {
+    if (!isPathUnlocked(UnlockablePath.ASCENT)) {
       gridEntity.SetType(GridEntityType.ROCK);
     }
   }

@@ -129,7 +129,7 @@ export function getCharacterObjectiveKindName(
       return "Satan";
     }
 
-    case CharacterObjectiveKind.THE_LAMB: {
+    case CharacterObjectiveKind.LAMB: {
       return "The Lamb";
     }
 
@@ -153,7 +153,7 @@ export function getCharacterObjectiveKindName(
       return "Mother";
     }
 
-    case CharacterObjectiveKind.THE_BEAST: {
+    case CharacterObjectiveKind.BEAST: {
       return "The Beast";
     }
 

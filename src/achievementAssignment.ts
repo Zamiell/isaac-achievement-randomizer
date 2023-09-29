@@ -60,7 +60,7 @@ const BASIC_CHARACTER_OBJECTIVES = new ReadonlySet<CharacterObjectiveKind>([
   CharacterObjectiveKind.ISAAC,
   CharacterObjectiveKind.BLUE_BABY,
   CharacterObjectiveKind.SATAN,
-  CharacterObjectiveKind.THE_LAMB,
+  CharacterObjectiveKind.LAMB,
 ]);
 
 export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Achievement> {

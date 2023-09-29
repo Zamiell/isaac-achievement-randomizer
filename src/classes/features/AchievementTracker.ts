@@ -1,18 +1,17 @@
 import type {
-  BatterySubType,
   CardType,
-  GridEntityType,
   PillEffect,
   SackSubType,
-  TrinketType,
 } from "isaac-typescript-definitions";
 import {
+  BatterySubType,
   BombSubType,
   BossID,
   CallbackPriority,
   Challenge,
   CoinSubType,
   CollectibleType,
+  GridEntityType,
   HeartSubType,
   ItemConfigTag,
   KeySubType,
@@ -21,6 +20,7 @@ import {
   PlayerType,
   SeedEffect,
   SlotVariant,
+  TrinketType,
 } from "isaac-typescript-definitions";
 import {
   Callback,
@@ -51,7 +51,11 @@ import {
 } from "isaacscript-common";
 import { getAchievementsForRNG } from "../../achievementAssignment";
 import { ALL_ACHIEVEMENTS } from "../../achievements";
-import { CHALLENGES, CHARACTER_OBJECTIVE_KINDS } from "../../cachedEnums";
+import {
+  ALT_FLOORS,
+  CHALLENGES,
+  CHARACTER_OBJECTIVE_KINDS,
+} from "../../cachedEnums";
 import { AchievementType } from "../../enums/AchievementType";
 import type { AltFloor } from "../../enums/AltFloor";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
@@ -62,7 +66,7 @@ import { mod } from "../../mod";
 import { ALL_BOSS_IDS } from "../../objectives";
 import { convertSecondsToTimerValues } from "../../timer";
 import type { Achievement } from "../../types/Achievement";
-import { getAchievementText } from "../../types/Achievement";
+import { getAchievement, getAchievementText } from "../../types/Achievement";
 import type { Objective } from "../../types/Objective";
 import {
   getObjective,
@@ -294,12 +298,15 @@ export function addObjective(objective: Objective, emulating = false): void {
     `Failed to get the achievement corresponding to objective ID: ${objectiveID}`,
   );
 
-  // TODO: swap
+  const swappedAchievement = checkSwapProblematicAchievement(
+    achievement,
+    objectiveID,
+  );
 
-  v.persistent.completedAchievements.push(achievement);
+  v.persistent.completedAchievements.push(swappedAchievement);
 
   if (!emulating) {
-    showNewAchievement(achievement);
+    showNewAchievement(swappedAchievement);
   }
 }
 
@@ -330,6 +337,394 @@ function isObjectiveCompleted(objectiveToMatch: Objective): boolean {
       );
     }
   }
+}
+
+function checkSwapProblematicAchievement(
+  achievement: Achievement,
+  objectiveID: ObjectiveID,
+): Achievement {
+  const swappedAchievement = getAchievementSwap(achievement);
+  if (swappedAchievement === undefined) {
+    return achievement;
+  }
+
+  const swappedObjectiveID = findObjectiveIDForAchievement(swappedAchievement);
+  assertDefined(
+    swappedObjectiveID,
+    `Failed to find the objective ID for swapped achievement: ${getAchievementText(
+      swappedAchievement,
+    )}`,
+  );
+
+  v.persistent.objectiveToAchievementMap.set(objectiveID, swappedAchievement);
+  v.persistent.objectiveToAchievementMap.set(swappedObjectiveID, achievement);
+
+  return swappedAchievement;
+}
+
+function getAchievementSwap(achievement: Achievement): Achievement | undefined {
+  switch (achievement.type) {
+    case AchievementType.PATH: {
+      switch (achievement.unlockablePath) {
+        case UnlockablePath.VOID: {
+          if (!isPathUnlocked(UnlockablePath.BLUE_WOMB)) {
+            return getAchievement(
+              AchievementType.PATH,
+              UnlockablePath.BLUE_WOMB,
+            );
+          }
+
+          return undefined;
+        }
+
+        case UnlockablePath.BLACK_MARKETS: {
+          if (!isGridEntityTypeUnlocked(GridEntityType.CRAWL_SPACE)) {
+            return getAchievement(
+              AchievementType.GRID_ENTITY,
+              GridEntityType.CRAWL_SPACE,
+            );
+          }
+
+          return undefined;
+        }
+
+        default: {
+          return undefined;
+        }
+      }
+    }
+
+    case AchievementType.COLLECTIBLE: {
+      switch (achievement.collectibleType) {
+        // 84
+        case CollectibleType.WE_NEED_TO_GO_DEEPER: {
+          if (!isGridEntityTypeUnlocked(GridEntityType.CRAWL_SPACE)) {
+            return getAchievement(
+              AchievementType.GRID_ENTITY,
+              GridEntityType.CRAWL_SPACE,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 203
+        case CollectibleType.HUMBLING_BUNDLE: {
+          if (!isCoinSubTypeUnlocked(CoinSubType.DOUBLE_PACK)) {
+            return getAchievement(
+              AchievementType.COIN,
+              CoinSubType.DOUBLE_PACK,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 250
+        case CollectibleType.BOGO_BOMBS: {
+          if (!isBombSubTypeUnlocked(BombSubType.DOUBLE_PACK)) {
+            return getAchievement(
+              AchievementType.BOMB,
+              BombSubType.DOUBLE_PACK,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 566
+        case CollectibleType.DREAM_CATCHER: {
+          for (const altFloor of ALT_FLOORS) {
+            if (!isAltFloorUnlocked(altFloor)) {
+              return getAchievement(AchievementType.ALT_FLOOR, altFloor);
+            }
+          }
+
+          return undefined;
+        }
+
+        // 603
+        case CollectibleType.BATTERY_PACK: {
+          if (!isBatterySubTypeUnlocked(BatterySubType.NORMAL)) {
+            return getAchievement(
+              AchievementType.BATTERY,
+              BatterySubType.NORMAL,
+            );
+          }
+
+          return undefined;
+        }
+
+        default: {
+          return undefined;
+        }
+      }
+    }
+
+    case AchievementType.TRINKET: {
+      switch (achievement.trinketType) {
+        // 22
+        case TrinketType.DAEMONS_TAIL: {
+          if (!isHeartSubTypeUnlocked(HeartSubType.BLACK)) {
+            return getAchievement(AchievementType.HEART, HeartSubType.BLACK);
+          }
+
+          return undefined;
+        }
+
+        // 61
+        case TrinketType.LEFT_HAND: {
+          if (!isChestPickupVariantUnlocked(PickupVariant.RED_CHEST)) {
+            return getAchievement(
+              AchievementType.CHEST,
+              PickupVariant.RED_CHEST,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 159
+        case TrinketType.GILDED_KEY: {
+          if (!isChestPickupVariantUnlocked(PickupVariant.LOCKED_CHEST)) {
+            return getAchievement(
+              AchievementType.CHEST,
+              PickupVariant.LOCKED_CHEST,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 168
+        case TrinketType.HOLLOW_HEART: {
+          if (!isHeartSubTypeUnlocked(HeartSubType.BONE)) {
+            return getAchievement(AchievementType.HEART, HeartSubType.BONE);
+          }
+
+          return undefined;
+        }
+
+        default: {
+          return undefined;
+        }
+      }
+    }
+
+    default: {
+      return undefined;
+    }
+  }
+}
+
+function findObjectiveIDForAchievement(
+  achievementToMatch: Achievement,
+): ObjectiveID | undefined {
+  for (const entries of v.persistent.objectiveToAchievementMap) {
+    const [objectiveID, achievement] = entries;
+
+    switch (achievement.type) {
+      case AchievementType.CHARACTER: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.character === achievementToMatch.character
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+
+      case AchievementType.PATH: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.unlockablePath === achievementToMatch.unlockablePath
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+
+      case AchievementType.ALT_FLOOR: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.altFloor === achievementToMatch.altFloor
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+
+      case AchievementType.CHALLENGE: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.challenge === achievementToMatch.challenge
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+
+      case AchievementType.COLLECTIBLE: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.collectibleType === achievementToMatch.collectibleType
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+
+      case AchievementType.TRINKET: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.trinketType === achievementToMatch.trinketType
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+
+      case AchievementType.CARD: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.cardType === achievementToMatch.cardType
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+
+      case AchievementType.PILL_EFFECT: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.pillEffect === achievementToMatch.pillEffect
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+
+      case AchievementType.HEART: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.heartSubType === achievementToMatch.heartSubType
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+
+      case AchievementType.COIN: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.coinSubType === achievementToMatch.coinSubType
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+
+      case AchievementType.BOMB: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.bombSubType === achievementToMatch.bombSubType
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+
+      case AchievementType.KEY: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.keySubType === achievementToMatch.keySubType
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+
+      case AchievementType.BATTERY: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.batterySubType === achievementToMatch.batterySubType
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+
+      case AchievementType.SACK: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.sackSubType === achievementToMatch.sackSubType
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+
+      case AchievementType.CHEST: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.pickupVariant === achievementToMatch.pickupVariant
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+
+      case AchievementType.SLOT: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.slotVariant === achievementToMatch.slotVariant
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+
+      case AchievementType.GRID_ENTITY: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.gridEntityType === achievementToMatch.gridEntityType
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+
+      case AchievementType.OTHER: {
+        if (
+          achievement.type === achievementToMatch.type &&
+          achievement.kind === achievementToMatch.kind
+        ) {
+          return objectiveID;
+        }
+
+        break;
+      }
+    }
+  }
+
+  return undefined;
 }
 
 // -----------------------------
@@ -416,6 +811,14 @@ export function isAltFloorUnlocked(altFloor: AltFloor): boolean {
       achievement.type === AchievementType.ALT_FLOOR &&
       achievement.altFloor === altFloor,
   );
+}
+
+export function isAllAltFloorsUnlocked(): boolean {
+  const completedAchievements = v.persistent.completedAchievements.filter(
+    (achievement) => achievement.type === AchievementType.ALT_FLOOR,
+  );
+
+  return completedAchievements.length === ALT_FLOORS.length;
 }
 
 // ---------------------------------
@@ -849,7 +1252,7 @@ function canGetToCharacterObjectiveKind(kind: CharacterObjectiveKind): boolean {
       return isPathUnlocked(UnlockablePath.CHEST);
     }
 
-    case CharacterObjectiveKind.THE_LAMB: {
+    case CharacterObjectiveKind.LAMB: {
       return isPathUnlocked(UnlockablePath.DARK_ROOM);
     }
 
@@ -876,8 +1279,8 @@ function canGetToCharacterObjectiveKind(kind: CharacterObjectiveKind): boolean {
       return isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS);
     }
 
-    case CharacterObjectiveKind.THE_BEAST: {
-      return isPathUnlocked(UnlockablePath.THE_ASCENT);
+    case CharacterObjectiveKind.BEAST: {
+      return isPathUnlocked(UnlockablePath.ASCENT);
     }
 
     case CharacterObjectiveKind.ULTRA_GREED: {
@@ -953,7 +1356,7 @@ function canGetToBoss(bossID: BossID): boolean {
 
   if (
     (bossID === BossID.DOGMA || bossID === BossID.BEAST) &&
-    !isPathUnlocked(UnlockablePath.THE_ASCENT)
+    !isPathUnlocked(UnlockablePath.ASCENT)
   ) {
     return false;
   }

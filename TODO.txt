@@ -1,21 +1,6 @@
 TODO:
 - SWAP LOGIC
-- unlock logic:
-  - swap blue womb and the void path unlocks
-  - fool card before ascent
-  - unlock logic for collectibles:
-    - We Need to Go Deeper (#84) behind crawl spaces
-    - Humbleing Bundle (#203) behind one of 2x coin/bomb/key
-    - Bogo Bombs (#250) behind double bomb
-    - Dream Catcher (#566) behind all alt floors
-    - Battery Pack (#603) behind Lil Battery
-  - unlock logic for trinkets:
-    - Daemon's Tail (#22) behind black hearts
-    - Left Hand (#61) behind Red Chests
-    - Gilded Key (#159) behind Locked Chests
-    - Hollow Heart (#168) behind Bone Hearts
-  - other unlock logic:
-    - black markets behind crawl spaces
+  - fool card behind The Ascent
 
 POTENTIAL TODO:
 - see current unlocks in DSS

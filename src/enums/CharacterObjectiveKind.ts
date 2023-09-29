@@ -4,14 +4,14 @@ export enum CharacterObjectiveKind {
   ISAAC,
   BLUE_BABY,
   SATAN,
-  THE_LAMB,
+  LAMB,
 
   MEGA_SATAN,
   BOSS_RUSH,
   HUSH,
   DELIRIUM,
   MOTHER,
-  THE_BEAST,
+  BEAST,
   ULTRA_GREED,
 
   NO_HIT_BASEMENT_1,

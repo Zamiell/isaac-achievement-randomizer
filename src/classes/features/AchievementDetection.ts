@@ -36,7 +36,7 @@ const BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND = new ReadonlyMap<
   [BossID.ISAAC, CharacterObjectiveKind.ISAAC],
   [BossID.BLUE_BABY, CharacterObjectiveKind.BLUE_BABY],
   [BossID.SATAN, CharacterObjectiveKind.SATAN],
-  [BossID.LAMB, CharacterObjectiveKind.THE_LAMB],
+  [BossID.LAMB, CharacterObjectiveKind.LAMB],
   [BossID.MEGA_SATAN, CharacterObjectiveKind.MEGA_SATAN],
   // There is no boss ID for the Boss Rush (it has a separate room type).
   [BossID.HUSH, CharacterObjectiveKind.HUSH],
@@ -198,7 +198,7 @@ export function achievementDetectionPostRoomCleared(): void {
         const objective = getObjective(
           ObjectiveType.CHARACTER,
           character,
-          CharacterObjectiveKind.THE_BEAST,
+          CharacterObjectiveKind.BEAST,
         );
         addObjective(objective);
       }

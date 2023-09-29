@@ -5,6 +5,7 @@ import type {
   Challenge,
   CoinSubType,
   CollectibleType,
+  GridEntityType,
   HeartSubType,
   KeySubType,
   PickupVariant,
@@ -161,6 +162,70 @@ export function getAchievement(
   type: AchievementType.PATH,
   unlockablePath: UnlockablePath,
 ): PathAchievement;
+export function getAchievement(
+  type: AchievementType.ALT_FLOOR,
+  altFloor: AltFloor,
+): AltFloorAchievement;
+export function getAchievement(
+  type: AchievementType.CHALLENGE,
+  challenge: Challenge,
+): ChallengeAchievement;
+export function getAchievement(
+  type: AchievementType.COLLECTIBLE,
+  collectibleType: CollectibleType,
+): CollectibleAchievement;
+export function getAchievement(
+  type: AchievementType.TRINKET,
+  trinketType: TrinketType,
+): TrinketAchievement;
+export function getAchievement(
+  type: AchievementType.CARD,
+  cardType: CardType,
+): CardAchievement;
+export function getAchievement(
+  type: AchievementType.PILL_EFFECT,
+  pillEffect: PillEffect,
+): PillEffectAchievement;
+export function getAchievement(
+  type: AchievementType.HEART,
+  heartSubType: HeartSubType,
+): HeartAchievement;
+export function getAchievement(
+  type: AchievementType.COIN,
+  coinSubType: CoinSubType,
+): CoinAchievement;
+export function getAchievement(
+  type: AchievementType.BOMB,
+  bombSubType: BombSubType,
+): BombAchievement;
+export function getAchievement(
+  type: AchievementType.KEY,
+  keySubType: KeySubType,
+): KeyAchievement;
+export function getAchievement(
+  type: AchievementType.BATTERY,
+  batterySubType: BatterySubType,
+): BatteryAchievement;
+export function getAchievement(
+  type: AchievementType.SACK,
+  sackSubType: SackSubType,
+): SackAchievement;
+export function getAchievement(
+  type: AchievementType.CHEST,
+  pickupVariant: PickupVariant,
+): ChestAchievement;
+export function getAchievement(
+  type: AchievementType.SLOT,
+  slotVariant: SlotVariant,
+): SlotAchievement;
+export function getAchievement(
+  type: AchievementType.GRID_ENTITY,
+  gridEntityType: GridEntityType,
+): GridEntityAchievement;
+export function getAchievement(
+  type: AchievementType.OTHER,
+  kind: OtherAchievementKind,
+): OtherAchievement;
 export function getAchievement(type: AchievementType, arg: int): Achievement {
   switch (type) {
     case AchievementType.CHARACTER: {
@@ -177,10 +242,116 @@ export function getAchievement(type: AchievementType, arg: int): Achievement {
       };
     }
 
-    default: {
-      return error(
-        `getAchievement missing logic for achievement type: ${AchievementType[type]}`,
-      );
+    case AchievementType.ALT_FLOOR: {
+      return {
+        type,
+        altFloor: arg,
+      };
+    }
+
+    case AchievementType.CHALLENGE: {
+      return {
+        type,
+        challenge: arg,
+      };
+    }
+
+    case AchievementType.COLLECTIBLE: {
+      return {
+        type,
+        collectibleType: arg,
+      };
+    }
+
+    case AchievementType.TRINKET: {
+      return {
+        type,
+        trinketType: arg,
+      };
+    }
+
+    case AchievementType.CARD: {
+      return {
+        type,
+        cardType: arg,
+      };
+    }
+
+    case AchievementType.PILL_EFFECT: {
+      return {
+        type,
+        pillEffect: arg,
+      };
+    }
+
+    case AchievementType.HEART: {
+      return {
+        type,
+        heartSubType: arg,
+      };
+    }
+
+    case AchievementType.COIN: {
+      return {
+        type,
+        coinSubType: arg,
+      };
+    }
+
+    case AchievementType.BOMB: {
+      return {
+        type,
+        bombSubType: arg,
+      };
+    }
+
+    case AchievementType.KEY: {
+      return {
+        type,
+        keySubType: arg,
+      };
+    }
+
+    case AchievementType.BATTERY: {
+      return {
+        type,
+        batterySubType: arg,
+      };
+    }
+
+    case AchievementType.SACK: {
+      return {
+        type,
+        sackSubType: arg,
+      };
+    }
+
+    case AchievementType.CHEST: {
+      return {
+        type,
+        pickupVariant: arg,
+      };
+    }
+
+    case AchievementType.SLOT: {
+      return {
+        type,
+        slotVariant: arg,
+      };
+    }
+
+    case AchievementType.GRID_ENTITY: {
+      return {
+        type,
+        gridEntityType: arg,
+      };
+    }
+
+    case AchievementType.OTHER: {
+      return {
+        type,
+        kind: arg,
+      };
     }
   }
 }
