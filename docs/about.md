@@ -10,16 +10,29 @@ This page explains how it works.
 
 ## Table of Contents
 
+1. [Summary](#summary-tldr)
 1. [Design Principles](#design-principles)
-2. [Objective List](#objective-list)
-3. [Unlock List](#unlock-list)
-4. [Other Features](#other-features)
+1. [Objective List](#objective-list)
+1. [Unlock List](#unlock-list)
+1. [Other Features](#other-features)
+
+<br>
+
+## Summary (TL;DR)
+
+- This mod **does not** simply randomize all of the vanilla achievements. Rather, it has custom objectives and custom unlocks.
+- The custom objectives are designed to be challenging and non-arbitrary. There are only 4 types of objectives, so you can easily remember what they are:
+  - Kill each story boss (per character).
+  - Finish each floor without taking a hit (per character).
+  - Survive each boss for 2 minutes without taking a hit.
+  - Complete each challenge.
+- Unlike vanilla, almost everything you can imagine is locked from the start of the game. That means you will have to beat your the first run with only Breakfast in the collectible pool.
 
 <br>
 
 ## Design Principles
 
-This mod **does not** simply randomize all of the vanilla achievements. This is for several reasons:
+We do not want to base the mod around randomization of vanilla achievements. This is for several reasons:
 
 1. [Other mods](https://steamcommunity.com/sharedfiles/filedetails/?id=2838967057) have already done that.
 1. Some of the vanilla achievements do not make sense in the context of a player trying to "beat the game" in the least amount of death possible, like `The Scissors - Die 100 times` or `Mr. Resetter! - Reset 7 times in a row`. (This would make the minimum amount of deaths always be 100 and it is possible to complete the game in less than that.)
@@ -78,7 +91,7 @@ Additionally, each character will unlock something upon clearing the following f
 
 ### Boss-Based Objectives (100)
 
-There is one unlock for surviving for 2 minutes without taking damage for each boss.
+There is one unlock for surviving for 2 minutes without taking a hit for each boss.
 
 However, the following bosses have custom timers:
 
