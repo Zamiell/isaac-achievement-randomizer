@@ -1,9 +1,9 @@
 import { ModCallback } from "isaac-typescript-definitions";
 import { Callback, getBossID } from "isaacscript-common";
-import { NUM_MINUTES_FOR_BOSS_OBJECTIVE } from "../../constants";
 import { isTimerEnabled } from "../../deadSeaScrolls";
 import { TimerType } from "../../enums/TimerType";
 import { timerDraw } from "../../timer";
+import { getNumMinutesForBossObjective } from "../../types/Objective";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   getSecondsElapsed,
@@ -36,7 +36,8 @@ export class Timer extends RandomizerModFeature {
     }
 
     const seconds = getSecondsSinceLastDamage();
-    const totalSeconds = NUM_MINUTES_FOR_BOSS_OBJECTIVE * 60;
+    const numMinutesForBossObjective = getNumMinutesForBossObjective(bossID);
+    const totalSeconds = numMinutesForBossObjective * 60;
     const secondsRemaining = totalSeconds - seconds;
     timerDraw(TimerType.NO_HIT, secondsRemaining);
   }

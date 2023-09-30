@@ -20,10 +20,12 @@ import {
   isSelfDamage,
   onRepentanceStage,
 } from "isaacscript-common";
-import { NUM_MINUTES_FOR_BOSS_OBJECTIVE } from "../../constants";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
-import { getObjective } from "../../types/Objective";
+import {
+  getNumMinutesForBossObjective,
+  getObjective,
+} from "../../types/Objective";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { addObjective, isBossObjectiveCompleted } from "./AchievementTracker";
 
@@ -101,7 +103,8 @@ export class ObjectiveDetection extends RandomizerModFeature {
     }
 
     const seconds = getSecondsSinceLastDamage();
-    if (seconds >= NUM_MINUTES_FOR_BOSS_OBJECTIVE * 60) {
+    const numMinutesForBossObjective = getNumMinutesForBossObjective(bossID);
+    if (seconds >= numMinutesForBossObjective * 60) {
       const objective = getObjective(ObjectiveType.BOSS, bossID);
       addObjective(objective);
     }

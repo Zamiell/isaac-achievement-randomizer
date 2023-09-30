@@ -8,7 +8,7 @@ import {
   isEnumValue,
 } from "isaacscript-common";
 import { getCharacterObjectiveKindName } from "../classes/features/AchievementText";
-import { NUM_MINUTES_FOR_BOSS_OBJECTIVE } from "../constants";
+import { DEFAULT_NUM_MINUTES_FOR_BOSS_OBJECTIVE } from "../constants";
 import { CharacterObjectiveKind } from "../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../enums/ObjectiveType";
 import type { ObjectiveID } from "./ObjectiveID";
@@ -164,7 +164,7 @@ export function getObjectiveText(objective: Objective): string[] {
 
     case ObjectiveType.BOSS: {
       return [
-        `Survive ${NUM_MINUTES_FOR_BOSS_OBJECTIVE}`,
+        `Survive ${getNumMinutesForBossObjective(objective.bossID)}`,
         "minutes without",
         "getting hit",
         "on",
@@ -175,6 +175,49 @@ export function getObjectiveText(objective: Objective): string[] {
     case ObjectiveType.CHALLENGE: {
       const challengeName = getChallengeName(objective.challenge);
       return ["Completed challenge:", challengeName];
+    }
+  }
+}
+
+export function getNumMinutesForBossObjective(bossID: BossID): int {
+  switch (bossID) {
+    // 58
+    case BossID.BROWNIE: {
+      return 1;
+    }
+
+    // 78
+    case BossID.VISAGE: {
+      return 1;
+    }
+
+    // 79
+    case BossID.SIREN: {
+      return 1;
+    }
+
+    // 82
+    case BossID.HORNFEL: {
+      return 1;
+    }
+
+    // 84
+    case BossID.BABY_PLUM: {
+      return 0.5;
+    }
+
+    // 85
+    case BossID.SCOURGE: {
+      return 1;
+    }
+
+    // 87
+    case BossID.ROTGUT: {
+      return 1;
+    }
+
+    default: {
+      return DEFAULT_NUM_MINUTES_FOR_BOSS_OBJECTIVE;
     }
   }
 }

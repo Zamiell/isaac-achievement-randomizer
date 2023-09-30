@@ -26,13 +26,14 @@ This page explains how it works.
   - Finish each floor without taking a hit (per character).
   - Survive each boss for 2 minutes without taking a hit.
   - Complete each challenge.
-- Unlike vanilla, almost everything you can imagine is locked from the start of the game. That means you will have to beat your the first run with only Breakfast in the collectible pool.
+- Unlike vanilla, almost everything you can imagine is locked from the start of the game. That means you will have to beat your the first run as Isaac with only Breakfast in the collectible pool.
+- For more specific details about why we designed it this way and what exact things are locked, read on.
 
 <br>
 
 ## Design Principles
 
-We do not want to base the mod around randomization of vanilla achievements. This is for several reasons:
+We do not want to randomize vanilla achievements. This is for several reasons:
 
 1. [Other mods](https://steamcommunity.com/sharedfiles/filedetails/?id=2838967057) have already done that.
 1. Some of the vanilla achievements do not make sense in the context of a player trying to "beat the game" in the least amount of death possible, like `The Scissors - Die 100 times` or `Mr. Resetter! - Reset 7 times in a row`. (This would make the minimum amount of deaths always be 100 and it is possible to complete the game in less than that.)
@@ -40,7 +41,17 @@ We do not want to base the mod around randomization of vanilla achievements. Thi
 1. Some vanilla achievements are arbitrary conditions and are not very fun to play, like `They will charge you up... for a small fee - Donate to Battery Bums until they pay out with an item 5 times`. (If you are not lucky enough to get this achievement during your streak, the most consistent strategy is to reset as Tainted Keeper in Greed Mode until you see a Battery Bum in the shop. This is "busywork" and is not skill-based in any way.)
 1. Many things are not gated behind vanilla achievements and it would be fun if they were (e.g. soul hearts, locked chests).
 
-Thus, this mod locks almost everything behind custom achievements that actually represent meaningful accomplishments inside of the game.
+Thus, this mod takes a completely different approach. We want each objective to be difficult, skill-based, and non-arbitrary, representing meaningful accomplishments inside of the game. And we want as many unlockable things are possible.
+
+<br>
+
+## Terminology
+
+Before we get into the details of the mod, we should clarify the terminology used:
+
+- An _objective_ is something that you perform in the game to unlock something. (For example, killing Mom as Isaac is an objective.) All objectives are listed below.
+- An _unlock_ is something that you get after completing an objective. (For example, killing Mom as Isaac might unlock the Yum Heart collectible, allowing it to appear in item pools on subsequent runs.) All unlocks are listed below.
+- An _achievement_ is the unique pair of an _objective_ and an _unlock_. In this mod, all achievements are randomized, although there is some basic logic to prevent unbeatable seeds and other miscellaneous things.
 
 <br>
 
@@ -93,12 +104,12 @@ Additionally, each character will unlock something upon clearing the following f
 
 There is one unlock for surviving for 2 minutes without taking a hit for each boss.
 
-However, the following bosses have custom timers:
+However, the following bosses have custom timer lengths:
 
 - Brownie (#58) - 1 minute (because he damages himself)
-- Hornfel (#82) - 1 minute
 - Visage (#78) - 1 minute
 - Siren (#79) - 1 minute
+- Hornfel (#82) - 1 minute
 - Baby Plum (#84) - 30 seconds (because she flies away)
 - Scourge (#85) - 1 minute
 - Rotgut (#87) - 1 minute
@@ -228,7 +239,7 @@ Every card/rune in the game is locked (except for Rune Shard, which will never s
 
 - Every pill effect in the game is locked. If no pill effects are unlocked, pills will be converted to pennies.
 
-### Other Pickups (37)
+### Other Pickups (38)
 
 - Only half red heart pickups start out unlocked. Every other heart pickup in the game is locked. (11)
 - Only pennies start out unlocked. Every other coin in the game is locked. (6)
@@ -271,7 +282,7 @@ Every card/rune in the game is locked (except for Rune Shard, which will never s
 
 ### Total Unlocks
 
-There are 33 + 10 + 11 + 45 + 697 + 186 + 96 + 50 + 37 + 15 + 13 + 5 = 1198 unlocks in total.
+There are 33 + 10 + 11 + 45 + 697 + 186 + 96 + 50 + 38 + 15 + 13 + 5 = 1199 unlocks in total.
 
 <br>
 
