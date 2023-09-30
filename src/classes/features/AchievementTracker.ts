@@ -60,7 +60,7 @@ import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { OtherAchievementKind } from "../../enums/OtherAchievementKind";
 import { UnlockablePath } from "../../enums/UnlockablePath";
 import { mod } from "../../mod";
-import { ALL_BOSS_IDS } from "../../objectives";
+import { NO_HIT_BOSSES } from "../../objectives";
 import { convertSecondsToTimerValues } from "../../timer";
 import type { Achievement } from "../../types/Achievement";
 import { getAchievement, getAchievementText } from "../../types/Achievement";
@@ -1208,7 +1208,7 @@ function isAchievementsBeatable(): boolean {
       }
     }
 
-    for (const bossID of ALL_BOSS_IDS) {
+    for (const bossID of NO_HIT_BOSSES) {
       if (canGetToBoss(bossID) && !isBossObjectiveCompleted(bossID)) {
         const objective = getObjective(ObjectiveType.BOSS, bossID);
         addObjective(objective, true);

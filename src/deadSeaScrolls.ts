@@ -290,7 +290,7 @@ export function initDeadSeaScrolls(): void {
       title: "randomizer settings",
       buttons: [
         {
-          str: "timer",
+          str: "show timer",
           choices: DSS_CHOICES,
           setting: 1,
           variable: "timer",

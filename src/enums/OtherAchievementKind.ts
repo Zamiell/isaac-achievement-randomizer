@@ -2,7 +2,6 @@ export enum OtherAchievementKind {
   BEDS,
 
   SHOPKEEPERS,
-  BLUE_FIREPLACES,
   GOLD_TRINKETS,
   GOLD_PILLS,
   HORSE_PILLS,
@@ -28,10 +27,6 @@ export function getOtherAchievementName(
 
     case OtherAchievementKind.SHOPKEEPERS: {
       return ["entity", "shopkeepers"];
-    }
-
-    case OtherAchievementKind.BLUE_FIREPLACES: {
-      return ["entity", "blue fireplaces"];
     }
 
     case OtherAchievementKind.GOLD_TRINKETS: {

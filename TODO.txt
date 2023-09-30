@@ -3,10 +3,10 @@ TODO:
 - no hit check for entity type not being dead and existing
 
 - brownie timer is 1 minute
-- remove no hit achievement for delirium
+
+- remove no hit achievement for delirium, BLUE FIRES
+
 - "Loading" text does not work when IS_DEV is false
-- "Timer" --> "Show Timer"
-- crawlspaces should be replaced by decorations, not rocks
 - alt floors for rep should replace rep unlock
 - when corny poops are replaced they
 - track number of runs performed in the streak
@@ -17,6 +17,8 @@ TODO:
 - isaac no hit achievement timer should only start once you get to phase 2
 - blue baby no hit achievement timer should only start once you get to phase 2
 - add check for statue effect for 2 min timer
+
+- modify timers as seen in about.md.
 
 - add logic for GOOD collectibles being swapped with bad collectibles
 

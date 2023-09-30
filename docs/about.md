@@ -80,6 +80,21 @@ Additionally, each character will unlock something upon clearing the following f
 
 There is one unlock for surviving for 2 minutes without taking damage for each boss.
 
+However, the following bosses have custom timers:
+
+- Brownie (#58) - 1 minute (because he damages himself)
+- Hornfel (#82) - 1 minute
+- Visage (#78) - 1 minute
+- Siren (#79) - 1 minute
+- Baby Plum (#84) - 30 seconds (because she flies away)
+- Scourge (#85) - 1 minute
+- Rotgut (#87) - 1 minute
+
+Additionally, the following bosses are excluded entirely:
+
+- Delirium (#70) (would be unfair since the boss is poorly designed)
+- Raglich (#98) (unfinished boss)
+
 > Tip: A timer will appear on the screen if a boss is in the room and the corresponding objective has not yet been accomplished.
 
 ### Challenge-Based Objectives (45)

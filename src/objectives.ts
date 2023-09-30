@@ -9,8 +9,11 @@ import {
 import { ObjectiveType } from "./enums/ObjectiveType";
 import type { Objective } from "./types/Objective";
 
-export const ALL_BOSS_IDS: readonly BossID[] = BOSS_IDS.filter(
-  (bossID) => bossID !== BossID.RAGLICH,
+/** @see about.md */
+export const NO_HIT_BOSSES: readonly BossID[] = BOSS_IDS.filter(
+  (bossID) =>
+    bossID !== BossID.DELIRIUM && // 70
+    bossID !== BossID.RAGLICH, // 98
 );
 
 export const ALL_OBJECTIVES: readonly Objective[] = (() => {
@@ -34,7 +37,7 @@ export const ALL_OBJECTIVES: readonly Objective[] = (() => {
       }
 
       case ObjectiveType.BOSS: {
-        for (const bossID of ALL_BOSS_IDS) {
+        for (const bossID of NO_HIT_BOSSES) {
           const objective: Objective = {
             type: ObjectiveType.BOSS,
             bossID,
