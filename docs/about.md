@@ -305,7 +305,7 @@ The mod deletes all Void Portals outside of the Blue Womb. This is both a balanc
 
 ### Other Miscellaneous Quality of Life Improvements
 
-- <!-- "ui_hearts.png" --> The heart UI sprites have been modified so that it is easier to see an empty heart container on a black background.
+- <!-- "ui_hearts.png" --> The heart UI sprites have been slightly modified so that it is easier to see an empty heart container on a black background.
 - <!-- SilenceMomDad --> The audio clips of mom and dad on the Ascent are silenced.
 - <!-- ForceFadedConsoleDisplay --> The "faded console display" feature is automatically enabled in the "options.ini" file, which allows you to visually see when an error in the game happens.
 

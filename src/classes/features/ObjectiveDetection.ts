@@ -86,7 +86,7 @@ const v = {
   },
 };
 
-export class AchievementDetection extends RandomizerModFeature {
+export class ObjectiveDetection extends RandomizerModFeature {
   v = v;
 
   @Callback(ModCallback.POST_UPDATE)

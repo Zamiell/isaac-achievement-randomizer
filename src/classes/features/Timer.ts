@@ -5,11 +5,11 @@ import { isTimerEnabled } from "../../deadSeaScrolls";
 import { TimerType } from "../../enums/TimerType";
 import { timerDraw } from "../../timer";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { getSecondsSinceLastDamage } from "./AchievementDetection";
 import {
   getSecondsElapsed,
   isBossObjectiveCompleted,
 } from "./AchievementTracker";
+import { getSecondsSinceLastDamage } from "./ObjectiveDetection";
 
 export class Timer extends RandomizerModFeature {
   @Callback(ModCallback.POST_RENDER)

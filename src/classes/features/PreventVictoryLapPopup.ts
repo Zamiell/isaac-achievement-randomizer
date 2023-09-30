@@ -25,7 +25,7 @@ import {
 import { EffectVariantCustom } from "../../enums/EffectVariantCustom";
 import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { achievementDetectionPostRoomCleared } from "./AchievementDetection";
+import { achievementDetectionPostRoomCleared } from "./ObjectiveDetection";
 
 const v = {
   room: {

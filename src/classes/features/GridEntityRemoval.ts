@@ -8,6 +8,7 @@ import {
   ModCallbackCustom,
   RockAltType,
   getRockAltType,
+  setGridEntityType,
 } from "isaacscript-common";
 import { OtherAchievementKind } from "../../enums/OtherAchievementKind";
 import { UnlockablePath } from "../../enums/UnlockablePath";
@@ -24,7 +25,11 @@ export class GridEntityRemoval extends RandomizerModFeature {
     const gridEntityType = gridEntity.GetType();
 
     if (!isGridEntityTypeUnlocked(gridEntityType)) {
-      gridEntity.SetType(GridEntityType.ROCK);
+      const newGridEntityType =
+        gridEntityType === GridEntityType.CRAWL_SPACE
+          ? GridEntityType.DECORATION
+          : GridEntityType.ROCK;
+      setGridEntityType(gridEntity, newGridEntityType);
     }
   }
 
@@ -38,9 +43,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
     switch (rockAltType) {
       case RockAltType.URN: {
         if (!isOtherAchievementsUnlocked(OtherAchievementKind.URNS)) {
-          const sprite = gridEntity.GetSprite();
-          Isaac.DebugString(`GETTING HERE 1 - ${sprite.GetFilename()}`);
-          gridEntity.SetType(GridEntityType.ROCK);
+          setGridEntityType(gridEntity, GridEntityType.ROCK);
         }
 
         break;
@@ -48,7 +51,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
 
       case RockAltType.MUSHROOM: {
         if (!isOtherAchievementsUnlocked(OtherAchievementKind.MUSHROOMS)) {
-          gridEntity.SetType(GridEntityType.ROCK);
+          setGridEntityType(gridEntity, GridEntityType.ROCK);
         }
 
         break;
@@ -56,7 +59,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
 
       case RockAltType.SKULL: {
         if (!isOtherAchievementsUnlocked(OtherAchievementKind.SKULLS)) {
-          gridEntity.SetType(GridEntityType.ROCK);
+          setGridEntityType(gridEntity, GridEntityType.ROCK);
         }
 
         break;
@@ -64,7 +67,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
 
       case RockAltType.POLYP: {
         if (!isOtherAchievementsUnlocked(OtherAchievementKind.POLYPS)) {
-          gridEntity.SetType(GridEntityType.ROCK);
+          setGridEntityType(gridEntity, GridEntityType.ROCK);
         }
 
         break;
@@ -86,7 +89,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
       // 3
       case PoopGridEntityVariant.GOLDEN: {
         if (!isOtherAchievementsUnlocked(OtherAchievementKind.GOLDEN_POOP)) {
-          gridEntity.SetType(GridEntityType.ROCK);
+          setGridEntityType(gridEntity, GridEntityType.ROCK);
         }
 
         break;
@@ -95,7 +98,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
       // 4
       case PoopGridEntityVariant.RAINBOW: {
         if (!isOtherAchievementsUnlocked(OtherAchievementKind.RAINBOW_POOP)) {
-          gridEntity.SetType(GridEntityType.ROCK);
+          setGridEntityType(gridEntity, GridEntityType.ROCK);
         }
 
         break;
@@ -104,7 +107,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
       // 5
       case PoopGridEntityVariant.BLACK: {
         if (!isOtherAchievementsUnlocked(OtherAchievementKind.BLACK_POOP)) {
-          gridEntity.SetType(GridEntityType.ROCK);
+          setGridEntityType(gridEntity, GridEntityType.ROCK);
         }
 
         break;
@@ -113,7 +116,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
       // 11
       case PoopGridEntityVariant.CHARMING: {
         if (!isOtherAchievementsUnlocked(OtherAchievementKind.CHARMING_POOP)) {
-          gridEntity.SetType(GridEntityType.ROCK);
+          setGridEntityType(gridEntity, GridEntityType.ROCK);
         }
 
         break;
@@ -125,7 +128,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
     }
 
     if (!isPathUnlocked(UnlockablePath.ASCENT)) {
-      gridEntity.SetType(GridEntityType.ROCK);
+      setGridEntityType(gridEntity, GridEntityType.ROCK);
     }
   }
 
@@ -137,7 +140,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
   )
   postGridEntityInitRewardPlate(gridEntity: GridEntity): void {
     if (!isOtherAchievementsUnlocked(OtherAchievementKind.REWARD_PLATES)) {
-      gridEntity.SetType(GridEntityType.ROCK);
+      setGridEntityType(gridEntity, GridEntityType.ROCK);
     }
   }
 
@@ -148,7 +151,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
   )
   postGridEntityInitRockAlt2(gridEntity: GridEntity): void {
     if (!isPathUnlocked(UnlockablePath.ASCENT)) {
-      gridEntity.SetType(GridEntityType.ROCK);
+      setGridEntityType(gridEntity, GridEntityType.ROCK);
     }
   }
 }

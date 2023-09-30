@@ -84,7 +84,7 @@ export class PathRemoval extends RandomizerModFeature {
     }
 
     // The only Repentance door on Depths 2 / Necropolis 2 / Dank Depths 2 is the Strange Door
-    // leading to The Ascent.
+    // leading to the Ascent.
     const unlockablePath =
       onStage(LevelStage.DEPTHS_2) && !onRepentanceStage()
         ? UnlockablePath.ASCENT

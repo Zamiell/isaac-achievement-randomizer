@@ -5,7 +5,6 @@ import {
   setLogFunctionsGlobal,
   setTracebackFunctionsGlobal,
 } from "isaacscript-common";
-import { AchievementDetection } from "./classes/features/AchievementDetection";
 import { AchievementText } from "./classes/features/AchievementText";
 import { AchievementTracker } from "./classes/features/AchievementTracker";
 import { CheckErrors } from "./classes/features/CheckErrors";
@@ -13,6 +12,7 @@ import { ForceFadedConsoleDisplay } from "./classes/features/ForceFadedConsoleDi
 import { GridEntityRemoval } from "./classes/features/GridEntityRemoval";
 import { HitIcon } from "./classes/features/HitIcon";
 import { NPCRemoval } from "./classes/features/NPCRemoval";
+import { ObjectiveDetection } from "./classes/features/ObjectiveDetection";
 import { PathRemoval } from "./classes/features/PathRemoval";
 import { PickupRemoval } from "./classes/features/PickupRemoval";
 import { PreventPause } from "./classes/features/PreventPause";
@@ -33,7 +33,6 @@ import { mod } from "./mod";
 import { validate } from "./validate";
 
 const MOD_FEATURES = [
-  AchievementDetection,
   AchievementText,
   AchievementTracker,
   CheckErrors,
@@ -41,6 +40,7 @@ const MOD_FEATURES = [
   GridEntityRemoval,
   HitIcon,
   NPCRemoval,
+  ObjectiveDetection,
   PathRemoval,
   PickupRemoval,
   PreventPause,

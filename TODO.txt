@@ -1,7 +1,7 @@
 TODO:
+- check for the presence of 1 or more bosses when in boss room for the no hit achievement
 - no hit check for entity type not being dead and existing
-- enable heart mod
-- mushroom unlocked not setting SPRITE
+
 - brownie timer is 1 minute
 - remove no hit achievement for delirium
 - "Loading" text does not work when IS_DEV is false
@@ -10,7 +10,6 @@ TODO:
 - alt floors for rep should replace rep unlock
 - when corny poops are replaced they
 - track number of runs performed in the streak
-- check for the presence of 1 or more bosses when in boss room for the no hit achievement
 - corny poop is getting replaced by normal poop for some reason
 - womb room 911, poop turned into rock
 - add logic for room being cleared in boss room
