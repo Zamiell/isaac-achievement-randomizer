@@ -16,6 +16,7 @@ import {
   getCompletedAchievements,
   getCompletedObjectives,
   getNumCompletedAchievements,
+  getNumCompletedRuns,
   getNumDeaths,
   getRandomizerSeed,
   getTimeElapsed,
@@ -261,6 +262,17 @@ export function initDeadSeaScrolls(): void {
         {
           str: () =>
             `${getNumCompletedAchievements()} / ${ALL_ACHIEVEMENTS.length}`,
+          colorSelect: true,
+          noSel: true,
+        },
+        {
+          str: "",
+        },
+        {
+          str: "completed runs:",
+        },
+        {
+          str: getNumCompletedRuns,
           colorSelect: true,
           noSel: true,
         },

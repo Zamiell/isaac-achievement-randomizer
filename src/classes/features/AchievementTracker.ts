@@ -92,6 +92,7 @@ const v = {
     /** If `null`, the randomizer is not enabled. */
     seed: null as Seed | null,
 
+    numCompletedRuns: 0,
     numDeaths: 0,
     gameFramesElapsed: 0,
 
@@ -103,6 +104,7 @@ const v = {
 
   run: {
     shouldIncrementTime: true,
+    shouldIncrementCompletedRunsCounter: true,
     shouldIncrementDeathCounter: true,
   },
 };
@@ -138,6 +140,7 @@ export class AchievementTracker extends ModFeature {
     }
 
     this.incrementTime();
+    this.incrementCompletedRunsCounter();
     this.incrementDeathCounter();
   }
 
@@ -148,6 +151,15 @@ export class AchievementTracker extends ModFeature {
     }
 
     v.persistent.gameFramesElapsed += game.GetFrameCount();
+  }
+
+  incrementCompletedRunsCounter(): void {
+    if (!v.run.shouldIncrementCompletedRunsCounter) {
+      v.run.shouldIncrementCompletedRunsCounter = true;
+      return;
+    }
+
+    v.persistent.numCompletedRuns++;
   }
 
   incrementDeathCounter(): void {
@@ -240,6 +252,10 @@ export function getNumCompletedAchievements(): int {
   return v.persistent.completedAchievements.length;
 }
 
+export function getNumCompletedRuns(): int {
+  return v.persistent.numCompletedRuns;
+}
+
 export function getNumDeaths(): int {
   return v.persistent.numDeaths;
 }
@@ -261,6 +277,7 @@ export function getTimeElapsed(): string {
 
 export function preForcedRestart(): void {
   v.run.shouldIncrementTime = false;
+  v.run.shouldIncrementCompletedRunsCounter = false;
   v.run.shouldIncrementDeathCounter = false;
 }
 

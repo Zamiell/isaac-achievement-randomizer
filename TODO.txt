@@ -1,6 +1,4 @@
 TODO:
-- track number of runs performed in the streak
-- corny poop is getting replaced by normal poop for some reason
 - womb room 911, poop turned into rock
 - add logic for room being cleared in boss room
 - pause collectible should pause 2 minute no hit timer
