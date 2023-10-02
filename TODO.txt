@@ -1,7 +1,6 @@
 TODO:
 - isaac no hit achievement timer should only start once you get to phase 2
 - blue baby no hit achievement timer should only start once you get to phase 2
-- TODO: gnawed leaf
 
 POTENTIAL TODO:
 - see current unlocks in DSS

@@ -19,7 +19,7 @@ export interface CharacterObjective {
   kind: CharacterObjectiveKind;
 }
 
-interface BossObjective {
+export interface BossObjective {
   type: ObjectiveType.BOSS;
   bossID: BossID;
 }

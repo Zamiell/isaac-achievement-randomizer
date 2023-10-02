@@ -66,7 +66,7 @@ import { NO_HIT_BOSSES } from "../../objectives";
 import { convertSecondsToTimerValues } from "../../timer";
 import type { Achievement } from "../../types/Achievement";
 import { getAchievement, getAchievementText } from "../../types/Achievement";
-import type { Objective } from "../../types/Objective";
+import type { BossObjective, Objective } from "../../types/Objective";
 import {
   getObjective,
   getObjectiveFromID,
@@ -302,6 +302,21 @@ export function preForcedRestart(): void {
   v.run.shouldIncrementDeathCounter = false;
 }
 
+function getAchievementMatchingObjective(
+  objective: Objective,
+): Achievement | undefined {
+  const objectiveID = getObjectiveID(objective);
+
+  for (const [thisObjectiveID, achievement] of v.persistent
+    .objectiveToAchievementMap) {
+    if (thisObjectiveID === objectiveID) {
+      return achievement;
+    }
+  }
+
+  return undefined;
+}
+
 // -------------
 // Add functions
 // -------------
@@ -496,9 +511,13 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
 
         // 210
         case CollectibleType.GNAWED_LEAF: {
-          if (!isAllBossObjectivesCompleted()) {
-            // TODO
-            /// return getLowestCollectible();
+          const lockedBossObjective = getNonCompletedBossObjective();
+          if (lockedBossObjective !== undefined) {
+            const matchingAchievement =
+              getAchievementMatchingObjective(lockedBossObjective);
+            if (matchingAchievement !== undefined) {
+              return matchingAchievement;
+            }
           }
 
           return undefined;
@@ -848,18 +867,33 @@ export function isBossObjectiveCompleted(bossID: BossID): boolean {
   );
 }
 
-function isAllBossObjectivesCompleted(): boolean {
-  return v.persistent.completedObjectives.some(
-    (objective) => objective.type === ObjectiveType.BOSS,
-  );
-}
-
 export function isChallengeObjectiveCompleted(challenge: Challenge): boolean {
   return v.persistent.completedObjectives.some(
     (objective) =>
       objective.type === ObjectiveType.CHALLENGE &&
       objective.challenge === challenge,
   );
+}
+
+function getNonCompletedBossObjective(): BossObjective | undefined {
+  const completedBossObjectives = v.persistent.completedObjectives.filter(
+    (objective) => objective.type === ObjectiveType.BOSS,
+  ) as BossObjective[];
+  const completedBossIDs = completedBossObjectives.map(
+    (objective) => objective.bossID,
+  );
+  const completedBossIDsSet = new Set(completedBossIDs);
+
+  for (const bossID of NO_HIT_BOSSES) {
+    if (!completedBossIDsSet.has(bossID)) {
+      return {
+        type: ObjectiveType.BOSS,
+        bossID,
+      };
+    }
+  }
+
+  return undefined;
 }
 
 // ---------------------------------
