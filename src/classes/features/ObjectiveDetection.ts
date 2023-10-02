@@ -99,6 +99,12 @@ export class ObjectiveDetection extends RandomizerModFeature {
   }
 
   checkBossNoHit(): void {
+    const room = game.GetRoom();
+    const isClear = room.IsClear();
+    if (isClear) {
+      return;
+    }
+
     const bossID = getBossID();
     if (bossID === 0) {
       return;

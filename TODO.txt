@@ -1,6 +1,4 @@
 TODO:
-- womb room 911, poop turned into rock
-- add logic for room being cleared in boss room
 - pause collectible should pause 2 minute no hit timer
 - isaac no hit achievement timer should only start once you get to phase 2
 - blue baby no hit achievement timer should only start once you get to phase 2
