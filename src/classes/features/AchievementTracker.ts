@@ -54,7 +54,7 @@ import {
   CHARACTER_OBJECTIVE_KINDS,
 } from "../../cachedEnums";
 import { AchievementType } from "../../enums/AchievementType";
-import type { AltFloor } from "../../enums/AltFloor";
+import { AltFloor } from "../../enums/AltFloor";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { OtherAchievementKind } from "../../enums/OtherAchievementKind";
@@ -387,6 +387,27 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
             return getAchievement(
               AchievementType.GRID_ENTITY,
               GridEntityType.CRAWL_SPACE,
+            );
+          }
+
+          return undefined;
+        }
+
+        default: {
+          return undefined;
+        }
+      }
+    }
+
+    case AchievementType.ALT_FLOOR: {
+      switch (achievement.altFloor) {
+        case AltFloor.DROSS:
+        case AltFloor.ASHPIT:
+        case AltFloor.GEHENNA: {
+          if (!isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS)) {
+            return getAchievement(
+              AchievementType.PATH,
+              UnlockablePath.REPENTANCE_FLOORS,
             );
           }
 
