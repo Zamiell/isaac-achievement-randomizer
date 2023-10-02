@@ -1,5 +1,4 @@
 TODO:
-- pause collectible should pause 2 minute no hit timer
 - isaac no hit achievement timer should only start once you get to phase 2
 - blue baby no hit achievement timer should only start once you get to phase 2
 - add check for statue effect for 2 min timer

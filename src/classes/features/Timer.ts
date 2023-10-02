@@ -36,6 +36,10 @@ export class Timer extends RandomizerModFeature {
     }
 
     const seconds = getSecondsSinceLastDamage();
+    if (seconds === undefined) {
+      return;
+    }
+
     const numMinutesForBossObjective = getNumMinutesForBossObjective(bossID);
     const totalSeconds = numMinutesForBossObjective * 60;
     const secondsRemaining = totalSeconds - seconds;

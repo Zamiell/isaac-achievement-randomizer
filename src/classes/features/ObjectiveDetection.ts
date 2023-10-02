@@ -1,6 +1,7 @@
 import type { DamageFlag } from "isaac-typescript-definitions";
 import {
   BossID,
+  CollectibleType,
   LevelStage,
   ModCallback,
   PickupVariant,
@@ -87,12 +88,14 @@ const v = {
 
   room: {
     tookDamageRoomFrame: 0,
+    usedPause: false,
   },
 };
 
 export class ObjectiveDetection extends RandomizerModFeature {
   v = v;
 
+  // 1
   @Callback(ModCallback.POST_UPDATE)
   postUpdate(): void {
     this.checkBossNoHit();
@@ -122,11 +125,22 @@ export class ObjectiveDetection extends RandomizerModFeature {
     }
 
     const seconds = getSecondsSinceLastDamage();
+    if (seconds === undefined) {
+      return;
+    }
+
     const numMinutesForBossObjective = getNumMinutesForBossObjective(bossID);
     if (seconds >= numMinutesForBossObjective * 60) {
       const objective = getObjective(ObjectiveType.BOSS, bossID);
       addObjective(objective);
     }
+  }
+
+  // 3, 478
+  @Callback(ModCallback.POST_USE_ITEM, CollectibleType.PAUSE)
+  postUseItemPause(): boolean | undefined {
+    v.room.usedPause = true;
+    return undefined;
   }
 
   // 34, 370
@@ -249,7 +263,11 @@ export function hasTakenHitOnFloor(): boolean {
   return v.level.tookHit;
 }
 
-export function getSecondsSinceLastDamage(): int {
+export function getSecondsSinceLastDamage(): int | undefined {
+  if (v.room.usedPause) {
+    return undefined;
+  }
+
   const room = game.GetRoom();
   const roomFrameCount = room.GetFrameCount();
   const elapsedGameFrames = roomFrameCount - v.room.tookDamageRoomFrame;
