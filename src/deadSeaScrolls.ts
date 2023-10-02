@@ -148,9 +148,12 @@ export function initDeadSeaScrolls(): void {
       buttons: [
         {
           str: "use random seed",
-          func: (_item: unknown, menuObj: DeadSeaScrollsMenuSettings) => {
+          func: () => {
+            // The DSS menu text will continue to be drawn on the screen on top of the "Loading"
+            // text from this mod. So, disable DSS until the next run.
+            DSSMod.setEnabled(false);
+
             startRandomizer(undefined);
-            menuObj.Close();
           },
         },
         {

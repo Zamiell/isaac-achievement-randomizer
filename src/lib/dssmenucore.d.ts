@@ -9,7 +9,8 @@ export function init(
 interface DSSMod extends Mod {
   runMenu: () => void;
   openMenu: () => void;
-  closeMenu: () => void;
+  closeMenu: (fullClose: boolean, noAnimate: boolean) => void;
+  setEnabled: (enabled: boolean) => void; // A custom added function to work around DSS bugs.
 
   gamepadToggleButton: unknown;
   menuKeybindButton: unknown;

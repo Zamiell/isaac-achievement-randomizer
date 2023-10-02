@@ -1,12 +1,4 @@
 TODO:
-- check for the presence of 1 or more bosses when in boss room for the no hit achievement
-- no hit check for entity type not being dead and existing
-
-- brownie timer is 1 minute
-
-- remove no hit achievement for delirium, BLUE FIRES
-
-- "Loading" text does not work when IS_DEV is false
 - alt floors for rep should replace rep unlock
 - when corny poops are replaced they
 - track number of runs performed in the streak

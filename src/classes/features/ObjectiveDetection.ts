@@ -14,6 +14,8 @@ import {
   ReadonlyMap,
   game,
   getBossID,
+  getEntityTypeVariantFromBossID,
+  getNPCs,
   getRoomSubType,
   inBeastRoom,
   isFirstPlayer,
@@ -93,12 +95,23 @@ export class ObjectiveDetection extends RandomizerModFeature {
 
   @Callback(ModCallback.POST_UPDATE)
   postUpdate(): void {
+    this.checkBossNoHit();
+  }
+
+  checkBossNoHit(): void {
     const bossID = getBossID();
     if (bossID === 0) {
       return;
     }
 
     if (isBossObjectiveCompleted(bossID)) {
+      return;
+    }
+
+    const [entityType, variant] = getEntityTypeVariantFromBossID(bossID);
+    const bosses = getNPCs(entityType, variant, -1, true);
+    const aliveBosses = bosses.filter((boss) => !boss.IsDead());
+    if (aliveBosses.length === 0) {
       return;
     }
 

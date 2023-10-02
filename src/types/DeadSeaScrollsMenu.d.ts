@@ -5,15 +5,14 @@ interface DeadSeaScrollsMenu {
     settings: DeadSeaScrollsMenuSettings,
   ) => void;
 
-  AddPalettes: (palettes: DeadSeaScrollsPalette[]) => void;
-
+  Close: (fullClose: boolean, noAnimate: boolean) => void;
   IsOpen: () => boolean;
 }
 
 interface DeadSeaScrollsMenuSettings {
   Run: () => void;
   Open: () => void;
-  Close: () => void;
+  Close: (fullClose: boolean, noAnimate: boolean) => void;
 
   UseSubMenu: boolean;
   Directory: unknown;

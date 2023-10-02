@@ -74,6 +74,7 @@ function dssmenucore.init(DSSModName, v)
     local DSSMod = RegisterMod(DSSModName, 1)
     local game = Game()
     local sfx = SFXManager()
+    local enabled = true
 
     local DSSMenu = DeadSeaScrollsMenu
 
@@ -1013,6 +1014,10 @@ function dssmenucore.init(DSSModName, v)
     end
 
     function DSSMod.drawMenu(tbl, tab)
+        if not enabled then
+            return
+        end
+
         local dType = tab.type
         local scale = tab.scale or Vector(1, 1)
         local root = tab.root or getScreenCenterPosition()
@@ -1719,6 +1724,10 @@ function dssmenucore.init(DSSModName, v)
     end
 
     DSSMod.defaultPanelRenderBack = function(panel, pos, tbl)
+        if not enabled then
+            return
+        end
+
         local useClr = panel.Color or Color.Default
         if type(useClr) == "number" then
             useClr = DeadSeaScrollsMenu.GetPalette()[useClr]
@@ -1740,6 +1749,10 @@ function dssmenucore.init(DSSModName, v)
     end
 
     DSSMod.defaultPanelRenderFront = function(panel, pos, tbl)
+        if not enabled then
+            return
+        end
+
         if panel.Sprites.Border then
             panel.Sprites.Border:Render(pos, Vector.Zero, Vector.Zero)
         end
@@ -2238,6 +2251,10 @@ function dssmenucore.init(DSSModName, v)
 
     local hintFont = Font()
     hintFont:Load("font/pftempestasevencondensed.fnt")
+
+    function DSSMod.setEnabled(_, isEnabled)
+        enabled = isEnabled
+    end
 
     --POST RENDER
     local openToggle -- only store data when menu opens / closes
@@ -3306,6 +3323,12 @@ function dssmenucore.init(DSSModName, v)
 
         DSSMod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, DSSMod.CloseMenuOnGameStart)
 
+        function DSSMod:PostGameStarted()
+            enabled = true
+        end
+
+        DSSMod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, DSSMod.PostGameStarted)
+
         DSSMenu.PlayedBuzzer = false
         function DSSMod.ResetBuzzerCheck()
             DSSMenu.PlayedBuzzer = false
@@ -3374,6 +3397,7 @@ function dssmenucore.init(DSSModName, v)
             )
             DSSMod:RemoveCallback(ModCallbacks.MC_POST_RENDER, DSSMod.CheckMenuOpen)
             DSSMod:RemoveCallback(ModCallbacks.MC_POST_GAME_STARTED, DSSMod.CloseMenuOnGameStart)
+            DSSMod:RemoveCallback(ModCallbacks.MC_POST_GAME_STARTED, DSSMod.PostGameStarted)
             DSSMod:RemoveCallback(ModCallbacks.MC_POST_UPDATE, DSSMod.OpenQueuedMenus)
             DSSMod:RemoveCallback(ModCallbacks.MC_POST_NEW_ROOM, DSSMod.ResetBuzzerCheck)
 
