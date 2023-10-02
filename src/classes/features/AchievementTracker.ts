@@ -26,6 +26,7 @@ import {
   MAIN_CHARACTERS,
   ModFeature,
   PriorityCallback,
+  ReadonlySet,
   VectorZero,
   assertDefined,
   collectibleHasTag,
@@ -36,6 +37,7 @@ import {
   getCollectibleName,
   getRandomSeed,
   getScreenBottomRightPos,
+  getVanillaCollectibleTypesOfQuality,
   isActiveCollectible,
   isHiddenCollectible,
   isPassiveOrFamiliarCollectible,
@@ -77,11 +79,30 @@ import { UNLOCKABLE_GRID_ENTITY_TYPES } from "../../unlockableGridEntityTypes";
 import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../unlockableTrinketTypes";
 import { showNewAchievement } from "./AchievementText";
 
+const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
+const FONT = fonts.droid;
 const STARTING_CHARACTER = PlayerType.ISAAC;
 
-const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
+const GOOD_COLLECTIBLE_TYPES = new ReadonlySet<CollectibleType>([
+  ...getVanillaCollectibleTypesOfQuality(4),
+  CollectibleType.CHOCOLATE_MILK, // 69
+  CollectibleType.BOOK_OF_REVELATIONS, // 78
+  CollectibleType.RELIC, // 98
+  CollectibleType.CRICKETS_BODY, // 224
+  CollectibleType.MONSTROS_LUNG, // 229
+  CollectibleType.DEATHS_TOUCH, // 237
+  CollectibleType.TECH_5, // 244
+  CollectibleType.PROPTOSIS, // 261
+  CollectibleType.CANCER, // 301
+  CollectibleType.DEAD_EYE, // 373
+  CollectibleType.MAW_OF_THE_VOID, // 399
+  CollectibleType.HAEMOLACRIA, // 531
+  CollectibleType.ROCK_BOTTOM, // 562
+  CollectibleType.SPIRIT_SWORD, // 579
+  CollectibleType.ECHO_CHAMBER, // 700
+]);
 
-const FONT = fonts.droid;
+const BAD_QUALITIES = [0, 1] as const;
 
 /** `isaacscript-common` uses `CallbackPriority.IMPORTANT` (-200). */
 const HIGHER_PRIORITY_THAN_ISAACSCRIPT_COMMON = (CallbackPriority.IMPORTANT -
@@ -438,6 +459,16 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
     }
 
     case AchievementType.COLLECTIBLE: {
+      if (GOOD_COLLECTIBLE_TYPES.has(achievement.collectibleType)) {
+        const badCollectibleType = getLockedBadCollectibleType();
+        if (badCollectibleType !== undefined) {
+          return getAchievement(
+            AchievementType.COLLECTIBLE,
+            badCollectibleType,
+          );
+        }
+      }
+
       switch (achievement.collectibleType) {
         // 84
         case CollectibleType.WE_NEED_TO_GO_DEEPER: {
@@ -458,6 +489,16 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
               AchievementType.COIN,
               CoinSubType.DOUBLE_PACK,
             );
+          }
+
+          return undefined;
+        }
+
+        // 210
+        case CollectibleType.GNAWED_LEAF: {
+          if (!isAllBossObjectivesCompleted()) {
+            // TODO
+            /// return getLowestCollectible();
           }
 
           return undefined;
@@ -807,6 +848,12 @@ export function isBossObjectiveCompleted(bossID: BossID): boolean {
   );
 }
 
+function isAllBossObjectivesCompleted(): boolean {
+  return v.persistent.completedObjectives.some(
+    (objective) => objective.type === ObjectiveType.BOSS,
+  );
+}
+
 export function isChallengeObjectiveCompleted(challenge: Challenge): boolean {
   return v.persistent.completedObjectives.some(
     (objective) =>
@@ -911,6 +958,23 @@ export function getUnlockedEdenPassiveCollectibleTypes(): CollectibleType[] {
       isPassiveOrFamiliarCollectible(collectibleType) &&
       collectibleType !== CollectibleType.TMTRAINER,
   );
+}
+
+function getLockedBadCollectibleType(): CollectibleType | undefined {
+  for (const quality of BAD_QUALITIES) {
+    const badCollectibleTypes = getVanillaCollectibleTypesOfQuality(quality);
+    for (const collectibleType of badCollectibleTypes) {
+      if (ALWAYS_UNLOCKED_COLLECTIBLE_TYPES.has(collectibleType)) {
+        continue;
+      }
+
+      if (!isCollectibleTypeUnlocked(collectibleType)) {
+        return collectibleType;
+      }
+    }
+  }
+
+  return undefined;
 }
 
 function getUnlockedCollectibleTypes(): CollectibleType[] {
