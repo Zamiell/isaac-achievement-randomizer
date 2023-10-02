@@ -20,6 +20,7 @@ import {
 } from "./AchievementTracker";
 
 export class GridEntityRemoval extends RandomizerModFeature {
+  /** @see `UNLOCKABLE_GRID_ENTITY_TYPES` */
   @CallbackCustom(ModCallbackCustom.POST_GRID_ENTITY_INIT)
   postGridEntityInit(gridEntity: GridEntity): void {
     const gridEntityType = gridEntity.GetType();
@@ -125,10 +126,6 @@ export class GridEntityRemoval extends RandomizerModFeature {
       default: {
         break;
       }
-    }
-
-    if (!isPathUnlocked(UnlockablePath.ASCENT)) {
-      setGridEntityType(gridEntity, GridEntityType.ROCK);
     }
   }
 

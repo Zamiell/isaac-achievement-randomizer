@@ -1,5 +1,4 @@
 TODO:
-- when corny poops are replaced they
 - track number of runs performed in the streak
 - corny poop is getting replaced by normal poop for some reason
 - womb room 911, poop turned into rock
