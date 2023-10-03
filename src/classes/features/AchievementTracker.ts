@@ -50,6 +50,7 @@ import {
   newRNG,
   newSprite,
   restart,
+  setUnseeded,
 } from "isaacscript-common";
 import { getAchievementsForRNG } from "../../achievementAssignment";
 import { ALL_ACHIEVEMENTS } from "../../achievements";
@@ -263,6 +264,13 @@ function startRandomizer2(seed: Seed | undefined) {
   v.persistent.completedObjectives = [];
 
   preForcedRestart();
+  setUnseeded();
+
+  const challenge = Isaac.GetChallenge();
+  if (challenge !== Challenge.NULL) {
+    Isaac.ExecuteCommand("challenge 0");
+  }
+
   restart(STARTING_CHARACTER);
 }
 
