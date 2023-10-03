@@ -11,10 +11,15 @@ import {
 import { AltFloor } from "../../enums/AltFloor";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { isAltFloorUnlocked } from "./AchievementTracker";
+import { hasErrors } from "./CheckErrors";
 
 export class StageTypeRemoval extends RandomizerModFeature {
   @CallbackCustom(ModCallbackCustom.POST_NEW_LEVEL_REORDERED)
   postNewLevelReordered(stage: LevelStage, stageType: StageType): void {
+    if (hasErrors()) {
+      return;
+    }
+
     if (isStageTypeUnlocked(stage, stageType)) {
       return;
     }
