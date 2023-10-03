@@ -69,6 +69,7 @@ import {
 } from "../../unlockableCollectibleTypes";
 import {
   BANNED_TRINKET_TYPES,
+  BANNED_TRINKET_TYPES_SET,
   UNLOCKABLE_TRINKET_TYPES,
 } from "../../unlockableTrinketTypes";
 import { RandomizerModFeature } from "../RandomizerModFeature";
@@ -364,7 +365,9 @@ export class PickupRemoval extends RandomizerModFeature {
     for (const collectibleType of VANILLA_COLLECTIBLE_TYPES) {
       if (
         player.HasCollectible(collectibleType) &&
-        (!isCollectibleTypeUnlocked(collectibleType) || isEden(player))
+        (!isCollectibleTypeUnlocked(collectibleType) ||
+          BANNED_COLLECTIBLE_TYPES_SET.has(collectibleType) ||
+          isEden(player))
       ) {
         player.RemoveCollectible(collectibleType);
       }
@@ -377,6 +380,7 @@ export class PickupRemoval extends RandomizerModFeature {
         (!isTrinketTypeUnlocked(trinketType) ||
           (isGoldenTrinketType(trinketType) &&
             !isOtherAchievementUnlocked(OtherAchievementKind.GOLD_TRINKETS)) ||
+          BANNED_TRINKET_TYPES_SET.has(trinketType) ||
           isEden(player))
       ) {
         player.TryRemoveTrinket(trinketType);

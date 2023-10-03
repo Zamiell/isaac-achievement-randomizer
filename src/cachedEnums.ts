@@ -1,5 +1,4 @@
 import {
-  ActiveSlot,
   BatterySubType,
   BombSubType,
   BossID,
@@ -22,8 +21,6 @@ import { UnlockablePath } from "./enums/UnlockablePath";
 
 export const ACHIEVEMENT_TYPES: readonly AchievementType[] =
   getEnumValues(AchievementType);
-
-export const ACTIVE_SLOTS: readonly ActiveSlot[] = getEnumValues(ActiveSlot);
 
 export const ALT_FLOORS: readonly AltFloor[] = getEnumValues(AltFloor);
 
