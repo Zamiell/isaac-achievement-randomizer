@@ -502,6 +502,134 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
       }
     }
 
+    case AchievementType.CHALLENGE: {
+      switch (achievement.challenge) {
+        // 6
+        case Challenge.SOLAR_SYSTEM: {
+          for (const collectibleType of [
+            CollectibleType.DISTANT_ADMIRATION, // 57
+            CollectibleType.FOREVER_ALONE, // 128
+          ]) {
+            if (!isCollectibleTypeUnlocked(collectibleType)) {
+              return getAchievement(
+                AchievementType.COLLECTIBLE,
+                collectibleType,
+              );
+            }
+          }
+
+          return undefined;
+        }
+
+        // 6
+        case Challenge.CAT_GOT_YOUR_TONGUE: {
+          if (!isCollectibleTypeUnlocked(CollectibleType.GUPPYS_HAIRBALL)) {
+            return getAchievement(
+              AchievementType.COLLECTIBLE,
+              CollectibleType.GUPPYS_HAIRBALL,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 24
+        case Challenge.PAY_TO_PLAY: {
+          for (const collectibleType of [
+            CollectibleType.SACK_OF_PENNIES, // 94
+            CollectibleType.MONEY_EQUALS_POWER, // 109
+          ]) {
+            if (!isCollectibleTypeUnlocked(collectibleType)) {
+              return getAchievement(
+                AchievementType.COLLECTIBLE,
+                collectibleType,
+              );
+            }
+          }
+
+          return undefined;
+        }
+
+        // 25
+        case Challenge.HAVE_A_HEART: {
+          if (
+            !isCollectibleTypeUnlocked(CollectibleType.CHARM_OF_THE_VAMPIRE)
+          ) {
+            return getAchievement(
+              AchievementType.COLLECTIBLE,
+              CollectibleType.CHARM_OF_THE_VAMPIRE,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 29
+        case Challenge.ONANS_STREAK: {
+          if (!isCollectibleTypeUnlocked(CollectibleType.CHOCOLATE_MILK)) {
+            return getAchievement(
+              AchievementType.COLLECTIBLE,
+              CollectibleType.CHOCOLATE_MILK,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 37
+        case Challenge.BLOODY_MARY: {
+          if (!isCollectibleTypeUnlocked(CollectibleType.BLOOD_OATH)) {
+            return getAchievement(
+              AchievementType.COLLECTIBLE,
+              CollectibleType.BLOOD_OATH,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 41
+        case Challenge.PICA_RUN: {
+          if (!isCollectibleTypeUnlocked(CollectibleType.MOMS_BOX)) {
+            return getAchievement(
+              AchievementType.COLLECTIBLE,
+              CollectibleType.MOMS_BOX,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 44
+        case Challenge.RED_REDEMPTION: {
+          if (!isCollectibleTypeUnlocked(CollectibleType.RED_KEY)) {
+            return getAchievement(
+              AchievementType.COLLECTIBLE,
+              CollectibleType.RED_KEY,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 45
+        case Challenge.DELETE_THIS: {
+          if (!isCollectibleTypeUnlocked(CollectibleType.TMTRAINER)) {
+            return getAchievement(
+              AchievementType.COLLECTIBLE,
+              CollectibleType.TMTRAINER,
+            );
+          }
+
+          return undefined;
+        }
+
+        default: {
+          return undefined;
+        }
+      }
+    }
+
     case AchievementType.COLLECTIBLE: {
       if (GOOD_COLLECTIBLE_TYPES.has(achievement.collectibleType)) {
         const badCollectibleType = getLockedBadCollectibleType();

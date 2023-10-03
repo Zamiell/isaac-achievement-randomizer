@@ -1,14 +1,4 @@
 TODO:
-- red key for challenge 44
-- tmtrainer for challenge 45
-- Cantripped with Bag of Crafting
-- Flies with challenge 6
-- Guppy's Hairball on challenge 8
-- Charm of the vampire challenge 25
-- all item of challenge 24
-- chocolate milk on challenge 29
-- blood oath on challenge 37 otherwise it's cheesing lol
-- Mom's Box on challenge 41
 - check all blindfolded challenges
   - 6 8 13 19 23 27 30 36 38 (no need 42 since it T Forgotten)
 
