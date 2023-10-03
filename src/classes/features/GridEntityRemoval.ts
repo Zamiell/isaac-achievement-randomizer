@@ -43,106 +43,36 @@ export class GridEntityRemoval extends RandomizerModFeature {
   )
   postGridEntityInitRockAlt(gridEntity: GridEntity): void {
     const rockAltType = getRockAltType();
-    switch (rockAltType) {
-      case RockAltType.URN: {
-        if (!isOtherAchievementsUnlocked(OtherAchievementKind.URNS)) {
-          setGridEntityType(gridEntity, GridEntityType.ROCK);
-        }
-
-        break;
-      }
-
-      case RockAltType.MUSHROOM: {
-        if (!isOtherAchievementsUnlocked(OtherAchievementKind.MUSHROOMS)) {
-          setGridEntityType(gridEntity, GridEntityType.ROCK);
-        }
-
-        break;
-      }
-
-      case RockAltType.SKULL: {
-        if (!isOtherAchievementsUnlocked(OtherAchievementKind.SKULLS)) {
-          setGridEntityType(gridEntity, GridEntityType.ROCK);
-        }
-
-        break;
-      }
-
-      case RockAltType.POLYP: {
-        if (!isOtherAchievementsUnlocked(OtherAchievementKind.POLYPS)) {
-          setGridEntityType(gridEntity, GridEntityType.ROCK);
-        }
-
-        break;
-      }
-
-      case RockAltType.BUCKET_DOWNPOUR:
-      case RockAltType.BUCKET_DROSS: {
-        break;
-      }
+    const achievementKind = rockAltTypeToAchievementKind(rockAltType);
+    if (achievementKind === undefined) {
+      return;
     }
+
+    if (isOtherAchievementsUnlocked(achievementKind)) {
+      return;
+    }
+
+    setGridEntityType(gridEntity, GridEntityType.ROCK);
   }
 
   // 14
   @CallbackCustom(ModCallbackCustom.POST_GRID_ENTITY_INIT, GridEntityType.POOP)
   postGridEntityInitPoop(gridEntity: GridEntity): void {
-    const gridEntityVariant = gridEntity.GetVariant() as PoopGridEntityVariant;
+    const poopGridEntityVariant =
+      gridEntity.GetVariant() as PoopGridEntityVariant;
 
-    switch (gridEntityVariant) {
-      // 3
-      case PoopGridEntityVariant.GOLDEN: {
-        if (!isOtherAchievementsUnlocked(OtherAchievementKind.GOLDEN_POOP)) {
-          setGridEntityType(gridEntity, GridEntityType.ROCK);
-        }
-
-        break;
-      }
-
-      // 4
-      case PoopGridEntityVariant.RAINBOW: {
-        if (!isOtherAchievementsUnlocked(OtherAchievementKind.RAINBOW_POOP)) {
-          setGridEntityType(gridEntity, GridEntityType.ROCK);
-        }
-
-        break;
-      }
-
-      // 5
-      case PoopGridEntityVariant.BLACK: {
-        if (!isOtherAchievementsUnlocked(OtherAchievementKind.BLACK_POOP)) {
-          setGridEntityType(gridEntity, GridEntityType.ROCK);
-        }
-
-        break;
-      }
-
-      // 11
-      case PoopGridEntityVariant.CHARMING: {
-        if (!isOtherAchievementsUnlocked(OtherAchievementKind.CHARMING_POOP)) {
-          setGridEntityType(gridEntity, GridEntityType.ROCK);
-        }
-
-        break;
-      }
-
-      default: {
-        break;
-      }
+    const achievementKind = poopGridEntityVariantToAchievementKind(
+      poopGridEntityVariant,
+    );
+    if (achievementKind === undefined) {
+      return;
     }
-  }
 
-  // 20, 1
-  @CallbackCustom(
-    ModCallbackCustom.PRE_ROOM_ENTITY_SPAWN_FILTER,
-    GridEntityXMLType.PRESSURE_PLATE,
-    PressurePlateVariant.REWARD_PLATE,
-  )
-  preRoomEntitySpawnRewardPlate():
-    | [EntityType | GridEntityXMLType, int, int]
-    | undefined {
-    return isOtherAchievementsUnlocked(OtherAchievementKind.REWARD_PLATES)
-      ? undefined
-      : [GridEntityXMLType.ROCK, 0, 0];
+    if (isOtherAchievementsUnlocked(OtherAchievementKind.GOLDEN_POOP)) {
+      return;
+    }
+
+    setGridEntityType(gridEntity, GridEntityType.ROCK);
   }
 
   // 26
@@ -153,6 +83,120 @@ export class GridEntityRemoval extends RandomizerModFeature {
   postGridEntityInitRockAlt2(gridEntity: GridEntity): void {
     if (!isPathUnlocked(UnlockablePath.ASCENT)) {
       setGridEntityType(gridEntity, GridEntityType.ROCK);
+    }
+  }
+
+  // 26
+  @CallbackCustom(
+    ModCallbackCustom.POST_GRID_ENTITY_INIT,
+    GridEntityType.PRESSURE_PLATE,
+    PressurePlateVariant.REWARD_PLATE,
+  )
+  postGridEntityInitRewardPlate(gridEntity: GridEntity): void {
+    if (!isOtherAchievementsUnlocked(OtherAchievementKind.REWARD_PLATES)) {
+      setGridEntityType(gridEntity, GridEntityType.ROCK);
+    }
+  }
+
+  @CallbackCustom(
+    ModCallbackCustom.PRE_ROOM_ENTITY_SPAWN_FILTER,
+    GridEntityXMLType.ROCK_ALT, // 1002
+  )
+  preRoomEntitySpawnRockAlt():
+    | [EntityType | GridEntityXMLType, int, int]
+    | undefined {
+    const rockAltType = getRockAltType();
+    const achievementKind = rockAltTypeToAchievementKind(rockAltType);
+    if (achievementKind === undefined) {
+      return undefined;
+    }
+
+    if (isOtherAchievementsUnlocked(achievementKind)) {
+      return undefined;
+    }
+
+    return [GridEntityXMLType.ROCK, 0, 0];
+  }
+
+  @CallbackCustom(
+    ModCallbackCustom.PRE_ROOM_ENTITY_SPAWN_FILTER,
+    GridEntityXMLType.ROCK_ALT_2, // 1008
+  )
+  preRoomEntitySpawnRockAlt2():
+    | [EntityType | GridEntityXMLType, int, int]
+    | undefined {
+    return isPathUnlocked(UnlockablePath.ASCENT)
+      ? undefined
+      : [GridEntityXMLType.ROCK, 0, 0];
+  }
+
+  @CallbackCustom(
+    ModCallbackCustom.PRE_ROOM_ENTITY_SPAWN_FILTER,
+    GridEntityXMLType.PRESSURE_PLATE, // 4500
+    PressurePlateVariant.REWARD_PLATE,
+  )
+  preRoomEntitySpawnRewardPlate():
+    | [EntityType | GridEntityXMLType, int, int]
+    | undefined {
+    return isOtherAchievementsUnlocked(OtherAchievementKind.REWARD_PLATES)
+      ? undefined
+      : [GridEntityXMLType.ROCK, 0, 0];
+  }
+}
+
+function rockAltTypeToAchievementKind(
+  rockAltType: RockAltType,
+): OtherAchievementKind | undefined {
+  switch (rockAltType) {
+    case RockAltType.URN: {
+      return OtherAchievementKind.URNS;
+    }
+
+    case RockAltType.MUSHROOM: {
+      return OtherAchievementKind.MUSHROOMS;
+    }
+
+    case RockAltType.SKULL: {
+      return OtherAchievementKind.SKULLS;
+    }
+
+    case RockAltType.POLYP: {
+      return OtherAchievementKind.POLYPS;
+    }
+
+    case RockAltType.BUCKET_DOWNPOUR:
+    case RockAltType.BUCKET_DROSS: {
+      return undefined;
+    }
+  }
+}
+
+function poopGridEntityVariantToAchievementKind(
+  poopGridEntityVariant: PoopGridEntityVariant,
+): OtherAchievementKind | undefined {
+  switch (poopGridEntityVariant) {
+    // 3
+    case PoopGridEntityVariant.GOLDEN: {
+      return OtherAchievementKind.GOLDEN_POOP;
+    }
+
+    // 4
+    case PoopGridEntityVariant.RAINBOW: {
+      return OtherAchievementKind.RAINBOW_POOP;
+    }
+
+    // 5
+    case PoopGridEntityVariant.BLACK: {
+      return OtherAchievementKind.BLACK_POOP;
+    }
+
+    // 11
+    case PoopGridEntityVariant.CHARMING: {
+      return OtherAchievementKind.CHARMING_POOP;
+    }
+
+    default: {
+      return undefined;
     }
   }
 }
