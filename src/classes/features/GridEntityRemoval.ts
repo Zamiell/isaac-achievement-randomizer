@@ -1,5 +1,7 @@
+import type { EntityType } from "isaac-typescript-definitions";
 import {
   GridEntityType,
+  GridEntityXMLType,
   PoopGridEntityVariant,
   PressurePlateVariant,
 } from "isaac-typescript-definitions";
@@ -131,14 +133,16 @@ export class GridEntityRemoval extends RandomizerModFeature {
 
   // 20, 1
   @CallbackCustom(
-    ModCallbackCustom.POST_GRID_ENTITY_INIT,
-    GridEntityType.PRESSURE_PLATE,
+    ModCallbackCustom.PRE_ROOM_ENTITY_SPAWN_FILTER,
+    GridEntityXMLType.PRESSURE_PLATE,
     PressurePlateVariant.REWARD_PLATE,
   )
-  postGridEntityInitRewardPlate(gridEntity: GridEntity): void {
-    if (!isOtherAchievementsUnlocked(OtherAchievementKind.REWARD_PLATES)) {
-      setGridEntityType(gridEntity, GridEntityType.ROCK);
-    }
+  preRoomEntitySpawnRewardPlate():
+    | [EntityType | GridEntityXMLType, int, int]
+    | undefined {
+    return isOtherAchievementsUnlocked(OtherAchievementKind.REWARD_PLATES)
+      ? undefined
+      : [GridEntityXMLType.ROCK, 0, 0];
   }
 
   // 26
