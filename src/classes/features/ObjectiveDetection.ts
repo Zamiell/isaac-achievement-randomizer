@@ -297,7 +297,11 @@ export function getSecondsSinceLastDamage(): int | undefined {
     return;
   }
 
-  if (v.room.usedPause || onFirstPhaseOfIsaac() || onFirstPhaseOfHush()) {
+  if (
+    v.room.usedPause ||
+    onFirstPhaseOfIsaac(bossID) ||
+    onFirstPhaseOfHush(bossID)
+  ) {
     return undefined;
   }
 
@@ -307,20 +311,14 @@ export function getSecondsSinceLastDamage(): int | undefined {
   return elapsedGameFrames / GAME_FRAMES_PER_SECOND;
 }
 
-function onFirstPhaseOfIsaac(): boolean {
-  const room = game.GetRoom();
-  const bossID = room.GetBossID();
-
+function onFirstPhaseOfIsaac(bossID: BossID): boolean {
   return (
     (bossID === BossID.ISAAC || bossID === BossID.BLUE_BABY) &&
     v.room.onFirstPhaseOfIsaac
   );
 }
 
-function onFirstPhaseOfHush(): boolean {
-  const room = game.GetRoom();
-  const bossID = room.GetBossID();
-
+function onFirstPhaseOfHush(bossID: BossID): boolean {
   return bossID === BossID.HUSH && v.room.onFirstPhaseOfHush;
 }
 
