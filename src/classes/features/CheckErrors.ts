@@ -33,6 +33,7 @@ import {
   isPathUnlocked,
   isRandomizerEnabled,
 } from "./AchievementTracker";
+import { hasErrors, v } from "./checkErrors/v";
 
 const INCOMPLETE_SAVE_COLLECTIBLE_TO_CHECK = CollectibleType.DEATH_CERTIFICATE;
 const INCOMPLETE_SAVE_ITEM_POOL_TO_CHECK = ItemPoolType.SECRET;
@@ -40,25 +41,6 @@ const INCOMPLETE_SAVE_ITEM_POOL_TO_CHECK = ItemPoolType.SECRET;
 const STARTING_X = 115;
 const STARTING_Y = 70;
 const MAX_CHARACTERS_PER_LINE = 50;
-
-const v = {
-  run: {
-    afterbirthPlus: false,
-    incompleteSave: false,
-    otherModsEnabled: false,
-    wrongDifficulty: false,
-    onSetSeed: false,
-    hasEasterEggs: false,
-    onVictoryLap: false,
-    lockedCharacter: false,
-    lockedChallenge: false,
-    lockedMode: false,
-  },
-};
-
-export function hasErrors(): boolean {
-  return Object.values(v.run).includes(true);
-}
 
 /** This does not extend from `RandomizerModFeature` because we need to always do the checks. */
 export class CheckErrors extends ModFeature {

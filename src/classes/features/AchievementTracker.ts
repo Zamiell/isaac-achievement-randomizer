@@ -81,6 +81,7 @@ import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTy
 import { UNLOCKABLE_GRID_ENTITY_TYPES } from "../../unlockableGridEntityTypes";
 import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../unlockableTrinketTypes";
 import { showNewAchievement } from "./AchievementText";
+import { hasErrors } from "./checkErrors/v";
 
 const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
 const FONT = fonts.droid;
@@ -336,6 +337,10 @@ function getAchievementMatchingObjective(
 // -------------
 
 export function addObjective(objective: Objective, emulating = false): void {
+  if (hasErrors()) {
+    return;
+  }
+
   // Prevent accomplishing non-challenge objectives while inside of a challenge.
   if (!emulating) {
     const challenge = Isaac.GetChallenge();

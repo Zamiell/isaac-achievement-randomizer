@@ -17,7 +17,7 @@ import {
   getRandomizerSeed,
   getTimeElapsed,
 } from "./AchievementTracker";
-import { hasErrors } from "./CheckErrors";
+import { hasErrors } from "./checkErrors/v";
 
 const FONT = fonts.teamMeatFont10;
 
