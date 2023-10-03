@@ -28,6 +28,7 @@ import {
   ModCallbackCustom,
   ModFeature,
   PriorityCallback,
+  ReadonlyMap,
   ReadonlySet,
   VectorZero,
   assertDefined,
@@ -108,6 +109,102 @@ const GOOD_COLLECTIBLE_TYPES = new ReadonlySet<CollectibleType>([
 ]);
 
 const BAD_QUALITIES = [0, 1] as const;
+
+const CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP = new ReadonlyMap<
+  Challenge,
+  CollectibleType[]
+>([
+  // 6
+  [
+    Challenge.SOLAR_SYSTEM,
+    [
+      CollectibleType.DISTANT_ADMIRATION, // 57
+      CollectibleType.FOREVER_ALONE, // 128
+    ],
+  ],
+
+  // 8
+  [Challenge.CAT_GOT_YOUR_TONGUE, [CollectibleType.GUPPYS_HAIRBALL]],
+
+  // 13
+  [
+    Challenge.BEANS,
+    [
+      CollectibleType.BEAN, // 111
+      CollectibleType.NINE_VOLT, // 116
+    ],
+  ],
+
+  // 19
+  [Challenge.FAMILY_MAN, [CollectibleType.BROTHER_BOBBY]],
+
+  // 23
+  [
+    Challenge.BLUE_BOMBER,
+    [
+      CollectibleType.KAMIKAZE, // 40
+      CollectibleType.PYROMANIAC, // 223
+    ],
+  ],
+
+  // 24
+  [
+    Challenge.PAY_TO_PLAY,
+    [CollectibleType.SACK_OF_PENNIES, CollectibleType.MONEY_EQUALS_POWER],
+  ],
+
+  // 25
+  [Challenge.HAVE_A_HEART, [CollectibleType.CHARM_OF_THE_VAMPIRE]],
+
+  // 27
+  [Challenge.BRAINS, [CollectibleType.BOBS_BRAIN]],
+
+  // 29
+  [Challenge.ONANS_STREAK, [CollectibleType.CHOCOLATE_MILK]],
+
+  // 30
+  [
+    Challenge.GUARDIAN,
+    [
+      CollectibleType.ISAACS_HEART, // 276
+      CollectibleType.PUNCHING_BAG, // 281
+      CollectibleType.SPEAR_OF_DESTINY, // 400
+    ],
+  ],
+
+  // 36
+  [
+    Challenge.SCAT_MAN,
+    [
+      CollectibleType.POOP, // 36
+      CollectibleType.NINE_VOLT, // 116
+      CollectibleType.THUNDER_THIGHS, // 314
+      CollectibleType.DIRTY_MIND, // 576
+    ],
+  ],
+
+  // 37
+  [Challenge.BLOODY_MARY, [CollectibleType.BLOOD_OATH]],
+
+  // 38
+  [
+    Challenge.BAPTISM_BY_FIRE,
+    [
+      CollectibleType.GUPPYS_PAW, // 133
+      CollectibleType.SCHOOLBAG, // 534
+      CollectibleType.URN_OF_SOULS, // 640
+    ],
+  ],
+
+  // 41
+  [Challenge.PICA_RUN, [CollectibleType.MOMS_BOX]],
+
+  // 44
+  [Challenge.RED_REDEMPTION, [CollectibleType.RED_KEY]],
+
+  // 45
+  [Challenge.DELETE_THIS, [CollectibleType.TMTRAINER]],
+]);
 
 /** `isaacscript-common` uses `CallbackPriority.IMPORTANT` (-200). */
 const HIGHER_PRIORITY_THAN_ISAACSCRIPT_COMMON = (CallbackPriority.IMPORTANT -
@@ -503,131 +600,19 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
     }
 
     case AchievementType.CHALLENGE: {
-      switch (achievement.challenge) {
-        // 6
-        case Challenge.SOLAR_SYSTEM: {
-          for (const collectibleType of [
-            CollectibleType.DISTANT_ADMIRATION, // 57
-            CollectibleType.FOREVER_ALONE, // 128
-          ]) {
-            if (!isCollectibleTypeUnlocked(collectibleType)) {
-              return getAchievement(
-                AchievementType.COLLECTIBLE,
-                collectibleType,
-              );
-            }
-          }
+      const requiredCollectibleTypes =
+        CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP.get(achievement.challenge);
+      if (requiredCollectibleTypes === undefined) {
+        return undefined;
+      }
 
-          return undefined;
-        }
-
-        // 6
-        case Challenge.CAT_GOT_YOUR_TONGUE: {
-          if (!isCollectibleTypeUnlocked(CollectibleType.GUPPYS_HAIRBALL)) {
-            return getAchievement(
-              AchievementType.COLLECTIBLE,
-              CollectibleType.GUPPYS_HAIRBALL,
-            );
-          }
-
-          return undefined;
-        }
-
-        // 24
-        case Challenge.PAY_TO_PLAY: {
-          for (const collectibleType of [
-            CollectibleType.SACK_OF_PENNIES, // 94
-            CollectibleType.MONEY_EQUALS_POWER, // 109
-          ]) {
-            if (!isCollectibleTypeUnlocked(collectibleType)) {
-              return getAchievement(
-                AchievementType.COLLECTIBLE,
-                collectibleType,
-              );
-            }
-          }
-
-          return undefined;
-        }
-
-        // 25
-        case Challenge.HAVE_A_HEART: {
-          if (
-            !isCollectibleTypeUnlocked(CollectibleType.CHARM_OF_THE_VAMPIRE)
-          ) {
-            return getAchievement(
-              AchievementType.COLLECTIBLE,
-              CollectibleType.CHARM_OF_THE_VAMPIRE,
-            );
-          }
-
-          return undefined;
-        }
-
-        // 29
-        case Challenge.ONANS_STREAK: {
-          if (!isCollectibleTypeUnlocked(CollectibleType.CHOCOLATE_MILK)) {
-            return getAchievement(
-              AchievementType.COLLECTIBLE,
-              CollectibleType.CHOCOLATE_MILK,
-            );
-          }
-
-          return undefined;
-        }
-
-        // 37
-        case Challenge.BLOODY_MARY: {
-          if (!isCollectibleTypeUnlocked(CollectibleType.BLOOD_OATH)) {
-            return getAchievement(
-              AchievementType.COLLECTIBLE,
-              CollectibleType.BLOOD_OATH,
-            );
-          }
-
-          return undefined;
-        }
-
-        // 41
-        case Challenge.PICA_RUN: {
-          if (!isCollectibleTypeUnlocked(CollectibleType.MOMS_BOX)) {
-            return getAchievement(
-              AchievementType.COLLECTIBLE,
-              CollectibleType.MOMS_BOX,
-            );
-          }
-
-          return undefined;
-        }
-
-        // 44
-        case Challenge.RED_REDEMPTION: {
-          if (!isCollectibleTypeUnlocked(CollectibleType.RED_KEY)) {
-            return getAchievement(
-              AchievementType.COLLECTIBLE,
-              CollectibleType.RED_KEY,
-            );
-          }
-
-          return undefined;
-        }
-
-        // 45
-        case Challenge.DELETE_THIS: {
-          if (!isCollectibleTypeUnlocked(CollectibleType.TMTRAINER)) {
-            return getAchievement(
-              AchievementType.COLLECTIBLE,
-              CollectibleType.TMTRAINER,
-            );
-          }
-
-          return undefined;
-        }
-
-        default: {
-          return undefined;
+      for (const collectibleType of requiredCollectibleTypes) {
+        if (!isCollectibleTypeUnlocked(collectibleType)) {
+          return getAchievement(AchievementType.COLLECTIBLE, collectibleType);
         }
       }
+
+      return undefined;
     }
 
     case AchievementType.COLLECTIBLE: {

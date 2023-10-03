@@ -13,9 +13,9 @@
   "type": "commonjs",
   "dependencies": {
     "@total-typescript/ts-reset": "^0.5.1",
-    "isaac-typescript-definitions": "^23.0.0",
+    "isaac-typescript-definitions": "^24.0.0",
     "isaacscript": "^3.11.1",
-    "isaacscript-common": "^53.0.0",
+    "isaacscript-common": "^54.0.0",
     "isaacscript-lint": "^6.0.0",
     "isaacscript-spell": "^1.4.0",
     "isaacscript-tsconfig": "^4.0.0",
