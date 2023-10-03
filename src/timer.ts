@@ -53,10 +53,6 @@ export function timerDraw(timerType: TimerType, seconds: int): void {
   // We want the timer to be drawn when the game is paused so that players can continue to see the
   // countdown if they tab out of the game.
 
-  if (seconds < 0) {
-    return;
-  }
-
   // Calculate the starting draw position. It will be directly below the stat HUD.
   const [startingX, startingY] = STARTING_COORDINATES[timerType];
   const HUDOffsetVector = getHUDOffsetVector();
@@ -66,8 +62,12 @@ export function timerDraw(timerType: TimerType, seconds: int): void {
   const hourAdjustment = 2;
   let hourAdjustment2 = 0;
 
-  const { hour1, hour2, minute1, minute2, second1, second2 } =
-    convertSecondsToTimerValues(seconds);
+  const timerValues = convertSecondsToTimerValues(seconds);
+  if (timerValues === undefined) {
+    return;
+  }
+
+  const { hour1, hour2, minute1, minute2, second1, second2 } = timerValues;
 
   const sprites = spriteCollectionMap.getAndSetDefault(timerType);
 
@@ -114,15 +114,21 @@ export function timerDraw(timerType: TimerType, seconds: int): void {
   sprites.digits.second2.Render(positionSecond2);
 }
 
-export function convertSecondsToTimerValues(totalSeconds: int): {
-  hour1: int;
-  hour2: int;
-  minute1: int;
-  minute2: int;
-  second1: int;
-  second2: int;
-  tenths: int;
-} {
+export function convertSecondsToTimerValues(totalSeconds: int):
+  | {
+      hour1: int;
+      hour2: int;
+      minute1: int;
+      minute2: int;
+      second1: int;
+      second2: int;
+      tenths: int;
+    }
+  | undefined {
+  if (totalSeconds < 0) {
+    return undefined;
+  }
+
   // Calculate the hours digits.
   const hours = Math.floor(totalSeconds / 3600);
   const hoursStringUnpadded = hours.toString();

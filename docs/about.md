@@ -252,7 +252,7 @@ Every card/rune in the game is locked (except for Rune Shard, which will never s
 
 ### Slots (15)
 
-- Every slot entity (e.g. machines and beggars) is locked behind a random objective. Non-unlocked slot entities are converted to pennies, except for Dressing Tables, which are removed.
+- Every slot entity (e.g. machines and beggars) is locked behind a random objective. Non-unlocked slot entities are removed.
 
 ### Grid Entities (13)
 

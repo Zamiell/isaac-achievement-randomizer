@@ -1,9 +1,5 @@
-import {
-  CoinSubType,
-  EntityType,
-  PickupVariant,
-  SlotVariant,
-} from "isaac-typescript-definitions";
+import type { SlotVariant } from "isaac-typescript-definitions";
+import { EntityType } from "isaac-typescript-definitions";
 import { CallbackCustom, ModCallbackCustom } from "isaacscript-common";
 import { EffectVariantCustom } from "../../enums/EffectVariantCustom";
 import { RandomizerModFeature } from "../RandomizerModFeature";
@@ -26,8 +22,11 @@ export class SlotRemoval extends RandomizerModFeature {
       return undefined;
     }
 
-    return slotVariant === SlotVariant.MOMS_DRESSING_TABLE
-      ? [EntityType.EFFECT, EffectVariantCustom.INVISIBLE_EFFECT, 0, initSeed]
-      : [EntityType.PICKUP, PickupVariant.COIN, CoinSubType.PENNY, initSeed];
+    return [
+      EntityType.EFFECT,
+      EffectVariantCustom.INVISIBLE_EFFECT,
+      0,
+      initSeed,
+    ];
   }
 }

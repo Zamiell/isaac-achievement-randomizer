@@ -290,9 +290,12 @@ export function getSecondsElapsed(): int {
 
 export function getTimeElapsed(): string {
   const seconds = getSecondsElapsed();
-  const { hour1, hour2, minute1, minute2, second1, second2 } =
-    convertSecondsToTimerValues(seconds);
+  const timerValues = convertSecondsToTimerValues(seconds);
+  if (timerValues === undefined) {
+    return "unknown";
+  }
 
+  const { hour1, hour2, minute1, minute2, second1, second2 } = timerValues;
   return `${hour1}${hour2}:${minute1}${minute2}:${second1}${second2}`;
 }
 
