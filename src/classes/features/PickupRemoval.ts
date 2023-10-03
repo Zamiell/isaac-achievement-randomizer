@@ -93,7 +93,7 @@ import {
   isCollectibleTypeUnlocked,
   isHeartSubTypeUnlocked,
   isKeySubTypeUnlocked,
-  isOtherAchievementsUnlocked,
+  isOtherAchievementUnlocked,
   isPillEffectUnlocked,
   isSackSubTypeUnlocked,
   isTrinketTypeUnlocked,
@@ -453,7 +453,7 @@ export class PickupRemoval extends RandomizerModFeature {
       trinketType !== TrinketType.NULL &&
       (!isTrinketTypeUnlocked(trinketType) ||
         (isGoldenTrinketType(trinketType) &&
-          !isOtherAchievementsUnlocked(OtherAchievementKind.GOLD_TRINKETS)))
+          !isOtherAchievementUnlocked(OtherAchievementKind.GOLD_TRINKETS)))
     ) {
       player.TryRemoveTrinket(trinketType);
     }
@@ -612,14 +612,14 @@ export class PickupRemoval extends RandomizerModFeature {
 
     if (
       isGoldPill(pillColor) &&
-      !isOtherAchievementsUnlocked(OtherAchievementKind.GOLD_PILLS)
+      !isOtherAchievementUnlocked(OtherAchievementKind.GOLD_PILLS)
     ) {
       return [PickupVariant.PILL, FIRST_PILL_COLOR];
     }
 
     if (
       isHorsePill(pillColor) &&
-      !isOtherAchievementsUnlocked(OtherAchievementKind.HORSE_PILLS)
+      !isOtherAchievementUnlocked(OtherAchievementKind.HORSE_PILLS)
     ) {
       const normalPillColor = getNormalPillColorFromHorse(pillColor);
       return [PickupVariant.PILL, normalPillColor];
@@ -703,7 +703,7 @@ export class PickupRemoval extends RandomizerModFeature {
     unlockedTrinketTypes: TrinketType[],
   ): [PickupVariant, int] | undefined {
     const normalizedTrinketType = getNormalTrinketType(trinketType);
-    const goldTrinketsUnlocked = isOtherAchievementsUnlocked(
+    const goldTrinketsUnlocked = isOtherAchievementUnlocked(
       OtherAchievementKind.GOLD_TRINKETS,
     );
 
@@ -738,7 +738,7 @@ export class PickupRemoval extends RandomizerModFeature {
     PickupVariant.BED, // 380
   )
   postPickupSelectionBed(): [PickupVariant, int] | undefined {
-    return isOtherAchievementsUnlocked(OtherAchievementKind.BEDS)
+    return isOtherAchievementUnlocked(OtherAchievementKind.BEDS)
       ? undefined
       : [PickupVariant.COIN, CoinSubType.PENNY];
   }

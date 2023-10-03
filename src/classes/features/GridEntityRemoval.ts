@@ -2,14 +2,19 @@ import type { EntityType } from "isaac-typescript-definitions";
 import {
   GridEntityType,
   GridEntityXMLType,
+  ModCallback,
   PoopGridEntityVariant,
   PressurePlateVariant,
 } from "isaac-typescript-definitions";
 import {
+  Callback,
   CallbackCustom,
   ModCallbackCustom,
   RockAltType,
+  convertXMLGridEntityType,
   getRockAltType,
+  isGridEntityXMLType,
+  isPoopGridEntityXMLType,
   setGridEntityType,
 } from "isaacscript-common";
 import { OtherAchievementKind } from "../../enums/OtherAchievementKind";
@@ -17,9 +22,11 @@ import { UnlockablePath } from "../../enums/UnlockablePath";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   isGridEntityTypeUnlocked,
-  isOtherAchievementsUnlocked,
+  isOtherAchievementUnlocked,
   isPathUnlocked,
 } from "./AchievementTracker";
+
+const POOP_ANM2_PATH = "gfx/grid/grid_poop.anm2";
 
 export class GridEntityRemoval extends RandomizerModFeature {
   /** @see `UNLOCKABLE_GRID_ENTITY_TYPES` */
@@ -27,13 +34,15 @@ export class GridEntityRemoval extends RandomizerModFeature {
   postGridEntityInit(gridEntity: GridEntity): void {
     const gridEntityType = gridEntity.GetType();
 
-    if (!isGridEntityTypeUnlocked(gridEntityType)) {
-      const newGridEntityType =
-        gridEntityType === GridEntityType.CRAWL_SPACE
-          ? GridEntityType.DECORATION
-          : GridEntityType.ROCK;
-      setGridEntityType(gridEntity, newGridEntityType);
+    if (isGridEntityTypeUnlocked(gridEntityType)) {
+      return;
     }
+
+    const newGridEntityType =
+      gridEntityType === GridEntityType.CRAWL_SPACE
+        ? GridEntityType.DECORATION
+        : GridEntityType.ROCK;
+    setGridEntityType(gridEntity, newGridEntityType);
   }
 
   // 6
@@ -48,7 +57,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (isOtherAchievementsUnlocked(achievementKind)) {
+    if (isOtherAchievementUnlocked(achievementKind)) {
       return;
     }
 
@@ -68,11 +77,15 @@ export class GridEntityRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (isOtherAchievementsUnlocked(OtherAchievementKind.GOLDEN_POOP)) {
+    if (isOtherAchievementUnlocked(achievementKind)) {
       return;
     }
 
-    setGridEntityType(gridEntity, GridEntityType.ROCK);
+    gridEntity.SetVariant(PoopGridEntityVariant.NORMAL);
+    const sprite = gridEntity.GetSprite();
+    sprite.Load(POOP_ANM2_PATH, true);
+    const defaultAnimation = sprite.GetDefaultAnimation();
+    sprite.Play(defaultAnimation, true);
   }
 
   // 26
@@ -93,9 +106,48 @@ export class GridEntityRemoval extends RandomizerModFeature {
     PressurePlateVariant.REWARD_PLATE,
   )
   postGridEntityInitRewardPlate(gridEntity: GridEntity): void {
-    if (!isOtherAchievementsUnlocked(OtherAchievementKind.REWARD_PLATES)) {
+    if (!isOtherAchievementUnlocked(OtherAchievementKind.REWARD_PLATES)) {
       setGridEntityType(gridEntity, GridEntityType.ROCK);
     }
+  }
+
+  @Callback(ModCallback.PRE_ROOM_ENTITY_SPAWN)
+  preRoomEntitySpawn(
+    entityTypeOrGridEntityXMLType: EntityType | GridEntityXMLType,
+    variant: int,
+    _subType: int,
+    _gridIndex: int,
+    _seed: Seed,
+  ): [EntityType | GridEntityXMLType, int, int] | undefined {
+    if (!isGridEntityXMLType(entityTypeOrGridEntityXMLType)) {
+      return undefined;
+    }
+
+    const gridEntityXMLType = entityTypeOrGridEntityXMLType;
+
+    if (!isPoopGridEntityXMLType(gridEntityXMLType)) {
+      return undefined;
+    }
+
+    const tuple = convertXMLGridEntityType(gridEntityXMLType, variant);
+    if (tuple === undefined) {
+      return undefined;
+    }
+
+    const [_gridEntityType, gridEntityVariant] = tuple;
+    const poopGridEntityVariant = gridEntityVariant as PoopGridEntityVariant;
+    const achievementKind = poopGridEntityVariantToAchievementKind(
+      poopGridEntityVariant,
+    );
+    if (achievementKind === undefined) {
+      return undefined;
+    }
+
+    if (isOtherAchievementUnlocked(achievementKind)) {
+      return undefined;
+    }
+
+    return [GridEntityXMLType.POOP, 0, 0];
   }
 
   @CallbackCustom(
@@ -111,7 +163,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
       return undefined;
     }
 
-    if (isOtherAchievementsUnlocked(achievementKind)) {
+    if (isOtherAchievementUnlocked(achievementKind)) {
       return undefined;
     }
 
@@ -138,7 +190,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
   preRoomEntitySpawnRewardPlate():
     | [EntityType | GridEntityXMLType, int, int]
     | undefined {
-    return isOtherAchievementsUnlocked(OtherAchievementKind.REWARD_PLATES)
+    return isOtherAchievementUnlocked(OtherAchievementKind.REWARD_PLATES)
       ? undefined
       : [GridEntityXMLType.ROCK, 0, 0];
   }

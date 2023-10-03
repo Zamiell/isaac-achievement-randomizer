@@ -21,15 +21,18 @@ import {
 } from "isaac-typescript-definitions";
 import {
   Callback,
+  CallbackCustom,
   GAME_FRAMES_PER_SECOND,
   KColorDefault,
   MAIN_CHARACTERS,
+  ModCallbackCustom,
   ModFeature,
   PriorityCallback,
   ReadonlySet,
   VectorZero,
   assertDefined,
   collectibleHasTag,
+  copyArray,
   filterMap,
   fonts,
   game,
@@ -121,6 +124,7 @@ const v = {
 
     completedObjectives: [] as Objective[],
     completedAchievements: [] as Achievement[],
+    completedAchievementsForRun: [] as Achievement[],
   },
 
   run: {
@@ -190,6 +194,13 @@ export class AchievementTracker extends ModFeature {
     }
 
     v.persistent.numDeaths++;
+  }
+
+  @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
+  postGameStartedReorderedFalse(): void {
+    v.persistent.completedAchievementsForRun = copyArray(
+      v.persistent.completedAchievements,
+    );
   }
 }
 
@@ -358,7 +369,9 @@ export function addObjective(objective: Objective, emulating = false): void {
 
   v.persistent.completedAchievements.push(swappedAchievement);
 
-  if (!emulating) {
+  if (emulating) {
+    v.persistent.completedAchievementsForRun.push(swappedAchievement);
+  } else {
     showNewAchievement(swappedAchievement);
   }
 }
@@ -910,7 +923,7 @@ export function isCharacterUnlocked(character: PlayerType): boolean {
     return true;
   }
 
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.CHARACTER &&
       achievement.character === character,
@@ -922,7 +935,7 @@ export function isCharacterUnlocked(character: PlayerType): boolean {
 // ----------------------------
 
 export function isPathUnlocked(unlockablePath: UnlockablePath): boolean {
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.PATH &&
       achievement.unlockablePath === unlockablePath,
@@ -934,7 +947,7 @@ export function isPathUnlocked(unlockablePath: UnlockablePath): boolean {
 // ---------------------------------
 
 export function isAltFloorUnlocked(altFloor: AltFloor): boolean {
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.ALT_FLOOR &&
       achievement.altFloor === altFloor,
@@ -950,7 +963,7 @@ export function isChallengeUnlocked(challenge: Challenge): boolean {
     return true;
   }
 
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.CHALLENGE &&
       achievement.challenge === challenge,
@@ -968,7 +981,7 @@ export function isCollectibleTypeUnlocked(
     return true;
   }
 
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.COLLECTIBLE &&
       achievement.collectibleType === collectibleType,
@@ -1016,7 +1029,7 @@ function getLockedBadCollectibleType(): CollectibleType | undefined {
 }
 
 function getUnlockedCollectibleTypes(): CollectibleType[] {
-  return filterMap(v.persistent.completedAchievements, (achievement) =>
+  return filterMap(v.persistent.completedAchievementsForRun, (achievement) =>
     achievement.type === AchievementType.COLLECTIBLE
       ? achievement.collectibleType
       : undefined,
@@ -1032,7 +1045,7 @@ export function isTrinketTypeUnlocked(trinketType: TrinketType): boolean {
     return true;
   }
 
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.TRINKET &&
       achievement.trinketType === trinketType,
@@ -1040,7 +1053,7 @@ export function isTrinketTypeUnlocked(trinketType: TrinketType): boolean {
 }
 
 export function getUnlockedTrinketTypes(): TrinketType[] {
-  return filterMap(v.persistent.completedAchievements, (achievement) =>
+  return filterMap(v.persistent.completedAchievementsForRun, (achievement) =>
     achievement.type === AchievementType.TRINKET
       ? achievement.trinketType
       : undefined,
@@ -1052,13 +1065,13 @@ export function getUnlockedTrinketTypes(): TrinketType[] {
 // ----------------------------
 
 export function anyCardTypesUnlocked(): boolean {
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) => achievement.type === AchievementType.CARD,
   );
 }
 
 export function isCardTypeUnlocked(cardType: CardType): boolean {
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.CARD &&
       achievement.cardType === cardType,
@@ -1066,7 +1079,7 @@ export function isCardTypeUnlocked(cardType: CardType): boolean {
 }
 
 export function getUnlockedCardTypes(): CardType[] {
-  return filterMap(v.persistent.completedAchievements, (achievement) =>
+  return filterMap(v.persistent.completedAchievementsForRun, (achievement) =>
     achievement.type === AchievementType.CARD
       ? achievement.cardType
       : undefined,
@@ -1078,13 +1091,13 @@ export function getUnlockedCardTypes(): CardType[] {
 // -----------------------------------
 
 export function anyPillEffectsUnlocked(): boolean {
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) => achievement.type === AchievementType.PILL_EFFECT,
   );
 }
 
 export function isPillEffectUnlocked(pillEffect: PillEffect): boolean {
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.PILL_EFFECT &&
       achievement.pillEffect === pillEffect,
@@ -1092,7 +1105,7 @@ export function isPillEffectUnlocked(pillEffect: PillEffect): boolean {
 }
 
 export function getUnlockedPillEffects(): PillEffect[] {
-  return filterMap(v.persistent.completedAchievements, (achievement) =>
+  return filterMap(v.persistent.completedAchievementsForRun, (achievement) =>
     achievement.type === AchievementType.PILL_EFFECT
       ? achievement.pillEffect
       : undefined,
@@ -1109,7 +1122,7 @@ export function isHeartSubTypeUnlocked(heartSubType: HeartSubType): boolean {
     return true;
   }
 
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.HEART &&
       achievement.heartSubType === heartSubType,
@@ -1122,7 +1135,7 @@ export function isCoinSubTypeUnlocked(coinSubType: CoinSubType): boolean {
     return true;
   }
 
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.COIN &&
       achievement.coinSubType === coinSubType,
@@ -1141,7 +1154,7 @@ export function isBombSubTypeUnlocked(bombSubType: BombSubType): boolean {
     return true;
   }
 
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.BOMB &&
       achievement.bombSubType === bombSubType,
@@ -1154,7 +1167,7 @@ export function isKeySubTypeUnlocked(keySubType: KeySubType): boolean {
     return true;
   }
 
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.KEY &&
       achievement.keySubType === keySubType,
@@ -1164,7 +1177,7 @@ export function isKeySubTypeUnlocked(keySubType: KeySubType): boolean {
 export function isBatterySubTypeUnlocked(
   batterySubType: BatterySubType,
 ): boolean {
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.BATTERY &&
       achievement.batterySubType === batterySubType,
@@ -1172,7 +1185,7 @@ export function isBatterySubTypeUnlocked(
 }
 
 export function isSackSubTypeUnlocked(sackSubType: SackSubType): boolean {
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.SACK &&
       achievement.sackSubType === sackSubType,
@@ -1195,7 +1208,7 @@ export function isChestPickupVariantUnlocked(
     return true;
   }
 
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.CHEST &&
       achievement.pickupVariant === pickupVariant,
@@ -1216,7 +1229,7 @@ export function isSlotVariantUnlocked(slotVariant: SlotVariant): boolean {
     return true;
   }
 
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.SLOT &&
       achievement.slotVariant === slotVariant,
@@ -1234,7 +1247,7 @@ export function isGridEntityTypeUnlocked(
     return true;
   }
 
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.GRID_ENTITY &&
       achievement.gridEntityType === gridEntityType,
@@ -1245,10 +1258,10 @@ export function isGridEntityTypeUnlocked(
 // Achievement - Other functions
 // -----------------------------
 
-export function isOtherAchievementsUnlocked(
+export function isOtherAchievementUnlocked(
   otherAchievementKind: OtherAchievementKind,
 ): boolean {
-  return v.persistent.completedAchievements.some(
+  return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.OTHER &&
       achievement.kind === otherAchievementKind,
