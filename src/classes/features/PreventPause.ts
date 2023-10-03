@@ -10,16 +10,26 @@ import {
   game,
   getEntities,
 } from "isaacscript-common";
+import { IS_DEV } from "../../constants";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 
 export class PreventPause extends RandomizerModFeature {
   @CallbackCustom(
     ModCallbackCustom.INPUT_ACTION_FILTER,
     InputHook.IS_ACTION_TRIGGERED,
-    ButtonAction.PAUSE,
+    ButtonAction.PAUSE, // 12
   )
   inputActionPause(): boolean | undefined {
     return this.isRoomDangerous() ? false : undefined;
+  }
+
+  @CallbackCustom(
+    ModCallbackCustom.INPUT_ACTION_FILTER,
+    InputHook.IS_ACTION_TRIGGERED,
+    ButtonAction.CONSOLE, // 28
+  )
+  inputActionConsole(): boolean | undefined {
+    return this.isRoomDangerous() && !IS_DEV ? false : undefined;
   }
 
   isRoomDangerous(): boolean {

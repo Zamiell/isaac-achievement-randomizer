@@ -511,10 +511,11 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
 
         // 210
         case CollectibleType.GNAWED_LEAF: {
-          const lockedBossObjective = getNonCompletedBossObjective();
-          if (lockedBossObjective !== undefined) {
-            const matchingAchievement =
-              getAchievementMatchingObjective(lockedBossObjective);
+          const nonCompletedBossObjective = getNonCompletedBossObjective();
+          if (nonCompletedBossObjective !== undefined) {
+            const matchingAchievement = getAchievementMatchingObjective(
+              nonCompletedBossObjective,
+            );
             if (matchingAchievement !== undefined) {
               return matchingAchievement;
             }

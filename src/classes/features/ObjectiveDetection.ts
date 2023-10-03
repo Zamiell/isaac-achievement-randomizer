@@ -2,8 +2,10 @@ import type { DamageFlag } from "isaac-typescript-definitions";
 import {
   BossID,
   CollectibleType,
+  EntityType,
   LevelStage,
   ModCallback,
+  NPCState,
   PickupVariant,
   RoomType,
 } from "isaac-typescript-definitions";
@@ -89,11 +91,27 @@ const v = {
   room: {
     tookDamageRoomFrame: 0,
     usedPause: false,
+    onFirstPhaseOfIsaac: true,
   },
 };
 
 export class ObjectiveDetection extends RandomizerModFeature {
   v = v;
+
+  // 0, 102
+  @Callback(ModCallback.POST_NPC_UPDATE, EntityType.ISAAC)
+  postNPCUpdateIsaac(npc: EntityNPC): void {
+    // Isaac goes to `NPCState.SPECIAL` when transitioning from phase 1 to phase 2 and when
+    // transitioning from phase 2 to phase 3.
+    if (npc.State === NPCState.SPECIAL) {
+      if (v.room.onFirstPhaseOfIsaac) {
+        const room = game.GetRoom();
+        v.room.tookDamageRoomFrame = room.GetFrameCount();
+      }
+
+      v.room.onFirstPhaseOfIsaac = false;
+    }
+  }
 
   // 1
   @Callback(ModCallback.POST_UPDATE)
@@ -264,7 +282,7 @@ export function hasTakenHitOnFloor(): boolean {
 }
 
 export function getSecondsSinceLastDamage(): int | undefined {
-  if (v.room.usedPause) {
+  if (v.room.usedPause || onFirstPhaseOfIsaac()) {
     return undefined;
   }
 
@@ -273,6 +291,16 @@ export function getSecondsSinceLastDamage(): int | undefined {
   const elapsedGameFrames = roomFrameCount - v.room.tookDamageRoomFrame;
 
   return elapsedGameFrames / GAME_FRAMES_PER_SECOND;
+}
+
+function onFirstPhaseOfIsaac(): boolean {
+  const room = game.GetRoom();
+  const bossID = room.GetBossID();
+
+  return (
+    (bossID === BossID.ISAAC || bossID === BossID.BLUE_BABY) &&
+    v.room.onFirstPhaseOfIsaac
+  );
 }
 
 export function getCharacterObjectiveKindNoHit():
