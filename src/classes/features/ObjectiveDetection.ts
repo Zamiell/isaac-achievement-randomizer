@@ -28,7 +28,7 @@ import {
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import {
-  getNumMinutesForBossObjective,
+  getNumSecondsForBossObjective,
   getObjective,
 } from "../../types/Objective";
 import { RandomizerModFeature } from "../RandomizerModFeature";
@@ -92,6 +92,7 @@ const v = {
     tookDamageRoomFrame: 0,
     usedPause: false,
     onFirstPhaseOfIsaac: true,
+    onFirstPhaseOfHush: true,
   },
 };
 
@@ -103,13 +104,22 @@ export class ObjectiveDetection extends RandomizerModFeature {
   postNPCUpdateIsaac(npc: EntityNPC): void {
     // Isaac goes to `NPCState.SPECIAL` when transitioning from phase 1 to phase 2 and when
     // transitioning from phase 2 to phase 3.
-    if (npc.State === NPCState.SPECIAL) {
-      if (v.room.onFirstPhaseOfIsaac) {
-        const room = game.GetRoom();
-        v.room.tookDamageRoomFrame = room.GetFrameCount();
-      }
-
+    if (v.room.onFirstPhaseOfIsaac && npc.State === NPCState.SPECIAL) {
       v.room.onFirstPhaseOfIsaac = false;
+
+      const room = game.GetRoom();
+      v.room.tookDamageRoomFrame = room.GetFrameCount();
+    }
+  }
+
+  // 0, 407
+  @Callback(ModCallback.POST_NPC_UPDATE, EntityType.HUSH)
+  postNPCUpdateHush(): void {
+    if (v.room.onFirstPhaseOfHush) {
+      v.room.onFirstPhaseOfHush = false;
+
+      const room = game.GetRoom();
+      v.room.tookDamageRoomFrame = room.GetFrameCount();
     }
   }
 
@@ -120,25 +130,8 @@ export class ObjectiveDetection extends RandomizerModFeature {
   }
 
   checkBossNoHit(): void {
-    const room = game.GetRoom();
-    const isClear = room.IsClear();
-    if (isClear) {
-      return;
-    }
-
     const bossID = getBossID();
     if (bossID === 0) {
-      return;
-    }
-
-    if (isBossObjectiveCompleted(bossID)) {
-      return;
-    }
-
-    const [entityType, variant] = getEntityTypeVariantFromBossID(bossID);
-    const bosses = getNPCs(entityType, variant, -1, true);
-    const aliveBosses = bosses.filter((boss) => !boss.IsDead());
-    if (aliveBosses.length === 0) {
       return;
     }
 
@@ -147,8 +140,8 @@ export class ObjectiveDetection extends RandomizerModFeature {
       return;
     }
 
-    const numMinutesForBossObjective = getNumMinutesForBossObjective(bossID);
-    if (seconds >= numMinutesForBossObjective * 60) {
+    const numSecondsForBossObjective = getNumSecondsForBossObjective(bossID);
+    if (seconds >= numSecondsForBossObjective) {
       const objective = getObjective(ObjectiveType.BOSS, bossID);
       addObjective(objective);
     }
@@ -282,11 +275,32 @@ export function hasTakenHitOnFloor(): boolean {
 }
 
 export function getSecondsSinceLastDamage(): int | undefined {
-  if (v.room.usedPause || onFirstPhaseOfIsaac()) {
+  const room = game.GetRoom();
+  const bossID = room.GetBossID();
+  if (bossID === 0) {
     return undefined;
   }
 
-  const room = game.GetRoom();
+  if (isBossObjectiveCompleted(bossID)) {
+    return undefined;
+  }
+
+  const isClear = room.IsClear();
+  if (isClear) {
+    return undefined;
+  }
+
+  const [entityType, variant] = getEntityTypeVariantFromBossID(bossID);
+  const bosses = getNPCs(entityType, variant, -1, true);
+  const aliveBosses = bosses.filter((boss) => !boss.IsDead());
+  if (aliveBosses.length === 0) {
+    return;
+  }
+
+  if (v.room.usedPause || onFirstPhaseOfIsaac() || onFirstPhaseOfHush()) {
+    return undefined;
+  }
+
   const roomFrameCount = room.GetFrameCount();
   const elapsedGameFrames = roomFrameCount - v.room.tookDamageRoomFrame;
 
@@ -301,6 +315,13 @@ function onFirstPhaseOfIsaac(): boolean {
     (bossID === BossID.ISAAC || bossID === BossID.BLUE_BABY) &&
     v.room.onFirstPhaseOfIsaac
   );
+}
+
+function onFirstPhaseOfHush(): boolean {
+  const room = game.GetRoom();
+  const bossID = room.GetBossID();
+
+  return bossID === BossID.HUSH && v.room.onFirstPhaseOfHush;
 }
 
 export function getCharacterObjectiveKindNoHit():

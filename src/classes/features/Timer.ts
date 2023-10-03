@@ -3,12 +3,9 @@ import { Callback, getBossID } from "isaacscript-common";
 import { isTimerEnabled } from "../../deadSeaScrolls";
 import { TimerType } from "../../enums/TimerType";
 import { timerDraw } from "../../timer";
-import { getNumMinutesForBossObjective } from "../../types/Objective";
+import { getNumSecondsForBossObjective } from "../../types/Objective";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import {
-  getSecondsElapsed,
-  isBossObjectiveCompleted,
-} from "./AchievementTracker";
+import { getSecondsElapsed } from "./AchievementTracker";
 import { getSecondsSinceLastDamage } from "./ObjectiveDetection";
 
 export class Timer extends RandomizerModFeature {
@@ -31,18 +28,13 @@ export class Timer extends RandomizerModFeature {
       return;
     }
 
-    if (isBossObjectiveCompleted(bossID)) {
-      return;
-    }
-
     const seconds = getSecondsSinceLastDamage();
     if (seconds === undefined) {
       return;
     }
 
-    const numMinutesForBossObjective = getNumMinutesForBossObjective(bossID);
-    const totalSeconds = numMinutesForBossObjective * 60;
-    const secondsRemaining = totalSeconds - seconds;
+    const numSecondsForBossObjective = getNumSecondsForBossObjective(bossID);
+    const secondsRemaining = numSecondsForBossObjective - seconds;
     timerDraw(TimerType.NO_HIT, secondsRemaining);
   }
 }

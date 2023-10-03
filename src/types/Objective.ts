@@ -179,7 +179,7 @@ export function getObjectiveText(objective: Objective): string[] {
   }
 }
 
-export function getNumMinutesForBossObjective(bossID: BossID): int {
+function getNumMinutesForBossObjective(bossID: BossID): int {
   switch (bossID) {
     // 58
     case BossID.BROWNIE: {
@@ -220,4 +220,9 @@ export function getNumMinutesForBossObjective(bossID: BossID): int {
       return DEFAULT_NUM_MINUTES_FOR_BOSS_OBJECTIVE;
     }
   }
+}
+
+export function getNumSecondsForBossObjective(bossID: BossID): int {
+  const numMinutesForBossObjective = getNumMinutesForBossObjective(bossID);
+  return numMinutesForBossObjective * 60;
 }
