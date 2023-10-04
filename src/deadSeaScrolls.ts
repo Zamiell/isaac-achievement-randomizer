@@ -565,7 +565,7 @@ function getChallengeObjectiveButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
-/** We manually replaced the caret image in the "" file from a caret to a checkmark. */
+/** We manually replaced the caret image in the "16font.png" file from a caret to a checkmark. */
 function getCompletedText(completed: boolean): string {
   return completed ? "^" : "x";
 }

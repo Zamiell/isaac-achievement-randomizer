@@ -69,9 +69,13 @@ export class CheckErrors extends ModFeature {
       this.drawErrorText(
         `You have illegal mods enabled.\n\nMake sure that ${MOD_NAME} is the only mod enabled in your mod list and then completely close and re-open the game.`,
       );
-    } else if (v.run.wrongDifficulty) {
+    } else if (v.run.normalMode) {
       this.drawErrorText(
-        `You are only allowed to play ${MOD_NAME} on hard mode.`,
+        `You are playing on normal mode, but you are only allowed to play ${MOD_NAME} on hard mode.`,
+      );
+    } else if (v.run.normalGreedMode) {
+      this.drawErrorText(
+        `You are playing on Greed Mode, but you are only allowed to play ${MOD_NAME} on Greedier mode.`,
       );
     } else if (v.run.onSetSeed) {
       this.drawErrorText(
@@ -136,7 +140,8 @@ export class CheckErrors extends ModFeature {
     checkAfterbirthPlus();
     checkIncompleteSave();
     checkOtherModsEnabled();
-    checkDifficulty();
+    checkNormalMode();
+    checkNormalGreedMode();
     checkSetSeed();
     checkEasterEggs();
     checkVictoryLap();
@@ -198,27 +203,31 @@ function checkOtherModsEnabled() {
   }
 }
 
-function checkDifficulty() {
+function checkNormalMode() {
   if (!isRandomizerEnabled()) {
     return;
   }
 
-  // Some challenges are on hard mode.
+  // Some challenges are on normal mode.
   const challenge = Isaac.GetChallenge();
   if (challenge !== Challenge.NULL) {
     return;
   }
 
-  if (
-    game.Difficulty === Difficulty.NORMAL ||
-    game.Difficulty === Difficulty.GREED
-  ) {
-    log(
-      `Error: Wrong difficulty detected: ${Difficulty[game.Difficulty]} (${
-        game.Difficulty
-      })`,
-    );
-    v.run.wrongDifficulty = true;
+  if (game.Difficulty === Difficulty.NORMAL) {
+    log("Error: Normal mode (non-hard mode) detected.");
+    v.run.normalMode = true;
+  }
+}
+
+function checkNormalGreedMode() {
+  if (!isRandomizerEnabled()) {
+    return;
+  }
+
+  if (game.Difficulty === Difficulty.GREED) {
+    log("Error: Normal Greed Mode (non-Greedier mode) detected.");
+    v.run.normalGreedMode = true;
   }
 }
 
