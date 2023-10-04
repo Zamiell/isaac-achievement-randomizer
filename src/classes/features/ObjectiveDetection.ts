@@ -88,6 +88,7 @@ const STAGE_TO_CHARACTER_OBJECTIVE_KIND_REPENTANCE = new ReadonlyMap<
 const BOSSES_IN_BIG_ROOMS_SET = new ReadonlySet([
   BossID.MR_FRED, // 53
   BossID.MEGA_SATAN, // 55
+  BossID.DELIRIUM, // 70
   BossID.TUFF_TWINS, // 80
   BossID.GREAT_GIDEON, // 83
   BossID.MOTHER, // 88
