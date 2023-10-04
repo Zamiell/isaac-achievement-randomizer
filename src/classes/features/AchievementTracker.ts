@@ -1,4 +1,3 @@
-import type { PillEffect, SackSubType } from "isaac-typescript-definitions";
 import {
   BatterySubType,
   BombSubType,
@@ -14,7 +13,9 @@ import {
   KeySubType,
   ModCallback,
   PickupVariant,
+  PillEffect,
   PlayerType,
+  SackSubType,
   SeedEffect,
   SlotVariant,
   TrinketType,
@@ -43,9 +44,11 @@ import {
   getScreenBottomRightPos,
   getVanillaCollectibleTypesOfQuality,
   isActiveCollectible,
+  isCard,
   isHiddenCollectible,
   isPassiveOrFamiliarCollectible,
   isRepentanceBoss,
+  isRune,
   log,
   logError,
   newRNG,
@@ -94,11 +97,13 @@ const GOOD_COLLECTIBLE_TYPES = new ReadonlySet<CollectibleType>([
   CollectibleType.CHOCOLATE_MILK, // 69
   CollectibleType.BOOK_OF_REVELATIONS, // 78
   CollectibleType.RELIC, // 98
+  CollectibleType.CRYSTAL_BALL, // 158
   CollectibleType.CRICKETS_BODY, // 224
   CollectibleType.MONSTROS_LUNG, // 229
   CollectibleType.DEATHS_TOUCH, // 237
   CollectibleType.TECH_5, // 244
   CollectibleType.PROPTOSIS, // 261
+  CollectibleType.DARK_BUM, // 278
   CollectibleType.CANCER, // 301
   CollectibleType.DEAD_EYE, // 373
   CollectibleType.MAW_OF_THE_VOID, // 399
@@ -628,12 +633,66 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
       }
 
       switch (achievement.collectibleType) {
+        // 75
+        case CollectibleType.PHD: {
+          if (!anyPillEffectsUnlocked()) {
+            return getAchievement(
+              AchievementType.PILL_EFFECT,
+              PillEffect.I_FOUND_PILLS,
+            );
+          }
+
+          return undefined;
+        }
+
         // 84
         case CollectibleType.WE_NEED_TO_GO_DEEPER: {
           if (!isGridEntityTypeUnlocked(GridEntityType.CRAWL_SPACE)) {
             return getAchievement(
               AchievementType.GRID_ENTITY,
               GridEntityType.CRAWL_SPACE,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 85
+        case CollectibleType.DECK_OF_CARDS: {
+          if (!anyCardsUnlocked()) {
+            return getAchievement(AchievementType.CARD, CardType.FOOL);
+          }
+
+          return undefined;
+        }
+
+        // 102
+        case CollectibleType.MOMS_BOTTLE_OF_PILLS: {
+          if (!anyPillEffectsUnlocked()) {
+            return getAchievement(
+              AchievementType.PILL_EFFECT,
+              PillEffect.I_FOUND_PILLS,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 139
+        case CollectibleType.MOMS_PURSE: {
+          if (!anyTrinketTypesUnlocked()) {
+            return getAchievement(AchievementType.TRINKET, TrinketType.ERROR);
+          }
+
+          return undefined;
+        }
+
+        // 195
+        case CollectibleType.MOMS_COIN_PURSE: {
+          if (!anyPillEffectsUnlocked()) {
+            return getAchievement(
+              AchievementType.PILL_EFFECT,
+              PillEffect.I_FOUND_PILLS,
             );
           }
 
@@ -679,6 +738,123 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
           return undefined;
         }
 
+        // 251
+        case CollectibleType.STARTER_DECK: {
+          if (!anyCardTypesUnlocked()) {
+            return getAchievement(AchievementType.CARD, CardType.FOOL);
+          }
+
+          return undefined;
+        }
+
+        // 252
+        case CollectibleType.LITTLE_BAGGY: {
+          if (!anyPillEffectsUnlocked()) {
+            return getAchievement(
+              AchievementType.PILL_EFFECT,
+              PillEffect.I_FOUND_PILLS,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 263
+        case CollectibleType.CLEAR_RUNE: {
+          if (!anyRunesUnlocked()) {
+            return getAchievement(AchievementType.CARD, CardType.RUNE_BLANK);
+          }
+
+          return undefined;
+        }
+
+        // 286
+        case CollectibleType.BLANK_CARD: {
+          if (!anyCardsUnlocked()) {
+            return getAchievement(AchievementType.CARD, CardType.FOOL);
+          }
+
+          return undefined;
+        }
+
+        // 348
+        case CollectibleType.PLACEBO: {
+          if (!anyPillEffectsUnlocked()) {
+            return getAchievement(
+              AchievementType.PILL_EFFECT,
+              PillEffect.I_FOUND_PILLS,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 424
+        case CollectibleType.SACK_HEAD: {
+          if (!isSackSubTypeUnlocked(SackSubType.NORMAL)) {
+            return getAchievement(AchievementType.SACK, SackSubType.NORMAL);
+          }
+
+          return undefined;
+        }
+
+        // 439
+        case CollectibleType.MOMS_BOX: {
+          if (!anyTrinketTypesUnlocked()) {
+            return getAchievement(AchievementType.TRINKET, TrinketType.ERROR);
+          }
+
+          return undefined;
+        }
+
+        // 451
+        case CollectibleType.TAROT_CLOTH: {
+          if (!anyCardsUnlocked()) {
+            return getAchievement(AchievementType.CARD, CardType.FOOL);
+          }
+
+          return undefined;
+        }
+
+        // 458
+        case CollectibleType.BELLY_BUTTON: {
+          if (!anyTrinketTypesUnlocked()) {
+            return getAchievement(AchievementType.TRINKET, TrinketType.ERROR);
+          }
+
+          return undefined;
+        }
+
+        // 479
+        case CollectibleType.SMELTER: {
+          if (!anyTrinketTypesUnlocked()) {
+            return getAchievement(AchievementType.TRINKET, TrinketType.ERROR);
+          }
+
+          return undefined;
+        }
+
+        // 491
+        case CollectibleType.ACID_BABY: {
+          if (!anyPillEffectsUnlocked()) {
+            return getAchievement(
+              AchievementType.PILL_EFFECT,
+              PillEffect.I_FOUND_PILLS,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 538
+        case CollectibleType.MARBLES: {
+          if (!anyTrinketTypesUnlocked()) {
+            return getAchievement(AchievementType.TRINKET, TrinketType.ERROR);
+          }
+
+          return undefined;
+        }
+
         // 566
         case CollectibleType.DREAM_CATCHER: {
           for (const altFloor of ALT_FLOORS) {
@@ -702,6 +878,27 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
           return undefined;
         }
 
+        // 624
+        case CollectibleType.BOOSTER_PACK: {
+          if (!anyCardsUnlocked()) {
+            return getAchievement(AchievementType.CARD, CardType.FOOL);
+          }
+
+          return undefined;
+        }
+
+        // 654
+        case CollectibleType.FALSE_PHD: {
+          if (!anyPillEffectsUnlocked()) {
+            return getAchievement(
+              AchievementType.PILL_EFFECT,
+              PillEffect.I_FOUND_PILLS,
+            );
+          }
+
+          return undefined;
+        }
+
         default: {
           return undefined;
         }
@@ -714,6 +911,27 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         case TrinketType.DAEMONS_TAIL: {
           if (!isHeartSubTypeUnlocked(HeartSubType.BLACK)) {
             return getAchievement(AchievementType.HEART, HeartSubType.BLACK);
+          }
+
+          return undefined;
+        }
+
+        // 44
+        case TrinketType.SAFETY_CAP: {
+          if (!anyPillEffectsUnlocked()) {
+            return getAchievement(
+              AchievementType.PILL_EFFECT,
+              PillEffect.I_FOUND_PILLS,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 45
+        case TrinketType.ACE_OF_SPADES: {
+          if (!anyCardsUnlocked()) {
+            return getAchievement(AchievementType.CARD, CardType.FOOL);
           }
 
           return undefined;
@@ -1187,6 +1405,12 @@ function getUnlockedCollectibleTypes(): CollectibleType[] {
 // Achievement - Trinket functions
 // -------------------------------
 
+export function anyTrinketTypesUnlocked(): boolean {
+  return v.persistent.completedAchievementsForRun.some(
+    (achievement) => achievement.type === AchievementType.TRINKET,
+  );
+}
+
 export function isTrinketTypeUnlocked(trinketType: TrinketType): boolean {
   if (ALWAYS_UNLOCKED_TRINKET_TYPES.has(trinketType)) {
     return true;
@@ -1214,6 +1438,20 @@ export function getUnlockedTrinketTypes(): TrinketType[] {
 export function anyCardTypesUnlocked(): boolean {
   return v.persistent.completedAchievementsForRun.some(
     (achievement) => achievement.type === AchievementType.CARD,
+  );
+}
+
+export function anyCardsUnlocked(): boolean {
+  return v.persistent.completedAchievementsForRun.some(
+    (achievement) =>
+      achievement.type === AchievementType.CARD && isCard(achievement.cardType),
+  );
+}
+
+export function anyRunesUnlocked(): boolean {
+  return v.persistent.completedAchievementsForRun.some(
+    (achievement) =>
+      achievement.type === AchievementType.CARD && isRune(achievement.cardType),
   );
 }
 
