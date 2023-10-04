@@ -1,3 +1,10 @@
+TODO:
+
+- getBossName
+- DSS should have objectives and achievements in separate submenus
+- add character unlock screen
+- add all the other unlock screens except for collectibles and trinkets
+
 POTENTIAL TODO:
 - see current unlocks in DSS
 
