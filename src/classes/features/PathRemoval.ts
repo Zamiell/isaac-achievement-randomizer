@@ -190,8 +190,10 @@ export class PathRemoval extends RandomizerModFeature {
     _position: Vector,
     _velocity: Vector,
     _spawner: Entity | undefined,
-    initSeed: int,
-  ): [EntityType, int, int, int] | undefined {
+    initSeed: Seed,
+  ):
+    | [entityType: EntityType, variant: int, subType: int, initSeed: Seed]
+    | undefined {
     const collectibleType = subType as CollectibleType;
 
     if (

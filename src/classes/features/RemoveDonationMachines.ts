@@ -21,12 +21,14 @@ export class RemoveDonationMachines extends RandomizerModFeature {
     _position: Vector,
     _velocity: Vector,
     _spawner: Entity | undefined,
-    _initSeed: Seed,
-  ): [EntityType, int, int, int] | undefined {
+    initSeed: Seed,
+  ):
+    | [entityType: EntityType, variant: int, subType: int, initSeed: Seed]
+    | undefined {
     const slotVariant = variant as SlotVariant;
 
     return DONATION_MACHINE_VARIANTS.has(slotVariant)
-      ? [EntityType.EFFECT, EffectVariantCustom.INVISIBLE_EFFECT, 0, 0]
+      ? [EntityType.EFFECT, EffectVariantCustom.INVISIBLE_EFFECT, 0, initSeed]
       : undefined;
   }
 }

@@ -18,7 +18,9 @@ export class NPCRemoval extends RandomizerModFeature {
     _velocity: Vector,
     _spawner: Entity | undefined,
     initSeed: Seed,
-  ): [EntityType, int, int, int] | undefined {
+  ):
+    | [entityType: EntityType, variant: int, subType: int, initSeed: Seed]
+    | undefined {
     return isOtherAchievementUnlocked(OtherAchievementKind.SHOPKEEPERS)
       ? undefined
       : [EntityType.EFFECT, EffectVariantCustom.INVISIBLE_EFFECT, 0, initSeed];

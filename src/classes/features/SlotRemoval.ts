@@ -15,7 +15,9 @@ export class SlotRemoval extends RandomizerModFeature {
     _velocity: Vector,
     _spawner: Entity | undefined,
     initSeed: Seed,
-  ): [EntityType, int, int, int] | undefined {
+  ):
+    | [entityType: EntityType, variant: int, subType: int, initSeed: Seed]
+    | undefined {
     const slotVariant = variant as SlotVariant;
 
     if (isSlotVariantUnlocked(slotVariant)) {

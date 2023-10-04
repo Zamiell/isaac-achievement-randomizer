@@ -117,8 +117,10 @@ export class GridEntityRemoval extends RandomizerModFeature {
     variant: int,
     _subType: int,
     _gridIndex: int,
-    _seed: Seed,
-  ): [EntityType | GridEntityXMLType, int, int] | undefined {
+    _initSeed: Seed,
+  ):
+    | [type: EntityType | GridEntityXMLType, variant: int, subType: int]
+    | undefined {
     if (!isGridEntityXMLType(entityTypeOrGridEntityXMLType)) {
       return undefined;
     }
@@ -155,7 +157,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
     GridEntityXMLType.ROCK_ALT, // 1002
   )
   preRoomEntitySpawnRockAlt():
-    | [EntityType | GridEntityXMLType, int, int]
+    | [type: EntityType | GridEntityXMLType, variant: int, subType: int]
     | undefined {
     const rockAltType = getRockAltType();
     const achievementKind = rockAltTypeToAchievementKind(rockAltType);
@@ -175,7 +177,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
     GridEntityXMLType.ROCK_ALT_2, // 1008
   )
   preRoomEntitySpawnRockAlt2():
-    | [EntityType | GridEntityXMLType, int, int]
+    | [type: EntityType | GridEntityXMLType, variant: int, subType: int]
     | undefined {
     return isPathUnlocked(UnlockablePath.ASCENT)
       ? undefined
@@ -188,7 +190,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
     PressurePlateVariant.REWARD_PLATE,
   )
   preRoomEntitySpawnRewardPlate():
-    | [EntityType | GridEntityXMLType, int, int]
+    | [type: EntityType | GridEntityXMLType, variant: int, subType: int]
     | undefined {
     return isOtherAchievementUnlocked(OtherAchievementKind.REWARD_PLATES)
       ? undefined
