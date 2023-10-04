@@ -1,4 +1,5 @@
 import {
+  Challenge,
   ModCallback,
   PlayerType,
   SeedEffect,
@@ -27,6 +28,11 @@ export class HitIcon extends RandomizerModFeature {
   // 2
   @Callback(ModCallback.POST_RENDER)
   postRender(): void {
+    const challenge = Isaac.GetChallenge();
+    if (challenge !== Challenge.NULL) {
+      return;
+    }
+
     const kindNoHit = getCharacterObjectiveKindNoHit();
     if (kindNoHit === undefined) {
       return;

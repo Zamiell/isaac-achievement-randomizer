@@ -310,7 +310,7 @@ export function getSecondsSinceLastDamage(): int | undefined {
 
   const challenge = Isaac.GetChallenge();
   if (challenge !== Challenge.NULL) {
-    return;
+    return undefined;
   }
 
   if (inBigRoom() && !BOSSES_IN_BIG_ROOMS_SET.has(bossID)) {
