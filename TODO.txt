@@ -1,6 +1,5 @@
 TODO:
 
-- add succubus to good items (replace in save.dat)
 - logic for PHD behind pill effects and False PHD
 - check that bosses behind either PATH or ALT_STAGE have logic for no hit achievement
 - check that repentance bosses are gated behind repentance achievements

@@ -102,6 +102,7 @@ const GOOD_COLLECTIBLE_TYPES = new ReadonlySet<CollectibleType>([
   CollectibleType.CANCER, // 301
   CollectibleType.DEAD_EYE, // 373
   CollectibleType.MAW_OF_THE_VOID, // 399
+  CollectibleType.SUCCUBUS, // 417
   CollectibleType.HAEMOLACRIA, // 531
   CollectibleType.ROCK_BOTTOM, // 562
   CollectibleType.SPIRIT_SWORD, // 579
