@@ -1,7 +1,6 @@
 TODO:
 
-- when removing character starting items, also remove it from the rebirth item tracker
-- getBossName
+- rebirth item tracker is bugged with D6 on Isaac
 
 - check that bosses behind either PATH or ALT_STAGE have logic for no hit achievement
 - check that repentance bosses are gated behind repentance achievements

@@ -13,6 +13,7 @@ import type { Objective } from "./types/Objective";
 export const NO_HIT_BOSSES: readonly BossID[] = BOSS_IDS.filter(
   (bossID) =>
     bossID !== BossID.DELIRIUM && // 70
+    bossID !== BossID.ULTRA_GREEDIER && // 71
     bossID !== BossID.RAGLICH, // 98
 );
 
