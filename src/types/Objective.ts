@@ -3,6 +3,7 @@ import { BossID } from "isaac-typescript-definitions";
 import type { CompositionTypeSatisfiesEnum } from "isaacscript-common";
 import {
   assertDefined,
+  getBossName,
   getChallengeName,
   getCharacterName,
   isEnumValue,
@@ -163,7 +164,7 @@ export function getObjectiveText(objective: Objective): string[] {
     }
 
     case ObjectiveType.BOSS: {
-      const bossName = BossID[objective.bossID];
+      const bossName = getBossName(objective.bossID);
       return [
         `Survive ${getNumMinutesForBossObjective(objective.bossID)}`,
         "minutes without",

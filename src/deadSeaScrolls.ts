@@ -1,8 +1,9 @@
 import type { PlayerType } from "isaac-typescript-definitions";
-import { BossID, Challenge } from "isaac-typescript-definitions";
+import { Challenge } from "isaac-typescript-definitions";
 import {
   MAIN_CHARACTERS,
   assertDefined,
+  getBossName,
   getChallengeName,
   getCharacterName,
   iRange,
@@ -511,7 +512,7 @@ function getBossButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const bossID of NO_HIT_BOSSES) {
-    const bossName = BossID[bossID].toLowerCase();
+    const bossName = getBossName(bossID).toLowerCase();
     const completed = isBossObjectiveCompleted(bossID);
     const completedText = getCompletedText(completed);
 

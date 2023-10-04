@@ -1,9 +1,11 @@
 TODO:
 
-- check that bosses behind either PATH or ALT_STAGE have logic for no hit achievement
-- check that repentance bosses are gated behind repentance achievements
 - when removing character starting items, also remove it from the rebirth item tracker
 - getBossName
+
+- check that bosses behind either PATH or ALT_STAGE have logic for no hit achievement
+- check that repentance bosses are gated behind repentance achievements
+
 - DSS should have objectives and achievements in separate submenus
 - add character unlock screen
 - add all the other unlock screens except for collectibles and trinkets
