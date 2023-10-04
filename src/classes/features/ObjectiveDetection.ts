@@ -1,6 +1,7 @@
 import type { DamageFlag } from "isaac-typescript-definitions";
 import {
   BossID,
+  Challenge,
   CollectibleType,
   EntityType,
   LevelStage,
@@ -305,6 +306,11 @@ export function getSecondsSinceLastDamage(): int | undefined {
   const isClear = room.IsClear();
   if (isClear) {
     return undefined;
+  }
+
+  const challenge = Isaac.GetChallenge();
+  if (challenge !== Challenge.NULL) {
+    return;
   }
 
   if (inBigRoom() && !BOSSES_IN_BIG_ROOMS_SET.has(bossID)) {
