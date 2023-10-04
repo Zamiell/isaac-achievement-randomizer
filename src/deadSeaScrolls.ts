@@ -1,5 +1,5 @@
 import type { PlayerType } from "isaac-typescript-definitions";
-import { Challenge } from "isaac-typescript-definitions";
+import { BossID, Challenge } from "isaac-typescript-definitions";
 import {
   MAIN_CHARACTERS,
   assertDefined,
@@ -20,6 +20,7 @@ import {
   getNumDeaths,
   getRandomizerSeed,
   getTimeElapsed,
+  isBossObjectiveCompleted,
   isChallengeObjectiveCompleted,
   isCharacterObjectiveCompleted,
   isRandomizerEnabled,
@@ -30,6 +31,7 @@ import { MOD_NAME } from "./constants";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { init } from "./lib/dssmenucore";
 import { mod } from "./mod";
+import { NO_HIT_BOSSES } from "./objectives";
 import { getAchievementText } from "./types/Achievement";
 import { getObjectiveText } from "./types/Objective";
 
@@ -213,6 +215,10 @@ export function initDeadSeaScrolls(): void {
           dest: "characterObjectives",
         },
         {
+          str: "boss",
+          dest: "bossObjectives",
+        },
+        {
           str: "challenge",
           dest: "challengeObjectives",
         },
@@ -237,6 +243,18 @@ export function initDeadSeaScrolls(): void {
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
         menu.buttons = getCharacterButtons();
+      },
+    },
+
+    bossObjectives: {
+      title: "boss todo",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getBossButtons();
       },
     },
 
@@ -470,11 +488,36 @@ function getSpecificCharacterObjectiveButtons(
     }
 
     const completed = isCharacterObjectiveCompleted(character, kind);
-    const completedText = completed ? "completed" : "x";
+    const completedText = getCompletedText(completed);
 
     buttons.push(
       {
         str: objectiveName,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getBossButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const bossID of NO_HIT_BOSSES) {
+    const bossName = BossID[bossID].toLowerCase();
+    const completed = isBossObjectiveCompleted(bossID);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: `${bossID} - ${bossName}`,
       },
       {
         str: completedText,
@@ -503,7 +546,7 @@ function getChallengeObjectiveButtons(): DeadSeaScrollsButton[] {
     }
 
     const completed = isChallengeObjectiveCompleted(challenge);
-    const completedText = completed ? "completed" : "x";
+    const completedText = getCompletedText(completed);
 
     buttons.push(
       {
@@ -520,4 +563,9 @@ function getChallengeObjectiveButtons(): DeadSeaScrollsButton[] {
   }
 
   return buttons;
+}
+
+/** We manually replaced the caret image in the "" file from a caret to a checkmark. */
+function getCompletedText(completed: boolean): string {
+  return completed ? "^" : "x";
 }

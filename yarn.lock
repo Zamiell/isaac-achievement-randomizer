@@ -3892,7 +3892,7 @@ __metadata:
     isaacscript: ^3.11.1
     isaacscript-common: ^55.2.0
     isaacscript-lint: ^6.0.0
-    isaacscript-spell: ^1.4.0
+    isaacscript-spell: ^1.5.0
     isaacscript-tsconfig: ^4.0.0
     typescript: ^5.2.2
     typescript-to-lua: ^1.20.1
@@ -3956,10 +3956,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-spell@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "isaacscript-spell@npm:1.4.0"
-  checksum: 5dec201d96868378e7df1cb5c8955e10611e501d38bf53554185b67c0d20d1fc695a9bc1e75b4de4ca415e5896a17b582443760c4ee1771c9c555f5a2cf017c5
+"isaacscript-spell@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "isaacscript-spell@npm:1.5.0"
+  checksum: e06de4cd86a0f33b1a167d9a82f93022dd98c70c5a59b08a5ff7ac6020b42501fdd2be08f761e40bfa4b49daf663f32a867ffceeb9f8c7d8ddf6aa5163a470f4
   languageName: node
   linkType: hard
 

@@ -1,3 +1,7 @@
+TODO:
+- change "COMPLETED" to check mark
+- add TODO for boss objectives
+
 POTENTIAL TODO:
 - see current unlocks in DSS
 
