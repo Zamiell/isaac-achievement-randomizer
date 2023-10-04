@@ -757,6 +757,26 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
       }
     }
 
+    case AchievementType.CARD: {
+      switch (achievement.cardType) {
+        // 72
+        case CardType.REVERSE_TOWER: {
+          if (!isGridEntityTypeUnlocked(GridEntityType.ROCK_TINTED)) {
+            return getAchievement(
+              AchievementType.GRID_ENTITY,
+              GridEntityType.ROCK_TINTED,
+            );
+          }
+
+          return undefined;
+        }
+
+        default: {
+          return undefined;
+        }
+      }
+    }
+
     default: {
       return undefined;
     }
