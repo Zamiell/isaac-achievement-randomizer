@@ -11,6 +11,7 @@ import { CheckErrors } from "./classes/features/CheckErrors";
 import { ForceFadedConsoleDisplay } from "./classes/features/ForceFadedConsoleDisplay";
 import { GridEntityRemoval } from "./classes/features/GridEntityRemoval";
 import { HitIcon } from "./classes/features/HitIcon";
+import { InvisibleEntities } from "./classes/features/InvisibleEntities";
 import { NPCRemoval } from "./classes/features/NPCRemoval";
 import { ObjectiveDetection } from "./classes/features/ObjectiveDetection";
 import { PathRemoval } from "./classes/features/PathRemoval";
@@ -39,6 +40,7 @@ const MOD_FEATURES = [
   ForceFadedConsoleDisplay,
   GridEntityRemoval,
   HitIcon,
+  InvisibleEntities,
   NPCRemoval,
   ObjectiveDetection,
   PathRemoval,
