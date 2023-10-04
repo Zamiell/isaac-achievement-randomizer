@@ -1,6 +1,3 @@
-TODO:
-- survive on each boss, exclude non 1x1 rooms (except for Fred)
-
 POTENTIAL TODO:
 - see current unlocks in DSS
 

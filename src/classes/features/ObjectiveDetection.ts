@@ -15,12 +15,14 @@ import {
   GAME_FRAMES_PER_SECOND,
   ModCallbackCustom,
   ReadonlyMap,
+  ReadonlySet,
   game,
   getBossID,
   getEntityTypeVariantFromBossID,
   getNPCs,
   getRoomSubType,
   inBeastRoom,
+  inBigRoom,
   isFirstPlayer,
   isSelfDamage,
   onRepentanceStage,
@@ -81,6 +83,14 @@ const STAGE_TO_CHARACTER_OBJECTIVE_KIND_REPENTANCE = new ReadonlyMap<
   [LevelStage.DEPTHS_2, CharacterObjectiveKind.NO_HIT_MAUSOLEUM_2],
   [LevelStage.WOMB_1, CharacterObjectiveKind.NO_HIT_CORPSE_1],
   [LevelStage.WOMB_2, CharacterObjectiveKind.NO_HIT_CORPSE_2],
+]);
+
+const BOSSES_IN_BIG_ROOMS_SET = new ReadonlySet([
+  BossID.MR_FRED, // 53
+  BossID.TUFF_TWINS, // 80
+  BossID.GREAT_GIDEON, // 83
+  BossID.MOTHER, // 88
+  BossID.DOGMA, // 99
 ]);
 
 const v = {
@@ -274,6 +284,10 @@ export function hasTakenHitOnFloor(): boolean {
   return v.level.tookHit;
 }
 
+/**
+ * Returns undefined if the player does not need the corresponding boss objective for the current
+ * room.
+ */
 export function getSecondsSinceLastDamage(): int | undefined {
   const room = game.GetRoom();
   const bossID = room.GetBossID();
@@ -288,6 +302,10 @@ export function getSecondsSinceLastDamage(): int | undefined {
   const isClear = room.IsClear();
   if (isClear) {
     return undefined;
+  }
+
+  if (inBigRoom() && !BOSSES_IN_BIG_ROOMS_SET.has(bossID)) {
+    return;
   }
 
   const [entityType, variant] = getEntityTypeVariantFromBossID(bossID);

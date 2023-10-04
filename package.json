@@ -15,7 +15,7 @@
     "@total-typescript/ts-reset": "^0.5.1",
     "isaac-typescript-definitions": "^25.0.0",
     "isaacscript": "^3.11.1",
-    "isaacscript-common": "^55.1.1",
+    "isaacscript-common": "^55.2.0",
     "isaacscript-lint": "^6.0.0",
     "isaacscript-spell": "^1.4.0",
     "isaacscript-tsconfig": "^4.0.0",

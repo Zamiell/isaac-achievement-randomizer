@@ -64,7 +64,6 @@ export class PathRemoval extends RandomizerModFeature {
 
   @CallbackCustom(ModCallbackCustom.POST_NEW_ROOM_REORDERED)
   postNewRoomReordered(): void {
-    Isaac.DebugString("GETTING HERE - POST_NEW_ROOM_REORDERED");
     this.checkPathDoors();
     this.checkRemoveSacrificeRoomSpikes();
     this.checkBlackMarket();
