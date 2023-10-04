@@ -1,14 +1,15 @@
+TODO:
+- survive on each boss, exclude non 1x1 rooms (except for Fred)
+
 POTENTIAL TODO:
 - see current unlocks in DSS
 
 OTHER POTENTIAL ACHIEVEMENTS:
 - characters start with their items
+- champions that drop items
 
 OTHER POTENTIAL OBJECTIVES:
-- would need 288 objectives to reduce no damage objectives by half
-- survive on each boss in the game for 2 minutes without getting damaged (100 bosses)
-  - exclude non 1x1 rooms (except for Fred)
-  - exclude holy mantle hits
+- [would need 288 objectives to reduce no damage objectives by half]
 - survive for 2 minutes - 16 mini-bosses + 2 angels
 
 - forgotten unlock sequence

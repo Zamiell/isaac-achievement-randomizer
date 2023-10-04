@@ -9,6 +9,7 @@ import {
   setPlayerHealth,
 } from "isaacscript-common";
 import { AltFloor } from "../../enums/AltFloor";
+import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { isAltFloorUnlocked } from "./AchievementTracker";
 import { hasErrors } from "./checkErrors/v";
@@ -34,6 +35,7 @@ export class StageTypeRemoval extends RandomizerModFeature {
     const playerHealth = getPlayerHealth(player);
     player.AddEternalHearts(-1);
     goToStage(stage, StageType.ORIGINAL);
+    mod.reorderedCallbacksSetStage(stage, StageType.ORIGINAL);
     setPlayerHealth(player, playerHealth);
   }
 }
