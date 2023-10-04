@@ -1405,7 +1405,7 @@ function getUnlockedCollectibleTypes(): CollectibleType[] {
 // Achievement - Trinket functions
 // -------------------------------
 
-export function anyTrinketTypesUnlocked(): boolean {
+function anyTrinketTypesUnlocked(): boolean {
   return v.persistent.completedAchievementsForRun.some(
     (achievement) => achievement.type === AchievementType.TRINKET,
   );
@@ -1441,14 +1441,14 @@ export function anyCardTypesUnlocked(): boolean {
   );
 }
 
-export function anyCardsUnlocked(): boolean {
+function anyCardsUnlocked(): boolean {
   return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.CARD && isCard(achievement.cardType),
   );
 }
 
-export function anyRunesUnlocked(): boolean {
+function anyRunesUnlocked(): boolean {
   return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.CARD && isRune(achievement.cardType),
