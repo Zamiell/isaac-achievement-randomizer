@@ -1564,7 +1564,7 @@ function getWorseCollectibleType(
         continue;
       }
 
-      if (!isCollectibleTypeUnlocked(lowerQualityCollectibleType)) {
+      if (!isCollectibleTypeUnlocked(lowerQualityCollectibleType, false)) {
         return lowerQualityCollectibleType;
       }
     }
