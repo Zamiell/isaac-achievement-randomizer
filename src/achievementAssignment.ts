@@ -101,7 +101,6 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Achievement> {
 
   // Each character is guaranteed to unlock another character from a basic objective.
   let lastUnlockedCharacter = PlayerType.ISAAC;
-
   for (const character of unlockableCharacters) {
     const achievement = getAchievement(AchievementType.CHARACTER, character);
     removeAchievement(achievements, achievement);

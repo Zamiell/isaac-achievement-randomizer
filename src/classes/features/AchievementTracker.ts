@@ -32,6 +32,7 @@ import {
   ModFeature,
   PriorityCallback,
   ReadonlyMap,
+  ReadonlySet,
   VectorZero,
   addSetsToSet,
   assertDefined,
@@ -47,10 +48,12 @@ import {
   getCollectibleQuality,
   getRandomSeed,
   getScreenBottomRightPos,
+  getScreenCenterPos,
   getVanillaCollectibleTypesOfQuality,
   includes,
   isActiveCollectible,
   isCard,
+  isEven,
   isHiddenCollectible,
   isPassiveOrFamiliarCollectible,
   isRepentanceStage,
@@ -76,8 +79,7 @@ import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { OtherAchievementKind } from "../../enums/OtherAchievementKind";
 import { UnlockablePath } from "../../enums/UnlockablePath";
-import { mod } from "../../mod";
-import { NO_HIT_BOSSES } from "../../objectives";
+import { ALL_OBJECTIVES, NO_HIT_BOSSES } from "../../objectives";
 import { convertSecondsToTimerValues } from "../../timer";
 import type { Achievement } from "../../types/Achievement";
 import { getAchievement, getAchievementText } from "../../types/Achievement";
@@ -255,14 +257,99 @@ const v = {
   },
 };
 
+let generatingRNG: RNG | undefined;
+let numGenerationAttempts = 0;
+
 /** This does not extend from `RandomizerModFeature` to avoid a dependency cycle. */
 export class AchievementTracker extends ModFeature {
   v = v;
 
+  @Callback(ModCallback.POST_RENDER)
+  postRender(): void {
+    this.checkDrawBlackScreen();
+    this.checkGenerate();
+  }
+
+  checkDrawBlackScreen(): void {
+    if (generatingRNG === undefined) {
+      return;
+    }
+
+    const seeds = game.GetSeeds();
+    seeds.AddSeedEffect(SeedEffect.NO_HUD);
+
+    BLACK_SPRITE.Render(VectorZero);
+
+    const screenCenterPos = getScreenCenterPos();
+    const screenBottomRightPos = getScreenBottomRightPos();
+    const rightX = screenBottomRightPos.X;
+
+    const text1 = "Randomizing, please wait...";
+    const aboveCenterY = screenCenterPos.Y - 10;
+    FONT.DrawString(text1, 0, aboveCenterY, KColorDefault, rightX, true);
+
+    // - `numGenerationAttempts` starts at -1, so we normalize it to 1.
+    // - Additionally, it is rendered before it is incremented, so we have to add one.
+    const numAttempts = Math.max(numGenerationAttempts + 1, 1);
+    const text2 = `(attempt #${numAttempts})`;
+    const belowCenterY = screenCenterPos.Y + 10;
+    FONT.DrawString(text2, 0, belowCenterY, KColorDefault, rightX, true);
+  }
+
+  checkGenerate(): void {
+    if (generatingRNG === undefined) {
+      return;
+    }
+
+    // Only attempt to generate on odd render frames. Otherwise, the text will not consistently be
+    // drawn on top of the black sprite due to lag.
+    const renderFrameCount = Isaac.GetFrameCount();
+    if (isEven(renderFrameCount)) {
+      return;
+    }
+
+    numGenerationAttempts++;
+
+    // Allow a render frame to pass before doing the first generation attempt so that the black
+    // sprite is drawn to the screen.
+    if (numGenerationAttempts === 0) {
+      return;
+    }
+
+    v.persistent.objectiveToAchievementMap =
+      getAchievementsForRNG(generatingRNG);
+    log(
+      `Checking to see if randomizer seed ${v.persistent.seed} is beatable. Attempt: #${numGenerationAttempts}`,
+    );
+
+    if (!isAchievementsBeatable()) {
+      // Try again on the next render frame.
+      return;
+    }
+
+    generatingRNG = undefined;
+
+    // Reset the persistent variable relating to our streak.
+    v.persistent.numDeaths = 0;
+    v.persistent.gameFramesElapsed = 0;
+    v.persistent.completedAchievements = [];
+    v.persistent.completedObjectives = [];
+
+    preForcedRestart();
+    setUnseeded();
+
+    const challenge = Isaac.GetChallenge();
+    if (challenge !== Challenge.NULL) {
+      Isaac.ExecuteCommand("challenge 0");
+    }
+
+    restart(STARTING_CHARACTER);
+  }
+
   // 16
   @Callback(ModCallback.POST_GAME_END)
   postGameEnd(isGameOver: boolean): void {
-    if (v.persistent.seed === null) {
+    if (!isRandomizerEnabled()) {
       return;
     }
 
@@ -281,7 +368,7 @@ export class AchievementTracker extends ModFeature {
     HIGHER_PRIORITY_THAN_ISAACSCRIPT_COMMON,
   )
   preGameExit(): void {
-    if (v.persistent.seed === null) {
+    if (!isRandomizerEnabled()) {
       return;
     }
 
@@ -319,6 +406,10 @@ export class AchievementTracker extends ModFeature {
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
   postGameStartedReorderedFalse(): void {
+    if (!isRandomizerEnabled()) {
+      return;
+    }
+
     v.persistent.completedAchievementsForRun = copyArray(
       v.persistent.completedAchievements,
     );
@@ -338,26 +429,6 @@ export function getRandomizerSeed(): Seed | undefined {
 }
 
 export function startRandomizer(seed: Seed | undefined): void {
-  const seeds = game.GetSeeds();
-  seeds.AddSeedEffect(SeedEffect.NO_HUD);
-  BLACK_SPRITE.Render(VectorZero);
-
-  const bottomRightPos = getScreenBottomRightPos();
-  const position = bottomRightPos.mul(0.5);
-  const text = "Randomizing, please wait...";
-  const length = FONT.GetStringWidthUTF8(text);
-  FONT.DrawString(text, position.X - length / 2, position.Y, KColorDefault);
-
-  // We need to wait a frame for the text to be drawn to the screen.
-  mod.runNextRenderFrame(() => {
-    const seeds2 = game.GetSeeds();
-    seeds2.RemoveSeedEffect(SeedEffect.NO_HUD);
-
-    startRandomizer2(seed);
-  });
-}
-
-function startRandomizer2(seed: Seed | undefined) {
   if (seed === undefined) {
     seed = getRandomSeed();
   }
@@ -365,32 +436,10 @@ function startRandomizer2(seed: Seed | undefined) {
   v.persistent.seed = seed;
   log(`Set new randomizer seed: ${v.persistent.seed}`);
 
-  const rng = newRNG(seed);
+  generatingRNG = newRNG(v.persistent.seed);
+  numGenerationAttempts = -1;
 
-  let numAttempts = 0;
-  do {
-    numAttempts++;
-    v.persistent.objectiveToAchievementMap = getAchievementsForRNG(rng);
-    log(
-      `Checking to see if randomizer seed ${seed} is beatable. Attempt: ${numAttempts}`,
-    );
-  } while (!isAchievementsBeatable());
-
-  // Reset the persistent variable relating to our streak.
-  v.persistent.numDeaths = 0;
-  v.persistent.gameFramesElapsed = 0;
-  v.persistent.completedAchievements = [];
-  v.persistent.completedObjectives = [];
-
-  preForcedRestart();
-  setUnseeded();
-
-  const challenge = Isaac.GetChallenge();
-  if (challenge !== Challenge.NULL) {
-    Isaac.ExecuteCommand("challenge 0");
-  }
-
-  restart(STARTING_CHARACTER);
+  // We will start generating achievements on the next render frame.
 }
 
 export function endRandomizer(): void {
@@ -1869,6 +1918,10 @@ function isAchievementsBeatable(): boolean {
     }
 
     if (!unlockedSomething) {
+      log(
+        `Failed to emulate beating seed ${v.persistent.seed}: ${v.persistent.completedAchievements.length} / ${ALL_ACHIEVEMENTS.length}`,
+      );
+      logMissingObjectives();
       return false;
     }
   }
@@ -2058,6 +2111,25 @@ function canGetToBoss(
 // -------
 // Logging
 // -------
+
+function logMissingObjectives() {
+  log("Missing objectives:");
+
+  const completedObjectiveIDs = v.persistent.completedObjectives.map(
+    (objective) => getObjectiveID(objective),
+  );
+  const completedObjectiveIDsSet = new ReadonlySet(completedObjectiveIDs);
+
+  const missingObjectives = ALL_OBJECTIVES.filter((objective) => {
+    const objectiveID = getObjectiveID(objective);
+    return !completedObjectiveIDsSet.has(objectiveID);
+  });
+
+  for (const [i, objective] of missingObjectives.entries()) {
+    const objectiveText = getObjectiveText(objective).join(" ");
+    log(`${i + 1}) ${objectiveText}`);
+  }
+}
 
 export function logSpoilerLog(): void {
   if (v.persistent.seed === null) {

@@ -45,6 +45,7 @@ import {
   itemConfig,
   log,
   newRNG,
+  rebirthItemTrackerRemoveCollectible,
   removeAllEffects,
   removeAllFamiliars,
   removeAllPickups,
@@ -370,6 +371,7 @@ export class PickupRemoval extends RandomizerModFeature {
           isEden(player))
       ) {
         player.RemoveCollectible(collectibleType);
+        rebirthItemTrackerRemoveCollectible(collectibleType);
       }
     }
 
