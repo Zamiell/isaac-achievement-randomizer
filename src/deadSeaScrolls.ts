@@ -30,7 +30,7 @@ import {
   OTHER_ACHIEVEMENT_KINDS,
   UNLOCKABLE_PATHS,
 } from "./cachedEnums";
-import { getCharacterObjectiveKindName } from "./classes/features/AchievementText";
+import { getCharacterObjectiveKindName } from "./classes/features/AchievementNotification";
 import {
   endRandomizer,
   getCompletedAchievements,

@@ -119,7 +119,7 @@ import {
 } from "../../unlockablePickupTypes";
 import { UNLOCKABLE_SLOT_VARIANTS } from "../../unlockableSlotVariants";
 import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../unlockableTrinketTypes";
-import { showNewAchievement } from "./AchievementText";
+import { showNewAchievement } from "./AchievementNotification";
 import { hasErrors } from "./checkErrors/v";
 
 const VERBOSE = false as boolean;

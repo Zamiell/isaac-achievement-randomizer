@@ -20,17 +20,33 @@ const v = {
   run: {
     text: null as string | null,
     renderFrameSet: null as int | null,
+    queuedTexts: [] as string[],
   },
 };
 
 /** This does not extend from `RandomizerModFeature` to avoid a dependency cycle. */
-export class AchievementText extends ModFeature {
+export class AchievementNotification extends ModFeature {
   v = v;
 
   // 2
   @Callback(ModCallback.POST_RENDER)
   postRender(): void {
+    this.checkDequeueText();
     this.checkDraw();
+  }
+
+  checkDequeueText(): void {
+    if (v.run.text !== null) {
+      return;
+    }
+
+    const text = v.run.queuedTexts.shift();
+    if (text === undefined) {
+      return;
+    }
+
+    v.run.text = text;
+    v.run.renderFrameSet = Isaac.GetFrameCount();
   }
 
   checkDraw(): void {
@@ -53,19 +69,17 @@ export class AchievementText extends ModFeature {
       return;
     }
 
-    if (v.run.renderFrameSet === null) {
+    if (v.run.text === null || v.run.renderFrameSet === null) {
       return;
     }
 
     // The streak text will slowly fade out.
     const fade = this.getFade(v.run.renderFrameSet);
-    if (fade <= 0) {
-      v.run.renderFrameSet = null;
-      return;
-    }
-
-    if (v.run.text !== null) {
+    if (fade > 0) {
       this.draw(v.run.text, fade);
+    } else {
+      v.run.text = null;
+      v.run.renderFrameSet = null;
     }
   }
 
@@ -99,8 +113,9 @@ export class AchievementText extends ModFeature {
 
 export function showNewAchievement(achievement: Achievement): void {
   const achievementText = getAchievementText(achievement);
-  v.run.text = `You have unlocked a new ${achievementText[0]}:\n${achievementText[1]}`;
-  v.run.renderFrameSet = Isaac.GetFrameCount();
+  v.run.queuedTexts.push(
+    `You have unlocked a new ${achievementText[0]}:\n${achievementText[1]}`,
+  );
 
   sfxManager.Play(SoundEffectCustom.GOLDEN_WALNUT);
 }

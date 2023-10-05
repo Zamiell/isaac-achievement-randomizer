@@ -5,7 +5,7 @@ import {
   setLogFunctionsGlobal,
   setTracebackFunctionsGlobal,
 } from "isaacscript-common";
-import { AchievementText } from "./classes/features/AchievementText";
+import { AchievementNotification } from "./classes/features/AchievementNotification";
 import { AchievementTracker } from "./classes/features/AchievementTracker";
 import { CheckErrors } from "./classes/features/CheckErrors";
 import { DrawControls } from "./classes/features/DrawControls";
@@ -35,7 +35,7 @@ import { mod } from "./mod";
 import { validate } from "./validate";
 
 const MOD_FEATURES = [
-  AchievementText,
+  AchievementNotification,
   AchievementTracker,
   CheckErrors,
   DrawControls,
