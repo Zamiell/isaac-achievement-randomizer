@@ -21,19 +21,19 @@ This page explains how it works.
 ## Summary (TL;DR)
 
 - This mod **does not** simply randomize all of the vanilla achievements. Rather, it has custom objectives and custom unlocks.
-- The custom objectives are designed to be challenging and non-arbitrary. There are only 4 types of objectives, so you can easily remember what they are:
+- The custom objectives are designed to be challenging and non-arbitrary. There are only 4 types of objectives:
   - Kill each story boss (per character).
   - Finish each floor without taking a hit (per character).
   - Survive each boss for 2 minutes without taking a hit.
   - Complete each challenge.
-- Unlike vanilla, almost everything you can imagine is locked from the start of the game. That means you will have to beat your the first run as Isaac with only Breakfast in the collectible pool.
+- Unlike vanilla, almost everything you can imagine is locked from the start of the game. That means you will have to beat your the first run as Isaac with only Breakfast in the item pools.
 - For more specific details about why we designed it this way and what exact things are locked, read on.
 
 <br>
 
 ## Design Principles
 
-We do not want to randomize vanilla achievements. This is for several reasons:
+We do not want to randomize the vanilla achievements. This is for several reasons:
 
 1. [Other mods](https://steamcommunity.com/sharedfiles/filedetails/?id=2838967057) have already done that.
 1. Some of the vanilla achievements do not make sense in the context of a player trying to "beat the game" in the least amount of death possible, like `The Scissors - Die 100 times` or `Mr. Resetter! - Reset 7 times in a row`. (This would make the minimum amount of deaths always be 100 and it is possible to complete the game in less than that.)
@@ -41,7 +41,7 @@ We do not want to randomize vanilla achievements. This is for several reasons:
 1. Some vanilla achievements are arbitrary conditions and are not very fun to play, like `They will charge you up... for a small fee - Donate to Battery Bums until they pay out with an item 5 times`. (If you are not lucky enough to get this achievement during your streak, the most consistent strategy is to reset as Tainted Keeper in Greed Mode until you see a Battery Bum in the shop. This is "busywork" and is not skill-based in any way.)
 1. Many things are not gated behind vanilla achievements and it would be fun if they were (e.g. soul hearts, locked chests).
 
-Thus, this mod takes a completely different approach. We want each objective to be difficult, skill-based, and non-arbitrary, representing meaningful accomplishments inside of the game. And we want as many unlockable things are possible.
+Thus, this mod takes a completely different approach. We want each objective to be non-arbitrary, difficult, skill-based, and represent a meaningful accomplishment inside of the game. And we want as many unlockable things are possible.
 
 <br>
 

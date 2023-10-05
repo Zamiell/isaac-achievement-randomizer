@@ -31,18 +31,19 @@ import {
   ModFeature,
   PriorityCallback,
   ReadonlyMap,
-  ReadonlySet,
   VectorZero,
   addSetsToSet,
   assertDefined,
   collectibleHasTag,
   copyArray,
+  eRange,
   filterMap,
   fonts,
   game,
   getBossSet,
   getCharacterName,
   getCollectibleName,
+  getCollectibleQuality,
   getRandomSeed,
   getScreenBottomRightPos,
   getVanillaCollectibleTypesOfQuality,
@@ -105,30 +106,6 @@ import { hasErrors } from "./checkErrors/v";
 const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
 const FONT = fonts.droid;
 const STARTING_CHARACTER = PlayerType.ISAAC;
-
-const GOOD_COLLECTIBLE_TYPES = new ReadonlySet<CollectibleType>([
-  ...getVanillaCollectibleTypesOfQuality(4),
-  CollectibleType.CHOCOLATE_MILK, // 69
-  CollectibleType.BOOK_OF_REVELATIONS, // 78
-  CollectibleType.RELIC, // 98
-  CollectibleType.CRYSTAL_BALL, // 158
-  CollectibleType.CRICKETS_BODY, // 224
-  CollectibleType.MONSTROS_LUNG, // 229
-  CollectibleType.DEATHS_TOUCH, // 237
-  CollectibleType.TECH_5, // 244
-  CollectibleType.PROPTOSIS, // 261
-  CollectibleType.DARK_BUM, // 278
-  CollectibleType.CANCER, // 301
-  CollectibleType.DEAD_EYE, // 373
-  CollectibleType.MAW_OF_THE_VOID, // 399
-  CollectibleType.SUCCUBUS, // 417
-  CollectibleType.HAEMOLACRIA, // 531
-  CollectibleType.ROCK_BOTTOM, // 562
-  CollectibleType.SPIRIT_SWORD, // 579
-  CollectibleType.ECHO_CHAMBER, // 700
-]);
-
-const BAD_QUALITIES = [0, 1] as const;
 
 const CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP = new ReadonlyMap<
   Challenge,
@@ -643,14 +620,15 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
     }
 
     case AchievementType.COLLECTIBLE: {
-      if (GOOD_COLLECTIBLE_TYPES.has(achievement.collectibleType)) {
-        const badCollectibleType = getLockedBadCollectibleType();
-        if (badCollectibleType !== undefined) {
-          return getAchievement(
-            AchievementType.COLLECTIBLE,
-            badCollectibleType,
-          );
-        }
+      // First, check to see if there is a worse collectible available to unlock.
+      const worseCollectibleType = getWorseCollectibleType(
+        achievement.collectibleType,
+      );
+      if (worseCollectibleType !== undefined) {
+        return getAchievement(
+          AchievementType.COLLECTIBLE,
+          worseCollectibleType,
+        );
       }
 
       switch (achievement.collectibleType) {
@@ -1409,16 +1387,22 @@ export function getUnlockedEdenPassiveCollectibleTypes(): CollectibleType[] {
   );
 }
 
-function getLockedBadCollectibleType(): CollectibleType | undefined {
-  for (const quality of BAD_QUALITIES) {
-    const badCollectibleTypes = getVanillaCollectibleTypesOfQuality(quality);
-    for (const collectibleType of badCollectibleTypes) {
-      if (ALWAYS_UNLOCKED_COLLECTIBLE_TYPES.has(collectibleType)) {
+function getWorseCollectibleType(
+  collectibleType: CollectibleType,
+): CollectibleType | undefined {
+  const quality = getCollectibleQuality(collectibleType);
+
+  for (const lowerQualityInt of eRange(quality)) {
+    const lowerQuality = lowerQualityInt as Quality;
+    const lowerQualityCollectibleTypes =
+      getVanillaCollectibleTypesOfQuality(lowerQuality);
+    for (const lowerQualityCollectibleType of lowerQualityCollectibleTypes) {
+      if (ALWAYS_UNLOCKED_COLLECTIBLE_TYPES.has(lowerQualityCollectibleType)) {
         continue;
       }
 
-      if (!isCollectibleTypeUnlocked(collectibleType)) {
-        return collectibleType;
+      if (!isCollectibleTypeUnlocked(lowerQualityCollectibleType)) {
+        return lowerQualityCollectibleType;
       }
     }
   }
