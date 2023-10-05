@@ -1839,8 +1839,13 @@ function isAchievementsBeatable(): boolean {
       }
     }
 
+    const reachableNonStoryBossesSet = getReachableNonStoryBossesSet();
+
     for (const bossID of NO_HIT_BOSSES) {
-      if (canGetToBoss(bossID) && !isBossObjectiveCompleted(bossID)) {
+      if (
+        canGetToBoss(bossID, reachableNonStoryBossesSet) &&
+        !isBossObjectiveCompleted(bossID)
+      ) {
         const objective = getObjective(ObjectiveType.BOSS, bossID);
         addObjective(objective, true);
         unlockedSomething = true;
@@ -1947,7 +1952,10 @@ function canGetToCharacterObjectiveKind(kind: CharacterObjectiveKind): boolean {
   }
 }
 
-function canGetToBoss(bossID: BossID): boolean {
+function canGetToBoss(
+  bossID: BossID,
+  reachableBossesSet: Set<BossID>,
+): boolean {
   switch (bossID) {
     // 6, 8, 24, 25, 39
     case BossID.MOM:
@@ -2006,13 +2014,13 @@ function canGetToBoss(bossID: BossID): boolean {
     }
 
     default: {
-      return canGetToBossNonStory(bossID);
+      return reachableBossesSet.has(bossID);
     }
   }
 }
 
-function canGetToBossNonStory(bossID: BossID): boolean {
-  const reachableBossesSet = new Set<BossID>();
+function getReachableNonStoryBossesSet(): Set<BossID> {
+  const reachableNonStoryBossesSet = new Set<BossID>();
 
   for (const stage of BOSS_STAGES) {
     for (const stageType of STAGE_TYPES) {
@@ -2036,11 +2044,11 @@ function canGetToBossNonStory(bossID: BossID): boolean {
         continue;
       }
 
-      addSetsToSet(reachableBossesSet, bossSet);
+      addSetsToSet(reachableNonStoryBossesSet, bossSet);
     }
   }
 
-  return reachableBossesSet.has(bossID);
+  return reachableNonStoryBossesSet;
 }
 
 // -------
