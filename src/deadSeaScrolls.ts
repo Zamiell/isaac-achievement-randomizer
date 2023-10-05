@@ -994,7 +994,7 @@ function getCharacterUnlockButtons(): DeadSeaScrollsButton[] {
 
   for (const character of UNLOCKABLE_CHARACTERS) {
     const characterName = getCharacterName(character).toLowerCase();
-    const completed = isCharacterUnlocked(character);
+    const completed = isCharacterUnlocked(character, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
@@ -1019,7 +1019,7 @@ function getPathUnlockButtons(): DeadSeaScrollsButton[] {
 
   for (const unlockablePath of UNLOCKABLE_PATHS) {
     const pathName = getPathName(unlockablePath).toLowerCase();
-    const completed = isPathUnlocked(unlockablePath);
+    const completed = isPathUnlocked(unlockablePath, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
@@ -1044,7 +1044,7 @@ function getAltFloorUnlockButtons(): DeadSeaScrollsButton[] {
 
   for (const altFloor of ALT_FLOORS) {
     const altFloorName = getAltFloorName(altFloor).toLowerCase();
-    const completed = isAltFloorUnlocked(altFloor);
+    const completed = isAltFloorUnlocked(altFloor, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
@@ -1074,7 +1074,7 @@ function getChallengeUnlockButtons(): DeadSeaScrollsButton[] {
 
     const challengeName = getChallengeName(challenge).toLowerCase();
     const challengeNameTruncated = getNameTruncated(challengeName);
-    const completed = isChallengeUnlocked(challenge);
+    const completed = isChallengeUnlocked(challenge, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
@@ -1099,7 +1099,7 @@ function getCollectibleUnlockButtons(): DeadSeaScrollsButton[] {
 
   for (const collectibleType of UNLOCKABLE_COLLECTIBLE_TYPES) {
     const collectibleName = getCollectibleName(collectibleType).toLowerCase();
-    const completed = isCollectibleTypeUnlocked(collectibleType);
+    const completed = isCollectibleTypeUnlocked(collectibleType, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
@@ -1124,7 +1124,7 @@ function getTrinketUnlockButtons(): DeadSeaScrollsButton[] {
 
   for (const trinketType of UNLOCKABLE_TRINKET_TYPES) {
     const trinketName = getTrinketName(trinketType).toLowerCase();
-    const completed = isTrinketTypeUnlocked(trinketType);
+    const completed = isTrinketTypeUnlocked(trinketType, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
@@ -1149,7 +1149,7 @@ function getCardUnlockButtons(): DeadSeaScrollsButton[] {
 
   for (const cardType of UNLOCKABLE_CARD_TYPES) {
     const cardName = getCardName(cardType).toLowerCase();
-    const completed = isCardTypeUnlocked(cardType);
+    const completed = isCardTypeUnlocked(cardType, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
@@ -1175,7 +1175,7 @@ function getPillEffectUnlockButtons(): DeadSeaScrollsButton[] {
   for (const pillEffect of VANILLA_PILL_EFFECTS) {
     const pillEffectName = getPillEffectName(pillEffect).toLowerCase();
     const pillEffectNameTruncated = getNameTruncated(pillEffectName);
-    const completed = isPillEffectUnlocked(pillEffect);
+    const completed = isPillEffectUnlocked(pillEffect, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
@@ -1200,7 +1200,7 @@ function getHeartUnlockButtons(): DeadSeaScrollsButton[] {
 
   for (const heartSubType of UNLOCKABLE_HEART_SUB_TYPES) {
     const heartName = getHeartName(heartSubType).toLowerCase();
-    const completed = isHeartSubTypeUnlocked(heartSubType);
+    const completed = isHeartSubTypeUnlocked(heartSubType, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
@@ -1225,7 +1225,7 @@ function getCoinUnlockButtons(): DeadSeaScrollsButton[] {
 
   for (const coinSubType of UNLOCKABLE_COIN_SUB_TYPES) {
     const coinName = getCoinName(coinSubType).toLowerCase();
-    const completed = isCoinSubTypeUnlocked(coinSubType);
+    const completed = isCoinSubTypeUnlocked(coinSubType, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
@@ -1250,7 +1250,7 @@ function getBombUnlockButtons(): DeadSeaScrollsButton[] {
 
   for (const bombSubType of UNLOCKABLE_BOMB_SUB_TYPES) {
     const bombName = getBombName(bombSubType).toLowerCase();
-    const completed = isBombSubTypeUnlocked(bombSubType);
+    const completed = isBombSubTypeUnlocked(bombSubType, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
@@ -1275,7 +1275,7 @@ function getKeyUnlockButtons(): DeadSeaScrollsButton[] {
 
   for (const keySubType of UNLOCKABLE_KEY_SUB_TYPES) {
     const keyName = getKeyName(keySubType).toLowerCase();
-    const completed = isKeySubTypeUnlocked(keySubType);
+    const completed = isKeySubTypeUnlocked(keySubType, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
@@ -1300,7 +1300,7 @@ function getBatteryUnlockButtons(): DeadSeaScrollsButton[] {
 
   for (const batterySubType of UNLOCKABLE_BATTERY_SUB_TYPES) {
     const batteryName = getBatteryName(batterySubType).toLowerCase();
-    const completed = isBatterySubTypeUnlocked(batterySubType);
+    const completed = isBatterySubTypeUnlocked(batterySubType, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
@@ -1325,7 +1325,7 @@ function getSackUnlockButtons(): DeadSeaScrollsButton[] {
 
   for (const sackSubType of UNLOCKABLE_SACK_KEY_SUB_TYPES) {
     const sackName = getSackName(sackSubType).toLowerCase();
-    const completed = isSackSubTypeUnlocked(sackSubType);
+    const completed = isSackSubTypeUnlocked(sackSubType, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
@@ -1350,7 +1350,7 @@ function getChestUnlockButtons(): DeadSeaScrollsButton[] {
 
   for (const pickupVariant of UNLOCKABLE_CHEST_PICKUP_VARIANTS) {
     const chestName = getChestName(pickupVariant).toLowerCase();
-    const completed = isChestPickupVariantUnlocked(pickupVariant);
+    const completed = isChestPickupVariantUnlocked(pickupVariant, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
@@ -1375,7 +1375,7 @@ function getSlotUnlockButtons(): DeadSeaScrollsButton[] {
 
   for (const slotVariant of UNLOCKABLE_SLOT_VARIANTS) {
     const slotName = getSlotName(slotVariant).toLowerCase();
-    const completed = isSlotVariantUnlocked(slotVariant);
+    const completed = isSlotVariantUnlocked(slotVariant, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
@@ -1400,7 +1400,7 @@ function getGridEntityUnlockButtons(): DeadSeaScrollsButton[] {
 
   for (const gridEntityType of UNLOCKABLE_GRID_ENTITY_TYPES) {
     const gridEntityName = getGridEntityName(gridEntityType).toLowerCase();
-    const completed = isGridEntityTypeUnlocked(gridEntityType);
+    const completed = isGridEntityTypeUnlocked(gridEntityType, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
@@ -1426,7 +1426,7 @@ function getOtherUnlockButtons(): DeadSeaScrollsButton[] {
   for (const otherAchievementKind of OTHER_ACHIEVEMENT_KINDS) {
     const otherAchievementName =
       getOtherAchievementName(otherAchievementKind)[1].toLowerCase();
-    const completed = isOtherAchievementUnlocked(otherAchievementKind);
+    const completed = isOtherAchievementUnlocked(otherAchievementKind, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(

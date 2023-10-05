@@ -105,6 +105,7 @@ import {
 import type { ObjectiveID } from "../../types/ObjectiveID";
 import { getObjectiveID } from "../../types/ObjectiveID";
 import { UNLOCKABLE_CARD_TYPES } from "../../unlockableCardTypes";
+import { UNLOCKABLE_CHARACTERS } from "../../unlockableCharacters";
 import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTypes";
 import { UNLOCKABLE_GRID_ENTITY_TYPES } from "../../unlockableGridEntityTypes";
 import {
@@ -1506,13 +1507,19 @@ function getNonCompletedBossObjective(): BossObjective | undefined {
 // Achievement - Character functions
 // ---------------------------------
 
-export function isCharacterUnlocked(character: PlayerType): boolean {
-  // Isaac is always unlocked.
-  if (character === PlayerType.ISAAC) {
+export function isCharacterUnlocked(
+  character: PlayerType,
+  forRun = true,
+): boolean {
+  if (!UNLOCKABLE_CHARACTERS.includes(character)) {
     return true;
   }
 
-  return v.persistent.completedAchievementsForRun.some(
+  const array = forRun
+    ? v.persistent.completedAchievementsForRun
+    : v.persistent.completedAchievements;
+
+  return array.some(
     (achievement) =>
       achievement.type === AchievementType.CHARACTER &&
       achievement.character === character,
@@ -1570,12 +1577,19 @@ export function isStageTypeUnlocked(
 // Achievement - Challenge functions
 // ---------------------------------
 
-export function isChallengeUnlocked(challenge: Challenge): boolean {
+export function isChallengeUnlocked(
+  challenge: Challenge,
+  forRun = true,
+): boolean {
   if (challenge === Challenge.NULL) {
     return true;
   }
 
-  return v.persistent.completedAchievementsForRun.some(
+  const array = forRun
+    ? v.persistent.completedAchievementsForRun
+    : v.persistent.completedAchievements;
+
+  return array.some(
     (achievement) =>
       achievement.type === AchievementType.CHALLENGE &&
       achievement.challenge === challenge,
@@ -1694,12 +1708,19 @@ function anyTrinketTypesUnlocked(forRun = true): boolean {
   );
 }
 
-export function isTrinketTypeUnlocked(trinketType: TrinketType): boolean {
+export function isTrinketTypeUnlocked(
+  trinketType: TrinketType,
+  forRun = true,
+): boolean {
   if (ALWAYS_UNLOCKED_TRINKET_TYPES.has(trinketType)) {
     return true;
   }
 
-  return v.persistent.completedAchievementsForRun.some(
+  const array = forRun
+    ? v.persistent.completedAchievementsForRun
+    : v.persistent.completedAchievements;
+
+  return array.some(
     (achievement) =>
       achievement.type === AchievementType.TRINKET &&
       achievement.trinketType === trinketType,
@@ -1954,12 +1975,19 @@ export function isBombSubTypeUnlocked(
   );
 }
 
-export function isKeySubTypeUnlocked(keySubType: KeySubType): boolean {
+export function isKeySubTypeUnlocked(
+  keySubType: KeySubType,
+  forRun = true,
+): boolean {
   if (!includes(UNLOCKABLE_KEY_SUB_TYPES, keySubType)) {
     return true;
   }
 
-  return v.persistent.completedAchievementsForRun.some(
+  const array = forRun
+    ? v.persistent.completedAchievementsForRun
+    : v.persistent.completedAchievements;
+
+  return array.some(
     (achievement) =>
       achievement.type === AchievementType.KEY &&
       achievement.keySubType === keySubType,
@@ -2075,8 +2103,13 @@ export function isGridEntityTypeUnlocked(
 
 export function isOtherAchievementUnlocked(
   otherAchievementKind: OtherAchievementKind,
+  forRun = true,
 ): boolean {
-  return v.persistent.completedAchievementsForRun.some(
+  const array = forRun
+    ? v.persistent.completedAchievementsForRun
+    : v.persistent.completedAchievements;
+
+  return array.some(
     (achievement) =>
       achievement.type === AchievementType.OTHER &&
       achievement.kind === otherAchievementKind,
