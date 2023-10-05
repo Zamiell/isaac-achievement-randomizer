@@ -1,5 +1,7 @@
 TODO:
 
+- get rid of chests on the chest / dark room
+- need to warp to rep stage from rep stage
 - n/a
 
 ------------------------------

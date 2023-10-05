@@ -9,6 +9,7 @@ import {
   isEnumValue,
 } from "isaacscript-common";
 import { getCharacterObjectiveKindName } from "../classes/features/AchievementText";
+import { IS_DEV } from "../constants";
 import { CharacterObjectiveKind } from "../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../enums/ObjectiveType";
 import type { ObjectiveID } from "./ObjectiveID";
@@ -182,6 +183,10 @@ export function getObjectiveText(objective: Objective): string[] {
 }
 
 function getNumMinutesForBossObjective(bossID: BossID): int {
+  if (IS_DEV) {
+    return 0.05;
+  }
+
   switch (bossID) {
     // 58
     case BossID.BROWNIE: {

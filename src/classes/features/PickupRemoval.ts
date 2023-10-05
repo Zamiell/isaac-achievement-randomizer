@@ -35,6 +35,7 @@ import {
   getNormalTrinketType,
   getRandomArrayElement,
   getRandomSetElement,
+  inStartingRoom,
   isChestVariant,
   isEden,
   isGoldPill,
@@ -45,6 +46,8 @@ import {
   itemConfig,
   log,
   newRNG,
+  onChest,
+  onDarkRoom,
   rebirthItemTrackerRemoveCollectible,
   removeAllEffects,
   removeAllFamiliars,
@@ -474,6 +477,33 @@ export class PickupRemoval extends RandomizerModFeature {
 
     player.AddCollectible(activeCollectibleType);
     player.AddCollectible(passiveCollectibleType);
+  }
+
+  @CallbackCustom(ModCallbackCustom.POST_NEW_ROOM_REORDERED)
+  postNewRoomReordered(): void {
+    const room = game.GetRoom();
+    const isFirstVisit = room.IsFirstVisit();
+    if (!isFirstVisit) {
+      return;
+    }
+
+    if (!inStartingRoom()) {
+      return;
+    }
+
+    if (
+      onChest() &&
+      !isChestPickupVariantUnlocked(PickupVariant.LOCKED_CHEST)
+    ) {
+      removeAllPickups(PickupVariant.LOCKED_CHEST);
+    }
+
+    if (
+      onDarkRoom() &&
+      !isChestPickupVariantUnlocked(PickupVariant.RED_CHEST)
+    ) {
+      removeAllPickups(PickupVariant.RED_CHEST);
+    }
   }
 
   @CallbackCustom(
