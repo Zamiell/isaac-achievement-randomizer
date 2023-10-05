@@ -62,23 +62,19 @@ export class ChillRoom extends ModFeature {
     removeAllDoors();
     setBackdrop(BackdropType.ISAACS_BEDROOM);
 
-    spawnEffect(EffectVariant.CARPET, CarpetSubType.ISAACS_CARPET, 16);
-    spawnEffect(EffectVariant.CARPET, CarpetSubType.ISAACS_CARPET, 46);
-    spawnEffect(EffectVariant.CARPET, CarpetSubType.ISAACS_CARPET, 76);
-    spawnEffect(EffectVariant.CARPET, CarpetSubType.ISAACS_CARPET, 106);
-
-    spawnEffect(EffectVariant.CARPET, CarpetSubType.ISAACS_CARPET, 28);
-    spawnEffect(EffectVariant.CARPET, CarpetSubType.ISAACS_CARPET, 58);
-    spawnEffect(EffectVariant.CARPET, CarpetSubType.ISAACS_CARPET, 88);
-    spawnEffect(EffectVariant.CARPET, CarpetSubType.ISAACS_CARPET, 118);
+    for (const gridIndex of [16, 46, 76, 106, 28, 58, 88, 118]) {
+      spawnEffect(EffectVariant.CARPET, CarpetSubType.ISAACS_CARPET, gridIndex);
+    }
 
     spawnEffect(EffectVariant.CARPET, CarpetSubType.MOMS_CARPET_2, 67);
 
-    spawnNPC(EntityType.GENERIC_PROP, GenericPropVariant.COUCH, 0, 108);
-    spawnNPC(EntityType.GENERIC_PROP, GenericPropVariant.COUCH, 0, 116);
+    for (const gridIndex of [108, 116]) {
+      spawnNPC(EntityType.GENERIC_PROP, GenericPropVariant.COUCH, 0, gridIndex);
+    }
 
-    spawnNPC(EntityType.GENERIC_PROP, GenericPropVariant.TV, 0, 18);
-    spawnNPC(EntityType.GENERIC_PROP, GenericPropVariant.TV, 0, 26);
+    for (const gridIndex of [17, 27]) {
+      spawnNPC(EntityType.GENERIC_PROP, GenericPropVariant.TV, 0, gridIndex);
+    }
   }
 
   @Callback(ModCallback.POST_CURSE_EVAL)
