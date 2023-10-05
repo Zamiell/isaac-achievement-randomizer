@@ -1,6 +1,8 @@
 TODO:
 
-- quality unlocks in order
+- write version on title screen
+- remove controls graphic
+- write version on starting room
 
 - rebirth item tracker is bugged with D6 on Isaac
 
