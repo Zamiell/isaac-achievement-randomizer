@@ -1,6 +1,5 @@
 TODO:
 
-- write code for delirium needing blue womb + the void paths
 - n/a
 
 ------------------------------

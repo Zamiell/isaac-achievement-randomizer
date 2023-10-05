@@ -54,6 +54,8 @@ export function getUnlockablePathFromStoryBoss(
 
     // 70
     case BossID.DELIRIUM: {
+      // Note that Delirium actually requires both Blue Womb and The Void, so this value is slightly
+      // misleading.
       return UnlockablePath.VOID;
     }
 
