@@ -160,9 +160,7 @@ export function initDeadSeaScrolls(): void {
         },
         {
           str: "end randomizer",
-          func: () => {
-            endRandomizer();
-          },
+          dest: "end",
           tooltip: {
             strSet: [
               "turn the",
@@ -260,6 +258,32 @@ export function initDeadSeaScrolls(): void {
         },
         {
           str: `${MAX_SEED}.)`,
+        },
+      ],
+    },
+
+    end: {
+      title: "end",
+      buttons: [
+        {
+          str: "cancel",
+          action: "back",
+          tooltip: {
+            strSet: ["go back."],
+          },
+        },
+        {
+          str: "",
+          noSel: true,
+        },
+        {
+          str: "confirm",
+          func: () => {
+            endRandomizer();
+          },
+          tooltip: {
+            strSet: ["make sure", "you have a", "backup, if", "needed."],
+          },
         },
       ],
     },

@@ -1,18 +1,16 @@
-import { CollectibleType } from "isaac-typescript-definitions";
 import {
   log,
   logAndPrint,
   setLogFunctionsGlobal,
   setTracebackFunctionsGlobal,
 } from "isaacscript-common";
-import { setCollectibleUnlocked } from "./classes/features/AchievementTracker";
+import { startRandomizer } from "./classes/features/AchievementTracker";
 import { mod } from "./mod";
 
 /** Currently, F3 is set to execute this function. */
 function debugCode(_params?: string) {
   // Add code here.
-  /// startRandomizer(undefined);
-  setCollectibleUnlocked(CollectibleType.IV_BAG);
+  startRandomizer(undefined);
 }
 
 /** Hotkey 1 is bound to F3. */
