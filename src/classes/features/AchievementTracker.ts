@@ -48,6 +48,7 @@ import {
   getRandomSeed,
   getScreenBottomRightPos,
   getVanillaCollectibleTypesOfQuality,
+  includes,
   isActiveCollectible,
   isCard,
   isHiddenCollectible,
@@ -1614,7 +1615,7 @@ export function getUnlockedPillEffects(): PillEffect[] {
 // ------------------------------------
 
 export function isHeartSubTypeUnlocked(heartSubType: HeartSubType): boolean {
-  if (!UNLOCKABLE_HEART_SUB_TYPES.includes(heartSubType)) {
+  if (!includes(UNLOCKABLE_HEART_SUB_TYPES, heartSubType)) {
     return true;
   }
 
@@ -1626,7 +1627,7 @@ export function isHeartSubTypeUnlocked(heartSubType: HeartSubType): boolean {
 }
 
 export function isCoinSubTypeUnlocked(coinSubType: CoinSubType): boolean {
-  if (!UNLOCKABLE_COIN_SUB_TYPES.includes(coinSubType)) {
+  if (!includes(UNLOCKABLE_COIN_SUB_TYPES, coinSubType)) {
     return true;
   }
 
@@ -1638,7 +1639,7 @@ export function isCoinSubTypeUnlocked(coinSubType: CoinSubType): boolean {
 }
 
 export function isBombSubTypeUnlocked(bombSubType: BombSubType): boolean {
-  if (!UNLOCKABLE_BOMB_SUB_TYPES.includes(bombSubType)) {
+  if (!includes(UNLOCKABLE_BOMB_SUB_TYPES, bombSubType)) {
     return true;
   }
 
@@ -1650,7 +1651,7 @@ export function isBombSubTypeUnlocked(bombSubType: BombSubType): boolean {
 }
 
 export function isKeySubTypeUnlocked(keySubType: KeySubType): boolean {
-  if (!UNLOCKABLE_KEY_SUB_TYPES.includes(keySubType)) {
+  if (!includes(UNLOCKABLE_KEY_SUB_TYPES, keySubType)) {
     return true;
   }
 
@@ -1664,7 +1665,7 @@ export function isKeySubTypeUnlocked(keySubType: KeySubType): boolean {
 export function isBatterySubTypeUnlocked(
   batterySubType: BatterySubType,
 ): boolean {
-  if (!UNLOCKABLE_BATTERY_SUB_TYPES.includes(batterySubType)) {
+  if (!includes(UNLOCKABLE_BATTERY_SUB_TYPES, batterySubType)) {
     return true;
   }
 
@@ -1676,7 +1677,7 @@ export function isBatterySubTypeUnlocked(
 }
 
 export function isSackSubTypeUnlocked(sackSubType: SackSubType): boolean {
-  if (!UNLOCKABLE_SACK_KEY_SUB_TYPES.includes(sackSubType)) {
+  if (!includes(UNLOCKABLE_SACK_KEY_SUB_TYPES, sackSubType)) {
     return true;
   }
 
@@ -1690,7 +1691,7 @@ export function isSackSubTypeUnlocked(sackSubType: SackSubType): boolean {
 export function isChestPickupVariantUnlocked(
   pickupVariant: PickupVariant,
 ): boolean {
-  if (!UNLOCKABLE_CHEST_PICKUP_VARIANTS.includes(pickupVariant)) {
+  if (!includes(UNLOCKABLE_CHEST_PICKUP_VARIANTS, pickupVariant)) {
     return true;
   }
 
@@ -1706,7 +1707,7 @@ export function isChestPickupVariantUnlocked(
 // ----------------------------
 
 export function isSlotVariantUnlocked(slotVariant: SlotVariant): boolean {
-  if (!UNLOCKABLE_SLOT_VARIANTS.includes(slotVariant)) {
+  if (!includes(UNLOCKABLE_SLOT_VARIANTS, slotVariant)) {
     return true;
   }
 
@@ -1724,7 +1725,7 @@ export function isSlotVariantUnlocked(slotVariant: SlotVariant): boolean {
 export function isGridEntityTypeUnlocked(
   gridEntityType: GridEntityType,
 ): boolean {
-  if (!UNLOCKABLE_GRID_ENTITY_TYPES.includes(gridEntityType)) {
+  if (!includes(UNLOCKABLE_GRID_ENTITY_TYPES, gridEntityType)) {
     return true;
   }
 
