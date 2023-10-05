@@ -110,7 +110,7 @@ However, the following bosses have custom timer lengths:
 - Visage (#78) - 1 minute
 - Siren (#79) - 1 minute
 - Hornfel (#82) - 1 minute
-- Baby Plum (#84) - 30 seconds (because she flies away)
+- Baby Plum (#84) - 1 minute (because she flies away)
 - Scourge (#85) - 1 minute
 - Rotgut (#87) - 1 minute
 

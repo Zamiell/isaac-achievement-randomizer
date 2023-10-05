@@ -205,7 +205,7 @@ function getNumMinutesForBossObjective(bossID: BossID): int {
 
     // 84
     case BossID.BABY_PLUM: {
-      return 0.5;
+      return 1;
     }
 
     // 85
