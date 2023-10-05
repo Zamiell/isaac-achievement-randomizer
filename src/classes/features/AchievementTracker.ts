@@ -220,6 +220,25 @@ const BOSS_STAGES = [
   LevelStage.WOMB_1,
 ] as const;
 
+const GOOD_COLLECTIBLES = new ReadonlySet([
+  CollectibleType.CHOCOLATE_MILK, // 69 (quality 3)
+  CollectibleType.BOOK_OF_REVELATIONS, // 78 (quality 3)
+  CollectibleType.RELIC, // 98 (quality 3)
+  CollectibleType.GNAWED_LEAF, // 210 (quality 1)
+  CollectibleType.CRICKETS_BODY, // 224 (quality 3)
+  CollectibleType.MONSTROS_LUNG, // 229 (quality 2)
+  CollectibleType.DEATHS_TOUCH, // 237 (quality 3)
+  CollectibleType.TECH_5, // 244 (quality 3)
+  CollectibleType.PROPTOSIS, // 261 (quality 3)
+  CollectibleType.CANCER, // 301 (quality 3)
+  CollectibleType.DEAD_EYE, // 373 (quality 3)
+  CollectibleType.MAW_OF_THE_VOID, // 399 (quality 3)
+  CollectibleType.ROCK_BOTTOM, // 562 (quality 3)
+  CollectibleType.SPIRIT_SWORD, // 579 (quality 3)
+  CollectibleType.ECHO_CHAMBER, // 700 (quality 3)
+  CollectibleType.TMTRAINER, // 721 (quality 0)
+]);
+
 /** `isaacscript-common` uses `CallbackPriority.IMPORTANT` (-200). */
 const HIGHER_PRIORITY_THAN_ISAACSCRIPT_COMMON = (CallbackPriority.IMPORTANT -
   1) as CallbackPriority;
@@ -1582,13 +1601,10 @@ export function getUnlockedEdenPassiveCollectibleTypes(): CollectibleType[] {
 function getWorseCollectibleType(
   collectibleType: CollectibleType,
 ): CollectibleType | undefined {
-  // Gnawed Leaf should be treated as a collectible with maximum quality, otherwise it can lead to
-  // infinite loops with achievement swapped (since Gnawed Leaf requires all the boss objectives to
-  // be finished).
-  const quality =
-    collectibleType === CollectibleType.GNAWED_LEAF
-      ? MAX_QUALITY
-      : getCollectibleQuality(collectibleType);
+  // Some collectibles result in a won run and should be treated as maximum quality.
+  const quality = GOOD_COLLECTIBLES.has(collectibleType)
+    ? MAX_QUALITY
+    : getCollectibleQuality(collectibleType);
 
   for (const lowerQualityInt of eRange(quality)) {
     const lowerQuality = lowerQualityInt as Quality;
