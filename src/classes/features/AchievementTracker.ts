@@ -1645,17 +1645,23 @@ function getWorseCollectibleType(
     const lowerQuality = lowerQualityInt as Quality;
     const lowerQualityCollectibleTypes =
       getVanillaCollectibleTypesOfQuality(lowerQuality);
-    const lockedLowerQualityCollectibleTypes = [
+    const unlockedLowerQualityCollectibleTypes = [
       ...lowerQualityCollectibleTypes,
-    ].filter(
-      (lowerQualityCollectibleType) =>
-        !isCollectibleTypeUnlocked(lowerQualityCollectibleType, false),
+    ].filter((lowerQualityCollectibleType) =>
+      isCollectibleTypeUnlocked(lowerQualityCollectibleType, false),
     );
 
     if (
-      lockedLowerQualityCollectibleTypes.length <
+      unlockedLowerQualityCollectibleTypes.length <
       lowerQualityCollectibleTypes.size * QUALITY_THRESHOLD_PERCENT
     ) {
+      const lockedLowerQualityCollectibleTypes = [
+        ...lowerQualityCollectibleTypes,
+      ].filter(
+        (lowerQualityCollectibleType) =>
+          !isCollectibleTypeUnlocked(lowerQualityCollectibleType, false),
+      );
+
       return getRandomArrayElement(
         lockedLowerQualityCollectibleTypes,
         v.persistent.seed,
@@ -1780,7 +1786,7 @@ export function anyPillEffectsUnlocked(forRun = true): boolean {
   );
 }
 
-export function anyGoodPillEffectsUnlocked(forRun = true): boolean {
+function anyGoodPillEffectsUnlocked(forRun = true): boolean {
   const array = forRun
     ? v.persistent.completedAchievementsForRun
     : v.persistent.completedAchievements;
@@ -1793,7 +1799,7 @@ export function anyGoodPillEffectsUnlocked(forRun = true): boolean {
   );
 }
 
-export function anyBadPillEffectsUnlocked(forRun = true): boolean {
+function anyBadPillEffectsUnlocked(forRun = true): boolean {
   const array = forRun
     ? v.persistent.completedAchievementsForRun
     : v.persistent.completedAchievements;
@@ -1842,14 +1848,18 @@ function getWorsePillEffect(pillEffect: PillEffect): PillEffect | undefined {
 
   for (const worsePillEffectType of worsePillEffectTypes) {
     const worsePillEffects = getVanillaPillEffectsOfType(worsePillEffectType);
-    const lockedWorsePillEffects = worsePillEffects.filter(
-      (worsePillEffect) => !isPillEffectUnlocked(worsePillEffect, false),
+    const unlockedWorsePillEffects = worsePillEffects.filter(
+      (worsePillEffect) => isPillEffectUnlocked(worsePillEffect, false),
     );
 
     if (
-      lockedWorsePillEffects.length <
+      unlockedWorsePillEffects.length <
       worsePillEffects.length * QUALITY_THRESHOLD_PERCENT
     ) {
+      const lockedWorsePillEffects = worsePillEffects.filter(
+        (worsePillEffect) => !isPillEffectUnlocked(worsePillEffect, false),
+      );
+
       return getRandomArrayElement(lockedWorsePillEffects, v.persistent.seed);
     }
   }
