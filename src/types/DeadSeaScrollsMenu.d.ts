@@ -38,6 +38,7 @@ interface DeadSeaScrollsButton {
   clr?: int;
   colorSelect?: boolean;
   fSize?: int;
+  displayIf?: () => boolean;
 }
 
 declare const DeadSeaScrollsMenu: DeadSeaScrollsMenu | undefined;

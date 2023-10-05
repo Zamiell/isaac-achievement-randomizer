@@ -1,4 +1,5 @@
 import { BossID } from "isaac-typescript-definitions";
+import { CharacterObjectiveKind } from "./CharacterObjectiveKind";
 
 export enum UnlockablePath {
   CHEST,
@@ -74,6 +75,86 @@ export function getUnlockablePathFromStoryBoss(
 
     default: {
       return undefined;
+    }
+  }
+}
+
+export function getUnlockablePathFromCharacterObjectiveKind(
+  kind: CharacterObjectiveKind,
+): UnlockablePath | undefined {
+  switch (kind) {
+    case CharacterObjectiveKind.MOM:
+    case CharacterObjectiveKind.IT_LIVES:
+    case CharacterObjectiveKind.ISAAC:
+    case CharacterObjectiveKind.SATAN: {
+      return undefined;
+    }
+
+    case CharacterObjectiveKind.BLUE_BABY: {
+      return UnlockablePath.CHEST;
+    }
+
+    case CharacterObjectiveKind.LAMB: {
+      return UnlockablePath.DARK_ROOM;
+    }
+
+    case CharacterObjectiveKind.MEGA_SATAN: {
+      return UnlockablePath.MEGA_SATAN;
+    }
+
+    case CharacterObjectiveKind.BOSS_RUSH: {
+      return UnlockablePath.BOSS_RUSH;
+    }
+
+    case CharacterObjectiveKind.HUSH: {
+      return UnlockablePath.BLUE_WOMB;
+    }
+
+    case CharacterObjectiveKind.DELIRIUM: {
+      // Note that Delirium actually requires both Blue Womb and The Void, so this value is slightly
+      // misleading.
+      return UnlockablePath.VOID;
+    }
+
+    case CharacterObjectiveKind.MOTHER: {
+      return UnlockablePath.REPENTANCE_FLOORS;
+    }
+
+    case CharacterObjectiveKind.BEAST: {
+      return UnlockablePath.ASCENT;
+    }
+
+    case CharacterObjectiveKind.ULTRA_GREED: {
+      return UnlockablePath.GREED_MODE;
+    }
+
+    case CharacterObjectiveKind.NO_HIT_BASEMENT_1:
+    case CharacterObjectiveKind.NO_HIT_BASEMENT_2:
+    case CharacterObjectiveKind.NO_HIT_CAVES_1:
+    case CharacterObjectiveKind.NO_HIT_CAVES_2:
+    case CharacterObjectiveKind.NO_HIT_DEPTHS_1:
+    case CharacterObjectiveKind.NO_HIT_DEPTHS_2:
+    case CharacterObjectiveKind.NO_HIT_WOMB_1:
+    case CharacterObjectiveKind.NO_HIT_WOMB_2:
+    case CharacterObjectiveKind.NO_HIT_SHEOL_CATHEDRAL: {
+      return undefined;
+    }
+
+    case CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST: {
+      // Note that this can unlock from either Dark Room or The Chest, so this value is slightly
+      // misleading.
+      return UnlockablePath.CHEST;
+    }
+
+    case CharacterObjectiveKind.NO_HIT_DOWNPOUR_1:
+    case CharacterObjectiveKind.NO_HIT_DOWNPOUR_2:
+    case CharacterObjectiveKind.NO_HIT_MINES_1:
+    case CharacterObjectiveKind.NO_HIT_MINES_2:
+    case CharacterObjectiveKind.NO_HIT_MAUSOLEUM_1:
+    case CharacterObjectiveKind.NO_HIT_MAUSOLEUM_2:
+    case CharacterObjectiveKind.NO_HIT_CORPSE_1:
+    case CharacterObjectiveKind.NO_HIT_CORPSE_2: {
+      return UnlockablePath.REPENTANCE_FLOORS;
     }
   }
 }

@@ -32,6 +32,8 @@ import {
 } from "./cachedEnums";
 import { getCharacterObjectiveKindName } from "./classes/features/AchievementNotification";
 import {
+  canGetToBoss,
+  canGetToCharacterObjectiveKind,
   endRandomizer,
   getCompletedAchievements,
   getCompletedObjectives,
@@ -39,6 +41,7 @@ import {
   getNumCompletedRuns,
   getNumDeaths,
   getRandomizerSeed,
+  getReachableNonStoryBossesSet,
   getTimeElapsed,
   isAltFloorUnlocked,
   isBatterySubTypeUnlocked,
@@ -946,6 +949,11 @@ function getSpecificCharacterObjectiveButtons(
         clr: completed ? 0 : 3,
       },
       {
+        str: "(inaccessible)",
+        fSize: 1,
+        displayIf: () => !canGetToCharacterObjectiveKind(kind, false),
+      },
+      {
         str: "",
       },
     );
@@ -956,6 +964,8 @@ function getSpecificCharacterObjectiveButtons(
 
 function getBossObjectiveButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
+
+  const reachableBosses = getReachableNonStoryBossesSet();
 
   for (const bossID of NO_HIT_BOSSES) {
     const bossName = getBossName(bossID).toLowerCase();
@@ -969,6 +979,11 @@ function getBossObjectiveButtons(): DeadSeaScrollsButton[] {
       {
         str: completedText,
         clr: completed ? 0 : 3,
+      },
+      {
+        str: "(inaccessible)",
+        fSize: 1,
+        displayIf: () => !canGetToBoss(bossID, reachableBosses, false),
       },
       {
         str: "",
@@ -999,6 +1014,11 @@ function getChallengeObjectiveButtons(): DeadSeaScrollsButton[] {
       {
         str: completedText,
         clr: completed ? 0 : 3,
+      },
+      {
+        str: "(inaccessible)",
+        fSize: 1,
+        displayIf: () => !isChallengeUnlocked(challenge, false),
       },
       {
         str: "",

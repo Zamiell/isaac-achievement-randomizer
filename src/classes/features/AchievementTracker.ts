@@ -89,6 +89,7 @@ import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { OtherAchievementKind } from "../../enums/OtherAchievementKind";
 import {
   UnlockablePath,
+  getUnlockablePathFromCharacterObjectiveKind,
   getUnlockablePathFromStoryBoss,
 } from "../../enums/UnlockablePath";
 import { ALL_OBJECTIVES, NO_HIT_BOSSES } from "../../objectives";
@@ -2195,7 +2196,7 @@ function isAchievementsBeatable(): boolean {
 
       for (const kind of CHARACTER_OBJECTIVE_KINDS) {
         if (
-          canGetToCharacterObjectiveKind(kind) &&
+          canGetToCharacterObjectiveKind(kind, false) &&
           !isCharacterObjectiveCompleted(character, kind)
         ) {
           const objective = getObjective(
@@ -2213,7 +2214,7 @@ function isAchievementsBeatable(): boolean {
 
     for (const bossID of NO_HIT_BOSSES) {
       if (
-        canGetToBoss(bossID, reachableNonStoryBossesSet) &&
+        canGetToBoss(bossID, reachableNonStoryBossesSet, false) &&
         !isBossObjectiveCompleted(bossID)
       ) {
         const objective = getObjective(ObjectiveType.BOSS, bossID);
@@ -2225,7 +2226,7 @@ function isAchievementsBeatable(): boolean {
     for (const challenge of CHALLENGES) {
       if (
         challenge !== Challenge.NULL &&
-        isChallengeUnlocked(challenge) &&
+        isChallengeUnlocked(challenge, false) &&
         !isChallengeObjectiveCompleted(challenge)
       ) {
         const objective = getObjective(ObjectiveType.CHALLENGE, challenge);
@@ -2247,87 +2248,34 @@ function isAchievementsBeatable(): boolean {
   return true;
 }
 
-function canGetToCharacterObjectiveKind(kind: CharacterObjectiveKind): boolean {
-  switch (kind) {
-    case CharacterObjectiveKind.MOM:
-    case CharacterObjectiveKind.IT_LIVES:
-    case CharacterObjectiveKind.ISAAC:
-    case CharacterObjectiveKind.SATAN: {
-      return true;
-    }
-
-    case CharacterObjectiveKind.BLUE_BABY: {
-      return isPathUnlocked(UnlockablePath.CHEST);
-    }
-
-    case CharacterObjectiveKind.LAMB: {
-      return isPathUnlocked(UnlockablePath.DARK_ROOM);
-    }
-
-    case CharacterObjectiveKind.MEGA_SATAN: {
-      return isPathUnlocked(UnlockablePath.MEGA_SATAN);
-    }
-
-    case CharacterObjectiveKind.BOSS_RUSH: {
-      return isPathUnlocked(UnlockablePath.BOSS_RUSH);
-    }
-
-    case CharacterObjectiveKind.HUSH: {
-      return isPathUnlocked(UnlockablePath.BLUE_WOMB);
-    }
-
-    case CharacterObjectiveKind.DELIRIUM: {
-      return (
-        isPathUnlocked(UnlockablePath.BLUE_WOMB) &&
-        isPathUnlocked(UnlockablePath.VOID)
-      );
-    }
-
-    case CharacterObjectiveKind.MOTHER: {
-      return isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS);
-    }
-
-    case CharacterObjectiveKind.BEAST: {
-      return isPathUnlocked(UnlockablePath.ASCENT);
-    }
-
-    case CharacterObjectiveKind.ULTRA_GREED: {
-      return isPathUnlocked(UnlockablePath.GREED_MODE);
-    }
-
-    case CharacterObjectiveKind.NO_HIT_BASEMENT_1:
-    case CharacterObjectiveKind.NO_HIT_BASEMENT_2:
-    case CharacterObjectiveKind.NO_HIT_CAVES_1:
-    case CharacterObjectiveKind.NO_HIT_CAVES_2:
-    case CharacterObjectiveKind.NO_HIT_DEPTHS_1:
-    case CharacterObjectiveKind.NO_HIT_DEPTHS_2:
-    case CharacterObjectiveKind.NO_HIT_WOMB_1:
-    case CharacterObjectiveKind.NO_HIT_WOMB_2:
-    case CharacterObjectiveKind.NO_HIT_SHEOL_CATHEDRAL: {
-      return true;
-    }
-
-    case CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST: {
-      return (
-        isPathUnlocked(UnlockablePath.CHEST) ||
-        isPathUnlocked(UnlockablePath.DARK_ROOM)
-      );
-    }
-
-    case CharacterObjectiveKind.NO_HIT_DOWNPOUR_1:
-    case CharacterObjectiveKind.NO_HIT_DOWNPOUR_2:
-    case CharacterObjectiveKind.NO_HIT_MINES_1:
-    case CharacterObjectiveKind.NO_HIT_MINES_2:
-    case CharacterObjectiveKind.NO_HIT_MAUSOLEUM_1:
-    case CharacterObjectiveKind.NO_HIT_MAUSOLEUM_2:
-    case CharacterObjectiveKind.NO_HIT_CORPSE_1:
-    case CharacterObjectiveKind.NO_HIT_CORPSE_2: {
-      return isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS);
-    }
+export function canGetToCharacterObjectiveKind(
+  kind: CharacterObjectiveKind,
+  forRun = true,
+): boolean {
+  // Handle special cases that require two or more unlockable paths.
+  if (kind === CharacterObjectiveKind.DELIRIUM) {
+    return (
+      isPathUnlocked(UnlockablePath.BLUE_WOMB, forRun) &&
+      isPathUnlocked(UnlockablePath.VOID, forRun)
+    );
   }
+
+  if (kind === CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST) {
+    return (
+      isPathUnlocked(UnlockablePath.CHEST, forRun) ||
+      isPathUnlocked(UnlockablePath.DARK_ROOM, forRun)
+    );
+  }
+
+  const unlockablePath = getUnlockablePathFromCharacterObjectiveKind(kind);
+  if (unlockablePath === undefined) {
+    return true;
+  }
+
+  return isPathUnlocked(unlockablePath, forRun);
 }
 
-function getReachableNonStoryBossesSet(): Set<BossID> {
+export function getReachableNonStoryBossesSet(): Set<BossID> {
   const reachableNonStoryBossesSet = new Set<BossID>();
 
   for (const stage of BOSS_STAGES) {
@@ -2359,9 +2307,10 @@ function getReachableNonStoryBossesSet(): Set<BossID> {
   return reachableNonStoryBossesSet;
 }
 
-function canGetToBoss(
+export function canGetToBoss(
   bossID: BossID,
   reachableBossesSet: Set<BossID>,
+  forRun = true,
 ): boolean {
   if (!isStoryBossID(bossID)) {
     return reachableBossesSet.has(bossID);
@@ -2371,8 +2320,8 @@ function canGetToBoss(
   // the mod manually removes void portals, getting to Delirium requires going through Blue Womb.)
   if (bossID === BossID.DELIRIUM) {
     return (
-      isPathUnlocked(UnlockablePath.BLUE_WOMB) &&
-      isPathUnlocked(UnlockablePath.VOID)
+      isPathUnlocked(UnlockablePath.BLUE_WOMB, forRun) &&
+      isPathUnlocked(UnlockablePath.VOID, forRun)
     );
   }
 
@@ -2381,7 +2330,7 @@ function canGetToBoss(
     return true;
   }
 
-  return isPathUnlocked(unlockablePath);
+  return isPathUnlocked(unlockablePath, forRun);
 }
 
 // -------
