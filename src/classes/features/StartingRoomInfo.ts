@@ -1,8 +1,4 @@
-import {
-  CollectibleType,
-  ModCallback,
-  SeedEffect,
-} from "isaac-typescript-definitions";
+import { ModCallback, SeedEffect } from "isaac-typescript-definitions";
 import {
   Callback,
   KColorDefault,
@@ -11,11 +7,11 @@ import {
   game,
   inStartingRoom,
   isGreedMode,
+  newSprite,
   onFirstFloor,
 } from "isaacscript-common";
 import { ALL_ACHIEVEMENTS } from "../../achievements";
 import { VERSION } from "../../constants";
-import { newGlowingCollectibleSprite } from "../../sprite";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   getNumCompletedAchievements,
@@ -26,7 +22,11 @@ import {
 import { hasErrors } from "./checkErrors/v";
 
 const FONT = fonts.teamMeatFont10;
-const D100_SPRITE = newGlowingCollectibleSprite(CollectibleType.D100);
+
+const MOD_ICON_SPRITE = newSprite(
+  "gfx/glowing_item.anm2",
+  "gfx/misc/shuffle_icon.png",
+);
 
 export class StartingRoomInfo extends RandomizerModFeature {
   @Callback(ModCallback.POST_RENDER)
@@ -95,7 +95,7 @@ export class StartingRoomInfo extends RandomizerModFeature {
     );
 
     const position = Isaac.WorldToScreen(centerTopPosition).add(Vector(0, 10));
-    D100_SPRITE.Render(position);
+    MOD_ICON_SPRITE.Render(position);
 
     this.drawCenteredText("Mod version:", centerPosition);
     this.drawCenteredText(

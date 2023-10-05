@@ -335,8 +335,9 @@ export function getSecondsSinceLastDamage(): int | undefined {
 
   if (
     v.room.usedPause ||
-    onFirstPhaseOfIsaac(bossID) ||
-    onFirstPhaseOfHush(bossID)
+    onFirstPhaseOfSatan(bossID) || // 24
+    onFirstPhaseOfIsaacOrBlueBaby(bossID) || // 39, 40
+    onFirstPhaseOfHush(bossID) // 63
   ) {
     return undefined;
   }
@@ -347,7 +348,20 @@ export function getSecondsSinceLastDamage(): int | undefined {
   return elapsedGameFrames / GAME_FRAMES_PER_SECOND;
 }
 
-function onFirstPhaseOfIsaac(bossID: BossID): boolean {
+function onFirstPhaseOfSatan(bossID: BossID): boolean {
+  if (bossID !== BossID.SATAN) {
+    return false;
+  }
+
+  const satans = getNPCs(EntityType.SATAN);
+  if (satans.length === 0) {
+    return false;
+  }
+
+  return satans.every((satan) => satan.State === NPCState.IDLE);
+}
+
+function onFirstPhaseOfIsaacOrBlueBaby(bossID: BossID): boolean {
   return (
     (bossID === BossID.ISAAC || bossID === BossID.BLUE_BABY) &&
     v.room.onFirstPhaseOfIsaac
