@@ -186,7 +186,7 @@ export function getPathName(unlockablePath: UnlockablePath): string {
     }
 
     case UnlockablePath.REPENTANCE_FLOORS: {
-      return "Repentance floors";
+      return "Repentance Floors";
     }
 
     case UnlockablePath.ASCENT: {

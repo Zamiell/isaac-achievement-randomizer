@@ -13,22 +13,22 @@ export function getGridEntityName(
   switch (gridEntityType) {
     // 4
     case GridEntityType.ROCK_TINTED: {
-      return "tinted rocks";
+      return "Tinted Rocks";
     }
 
     // 18
     case GridEntityType.CRAWL_SPACE: {
-      return "crawl spaces";
+      return "Crawl Spaces";
     }
 
     // 22
     case GridEntityType.ROCK_SUPER_SPECIAL: {
-      return "super tinted rocks";
+      return "Super Tinted Rocks";
     }
 
     // 27
     case GridEntityType.ROCK_GOLD: {
-      return "fool's gold rocks";
+      return "Fool's Gold Rocks";
     }
   }
 }

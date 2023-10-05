@@ -1,6 +1,5 @@
 TODO:
 
-- (inaccessible) suffix for DSS
 - challenge to check things out
 - all achievement names should be capitalized
 - n/a

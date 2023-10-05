@@ -22,59 +22,59 @@ export function getOtherAchievementName(
 ): [string, string] {
   switch (otherAchievementKind) {
     case OtherAchievementKind.BEDS: {
-      return ["pickup", "beds"];
+      return ["pickup", "Beds"];
     }
 
     case OtherAchievementKind.SHOPKEEPERS: {
-      return ["entity", "shopkeepers"];
+      return ["entity", "Shopkeepers"];
     }
 
     case OtherAchievementKind.GOLD_TRINKETS: {
-      return ["trinket type", "gold trinkets"];
+      return ["trinket type", "Gold Trinkets"];
     }
 
     case OtherAchievementKind.GOLD_PILLS: {
-      return ["pill type", "gold pills"];
+      return ["pill type", "Gold Pills"];
     }
 
     case OtherAchievementKind.HORSE_PILLS: {
-      return ["pill type", "horse pills"];
+      return ["pill type", "Horse Pills"];
     }
 
     case OtherAchievementKind.URNS: {
-      return ["grid entity", "urns"];
+      return ["grid entity", "Urns"];
     }
 
     case OtherAchievementKind.MUSHROOMS: {
-      return ["grid entity", "mushrooms"];
+      return ["grid entity", "Mushrooms"];
     }
 
     case OtherAchievementKind.SKULLS: {
-      return ["grid entity", "skulls"];
+      return ["grid entity", "Skulls"];
     }
 
     case OtherAchievementKind.POLYPS: {
-      return ["grid entity", "polyps"];
+      return ["grid entity", "Polyps"];
     }
 
     case OtherAchievementKind.GOLDEN_POOP: {
-      return ["grid entity", "golden poop"];
+      return ["grid entity", "Golden Poop"];
     }
 
     case OtherAchievementKind.RAINBOW_POOP: {
-      return ["grid entity", "rainbow poop"];
+      return ["grid entity", "Rainbow Poop"];
     }
 
     case OtherAchievementKind.BLACK_POOP: {
-      return ["grid entity", "black poop"];
+      return ["grid entity", "Black Poop"];
     }
 
     case OtherAchievementKind.CHARMING_POOP: {
-      return ["grid entity", "charming poop"];
+      return ["grid entity", "Charming Poop"];
     }
 
     case OtherAchievementKind.REWARD_PLATES: {
-      return ["grid entity", "reward plates"];
+      return ["grid entity", "Reward Plates"];
     }
   }
 }
