@@ -45,6 +45,7 @@ import {
   fonts,
   game,
   getBossSet,
+  getChallengeCharacter,
   getCharacterName,
   getCollectibleName,
   getCollectibleQuality,
@@ -721,15 +722,18 @@ function getSwappedAchievement(
     }
 
     case AchievementType.CHALLENGE: {
-      const requiredCollectibleTypes =
-        CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP.get(achievement.challenge);
-      if (requiredCollectibleTypes === undefined) {
-        return undefined;
+      const challengeCharacter = getChallengeCharacter(achievement.challenge);
+      if (!isCharacterUnlocked(challengeCharacter)) {
+        return getAchievement(AchievementType.CHARACTER, challengeCharacter);
       }
 
-      for (const collectibleType of requiredCollectibleTypes) {
-        if (!isCollectibleTypeUnlocked(collectibleType, false)) {
-          return getAchievement(AchievementType.COLLECTIBLE, collectibleType);
+      const requiredCollectibleTypes =
+        CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP.get(achievement.challenge);
+      if (requiredCollectibleTypes !== undefined) {
+        for (const collectibleType of requiredCollectibleTypes) {
+          if (!isCollectibleTypeUnlocked(collectibleType, false)) {
+            return getAchievement(AchievementType.COLLECTIBLE, collectibleType);
+          }
         }
       }
 
