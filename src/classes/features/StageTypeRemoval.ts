@@ -24,8 +24,13 @@ export class StageTypeRemoval extends RandomizerModFeature {
       return;
     }
 
+    const newStageType =
+      stageType === StageType.REPENTANCE_B
+        ? StageType.REPENTANCE
+        : StageType.ORIGINAL;
+
     log(
-      `Locked stage type detected (${stageType}). Going to the original version of the stage.`,
+      `Locked stage type detected (${stageType}). Going to stage type StageType.${StageType[newStageType]} (${newStageType}).`,
     );
 
     // Reloading the stage will cause collectibles (Dream Catcher, Empty Heart) and trinkets
@@ -33,8 +38,11 @@ export class StageTypeRemoval extends RandomizerModFeature {
     const player = Isaac.GetPlayer();
     const playerHealth = getPlayerHealth(player);
     player.AddEternalHearts(-1);
-    goToStage(stage, StageType.ORIGINAL);
-    mod.reorderedCallbacksSetStage(stage, StageType.ORIGINAL);
+    goToStage(stage, newStageType);
     setPlayerHealth(player, playerHealth);
+
+    // Since we can change stages on the 0th frame of the run, we also need to notify the reordered
+    // callbacks feature.
+    mod.reorderedCallbacksSetStage(stage, newStageType);
   }
 }
