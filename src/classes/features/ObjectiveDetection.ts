@@ -21,6 +21,7 @@ import {
   getBossID,
   getEntityTypeVariantFromBossID,
   getNPCs,
+  getRoomListIndex,
   getRoomSubType,
   inBeastRoom,
   inBigRoom,
@@ -227,6 +228,14 @@ export function achievementDetectionPostRoomCleared(): void {
   switch (roomType) {
     // 5
     case RoomType.BOSS: {
+      // Handle XL floors.
+      const level = game.GetLevel();
+      const lastBossRoomListIndex = level.GetLastBossRoomListIndex();
+      const roomListIndex = getRoomListIndex();
+      if (roomListIndex !== lastBossRoomListIndex) {
+        return;
+      }
+
       const bossID = getRoomSubType() as BossID;
       const kindBoss = BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND.get(bossID);
       if (kindBoss !== undefined) {
