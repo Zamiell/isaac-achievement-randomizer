@@ -10,6 +10,7 @@ import {
   onFirstFloor,
 } from "isaacscript-common";
 import { ALL_ACHIEVEMENTS } from "../../achievements";
+import { VERSION } from "../../constants";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   getNumCompletedAchievements,
@@ -68,6 +69,7 @@ export class StartingRoomInfo extends RandomizerModFeature {
     const room = game.GetRoom();
     const topLeftPosition = room.GetGridPosition(18);
     const topRightPosition = room.GetGridPosition(26);
+    const centerPosition = room.GetGridPosition(52);
     const bottomLeftPosition = room.GetGridPosition(78);
     const bottomRightPosition = room.GetGridPosition(86);
 
@@ -82,6 +84,13 @@ export class StartingRoomInfo extends RandomizerModFeature {
     this.drawCenteredText(
       `${getNumCompletedAchievements()} / ${ALL_ACHIEVEMENTS.length}`,
       topRightPosition.add(Vector(0, 30)),
+      K_COLORS.Green,
+    );
+
+    this.drawCenteredText("Mod version:", centerPosition);
+    this.drawCenteredText(
+      VERSION,
+      centerPosition.add(Vector(0, 30)),
       K_COLORS.Green,
     );
 

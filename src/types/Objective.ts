@@ -9,7 +9,6 @@ import {
   isEnumValue,
 } from "isaacscript-common";
 import { getCharacterObjectiveKindName } from "../classes/features/AchievementText";
-import { DEFAULT_NUM_MINUTES_FOR_BOSS_OBJECTIVE } from "../constants";
 import { CharacterObjectiveKind } from "../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../enums/ObjectiveType";
 import type { ObjectiveID } from "./ObjectiveID";
@@ -33,6 +32,8 @@ interface ChallengeObjective {
 export type Objective = CharacterObjective | BossObjective | ChallengeObjective;
 
 type _Test = CompositionTypeSatisfiesEnum<Objective, ObjectiveType>;
+
+export const DEFAULT_NUM_MINUTES_FOR_BOSS_OBJECTIVE = 2;
 
 export function getObjective(
   type: ObjectiveType.CHARACTER,
