@@ -1,15 +1,16 @@
-export function newSprite(anm2Path: string, pngPath?: string): Sprite {
-  const sprite = Sprite();
+import type { CollectibleType } from "isaac-typescript-definitions";
+import { newSprite } from "isaacscript-common";
 
-  if (pngPath === undefined) {
-    sprite.Load(anm2Path, true);
-  } else {
-    sprite.Load(anm2Path, false);
-    sprite.ReplaceSpritesheet(0, pngPath);
-    sprite.LoadGraphics();
-  }
+/** From Racing+. */
+export function newGlowingCollectibleSprite(
+  collectibleType: CollectibleType,
+): Sprite {
+  return newGlowingItemSprite(collectibleType);
+}
 
-  sprite.SetFrame("Default", 0);
+function newGlowingItemSprite(itemID: int): Sprite {
+  const directory = "items-glowing";
+  const filename = `collectibles_${itemID}.png`;
 
-  return sprite;
+  return newSprite("gfx/glowing_item.anm2", `gfx/${directory}/${filename}`);
 }

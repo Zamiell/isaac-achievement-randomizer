@@ -4,9 +4,9 @@ import {
   assertDefined,
   game,
   getHUDOffsetVector,
+  newSprite,
 } from "isaacscript-common";
 import { TimerType } from "./enums/TimerType";
-import { newSprite } from "./sprite";
 
 class TimerSprites {
   clock = newSprite("gfx/timer/clock.anm2");

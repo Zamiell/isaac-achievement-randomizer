@@ -33,7 +33,7 @@ export type Objective = CharacterObjective | BossObjective | ChallengeObjective;
 
 type _Test = CompositionTypeSatisfiesEnum<Objective, ObjectiveType>;
 
-export const DEFAULT_NUM_MINUTES_FOR_BOSS_OBJECTIVE = 2;
+const DEFAULT_NUM_MINUTES_FOR_BOSS_OBJECTIVE = 2;
 
 export function getObjective(
   type: ObjectiveType.CHARACTER,

@@ -1,4 +1,8 @@
-import { ModCallback, SeedEffect } from "isaac-typescript-definitions";
+import {
+  CollectibleType,
+  ModCallback,
+  SeedEffect,
+} from "isaac-typescript-definitions";
 import {
   Callback,
   KColorDefault,
@@ -11,6 +15,7 @@ import {
 } from "isaacscript-common";
 import { ALL_ACHIEVEMENTS } from "../../achievements";
 import { VERSION } from "../../constants";
+import { newGlowingCollectibleSprite } from "../../sprite";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   getNumCompletedAchievements,
@@ -21,6 +26,7 @@ import {
 import { hasErrors } from "./checkErrors/v";
 
 const FONT = fonts.teamMeatFont10;
+const D100_SPRITE = newGlowingCollectibleSprite(CollectibleType.D100);
 
 export class StartingRoomInfo extends RandomizerModFeature {
   @Callback(ModCallback.POST_RENDER)
@@ -69,6 +75,7 @@ export class StartingRoomInfo extends RandomizerModFeature {
     const room = game.GetRoom();
     const topLeftPosition = room.GetGridPosition(18);
     const topRightPosition = room.GetGridPosition(26);
+    const centerTopPosition = room.GetGridPosition(37);
     const centerPosition = room.GetGridPosition(52);
     const bottomLeftPosition = room.GetGridPosition(78);
     const bottomRightPosition = room.GetGridPosition(86);
@@ -86,6 +93,9 @@ export class StartingRoomInfo extends RandomizerModFeature {
       topRightPosition.add(Vector(0, 30)),
       K_COLORS.Green,
     );
+
+    const position = Isaac.WorldToScreen(centerTopPosition).add(Vector(0, 10));
+    D100_SPRITE.Render(position);
 
     this.drawCenteredText("Mod version:", centerPosition);
     this.drawCenteredText(
