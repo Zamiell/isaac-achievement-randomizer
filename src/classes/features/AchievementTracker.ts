@@ -85,6 +85,7 @@ import { ALL_OBJECTIVES, NO_HIT_BOSSES } from "../../objectives";
 import { convertSecondsToTimerValues } from "../../timer";
 import type { Achievement } from "../../types/Achievement";
 import { getAchievement, getAchievementText } from "../../types/Achievement";
+import { getAchievementID } from "../../types/AchievementID";
 import type { BossObjective, Objective } from "../../types/Objective";
 import {
   getObjective,
@@ -545,9 +546,14 @@ export function addObjective(objective: Objective, emulating = false): void {
     `Failed to get the achievement corresponding to objective ID: ${objectiveID}`,
   );
 
-  const swappedAchievement = checkSwapProblematicAchievement(
-    achievement,
-    objectiveID,
+  let swappedAchievement: Achievement;
+  do {
+    swappedAchievement = checkSwapProblematicAchievement(
+      achievement,
+      objectiveID,
+    );
+  } while (
+    getAchievementID(achievement) !== getAchievementID(swappedAchievement)
   );
 
   v.persistent.completedAchievements.push(swappedAchievement);
