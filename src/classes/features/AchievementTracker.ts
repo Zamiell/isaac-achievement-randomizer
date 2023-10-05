@@ -771,7 +771,7 @@ function getSwappedAchievement(
       switch (achievement.collectibleType) {
         // 75
         case CollectibleType.PHD: {
-          if (!anyPillEffectsUnlocked(false)) {
+          if (!anyGoodPillEffectsUnlocked(false)) {
             return DEFAULT_PILL_ACHIEVEMENT;
           }
 
@@ -1007,7 +1007,7 @@ function getSwappedAchievement(
 
         // 654
         case CollectibleType.FALSE_PHD: {
-          if (!anyPillEffectsUnlocked(false)) {
+          if (!anyBadPillEffectsUnlocked(false)) {
             return DEFAULT_PILL_ACHIEVEMENT;
           }
 
@@ -1777,6 +1777,32 @@ export function anyPillEffectsUnlocked(forRun = true): boolean {
 
   return array.some(
     (achievement) => achievement.type === AchievementType.PILL_EFFECT,
+  );
+}
+
+export function anyGoodPillEffectsUnlocked(forRun = true): boolean {
+  const array = forRun
+    ? v.persistent.completedAchievementsForRun
+    : v.persistent.completedAchievements;
+
+  return array.some(
+    (achievement) =>
+      achievement.type === AchievementType.PILL_EFFECT &&
+      getPillEffectType(achievement.pillEffect) ===
+        ItemConfigPillEffectType.POSITIVE,
+  );
+}
+
+export function anyBadPillEffectsUnlocked(forRun = true): boolean {
+  const array = forRun
+    ? v.persistent.completedAchievementsForRun
+    : v.persistent.completedAchievements;
+
+  return array.some(
+    (achievement) =>
+      achievement.type === AchievementType.PILL_EFFECT &&
+      getPillEffectType(achievement.pillEffect) ===
+        ItemConfigPillEffectType.NEGATIVE,
   );
 }
 
