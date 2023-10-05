@@ -8,6 +8,7 @@ import {
 import { AchievementText } from "./classes/features/AchievementText";
 import { AchievementTracker } from "./classes/features/AchievementTracker";
 import { CheckErrors } from "./classes/features/CheckErrors";
+import { DrawControls } from "./classes/features/DrawControls";
 import { ForceFadedConsoleDisplay } from "./classes/features/ForceFadedConsoleDisplay";
 import { GridEntityRemoval } from "./classes/features/GridEntityRemoval";
 import { HitIcon } from "./classes/features/HitIcon";
@@ -37,6 +38,7 @@ const MOD_FEATURES = [
   AchievementText,
   AchievementTracker,
   CheckErrors,
+  DrawControls,
   ForceFadedConsoleDisplay,
   GridEntityRemoval,
   HitIcon,

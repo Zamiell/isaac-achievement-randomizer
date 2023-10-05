@@ -1,5 +1,6 @@
 TODO:
 
+- draw generation attempts in black screen
 - rebirth item tracker is bugged with D6 on Isaac
 
 ------------------------------
