@@ -1877,6 +1877,15 @@ function canGetToCharacterObjectiveKind(kind: CharacterObjectiveKind): boolean {
 
 function canGetToBoss(bossID: BossID): boolean {
   switch (bossID) {
+    // 6, 8, 24, 25, 39
+    case BossID.MOM:
+    case BossID.MOMS_HEART:
+    case BossID.SATAN:
+    case BossID.IT_LIVES:
+    case BossID.ISAAC: {
+      return true;
+    }
+
     // 40
     case BossID.BLUE_BABY: {
       return isPathUnlocked(UnlockablePath.CHEST);
@@ -1909,6 +1918,13 @@ function canGetToBoss(bossID: BossID): boolean {
         isPathUnlocked(UnlockablePath.BLUE_WOMB) &&
         isPathUnlocked(UnlockablePath.VOID)
       );
+    }
+
+    // 88, 89, 90
+    case BossID.MOTHER:
+    case BossID.MAUSOLEUM_MOM:
+    case BossID.MAUSOLEUM_MOMS_HEART: {
+      return isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS);
     }
 
     // 99, 100
