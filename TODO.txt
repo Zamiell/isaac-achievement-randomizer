@@ -2,9 +2,6 @@ TODO:
 
 - quality unlocks in order
 
-- check that bosses behind either PATH or ALT_STAGE have logic for no hit achievement
-- check that repentance bosses are gated behind repentance achievements
-
 - rebirth item tracker is bugged with D6 on Isaac
 
 ------------------------------

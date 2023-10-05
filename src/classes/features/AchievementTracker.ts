@@ -11,12 +11,14 @@ import {
   GridEntityType,
   HeartSubType,
   ItemConfigTag,
+  LevelStage,
   ModCallback,
   PickupVariant,
   PillEffect,
   PlayerType,
   SackSubType,
   SeedEffect,
+  StageType,
   TrinketType,
 } from "isaac-typescript-definitions";
 import {
@@ -31,12 +33,14 @@ import {
   ReadonlyMap,
   ReadonlySet,
   VectorZero,
+  addSetsToSet,
   assertDefined,
   collectibleHasTag,
   copyArray,
   filterMap,
   fonts,
   game,
+  getBossSet,
   getCharacterName,
   getCollectibleName,
   getRandomSeed,
@@ -46,7 +50,7 @@ import {
   isCard,
   isHiddenCollectible,
   isPassiveOrFamiliarCollectible,
-  isRepentanceBoss,
+  isRepentanceStage,
   isRune,
   log,
   logError,
@@ -61,9 +65,10 @@ import {
   ALT_FLOORS,
   CHALLENGES,
   CHARACTER_OBJECTIVE_KINDS,
+  STAGE_TYPES,
 } from "../../cachedEnums";
 import { AchievementType } from "../../enums/AchievementType";
-import { AltFloor } from "../../enums/AltFloor";
+import { AltFloor, getAltFloor } from "../../enums/AltFloor";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { OtherAchievementKind } from "../../enums/OtherAchievementKind";
@@ -220,6 +225,13 @@ const CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP = new ReadonlyMap<
   // 45
   [Challenge.DELETE_THIS, [CollectibleType.TMTRAINER]],
 ]);
+
+const BOSS_STAGES = [
+  LevelStage.BASEMENT_1,
+  LevelStage.CAVES_1,
+  LevelStage.DEPTHS_1,
+  LevelStage.WOMB_1,
+] as const;
 
 /** `isaacscript-common` uses `CallbackPriority.IMPORTANT` (-200). */
 const HIGHER_PRIORITY_THAN_ISAACSCRIPT_COMMON = (CallbackPriority.IMPORTANT -
@@ -1328,6 +1340,18 @@ export function isAltFloorUnlocked(altFloor: AltFloor): boolean {
   );
 }
 
+export function isStageTypeUnlocked(
+  stage: LevelStage,
+  stageType: StageType,
+): boolean {
+  const altFloor = getAltFloor(stage, stageType);
+  if (altFloor === undefined) {
+    return true;
+  }
+
+  return isAltFloorUnlocked(altFloor);
+}
+
 // ---------------------------------
 // Achievement - Challenge functions
 // ---------------------------------
@@ -1852,55 +1876,83 @@ function canGetToCharacterObjectiveKind(kind: CharacterObjectiveKind): boolean {
 }
 
 function canGetToBoss(bossID: BossID): boolean {
-  if (bossID === BossID.BLUE_BABY && !isPathUnlocked(UnlockablePath.CHEST)) {
-    return false;
+  switch (bossID) {
+    // 40
+    case BossID.BLUE_BABY: {
+      return isPathUnlocked(UnlockablePath.CHEST);
+    }
+
+    // 54
+    case BossID.LAMB: {
+      return isPathUnlocked(UnlockablePath.DARK_ROOM);
+    }
+
+    // 55
+    case BossID.MEGA_SATAN: {
+      return isPathUnlocked(UnlockablePath.MEGA_SATAN);
+    }
+
+    // 62, 71
+    case BossID.ULTRA_GREED:
+    case BossID.ULTRA_GREEDIER: {
+      return isPathUnlocked(UnlockablePath.GREED_MODE);
+    }
+
+    // 63
+    case BossID.HUSH: {
+      return isPathUnlocked(UnlockablePath.BLUE_WOMB);
+    }
+
+    // 70
+    case BossID.DELIRIUM: {
+      return (
+        isPathUnlocked(UnlockablePath.BLUE_WOMB) &&
+        isPathUnlocked(UnlockablePath.VOID)
+      );
+    }
+
+    // 99, 100
+    case BossID.DOGMA:
+    case BossID.BEAST: {
+      return isPathUnlocked(UnlockablePath.ASCENT);
+    }
+
+    default: {
+      return canGetToBossNonStory(bossID);
+    }
+  }
+}
+
+function canGetToBossNonStory(bossID: BossID): boolean {
+  const reachableBossesSet = new Set<BossID>();
+
+  for (const stage of BOSS_STAGES) {
+    for (const stageType of STAGE_TYPES) {
+      if (stageType === StageType.GREED_MODE) {
+        continue;
+      }
+
+      if (!isStageTypeUnlocked(stage, stageType)) {
+        continue;
+      }
+
+      if (
+        isRepentanceStage(stageType) &&
+        !isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS)
+      ) {
+        continue;
+      }
+
+      const bossSet = getBossSet(stage, stageType);
+      if (bossSet === undefined) {
+        continue;
+      }
+
+      addSetsToSet(reachableBossesSet, bossSet);
+    }
   }
 
-  if (bossID === BossID.LAMB && !isPathUnlocked(UnlockablePath.DARK_ROOM)) {
-    return false;
-  }
-
-  if (
-    bossID === BossID.MEGA_SATAN &&
-    !isPathUnlocked(UnlockablePath.MEGA_SATAN)
-  ) {
-    return false;
-  }
-
-  if (bossID === BossID.HUSH && !isPathUnlocked(UnlockablePath.BLUE_WOMB)) {
-    return false;
-  }
-
-  if (
-    bossID === BossID.DELIRIUM &&
-    (!isPathUnlocked(UnlockablePath.BLUE_WOMB) ||
-      !isPathUnlocked(UnlockablePath.VOID))
-  ) {
-    return false;
-  }
-
-  if (
-    isRepentanceBoss(bossID) &&
-    !isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS)
-  ) {
-    return false;
-  }
-
-  if (
-    (bossID === BossID.DOGMA || bossID === BossID.BEAST) &&
-    !isPathUnlocked(UnlockablePath.ASCENT)
-  ) {
-    return false;
-  }
-
-  if (
-    bossID === BossID.ULTRA_GREED &&
-    !isPathUnlocked(UnlockablePath.GREED_MODE)
-  ) {
-    return false;
-  }
-
-  return true;
+  return reachableBossesSet.has(bossID);
 }
 
 // -------

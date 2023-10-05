@@ -2,6 +2,7 @@ import {
   BossID,
   Challenge,
   PocketItemSlot,
+  StageType,
   TrinketSlot,
 } from "isaac-typescript-definitions";
 import { getEnumValues } from "isaacscript-common";
@@ -32,6 +33,8 @@ export const OTHER_ACHIEVEMENT_KINDS: readonly OtherAchievementKind[] =
 
 export const POCKET_ITEM_SLOTS: readonly PocketItemSlot[] =
   getEnumValues(PocketItemSlot);
+
+export const STAGE_TYPES: readonly StageType[] = getEnumValues(StageType);
 
 export const TRINKET_SLOTS: readonly TrinketSlot[] = getEnumValues(TrinketSlot);
 
