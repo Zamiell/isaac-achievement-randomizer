@@ -75,7 +75,7 @@ export class AchievementNotification extends ModFeature {
     // The streak text will slowly fade out.
     const fade = this.getFade(v.run.renderFrameSet);
     if (fade > 0) {
-      drawText(v.run.text, fade);
+      this.draw(v.run.text, fade);
     } else {
       v.run.text = null;
       v.run.renderFrameSet = null;
@@ -93,6 +93,19 @@ export class AchievementNotification extends ModFeature {
     const fadeFrames = elapsedFrames - RENDER_FRAMES_BEFORE_FADE;
     return 1 - 0.02 * fadeFrames;
   }
+
+  draw(text: string, fade: float): void {
+    const screenBottomRightPos = getScreenBottomRightPos();
+    let y = screenBottomRightPos.Y * 0.25;
+
+    const lines = text.split("\n");
+    for (const line of lines) {
+      const color = KColor(1, 1, 1, fade);
+      FONT.DrawString(line, 0, y, color, screenBottomRightPos.X, true);
+
+      y += 20;
+    }
+  }
 }
 
 export function showNewAchievement(achievement: Achievement): void {
@@ -102,17 +115,4 @@ export function showNewAchievement(achievement: Achievement): void {
   );
 
   sfxManager.Play(SoundEffectCustom.GOLDEN_WALNUT);
-}
-
-function drawText(text: string, fade: float) {
-  const screenBottomRightPos = getScreenBottomRightPos();
-  let y = screenBottomRightPos.Y * 0.25;
-
-  const lines = text.split("\n");
-  for (const line of lines) {
-    const color = KColor(1, 1, 1, fade);
-    FONT.DrawString(line, 0, y, color, screenBottomRightPos.X, true);
-
-    y += 20;
-  }
 }
