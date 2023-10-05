@@ -1,9 +1,5 @@
-import { CardType, Challenge, PlayerType } from "isaac-typescript-definitions";
-import {
-  MAIN_CHARACTERS,
-  VANILLA_CARD_TYPES,
-  VANILLA_PILL_EFFECTS,
-} from "isaacscript-common";
+import { Challenge } from "isaac-typescript-definitions";
+import { VANILLA_PILL_EFFECTS } from "isaacscript-common";
 import {
   ACHIEVEMENT_TYPES,
   ALT_FLOORS,
@@ -13,6 +9,8 @@ import {
 } from "./cachedEnums";
 import { AchievementType } from "./enums/AchievementType";
 import type { Achievement } from "./types/Achievement";
+import { UNLOCKABLE_CARD_TYPES } from "./unlockableCardTypes";
+import { UNLOCKABLE_CHARACTERS } from "./unlockableCharacters";
 import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./unlockableCollectibleTypes";
 import { UNLOCKABLE_GRID_ENTITY_TYPES } from "./unlockableGridEntityTypes";
 import {
@@ -33,11 +31,7 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
   for (const achievementType of ACHIEVEMENT_TYPES) {
     switch (achievementType) {
       case AchievementType.CHARACTER: {
-        for (const character of MAIN_CHARACTERS) {
-          if (character === PlayerType.ISAAC) {
-            continue;
-          }
-
+        for (const character of UNLOCKABLE_CHARACTERS) {
           const achievement: Achievement = {
             type: AchievementType.CHARACTER,
             character,
@@ -113,11 +107,7 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
       }
 
       case AchievementType.CARD: {
-        for (const cardType of VANILLA_CARD_TYPES) {
-          if (cardType === CardType.RUNE_SHARD) {
-            continue;
-          }
-
+        for (const cardType of UNLOCKABLE_CARD_TYPES) {
           const achievement: Achievement = {
             type: AchievementType.CARD,
             cardType,

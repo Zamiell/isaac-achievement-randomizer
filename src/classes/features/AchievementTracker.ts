@@ -88,6 +88,7 @@ import {
 } from "../../types/Objective";
 import type { ObjectiveID } from "../../types/ObjectiveID";
 import { getObjectiveID } from "../../types/ObjectiveID";
+import { UNLOCKABLE_CARD_TYPES } from "../../unlockableCardTypes";
 import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTypes";
 import { UNLOCKABLE_GRID_ENTITY_TYPES } from "../../unlockableGridEntityTypes";
 import {
@@ -539,7 +540,7 @@ function checkSwapProblematicAchievement(
   achievement: Achievement,
   objectiveID: ObjectiveID,
 ): Achievement {
-  const swappedAchievement = getAchievementSwap(achievement);
+  const swappedAchievement = getSwappedAchievement(achievement);
   if (swappedAchievement === undefined) {
     return achievement;
   }
@@ -558,7 +559,9 @@ function checkSwapProblematicAchievement(
   return swappedAchievement;
 }
 
-function getAchievementSwap(achievement: Achievement): Achievement | undefined {
+function getSwappedAchievement(
+  achievement: Achievement,
+): Achievement | undefined {
   switch (achievement.type) {
     case AchievementType.PATH: {
       switch (achievement.unlockablePath) {
@@ -1561,7 +1564,7 @@ function anyRunesUnlocked(): boolean {
 }
 
 export function isCardTypeUnlocked(cardType: CardType): boolean {
-  if (cardType === CardType.RUNE_SHARD) {
+  if (!UNLOCKABLE_CARD_TYPES.includes(cardType)) {
     return true;
   }
 

@@ -1,7 +1,7 @@
-import { CardType, Challenge, PlayerType } from "isaac-typescript-definitions";
+import type { PlayerType } from "isaac-typescript-definitions";
+import { Challenge } from "isaac-typescript-definitions";
 import {
   MAIN_CHARACTERS,
-  VANILLA_CARD_TYPES,
   VANILLA_PILL_EFFECTS,
   assertDefined,
   getBatteryName,
@@ -75,6 +75,8 @@ import { mod } from "./mod";
 import { NO_HIT_BOSSES } from "./objectives";
 import { getAchievementText } from "./types/Achievement";
 import { getObjectiveText } from "./types/Objective";
+import { UNLOCKABLE_CARD_TYPES } from "./unlockableCardTypes";
+import { UNLOCKABLE_CHARACTERS } from "./unlockableCharacters";
 import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./unlockableCollectibleTypes";
 import {
   UNLOCKABLE_GRID_ENTITY_TYPES,
@@ -990,11 +992,7 @@ function getChallengeObjectiveButtons(): DeadSeaScrollsButton[] {
 function getCharacterUnlockButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const character of MAIN_CHARACTERS) {
-    if (character === PlayerType.ISAAC) {
-      continue;
-    }
-
+  for (const character of UNLOCKABLE_CHARACTERS) {
     const characterName = getCharacterName(character).toLowerCase();
     const completed = isCharacterUnlocked(character);
     const completedText = getCompletedText(completed);
@@ -1149,11 +1147,7 @@ function getTrinketUnlockButtons(): DeadSeaScrollsButton[] {
 function getCardUnlockButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const cardType of VANILLA_CARD_TYPES) {
-    if (cardType === CardType.NULL || cardType === CardType.RUNE_SHARD) {
-      continue;
-    }
-
+  for (const cardType of UNLOCKABLE_CARD_TYPES) {
     const cardName = getCardName(cardType).toLowerCase();
     const completed = isCardTypeUnlocked(cardType);
     const completedText = getCompletedText(completed);

@@ -4,7 +4,6 @@
 
 import { PlayerType } from "isaac-typescript-definitions";
 import {
-  MAIN_CHARACTERS,
   ReadonlySet,
   arrayRemoveIndexInPlace,
   assertDefined,
@@ -25,6 +24,7 @@ import type { CharacterObjective, Objective } from "./types/Objective";
 import { getObjective, getObjectiveText } from "./types/Objective";
 import type { ObjectiveID } from "./types/ObjectiveID";
 import { getObjectiveID } from "./types/ObjectiveID";
+import { UNLOCKABLE_CHARACTERS } from "./unlockableCharacters";
 
 /** These are the objectives that The Polaroid and The Negative are gated behind. */
 const EASY_OBJECTIVE_KINDS = [
@@ -93,12 +93,8 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Achievement> {
 
   // Each character is guaranteed to unlock another character from a basic objective.
   let lastUnlockedCharacter = PlayerType.ISAAC;
-  const mainCharacters = shuffleArray(MAIN_CHARACTERS, rng);
-  for (const character of mainCharacters) {
-    if (character === PlayerType.ISAAC) {
-      continue;
-    }
-
+  const unlockableCharacters = shuffleArray(UNLOCKABLE_CHARACTERS, rng);
+  for (const character of unlockableCharacters) {
     const achievement = getAchievement(AchievementType.CHARACTER, character);
     removeAchievement(achievements, achievement);
 
