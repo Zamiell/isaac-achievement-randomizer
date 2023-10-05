@@ -1922,6 +1922,7 @@ function isAchievementsBeatable(): boolean {
         `Failed to emulate beating seed ${v.persistent.seed}: ${v.persistent.completedAchievements.length} / ${ALL_ACHIEVEMENTS.length}`,
       );
       logMissingObjectives();
+
       return false;
     }
   }

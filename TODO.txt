@@ -1,8 +1,6 @@
 TODO:
 
-- don't release black screen until new seed is arrived
-
-- rebirth item tracker is bugged with D6 on Isaac
+- n/a
 
 ------------------------------
 
