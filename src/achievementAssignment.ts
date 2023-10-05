@@ -63,6 +63,12 @@ const BASIC_CHARACTER_OBJECTIVES = new ReadonlySet<CharacterObjectiveKind>([
   CharacterObjectiveKind.LAMB,
 ]);
 
+/** These are characters that are guaranteed to not be unlocked early on. */
+const HARD_CHARACTERS = [
+  PlayerType.LAZARUS_B, // 29
+  PlayerType.LOST_B, // 31
+] as const;
+
 export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Achievement> {
   // When an achievement/objective is assigned, it is added to the following map.
   const objectiveToAchievementMap = new Map<ObjectiveID, Achievement>();
@@ -91,9 +97,11 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Achievement> {
     objectiveToAchievementMap.set(objectiveID, achievement);
   }
 
+  const unlockableCharacters = getUnlockableCharacters(rng);
+
   // Each character is guaranteed to unlock another character from a basic objective.
   let lastUnlockedCharacter = PlayerType.ISAAC;
-  const unlockableCharacters = shuffleArray(UNLOCKABLE_CHARACTERS, rng);
+
   for (const character of unlockableCharacters) {
     const achievement = getAchievement(AchievementType.CHARACTER, character);
     removeAchievement(achievements, achievement);
@@ -121,6 +129,32 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Achievement> {
   }
 
   return objectiveToAchievementMap;
+}
+
+/** Returns a shuffled array with certain character restrictions. */
+function getUnlockableCharacters(rng: RNG): PlayerType[] {
+  let unlockableCharacters = copyArray(UNLOCKABLE_CHARACTERS);
+
+  do {
+    unlockableCharacters = shuffleArray(unlockableCharacters, rng);
+  } while (!isValidUnlockableCharacterOrder(unlockableCharacters));
+
+  return unlockableCharacters;
+}
+
+function isValidUnlockableCharacterOrder(characters: PlayerType[]): boolean {
+  return HARD_CHARACTERS.every((character) =>
+    inSecondHalfOfArray(character, characters),
+  );
+}
+
+function inSecondHalfOfArray<T>(element: T, array: T[]): boolean {
+  const index = array.indexOf(element);
+  if (index === -1) {
+    return false;
+  }
+
+  return index > (array.length - 1) / 2;
 }
 
 function removeAchievement(
