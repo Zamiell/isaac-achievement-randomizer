@@ -8,6 +8,7 @@ import {
 import { AchievementNotification } from "./classes/features/AchievementNotification";
 import { AchievementTracker } from "./classes/features/AchievementTracker";
 import { CheckErrors } from "./classes/features/CheckErrors";
+import { ChillRoom } from "./classes/features/ChillRoom";
 import { DrawControls } from "./classes/features/DrawControls";
 import { ForceFadedConsoleDisplay } from "./classes/features/ForceFadedConsoleDisplay";
 import { GridEntityRemoval } from "./classes/features/GridEntityRemoval";
@@ -38,6 +39,7 @@ const MOD_FEATURES = [
   AchievementNotification,
   AchievementTracker,
   CheckErrors,
+  ChillRoom,
   DrawControls,
   ForceFadedConsoleDisplay,
   GridEntityRemoval,

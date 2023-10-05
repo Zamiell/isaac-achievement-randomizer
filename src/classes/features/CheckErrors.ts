@@ -16,6 +16,7 @@ import {
   anyEasterEggEnabled,
   emptyRoomGridEntities,
   game,
+  getChallengeName,
   getCharacterName,
   getCollectibleName,
   isRepentance,
@@ -290,9 +291,8 @@ function checkChallengeUnlocked() {
   const challenge = Isaac.GetChallenge();
 
   if (!isChallengeUnlocked(challenge)) {
-    log(
-      `Error: Locked challenge detected: ${Challenge[challenge]} (${challenge})`,
-    );
+    const challengeName = getChallengeName(challenge);
+    log(`Error: Locked challenge detected: ${challengeName} (${challenge})`);
     v.run.lockedChallenge = true;
   }
 }

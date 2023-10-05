@@ -1,0 +1,4 @@
+<?xml-model href="https://wofsauge.github.io/isaac-xml-validator/xsd/challenges.xsd" ?>
+<challenges version="1">
+  <challenge name="Randomizer Chill Room" endstage="11" altpath="true" />
+</challenges>

@@ -11,6 +11,7 @@ import {
   onStageType,
   spawnEffect,
 } from "isaacscript-common";
+import { ChallengeCustom } from "../../enums/ChallengeCustom";
 import { CreepRedSubTypeCustom } from "../../enums/CreepRedSubTypeCustom";
 import { isRandomizerEnabled } from "./AchievementTracker";
 
@@ -42,12 +43,14 @@ export class DrawControls extends ModFeature {
    */
   shouldDrawControlsGraphic(): boolean {
     const isGreedMode = game.IsGreedMode();
+    const challenge = Isaac.GetChallenge();
 
     return (
       !isGreedMode &&
       onFirstFloor() &&
       inStartingRoom() &&
-      !isRandomizerEnabled()
+      !isRandomizerEnabled() &&
+      challenge !== ChallengeCustom.RANDOMIZER_CHILL_ROOM
     );
   }
 

@@ -342,6 +342,10 @@ Victory Laps and the "Rerun" feature on the main menu are banned for the same re
 
 The mod deletes all Void Portals outside of the Blue Womb. This is both a balance change (since it slightly increases the difficulty of Delirium) and a quality of life fix (since players can no longer accidentally enter a Void Portal and lose their streak).
 
+### Chill Room
+
+The mod provides a custom challenge that simply locks you in the starting room of the run. You can use this challenge to review your achievements and plan for your next run. Runs started inside of the challenge will not count towards your randomizer stats or deaths.
+
 ### Other Miscellaneous Quality of Life Improvements
 
 - <!-- "ui_hearts.png" --> The heart UI sprites have been slightly modified so that it is easier to see an empty heart container on a black background.

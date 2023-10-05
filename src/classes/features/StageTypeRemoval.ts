@@ -8,6 +8,7 @@ import {
   log,
   setPlayerHealth,
 } from "isaacscript-common";
+import { ChallengeCustom } from "../../enums/ChallengeCustom";
 import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { isStageTypeUnlocked } from "./AchievementTracker";
@@ -17,6 +18,11 @@ export class StageTypeRemoval extends RandomizerModFeature {
   @CallbackCustom(ModCallbackCustom.POST_NEW_LEVEL_REORDERED)
   postNewLevelReordered(stage: LevelStage, stageType: StageType): void {
     if (hasErrors()) {
+      return;
+    }
+
+    const challenge = Isaac.GetChallenge();
+    if (challenge === ChallengeCustom.RANDOMIZER_CHILL_ROOM) {
       return;
     }
 

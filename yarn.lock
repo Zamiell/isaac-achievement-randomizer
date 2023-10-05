@@ -3895,9 +3895,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "isaac-achievement-randomizer@workspace:."
   dependencies:
-    isaac-typescript-definitions: ^26.1.0
+    isaac-typescript-definitions: ^27.0.0
     isaacscript: ^3.12.0
-    isaacscript-common: ^57.9.0
+    isaacscript-common: ^59.0.0
     isaacscript-lint: ^6.0.0
     isaacscript-spell: ^1.6.0
     isaacscript-tsconfig: ^4.0.0
@@ -3906,12 +3906,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"isaac-typescript-definitions@npm:^26.1.0":
-  version: 26.1.0
-  resolution: "isaac-typescript-definitions@npm:26.1.0"
+"isaac-typescript-definitions@npm:^27.0.0":
+  version: 27.0.0
+  resolution: "isaac-typescript-definitions@npm:27.0.0"
   dependencies:
     lua-types: ^2.13.1
-  checksum: d7c4e97aad9be98751b3f93bab1d7f20fa106c438dc49886a38ce51ea8a4ca545c1977f1f99f7fb0ced6be83a0c1571e5a920febf43a287f8b7e2792b56f9b96
+  checksum: 2e61c3c6b562bf84dec2c951ebeb1212c6a3a87c7fb9d5112af822f351bbad02475880087e78febc58673d23275e7e68d15dae562ec3b68f6a146b16f6967bb5
   languageName: node
   linkType: hard
 
@@ -3922,12 +3922,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common@npm:^57.9.0":
-  version: 57.9.0
-  resolution: "isaacscript-common@npm:57.9.0"
+"isaacscript-common@npm:^59.0.0":
+  version: 59.0.0
+  resolution: "isaacscript-common@npm:59.0.0"
   dependencies:
-    isaac-typescript-definitions: ^26.1.0
-  checksum: 87ea8bff3866d3cc386121618793b192e1547e6f0bdd0dab0e29b06bd3c5aabebeb25cffef7f59f5bddc75b8db73815f261c5caf2d7be832722a2471d757a3e2
+    isaac-typescript-definitions: ^27.0.0
+  checksum: f3164c6a29f94ff82516f4a45f31207f464fbcb9dde82e3d84ebabfe85b1e87b4f86472e82fd5e9fea7abcfffbba696f151e8c169372b44e678019fdad2383d3
   languageName: node
   linkType: hard
 

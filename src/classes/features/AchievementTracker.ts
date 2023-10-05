@@ -84,6 +84,7 @@ import {
 } from "../../cachedEnums";
 import { AchievementType } from "../../enums/AchievementType";
 import { AltFloor, getAltFloor } from "../../enums/AltFloor";
+import { ChallengeCustom } from "../../enums/ChallengeCustom";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { OtherAchievementKind } from "../../enums/OtherAchievementKind";
@@ -389,6 +390,11 @@ export class AchievementTracker extends ModFeature {
       return;
     }
 
+    const challenge = Isaac.GetChallenge();
+    if (challenge === ChallengeCustom.RANDOMIZER_CHILL_ROOM) {
+      return;
+    }
+
     if (!isGameOver) {
       v.run.shouldIncrementDeathCounter = false;
     }
@@ -405,6 +411,11 @@ export class AchievementTracker extends ModFeature {
   )
   preGameExit(): void {
     if (!isRandomizerEnabled()) {
+      return;
+    }
+
+    const challenge = Isaac.GetChallenge();
+    if (challenge === ChallengeCustom.RANDOMIZER_CHILL_ROOM) {
       return;
     }
 
@@ -1582,7 +1593,10 @@ export function isChallengeUnlocked(
   challenge: Challenge,
   forRun = true,
 ): boolean {
-  if (challenge === Challenge.NULL) {
+  if (
+    challenge === Challenge.NULL ||
+    challenge === ChallengeCustom.RANDOMIZER_CHILL_ROOM
+  ) {
     return true;
   }
 
