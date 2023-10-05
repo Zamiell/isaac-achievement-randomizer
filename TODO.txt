@@ -1,5 +1,7 @@
 TODO:
 
+- only require 3/4 of quality unlocks
+- pill effect should unlock with quality
 - n/a
 
 ------------------------------

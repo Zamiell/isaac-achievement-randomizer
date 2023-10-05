@@ -495,14 +495,14 @@ export class PickupRemoval extends RandomizerModFeature {
       onChest() &&
       !isChestPickupVariantUnlocked(PickupVariant.LOCKED_CHEST)
     ) {
-      removeAllPickups(PickupVariant.LOCKED_CHEST);
+      removeAllPickups(PickupVariant.CHEST);
     }
 
     if (
       onDarkRoom() &&
       !isChestPickupVariantUnlocked(PickupVariant.RED_CHEST)
     ) {
-      removeAllPickups(PickupVariant.RED_CHEST);
+      removeAllPickups(PickupVariant.CHEST);
     }
   }
 

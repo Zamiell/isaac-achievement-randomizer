@@ -10,6 +10,7 @@ import {
   CollectibleType,
   GridEntityType,
   HeartSubType,
+  ItemConfigPillEffectType,
   ItemConfigTag,
   LevelStage,
   ModCallback,
@@ -50,10 +51,12 @@ import {
   getCharacterName,
   getCollectibleName,
   getCollectibleQuality,
+  getPillEffectType,
   getRandomSeed,
   getScreenBottomRightPos,
   getScreenCenterPos,
   getVanillaCollectibleTypesOfQuality,
+  getVanillaPillEffectsOfType,
   includes,
   isActiveCollectible,
   isCard,
@@ -1206,6 +1209,16 @@ function getSwappedAchievement(
       }
     }
 
+    case AchievementType.PILL_EFFECT: {
+      // Check to see if there is a worse pill effect to unlock.
+      const worsePillEffect = getWorsePillEffect(achievement.pillEffect);
+      if (worsePillEffect !== undefined) {
+        return getAchievement(AchievementType.PILL_EFFECT, worsePillEffect);
+      }
+
+      return undefined;
+    }
+
     default: {
       return undefined;
     }
@@ -1634,6 +1647,7 @@ function getWorseCollectibleType(
       [...lowerQualityCollectibleTypes],
       v.persistent.seed,
     );
+
     for (const lowerQualityCollectibleType of shuffledCollectibleTypes) {
       if (ALWAYS_UNLOCKED_COLLECTIBLE_TYPES.has(lowerQualityCollectibleType)) {
         continue;
@@ -1762,8 +1776,15 @@ export function anyPillEffectsUnlocked(forRun = true): boolean {
   );
 }
 
-export function isPillEffectUnlocked(pillEffect: PillEffect): boolean {
-  return v.persistent.completedAchievementsForRun.some(
+export function isPillEffectUnlocked(
+  pillEffect: PillEffect,
+  forRun = true,
+): boolean {
+  const array = forRun
+    ? v.persistent.completedAchievementsForRun
+    : v.persistent.completedAchievements;
+
+  return array.some(
     (achievement) =>
       achievement.type === AchievementType.PILL_EFFECT &&
       achievement.pillEffect === pillEffect,
@@ -1776,6 +1797,59 @@ export function getUnlockedPillEffects(): PillEffect[] {
       ? achievement.pillEffect
       : undefined,
   );
+}
+
+function getWorsePillEffect(pillEffect: PillEffect): PillEffect | undefined {
+  // Some collectibles result in a won run and should be treated as maximum quality.
+  const pillEffectType = getPillEffectType(pillEffect);
+  const worsePillEffectTypes =
+    getWorseItemConfigPillEffectTypes(pillEffectType);
+  assertNotNull(
+    v.persistent.seed,
+    "Failed to get a worse pill effect since the seed was null.",
+  );
+
+  for (const worsePillEffectType of worsePillEffectTypes) {
+    const worsePillEffects = getVanillaPillEffectsOfType(worsePillEffectType);
+    const shuffledPillEffects = shuffleArray(
+      worsePillEffects,
+      v.persistent.seed,
+    );
+
+    for (const worsePillEffect of shuffledPillEffects) {
+      if (!isPillEffectUnlocked(worsePillEffect, false)) {
+        return worsePillEffect;
+      }
+    }
+  }
+
+  return undefined;
+}
+
+function getWorseItemConfigPillEffectTypes(
+  pillEffectType: ItemConfigPillEffectType,
+): ItemConfigPillEffectType[] {
+  switch (pillEffectType) {
+    // -1, 1, 3
+    case ItemConfigPillEffectType.NULL:
+    case ItemConfigPillEffectType.NEGATIVE:
+    case ItemConfigPillEffectType.MODDED: {
+      return [];
+    }
+
+    // 0
+    case ItemConfigPillEffectType.POSITIVE: {
+      return [
+        ItemConfigPillEffectType.NEUTRAL,
+        ItemConfigPillEffectType.NEGATIVE,
+      ];
+    }
+
+    // 2
+    case ItemConfigPillEffectType.NEUTRAL: {
+      return [ItemConfigPillEffectType.NEGATIVE];
+    }
+  }
 }
 
 // ------------------------------------
