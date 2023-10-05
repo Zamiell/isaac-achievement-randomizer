@@ -1,7 +1,8 @@
 TODO:
 
 - only require 3/4 of quality unlocks
-- pill effect should unlock with quality
+- change PHD to be locked behind a good pill
+- change False PHD to be locked behind a bad pill
 - n/a
 
 ------------------------------

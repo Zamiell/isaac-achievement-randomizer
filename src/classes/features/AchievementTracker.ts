@@ -52,6 +52,7 @@ import {
   getCollectibleName,
   getCollectibleQuality,
   getPillEffectType,
+  getRandomArrayElement,
   getRandomSeed,
   getScreenBottomRightPos,
   getScreenCenterPos,
@@ -72,7 +73,6 @@ import {
   newSprite,
   restart,
   setUnseeded,
-  shuffleArray,
 } from "isaacscript-common";
 import { getAchievementsForRNG } from "../../achievementAssignment";
 import { ALL_ACHIEVEMENTS } from "../../achievements";
@@ -125,6 +125,7 @@ const VERBOSE = false as boolean;
 const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
 const FONT = fonts.droid;
 const STARTING_CHARACTER = PlayerType.ISAAC;
+const QUALITY_THRESHOLD_PERCENT = 0.75;
 
 const CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP = new ReadonlyMap<
   Challenge,
@@ -264,7 +265,7 @@ const DEFAULT_CARD_ACHIEVEMENT = getAchievement(
 
 const DEFAULT_PILL_ACHIEVEMENT = getAchievement(
   AchievementType.PILL_EFFECT,
-  PillEffect.I_FOUND_PILLS,
+  PillEffect.PARALYSIS,
 );
 
 const v = {
@@ -1630,6 +1631,11 @@ export function getUnlockedEdenPassiveCollectibleTypes(): CollectibleType[] {
 function getWorseCollectibleType(
   collectibleType: CollectibleType,
 ): CollectibleType | undefined {
+  assertNotNull(
+    v.persistent.seed,
+    "Failed to get a worse collectible type since the seed was null.",
+  );
+
   // Some collectibles result in a won run and should be treated as maximum quality.
   const quality = GOOD_COLLECTIBLES.has(collectibleType)
     ? MAX_QUALITY
@@ -1639,23 +1645,21 @@ function getWorseCollectibleType(
     const lowerQuality = lowerQualityInt as Quality;
     const lowerQualityCollectibleTypes =
       getVanillaCollectibleTypesOfQuality(lowerQuality);
-    assertNotNull(
-      v.persistent.seed,
-      "Failed to get a worse collectible type since the seed was null.",
-    );
-    const shuffledCollectibleTypes = shuffleArray(
-      [...lowerQualityCollectibleTypes],
-      v.persistent.seed,
+    const lockedLowerQualityCollectibleTypes = [
+      ...lowerQualityCollectibleTypes,
+    ].filter(
+      (lowerQualityCollectibleType) =>
+        !isCollectibleTypeUnlocked(lowerQualityCollectibleType, false),
     );
 
-    for (const lowerQualityCollectibleType of shuffledCollectibleTypes) {
-      if (ALWAYS_UNLOCKED_COLLECTIBLE_TYPES.has(lowerQualityCollectibleType)) {
-        continue;
-      }
-
-      if (!isCollectibleTypeUnlocked(lowerQualityCollectibleType, false)) {
-        return lowerQualityCollectibleType;
-      }
+    if (
+      lockedLowerQualityCollectibleTypes.length <
+      lowerQualityCollectibleTypes.size * QUALITY_THRESHOLD_PERCENT
+    ) {
+      return getRandomArrayElement(
+        lockedLowerQualityCollectibleTypes,
+        v.persistent.seed,
+      );
     }
   }
 
@@ -1800,26 +1804,27 @@ export function getUnlockedPillEffects(): PillEffect[] {
 }
 
 function getWorsePillEffect(pillEffect: PillEffect): PillEffect | undefined {
-  // Some collectibles result in a won run and should be treated as maximum quality.
-  const pillEffectType = getPillEffectType(pillEffect);
-  const worsePillEffectTypes =
-    getWorseItemConfigPillEffectTypes(pillEffectType);
   assertNotNull(
     v.persistent.seed,
     "Failed to get a worse pill effect since the seed was null.",
   );
 
+  // Some collectibles result in a won run and should be treated as maximum quality.
+  const pillEffectType = getPillEffectType(pillEffect);
+  const worsePillEffectTypes =
+    getWorseItemConfigPillEffectTypes(pillEffectType);
+
   for (const worsePillEffectType of worsePillEffectTypes) {
     const worsePillEffects = getVanillaPillEffectsOfType(worsePillEffectType);
-    const shuffledPillEffects = shuffleArray(
-      worsePillEffects,
-      v.persistent.seed,
+    const lockedWorsePillEffects = worsePillEffects.filter(
+      (worsePillEffect) => !isPillEffectUnlocked(worsePillEffect, false),
     );
 
-    for (const worsePillEffect of shuffledPillEffects) {
-      if (!isPillEffectUnlocked(worsePillEffect, false)) {
-        return worsePillEffect;
-      }
+    if (
+      lockedWorsePillEffects.length <
+      worsePillEffects.length * QUALITY_THRESHOLD_PERCENT
+    ) {
+      return getRandomArrayElement(lockedWorsePillEffects, v.persistent.seed);
     }
   }
 
