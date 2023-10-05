@@ -30,7 +30,7 @@ export class StageTypeRemoval extends RandomizerModFeature {
         : StageType.ORIGINAL;
 
     log(
-      `Locked stage type detected (${stageType}). Going to stage type StageType.${StageType[newStageType]} (${newStageType}).`,
+      `Locked stage type detected (${stageType}). Warping to: StageType.${StageType[newStageType]} (${newStageType})`,
     );
 
     // Reloading the stage will cause collectibles (Dream Catcher, Empty Heart) and trinkets
