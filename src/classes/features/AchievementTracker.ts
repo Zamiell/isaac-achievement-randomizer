@@ -36,6 +36,7 @@ import {
   VectorZero,
   addSetsToSet,
   assertDefined,
+  assertNotNull,
   collectibleHasTag,
   copyArray,
   eRange,
@@ -64,6 +65,7 @@ import {
   newSprite,
   restart,
   setUnseeded,
+  shuffleArray,
 } from "isaacscript-common";
 import { getAchievementsForRNG } from "../../achievementAssignment";
 import { ALL_ACHIEVEMENTS } from "../../achievements";
@@ -1559,7 +1561,15 @@ function getWorseCollectibleType(
     const lowerQuality = lowerQualityInt as Quality;
     const lowerQualityCollectibleTypes =
       getVanillaCollectibleTypesOfQuality(lowerQuality);
-    for (const lowerQualityCollectibleType of lowerQualityCollectibleTypes) {
+    assertNotNull(
+      v.persistent.seed,
+      "Failed to get a worse collectible type since the seed was null.",
+    );
+    const shuffledCollectibleTypes = shuffleArray(
+      [...lowerQualityCollectibleTypes],
+      v.persistent.seed,
+    );
+    for (const lowerQualityCollectibleType of shuffledCollectibleTypes) {
       if (ALWAYS_UNLOCKED_COLLECTIBLE_TYPES.has(lowerQualityCollectibleType)) {
         continue;
       }
