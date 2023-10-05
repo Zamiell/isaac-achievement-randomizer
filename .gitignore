@@ -12,6 +12,9 @@ isaacscript.json
 # The transpiled Lua output
 mod/main.lua
 
+# Python cache
+__pycache__
+
 # ------------------------------
 # GitHub Node.gitignore template
 # https://raw.githubusercontent.com/github/gitignore/master/Node.gitignore

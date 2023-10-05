@@ -1,6 +1,5 @@
 TODO:
 
-- write version on title screen
 - remove controls graphic
 - write version on starting room
 
