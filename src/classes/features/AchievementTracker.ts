@@ -1,4 +1,4 @@
-import type { KeySubType, SlotVariant } from "isaac-typescript-definitions";
+import type { KeySubType } from "isaac-typescript-definitions";
 import {
   BatterySubType,
   BombSubType,
@@ -18,6 +18,7 @@ import {
   PlayerType,
   SackSubType,
   SeedEffect,
+  SlotVariant,
   StageType,
   TrinketType,
 } from "isaac-typescript-definitions";
@@ -213,6 +214,21 @@ const BOSS_STAGES = [
 /** `isaacscript-common` uses `CallbackPriority.IMPORTANT` (-200). */
 const HIGHER_PRIORITY_THAN_ISAACSCRIPT_COMMON = (CallbackPriority.IMPORTANT -
   1) as CallbackPriority;
+
+const DEFAULT_TRINKET_ACHIEVEMENT = getAchievement(
+  AchievementType.TRINKET,
+  TrinketType.ERROR,
+);
+
+const DEFAULT_CARD_ACHIEVEMENT = getAchievement(
+  AchievementType.CARD,
+  CardType.FOOL,
+);
+
+const DEFAULT_PILL_ACHIEVEMENT = getAchievement(
+  AchievementType.PILL_EFFECT,
+  PillEffect.I_FOUND_PILLS,
+);
 
 const v = {
   persistent: {
@@ -635,10 +651,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 75
         case CollectibleType.PHD: {
           if (!anyPillEffectsUnlocked()) {
-            return getAchievement(
-              AchievementType.PILL_EFFECT,
-              PillEffect.I_FOUND_PILLS,
-            );
+            return DEFAULT_PILL_ACHIEVEMENT;
           }
 
           return undefined;
@@ -659,7 +672,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 85
         case CollectibleType.DECK_OF_CARDS: {
           if (!anyCardsUnlocked()) {
-            return getAchievement(AchievementType.CARD, CardType.FOOL);
+            return DEFAULT_CARD_ACHIEVEMENT;
           }
 
           return undefined;
@@ -668,10 +681,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 102
         case CollectibleType.MOMS_BOTTLE_OF_PILLS: {
           if (!anyPillEffectsUnlocked()) {
-            return getAchievement(
-              AchievementType.PILL_EFFECT,
-              PillEffect.I_FOUND_PILLS,
-            );
+            return DEFAULT_PILL_ACHIEVEMENT;
           }
 
           return undefined;
@@ -680,7 +690,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 139
         case CollectibleType.MOMS_PURSE: {
           if (!anyTrinketTypesUnlocked()) {
-            return getAchievement(AchievementType.TRINKET, TrinketType.ERROR);
+            return DEFAULT_TRINKET_ACHIEVEMENT;
           }
 
           return undefined;
@@ -689,10 +699,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 195
         case CollectibleType.MOMS_COIN_PURSE: {
           if (!anyPillEffectsUnlocked()) {
-            return getAchievement(
-              AchievementType.PILL_EFFECT,
-              PillEffect.I_FOUND_PILLS,
-            );
+            return DEFAULT_PILL_ACHIEVEMENT;
           }
 
           return undefined;
@@ -740,7 +747,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 251
         case CollectibleType.STARTER_DECK: {
           if (!anyCardTypesUnlocked()) {
-            return getAchievement(AchievementType.CARD, CardType.FOOL);
+            return DEFAULT_CARD_ACHIEVEMENT;
           }
 
           return undefined;
@@ -749,10 +756,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 252
         case CollectibleType.LITTLE_BAGGY: {
           if (!anyPillEffectsUnlocked()) {
-            return getAchievement(
-              AchievementType.PILL_EFFECT,
-              PillEffect.I_FOUND_PILLS,
-            );
+            return DEFAULT_PILL_ACHIEVEMENT;
           }
 
           return undefined;
@@ -770,7 +774,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 286
         case CollectibleType.BLANK_CARD: {
           if (!anyCardsUnlocked()) {
-            return getAchievement(AchievementType.CARD, CardType.FOOL);
+            return DEFAULT_CARD_ACHIEVEMENT;
           }
 
           return undefined;
@@ -779,10 +783,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 348
         case CollectibleType.PLACEBO: {
           if (!anyPillEffectsUnlocked()) {
-            return getAchievement(
-              AchievementType.PILL_EFFECT,
-              PillEffect.I_FOUND_PILLS,
-            );
+            return DEFAULT_PILL_ACHIEVEMENT;
           }
 
           return undefined;
@@ -800,7 +801,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 439
         case CollectibleType.MOMS_BOX: {
           if (!anyTrinketTypesUnlocked()) {
-            return getAchievement(AchievementType.TRINKET, TrinketType.ERROR);
+            return DEFAULT_TRINKET_ACHIEVEMENT;
           }
 
           return undefined;
@@ -809,7 +810,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 451
         case CollectibleType.TAROT_CLOTH: {
           if (!anyCardsUnlocked()) {
-            return getAchievement(AchievementType.CARD, CardType.FOOL);
+            return DEFAULT_CARD_ACHIEVEMENT;
           }
 
           return undefined;
@@ -818,7 +819,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 458
         case CollectibleType.BELLY_BUTTON: {
           if (!anyTrinketTypesUnlocked()) {
-            return getAchievement(AchievementType.TRINKET, TrinketType.ERROR);
+            return DEFAULT_TRINKET_ACHIEVEMENT;
           }
 
           return undefined;
@@ -827,7 +828,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 479
         case CollectibleType.SMELTER: {
           if (!anyTrinketTypesUnlocked()) {
-            return getAchievement(AchievementType.TRINKET, TrinketType.ERROR);
+            return DEFAULT_TRINKET_ACHIEVEMENT;
           }
 
           return undefined;
@@ -836,10 +837,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 491
         case CollectibleType.ACID_BABY: {
           if (!anyPillEffectsUnlocked()) {
-            return getAchievement(
-              AchievementType.PILL_EFFECT,
-              PillEffect.I_FOUND_PILLS,
-            );
+            return DEFAULT_PILL_ACHIEVEMENT;
           }
 
           return undefined;
@@ -848,7 +846,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 538
         case CollectibleType.MARBLES: {
           if (!anyTrinketTypesUnlocked()) {
-            return getAchievement(AchievementType.TRINKET, TrinketType.ERROR);
+            return DEFAULT_TRINKET_ACHIEVEMENT;
           }
 
           return undefined;
@@ -880,7 +878,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 624
         case CollectibleType.BOOSTER_PACK: {
           if (!anyCardsUnlocked()) {
-            return getAchievement(AchievementType.CARD, CardType.FOOL);
+            return DEFAULT_CARD_ACHIEVEMENT;
           }
 
           return undefined;
@@ -889,10 +887,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 654
         case CollectibleType.FALSE_PHD: {
           if (!anyPillEffectsUnlocked()) {
-            return getAchievement(
-              AchievementType.PILL_EFFECT,
-              PillEffect.I_FOUND_PILLS,
-            );
+            return DEFAULT_PILL_ACHIEVEMENT;
           }
 
           return undefined;
@@ -918,10 +913,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 44
         case TrinketType.SAFETY_CAP: {
           if (!anyPillEffectsUnlocked()) {
-            return getAchievement(
-              AchievementType.PILL_EFFECT,
-              PillEffect.I_FOUND_PILLS,
-            );
+            return DEFAULT_PILL_ACHIEVEMENT;
           }
 
           return undefined;
@@ -930,7 +922,7 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
         // 45
         case TrinketType.ACE_OF_SPADES: {
           if (!anyCardsUnlocked()) {
-            return getAchievement(AchievementType.CARD, CardType.FOOL);
+            return DEFAULT_CARD_ACHIEVEMENT;
           }
 
           return undefined;
@@ -977,12 +969,108 @@ function getAchievementSwap(achievement: Achievement): Achievement | undefined {
 
     case AchievementType.CARD: {
       switch (achievement.cardType) {
+        // 6
+        case CardType.HIEROPHANT: {
+          if (!isHeartSubTypeUnlocked(HeartSubType.SOUL)) {
+            return getAchievement(AchievementType.HEART, HeartSubType.SOUL);
+          }
+
+          return undefined;
+        }
+
+        // 11
+        case CardType.WHEEL_OF_FORTUNE: {
+          if (!isSlotVariantUnlocked(SlotVariant.SLOT_MACHINE)) {
+            return getAchievement(
+              AchievementType.SLOT,
+              SlotVariant.SLOT_MACHINE,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 15
+        case CardType.TEMPERANCE: {
+          if (!isSlotVariantUnlocked(SlotVariant.BLOOD_DONATION_MACHINE)) {
+            return getAchievement(
+              AchievementType.SLOT,
+              SlotVariant.BLOOD_DONATION_MACHINE,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 21
+        case CardType.JUDGEMENT: {
+          if (!isSlotVariantUnlocked(SlotVariant.BEGGAR)) {
+            return getAchievement(AchievementType.SLOT, SlotVariant.BEGGAR);
+          }
+
+          return undefined;
+        }
+
+        // 6
+        case CardType.REVERSE_HIEROPHANT: {
+          if (!isHeartSubTypeUnlocked(HeartSubType.BONE)) {
+            return getAchievement(AchievementType.HEART, HeartSubType.BONE);
+          }
+
+          return undefined;
+        }
+
+        // 64
+        case CardType.REVERSE_JUSTICE: {
+          if (!isChestPickupVariantUnlocked(PickupVariant.LOCKED_CHEST)) {
+            return getAchievement(
+              AchievementType.CHEST,
+              PickupVariant.LOCKED_CHEST,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 70
+        case CardType.REVERSE_TEMPERANCE: {
+          if (!anyPillEffectsUnlocked()) {
+            return DEFAULT_PILL_ACHIEVEMENT;
+          }
+
+          return undefined;
+        }
+
         // 72
         case CardType.REVERSE_TOWER: {
           if (!isGridEntityTypeUnlocked(GridEntityType.ROCK_TINTED)) {
             return getAchievement(
               AchievementType.GRID_ENTITY,
               GridEntityType.ROCK_TINTED,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 76
+        case CardType.REVERSE_JUDGEMENT: {
+          if (!isSlotVariantUnlocked(SlotVariant.SHOP_RESTOCK_MACHINE)) {
+            return getAchievement(
+              AchievementType.SLOT,
+              SlotVariant.SHOP_RESTOCK_MACHINE,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 77
+        case CardType.REVERSE_WORLD: {
+          if (!isGridEntityTypeUnlocked(GridEntityType.CRAWL_SPACE)) {
+            return getAchievement(
+              AchievementType.GRID_ENTITY,
+              GridEntityType.CRAWL_SPACE,
             );
           }
 
