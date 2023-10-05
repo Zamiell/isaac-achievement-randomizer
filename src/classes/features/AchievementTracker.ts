@@ -28,6 +28,7 @@ import {
   GAME_FRAMES_PER_SECOND,
   KColorDefault,
   MAIN_CHARACTERS,
+  MAX_QUALITY,
   ModCallbackCustom,
   ModFeature,
   PriorityCallback,
@@ -111,6 +112,7 @@ import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../unlockableTrinketTypes";
 import { showNewAchievement } from "./AchievementText";
 import { hasErrors } from "./checkErrors/v";
 
+const VERBOSE = false as boolean;
 const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
 const FONT = fonts.droid;
 const STARTING_CHARACTER = PlayerType.ISAAC;
@@ -540,21 +542,39 @@ export function addObjective(objective: Objective, emulating = false): void {
   v.persistent.completedObjectives.push(objective);
 
   const objectiveID = getObjectiveID(objective);
-  let achievement = v.persistent.objectiveToAchievementMap.get(objectiveID);
+  const achievement = v.persistent.objectiveToAchievementMap.get(objectiveID);
   assertDefined(
     achievement,
     `Failed to get the achievement corresponding to objective ID: ${objectiveID}`,
   );
 
+  let originalAchievement = achievement;
   let swappedAchievement = achievement;
   do {
-    achievement = swappedAchievement;
+    if (VERBOSE) {
+      log(
+        `Checking achievement swap for: ${getAchievementText(
+          originalAchievement,
+        ).join(" - ")}`,
+      );
+    }
+
+    originalAchievement = swappedAchievement;
     swappedAchievement = checkSwapProblematicAchievement(
-      achievement,
+      originalAchievement,
       objectiveID,
     );
+
+    if (VERBOSE) {
+      log(
+        `Swapped achievement is: ${getAchievementText(originalAchievement).join(
+          " - ",
+        )}`,
+      );
+    }
   } while (
-    getAchievementID(achievement) !== getAchievementID(swappedAchievement)
+    getAchievementID(originalAchievement) !==
+    getAchievementID(swappedAchievement)
   );
 
   v.persistent.completedAchievements.push(swappedAchievement);
@@ -1562,7 +1582,13 @@ export function getUnlockedEdenPassiveCollectibleTypes(): CollectibleType[] {
 function getWorseCollectibleType(
   collectibleType: CollectibleType,
 ): CollectibleType | undefined {
-  const quality = getCollectibleQuality(collectibleType);
+  // Gnawed Leaf should be treated as a collectible with maximum quality, otherwise it can lead to
+  // infinite loops with achievement swapped (since Gnawed Leaf requires all the boss objectives to
+  // be finished).
+  const quality =
+    collectibleType === CollectibleType.GNAWED_LEAF
+      ? MAX_QUALITY
+      : getCollectibleQuality(collectibleType);
 
   for (const lowerQualityInt of eRange(quality)) {
     const lowerQuality = lowerQualityInt as Quality;
