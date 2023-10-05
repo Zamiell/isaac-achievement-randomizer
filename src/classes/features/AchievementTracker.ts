@@ -540,14 +540,15 @@ export function addObjective(objective: Objective, emulating = false): void {
   v.persistent.completedObjectives.push(objective);
 
   const objectiveID = getObjectiveID(objective);
-  const achievement = v.persistent.objectiveToAchievementMap.get(objectiveID);
+  let achievement = v.persistent.objectiveToAchievementMap.get(objectiveID);
   assertDefined(
     achievement,
     `Failed to get the achievement corresponding to objective ID: ${objectiveID}`,
   );
 
-  let swappedAchievement: Achievement;
+  let swappedAchievement = achievement;
   do {
+    achievement = swappedAchievement;
     swappedAchievement = checkSwapProblematicAchievement(
       achievement,
       objectiveID,

@@ -6,7 +6,7 @@ import type { Achievement } from "./Achievement";
  *
  * This type is branded for extra type safety.
  */
-export type AchievementID = string & { readonly __achievementIDBrand: symbol };
+type AchievementID = string & { readonly __achievementIDBrand: symbol };
 
 export function getAchievementID(achievement: Achievement): AchievementID {
   switch (achievement.type) {
