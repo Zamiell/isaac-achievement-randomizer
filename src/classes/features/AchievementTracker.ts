@@ -45,6 +45,7 @@ import {
   fonts,
   game,
   getBossSet,
+  getChallengeBoss,
   getChallengeCharacter,
   getCharacterName,
   getCollectibleName,
@@ -61,6 +62,7 @@ import {
   isPassiveOrFamiliarCollectible,
   isRepentanceStage,
   isRune,
+  isStoryBossID,
   log,
   logError,
   newRNG,
@@ -82,7 +84,10 @@ import { AltFloor, getAltFloor } from "../../enums/AltFloor";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { OtherAchievementKind } from "../../enums/OtherAchievementKind";
-import { UnlockablePath } from "../../enums/UnlockablePath";
+import {
+  UnlockablePath,
+  getUnlockablePathFromStoryBoss,
+} from "../../enums/UnlockablePath";
 import { ALL_OBJECTIVES, NO_HIT_BOSSES } from "../../objectives";
 import { convertSecondsToTimerValues } from "../../timer";
 import type { Achievement } from "../../types/Achievement";
@@ -725,6 +730,13 @@ function getSwappedAchievement(
       const challengeCharacter = getChallengeCharacter(achievement.challenge);
       if (!isCharacterUnlocked(challengeCharacter)) {
         return getAchievement(AchievementType.CHARACTER, challengeCharacter);
+      }
+
+      // All the challenge bosses are story bosses.
+      const challengeBossID = getChallengeBoss(achievement.challenge);
+      const unlockablePath = getUnlockablePathFromStoryBoss(challengeBossID);
+      if (unlockablePath !== undefined && !isPathUnlocked(unlockablePath)) {
+        return getAchievement(AchievementType.PATH, unlockablePath);
       }
 
       const requiredCollectibleTypes =
@@ -2203,67 +2215,25 @@ function canGetToBoss(
   bossID: BossID,
   reachableBossesSet: Set<BossID>,
 ): boolean {
-  switch (bossID) {
-    // 6, 8, 24, 25, 39
-    case BossID.MOM:
-    case BossID.MOMS_HEART:
-    case BossID.SATAN:
-    case BossID.IT_LIVES:
-    case BossID.ISAAC: {
-      return true;
-    }
-
-    // 40
-    case BossID.BLUE_BABY: {
-      return isPathUnlocked(UnlockablePath.CHEST);
-    }
-
-    // 54
-    case BossID.LAMB: {
-      return isPathUnlocked(UnlockablePath.DARK_ROOM);
-    }
-
-    // 55
-    case BossID.MEGA_SATAN: {
-      return isPathUnlocked(UnlockablePath.MEGA_SATAN);
-    }
-
-    // 62, 71
-    case BossID.ULTRA_GREED:
-    case BossID.ULTRA_GREEDIER: {
-      return isPathUnlocked(UnlockablePath.GREED_MODE);
-    }
-
-    // 63
-    case BossID.HUSH: {
-      return isPathUnlocked(UnlockablePath.BLUE_WOMB);
-    }
-
-    // 70
-    case BossID.DELIRIUM: {
-      return (
-        isPathUnlocked(UnlockablePath.BLUE_WOMB) &&
-        isPathUnlocked(UnlockablePath.VOID)
-      );
-    }
-
-    // 88, 89, 90
-    case BossID.MOTHER:
-    case BossID.MAUSOLEUM_MOM:
-    case BossID.MAUSOLEUM_MOMS_HEART: {
-      return isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS);
-    }
-
-    // 99, 100
-    case BossID.DOGMA:
-    case BossID.BEAST: {
-      return isPathUnlocked(UnlockablePath.ASCENT);
-    }
-
-    default: {
-      return reachableBossesSet.has(bossID);
-    }
+  if (!isStoryBossID(bossID)) {
+    return reachableBossesSet.has(bossID);
   }
+
+  // Handle the special case of Delirium, which requires two separate paths to be unlocked. (Since
+  // the mod manually removes void portals, getting to Delirium requires going through Blue Womb.)
+  if (bossID === BossID.DELIRIUM) {
+    return (
+      isPathUnlocked(UnlockablePath.BLUE_WOMB) &&
+      isPathUnlocked(UnlockablePath.VOID)
+    );
+  }
+
+  const unlockablePath = getUnlockablePathFromStoryBoss(bossID);
+  if (unlockablePath === undefined) {
+    return true;
+  }
+
+  return isPathUnlocked(unlockablePath);
 }
 
 // -------

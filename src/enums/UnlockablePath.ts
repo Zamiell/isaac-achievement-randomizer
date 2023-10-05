@@ -1,3 +1,5 @@
+import { BossID } from "isaac-typescript-definitions";
+
 export enum UnlockablePath {
   CHEST,
   DARK_ROOM,
@@ -9,6 +11,69 @@ export enum UnlockablePath {
   ASCENT,
   GREED_MODE,
   BLACK_MARKETS,
+}
+
+export function getUnlockablePathFromStoryBoss(
+  bossID: BossID,
+): UnlockablePath | undefined {
+  switch (bossID) {
+    // 6, 8, 24, 25, 39
+    case BossID.MOM:
+    case BossID.MOMS_HEART:
+    case BossID.SATAN:
+    case BossID.IT_LIVES:
+    case BossID.ISAAC: {
+      return undefined;
+    }
+
+    // 40
+    case BossID.BLUE_BABY: {
+      return UnlockablePath.CHEST;
+    }
+
+    // 54
+    case BossID.LAMB: {
+      return UnlockablePath.DARK_ROOM;
+    }
+
+    // 55
+    case BossID.MEGA_SATAN: {
+      return UnlockablePath.MEGA_SATAN;
+    }
+
+    // 62, 71
+    case BossID.ULTRA_GREED:
+    case BossID.ULTRA_GREEDIER: {
+      return UnlockablePath.GREED_MODE;
+    }
+
+    // 63
+    case BossID.HUSH: {
+      return UnlockablePath.BLUE_WOMB;
+    }
+
+    // 70
+    case BossID.DELIRIUM: {
+      return UnlockablePath.VOID;
+    }
+
+    // 88, 89, 90
+    case BossID.MOTHER:
+    case BossID.MAUSOLEUM_MOM:
+    case BossID.MAUSOLEUM_MOMS_HEART: {
+      return UnlockablePath.REPENTANCE_FLOORS;
+    }
+
+    // 99, 100
+    case BossID.DOGMA:
+    case BossID.BEAST: {
+      return UnlockablePath.ASCENT;
+    }
+
+    default: {
+      return undefined;
+    }
+  }
 }
 
 export function getPathName(unlockablePath: UnlockablePath): string {
