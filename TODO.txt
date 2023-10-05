@@ -1,16 +1,16 @@
 TODO:
 
-- rebirth item tracker is bugged with D6 on Isaac
+- quality unlocks in order
+
+- DSS should have objectives and achievements in separate submenus
+- add all the other unlock screens except for collectibles and trinkets
 
 - check that bosses behind either PATH or ALT_STAGE have logic for no hit achievement
 - check that repentance bosses are gated behind repentance achievements
 
-- DSS should have objectives and achievements in separate submenus
-- add character unlock screen
-- add all the other unlock screens except for collectibles and trinkets
+- rebirth item tracker is bugged with D6 on Isaac
 
-POTENTIAL TODO:
-- see current unlocks in DSS
+------------------------------
 
 OTHER POTENTIAL ACHIEVEMENTS:
 - characters start with their items

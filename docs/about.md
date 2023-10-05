@@ -100,7 +100,7 @@ Additionally, each character will unlock something upon clearing the following f
 
 > Tip: A Crown of Light icon will appear next to the coin count UI when the "no hit" objective has not yet been accomplished for the particular character and floor combination.
 
-### Boss-Based Objectives (100)
+### Boss-Based Objectives (99)
 
 There is one unlock for surviving for 2 minutes without taking a hit for each boss.
 
@@ -117,6 +117,7 @@ However, the following bosses have custom timer lengths:
 Additionally, the following bosses are excluded entirely:
 
 - Delirium (#70) (would be unfair since the boss is poorly designed)
+- Ultra Greedier (#71) (not included since Ultra Greed is included)
 - Raglich (#98) (unfinished boss)
 
 > Tip: A timer will appear on the screen if a boss is in the room and the corresponding objective has not yet been accomplished.
@@ -127,7 +128,7 @@ There is one unlock for completing each challenge.
 
 ### Total Objectives
 
-There are 1054 + 100 + 45 = 1199 objectives in total.
+There are 1054 + 99 + 45 = 1198 objectives in total.
 
 <br>
 
@@ -239,7 +240,7 @@ Every card/rune in the game is locked (except for Rune Shard, which will never s
 
 - Every pill effect in the game is locked. If no pill effects are unlocked, pills will be converted to pennies.
 
-### Other Pickups (38)
+### Other Pickups (37)
 
 - Only half red heart pickups start out unlocked. Every other heart pickup in the game is locked. (11)
 - Only pennies start out unlocked. Every other coin in the game is locked. (6)
@@ -248,7 +249,6 @@ Every card/rune in the game is locked (except for Rune Shard, which will never s
 - Every battery type in the game is locked. Non-unlocked batteries are converted to pennies. (4)
 - Every sack type in the game is locked. Non-unlocked sacks are converted to pennies. (2)
 - Only normal chests start out unlocked. Every other chest type in the game is locked. (9)
-- Beds start out locked. (1)
 
 ### Slots (15)
 
@@ -274,15 +274,15 @@ Every card/rune in the game is locked (except for Rune Shard, which will never s
 ### Miscellaneous (5)
 
 - The following other things start out locked:
+  - Beds
   - Shopkeepers
-  - Blue Fireplaces
   - Golden Trinkets
   - Gold Pills
   - Horse Pills
 
 ### Total Unlocks
 
-There are 33 + 10 + 11 + 45 + 697 + 186 + 96 + 50 + 38 + 15 + 13 + 5 = 1199 unlocks in total.
+There are 33 + 10 + 11 + 45 + 697 + 186 + 96 + 50 + 37 + 15 + 13 + 5 = 1198 unlocks in total.
 
 <br>
 

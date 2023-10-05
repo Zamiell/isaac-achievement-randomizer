@@ -1,14 +1,7 @@
 import {
-  BatterySubType,
-  BombSubType,
   BossID,
   Challenge,
-  CoinSubType,
-  HeartSubType,
-  KeySubType,
   PocketItemSlot,
-  SackSubType,
-  SlotVariant,
   TrinketSlot,
 } from "isaac-typescript-definitions";
 import { getEnumValues } from "isaacscript-common";
@@ -24,26 +17,12 @@ export const ACHIEVEMENT_TYPES: readonly AchievementType[] =
 
 export const ALT_FLOORS: readonly AltFloor[] = getEnumValues(AltFloor);
 
-export const BATTERY_SUB_TYPES: readonly BatterySubType[] =
-  getEnumValues(BatterySubType);
-
-export const BOMB_SUB_TYPES: readonly BombSubType[] =
-  getEnumValues(BombSubType);
-
 export const BOSS_IDS: readonly BossID[] = getEnumValues(BossID);
 
 export const CHALLENGES: readonly Challenge[] = getEnumValues(Challenge);
 
 export const CHARACTER_OBJECTIVE_KINDS: readonly CharacterObjectiveKind[] =
   getEnumValues(CharacterObjectiveKind);
-
-export const COIN_SUB_TYPES: readonly CoinSubType[] =
-  getEnumValues(CoinSubType);
-
-export const HEART_SUB_TYPES: readonly HeartSubType[] =
-  getEnumValues(HeartSubType);
-
-export const KEY_SUB_TYPES: readonly KeySubType[] = getEnumValues(KeySubType);
 
 export const OBJECTIVE_TYPES: readonly ObjectiveType[] =
   getEnumValues(ObjectiveType);
@@ -53,11 +32,6 @@ export const OTHER_ACHIEVEMENT_KINDS: readonly OtherAchievementKind[] =
 
 export const POCKET_ITEM_SLOTS: readonly PocketItemSlot[] =
   getEnumValues(PocketItemSlot);
-
-export const SACK_SUB_TYPES: readonly SackSubType[] =
-  getEnumValues(SackSubType);
-
-export const SLOT_VARIANTS: readonly SlotVariant[] = getEnumValues(SlotVariant);
 
 export const TRINKET_SLOTS: readonly TrinketSlot[] = getEnumValues(TrinketSlot);
 

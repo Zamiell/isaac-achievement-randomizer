@@ -1,3 +1,4 @@
+import type { KeySubType, SlotVariant } from "isaac-typescript-definitions";
 import {
   BatterySubType,
   BombSubType,
@@ -10,14 +11,12 @@ import {
   GridEntityType,
   HeartSubType,
   ItemConfigTag,
-  KeySubType,
   ModCallback,
   PickupVariant,
   PillEffect,
   PlayerType,
   SackSubType,
   SeedEffect,
-  SlotVariant,
   TrinketType,
 } from "isaac-typescript-definitions";
 import {
@@ -84,6 +83,16 @@ import type { ObjectiveID } from "../../types/ObjectiveID";
 import { getObjectiveID } from "../../types/ObjectiveID";
 import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTypes";
 import { UNLOCKABLE_GRID_ENTITY_TYPES } from "../../unlockableGridEntityTypes";
+import {
+  UNLOCKABLE_BATTERY_SUB_TYPES,
+  UNLOCKABLE_BOMB_SUB_TYPES,
+  UNLOCKABLE_CHEST_PICKUP_VARIANTS,
+  UNLOCKABLE_COIN_SUB_TYPES,
+  UNLOCKABLE_HEART_SUB_TYPES,
+  UNLOCKABLE_KEY_SUB_TYPES,
+  UNLOCKABLE_SACK_KEY_SUB_TYPES,
+} from "../../unlockablePickupTypes";
+import { UNLOCKABLE_SLOT_VARIANTS } from "../../unlockableSlotVariants";
 import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../unlockableTrinketTypes";
 import { showNewAchievement } from "./AchievementText";
 import { hasErrors } from "./checkErrors/v";
@@ -1456,6 +1465,10 @@ function anyRunesUnlocked(): boolean {
 }
 
 export function isCardTypeUnlocked(cardType: CardType): boolean {
+  if (cardType === CardType.RUNE_SHARD) {
+    return true;
+  }
+
   return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.CARD &&
@@ -1502,8 +1515,7 @@ export function getUnlockedPillEffects(): PillEffect[] {
 // ------------------------------------
 
 export function isHeartSubTypeUnlocked(heartSubType: HeartSubType): boolean {
-  // Half red hearts are always unlocked.
-  if (heartSubType === HeartSubType.HALF) {
+  if (!UNLOCKABLE_HEART_SUB_TYPES.includes(heartSubType)) {
     return true;
   }
 
@@ -1515,8 +1527,7 @@ export function isHeartSubTypeUnlocked(heartSubType: HeartSubType): boolean {
 }
 
 export function isCoinSubTypeUnlocked(coinSubType: CoinSubType): boolean {
-  // Pennies hearts always start out as being unlocked.
-  if (coinSubType === CoinSubType.PENNY) {
+  if (!UNLOCKABLE_COIN_SUB_TYPES.includes(coinSubType)) {
     return true;
   }
 
@@ -1528,14 +1539,7 @@ export function isCoinSubTypeUnlocked(coinSubType: CoinSubType): boolean {
 }
 
 export function isBombSubTypeUnlocked(bombSubType: BombSubType): boolean {
-  // Normal bomb drops, all troll bombs, and Giga Bombs start out as being unlocked.
-  if (
-    bombSubType === BombSubType.NORMAL ||
-    bombSubType === BombSubType.TROLL ||
-    bombSubType === BombSubType.MEGA_TROLL ||
-    bombSubType === BombSubType.GOLDEN_TROLL ||
-    bombSubType === BombSubType.GIGA
-  ) {
+  if (!UNLOCKABLE_BOMB_SUB_TYPES.includes(bombSubType)) {
     return true;
   }
 
@@ -1547,8 +1551,7 @@ export function isBombSubTypeUnlocked(bombSubType: BombSubType): boolean {
 }
 
 export function isKeySubTypeUnlocked(keySubType: KeySubType): boolean {
-  // Normal key drops always start out as being unlocked.
-  if (keySubType === KeySubType.NORMAL) {
+  if (!UNLOCKABLE_KEY_SUB_TYPES.includes(keySubType)) {
     return true;
   }
 
@@ -1562,6 +1565,10 @@ export function isKeySubTypeUnlocked(keySubType: KeySubType): boolean {
 export function isBatterySubTypeUnlocked(
   batterySubType: BatterySubType,
 ): boolean {
+  if (!UNLOCKABLE_BATTERY_SUB_TYPES.includes(batterySubType)) {
+    return true;
+  }
+
   return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.BATTERY &&
@@ -1570,6 +1577,10 @@ export function isBatterySubTypeUnlocked(
 }
 
 export function isSackSubTypeUnlocked(sackSubType: SackSubType): boolean {
+  if (!UNLOCKABLE_SACK_KEY_SUB_TYPES.includes(sackSubType)) {
+    return true;
+  }
+
   return v.persistent.completedAchievementsForRun.some(
     (achievement) =>
       achievement.type === AchievementType.SACK &&
@@ -1580,16 +1591,7 @@ export function isSackSubTypeUnlocked(sackSubType: SackSubType): boolean {
 export function isChestPickupVariantUnlocked(
   pickupVariant: PickupVariant,
 ): boolean {
-  // Normal chests always start out as being unlocked.
-  if (pickupVariant === PickupVariant.CHEST) {
-    return true;
-  }
-
-  // Other types of chests do not randomly spawn.
-  if (
-    pickupVariant === PickupVariant.OLD_CHEST || // 55
-    pickupVariant === PickupVariant.MOMS_CHEST // 390
-  ) {
+  if (!UNLOCKABLE_CHEST_PICKUP_VARIANTS.includes(pickupVariant)) {
     return true;
   }
 
@@ -1605,12 +1607,7 @@ export function isChestPickupVariantUnlocked(
 // ----------------------------
 
 export function isSlotVariantUnlocked(slotVariant: SlotVariant): boolean {
-  // Ignore quest slots.
-  if (
-    slotVariant === SlotVariant.DONATION_MACHINE ||
-    slotVariant === SlotVariant.GREED_DONATION_MACHINE ||
-    slotVariant === SlotVariant.ISAAC_SECRET
-  ) {
+  if (!UNLOCKABLE_SLOT_VARIANTS.includes(slotVariant)) {
     return true;
   }
 

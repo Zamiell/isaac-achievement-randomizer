@@ -1,16 +1,31 @@
-import type { PlayerType } from "isaac-typescript-definitions";
-import { Challenge } from "isaac-typescript-definitions";
+import { CardType, Challenge, PlayerType } from "isaac-typescript-definitions";
 import {
   MAIN_CHARACTERS,
+  VANILLA_CARD_TYPES,
+  VANILLA_PILL_EFFECTS,
   assertDefined,
+  getBatteryName,
+  getBombName,
   getBossName,
+  getCardName,
   getChallengeName,
   getCharacterName,
+  getChestName,
+  getCoinName,
+  getHeartName,
+  getKeyName,
+  getPillEffectName,
+  getSackName,
   iRange,
   isOdd,
 } from "isaacscript-common";
 import { ALL_ACHIEVEMENTS } from "./achievements";
-import { CHALLENGES, CHARACTER_OBJECTIVE_KINDS } from "./cachedEnums";
+import {
+  ALT_FLOORS,
+  CHALLENGES,
+  CHARACTER_OBJECTIVE_KINDS,
+  UNLOCKABLE_PATHS,
+} from "./cachedEnums";
 import { getCharacterObjectiveKindName } from "./classes/features/AchievementText";
 import {
   endRandomizer,
@@ -21,20 +36,44 @@ import {
   getNumDeaths,
   getRandomizerSeed,
   getTimeElapsed,
+  isAltFloorUnlocked,
+  isBatterySubTypeUnlocked,
+  isBombSubTypeUnlocked,
   isBossObjectiveCompleted,
+  isCardTypeUnlocked,
   isChallengeObjectiveCompleted,
+  isChallengeUnlocked,
   isCharacterObjectiveCompleted,
+  isCharacterUnlocked,
+  isChestPickupVariantUnlocked,
+  isCoinSubTypeUnlocked,
+  isHeartSubTypeUnlocked,
+  isKeySubTypeUnlocked,
+  isPathUnlocked,
+  isPillEffectUnlocked,
   isRandomizerEnabled,
+  isSackSubTypeUnlocked,
   startRandomizer,
 } from "./classes/features/AchievementTracker";
 import { MAX_SEED, MIN_SEED } from "./consoleCommands";
 import { MOD_NAME } from "./constants";
+import { getAltFloorName } from "./enums/AltFloor";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
+import { getPathName } from "./enums/UnlockablePath";
 import { init } from "./lib/dssmenucore";
 import { mod } from "./mod";
 import { NO_HIT_BOSSES } from "./objectives";
 import { getAchievementText } from "./types/Achievement";
 import { getObjectiveText } from "./types/Objective";
+import {
+  UNLOCKABLE_BATTERY_SUB_TYPES,
+  UNLOCKABLE_BOMB_SUB_TYPES,
+  UNLOCKABLE_CHEST_PICKUP_VARIANTS,
+  UNLOCKABLE_COIN_SUB_TYPES,
+  UNLOCKABLE_HEART_SUB_TYPES,
+  UNLOCKABLE_KEY_SUB_TYPES,
+  UNLOCKABLE_SACK_KEY_SUB_TYPES,
+} from "./unlockablePickupTypes";
 
 const DSS_CHOICES = ["disabled", "enabled"] as const;
 
@@ -73,7 +112,7 @@ export function initDeadSeaScrolls(): void {
           str: "achievement list",
           dest: "achievementList",
           tooltip: {
-            strSet: ["see the", "unlocks you", "have yet", "to complete."],
+            strSet: ["see your", "remaining", "objectives", "and unlocks."],
           },
           displayIf: () => isRandomizerEnabled(),
         },
@@ -204,7 +243,7 @@ export function initDeadSeaScrolls(): void {
       title: "achievement list",
       buttons: [
         {
-          str: "recent",
+          str: "recent ach.",
           dest: "recentAchievements",
         },
         {
@@ -212,16 +251,12 @@ export function initDeadSeaScrolls(): void {
           noSel: true,
         },
         {
-          str: "character",
-          dest: "characterObjectives",
+          str: "objective list",
+          dest: "objectives",
         },
         {
-          str: "boss",
-          dest: "bossObjectives",
-        },
-        {
-          str: "challenge",
-          dest: "challengeObjectives",
+          str: "unlock list",
+          dest: "unlocks",
         },
       ],
     },
@@ -238,12 +273,30 @@ export function initDeadSeaScrolls(): void {
       },
     },
 
+    objectives: {
+      title: "objective list",
+      buttons: [
+        {
+          str: "character list",
+          dest: "characterObjectives",
+        },
+        {
+          str: "boss list",
+          dest: "bossObjectives",
+        },
+        {
+          str: "challenge list",
+          dest: "challengeObjectives",
+        },
+      ],
+    },
+
     characterObjectives: {
       title: "character todo",
 
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
-        menu.buttons = getCharacterButtons();
+        menu.buttons = getCharacterObjectiveButtons();
       },
     },
 
@@ -255,7 +308,7 @@ export function initDeadSeaScrolls(): void {
 
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
-        menu.buttons = getBossButtons();
+        menu.buttons = getBossObjectiveButtons();
       },
     },
 
@@ -268,6 +321,220 @@ export function initDeadSeaScrolls(): void {
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
         menu.buttons = getChallengeObjectiveButtons();
+      },
+    },
+
+    unlocks: {
+      title: "unlock list",
+      buttons: [
+        {
+          str: "character list",
+          dest: "characterUnlocks",
+        },
+        {
+          str: "path list",
+          dest: "pathUnlocks",
+        },
+        {
+          str: "alt floor list",
+          dest: "altFloorUnlocks",
+        },
+        {
+          str: "challenge list",
+          dest: "challengeUnlocks",
+        },
+        {
+          str: "card list",
+          dest: "cardUnlocks",
+        },
+        {
+          str: "pill effect list",
+          dest: "pillEffectUnlocks",
+        },
+        {
+          str: "heart list",
+          dest: "heartUnlocks",
+        },
+        {
+          str: "coin list",
+          dest: "coinUnlocks",
+        },
+        {
+          str: "bomb list",
+          dest: "bombUnlocks",
+        },
+        {
+          str: "key list",
+          dest: "keyUnlocks",
+        },
+        {
+          str: "battery list",
+          dest: "batteryUnlocks",
+        },
+        {
+          str: "sack list",
+          dest: "sackUnlocks",
+        },
+        {
+          str: "chest list",
+          dest: "chestUnlocks",
+        },
+      ],
+    },
+
+    characterUnlocks: {
+      title: "character unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getCharacterUnlockButtons();
+      },
+    },
+
+    pathUnlocks: {
+      title: "path unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getPathUnlockButtons();
+      },
+    },
+
+    altFloorUnlocks: {
+      title: "alt floor unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getAltFloorUnlockButtons();
+      },
+    },
+
+    challengeUnlocks: {
+      title: "challenge unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getChallengeUnlockButtons();
+      },
+    },
+
+    cardUnlocks: {
+      title: "card unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getCardUnlockButtons();
+      },
+    },
+
+    pillEffectUnlocks: {
+      title: "pill effect unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getPillEffectUnlockButtons();
+      },
+    },
+
+    heartUnlocks: {
+      title: "heart unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getHeartUnlockButtons();
+      },
+    },
+
+    coinUnlocks: {
+      title: "coin unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getCoinUnlockButtons();
+      },
+    },
+
+    bombUnlocks: {
+      title: "bomb unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getBombUnlockButtons();
+      },
+    },
+
+    keyUnlocks: {
+      title: "key unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getKeyUnlockButtons();
+      },
+    },
+
+    batteryUnlocks: {
+      title: "battery unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getBatteryUnlockButtons();
+      },
+    },
+
+    sackUnlocks: {
+      title: "sack unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getSackUnlockButtons();
+      },
+    },
+
+    chestUnlocks: {
+      title: "chest unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getChestUnlockButtons();
       },
     },
 
@@ -398,6 +665,10 @@ export function initDeadSeaScrolls(): void {
   DeadSeaScrollsMenu.AddMenu(MOD_NAME, settings);
 }
 
+// -------
+// Buttons
+// -------
+
 function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
   const completedAchievements = getCompletedAchievements();
   completedAchievements.reverse();
@@ -463,7 +734,11 @@ function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
-function getCharacterButtons(): DeadSeaScrollsButton[] {
+// -----------------
+// Objective buttons
+// -----------------
+
+function getCharacterObjectiveButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const character of MAIN_CHARACTERS) {
@@ -508,7 +783,7 @@ function getSpecificCharacterObjectiveButtons(
   return buttons;
 }
 
-function getBossButtons(): DeadSeaScrollsButton[] {
+function getBossObjectiveButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const bossID of NO_HIT_BOSSES) {
@@ -541,17 +816,14 @@ function getChallengeObjectiveButtons(): DeadSeaScrollsButton[] {
       continue;
     }
 
-    let challengeName = getChallengeName(challenge).toLowerCase();
-    if (challengeName.length > 19) {
-      challengeName = `${challengeName.slice(0, 19)}...`;
-    }
-
+    const challengeName = getChallengeName(challenge).toLowerCase();
+    const challengeNameTruncated = getNameTruncated(challengeName);
     const completed = isChallengeObjectiveCompleted(challenge);
     const completedText = getCompletedText(completed);
 
     buttons.push(
       {
-        str: `${challenge} - ${challengeName}`,
+        str: `${challenge} - ${challengeNameTruncated}`,
       },
       {
         str: completedText,
@@ -564,6 +836,357 @@ function getChallengeObjectiveButtons(): DeadSeaScrollsButton[] {
   }
 
   return buttons;
+}
+
+// --------------
+// Unlock buttons
+// --------------
+
+function getCharacterUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const character of MAIN_CHARACTERS) {
+    if (character === PlayerType.ISAAC) {
+      continue;
+    }
+
+    const characterName = getCharacterName(character).toLowerCase();
+    const completed = isCharacterUnlocked(character);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: characterName,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getPathUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const unlockablePath of UNLOCKABLE_PATHS) {
+    const pathName = getPathName(unlockablePath).toLowerCase();
+    const completed = isPathUnlocked(unlockablePath);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: pathName,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getAltFloorUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const altFloor of ALT_FLOORS) {
+    const altFloorName = getAltFloorName(altFloor).toLowerCase();
+    const completed = isAltFloorUnlocked(altFloor);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: altFloorName,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getChallengeUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const challenge of CHALLENGES) {
+    if (challenge === Challenge.NULL) {
+      continue;
+    }
+
+    const challengeName = getChallengeName(challenge).toLowerCase();
+    const challengeNameTruncated = getNameTruncated(challengeName);
+    const completed = isChallengeUnlocked(challenge);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: `${challenge} - ${challengeNameTruncated}`,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getCardUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const cardType of VANILLA_CARD_TYPES) {
+    if (cardType === CardType.NULL || cardType === CardType.RUNE_SHARD) {
+      continue;
+    }
+
+    const cardName = getCardName(cardType).toLowerCase();
+    const completed = isCardTypeUnlocked(cardType);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: cardName,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getPillEffectUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const pillEffect of VANILLA_PILL_EFFECTS) {
+    const pillEffectName = getPillEffectName(pillEffect).toLowerCase();
+    const pillEffectNameTruncated = getNameTruncated(pillEffectName);
+    const completed = isPillEffectUnlocked(pillEffect);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: `${pillEffect} - ${pillEffectNameTruncated}`,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getHeartUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const heartSubType of UNLOCKABLE_HEART_SUB_TYPES) {
+    const heartName = getHeartName(heartSubType).toLowerCase();
+    const completed = isHeartSubTypeUnlocked(heartSubType);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: heartName,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getCoinUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const coinSubType of UNLOCKABLE_COIN_SUB_TYPES) {
+    const coinName = getCoinName(coinSubType).toLowerCase();
+    const completed = isCoinSubTypeUnlocked(coinSubType);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: coinName,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getBombUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const bombSubType of UNLOCKABLE_BOMB_SUB_TYPES) {
+    const bombName = getBombName(bombSubType).toLowerCase();
+    const completed = isBombSubTypeUnlocked(bombSubType);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: bombName,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getKeyUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const keySubType of UNLOCKABLE_KEY_SUB_TYPES) {
+    const keyName = getKeyName(keySubType).toLowerCase();
+    const completed = isKeySubTypeUnlocked(keySubType);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: keyName,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getBatteryUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const batterySubType of UNLOCKABLE_BATTERY_SUB_TYPES) {
+    const batteryName = getBatteryName(batterySubType).toLowerCase();
+    const completed = isBatterySubTypeUnlocked(batterySubType);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: batteryName,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getSackUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const sackSubType of UNLOCKABLE_SACK_KEY_SUB_TYPES) {
+    const sackName = getSackName(sackSubType).toLowerCase();
+    const completed = isSackSubTypeUnlocked(sackSubType);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: sackName,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getChestUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const pickupVariant of UNLOCKABLE_CHEST_PICKUP_VARIANTS) {
+    const chestName = getChestName(pickupVariant).toLowerCase();
+    const completed = isChestPickupVariantUnlocked(pickupVariant);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: chestName,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+// -----------
+// Subroutines
+// -----------
+
+function getNameTruncated(name: string): string {
+  return name.length > 19 ? `${name.slice(0, 19)}...` : name;
 }
 
 /** We manually replaced the caret image in the "16font.png" file from a caret to a checkmark. */
