@@ -13,9 +13,12 @@ import {
 import {
   Callback,
   CallbackCustom,
+  KColorDefault,
   ModCallbackCustom,
   ModFeature,
+  fonts,
   game,
+  getScreenBottomRightPos,
   goToStage,
   removeAllDoors,
   setBackdrop,
@@ -25,8 +28,17 @@ import {
 import { ChallengeCustom } from "../../enums/ChallengeCustom";
 import { mod } from "../../mod";
 
+const FONT = fonts.droid;
+
 /** This does not extend from `RandomizerModFeature` because we want it to always apply. */
 export class ChillRoom extends ModFeature {
+  @Callback(ModCallback.POST_RENDER)
+  postRender(): void {
+    const text = "Randomizer Chill Room";
+    const screenBottomRightPos = getScreenBottomRightPos();
+    FONT.DrawString(text, 0, 33, KColorDefault, screenBottomRightPos.X, true);
+  }
+
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
   postGameStartedReorderedFalse(): void {
     const challenge = Isaac.GetChallenge();

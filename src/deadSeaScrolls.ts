@@ -30,7 +30,6 @@ import {
   OTHER_ACHIEVEMENT_KINDS,
   UNLOCKABLE_PATHS,
 } from "./cachedEnums";
-import { getCharacterObjectiveKindName } from "./classes/features/AchievementNotification";
 import {
   canGetToBoss,
   canGetToCharacterObjectiveKind,
@@ -70,7 +69,10 @@ import {
 import { MAX_SEED, MIN_SEED } from "./consoleCommands";
 import { MOD_NAME } from "./constants";
 import { getAltFloorName } from "./enums/AltFloor";
-import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
+import {
+  CharacterObjectiveKind,
+  getCharacterObjectiveKindName,
+} from "./enums/CharacterObjectiveKind";
 import { getOtherAchievementName } from "./enums/OtherAchievementKind";
 import { getPathName } from "./enums/UnlockablePath";
 import { init } from "./lib/dssmenucore";

@@ -8,7 +8,6 @@ import {
   getScreenBottomRightPos,
   sfxManager,
 } from "isaacscript-common";
-import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { SoundEffectCustom } from "../../enums/SoundEffectCustom";
 import type { Achievement } from "../../types/Achievement";
 import { getAchievementText } from "../../types/Achievement";
@@ -76,7 +75,7 @@ export class AchievementNotification extends ModFeature {
     // The streak text will slowly fade out.
     const fade = this.getFade(v.run.renderFrameSet);
     if (fade > 0) {
-      this.draw(v.run.text, fade);
+      drawText(v.run.text, fade);
     } else {
       v.run.text = null;
       v.run.renderFrameSet = null;
@@ -94,21 +93,6 @@ export class AchievementNotification extends ModFeature {
     const fadeFrames = elapsedFrames - RENDER_FRAMES_BEFORE_FADE;
     return 1 - 0.02 * fadeFrames;
   }
-
-  draw(text: string, fade: float): void {
-    const bottomRightPos = getScreenBottomRightPos();
-    const x = bottomRightPos.X * 0.5;
-    let y = bottomRightPos.Y * 0.25;
-
-    const lines = text.split("\n");
-    for (const line of lines) {
-      const length = FONT.GetStringWidthUTF8(line);
-      const color = KColor(1, 1, 1, fade);
-      FONT.DrawString(line, x - length / 2, y, color);
-
-      y += 20;
-    }
-  }
 }
 
 export function showNewAchievement(achievement: Achievement): void {
@@ -120,132 +104,15 @@ export function showNewAchievement(achievement: Achievement): void {
   sfxManager.Play(SoundEffectCustom.GOLDEN_WALNUT);
 }
 
-export function getCharacterObjectiveKindName(
-  kind: CharacterObjectiveKind,
-): string {
-  switch (kind) {
-    case CharacterObjectiveKind.MOM: {
-      return "Mom";
-    }
+function drawText(text: string, fade: float) {
+  const screenBottomRightPos = getScreenBottomRightPos();
+  let y = screenBottomRightPos.Y * 0.25;
 
-    case CharacterObjectiveKind.IT_LIVES: {
-      return "It Lives";
-    }
+  const lines = text.split("\n");
+  for (const line of lines) {
+    const color = KColor(1, 1, 1, fade);
+    FONT.DrawString(line, 0, y, color, screenBottomRightPos.X, true);
 
-    case CharacterObjectiveKind.ISAAC: {
-      return "Isaac";
-    }
-
-    case CharacterObjectiveKind.BLUE_BABY: {
-      return "Blue Baby";
-    }
-
-    case CharacterObjectiveKind.SATAN: {
-      return "Satan";
-    }
-
-    case CharacterObjectiveKind.LAMB: {
-      return "The Lamb";
-    }
-
-    case CharacterObjectiveKind.MEGA_SATAN: {
-      return "Mega Satan";
-    }
-
-    case CharacterObjectiveKind.BOSS_RUSH: {
-      return "Boss Rush";
-    }
-
-    case CharacterObjectiveKind.HUSH: {
-      return "Hush";
-    }
-
-    case CharacterObjectiveKind.DELIRIUM: {
-      return "Delirium";
-    }
-
-    case CharacterObjectiveKind.MOTHER: {
-      return "Mother";
-    }
-
-    case CharacterObjectiveKind.BEAST: {
-      return "The Beast";
-    }
-
-    case CharacterObjectiveKind.ULTRA_GREED: {
-      return "Ultra Greed";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_BASEMENT_1: {
-      return "1";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_BASEMENT_2: {
-      return "2";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_CAVES_1: {
-      return "3";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_CAVES_2: {
-      return "4";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_DEPTHS_1: {
-      return "5";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_DEPTHS_2: {
-      return "6";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_WOMB_1: {
-      return "7";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_WOMB_2: {
-      return "8";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_SHEOL_CATHEDRAL: {
-      return "10";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST: {
-      return "11";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_DOWNPOUR_1: {
-      return "1 (alt)";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_DOWNPOUR_2: {
-      return "2 (alt)";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_MINES_1: {
-      return "3 (alt)";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_MINES_2: {
-      return "4 (alt)";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_MAUSOLEUM_1: {
-      return "5 (alt)";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_MAUSOLEUM_2: {
-      return "6 (alt)";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_CORPSE_1: {
-      return "7 (alt)";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_CORPSE_2: {
-      return "8 (alt)";
-    }
+    y += 20;
   }
 }

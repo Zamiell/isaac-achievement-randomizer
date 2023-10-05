@@ -8,9 +8,11 @@ import {
   getCharacterName,
   isEnumValue,
 } from "isaacscript-common";
-import { getCharacterObjectiveKindName } from "../classes/features/AchievementNotification";
 import { IS_DEV } from "../constants";
-import { CharacterObjectiveKind } from "../enums/CharacterObjectiveKind";
+import {
+  CharacterObjectiveKind,
+  getCharacterObjectiveKindName,
+} from "../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../enums/ObjectiveType";
 import type { ObjectiveID } from "./ObjectiveID";
 
