@@ -111,6 +111,7 @@ export function initDeadSeaScrolls(): void {
   const directory: Record<string, unknown> = {
     main: {
       title: "randomizer menu",
+      fSize: 2,
       buttons: [
         {
           str: "current seed:",
@@ -176,6 +177,13 @@ export function initDeadSeaScrolls(): void {
         {
           str: "",
           noSel: true,
+        },
+        {
+          str: "randomizer info",
+          dest: "randomizerInfo",
+          tooltip: {
+            strSet: ["see more", "information", "about this", "mod."],
+          },
         },
         {
           str: "randomizer settings",
@@ -680,6 +688,46 @@ export function initDeadSeaScrolls(): void {
           str: getTimeElapsed,
           colorSelect: true,
           noSel: true,
+        },
+      ],
+    },
+
+    randomizerInfo: {
+      title: "randomizer info",
+      noCursor: true,
+      fSize: 2,
+      buttons: [
+        {
+          str: "created by:",
+        },
+        {
+          str: "zamiel",
+          clr: 3,
+        },
+        {
+          str: "",
+        },
+        {
+          str: "read the manual:",
+        },
+        {
+          str: "",
+        },
+        {
+          str: "https://github.com/zamiell/",
+          fSize: 1,
+        },
+        {
+          str: "isaac-achievement-randomizer",
+          fSize: 1,
+        },
+        {
+          str: "",
+          fSize: 1,
+        },
+        {
+          str: "(zamiell is capitalized and has two l's.)",
+          fSize: 1,
         },
       ],
     },

@@ -167,11 +167,10 @@ export function getObjectiveText(objective: Objective): string[] {
     case ObjectiveType.BOSS: {
       const bossName = getBossName(objective.bossID);
       return [
-        `Survive ${getNumMinutesForBossObjective(objective.bossID)}`,
-        "minutes without",
-        "getting hit",
-        "on",
+        "No hit",
         bossName,
+        "for",
+        `${getNumMinutesForBossObjective(objective.bossID)} minutes`,
       ];
     }
 

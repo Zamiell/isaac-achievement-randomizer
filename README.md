@@ -1,20 +1,21 @@
 # isaac-achievement-randomizer
 
+## [READ THE MANUAL HERE](docs/about.md)
+
 <!-- markdownlint-disable MD033 -->
 
-Achievement Randomizer is a mod for _[The Binding of Isaac: Repentance](https://store.steampowered.com/app/1426300/The_Binding_of_Isaac_Repentance/)_.
+Achievement Randomizer is a mod for [_The Binding of Isaac: Repentance_](https://store.steampowered.com/app/1426300/The_Binding_of_Isaac_Repentance/) that gives you the experience of playing through the game from scratch, unlocking each item one by one in a randomized way.
 
-The mod requires that you are on a fully-unlocked save file, but gives you the experience of playing through the game from scratch, unlocking each item one by one in a randomized way. And it will track all of your deaths and time taken along the way! For more details about how it works, see [the documentation](docs/about.md).
-
-Also see the [version history](docs/history.md) for the mod.
-
-Achievement Randomizer is written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacScript](https://isaacscript.github.io/) framework.
+- Check out [the documentation](docs/about.md).
+- Also see the [version history](docs/history.md).
 
 <br>
 
 ## Credits
 
 The mod was designed by Zamiel and [Gamonymous](https://github.com/Rchardon).
+
+It is written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacScript](https://isaacscript.github.io/) framework.
 
 <br>
 
@@ -26,7 +27,13 @@ For questions about playing the mod, or reporting bugs, or if you want to help d
 
 ## How To Play
 
+<!--
+
 For normal people, you can play the mod by subscribing to it on [the Steam Workshop](https://steamcommunity.com/app/250900/workshop/). (Subscribing to the mod will automatically download and install it once you launch the game.)
+
+-->
+
+The mod is not yet released on the Steam Workshop, since it is still in development. It will be released soon!
 
 <br>
 
