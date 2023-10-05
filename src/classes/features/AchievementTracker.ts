@@ -1952,6 +1952,38 @@ function canGetToCharacterObjectiveKind(kind: CharacterObjectiveKind): boolean {
   }
 }
 
+function getReachableNonStoryBossesSet(): Set<BossID> {
+  const reachableNonStoryBossesSet = new Set<BossID>();
+
+  for (const stage of BOSS_STAGES) {
+    for (const stageType of STAGE_TYPES) {
+      if (stageType === StageType.GREED_MODE) {
+        continue;
+      }
+
+      if (!isStageTypeUnlocked(stage, stageType)) {
+        continue;
+      }
+
+      if (
+        isRepentanceStage(stageType) &&
+        !isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS)
+      ) {
+        continue;
+      }
+
+      const bossSet = getBossSet(stage, stageType);
+      if (bossSet === undefined) {
+        continue;
+      }
+
+      addSetsToSet(reachableNonStoryBossesSet, bossSet);
+    }
+  }
+
+  return reachableNonStoryBossesSet;
+}
+
 function canGetToBoss(
   bossID: BossID,
   reachableBossesSet: Set<BossID>,
@@ -2017,38 +2049,6 @@ function canGetToBoss(
       return reachableBossesSet.has(bossID);
     }
   }
-}
-
-function getReachableNonStoryBossesSet(): Set<BossID> {
-  const reachableNonStoryBossesSet = new Set<BossID>();
-
-  for (const stage of BOSS_STAGES) {
-    for (const stageType of STAGE_TYPES) {
-      if (stageType === StageType.GREED_MODE) {
-        continue;
-      }
-
-      if (!isStageTypeUnlocked(stage, stageType)) {
-        continue;
-      }
-
-      if (
-        isRepentanceStage(stageType) &&
-        !isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS)
-      ) {
-        continue;
-      }
-
-      const bossSet = getBossSet(stage, stageType);
-      if (bossSet === undefined) {
-        continue;
-      }
-
-      addSetsToSet(reachableNonStoryBossesSet, bossSet);
-    }
-  }
-
-  return reachableNonStoryBossesSet;
 }
 
 // -------
