@@ -12,10 +12,13 @@ import {
   getCharacterName,
   getChestName,
   getCoinName,
+  getCollectibleName,
   getHeartName,
   getKeyName,
   getPillEffectName,
   getSackName,
+  getSlotName,
+  getTrinketName,
   iRange,
   isOdd,
 } from "isaacscript-common";
@@ -24,6 +27,7 @@ import {
   ALT_FLOORS,
   CHALLENGES,
   CHARACTER_OBJECTIVE_KINDS,
+  OTHER_ACHIEVEMENT_KINDS,
   UNLOCKABLE_PATHS,
 } from "./cachedEnums";
 import { getCharacterObjectiveKindName } from "./classes/features/AchievementText";
@@ -47,24 +51,35 @@ import {
   isCharacterUnlocked,
   isChestPickupVariantUnlocked,
   isCoinSubTypeUnlocked,
+  isCollectibleTypeUnlocked,
+  isGridEntityTypeUnlocked,
   isHeartSubTypeUnlocked,
   isKeySubTypeUnlocked,
+  isOtherAchievementUnlocked,
   isPathUnlocked,
   isPillEffectUnlocked,
   isRandomizerEnabled,
   isSackSubTypeUnlocked,
+  isSlotVariantUnlocked,
+  isTrinketTypeUnlocked,
   startRandomizer,
 } from "./classes/features/AchievementTracker";
 import { MAX_SEED, MIN_SEED } from "./consoleCommands";
 import { MOD_NAME } from "./constants";
 import { getAltFloorName } from "./enums/AltFloor";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
+import { getOtherAchievementName } from "./enums/OtherAchievementKind";
 import { getPathName } from "./enums/UnlockablePath";
 import { init } from "./lib/dssmenucore";
 import { mod } from "./mod";
 import { NO_HIT_BOSSES } from "./objectives";
 import { getAchievementText } from "./types/Achievement";
 import { getObjectiveText } from "./types/Objective";
+import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./unlockableCollectibleTypes";
+import {
+  UNLOCKABLE_GRID_ENTITY_TYPES,
+  getGridEntityName,
+} from "./unlockableGridEntityTypes";
 import {
   UNLOCKABLE_BATTERY_SUB_TYPES,
   UNLOCKABLE_BOMB_SUB_TYPES,
@@ -74,6 +89,8 @@ import {
   UNLOCKABLE_KEY_SUB_TYPES,
   UNLOCKABLE_SACK_KEY_SUB_TYPES,
 } from "./unlockablePickupTypes";
+import { UNLOCKABLE_SLOT_VARIANTS } from "./unlockableSlotVariants";
+import { UNLOCKABLE_TRINKET_TYPES } from "./unlockableTrinketTypes";
 
 const DSS_CHOICES = ["disabled", "enabled"] as const;
 
@@ -139,14 +156,6 @@ export function initDeadSeaScrolls(): void {
           displayIf: () => !isRandomizerEnabled(),
         },
         {
-          str: "randomizer settings",
-          dest: "randomizerSettings",
-          tooltip: {
-            strSet: ["customize the", "timer", "and other", "settings."],
-          },
-          displayIf: () => isRandomizerEnabled(),
-        },
-        {
           str: "end randomizer",
           func: () => {
             endRandomizer();
@@ -167,7 +176,13 @@ export function initDeadSeaScrolls(): void {
         {
           str: "",
           noSel: true,
-          displayIf: () => isRandomizerEnabled(),
+        },
+        {
+          str: "randomizer settings",
+          dest: "randomizerSettings",
+          tooltip: {
+            strSet: ["customize the", "timer", "and other", "settings."],
+          },
         },
         {
           str: "menu settings",
@@ -277,15 +292,15 @@ export function initDeadSeaScrolls(): void {
       title: "objective list",
       buttons: [
         {
-          str: "character list",
+          str: "characters",
           dest: "characterObjectives",
         },
         {
-          str: "boss list",
+          str: "bosses",
           dest: "bossObjectives",
         },
         {
-          str: "challenge list",
+          str: "challenges",
           dest: "challengeObjectives",
         },
       ],
@@ -293,6 +308,7 @@ export function initDeadSeaScrolls(): void {
 
     characterObjectives: {
       title: "character todo",
+      fSize: 2,
 
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
@@ -326,58 +342,79 @@ export function initDeadSeaScrolls(): void {
 
     unlocks: {
       title: "unlock list",
+      fSize: 2,
       buttons: [
         {
-          str: "character list",
+          str: "characters",
           dest: "characterUnlocks",
         },
         {
-          str: "path list",
+          str: "paths",
           dest: "pathUnlocks",
         },
         {
-          str: "alt floor list",
+          str: "alt floors",
           dest: "altFloorUnlocks",
         },
         {
-          str: "challenge list",
+          str: "challenges",
           dest: "challengeUnlocks",
         },
         {
-          str: "card list",
+          str: "collectibles",
+          dest: "collectibleUnlocks",
+        },
+        {
+          str: "trinkets",
+          dest: "trinketUnlocks",
+        },
+        {
+          str: "cards",
           dest: "cardUnlocks",
         },
         {
-          str: "pill effect list",
+          str: "pill effects",
           dest: "pillEffectUnlocks",
         },
         {
-          str: "heart list",
+          str: "hearts",
           dest: "heartUnlocks",
         },
         {
-          str: "coin list",
+          str: "coins",
           dest: "coinUnlocks",
         },
         {
-          str: "bomb list",
+          str: "bombs",
           dest: "bombUnlocks",
         },
         {
-          str: "key list",
+          str: "keys",
           dest: "keyUnlocks",
         },
         {
-          str: "battery list",
+          str: "batteries",
           dest: "batteryUnlocks",
         },
         {
-          str: "sack list",
+          str: "sacks",
           dest: "sackUnlocks",
         },
         {
-          str: "chest list",
+          str: "chests",
           dest: "chestUnlocks",
+        },
+        {
+          str: "slots",
+          dest: "slotUnlocks",
+        },
+        {
+          str: "grid entities",
+          dest: "gridEntityUnlocks",
+        },
+        {
+          str: "other",
+          dest: "otherUnlocks",
         },
       ],
     },
@@ -427,6 +464,30 @@ export function initDeadSeaScrolls(): void {
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
         menu.buttons = getChallengeUnlockButtons();
+      },
+    },
+
+    collectibleUnlocks: {
+      title: "collectible unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getCollectibleUnlockButtons();
+      },
+    },
+
+    trinketUnlocks: {
+      title: "trinket unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getTrinketUnlockButtons();
       },
     },
 
@@ -535,6 +596,42 @@ export function initDeadSeaScrolls(): void {
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
         menu.buttons = getChestUnlockButtons();
+      },
+    },
+
+    slotUnlocks: {
+      title: "slot unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getSlotUnlockButtons();
+      },
+    },
+
+    gridEntityUnlocks: {
+      title: "grid entity unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getGridEntityUnlockButtons();
+      },
+    },
+
+    otherUnlocks: {
+      title: "other unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getOtherUnlockButtons();
       },
     },
 
@@ -951,6 +1048,56 @@ function getChallengeUnlockButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
+function getCollectibleUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const collectibleType of UNLOCKABLE_COLLECTIBLE_TYPES) {
+    const collectibleName = getCollectibleName(collectibleType).toLowerCase();
+    const completed = isCollectibleTypeUnlocked(collectibleType);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: `${collectibleType} - ${collectibleName}`,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getTrinketUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const trinketType of UNLOCKABLE_TRINKET_TYPES) {
+    const trinketName = getTrinketName(trinketType).toLowerCase();
+    const completed = isTrinketTypeUnlocked(trinketType);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: `${trinketType} - ${trinketName}`,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
 function getCardUnlockButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
@@ -1167,6 +1314,82 @@ function getChestUnlockButtons(): DeadSeaScrollsButton[] {
     buttons.push(
       {
         str: chestName,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getSlotUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const slotVariant of UNLOCKABLE_SLOT_VARIANTS) {
+    const slotName = getSlotName(slotVariant).toLowerCase();
+    const completed = isSlotVariantUnlocked(slotVariant);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: slotName,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getGridEntityUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const gridEntityType of UNLOCKABLE_GRID_ENTITY_TYPES) {
+    const gridEntityName = getGridEntityName(gridEntityType).toLowerCase();
+    const completed = isGridEntityTypeUnlocked(gridEntityType);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: gridEntityName,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+function getOtherUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const otherAchievementKind of OTHER_ACHIEVEMENT_KINDS) {
+    const otherAchievementName =
+      getOtherAchievementName(otherAchievementKind)[1].toLowerCase();
+    const completed = isOtherAchievementUnlocked(otherAchievementKind);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: otherAchievementName,
       },
       {
         str: completedText,

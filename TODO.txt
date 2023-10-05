@@ -2,9 +2,6 @@ TODO:
 
 - quality unlocks in order
 
-- DSS should have objectives and achievements in separate submenus
-- add all the other unlock screens except for collectibles and trinkets
-
 - check that bosses behind either PATH or ALT_STAGE have logic for no hit achievement
 - check that repentance bosses are gated behind repentance achievements
 
