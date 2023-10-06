@@ -7,6 +7,7 @@ import {
 } from "isaac-typescript-definitions";
 import {
   Callback,
+  GAME_FRAMES_PER_SECOND,
   KColorDefault,
   MAIN_CHARACTERS,
   ReadonlySet,
@@ -74,8 +75,8 @@ const BOSS_STAGES = [
 
 let generatingRNG: RNG | undefined;
 let renderFrameToTryGenerate: int | undefined;
-let numGenerationAttempts = 1;
-let numValidationIterations = 1;
+let numGenerationAttempts = 0;
+let numValidationIterations = 0;
 
 /**
  * This does the actual randomization after the player selects a starting seed for the playthrough
@@ -113,7 +114,7 @@ export class AchievementRandomizer extends RandomizerModFeature {
       return;
     }
 
-    if (onOrPastRenderFrame(renderFrameToTryGenerate)) {
+    if (!onOrPastRenderFrame(renderFrameToTryGenerate)) {
       return;
     }
     renderFrameToTryGenerate = undefined;
@@ -124,6 +125,8 @@ export class AchievementRandomizer extends RandomizerModFeature {
     );
 
     if (!isAchievementsBeatable()) {
+      numGenerationAttempts++;
+
       const renderFrameCount = Isaac.GetFrameCount();
       renderFrameToTryGenerate = renderFrameCount + 2;
 
@@ -165,11 +168,15 @@ export function startRandomizer(
   const renderFrameCount = Isaac.GetFrameCount();
 
   generatingRNG = newRNG(v.persistent.seed);
+  renderFrameToTryGenerate = renderFrameCount + 1;
   numGenerationAttempts = 1;
-  renderFrameToTryGenerate = renderFrameCount + 2;
 
   const hud = game.GetHUD();
   hud.SetVisible(false);
+
+  const player = Isaac.GetPlayer();
+  player.AddControlsCooldown(GAME_FRAMES_PER_SECOND);
+  player.Velocity = VectorZero;
 
   // We will start generating achievements on the next render frame.
 }
@@ -190,6 +197,8 @@ function isAchievementsBeatable(): boolean {
   numValidationIterations = 0;
 
   while (v.persistent.completedUnlocks.length < ALL_UNLOCKS.length) {
+    numValidationIterations++;
+
     const unlockedSomething = tryUnlockEverythingReachable();
     if (!unlockedSomething) {
       log(
