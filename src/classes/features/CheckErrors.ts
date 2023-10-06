@@ -1,6 +1,5 @@
 import {
   CallbackPriority,
-  Challenge,
   CollectibleType,
   Difficulty,
   ItemPoolType,
@@ -21,6 +20,7 @@ import {
   getCollectibleName,
   isRepentance,
   log,
+  onAnyChallenge,
   onSetSeed,
   onVictoryLap,
   removeAllDoors,
@@ -210,8 +210,7 @@ function checkNormalMode() {
   }
 
   // Some challenges are on normal mode.
-  const challenge = Isaac.GetChallenge();
-  if (challenge !== Challenge.NULL) {
+  if (onAnyChallenge()) {
     return;
   }
 

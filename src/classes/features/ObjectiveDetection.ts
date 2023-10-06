@@ -1,7 +1,6 @@
 import type { DamageFlag } from "isaac-typescript-definitions";
 import {
   BossID,
-  Challenge,
   CollectibleType,
   EntityType,
   LevelStage,
@@ -27,6 +26,7 @@ import {
   inBigRoom,
   isFirstPlayer,
   isSelfDamage,
+  onAnyChallenge,
   onRepentanceStage,
 } from "isaacscript-common";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
@@ -317,8 +317,7 @@ export function getSecondsSinceLastDamage(): int | undefined {
     return undefined;
   }
 
-  const challenge = Isaac.GetChallenge();
-  if (challenge !== Challenge.NULL) {
+  if (onAnyChallenge()) {
     return undefined;
   }
 
@@ -375,6 +374,10 @@ function onFirstPhaseOfHush(bossID: BossID): boolean {
 export function getCharacterObjectiveKindNoHit():
   | CharacterObjectiveKind
   | undefined {
+  if (onAnyChallenge()) {
+    return undefined;
+  }
+
   const repentanceStage = onRepentanceStage();
   const stageToCharacterObjectiveKind = repentanceStage
     ? STAGE_TO_CHARACTER_OBJECTIVE_KIND_REPENTANCE

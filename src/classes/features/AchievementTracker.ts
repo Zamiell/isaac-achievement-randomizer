@@ -36,6 +36,7 @@ import {
   addSetsToSet,
   assertDefined,
   assertNotNull,
+  clearChallenge,
   collectibleHasTag,
   copyArray,
   eRange,
@@ -70,12 +71,12 @@ import {
   newSprite,
   onAnyChallenge,
   restart,
+  setRunSeed,
 } from "isaacscript-common";
 import { getAchievementsForRNG } from "../../achievementAssignment";
 import { ALL_ACHIEVEMENTS } from "../../achievements";
 import {
   ALT_FLOORS,
-  CHALLENGES,
   CHARACTER_OBJECTIVE_KINDS,
   STAGE_TYPES,
 } from "../../cachedEnums";
@@ -342,11 +343,10 @@ export class AchievementTracker extends ModFeature {
 
     const rng = newRNG(v.persistent.seed);
     const startSeed = rng.GetSeed();
-    const startSeedString = Seeds.Seed2String(startSeed);
 
-    Isaac.ExecuteCommand(`challenge ${Challenge.NULL}`);
-    Isaac.ExecuteCommand(`restart ${STARTING_CHARACTER}`);
-    Isaac.ExecuteCommand(`seed ${startSeedString}`);
+    clearChallenge();
+    restart(STARTING_CHARACTER);
+    setRunSeed(startSeed);
   }
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
@@ -2123,9 +2123,8 @@ function isAchievementsBeatable(): boolean {
       }
     }
 
-    for (const challenge of CHALLENGES) {
+    for (const challenge of UNLOCKABLE_CHALLENGES) {
       if (
-        challenge !== Challenge.NULL &&
         isChallengeUnlocked(challenge, false) &&
         !isChallengeObjectiveCompleted(challenge)
       ) {
