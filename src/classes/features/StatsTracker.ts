@@ -5,11 +5,14 @@ import {
   ModFeature,
   PriorityCallback,
   game,
+  newRNG,
+  onAnyChallenge,
   onChallenge,
+  repeat,
 } from "isaacscript-common";
 import { ChallengeCustom } from "../../enums/ChallengeCustom";
 import { convertSecondsToTimerValues } from "../../timer";
-import { isRandomizerEnabled } from "./achievementTracker/v";
+import { getRandomizerSeed, isRandomizerEnabled } from "./achievementTracker/v";
 import { hasErrors } from "./checkErrors/v";
 
 /** `isaacscript-common` uses `CallbackPriority.IMPORTANT` (-200). */
@@ -125,4 +128,32 @@ export function getPlaythroughTimeElapsed(): string {
 
   const { hour1, hour2, minute1, minute2, second1, second2 } = timerValues;
   return `${hour1}${hour2}:${minute1}${minute2}:${second1}${second2}`;
+}
+
+export function getRandomizerRunSeedString(): string | undefined {
+  const seed = getRandomizerSeed();
+  if (seed === undefined) {
+    return undefined;
+  }
+
+  const rng = newRNG(seed);
+  repeat(v.persistent.numCompletedRuns, () => {
+    rng.Next();
+  });
+
+  const startSeed = rng.GetSeed();
+  return Seeds.Seed2String(startSeed);
+}
+
+export function isOnCorrectRandomizerSeed(): boolean {
+  // Unfortunately, we cannot play on set seeds inside of challenges.
+  if (onAnyChallenge()) {
+    return true;
+  }
+
+  const seeds = game.GetSeeds();
+  const startSeedString = seeds.GetStartSeedString();
+  const correctRunSeedString = getRandomizerRunSeedString();
+
+  return startSeedString === correctRunSeedString;
 }

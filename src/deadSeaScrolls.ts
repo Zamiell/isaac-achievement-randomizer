@@ -35,7 +35,6 @@ import {
   getCompletedAchievements,
   getCompletedObjectives,
   getNumCompletedAchievements,
-  getRandomizerSeed,
   getReachableNonStoryBossesSet,
   isAltFloorUnlocked,
   isBatterySubTypeUnlocked,
@@ -66,7 +65,10 @@ import {
   getPlaythroughNumDeaths,
   getPlaythroughTimeElapsed,
 } from "./classes/features/StatsTracker";
-import { isRandomizerEnabled } from "./classes/features/achievementTracker/v";
+import {
+  getRandomizerSeed,
+  isRandomizerEnabled,
+} from "./classes/features/achievementTracker/v";
 import { MAX_SEED, MIN_SEED } from "./consoleCommands";
 import { MOD_NAME } from "./constants";
 import { getAltFloorName } from "./enums/AltFloor";

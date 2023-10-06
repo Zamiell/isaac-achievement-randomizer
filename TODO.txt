@@ -1,15 +1,18 @@
 TODO:
 
+- add icon like R+ icon on left UI
 - about.md TODO
 - refactor big files into smaller files (AchievementTracker + DSS)
-- /** This does not extend from `RandomizerModFeature` to avoid a dependency cycle. */
+- refactor /** This does not extend from `RandomizerModFeature` to avoid a dependency cycle. */
 - seeds go in order
-  - test TMTRAINER unlock early bug
+  - test TMTRAINER unlock early bug - 268365970
 
 - spiked chests / mimics should / haunted chests should start unlocked
 - pill effects unlock in sub-order
 - casual / hardcore
 - unlockable hearts/etc in order
+
+- version isn't showing on rebirth item tracker
 
 ------------------------------
 

@@ -16,6 +16,7 @@ import {
 } from "isaacscript-common";
 import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
+import { preForcedRestart } from "./StatsTracker";
 
 /**
  * In addition to preventing saving and quitting, this feature also fixes softlocks in the vanilla
@@ -48,7 +49,11 @@ export class PreventSaveAndQuit extends RandomizerModFeature {
   postGameStartedReorderedTrue(): void {
     mod.runNextRenderFrame(() => {
       logError("Illegal save and quit detected. Restarting the run.");
-      /// preForcedRestart(); // TODO
+
+      // The number of runs was incremented after the transition to the menu happened, so we must
+      // prevent a second increment.
+      preForcedRestart();
+
       restart();
     });
   }

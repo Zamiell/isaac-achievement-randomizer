@@ -4,13 +4,17 @@ import {
   PriorityCallbackCustom,
   game,
   log,
-  newRNG,
-  repeat,
+  onAnyChallenge,
+  setRunSeed,
 } from "isaacscript-common";
 import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { getRandomizerSeed } from "./AchievementTracker";
-import { getPlaythroughNumCompletedRuns } from "./StatsTracker";
+import {
+  getPlaythroughNumCompletedRuns,
+  getRandomizerRunSeedString,
+  preForcedRestart,
+} from "./StatsTracker";
+import { getRandomizerSeed } from "./achievementTracker/v";
 
 export class ForceSeeds extends RandomizerModFeature {
   /** We want all of the other `POST_GAME_STARTED_REORDERED` callbacks to happen first. */
@@ -20,33 +24,31 @@ export class ForceSeeds extends RandomizerModFeature {
     false,
   )
   postGameStartedReorderedFalse(): void {
+    // Unfortunately, we cannot play on set seeds inside of challenges.
+    if (onAnyChallenge()) {
+      return;
+    }
+
     const seed = getRandomizerSeed();
     if (seed === undefined) {
       return;
     }
 
     const seeds = game.GetSeeds();
-    const startSeed = seeds.GetStartSeed();
-
-    const rng = newRNG(seed);
-    const num = getPlaythroughNumCompletedRuns();
-    repeat(num, () => {
-      rng.Next();
-    });
-
-    const forcedStartSeed = rng.GetSeed();
-    if (startSeed === forcedStartSeed) {
-      return;
-    }
-
     const oldStartSeedString = seeds.GetStartSeedString();
-    const newStartSeedString = Seeds.Seed2String(forcedStartSeed);
+    const newStartSeedString = getRandomizerRunSeedString();
 
-    log(`Incorrect seed: ${oldStartSeedString}`);
-    log(`Going to seed: ${newStartSeedString}`);
+    if (
+      newStartSeedString !== undefined &&
+      oldStartSeedString !== newStartSeedString
+    ) {
+      const numRuns = getPlaythroughNumCompletedRuns();
+      log(`Incorrect seed for run #${numRuns}: ${oldStartSeedString}`);
 
-    mod.runNextRenderFrame(() => {
-      Isaac.ExecuteCommand(`seed ${newStartSeedString}`);
-    });
+      mod.runNextRenderFrame(() => {
+        preForcedRestart();
+        setRunSeed(newStartSeedString);
+      });
+    }
   }
 }

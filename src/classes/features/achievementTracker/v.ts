@@ -1,3 +1,4 @@
+import { RandomizerMode } from "../../../enums/RandomizerMode";
 import type { Achievement } from "../../../types/Achievement";
 import type { Objective } from "../../../types/Objective";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
@@ -8,6 +9,7 @@ export const v = {
   persistent: {
     /** If `null`, the randomizer is not enabled. */
     seed: null as Seed | null,
+    randomizerMode: RandomizerMode.CASUAL,
 
     objectiveToAchievementMap: new Map<ObjectiveID, Achievement>(),
 
@@ -19,4 +21,8 @@ export const v = {
 
 export function isRandomizerEnabled(): boolean {
   return v.persistent.seed !== null;
+}
+
+export function getRandomizerSeed(): Seed | undefined {
+  return v.persistent.seed ?? undefined;
 }

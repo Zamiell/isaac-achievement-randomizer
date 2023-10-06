@@ -365,10 +365,6 @@ export class AchievementTracker extends ModFeature {
 // Core functions
 // --------------
 
-export function getRandomizerSeed(): Seed | undefined {
-  return v.persistent.seed ?? undefined;
-}
-
 export function isValidSituationForStartingRandomizer(): boolean {
   return game.Difficulty === Difficulty.HARD && !onAnyChallenge();
 }
