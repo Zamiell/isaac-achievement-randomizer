@@ -12,7 +12,6 @@ import {
   getRandomArrayElementAndRemove,
   shuffleArray,
 } from "isaacscript-common";
-import { ALL_ACHIEVEMENTS } from "./achievements";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { UnlockType } from "./enums/UnlockType";
@@ -25,6 +24,7 @@ import { getObjectiveID } from "./types/ObjectiveID";
 import type { Unlock } from "./types/Unlock";
 import { getUnlock, getUnlockText } from "./types/Unlock";
 import { UNLOCKABLE_CHARACTERS } from "./unlockableCharacters";
+import { ALL_UNLOCKS } from "./unlocks";
 
 /** These are the objectives that The Polaroid and The Negative are gated behind. */
 const EASY_OBJECTIVE_KINDS = [
@@ -73,14 +73,14 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
   // When an achievement/objective is assigned, it is added to the following map.
   const objectiveToAchievementMap = new Map<ObjectiveID, Unlock>();
 
-  const achievements = copyArray(ALL_ACHIEVEMENTS);
+  const achievements = copyArray(ALL_UNLOCKS);
   const objectives = copyArray(ALL_OBJECTIVES);
 
   // The Polaroid and The Negative are guaranteed to be unlocked via an easy objective for Isaac.
   const easyObjectiveKinds = copyArray(EASY_OBJECTIVE_KINDS);
   for (const unlockablePath of EASY_UNLOCKABLE_PATHS) {
     const achievement = getUnlock(UnlockType.PATH, unlockablePath);
-    removeAchievement(achievements, achievement);
+    removeUnlock(achievements, achievement);
 
     const randomEasyObjectiveKind = getRandomArrayElementAndRemove(
       easyObjectiveKinds,
@@ -103,7 +103,7 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
   let lastUnlockedCharacter = PlayerType.ISAAC;
   for (const character of unlockableCharacters) {
     const achievement = getUnlock(UnlockType.CHARACTER, character);
-    removeAchievement(achievements, achievement);
+    removeUnlock(achievements, achievement);
 
     const lastCharacterObjectives = objectives.filter(
       (objective) =>
@@ -156,54 +156,51 @@ function inSecondHalfOfArray<T>(element: T, array: T[]): boolean {
   return index > (array.length - 1) / 2;
 }
 
-function removeAchievement(achievements: Unlock[], achievement: Unlock) {
-  const index = getAchievementIndex(achievements, achievement);
-  const matchingAchievement = achievements[index];
+function removeUnlock(unlocks: Unlock[], unlock: Unlock) {
+  const index = getUnlockIndex(unlocks, unlock);
+  const matchingAchievement = unlocks[index];
   assertDefined(
     matchingAchievement,
     `Failed to find the achievement at index: ${index}`,
   );
 
-  arrayRemoveIndexInPlace(achievements, index);
+  arrayRemoveIndexInPlace(unlocks, index);
 }
 
-function getAchievementIndex(
-  achievements: Unlock[],
-  achievementToMatch: Unlock,
-): int {
+function getUnlockIndex(unlocks: Unlock[], unlockToMatch: Unlock): int {
   let index: int;
 
-  switch (achievementToMatch.type) {
+  switch (unlockToMatch.type) {
     case UnlockType.PATH: {
-      index = achievements.findIndex(
-        (achievement) =>
-          achievement.type === achievementToMatch.type &&
-          achievement.unlockablePath === achievementToMatch.unlockablePath,
+      index = unlocks.findIndex(
+        (unlock) =>
+          unlock.type === unlockToMatch.type &&
+          unlock.unlockablePath === unlockToMatch.unlockablePath,
       );
       break;
     }
 
     case UnlockType.CHARACTER: {
-      index = achievements.findIndex(
-        (achievement) =>
-          achievement.type === achievementToMatch.type &&
-          achievement.character === achievementToMatch.character,
+      index = unlocks.findIndex(
+        (unlock) =>
+          unlock.type === unlockToMatch.type &&
+          unlock.character === unlockToMatch.character,
       );
       break;
     }
 
     default: {
       return error(
-        `Unhandled matching logic for achievement type: ${
-          UnlockType[achievementToMatch.type]
+        `Unhandled matching logic for unlock type: ${
+          UnlockType[unlockToMatch.type]
         }`,
       );
     }
   }
 
   if (index === -1) {
-    const text = getUnlockText(achievementToMatch);
-    error(`Failed to find the achievement in the array: ${text}`);
+    const text = getUnlockText(unlockToMatch);
+    error(`Failed to find the unlock in the array: ${text}`);
   }
 
   return index;

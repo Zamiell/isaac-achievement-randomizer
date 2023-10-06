@@ -11,7 +11,7 @@ export const v = {
     seed: null as Seed | null,
     randomizerMode: RandomizerMode.CASUAL,
 
-    objectiveToAchievementMap: new Map<ObjectiveID, Unlock>(),
+    objectiveToUnlockMap: new Map<ObjectiveID, Unlock>(),
 
     completedObjectives: [] as Objective[],
     completedAchievements: [] as Unlock[],

@@ -3,7 +3,6 @@ import {
   assertDefined,
   getCharacterName,
 } from "isaacscript-common";
-import { ALL_ACHIEVEMENTS } from "./achievements";
 import {
   endRandomizer,
   getNumCompletedAchievements,
@@ -50,6 +49,7 @@ import { RandomizerMode } from "./enums/RandomizerMode";
 import type { DSSMod } from "./lib/dssmenucore";
 import { init } from "./lib/dssmenucore";
 import { mod } from "./mod";
+import { ALL_UNLOCKS } from "./unlocks";
 
 const DSS_CHOICES = ["disabled", "enabled"] as const;
 
@@ -681,8 +681,7 @@ export function initDeadSeaScrolls(): void {
           str: "achievements:",
         },
         {
-          str: () =>
-            `${getNumCompletedAchievements()} / ${ALL_ACHIEVEMENTS.length}`,
+          str: () => `${getNumCompletedAchievements()} / ${ALL_UNLOCKS.length}`,
           colorSelect: true,
           noSel: true,
         },

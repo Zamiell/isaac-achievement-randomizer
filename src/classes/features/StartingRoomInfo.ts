@@ -10,8 +10,8 @@ import {
   newSprite,
   onFirstFloor,
 } from "isaacscript-common";
-import { ALL_ACHIEVEMENTS } from "../../achievements";
 import { VERSION } from "../../constants";
+import { ALL_UNLOCKS } from "../../unlocks";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { getNumCompletedAchievements } from "./AchievementTracker";
 import {
@@ -89,7 +89,7 @@ export class StartingRoomInfo extends RandomizerModFeature {
 
     this.drawCenteredText("Achievements:", topRightPosition);
     this.drawCenteredText(
-      `${getNumCompletedAchievements()} / ${ALL_ACHIEVEMENTS.length}`,
+      `${getNumCompletedAchievements()} / ${ALL_UNLOCKS.length}`,
       topRightPosition.add(Vector(0, 30)),
       K_COLORS.Green,
     );
