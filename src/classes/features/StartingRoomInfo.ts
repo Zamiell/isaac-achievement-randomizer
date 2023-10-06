@@ -13,12 +13,14 @@ import {
 import { VERSION } from "../../constants";
 import { ALL_UNLOCKS } from "../../unlocks";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { getNumCompletedUnlocks } from "./AchievementTracker";
 import {
   getPlaythroughNumDeaths,
   getPlaythroughTimeElapsed,
 } from "./StatsTracker";
-import { getRandomizerSeed } from "./achievementTracker/v";
+import {
+  getNumCompletedUnlocks,
+  getRandomizerSeed,
+} from "./achievementTracker/v";
 import { hasErrors } from "./checkErrors/v";
 
 const FONT = fonts.teamMeatFont10;

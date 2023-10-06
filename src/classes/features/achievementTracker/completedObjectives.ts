@@ -7,8 +7,41 @@ import { CHARACTER_OBJECTIVE_KINDS } from "../../../cachedEnums";
 import type { CharacterObjectiveKind } from "../../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../../enums/ObjectiveType";
 import { NO_HIT_BOSSES } from "../../../objectives";
-import type { BossObjective } from "../../../types/Objective";
+import type { BossObjective, Objective } from "../../../types/Objective";
 import { v } from "./v";
+
+// -------
+// Generic
+// -------
+
+export function isObjectiveCompleted(objectiveToMatch: Objective): boolean {
+  switch (objectiveToMatch.type) {
+    case ObjectiveType.CHARACTER: {
+      return v.persistent.completedObjectives.some(
+        (objective) =>
+          objective.type === objectiveToMatch.type &&
+          objective.character === objectiveToMatch.character &&
+          objective.kind === objectiveToMatch.kind,
+      );
+    }
+
+    case ObjectiveType.BOSS: {
+      return v.persistent.completedObjectives.some(
+        (objective) =>
+          objective.type === objectiveToMatch.type &&
+          objective.bossID === objectiveToMatch.bossID,
+      );
+    }
+
+    case ObjectiveType.CHALLENGE: {
+      return v.persistent.completedObjectives.some(
+        (objective) =>
+          objective.type === objectiveToMatch.type &&
+          objective.challenge === objectiveToMatch.challenge,
+      );
+    }
+  }
+}
 
 // -------------------------------
 // Objective - Character functions

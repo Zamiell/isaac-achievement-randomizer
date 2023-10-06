@@ -5,7 +5,6 @@ import {
 } from "isaacscript-common";
 import {
   endRandomizer,
-  getNumCompletedUnlocks,
   isValidSituationForStartingRandomizer,
   startRandomizer,
 } from "./classes/features/AchievementTracker";
@@ -15,6 +14,7 @@ import {
   getPlaythroughTimeElapsed,
 } from "./classes/features/StatsTracker";
 import {
+  getNumCompletedUnlocks,
   getRandomizerSeed,
   isRandomizerEnabled,
 } from "./classes/features/achievementTracker/v";

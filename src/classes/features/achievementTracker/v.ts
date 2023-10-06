@@ -26,3 +26,15 @@ export function isRandomizerEnabled(): boolean {
 export function getRandomizerSeed(): Seed | undefined {
   return v.persistent.seed ?? undefined;
 }
+
+export function getCompletedObjectives(): Objective[] {
+  return v.persistent.completedObjectives;
+}
+
+export function getCompletedUnlocks(): Unlock[] {
+  return v.persistent.completedUnlocks;
+}
+
+export function getNumCompletedUnlocks(): int {
+  return v.persistent.completedUnlocks.length;
+}

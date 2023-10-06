@@ -36,7 +36,7 @@ import {
   getObjective,
 } from "../../types/Objective";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { addObjective } from "./AchievementTracker";
+import { addObjective } from "./achievementTracker/addObjective";
 import { isBossObjectiveCompleted } from "./achievementTracker/completedObjectives";
 
 const BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND = new ReadonlyMap<

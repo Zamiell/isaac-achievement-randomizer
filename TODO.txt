@@ -2,7 +2,6 @@ TODO:
 
 - add icon like R+ icon on left UI
 - about.md TODO
-- refactor big file AchievementTracker
 - refactor /** This does not extend from `RandomizerModFeature` to avoid a dependency cycle. */
 - seeds go in order
   - test TMTRAINER unlock early bug - 268365970

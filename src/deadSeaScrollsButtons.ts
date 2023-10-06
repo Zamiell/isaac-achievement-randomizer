@@ -27,13 +27,6 @@ import {
   UNLOCKABLE_PATHS,
 } from "./cachedEnums";
 import {
-  canGetToBoss,
-  canGetToCharacterObjectiveKind,
-  getCompletedObjectives,
-  getCompletedUnlocks,
-  getReachableNonStoryBossesSet,
-} from "./classes/features/AchievementTracker";
-import {
   isBossObjectiveCompleted,
   isChallengeObjectiveCompleted,
   isCharacterObjectiveCompleted,
@@ -58,6 +51,15 @@ import {
   isSlotVariantUnlocked,
   isTrinketTypeUnlocked,
 } from "./classes/features/achievementTracker/completedUnlocks";
+import {
+  getCompletedObjectives,
+  getCompletedUnlocks,
+} from "./classes/features/achievementTracker/v";
+import {
+  canGetToBoss,
+  canGetToCharacterObjectiveKind,
+  getReachableNonStoryBossesSet,
+} from "./classes/features/achievementTracker/validateAchievements";
 import { getAltFloorName } from "./enums/AltFloor";
 import {
   CharacterObjectiveKind,
