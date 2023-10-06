@@ -1,13 +1,13 @@
-import { BossID, Challenge } from "isaac-typescript-definitions";
+import { BossID } from "isaac-typescript-definitions";
 import { MAIN_CHARACTERS } from "isaacscript-common";
 import {
   BOSS_IDS,
-  CHALLENGES,
   CHARACTER_OBJECTIVE_KINDS,
   OBJECTIVE_TYPES,
 } from "./cachedEnums";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import type { Objective } from "./types/Objective";
+import { UNLOCKABLE_CHALLENGES } from "./unlockableChallenges";
 
 /** @see about.md */
 export const NO_HIT_BOSSES: readonly BossID[] = BOSS_IDS.filter(
@@ -50,11 +50,7 @@ export const ALL_OBJECTIVES: readonly Objective[] = (() => {
       }
 
       case ObjectiveType.CHALLENGE: {
-        for (const challenge of CHALLENGES) {
-          if (challenge === Challenge.NULL) {
-            continue;
-          }
-
+        for (const challenge of UNLOCKABLE_CHALLENGES) {
           const objective: Objective = {
             type: ObjectiveType.CHALLENGE,
             challenge,

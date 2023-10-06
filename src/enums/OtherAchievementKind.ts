@@ -10,10 +10,12 @@ export enum OtherAchievementKind {
   MUSHROOMS, // 6.0
   SKULLS, // 6.0
   POLYPS, // 6.0
+
   GOLDEN_POOP, // 14.3
   RAINBOW_POOP, // 14.4
   BLACK_POOP, // 14.5
   CHARMING_POOP, // 14.11
+
   REWARD_PLATES, // 20.1
 }
 

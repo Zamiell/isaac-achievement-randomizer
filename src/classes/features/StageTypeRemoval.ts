@@ -6,6 +6,7 @@ import {
   getPlayerHealth,
   goToStage,
   log,
+  onChallenge,
   setPlayerHealth,
 } from "isaacscript-common";
 import { ChallengeCustom } from "../../enums/ChallengeCustom";
@@ -21,8 +22,7 @@ export class StageTypeRemoval extends RandomizerModFeature {
       return;
     }
 
-    const challenge = Isaac.GetChallenge();
-    if (challenge === ChallengeCustom.RANDOMIZER_CHILL_ROOM) {
+    if (onChallenge(ChallengeCustom.RANDOMIZER_CHILL_ROOM)) {
       return;
     }
 

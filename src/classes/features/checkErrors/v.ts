@@ -1,4 +1,4 @@
-// Registered in "CheckErrors.ts".
+// This is registered in "CheckErrors.ts".
 // eslint-disable-next-line isaacscript/require-v-registration
 export const v = {
   run: {

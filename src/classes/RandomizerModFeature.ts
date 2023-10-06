@@ -1,5 +1,5 @@
 import { ModFeature } from "isaacscript-common";
-import { isRandomizerEnabled } from "./features/AchievementTracker";
+import { isRandomizerEnabled } from "./features/achievementTracker/v";
 
 /**
  * The base class that most of the feature classes in this mod extends from.

@@ -1,10 +1,8 @@
 import type { PlayerType } from "isaac-typescript-definitions";
-import { Challenge, Difficulty } from "isaac-typescript-definitions";
 import {
   MAIN_CHARACTERS,
   VANILLA_PILL_EFFECTS,
   assertDefined,
-  game,
   getBatteryName,
   getBombName,
   getBossName,
@@ -26,7 +24,6 @@ import {
 import { ALL_ACHIEVEMENTS } from "./achievements";
 import {
   ALT_FLOORS,
-  CHALLENGES,
   CHARACTER_OBJECTIVE_KINDS,
   OTHER_ACHIEVEMENT_KINDS,
   UNLOCKABLE_PATHS,
@@ -38,11 +35,8 @@ import {
   getCompletedAchievements,
   getCompletedObjectives,
   getNumCompletedAchievements,
-  getNumCompletedRuns,
-  getNumDeaths,
   getRandomizerSeed,
   getReachableNonStoryBossesSet,
-  getTimeElapsed,
   isAltFloorUnlocked,
   isBatterySubTypeUnlocked,
   isBombSubTypeUnlocked,
@@ -61,12 +55,18 @@ import {
   isOtherAchievementUnlocked,
   isPathUnlocked,
   isPillEffectUnlocked,
-  isRandomizerEnabled,
   isSackSubTypeUnlocked,
   isSlotVariantUnlocked,
   isTrinketTypeUnlocked,
+  isValidSituationForStartingRandomizer,
   startRandomizer,
 } from "./classes/features/AchievementTracker";
+import {
+  getPlaythroughNumCompletedRuns,
+  getPlaythroughNumDeaths,
+  getPlaythroughTimeElapsed,
+} from "./classes/features/StatsTracker";
+import { isRandomizerEnabled } from "./classes/features/achievementTracker/v";
 import { MAX_SEED, MIN_SEED } from "./consoleCommands";
 import { MOD_NAME } from "./constants";
 import { getAltFloorName } from "./enums/AltFloor";
@@ -75,6 +75,7 @@ import {
   getCharacterObjectiveKindName,
 } from "./enums/CharacterObjectiveKind";
 import { getOtherAchievementName } from "./enums/OtherAchievementKind";
+import { RandomizerMode } from "./enums/RandomizerMode";
 import { getPathName } from "./enums/UnlockablePath";
 import { init } from "./lib/dssmenucore";
 import { mod } from "./mod";
@@ -82,6 +83,7 @@ import { NO_HIT_BOSSES } from "./objectives";
 import { getAchievementText } from "./types/Achievement";
 import { getObjectiveText } from "./types/Objective";
 import { UNLOCKABLE_CARD_TYPES } from "./unlockableCardTypes";
+import { UNLOCKABLE_CHALLENGES } from "./unlockableChallenges";
 import { UNLOCKABLE_CHARACTERS } from "./unlockableCharacters";
 import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./unlockableCollectibleTypes";
 import {
@@ -158,7 +160,7 @@ export function initDeadSeaScrolls(): void {
         },
         {
           str: "start randomizer",
-          dest: "start",
+          dest: "selectSeed",
           tooltip: {
             strSet: ["turn the", " randomizer", "on."],
           },
@@ -215,8 +217,8 @@ export function initDeadSeaScrolls(): void {
       ],
     },
 
-    start: {
-      title: "start",
+    selectSeed: {
+      title: "select seed",
 
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
@@ -224,13 +226,7 @@ export function initDeadSeaScrolls(): void {
           menu.buttons = [
             {
               str: "use random seed",
-              func: () => {
-                // The DSS menu text will continue to be drawn on the screen on top of the "Loading"
-                // text from this mod. So, disable DSS until the next run.
-                DSSMod.setEnabled(false);
-
-                startRandomizer(undefined);
-              },
+              dest: "selectMode",
             },
             {
               str: "use specific seed",
@@ -275,7 +271,7 @@ export function initDeadSeaScrolls(): void {
           str: "",
         },
         {
-          str: "achievementrandomizer 12345", // This must be lowercase.
+          str: "achievementrandomizer casual 12345", // This must be lowercase.
           clr: 3,
         },
         {
@@ -289,6 +285,42 @@ export function initDeadSeaScrolls(): void {
         },
         {
           str: `${MAX_SEED}.)`,
+        },
+        {
+          str: "",
+        },
+        {
+          str: 'change "casual" to "hardcore" if',
+        },
+        {
+          str: "you want to play on hardcore mode.",
+        },
+      ],
+    },
+
+    selectMode: {
+      title: "select mode",
+      fSize: 2,
+      buttons: [
+        {
+          str: "casual (full random)",
+          func: () => {
+            // The DSS menu text will continue to be drawn on the screen on top of the "Loading"
+            // text from this mod. So, disable DSS until the next run.
+            DSSMod.setEnabled(false);
+
+            startRandomizer(RandomizerMode.CASUAL, undefined);
+          },
+        },
+        {
+          str: "hardcore (logic)",
+          func: () => {
+            // The DSS menu text will continue to be drawn on the screen on top of the "Loading"
+            // text from this mod. So, disable DSS until the next run.
+            DSSMod.setEnabled(false);
+
+            startRandomizer(RandomizerMode.HARDCORE, undefined);
+          },
         },
       ],
     },
@@ -720,7 +752,7 @@ export function initDeadSeaScrolls(): void {
           str: "completed runs:",
         },
         {
-          str: getNumCompletedRuns,
+          str: getPlaythroughNumCompletedRuns,
           colorSelect: true,
           noSel: true,
         },
@@ -731,7 +763,7 @@ export function initDeadSeaScrolls(): void {
           str: "deaths:",
         },
         {
-          str: getNumDeaths,
+          str: getPlaythroughNumDeaths,
           colorSelect: true,
           noSel: true,
         },
@@ -742,7 +774,7 @@ export function initDeadSeaScrolls(): void {
           str: "total time:",
         },
         {
-          str: getTimeElapsed,
+          str: getPlaythroughTimeElapsed,
           colorSelect: true,
           noSel: true,
         },
@@ -865,11 +897,6 @@ export function initDeadSeaScrolls(): void {
   );
 
   DeadSeaScrollsMenu.AddMenu(MOD_NAME, settings);
-}
-
-function isValidSituationForStartingRandomizer(): boolean {
-  const challenge = Isaac.GetChallenge();
-  return game.Difficulty === Difficulty.HARD && challenge === Challenge.NULL;
 }
 
 // -------
@@ -1030,11 +1057,7 @@ function getBossObjectiveButtons(): DeadSeaScrollsButton[] {
 function getChallengeObjectiveButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const challenge of CHALLENGES) {
-    if (challenge === Challenge.NULL) {
-      continue;
-    }
-
+  for (const challenge of UNLOCKABLE_CHALLENGES) {
     const challengeName = getChallengeName(challenge).toLowerCase();
     const challengeNameTruncated = getNameTruncated(challengeName);
     const completed = isChallengeObjectiveCompleted(challenge);
@@ -1144,11 +1167,7 @@ function getAltFloorUnlockButtons(): DeadSeaScrollsButton[] {
 function getChallengeUnlockButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const challenge of CHALLENGES) {
-    if (challenge === Challenge.NULL) {
-      continue;
-    }
-
+  for (const challenge of UNLOCKABLE_CHALLENGES) {
     const challengeName = getChallengeName(challenge).toLowerCase();
     const challengeNameTruncated = getNameTruncated(challengeName);
     const completed = isChallengeUnlocked(challenge, false);

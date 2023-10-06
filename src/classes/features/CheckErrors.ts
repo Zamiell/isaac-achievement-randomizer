@@ -32,8 +32,8 @@ import {
   isChallengeUnlocked,
   isCharacterUnlocked,
   isPathUnlocked,
-  isRandomizerEnabled,
 } from "./AchievementTracker";
+import { isRandomizerEnabled } from "./achievementTracker/v";
 import { hasErrors, v } from "./checkErrors/v";
 
 const INCOMPLETE_SAVE_COLLECTIBLE_TO_CHECK = CollectibleType.DEATH_CERTIFICATE;

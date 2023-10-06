@@ -14,6 +14,7 @@ This page explains how it works.
 1. [Design Principles](#design-principles)
 1. [Objective List](#objective-list)
 1. [Unlock List](#unlock-list)
+1. [Modes](#modes)
 1. [Other Features](#other-features)
 
 <br>
@@ -38,7 +39,7 @@ We do not want to randomize the vanilla achievements. This is for several reason
 1. [Other mods](https://steamcommunity.com/sharedfiles/filedetails/?id=2838967057) have already done that.
 1. Some of the vanilla achievements do not make sense in the context of a player trying to "beat the game" in the least amount of death possible, like `The Scissors - Die 100 times` or `Mr. Resetter! - Reset 7 times in a row`. (This would make the minimum amount of deaths always be 100 and it is possible to complete the game in less than that.)
 1. Some vanilla achievements do not make sense in the context of a player trying to "beat the game" in the fastest time possible, like `Dedication - Participate in 31 Daily Challenges`. (This would make the minimum amount of time always be 31 days and it is possible to complete the game in less than that.)
-1. Some vanilla achievements are arbitrary conditions and are not very fun to play, like `They will charge you up... for a small fee - Donate to Battery Bums until they pay out with an item 5 times`. (If you are not lucky enough to get this achievement during your streak, the most consistent strategy is to reset as Tainted Keeper in Greed Mode until you see a Battery Bum in the shop. This is "busywork" and is not skill-based in any way.)
+1. Some vanilla achievements are arbitrary conditions and are not very fun to play, like `They will charge you up... for a small fee - Donate to Battery Bums until they pay out with an item 5 times`. (If you are not lucky enough to get this achievement during your playthrough, the most consistent strategy is to reset as Tainted Keeper in Greed Mode until you see a Battery Bum in the shop. This is "busywork" and is not skill-based in any way.)
 1. Many things are not gated behind vanilla achievements and it would be fun if they were (e.g. soul hearts, locked chests).
 
 Thus, this mod takes a completely different approach. We want each objective to be non-arbitrary, difficult, skill-based, and represent a meaningful accomplishment inside of the game. And we want as many unlockable things are possible.
@@ -286,13 +287,46 @@ There are 33 + 10 + 11 + 45 + 697 + 186 + 96 + 50 + 37 + 15 + 13 + 5 = 1198 unlo
 
 <br>
 
+## Modes
+
+When starting a new seed, you can select between two modes:
+
+### 1) Casual Mode (Full Random)
+
+In casual mode, things will mostly unlock in a completely random order, with some small exceptions for items that would be completely useless otherwise. (For example, if you unlock Deck of Cards before you have any cards unlocked, you will unlock a Fool card instead, and the place where you were supposed to unlock the Fool card will instead unlock Deck of Cards.)
+
+This mode can make a randomizer playthrough extremely easy, because if your first unlock is an extremely powerful item (e.g. Mom's Knife), then each subsequent run will be trivialized (until the item pool is sufficiently diluted). If you want a challenge, do not play on this mode.
+
+### 2) Hardcore Mode (Logic)
+
+In hardcore mode, we want to prevent the situation where you unlock powerful items early on in your playthrough.
+
+- Collectibles, trinkets, cards, and pill effects will progressively unlock based on their quality classification. (75% of 0 quality items must unlock first before 1 quality items, and so on.)
+  - Since trinkets and cards do not have a vanilla quality classification, a custom one is computed for this one.
+- Hearts will unlock in the following order:
+  - TODO
+- Coins will unlock in the following order:
+  - TODO
+- Bombs will unlock in the following order:
+  - TODO
+- Keys will unlock in the following order:
+  - TODO
+- Batteries will unlock in the following order:
+  - TODO
+- Sacks will unlock in the following order:
+  - TODO
+- Chests will unlock in the following order:
+  - TODO
+
+<br>
+
 ## Other Features
 
 ### Dead Sea Scrolls Integration
 
 The mod comes with an in-game menu called _Dead Sea Scrolls_. (This is the same menu that is used in other mods, like [_Fiend Folio_](https://steamcommunity.com/sharedfiles/filedetails/?id=2851063440).) You can open the menu by pressing `c` after starting a run.
 
-The menu will show you how many objectives you have left in your streak and other information.
+The menu will show you how many objectives you have left in your playthrough and other information.
 
 ### Death Tracker
 
@@ -350,6 +384,13 @@ The mod provides a custom challenge that simply locks you in the starting room o
 
 - <!-- "ui_hearts.png" --> The heart UI sprites have been slightly modified so that it is easier to see an empty heart container on a black background.
 - <!-- SilenceMomDad --> The audio clips of mom and dad on the Ascent are silenced.
-- <!-- ForceFadedConsoleDisplay --> The "faded console display" feature is automatically enabled in the "options.ini" file, which allows you to visually see when an error in the game happens.
+- <!-- ForceFadedConsoleDisplay --> The "faded console display" feature is automatically enabled in the "options.ini" file, which allows you to visually see when an error in the game happens. Please report bugs to the developers in [the Discord server](https://discord.gg/GwhUeQjHTF).
+
+### Custom Console Commands
+
+The mod provides several custom [console commands](https://bindingofisaacrebirth.fandom.com/wiki/Debug_Console):
+
+- `achievementRandomizer [mode] [seed]` - Starts a new playthrough using the specified seed. For example: `achievementRandomizer hardcore 12345`
+- `spoilerLog` - Writes out a spoiler log to the "log.txt" file. Note that the unlocks may not be accurate, since the mod swaps an unlock if it detects that you should not get it yet.
 
 <br>

@@ -5,8 +5,8 @@ import { TimerType } from "../../enums/TimerType";
 import { timerDraw } from "../../timer";
 import { getNumSecondsForBossObjective } from "../../types/Objective";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { getSecondsElapsed } from "./AchievementTracker";
 import { getSecondsSinceLastDamage } from "./ObjectiveDetection";
+import { getPlaythroughSecondsElapsed } from "./StatsTracker";
 
 export class Timer extends RandomizerModFeature {
   @Callback(ModCallback.POST_RENDER)
@@ -17,7 +17,7 @@ export class Timer extends RandomizerModFeature {
 
   drawMainTimer(): void {
     if (isTimerEnabled()) {
-      const seconds = getSecondsElapsed();
+      const seconds = getPlaythroughSecondsElapsed();
       timerDraw(TimerType.MAIN, seconds);
     }
   }

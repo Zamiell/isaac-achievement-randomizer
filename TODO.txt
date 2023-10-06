@@ -1,6 +1,15 @@
 TODO:
 
-- n/a
+- about.md TODO
+- refactor big files into smaller files (AchievementTracker + DSS)
+- /** This does not extend from `RandomizerModFeature` to avoid a dependency cycle. */
+- seeds go in order
+  - test TMTRAINER unlock early bug
+
+- spiked chests / mimics should / haunted chests should start unlocked
+- pill effects unlock in sub-order
+- casual / hardcore
+- unlockable hearts/etc in order
 
 ------------------------------
 

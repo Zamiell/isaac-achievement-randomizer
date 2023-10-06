@@ -1,15 +1,14 @@
-import { Challenge } from "isaac-typescript-definitions";
 import { VANILLA_PILL_EFFECTS } from "isaacscript-common";
 import {
   ACHIEVEMENT_TYPES,
   ALT_FLOORS,
-  CHALLENGES,
   OTHER_ACHIEVEMENT_KINDS,
   UNLOCKABLE_PATHS,
 } from "./cachedEnums";
 import { AchievementType } from "./enums/AchievementType";
 import type { Achievement } from "./types/Achievement";
 import { UNLOCKABLE_CARD_TYPES } from "./unlockableCardTypes";
+import { UNLOCKABLE_CHALLENGES } from "./unlockableChallenges";
 import { UNLOCKABLE_CHARACTERS } from "./unlockableCharacters";
 import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./unlockableCollectibleTypes";
 import { UNLOCKABLE_GRID_ENTITY_TYPES } from "./unlockableGridEntityTypes";
@@ -67,11 +66,7 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
       }
 
       case AchievementType.CHALLENGE: {
-        for (const challenge of CHALLENGES) {
-          if (challenge === Challenge.NULL) {
-            continue;
-          }
-
+        for (const challenge of UNLOCKABLE_CHALLENGES) {
           const achievement: Achievement = {
             type: AchievementType.CHALLENGE,
             challenge,

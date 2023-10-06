@@ -1,7 +1,6 @@
 import { ModCallback, SeedEffect } from "isaac-typescript-definitions";
 import {
   Callback,
-  ModFeature,
   RENDER_FRAMES_PER_SECOND,
   fonts,
   game,
@@ -11,6 +10,7 @@ import {
 import { SoundEffectCustom } from "../../enums/SoundEffectCustom";
 import type { Achievement } from "../../types/Achievement";
 import { getAchievementText } from "../../types/Achievement";
+import { RandomizerModFeature } from "../RandomizerModFeature";
 
 const FONT = fonts.droid;
 const RENDER_FRAMES_BEFORE_FADE = RENDER_FRAMES_PER_SECOND * 2;
@@ -23,8 +23,7 @@ const v = {
   },
 };
 
-/** This does not extend from `RandomizerModFeature` to avoid a dependency cycle. */
-export class AchievementNotification extends ModFeature {
+export class AchievementNotification extends RandomizerModFeature {
   v = v;
 
   // 2

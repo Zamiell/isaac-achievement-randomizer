@@ -11,6 +11,7 @@ import { CheckErrors } from "./classes/features/CheckErrors";
 import { ChillRoom } from "./classes/features/ChillRoom";
 import { DrawControls } from "./classes/features/DrawControls";
 import { ForceFadedConsoleDisplay } from "./classes/features/ForceFadedConsoleDisplay";
+import { ForceSeeds } from "./classes/features/ForceSeeds";
 import { GridEntityRemoval } from "./classes/features/GridEntityRemoval";
 import { HitIcon } from "./classes/features/HitIcon";
 import { InvisibleEntities } from "./classes/features/InvisibleEntities";
@@ -26,6 +27,7 @@ import { SilenceMomDad } from "./classes/features/SilenceMomDad";
 import { SlotRemoval } from "./classes/features/SlotRemoval";
 import { StageTypeRemoval } from "./classes/features/StageTypeRemoval";
 import { StartingRoomInfo } from "./classes/features/StartingRoomInfo";
+import { StatsTracker } from "./classes/features/StatsTracker";
 import { Timer } from "./classes/features/Timer";
 import { VoidPortalRemoval } from "./classes/features/VoidPortalRemoval";
 import { initConsoleCommands } from "./consoleCommands";
@@ -42,6 +44,7 @@ const MOD_FEATURES = [
   ChillRoom,
   DrawControls,
   ForceFadedConsoleDisplay,
+  ForceSeeds,
   GridEntityRemoval,
   HitIcon,
   InvisibleEntities,
@@ -57,6 +60,7 @@ const MOD_FEATURES = [
   SlotRemoval,
   StageTypeRemoval,
   StartingRoomInfo,
+  StatsTracker,
   Timer,
   VoidPortalRemoval,
 ] as const;

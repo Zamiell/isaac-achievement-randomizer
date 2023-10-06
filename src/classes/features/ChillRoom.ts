@@ -7,7 +7,6 @@ import {
   LevelCurse,
   LevelStage,
   ModCallback,
-  SeedEffect,
   StageType,
 } from "isaac-typescript-definitions";
 import {
@@ -20,6 +19,7 @@ import {
   game,
   getScreenBottomRightPos,
   goToStage,
+  onChallenge,
   removeAllDoors,
   setBackdrop,
   spawnEffect,
@@ -32,10 +32,8 @@ const FONT = fonts.droid;
 
 /** This does not extend from `RandomizerModFeature` because we want it to always apply. */
 export class ChillRoom extends ModFeature {
-  protected override shouldCallbackMethodsFire = (): boolean => {
-    const challenge = Isaac.GetChallenge();
-    return challenge === ChallengeCustom.RANDOMIZER_CHILL_ROOM;
-  };
+  protected override shouldCallbackMethodsFire = (): boolean =>
+    onChallenge(ChallengeCustom.RANDOMIZER_CHILL_ROOM);
 
   @Callback(ModCallback.POST_RENDER)
   postRender(): void {
@@ -46,8 +44,8 @@ export class ChillRoom extends ModFeature {
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
   postGameStartedReorderedFalse(): void {
-    const seeds = game.GetSeeds();
-    seeds.AddSeedEffect(SeedEffect.NO_HUD);
+    const hud = game.GetHUD();
+    hud.SetVisible(false);
 
     const player = Isaac.GetPlayer();
     player.AddBombs(-1);

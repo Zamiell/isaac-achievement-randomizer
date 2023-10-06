@@ -3,11 +3,11 @@ import {
   BatterySubType,
   BombSubType,
   BossID,
-  CallbackPriority,
   CardType,
   Challenge,
   CoinSubType,
   CollectibleType,
+  Difficulty,
   GridEntityType,
   HeartSubType,
   ItemConfigPillEffectType,
@@ -18,7 +18,6 @@ import {
   PillEffect,
   PlayerType,
   SackSubType,
-  SeedEffect,
   SlotVariant,
   StageType,
   TrinketType,
@@ -26,13 +25,11 @@ import {
 import {
   Callback,
   CallbackCustom,
-  GAME_FRAMES_PER_SECOND,
   KColorDefault,
   MAIN_CHARACTERS,
   MAX_QUALITY,
   ModCallbackCustom,
   ModFeature,
-  PriorityCallback,
   ReadonlyMap,
   ReadonlySet,
   VectorZero,
@@ -71,8 +68,8 @@ import {
   logError,
   newRNG,
   newSprite,
+  onAnyChallenge,
   restart,
-  setUnseeded,
 } from "isaacscript-common";
 import { getAchievementsForRNG } from "../../achievementAssignment";
 import { ALL_ACHIEVEMENTS } from "../../achievements";
@@ -84,17 +81,16 @@ import {
 } from "../../cachedEnums";
 import { AchievementType } from "../../enums/AchievementType";
 import { AltFloor, getAltFloor } from "../../enums/AltFloor";
-import { ChallengeCustom } from "../../enums/ChallengeCustom";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { OtherAchievementKind } from "../../enums/OtherAchievementKind";
+import type { RandomizerMode } from "../../enums/RandomizerMode";
 import {
   UnlockablePath,
   getUnlockablePathFromCharacterObjectiveKind,
   getUnlockablePathFromStoryBoss,
 } from "../../enums/UnlockablePath";
 import { ALL_OBJECTIVES, NO_HIT_BOSSES } from "../../objectives";
-import { convertSecondsToTimerValues } from "../../timer";
 import type { Achievement } from "../../types/Achievement";
 import { getAchievement, getAchievementText } from "../../types/Achievement";
 import { getAchievementID } from "../../types/AchievementID";
@@ -107,6 +103,7 @@ import {
 import type { ObjectiveID } from "../../types/ObjectiveID";
 import { getObjectiveID } from "../../types/ObjectiveID";
 import { UNLOCKABLE_CARD_TYPES } from "../../unlockableCardTypes";
+import { UNLOCKABLE_CHALLENGES } from "../../unlockableChallenges";
 import { UNLOCKABLE_CHARACTERS } from "../../unlockableCharacters";
 import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../unlockableCollectibleTypes";
 import { UNLOCKABLE_GRID_ENTITY_TYPES } from "../../unlockableGridEntityTypes";
@@ -122,6 +119,8 @@ import {
 import { UNLOCKABLE_SLOT_VARIANTS } from "../../unlockableSlotVariants";
 import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../unlockableTrinketTypes";
 import { showNewAchievement } from "./AchievementNotification";
+import { preForcedRestart, resetStats } from "./StatsTracker";
+import { isRandomizerEnabled, v } from "./achievementTracker/v";
 import { hasErrors } from "./checkErrors/v";
 
 const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
@@ -251,10 +250,6 @@ const GOOD_COLLECTIBLES = new ReadonlySet([
   CollectibleType.TMTRAINER, // 721 (quality 0)
 ]);
 
-/** `isaacscript-common` uses `CallbackPriority.IMPORTANT` (-200). */
-const HIGHER_PRIORITY_THAN_ISAACSCRIPT_COMMON = (CallbackPriority.IMPORTANT -
-  1) as CallbackPriority;
-
 const DEFAULT_TRINKET_ACHIEVEMENT = getAchievement(
   AchievementType.TRINKET,
   TrinketType.ERROR,
@@ -269,29 +264,6 @@ const DEFAULT_PILL_ACHIEVEMENT = getAchievement(
   AchievementType.PILL_EFFECT,
   PillEffect.PARALYSIS,
 );
-
-const v = {
-  persistent: {
-    /** If `null`, the randomizer is not enabled. */
-    seed: null as Seed | null,
-
-    numCompletedRuns: 0,
-    numDeaths: 0,
-    gameFramesElapsed: 0,
-
-    objectiveToAchievementMap: new Map<ObjectiveID, Achievement>(),
-
-    completedObjectives: [] as Objective[],
-    completedAchievements: [] as Achievement[],
-    completedAchievementsForRun: [] as Achievement[],
-  },
-
-  run: {
-    shouldIncrementTime: true,
-    shouldIncrementCompletedRunsCounter: true,
-    shouldIncrementDeathCounter: true,
-  },
-};
 
 let generatingRNG: RNG | undefined;
 let numGenerationAttempts = 0;
@@ -310,9 +282,6 @@ export class AchievementTracker extends ModFeature {
     if (generatingRNG === undefined) {
       return;
     }
-
-    const seeds = game.GetSeeds();
-    seeds.AddSeedEffect(SeedEffect.NO_HUD);
 
     BLACK_SPRITE.Render(VectorZero);
 
@@ -333,7 +302,7 @@ export class AchievementTracker extends ModFeature {
   }
 
   checkGenerate(): void {
-    if (generatingRNG === undefined) {
+    if (generatingRNG === undefined || v.persistent.seed === null) {
       return;
     }
 
@@ -365,89 +334,19 @@ export class AchievementTracker extends ModFeature {
 
     generatingRNG = undefined;
 
-    // Reset the persistent variable relating to our streak.
-    v.persistent.numDeaths = 0;
-    v.persistent.gameFramesElapsed = 0;
+    // Reset the persistent variable relating to our playthrough.
     v.persistent.completedAchievements = [];
     v.persistent.completedObjectives = [];
-
+    resetStats();
     preForcedRestart();
-    setUnseeded();
 
-    const challenge = Isaac.GetChallenge();
-    if (challenge !== Challenge.NULL) {
-      Isaac.ExecuteCommand("challenge 0");
-    }
+    const rng = newRNG(v.persistent.seed);
+    const startSeed = rng.GetSeed();
+    const startSeedString = Seeds.Seed2String(startSeed);
 
-    restart(STARTING_CHARACTER);
-  }
-
-  // 16
-  @Callback(ModCallback.POST_GAME_END)
-  postGameEnd(isGameOver: boolean): void {
-    if (!isRandomizerEnabled()) {
-      return;
-    }
-
-    const challenge = Isaac.GetChallenge();
-    if (challenge === ChallengeCustom.RANDOMIZER_CHILL_ROOM) {
-      return;
-    }
-
-    if (!isGameOver) {
-      v.run.shouldIncrementDeathCounter = false;
-    }
-  }
-
-  /**
-   * We need this function to fire before the save data manager or else the `numDeaths` modification
-   * will never be written to disk.
-   */
-  // 17
-  @PriorityCallback(
-    ModCallback.PRE_GAME_EXIT,
-    HIGHER_PRIORITY_THAN_ISAACSCRIPT_COMMON,
-  )
-  preGameExit(): void {
-    if (!isRandomizerEnabled()) {
-      return;
-    }
-
-    const challenge = Isaac.GetChallenge();
-    if (challenge === ChallengeCustom.RANDOMIZER_CHILL_ROOM) {
-      return;
-    }
-
-    this.incrementTime();
-    this.incrementCompletedRunsCounter();
-    this.incrementDeathCounter();
-  }
-
-  incrementTime(): void {
-    if (!v.run.shouldIncrementTime) {
-      v.run.shouldIncrementTime = true;
-      return;
-    }
-
-    v.persistent.gameFramesElapsed += game.GetFrameCount();
-  }
-
-  incrementCompletedRunsCounter(): void {
-    if (!v.run.shouldIncrementCompletedRunsCounter) {
-      v.run.shouldIncrementCompletedRunsCounter = true;
-      return;
-    }
-
-    v.persistent.numCompletedRuns++;
-  }
-
-  incrementDeathCounter(): void {
-    if (!v.run.shouldIncrementDeathCounter) {
-      v.run.shouldIncrementDeathCounter = true;
-      return;
-    }
-
-    v.persistent.numDeaths++;
+    Isaac.ExecuteCommand(`challenge ${Challenge.NULL}`);
+    Isaac.ExecuteCommand(`restart ${STARTING_CHARACTER}`);
+    Isaac.ExecuteCommand(`seed ${startSeedString}`);
   }
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
@@ -466,15 +365,18 @@ export class AchievementTracker extends ModFeature {
 // Core functions
 // --------------
 
-export function isRandomizerEnabled(): boolean {
-  return v.persistent.seed !== null;
-}
-
 export function getRandomizerSeed(): Seed | undefined {
   return v.persistent.seed ?? undefined;
 }
 
-export function startRandomizer(seed: Seed | undefined): void {
+export function isValidSituationForStartingRandomizer(): boolean {
+  return game.Difficulty === Difficulty.HARD && !onAnyChallenge();
+}
+
+export function startRandomizer(
+  _randomizerMode: RandomizerMode,
+  seed: Seed | undefined,
+): void {
   if (seed === undefined) {
     seed = getRandomSeed();
   }
@@ -484,6 +386,9 @@ export function startRandomizer(seed: Seed | undefined): void {
 
   generatingRNG = newRNG(v.persistent.seed);
   numGenerationAttempts = -1;
+
+  const hud = game.GetHUD();
+  hud.SetVisible(false);
 
   // We will start generating achievements on the next render frame.
 }
@@ -505,38 +410,6 @@ export function getCompletedAchievements(): Achievement[] {
 
 export function getNumCompletedAchievements(): int {
   return v.persistent.completedAchievements.length;
-}
-
-export function getNumCompletedRuns(): int {
-  return v.persistent.numCompletedRuns;
-}
-
-export function getNumDeaths(): int {
-  return v.persistent.numDeaths;
-}
-
-export function getSecondsElapsed(): int {
-  const gameFrameCount = game.GetFrameCount();
-  const totalFrames = v.persistent.gameFramesElapsed + gameFrameCount;
-
-  return totalFrames / GAME_FRAMES_PER_SECOND;
-}
-
-export function getTimeElapsed(): string {
-  const seconds = getSecondsElapsed();
-  const timerValues = convertSecondsToTimerValues(seconds);
-  if (timerValues === undefined) {
-    return "unknown";
-  }
-
-  const { hour1, hour2, minute1, minute2, second1, second2 } = timerValues;
-  return `${hour1}${hour2}:${minute1}${minute2}:${second1}${second2}`;
-}
-
-export function preForcedRestart(): void {
-  v.run.shouldIncrementTime = false;
-  v.run.shouldIncrementCompletedRunsCounter = false;
-  v.run.shouldIncrementDeathCounter = false;
 }
 
 function getAchievementMatchingObjective(
@@ -564,16 +437,12 @@ export function addObjective(objective: Objective, emulating = false): void {
   }
 
   // Prevent accomplishing non-challenge objectives while inside of a challenge.
-  if (!emulating) {
-    const challenge = Isaac.GetChallenge();
-    if (
-      (challenge === Challenge.NULL &&
-        objective.type === ObjectiveType.CHALLENGE) ||
-      (challenge !== Challenge.NULL &&
-        objective.type !== ObjectiveType.CHALLENGE)
-    ) {
-      return;
-    }
+  if (
+    !emulating &&
+    ((!onAnyChallenge() && objective.type === ObjectiveType.CHALLENGE) ||
+      (onAnyChallenge() && objective.type !== ObjectiveType.CHALLENGE))
+  ) {
+    return;
   }
 
   if (isObjectiveCompleted(objective)) {
@@ -592,6 +461,8 @@ export function addObjective(objective: Objective, emulating = false): void {
   let originalAchievement = achievement;
   let swappedAchievement = achievement;
   do {
+    originalAchievement = swappedAchievement;
+
     if (!emulating) {
       log(
         `Checking achievement swap for: ${getAchievementText(
@@ -600,7 +471,6 @@ export function addObjective(objective: Objective, emulating = false): void {
       );
     }
 
-    originalAchievement = swappedAchievement;
     swappedAchievement = checkSwapProblematicAchievement(
       originalAchievement,
       objectiveID,
@@ -608,7 +478,7 @@ export function addObjective(objective: Objective, emulating = false): void {
 
     if (!emulating) {
       log(
-        `Swapped achievement is: ${getAchievementText(originalAchievement).join(
+        `Swapped achievement is: ${getAchievementText(swappedAchievement).join(
           " - ",
         )}`,
       );
@@ -1075,6 +945,18 @@ function getSwappedAchievement(
             return getAchievement(
               AchievementType.CHEST,
               PickupVariant.RED_CHEST,
+            );
+          }
+
+          return undefined;
+        }
+
+        // 131
+        case TrinketType.BLESSED_PENNY: {
+          if (!isHeartSubTypeUnlocked(HeartSubType.HALF_SOUL, false)) {
+            return getAchievement(
+              AchievementType.HEART,
+              HeartSubType.HALF_SOUL,
             );
           }
 
@@ -1600,10 +1482,7 @@ export function isChallengeUnlocked(
   challenge: Challenge,
   forRun = true,
 ): boolean {
-  if (
-    challenge === Challenge.NULL ||
-    challenge === ChallengeCustom.RANDOMIZER_CHILL_ROOM
-  ) {
+  if (!UNLOCKABLE_CHALLENGES.includes(challenge)) {
     return true;
   }
 
@@ -2383,20 +2262,30 @@ export function logSpoilerLog(): void {
     return;
   }
 
-  const line = "-".repeat(20);
+  const line = "-".repeat(40);
 
   log(line, false);
   log(`Spoiler log for randomizer seed: ${v.persistent.seed}`, false);
   log(line, false);
 
-  for (const entries of v.persistent.objectiveToAchievementMap) {
-    const [objectiveID, achievement] = entries;
-    const objective = getObjectiveFromID(objectiveID);
+  for (const [i, objective] of ALL_OBJECTIVES.entries()) {
+    const objectiveID = getObjectiveID(objective);
 
-    const objectiveText = getObjectiveText(objective).join(" -");
-    const achievementText = getAchievementText(achievement).join(" -");
+    const achievement = v.persistent.objectiveToAchievementMap.get(objectiveID);
+    assertDefined(
+      achievement,
+      `Failed to get the achievement corresponding to objective ID: ${objectiveID}`,
+    );
 
-    log(`${objectiveText} --> ${achievementText}`, false);
+    const completed = isObjectiveCompleted(objective);
+    const completedText = completed ? "[C]" : "[X]";
+    const objectiveText = getObjectiveText(objective).join(" ");
+    const achievementText = getAchievementText(achievement).join(" - ");
+
+    log(
+      `${i + 1}) ${completedText} ${objectiveText} --> ${achievementText}`,
+      false,
+    );
   }
 
   log(line, false);

@@ -13,7 +13,7 @@ import {
 } from "isaacscript-common";
 import { ChallengeCustom } from "../../enums/ChallengeCustom";
 import { CreepRedSubTypeCustom } from "../../enums/CreepRedSubTypeCustom";
-import { isRandomizerEnabled } from "./AchievementTracker";
+import { isRandomizerEnabled } from "./achievementTracker/v";
 
 const BURNING_BASEMENT_COLOR = Color(0.5, 0.5, 0.5);
 

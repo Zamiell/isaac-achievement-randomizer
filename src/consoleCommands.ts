@@ -8,13 +8,18 @@ import {
   getCharacterName,
   getCollectibleName,
   getMapPartialMatch,
+  isEnumValue,
+  restart,
 } from "isaacscript-common";
+import { RANDOMIZER_MODES } from "./cachedEnums";
 import {
+  isValidSituationForStartingRandomizer,
   logSpoilerLog,
   setCharacterUnlocked,
   setCollectibleUnlocked,
   startRandomizer,
 } from "./classes/features/AchievementTracker";
+import { RandomizerMode } from "./enums/RandomizerMode";
 import { mod } from "./mod";
 
 export const MIN_SEED = 1;
@@ -28,23 +33,49 @@ export function initConsoleCommands(): void {
 }
 
 function achievementRandomizer(params: string) {
-  if (params === "") {
-    print("You must enter a seed. e.g. achievementRandomizer 12345");
+  const [randomizerMode, seedString] = params.split(" ");
+
+  if (randomizerMode === undefined || seedString === undefined) {
+    print(
+      "You must enter a mode and a seed. e.g. achievementRandomizer hardcore 12345",
+    );
     return;
   }
 
-  const seedNumber = tonumber(params);
+  if (!isEnumValue(randomizerMode, RandomizerMode)) {
+    const quoted = RANDOMIZER_MODES.map((mode) => `"${mode}"`);
+    const allQuoted = quoted.join(" or ");
+    print(`The mode must be either ${allQuoted}.`);
+    return;
+  }
+
+  const seedNumber = tonumber(seedString);
   if (seedNumber === undefined) {
-    print(`The provided seed was not a number: ${params}`);
+    print(`The provided seed was not a number: ${seedString}`);
     return;
   }
 
   if (seedNumber < MIN_SEED || seedNumber > MAX_SEED) {
     print(`The seed must be between ${MIN_SEED} and ${MAX_SEED}.`);
+    return;
   }
 
   const seed = seedNumber as Seed;
-  startRandomizer(seed);
+
+  if (!isValidSituationForStartingRandomizer()) {
+    print(
+      "You must be on a hard mode run and not inside a challenge in order to start the randomizer.",
+    );
+    return;
+  }
+
+  // Close the console by restarting the game.
+  restart();
+  mod.runNextRun(() => {
+    mod.runNextGameFrame(() => {
+      startRandomizer(randomizerMode, seed);
+    });
+  });
 }
 
 function spoilerLog(_params: string) {

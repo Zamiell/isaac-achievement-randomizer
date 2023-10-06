@@ -15,10 +15,12 @@ import { VERSION } from "../../constants";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   getNumCompletedAchievements,
-  getNumDeaths,
   getRandomizerSeed,
-  getTimeElapsed,
 } from "./AchievementTracker";
+import {
+  getPlaythroughNumDeaths,
+  getPlaythroughTimeElapsed,
+} from "./StatsTracker";
 import { hasErrors } from "./checkErrors/v";
 
 const FONT = fonts.teamMeatFont10;
@@ -106,14 +108,14 @@ export class StartingRoomInfo extends RandomizerModFeature {
 
     this.drawCenteredText("Deaths/resets:", bottomLeftPosition);
     this.drawCenteredText(
-      getNumDeaths().toString(),
+      getPlaythroughNumDeaths().toString(),
       bottomLeftPosition.add(Vector(0, 30)),
       K_COLORS.Green,
     );
 
     this.drawCenteredText("Total time:", bottomRightPosition);
     this.drawCenteredText(
-      getTimeElapsed(),
+      getPlaythroughTimeElapsed(),
       bottomRightPosition.add(Vector(0, 30)),
       K_COLORS.Green,
     );

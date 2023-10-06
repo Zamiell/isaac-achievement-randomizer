@@ -11,6 +11,7 @@ import { AltFloor } from "./enums/AltFloor";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { OtherAchievementKind } from "./enums/OtherAchievementKind";
+import { RandomizerMode } from "./enums/RandomizerMode";
 import { UnlockablePath } from "./enums/UnlockablePath";
 
 export const ACHIEVEMENT_TYPES: readonly AchievementType[] =
@@ -33,6 +34,9 @@ export const OTHER_ACHIEVEMENT_KINDS: readonly OtherAchievementKind[] =
 
 export const POCKET_ITEM_SLOTS: readonly PocketItemSlot[] =
   getEnumValues(PocketItemSlot);
+
+export const RANDOMIZER_MODES: readonly RandomizerMode[] =
+  getEnumValues(RandomizerMode);
 
 export const STAGE_TYPES: readonly StageType[] = getEnumValues(StageType);
 
