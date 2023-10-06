@@ -2,7 +2,6 @@ import type { CollectibleType, PlayerType } from "isaac-typescript-definitions";
 import {
   CallbackCustom,
   ModCallbackCustom,
-  ReadonlySet,
   assertDefined,
   copyArray,
   getCharacterName,
@@ -126,23 +125,4 @@ export function logSpoilerLog(): void {
   }
 
   log(line, false);
-}
-
-function _logMissingObjectives() {
-  log("Missing objectives:");
-
-  const completedObjectiveIDs = v.persistent.completedObjectives.map(
-    (objective) => getObjectiveID(objective),
-  );
-  const completedObjectiveIDsSet = new ReadonlySet(completedObjectiveIDs);
-
-  const missingObjectives = ALL_OBJECTIVES.filter((objective) => {
-    const objectiveID = getObjectiveID(objective);
-    return !completedObjectiveIDsSet.has(objectiveID);
-  });
-
-  for (const [i, objective] of missingObjectives.entries()) {
-    const objectiveText = getObjectiveText(objective).join(" ");
-    log(`${i + 1}) ${objectiveText}`);
-  }
 }
