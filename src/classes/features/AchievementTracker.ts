@@ -9,7 +9,6 @@ import {
   CallbackCustom,
   KColorDefault,
   ModCallbackCustom,
-  ModFeature,
   ReadonlySet,
   VectorZero,
   assertDefined,
@@ -39,10 +38,11 @@ import type { Objective } from "../../types/Objective";
 import { getObjectiveFromID, getObjectiveText } from "../../types/Objective";
 import { getObjectiveID } from "../../types/ObjectiveID";
 import { getUnlockText } from "../../types/Unlock";
+import { RandomizerModFeature } from "../RandomizerModFeature";
 import { preForcedRestart, resetStats } from "./StatsTracker";
 import { addObjective } from "./achievementTracker/addObjective";
 import { isObjectiveCompleted } from "./achievementTracker/completedObjectives";
-import { isRandomizerEnabled, v } from "./achievementTracker/v";
+import { v } from "./achievementTracker/v";
 import { isAchievementsBeatable } from "./achievementTracker/validateAchievements";
 
 const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
@@ -52,8 +52,7 @@ const STARTING_CHARACTER = PlayerType.ISAAC;
 let generatingRNG: RNG | undefined;
 let numGenerationAttempts = 0;
 
-/** This does not extend from `RandomizerModFeature` to avoid a dependency cycle. */
-export class AchievementTracker extends ModFeature {
+export class AchievementTracker extends RandomizerModFeature {
   v = v;
 
   @Callback(ModCallback.POST_RENDER)
@@ -133,10 +132,6 @@ export class AchievementTracker extends ModFeature {
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
   postGameStartedReorderedFalse(): void {
-    if (!isRandomizerEnabled()) {
-      return;
-    }
-
     v.persistent.completedUnlocksForRun = copyArray(
       v.persistent.completedUnlocks,
     );
