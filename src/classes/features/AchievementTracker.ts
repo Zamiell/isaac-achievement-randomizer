@@ -427,11 +427,8 @@ export function addObjective(objective: Objective, emulating = false): void {
     originalUnlock = swappedUnlock;
 
     if (!emulating) {
-      log(
-        `Checking unlock swap for: ${getUnlockText(originalUnlock).join(
-          " - ",
-        )}`,
-      );
+      const unlockText = getUnlockText(originalUnlock).join(" - ");
+      log(`Checking unlock swap for: ${unlockText}`);
     }
 
     swappedUnlock = checkSwapProblematicAchievement(
@@ -440,14 +437,16 @@ export function addObjective(objective: Objective, emulating = false): void {
     );
 
     if (!emulating) {
-      log(`Swapped unlock is: ${getUnlockText(swappedUnlock).join(" - ")}`);
+      const unlockText = getUnlockText(swappedUnlock).join(" - ");
+      log(`Swapped unlock is: ${unlockText}`);
     }
   } while (getUnlockID(originalUnlock) !== getUnlockID(swappedUnlock));
 
   v.persistent.completedUnlocks.push(swappedUnlock);
 
   if (!emulating) {
-    log(`Granted unlock: ${getUnlockText(originalUnlock).join(" - ")}`);
+    const unlockText = getUnlockText(originalUnlock).join(" - ");
+    log(`Granted unlock: ${unlockText}`);
   }
 
   if (emulating) {
