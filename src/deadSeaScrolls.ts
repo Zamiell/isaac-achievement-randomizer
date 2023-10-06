@@ -1,9 +1,10 @@
 import type { PlayerType } from "isaac-typescript-definitions";
-import { Challenge } from "isaac-typescript-definitions";
+import { Challenge, Difficulty } from "isaac-typescript-definitions";
 import {
   MAIN_CHARACTERS,
   VANILLA_PILL_EFFECTS,
   assertDefined,
+  game,
   getBatteryName,
   getBombName,
   getBossName,
@@ -216,22 +217,45 @@ export function initDeadSeaScrolls(): void {
 
     start: {
       title: "start",
-      buttons: [
-        {
-          str: "use random seed",
-          func: () => {
-            // The DSS menu text will continue to be drawn on the screen on top of the "Loading"
-            // text from this mod. So, disable DSS until the next run.
-            DSSMod.setEnabled(false);
 
-            startRandomizer(undefined);
-          },
-        },
-        {
-          str: "use specific seed",
-          dest: "specificSeed",
-        },
-      ],
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        if (isValidSituationForStartingRandomizer()) {
+          menu.buttons = [
+            {
+              str: "use random seed",
+              func: () => {
+                // The DSS menu text will continue to be drawn on the screen on top of the "Loading"
+                // text from this mod. So, disable DSS until the next run.
+                DSSMod.setEnabled(false);
+
+                startRandomizer(undefined);
+              },
+            },
+            {
+              str: "use specific seed",
+              dest: "specificSeed",
+            },
+          ];
+        } else {
+          menu.buttons = [
+            {
+              str: "you must be on a hard",
+            },
+            {
+              str: "mode run and not inside",
+            },
+            {
+              str: "a challenge in order to",
+            },
+            {
+              str: "start the randomizer.",
+            },
+          ];
+          menu.noCursor = true;
+          menu.fSize = 2;
+        }
+      },
     },
 
     specificSeed: {
@@ -839,6 +863,11 @@ export function initDeadSeaScrolls(): void {
   );
 
   DeadSeaScrollsMenu.AddMenu(MOD_NAME, settings);
+}
+
+function isValidSituationForStartingRandomizer(): boolean {
+  const challenge = Isaac.GetChallenge();
+  return game.Difficulty === Difficulty.HARD && challenge === Challenge.NULL;
 }
 
 // -------

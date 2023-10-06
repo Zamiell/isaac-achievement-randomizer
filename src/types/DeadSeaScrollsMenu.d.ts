@@ -29,6 +29,8 @@ interface DeadSeaScrollsPalette {
 interface DeadSeaScrollsMenu {
   title: string;
   buttons: DeadSeaScrollsButton[];
+  noCursor?: boolean;
+  fSize?: int;
 }
 
 interface DeadSeaScrollsButton {
@@ -39,6 +41,7 @@ interface DeadSeaScrollsButton {
   colorSelect?: boolean;
   fSize?: int;
   displayIf?: () => boolean;
+  func?: () => void;
 }
 
 declare const DeadSeaScrollsMenu: DeadSeaScrollsMenu | undefined;
