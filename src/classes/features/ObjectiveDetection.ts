@@ -181,7 +181,7 @@ export class ObjectiveDetection extends RandomizerModFeature {
   // 70
   @Callback(ModCallback.PRE_SPAWN_CLEAR_AWARD)
   preSpawnClearAward(): boolean | undefined {
-    achievementDetectionPostRoomCleared();
+    objectiveDetectionPostRoomCleared();
     return undefined;
   }
 
@@ -220,7 +220,7 @@ export class ObjectiveDetection extends RandomizerModFeature {
   }
 }
 
-export function achievementDetectionPostRoomCleared(): void {
+export function objectiveDetectionPostRoomCleared(): void {
   const room = game.GetRoom();
   const roomType = room.GetType();
   const player = Isaac.GetPlayer();

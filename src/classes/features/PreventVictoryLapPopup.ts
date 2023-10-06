@@ -25,7 +25,7 @@ import {
 import { EffectVariantCustom } from "../../enums/EffectVariantCustom";
 import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { achievementDetectionPostRoomCleared } from "./ObjectiveDetection";
+import { objectiveDetectionPostRoomCleared } from "./ObjectiveDetection";
 
 const v = {
   room: {
@@ -111,6 +111,6 @@ export class PreventVictoryLapPopup extends RandomizerModFeature {
 
     const position = room.GetCenterPos();
     spawnPickup(PickupVariant.BIG_CHEST, 0, position);
-    achievementDetectionPostRoomCleared();
+    objectiveDetectionPostRoomCleared();
   }
 }

@@ -13,12 +13,12 @@ export function validate(): void {
   }
 
   logObjectives(ALL_OBJECTIVES);
-  logAchievements(ALL_UNLOCKS);
+  logUnlocks(ALL_UNLOCKS);
 
-  let errorText = `There were ${ALL_OBJECTIVES.length} total objectives and ${ALL_UNLOCKS.length} total achievements. You need `;
+  let errorText = `There were ${ALL_OBJECTIVES.length} total objectives and ${ALL_UNLOCKS.length} total unlocks. You need `;
   errorText +=
     ALL_OBJECTIVES.length > ALL_UNLOCKS.length
-      ? `${ALL_OBJECTIVES.length - ALL_UNLOCKS.length} more achievements.`
+      ? `${ALL_OBJECTIVES.length - ALL_UNLOCKS.length} more unlocks.`
       : `${ALL_UNLOCKS.length - ALL_OBJECTIVES.length} more objectives.`;
 
   error(errorText);
@@ -35,13 +35,13 @@ function logObjectives(objectives: readonly Objective[]) {
   }
 }
 
-function logAchievements(achievements: readonly Unlock[]) {
-  log(`Logging all achievements (${achievements.length}):`);
+function logUnlocks(unlocks: readonly Unlock[]) {
+  log(`Logging all unlocks (${unlocks.length}):`);
 
   for (const unlockType of UNLOCK_TYPES) {
-    const thisTypeAchievements = achievements.filter(
-      (achievement) => achievement.type === unlockType,
+    const thisTypeUnlocks = unlocks.filter(
+      (unlock) => unlock.type === unlockType,
     );
-    log(`- ${UnlockType[unlockType]} - ${thisTypeAchievements.length}`);
+    log(`- ${UnlockType[unlockType]} - ${thisTypeUnlocks.length}`);
   }
 }

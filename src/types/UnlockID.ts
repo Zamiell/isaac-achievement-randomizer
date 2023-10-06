@@ -8,78 +8,78 @@ import type { Unlock } from "./Unlock";
  */
 type UnlockID = string & { readonly __unlockIDBrand: symbol };
 
-export function getUnlockID(achievement: Unlock): UnlockID {
-  switch (achievement.type) {
+export function getUnlockID(unlock: Unlock): UnlockID {
+  switch (unlock.type) {
     case UnlockType.CHARACTER: {
-      return `${achievement.type}.${achievement.character}` as UnlockID;
+      return `${unlock.type}.${unlock.character}` as UnlockID;
     }
 
     case UnlockType.PATH: {
-      return `${achievement.type}.${achievement.unlockablePath}` as UnlockID;
+      return `${unlock.type}.${unlock.unlockablePath}` as UnlockID;
     }
 
     case UnlockType.ALT_FLOOR: {
-      return `${achievement.type}.${achievement.altFloor}` as UnlockID;
+      return `${unlock.type}.${unlock.altFloor}` as UnlockID;
     }
 
     case UnlockType.CHALLENGE: {
-      return `${achievement.type}.${achievement.challenge}` as UnlockID;
+      return `${unlock.type}.${unlock.challenge}` as UnlockID;
     }
 
     case UnlockType.COLLECTIBLE: {
-      return `${achievement.type}.${achievement.collectibleType}` as UnlockID;
+      return `${unlock.type}.${unlock.collectibleType}` as UnlockID;
     }
 
     case UnlockType.TRINKET: {
-      return `${achievement.type}.${achievement.trinketType}` as UnlockID;
+      return `${unlock.type}.${unlock.trinketType}` as UnlockID;
     }
 
     case UnlockType.CARD: {
-      return `${achievement.type}.${achievement.cardType}` as UnlockID;
+      return `${unlock.type}.${unlock.cardType}` as UnlockID;
     }
 
     case UnlockType.PILL_EFFECT: {
-      return `${achievement.type}.${achievement.pillEffect}` as UnlockID;
+      return `${unlock.type}.${unlock.pillEffect}` as UnlockID;
     }
 
     case UnlockType.HEART: {
-      return `${achievement.type}.${achievement.heartSubType}` as UnlockID;
+      return `${unlock.type}.${unlock.heartSubType}` as UnlockID;
     }
 
     case UnlockType.COIN: {
-      return `${achievement.type}.${achievement.coinSubType}` as UnlockID;
+      return `${unlock.type}.${unlock.coinSubType}` as UnlockID;
     }
 
     case UnlockType.BOMB: {
-      return `${achievement.type}.${achievement.bombSubType}` as UnlockID;
+      return `${unlock.type}.${unlock.bombSubType}` as UnlockID;
     }
 
     case UnlockType.KEY: {
-      return `${achievement.type}.${achievement.keySubType}` as UnlockID;
+      return `${unlock.type}.${unlock.keySubType}` as UnlockID;
     }
 
     case UnlockType.BATTERY: {
-      return `${achievement.type}.${achievement.batterySubType}` as UnlockID;
+      return `${unlock.type}.${unlock.batterySubType}` as UnlockID;
     }
 
     case UnlockType.SACK: {
-      return `${achievement.type}.${achievement.sackSubType}` as UnlockID;
+      return `${unlock.type}.${unlock.sackSubType}` as UnlockID;
     }
 
     case UnlockType.CHEST: {
-      return `${achievement.type}.${achievement.pickupVariant}` as UnlockID;
+      return `${unlock.type}.${unlock.pickupVariant}` as UnlockID;
     }
 
     case UnlockType.SLOT: {
-      return `${achievement.type}.${achievement.slotVariant}` as UnlockID;
+      return `${unlock.type}.${unlock.slotVariant}` as UnlockID;
     }
 
     case UnlockType.GRID_ENTITY: {
-      return `${achievement.type}.${achievement.gridEntityType}` as UnlockID;
+      return `${unlock.type}.${unlock.gridEntityType}` as UnlockID;
     }
 
     case UnlockType.OTHER: {
-      return `${achievement.type}.${achievement.kind}` as UnlockID;
+      return `${unlock.type}.${unlock.kind}` as UnlockID;
     }
   }
 }

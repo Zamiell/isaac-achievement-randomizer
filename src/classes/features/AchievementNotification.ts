@@ -107,10 +107,10 @@ export class AchievementNotification extends RandomizerModFeature {
   }
 }
 
-export function showNewAchievement(achievement: Unlock): void {
-  const achievementText = getUnlockText(achievement);
+export function showNewUnlock(unlock: Unlock): void {
+  const unlockText = getUnlockText(unlock);
   v.run.queuedTexts.push(
-    `You have unlocked a new ${achievementText[0]}:\n${achievementText[1]}`,
+    `You have unlocked a new ${unlockText[0]}:\n${unlockText[1]}`,
   );
 
   sfxManager.Play(SoundEffectCustom.GOLDEN_WALNUT);

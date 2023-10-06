@@ -87,7 +87,7 @@ export class StartingRoomInfo extends RandomizerModFeature {
       K_COLORS.Green,
     );
 
-    this.drawCenteredText("Achievements:", topRightPosition);
+    this.drawCenteredText("Unlocks:", topRightPosition);
     this.drawCenteredText(
       `${getNumCompletedUnlocks()} / ${ALL_UNLOCKS.length}`,
       topRightPosition.add(Vector(0, 30)),

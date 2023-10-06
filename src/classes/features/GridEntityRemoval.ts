@@ -52,12 +52,12 @@ export class GridEntityRemoval extends RandomizerModFeature {
   )
   postGridEntityInitRockAlt(gridEntity: GridEntity): void {
     const rockAltType = getRockAltType();
-    const achievementKind = rockAltTypeToAchievementKind(rockAltType);
-    if (achievementKind === undefined) {
+    const unlockKind = rockAltTypeToUnlockKind(rockAltType);
+    if (unlockKind === undefined) {
       return;
     }
 
-    if (isOtherUnlockKindUnlocked(achievementKind)) {
+    if (isOtherUnlockKindUnlocked(unlockKind)) {
       return;
     }
 
@@ -70,14 +70,12 @@ export class GridEntityRemoval extends RandomizerModFeature {
     const poopGridEntityVariant =
       gridEntity.GetVariant() as PoopGridEntityVariant;
 
-    const achievementKind = poopGridEntityVariantToAchievementKind(
-      poopGridEntityVariant,
-    );
-    if (achievementKind === undefined) {
+    const unlockKind = poopGridEntityVariantToUnlockKind(poopGridEntityVariant);
+    if (unlockKind === undefined) {
       return;
     }
 
-    if (isOtherUnlockKindUnlocked(achievementKind)) {
+    if (isOtherUnlockKindUnlocked(unlockKind)) {
       return;
     }
 
@@ -138,14 +136,12 @@ export class GridEntityRemoval extends RandomizerModFeature {
 
     const [_gridEntityType, gridEntityVariant] = tuple;
     const poopGridEntityVariant = gridEntityVariant as PoopGridEntityVariant;
-    const achievementKind = poopGridEntityVariantToAchievementKind(
-      poopGridEntityVariant,
-    );
-    if (achievementKind === undefined) {
+    const unlockKind = poopGridEntityVariantToUnlockKind(poopGridEntityVariant);
+    if (unlockKind === undefined) {
       return undefined;
     }
 
-    if (isOtherUnlockKindUnlocked(achievementKind)) {
+    if (isOtherUnlockKindUnlocked(unlockKind)) {
       return undefined;
     }
 
@@ -160,12 +156,12 @@ export class GridEntityRemoval extends RandomizerModFeature {
     | [type: EntityType | GridEntityXMLType, variant: int, subType: int]
     | undefined {
     const rockAltType = getRockAltType();
-    const achievementKind = rockAltTypeToAchievementKind(rockAltType);
-    if (achievementKind === undefined) {
+    const unlockKind = rockAltTypeToUnlockKind(rockAltType);
+    if (unlockKind === undefined) {
       return undefined;
     }
 
-    if (isOtherUnlockKindUnlocked(achievementKind)) {
+    if (isOtherUnlockKindUnlocked(unlockKind)) {
       return undefined;
     }
 
@@ -198,7 +194,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
   }
 }
 
-function rockAltTypeToAchievementKind(
+function rockAltTypeToUnlockKind(
   rockAltType: RockAltType,
 ): OtherUnlockKind | undefined {
   switch (rockAltType) {
@@ -225,7 +221,7 @@ function rockAltTypeToAchievementKind(
   }
 }
 
-function poopGridEntityVariantToAchievementKind(
+function poopGridEntityVariantToUnlockKind(
   poopGridEntityVariant: PoopGridEntityVariant,
 ): OtherUnlockKind | undefined {
   switch (poopGridEntityVariant) {
