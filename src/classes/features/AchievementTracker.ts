@@ -124,7 +124,6 @@ import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../unlockableTrinketTypes";
 import { showNewAchievement } from "./AchievementNotification";
 import { hasErrors } from "./checkErrors/v";
 
-const VERBOSE = false as boolean;
 const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
 const FONT = fonts.droid;
 const STARTING_CHARACTER = PlayerType.ISAAC;
@@ -593,7 +592,7 @@ export function addObjective(objective: Objective, emulating = false): void {
   let originalAchievement = achievement;
   let swappedAchievement = achievement;
   do {
-    if (VERBOSE) {
+    if (!emulating) {
       log(
         `Checking achievement swap for: ${getAchievementText(
           originalAchievement,
@@ -607,7 +606,7 @@ export function addObjective(objective: Objective, emulating = false): void {
       objectiveID,
     );
 
-    if (VERBOSE) {
+    if (!emulating) {
       log(
         `Swapped achievement is: ${getAchievementText(originalAchievement).join(
           " - ",
@@ -620,6 +619,14 @@ export function addObjective(objective: Objective, emulating = false): void {
   );
 
   v.persistent.completedAchievements.push(swappedAchievement);
+
+  if (!emulating) {
+    log(
+      `Granted achievement: ${getAchievementText(originalAchievement).join(
+        " - ",
+      )}`,
+    );
+  }
 
   if (emulating) {
     v.persistent.completedAchievementsForRun.push(swappedAchievement);
@@ -2253,7 +2260,7 @@ function isAchievementsBeatable(): boolean {
       log(
         `Failed to emulate beating seed ${v.persistent.seed}: ${v.persistent.completedAchievements.length} / ${ALL_ACHIEVEMENTS.length}`,
       );
-      logMissingObjectives();
+      // logMissingObjectives();
 
       return false;
     }
@@ -2351,7 +2358,7 @@ export function canGetToBoss(
 // Logging
 // -------
 
-function logMissingObjectives() {
+function _logMissingObjectives() {
   log("Missing objectives:");
 
   const completedObjectiveIDs = v.persistent.completedObjectives.map(
