@@ -1,6 +1,5 @@
 TODO:
 
-- search for "unlockKind"
 - remove eden's blessing probably
 - add icon like R+ icon on left UI
 - about.md TODO

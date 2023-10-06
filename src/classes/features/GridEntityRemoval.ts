@@ -52,12 +52,12 @@ export class GridEntityRemoval extends RandomizerModFeature {
   )
   postGridEntityInitRockAlt(gridEntity: GridEntity): void {
     const rockAltType = getRockAltType();
-    const unlockKind = rockAltTypeToUnlockKind(rockAltType);
-    if (unlockKind === undefined) {
+    const otherUnlockKind = rockAltTypeToOtherUnlockKind(rockAltType);
+    if (otherUnlockKind === undefined) {
       return;
     }
 
-    if (isOtherUnlockKindUnlocked(unlockKind)) {
+    if (isOtherUnlockKindUnlocked(otherUnlockKind)) {
       return;
     }
 
@@ -70,12 +70,14 @@ export class GridEntityRemoval extends RandomizerModFeature {
     const poopGridEntityVariant =
       gridEntity.GetVariant() as PoopGridEntityVariant;
 
-    const unlockKind = poopGridEntityVariantToUnlockKind(poopGridEntityVariant);
-    if (unlockKind === undefined) {
+    const otherUnlockKind = poopGridEntityVariantToOtherUnlockKind(
+      poopGridEntityVariant,
+    );
+    if (otherUnlockKind === undefined) {
       return;
     }
 
-    if (isOtherUnlockKindUnlocked(unlockKind)) {
+    if (isOtherUnlockKindUnlocked(otherUnlockKind)) {
       return;
     }
 
@@ -136,12 +138,14 @@ export class GridEntityRemoval extends RandomizerModFeature {
 
     const [_gridEntityType, gridEntityVariant] = tuple;
     const poopGridEntityVariant = gridEntityVariant as PoopGridEntityVariant;
-    const unlockKind = poopGridEntityVariantToUnlockKind(poopGridEntityVariant);
-    if (unlockKind === undefined) {
+    const otherUnlockKind = poopGridEntityVariantToOtherUnlockKind(
+      poopGridEntityVariant,
+    );
+    if (otherUnlockKind === undefined) {
       return undefined;
     }
 
-    if (isOtherUnlockKindUnlocked(unlockKind)) {
+    if (isOtherUnlockKindUnlocked(otherUnlockKind)) {
       return undefined;
     }
 
@@ -156,12 +160,12 @@ export class GridEntityRemoval extends RandomizerModFeature {
     | [type: EntityType | GridEntityXMLType, variant: int, subType: int]
     | undefined {
     const rockAltType = getRockAltType();
-    const unlockKind = rockAltTypeToUnlockKind(rockAltType);
-    if (unlockKind === undefined) {
+    const otherUnlockKind = rockAltTypeToOtherUnlockKind(rockAltType);
+    if (otherUnlockKind === undefined) {
       return undefined;
     }
 
-    if (isOtherUnlockKindUnlocked(unlockKind)) {
+    if (isOtherUnlockKindUnlocked(otherUnlockKind)) {
       return undefined;
     }
 
@@ -194,7 +198,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
   }
 }
 
-function rockAltTypeToUnlockKind(
+function rockAltTypeToOtherUnlockKind(
   rockAltType: RockAltType,
 ): OtherUnlockKind | undefined {
   switch (rockAltType) {
@@ -221,7 +225,7 @@ function rockAltTypeToUnlockKind(
   }
 }
 
-function poopGridEntityVariantToUnlockKind(
+function poopGridEntityVariantToOtherUnlockKind(
   poopGridEntityVariant: PoopGridEntityVariant,
 ): OtherUnlockKind | undefined {
   switch (poopGridEntityVariant) {
