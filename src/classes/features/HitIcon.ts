@@ -12,11 +12,11 @@ import {
   newSprite,
 } from "isaacscript-common";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { isCharacterObjectiveCompleted } from "./AchievementTracker";
 import {
   getCharacterObjectiveKindNoHit,
   hasTakenHitOnFloor,
 } from "./ObjectiveDetection";
+import { isCharacterObjectiveCompleted } from "./achievementTracker/completedObjectives";
 
 const TOP_LEFT_UI_POSITION = Vector(42, 77); // To the right of the coin count.
 const TAINTED_CHARACTER_UI_OFFSET = Vector(4, 24);

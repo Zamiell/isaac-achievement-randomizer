@@ -85,7 +85,6 @@ import {
   getUnlockedEdenPassiveCollectibleTypes,
   getUnlockedPillEffects,
   getUnlockedTrinketTypes,
-  isAllCharacterObjectivesCompleted,
   isBatterySubTypeUnlocked,
   isBombSubTypeUnlocked,
   isCardTypeUnlocked,
@@ -100,6 +99,7 @@ import {
   isSackSubTypeUnlocked,
   isTrinketTypeUnlocked,
 } from "./AchievementTracker";
+import { isAllCharacterObjectivesCompleted } from "./achievementTracker/completedObjectives";
 
 /** This feature handles removing all of the pickups from the game that are not unlocked yet. */
 export class PickupRemoval extends RandomizerModFeature {

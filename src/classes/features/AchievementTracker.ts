@@ -95,7 +95,7 @@ import { ALL_OBJECTIVES, NO_HIT_BOSSES } from "../../objectives";
 import type { Achievement } from "../../types/Achievement";
 import { getAchievement, getAchievementText } from "../../types/Achievement";
 import { getAchievementID } from "../../types/AchievementID";
-import type { BossObjective, Objective } from "../../types/Objective";
+import type { Objective } from "../../types/Objective";
 import {
   getObjective,
   getObjectiveFromID,
@@ -121,6 +121,12 @@ import { UNLOCKABLE_SLOT_VARIANTS } from "../../unlockableSlotVariants";
 import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../unlockableTrinketTypes";
 import { showNewAchievement } from "./AchievementNotification";
 import { preForcedRestart, resetStats } from "./StatsTracker";
+import {
+  getNonCompletedBossObjective,
+  isBossObjectiveCompleted,
+  isChallengeObjectiveCompleted,
+  isCharacterObjectiveCompleted,
+} from "./achievementTracker/completedObjectives";
 import { isRandomizerEnabled, v } from "./achievementTracker/v";
 import { hasErrors } from "./checkErrors/v";
 
@@ -1328,72 +1334,6 @@ function findObjectiveIDForAchievement(
 
         break;
       }
-    }
-  }
-
-  return undefined;
-}
-
-// -----------------------------
-// Completed objective functions
-// -----------------------------
-
-export function isAllCharacterObjectivesCompleted(
-  character: PlayerType,
-): boolean {
-  const completedCharacterObjectives = v.persistent.completedObjectives.filter(
-    (objective) =>
-      objective.type === ObjectiveType.CHARACTER &&
-      objective.character === character,
-  );
-
-  return (
-    completedCharacterObjectives.length === CHARACTER_OBJECTIVE_KINDS.length
-  );
-}
-
-export function isCharacterObjectiveCompleted(
-  character: PlayerType,
-  kind: CharacterObjectiveKind,
-): boolean {
-  return v.persistent.completedObjectives.some(
-    (objective) =>
-      objective.type === ObjectiveType.CHARACTER &&
-      objective.character === character &&
-      objective.kind === kind,
-  );
-}
-
-export function isBossObjectiveCompleted(bossID: BossID): boolean {
-  return v.persistent.completedObjectives.some(
-    (objective) =>
-      objective.type === ObjectiveType.BOSS && objective.bossID === bossID,
-  );
-}
-
-export function isChallengeObjectiveCompleted(challenge: Challenge): boolean {
-  return v.persistent.completedObjectives.some(
-    (objective) =>
-      objective.type === ObjectiveType.CHALLENGE &&
-      objective.challenge === challenge,
-  );
-}
-
-function getNonCompletedBossObjective(): BossObjective | undefined {
-  const completedBossObjectives = v.persistent.completedObjectives.filter(
-    (objective) => objective.type === ObjectiveType.BOSS,
-  ) as BossObjective[];
-  const completedBossIDs = completedBossObjectives.map(
-    (objective) => objective.bossID,
-  );
-  const completedBossIDsSet = new Set(completedBossIDs);
-
-  for (const bossID of NO_HIT_BOSSES) {
-    if (!completedBossIDsSet.has(bossID)) {
-      return {
-        type: ObjectiveType.BOSS,
-        bossID,
-      };
     }
   }
 

@@ -35,11 +35,8 @@ import {
   isAltFloorUnlocked,
   isBatterySubTypeUnlocked,
   isBombSubTypeUnlocked,
-  isBossObjectiveCompleted,
   isCardTypeUnlocked,
-  isChallengeObjectiveCompleted,
   isChallengeUnlocked,
-  isCharacterObjectiveCompleted,
   isCharacterUnlocked,
   isChestPickupVariantUnlocked,
   isCoinSubTypeUnlocked,
@@ -54,6 +51,11 @@ import {
   isSlotVariantUnlocked,
   isTrinketTypeUnlocked,
 } from "./classes/features/AchievementTracker";
+import {
+  isBossObjectiveCompleted,
+  isChallengeObjectiveCompleted,
+  isCharacterObjectiveCompleted,
+} from "./classes/features/achievementTracker/completedObjectives";
 import { getAltFloorName } from "./enums/AltFloor";
 import {
   CharacterObjectiveKind,
