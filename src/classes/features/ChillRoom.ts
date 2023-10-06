@@ -32,6 +32,11 @@ const FONT = fonts.droid;
 
 /** This does not extend from `RandomizerModFeature` because we want it to always apply. */
 export class ChillRoom extends ModFeature {
+  protected override shouldCallbackMethodsFire = (): boolean => {
+    const challenge = Isaac.GetChallenge();
+    return challenge === ChallengeCustom.RANDOMIZER_CHILL_ROOM;
+  };
+
   @Callback(ModCallback.POST_RENDER)
   postRender(): void {
     const text = "Randomizer Chill Room";
@@ -41,11 +46,6 @@ export class ChillRoom extends ModFeature {
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
   postGameStartedReorderedFalse(): void {
-    const challenge = Isaac.GetChallenge();
-    if (challenge !== ChallengeCustom.RANDOMIZER_CHILL_ROOM) {
-      return;
-    }
-
     const seeds = game.GetSeeds();
     seeds.AddSeedEffect(SeedEffect.NO_HUD);
 

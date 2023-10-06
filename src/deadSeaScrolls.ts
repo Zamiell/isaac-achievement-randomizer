@@ -237,6 +237,8 @@ export function initDeadSeaScrolls(): void {
               dest: "specificSeed",
             },
           ];
+          menu.noCursor = false;
+          menu.fSize = 3;
         } else {
           menu.buttons = [
             {
