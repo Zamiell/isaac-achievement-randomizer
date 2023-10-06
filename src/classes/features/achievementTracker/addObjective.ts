@@ -1,6 +1,7 @@
 import { assertDefined, log, onAnyChallenge } from "isaacscript-common";
 import { ObjectiveType } from "../../../enums/ObjectiveType";
 import type { Objective } from "../../../types/Objective";
+import { getObjectiveText } from "../../../types/Objective";
 import { getObjectiveID } from "../../../types/ObjectiveID";
 import { getUnlockText } from "../../../types/Unlock";
 import { getUnlockID } from "../../../types/UnlockID";
@@ -30,6 +31,11 @@ export function addObjective(objective: Objective, emulating = false): void {
 
   v.persistent.completedObjectives.push(objective);
 
+  if (!emulating) {
+    const objectiveText = getObjectiveText(objective).join(" ");
+    log(`Accomplished objective: ${objectiveText}`);
+  }
+
   const objectiveID = getObjectiveID(objective);
   const unlock = v.persistent.objectiveToUnlockMap.get(objectiveID);
   assertDefined(
@@ -50,6 +56,7 @@ export function addObjective(objective: Objective, emulating = false): void {
     swappedUnlock = checkSwapProblematicAchievement(
       originalUnlock,
       objectiveID,
+      emulating,
     );
 
     if (!emulating) {

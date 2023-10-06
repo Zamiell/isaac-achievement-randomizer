@@ -18,6 +18,7 @@ import {
   assertDefined,
   getChallengeBoss,
   getChallengeCharacter,
+  log,
 } from "isaacscript-common";
 import { ALT_FLOORS } from "../../../cachedEnums";
 import { AltFloor } from "../../../enums/AltFloor";
@@ -27,6 +28,7 @@ import {
   getUnlockablePathFromStoryBoss,
 } from "../../../enums/UnlockablePath";
 import type { Objective } from "../../../types/Objective";
+import { getObjectiveFromID, getObjectiveText } from "../../../types/Objective";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
 import { getObjectiveID } from "../../../types/ObjectiveID";
 import type { Unlock } from "../../../types/Unlock";
@@ -166,6 +168,7 @@ const CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP = new ReadonlyMap<
 export function checkSwapProblematicAchievement(
   unlock: Unlock,
   objectiveID: ObjectiveID,
+  emulating: boolean,
 ): Unlock {
   const swappedUnlock = getSwappedUnlock(unlock);
   if (swappedUnlock === undefined) {
@@ -182,6 +185,17 @@ export function checkSwapProblematicAchievement(
 
   v.persistent.objectiveToUnlockMap.set(objectiveID, swappedUnlock);
   v.persistent.objectiveToUnlockMap.set(swappedObjectiveID, unlock);
+
+  if (!emulating) {
+    log("Swapped objectives:");
+    const objective1 = getObjectiveFromID(objectiveID);
+    const objective1Text = getObjectiveText(objective1).join(" ");
+    log(`1) ${objective1Text}`);
+
+    const objective2 = getObjectiveFromID(swappedObjectiveID);
+    const objective2Text = getObjectiveText(objective2).join(" ");
+    log(`2) ${objective2Text}`);
+  }
 
   return swappedUnlock;
 }

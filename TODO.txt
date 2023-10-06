@@ -1,11 +1,14 @@
 TODO:
 
+- test TMTRAINER unlock early bug - 268365970
+
+- let more time pass per frame on black screen with visual progress updates
+
 - add icon like R+ icon on left UI
 - about.md TODO
-- seeds go in order
-  - test TMTRAINER unlock early bug - 268365970
 
 - spiked chests / mimics should / haunted chests should start unlocked
+- ban Eden's Blessing
 - pill effects unlock in sub-order
 - casual / hardcore
 - unlockable hearts/etc in order
