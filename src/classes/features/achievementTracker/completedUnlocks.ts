@@ -22,16 +22,12 @@ import {
   ItemConfigTag,
 } from "isaac-typescript-definitions";
 import {
-  MAX_QUALITY,
-  ReadonlySet,
   assertNotNull,
   collectibleHasTag,
   eRange,
   filterMap,
-  getCollectibleQuality,
   getPillEffectType,
   getRandomArrayElement,
-  getVanillaCollectibleTypesOfQuality,
   getVanillaPillEffectsOfType,
   includes,
   isActiveCollectible,
@@ -61,28 +57,13 @@ import {
 } from "../../../unlockablePickupTypes";
 import { UNLOCKABLE_SLOT_VARIANTS } from "../../../unlockableSlotVariants";
 import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../../unlockableTrinketTypes";
+import {
+  getAdjustedCollectibleQuality,
+  getAdjustedCollectibleTypesOfQuality,
+} from "./collectibleQuality";
 import { v } from "./v";
 
 const QUALITY_THRESHOLD_PERCENT = 0.75;
-
-const GOOD_COLLECTIBLES = new ReadonlySet([
-  CollectibleType.CHOCOLATE_MILK, // 69 (quality 3)
-  CollectibleType.BOOK_OF_REVELATIONS, // 78 (quality 3)
-  CollectibleType.RELIC, // 98 (quality 3)
-  CollectibleType.GNAWED_LEAF, // 210 (quality 1)
-  CollectibleType.CRICKETS_BODY, // 224 (quality 3)
-  CollectibleType.MONSTROS_LUNG, // 229 (quality 2)
-  CollectibleType.DEATHS_TOUCH, // 237 (quality 3)
-  CollectibleType.TECH_5, // 244 (quality 3)
-  CollectibleType.PROPTOSIS, // 261 (quality 3)
-  CollectibleType.CANCER, // 301 (quality 3)
-  CollectibleType.DEAD_EYE, // 373 (quality 3)
-  CollectibleType.MAW_OF_THE_VOID, // 399 (quality 3)
-  CollectibleType.ROCK_BOTTOM, // 562 (quality 3)
-  CollectibleType.SPIRIT_SWORD, // 579 (quality 3)
-  CollectibleType.ECHO_CHAMBER, // 700 (quality 3)
-  CollectibleType.TMTRAINER, // 721 (quality 0)
-]);
 
 // ----------------------------
 // Unlock - Character functions
@@ -234,15 +215,12 @@ export function getWorseLockedCollectibleType(
     "Failed to get a worse collectible type since the seed was null.",
   );
 
-  // Some collectibles result in a won run and should be treated as maximum quality.
-  const quality = GOOD_COLLECTIBLES.has(collectibleType)
-    ? MAX_QUALITY
-    : getCollectibleQuality(collectibleType);
+  const quality = getAdjustedCollectibleQuality(collectibleType);
 
   for (const lowerQualityInt of eRange(quality)) {
     const lowerQuality = lowerQualityInt as Quality;
     const lowerQualityCollectibleTypes =
-      getVanillaCollectibleTypesOfQuality(lowerQuality);
+      getAdjustedCollectibleTypesOfQuality(lowerQuality);
     const unlockedLowerQualityCollectibleTypes = [
       ...lowerQualityCollectibleTypes,
     ].filter((lowerQualityCollectibleType) =>
