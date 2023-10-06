@@ -1,4 +1,4 @@
-export enum AchievementType {
+export enum UnlockType {
   CHARACTER,
   PATH,
   ALT_FLOOR,

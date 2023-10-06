@@ -62,7 +62,7 @@ import {
 } from "isaacscript-common";
 import { POCKET_ITEM_SLOTS, TRINKET_SLOTS } from "../../cachedEnums";
 import { MOD_NAME } from "../../constants";
-import { OtherAchievementKind } from "../../enums/OtherAchievementKind";
+import { OtherUnlockKind } from "../../enums/OtherUnlockKind";
 import { mod } from "../../mod";
 import {
   BANNED_COLLECTIBLE_TYPES,
@@ -384,7 +384,7 @@ export class PickupRemoval extends RandomizerModFeature {
         trinketType !== TrinketType.NULL &&
         (!isTrinketTypeUnlocked(trinketType) ||
           (isGoldenTrinketType(trinketType) &&
-            !isOtherAchievementUnlocked(OtherAchievementKind.GOLD_TRINKETS)) ||
+            !isOtherAchievementUnlocked(OtherUnlockKind.GOLD_TRINKETS)) ||
           BANNED_TRINKET_TYPES_SET.has(trinketType) ||
           isEden(player))
       ) {
@@ -603,14 +603,14 @@ export class PickupRemoval extends RandomizerModFeature {
 
     if (
       isGoldPill(pillColor) &&
-      !isOtherAchievementUnlocked(OtherAchievementKind.GOLD_PILLS)
+      !isOtherAchievementUnlocked(OtherUnlockKind.GOLD_PILLS)
     ) {
       return [PickupVariant.PILL, FIRST_PILL_COLOR];
     }
 
     if (
       isHorsePill(pillColor) &&
-      !isOtherAchievementUnlocked(OtherAchievementKind.HORSE_PILLS)
+      !isOtherAchievementUnlocked(OtherUnlockKind.HORSE_PILLS)
     ) {
       const normalPillColor = getNormalPillColorFromHorse(pillColor);
       return [PickupVariant.PILL, normalPillColor];
@@ -695,7 +695,7 @@ export class PickupRemoval extends RandomizerModFeature {
   ): [PickupVariant, int] | undefined {
     const normalizedTrinketType = getNormalTrinketType(trinketType);
     const goldTrinketsUnlocked = isOtherAchievementUnlocked(
-      OtherAchievementKind.GOLD_TRINKETS,
+      OtherUnlockKind.GOLD_TRINKETS,
     );
 
     if (unlockedTrinketTypes.includes(normalizedTrinketType)) {
@@ -729,7 +729,7 @@ export class PickupRemoval extends RandomizerModFeature {
     PickupVariant.BED, // 380
   )
   postPickupSelectionBed(): [PickupVariant, int] | undefined {
-    return isOtherAchievementUnlocked(OtherAchievementKind.BEDS)
+    return isOtherAchievementUnlocked(OtherUnlockKind.BEDS)
       ? undefined
       : [PickupVariant.COIN, CoinSubType.PENNY];
   }

@@ -23,7 +23,7 @@ import {
 import {
   ALT_FLOORS,
   CHARACTER_OBJECTIVE_KINDS,
-  OTHER_ACHIEVEMENT_KINDS,
+  OTHER_UNLOCK_KINDS,
   UNLOCKABLE_PATHS,
 } from "./cachedEnums";
 import {
@@ -63,11 +63,11 @@ import {
   CharacterObjectiveKind,
   getCharacterObjectiveKindName,
 } from "./enums/CharacterObjectiveKind";
-import { getOtherAchievementName } from "./enums/OtherAchievementKind";
+import { getOtherUnlockName } from "./enums/OtherUnlockKind";
 import { getPathName } from "./enums/UnlockablePath";
 import { NO_HIT_BOSSES } from "./objectives";
-import { getAchievementText } from "./types/Achievement";
 import { getObjectiveText } from "./types/Objective";
+import { getUnlockText } from "./types/Unlock";
 import { UNLOCKABLE_CARD_TYPES } from "./unlockableCardTypes";
 import { UNLOCKABLE_CHALLENGES } from "./unlockableChallenges";
 import { UNLOCKABLE_CHARACTERS } from "./unlockableCharacters";
@@ -137,7 +137,7 @@ export function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
       str: "",
     });
 
-    const achievementText = getAchievementText(achievement);
+    const achievementText = getUnlockText(achievement);
 
     for (const [j, line] of achievementText.entries()) {
       const str =
@@ -708,10 +708,10 @@ export function getGridEntityUnlockButtons(): DeadSeaScrollsButton[] {
 export function getOtherUnlockButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const otherAchievementKind of OTHER_ACHIEVEMENT_KINDS) {
+  for (const otherUnlockKind of OTHER_UNLOCK_KINDS) {
     const otherAchievementName =
-      getOtherAchievementName(otherAchievementKind)[1].toLowerCase();
-    const completed = isOtherAchievementUnlocked(otherAchievementKind, false);
+      getOtherUnlockName(otherUnlockKind)[1].toLowerCase();
+    const completed = isOtherAchievementUnlocked(otherUnlockKind, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(

@@ -1,12 +1,12 @@
 import { VANILLA_PILL_EFFECTS } from "isaacscript-common";
 import {
-  ACHIEVEMENT_TYPES,
   ALT_FLOORS,
-  OTHER_ACHIEVEMENT_KINDS,
+  OTHER_UNLOCK_KINDS,
   UNLOCKABLE_PATHS,
+  UNLOCK_TYPES,
 } from "./cachedEnums";
-import { AchievementType } from "./enums/AchievementType";
-import type { Achievement } from "./types/Achievement";
+import { UnlockType } from "./enums/UnlockType";
+import type { Unlock } from "./types/Unlock";
 import { UNLOCKABLE_CARD_TYPES } from "./unlockableCardTypes";
 import { UNLOCKABLE_CHALLENGES } from "./unlockableChallenges";
 import { UNLOCKABLE_CHARACTERS } from "./unlockableCharacters";
@@ -24,15 +24,15 @@ import {
 import { UNLOCKABLE_SLOT_VARIANTS } from "./unlockableSlotVariants";
 import { UNLOCKABLE_TRINKET_TYPES } from "./unlockableTrinketTypes";
 
-export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
-  const achievements: Achievement[] = [];
+export const ALL_ACHIEVEMENTS: readonly Unlock[] = (() => {
+  const achievements: Unlock[] = [];
 
-  for (const achievementType of ACHIEVEMENT_TYPES) {
-    switch (achievementType) {
-      case AchievementType.CHARACTER: {
+  for (const unlockType of UNLOCK_TYPES) {
+    switch (unlockType) {
+      case UnlockType.CHARACTER: {
         for (const character of UNLOCKABLE_CHARACTERS) {
-          const achievement: Achievement = {
-            type: AchievementType.CHARACTER,
+          const achievement: Unlock = {
+            type: UnlockType.CHARACTER,
             character,
           };
           achievements.push(achievement);
@@ -41,10 +41,10 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
         break;
       }
 
-      case AchievementType.PATH: {
+      case UnlockType.PATH: {
         for (const unlockablePath of UNLOCKABLE_PATHS) {
-          const achievement: Achievement = {
-            type: AchievementType.PATH,
+          const achievement: Unlock = {
+            type: UnlockType.PATH,
             unlockablePath,
           };
           achievements.push(achievement);
@@ -53,10 +53,10 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
         break;
       }
 
-      case AchievementType.ALT_FLOOR: {
+      case UnlockType.ALT_FLOOR: {
         for (const altFloor of ALT_FLOORS) {
-          const achievement: Achievement = {
-            type: AchievementType.ALT_FLOOR,
+          const achievement: Unlock = {
+            type: UnlockType.ALT_FLOOR,
             altFloor,
           };
           achievements.push(achievement);
@@ -65,10 +65,10 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
         break;
       }
 
-      case AchievementType.CHALLENGE: {
+      case UnlockType.CHALLENGE: {
         for (const challenge of UNLOCKABLE_CHALLENGES) {
-          const achievement: Achievement = {
-            type: AchievementType.CHALLENGE,
+          const achievement: Unlock = {
+            type: UnlockType.CHALLENGE,
             challenge,
           };
           achievements.push(achievement);
@@ -77,10 +77,10 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
         break;
       }
 
-      case AchievementType.COLLECTIBLE: {
+      case UnlockType.COLLECTIBLE: {
         for (const collectibleType of UNLOCKABLE_COLLECTIBLE_TYPES) {
-          const achievement: Achievement = {
-            type: AchievementType.COLLECTIBLE,
+          const achievement: Unlock = {
+            type: UnlockType.COLLECTIBLE,
             collectibleType,
           };
           achievements.push(achievement);
@@ -89,10 +89,10 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
         break;
       }
 
-      case AchievementType.TRINKET: {
+      case UnlockType.TRINKET: {
         for (const trinketType of UNLOCKABLE_TRINKET_TYPES) {
-          const achievement: Achievement = {
-            type: AchievementType.TRINKET,
+          const achievement: Unlock = {
+            type: UnlockType.TRINKET,
             trinketType,
           };
           achievements.push(achievement);
@@ -101,10 +101,10 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
         break;
       }
 
-      case AchievementType.CARD: {
+      case UnlockType.CARD: {
         for (const cardType of UNLOCKABLE_CARD_TYPES) {
-          const achievement: Achievement = {
-            type: AchievementType.CARD,
+          const achievement: Unlock = {
+            type: UnlockType.CARD,
             cardType,
           };
           achievements.push(achievement);
@@ -113,10 +113,10 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
         break;
       }
 
-      case AchievementType.PILL_EFFECT: {
+      case UnlockType.PILL_EFFECT: {
         for (const pillEffect of VANILLA_PILL_EFFECTS) {
-          const achievement: Achievement = {
-            type: AchievementType.PILL_EFFECT,
+          const achievement: Unlock = {
+            type: UnlockType.PILL_EFFECT,
             pillEffect,
           };
           achievements.push(achievement);
@@ -125,10 +125,10 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
         break;
       }
 
-      case AchievementType.HEART: {
+      case UnlockType.HEART: {
         for (const heartSubType of UNLOCKABLE_HEART_SUB_TYPES) {
-          const achievement: Achievement = {
-            type: AchievementType.HEART,
+          const achievement: Unlock = {
+            type: UnlockType.HEART,
             heartSubType,
           };
           achievements.push(achievement);
@@ -137,10 +137,10 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
         break;
       }
 
-      case AchievementType.COIN: {
+      case UnlockType.COIN: {
         for (const coinSubType of UNLOCKABLE_COIN_SUB_TYPES) {
-          const achievement: Achievement = {
-            type: AchievementType.COIN,
+          const achievement: Unlock = {
+            type: UnlockType.COIN,
             coinSubType,
           };
           achievements.push(achievement);
@@ -149,10 +149,10 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
         break;
       }
 
-      case AchievementType.BOMB: {
+      case UnlockType.BOMB: {
         for (const bombSubType of UNLOCKABLE_BOMB_SUB_TYPES) {
-          const achievement: Achievement = {
-            type: AchievementType.BOMB,
+          const achievement: Unlock = {
+            type: UnlockType.BOMB,
             bombSubType,
           };
           achievements.push(achievement);
@@ -161,10 +161,10 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
         break;
       }
 
-      case AchievementType.KEY: {
+      case UnlockType.KEY: {
         for (const keySubType of UNLOCKABLE_KEY_SUB_TYPES) {
-          const achievement: Achievement = {
-            type: AchievementType.KEY,
+          const achievement: Unlock = {
+            type: UnlockType.KEY,
             keySubType,
           };
           achievements.push(achievement);
@@ -173,10 +173,10 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
         break;
       }
 
-      case AchievementType.BATTERY: {
+      case UnlockType.BATTERY: {
         for (const batterySubType of UNLOCKABLE_BATTERY_SUB_TYPES) {
-          const achievement: Achievement = {
-            type: AchievementType.BATTERY,
+          const achievement: Unlock = {
+            type: UnlockType.BATTERY,
             batterySubType,
           };
           achievements.push(achievement);
@@ -185,10 +185,10 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
         break;
       }
 
-      case AchievementType.SACK: {
+      case UnlockType.SACK: {
         for (const sackSubType of UNLOCKABLE_SACK_KEY_SUB_TYPES) {
-          const achievement: Achievement = {
-            type: AchievementType.SACK,
+          const achievement: Unlock = {
+            type: UnlockType.SACK,
             sackSubType,
           };
           achievements.push(achievement);
@@ -197,10 +197,10 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
         break;
       }
 
-      case AchievementType.CHEST: {
+      case UnlockType.CHEST: {
         for (const pickupVariant of UNLOCKABLE_CHEST_PICKUP_VARIANTS) {
-          const achievement: Achievement = {
-            type: AchievementType.CHEST,
+          const achievement: Unlock = {
+            type: UnlockType.CHEST,
             pickupVariant,
           };
           achievements.push(achievement);
@@ -209,10 +209,10 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
         break;
       }
 
-      case AchievementType.SLOT: {
+      case UnlockType.SLOT: {
         for (const slotVariant of UNLOCKABLE_SLOT_VARIANTS) {
-          const achievement: Achievement = {
-            type: AchievementType.SLOT,
+          const achievement: Unlock = {
+            type: UnlockType.SLOT,
             slotVariant,
           };
           achievements.push(achievement);
@@ -221,10 +221,10 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
         break;
       }
 
-      case AchievementType.GRID_ENTITY: {
+      case UnlockType.GRID_ENTITY: {
         for (const gridEntityType of UNLOCKABLE_GRID_ENTITY_TYPES) {
-          const achievement: Achievement = {
-            type: AchievementType.GRID_ENTITY,
+          const achievement: Unlock = {
+            type: UnlockType.GRID_ENTITY,
             gridEntityType,
           };
           achievements.push(achievement);
@@ -233,11 +233,11 @@ export const ALL_ACHIEVEMENTS: readonly Achievement[] = (() => {
         break;
       }
 
-      case AchievementType.OTHER: {
-        for (const otherAchievementKind of OTHER_ACHIEVEMENT_KINDS) {
-          const achievement: Achievement = {
-            type: AchievementType.OTHER,
-            kind: otherAchievementKind,
+      case UnlockType.OTHER: {
+        for (const otherUnlockKind of OTHER_UNLOCK_KINDS) {
+          const achievement: Unlock = {
+            type: UnlockType.OTHER,
+            kind: otherUnlockKind,
           };
           achievements.push(achievement);
         }

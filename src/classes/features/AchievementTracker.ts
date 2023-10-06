@@ -61,20 +61,17 @@ import {
   CHARACTER_OBJECTIVE_KINDS,
   STAGE_TYPES,
 } from "../../cachedEnums";
-import { AchievementType } from "../../enums/AchievementType";
 import { AltFloor } from "../../enums/AltFloor";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { RandomizerMode } from "../../enums/RandomizerMode";
+import { UnlockType } from "../../enums/UnlockType";
 import {
   UnlockablePath,
   getUnlockablePathFromCharacterObjectiveKind,
   getUnlockablePathFromStoryBoss,
 } from "../../enums/UnlockablePath";
 import { ALL_OBJECTIVES, NO_HIT_BOSSES } from "../../objectives";
-import type { Achievement } from "../../types/Achievement";
-import { getAchievement, getAchievementText } from "../../types/Achievement";
-import { getAchievementID } from "../../types/AchievementID";
 import type { Objective } from "../../types/Objective";
 import {
   getObjective,
@@ -83,6 +80,9 @@ import {
 } from "../../types/Objective";
 import type { ObjectiveID } from "../../types/ObjectiveID";
 import { getObjectiveID } from "../../types/ObjectiveID";
+import type { Unlock } from "../../types/Unlock";
+import { getUnlock, getUnlockText } from "../../types/Unlock";
+import { getUnlockID } from "../../types/UnlockID";
 import { UNLOCKABLE_CHALLENGES } from "../../unlockableChallenges";
 import { showNewAchievement } from "./AchievementNotification";
 import { preForcedRestart, resetStats } from "./StatsTracker";
@@ -228,18 +228,15 @@ const BOSS_STAGES = [
   LevelStage.WOMB_1,
 ] as const;
 
-const DEFAULT_TRINKET_ACHIEVEMENT = getAchievement(
-  AchievementType.TRINKET,
+const DEFAULT_TRINKET_ACHIEVEMENT = getUnlock(
+  UnlockType.TRINKET,
   TrinketType.ERROR,
 );
 
-const DEFAULT_CARD_ACHIEVEMENT = getAchievement(
-  AchievementType.CARD,
-  CardType.FOOL,
-);
+const DEFAULT_CARD_ACHIEVEMENT = getUnlock(UnlockType.CARD, CardType.FOOL);
 
-const DEFAULT_PILL_ACHIEVEMENT = getAchievement(
-  AchievementType.PILL_EFFECT,
+const DEFAULT_PILL_ACHIEVEMENT = getUnlock(
+  UnlockType.PILL_EFFECT,
   PillEffect.PARALYSIS,
 );
 
@@ -377,7 +374,7 @@ export function getCompletedObjectives(): Objective[] {
   return v.persistent.completedObjectives;
 }
 
-export function getCompletedAchievements(): Achievement[] {
+export function getCompletedAchievements(): Unlock[] {
   return v.persistent.completedAchievements;
 }
 
@@ -387,7 +384,7 @@ export function getNumCompletedAchievements(): int {
 
 function getAchievementMatchingObjective(
   objective: Objective,
-): Achievement | undefined {
+): Unlock | undefined {
   const objectiveID = getObjectiveID(objective);
 
   for (const [thisObjectiveID, achievement] of v.persistent
@@ -438,7 +435,7 @@ export function addObjective(objective: Objective, emulating = false): void {
 
     if (!emulating) {
       log(
-        `Checking achievement swap for: ${getAchievementText(
+        `Checking achievement swap for: ${getUnlockText(
           originalAchievement,
         ).join(" - ")}`,
       );
@@ -451,23 +448,20 @@ export function addObjective(objective: Objective, emulating = false): void {
 
     if (!emulating) {
       log(
-        `Swapped achievement is: ${getAchievementText(swappedAchievement).join(
+        `Swapped achievement is: ${getUnlockText(swappedAchievement).join(
           " - ",
         )}`,
       );
     }
   } while (
-    getAchievementID(originalAchievement) !==
-    getAchievementID(swappedAchievement)
+    getUnlockID(originalAchievement) !== getUnlockID(swappedAchievement)
   );
 
   v.persistent.completedAchievements.push(swappedAchievement);
 
   if (!emulating) {
     log(
-      `Granted achievement: ${getAchievementText(originalAchievement).join(
-        " - ",
-      )}`,
+      `Granted achievement: ${getUnlockText(originalAchievement).join(" - ")}`,
     );
   }
 
@@ -508,9 +502,9 @@ function isObjectiveCompleted(objectiveToMatch: Objective): boolean {
 }
 
 function checkSwapProblematicAchievement(
-  achievement: Achievement,
+  achievement: Unlock,
   objectiveID: ObjectiveID,
-): Achievement {
+): Unlock {
   const swappedAchievement = getSwappedAchievement(achievement);
   if (swappedAchievement === undefined) {
     return achievement;
@@ -519,7 +513,7 @@ function checkSwapProblematicAchievement(
   const swappedObjectiveID = findObjectiveIDForAchievement(swappedAchievement);
   assertDefined(
     swappedObjectiveID,
-    `Failed to find the objective ID for swapped achievement: ${getAchievementText(
+    `Failed to find the objective ID for swapped achievement: ${getUnlockText(
       swappedAchievement,
     )}`,
   );
@@ -530,18 +524,13 @@ function checkSwapProblematicAchievement(
   return swappedAchievement;
 }
 
-function getSwappedAchievement(
-  achievement: Achievement,
-): Achievement | undefined {
+function getSwappedAchievement(achievement: Unlock): Unlock | undefined {
   switch (achievement.type) {
-    case AchievementType.PATH: {
+    case UnlockType.PATH: {
       switch (achievement.unlockablePath) {
         case UnlockablePath.VOID: {
           if (!isPathUnlocked(UnlockablePath.BLUE_WOMB, false)) {
-            return getAchievement(
-              AchievementType.PATH,
-              UnlockablePath.BLUE_WOMB,
-            );
+            return getUnlock(UnlockType.PATH, UnlockablePath.BLUE_WOMB);
           }
 
           return undefined;
@@ -549,7 +538,7 @@ function getSwappedAchievement(
 
         case UnlockablePath.ASCENT: {
           if (!isCardTypeUnlocked(CardType.FOOL, false)) {
-            return getAchievement(AchievementType.CARD, CardType.FOOL);
+            return getUnlock(UnlockType.CARD, CardType.FOOL);
           }
 
           return undefined;
@@ -557,8 +546,8 @@ function getSwappedAchievement(
 
         case UnlockablePath.BLACK_MARKETS: {
           if (!isGridEntityTypeUnlocked(GridEntityType.CRAWL_SPACE, false)) {
-            return getAchievement(
-              AchievementType.GRID_ENTITY,
+            return getUnlock(
+              UnlockType.GRID_ENTITY,
               GridEntityType.CRAWL_SPACE,
             );
           }
@@ -572,16 +561,13 @@ function getSwappedAchievement(
       }
     }
 
-    case AchievementType.ALT_FLOOR: {
+    case UnlockType.ALT_FLOOR: {
       switch (achievement.altFloor) {
         case AltFloor.DROSS:
         case AltFloor.ASHPIT:
         case AltFloor.GEHENNA: {
           if (!isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS, false)) {
-            return getAchievement(
-              AchievementType.PATH,
-              UnlockablePath.REPENTANCE_FLOORS,
-            );
+            return getUnlock(UnlockType.PATH, UnlockablePath.REPENTANCE_FLOORS);
           }
 
           return undefined;
@@ -593,17 +579,17 @@ function getSwappedAchievement(
       }
     }
 
-    case AchievementType.CHALLENGE: {
+    case UnlockType.CHALLENGE: {
       const challengeCharacter = getChallengeCharacter(achievement.challenge);
       if (!isCharacterUnlocked(challengeCharacter)) {
-        return getAchievement(AchievementType.CHARACTER, challengeCharacter);
+        return getUnlock(UnlockType.CHARACTER, challengeCharacter);
       }
 
       // All the challenge bosses are story bosses.
       const challengeBossID = getChallengeBoss(achievement.challenge);
       const unlockablePath = getUnlockablePathFromStoryBoss(challengeBossID);
       if (unlockablePath !== undefined && !isPathUnlocked(unlockablePath)) {
-        return getAchievement(AchievementType.PATH, unlockablePath);
+        return getUnlock(UnlockType.PATH, unlockablePath);
       }
 
       const requiredCollectibleTypes =
@@ -611,7 +597,7 @@ function getSwappedAchievement(
       if (requiredCollectibleTypes !== undefined) {
         for (const collectibleType of requiredCollectibleTypes) {
           if (!isCollectibleTypeUnlocked(collectibleType, false)) {
-            return getAchievement(AchievementType.COLLECTIBLE, collectibleType);
+            return getUnlock(UnlockType.COLLECTIBLE, collectibleType);
           }
         }
       }
@@ -619,16 +605,13 @@ function getSwappedAchievement(
       return undefined;
     }
 
-    case AchievementType.COLLECTIBLE: {
+    case UnlockType.COLLECTIBLE: {
       // First, check to see if there is a worse collectible available to unlock.
       const worseCollectibleType = getWorseLockedCollectibleType(
         achievement.collectibleType,
       );
       if (worseCollectibleType !== undefined) {
-        return getAchievement(
-          AchievementType.COLLECTIBLE,
-          worseCollectibleType,
-        );
+        return getUnlock(UnlockType.COLLECTIBLE, worseCollectibleType);
       }
 
       switch (achievement.collectibleType) {
@@ -644,8 +627,8 @@ function getSwappedAchievement(
         // 84
         case CollectibleType.WE_NEED_TO_GO_DEEPER: {
           if (!isGridEntityTypeUnlocked(GridEntityType.CRAWL_SPACE, false)) {
-            return getAchievement(
-              AchievementType.GRID_ENTITY,
+            return getUnlock(
+              UnlockType.GRID_ENTITY,
               GridEntityType.CRAWL_SPACE,
             );
           }
@@ -692,10 +675,7 @@ function getSwappedAchievement(
         // 203
         case CollectibleType.HUMBLING_BUNDLE: {
           if (!isCoinSubTypeUnlocked(CoinSubType.DOUBLE_PACK, false)) {
-            return getAchievement(
-              AchievementType.COIN,
-              CoinSubType.DOUBLE_PACK,
-            );
+            return getUnlock(UnlockType.COIN, CoinSubType.DOUBLE_PACK);
           }
 
           return undefined;
@@ -719,10 +699,7 @@ function getSwappedAchievement(
         // 250
         case CollectibleType.BOGO_BOMBS: {
           if (!isBombSubTypeUnlocked(BombSubType.DOUBLE_PACK, false)) {
-            return getAchievement(
-              AchievementType.BOMB,
-              BombSubType.DOUBLE_PACK,
-            );
+            return getUnlock(UnlockType.BOMB, BombSubType.DOUBLE_PACK);
           }
 
           return undefined;
@@ -749,7 +726,7 @@ function getSwappedAchievement(
         // 263
         case CollectibleType.CLEAR_RUNE: {
           if (!anyRunesUnlocked(false)) {
-            return getAchievement(AchievementType.CARD, CardType.RUNE_BLANK);
+            return getUnlock(UnlockType.CARD, CardType.RUNE_BLANK);
           }
 
           return undefined;
@@ -776,7 +753,7 @@ function getSwappedAchievement(
         // 424
         case CollectibleType.SACK_HEAD: {
           if (!isSackSubTypeUnlocked(SackSubType.NORMAL, false)) {
-            return getAchievement(AchievementType.SACK, SackSubType.NORMAL);
+            return getUnlock(UnlockType.SACK, SackSubType.NORMAL);
           }
 
           return undefined;
@@ -840,7 +817,7 @@ function getSwappedAchievement(
         case CollectibleType.DREAM_CATCHER: {
           for (const altFloor of ALT_FLOORS) {
             if (!isAltFloorUnlocked(altFloor, false)) {
-              return getAchievement(AchievementType.ALT_FLOOR, altFloor);
+              return getUnlock(UnlockType.ALT_FLOOR, altFloor);
             }
           }
 
@@ -850,10 +827,7 @@ function getSwappedAchievement(
         // 603
         case CollectibleType.BATTERY_PACK: {
           if (!isBatterySubTypeUnlocked(BatterySubType.NORMAL, false)) {
-            return getAchievement(
-              AchievementType.BATTERY,
-              BatterySubType.NORMAL,
-            );
+            return getUnlock(UnlockType.BATTERY, BatterySubType.NORMAL);
           }
 
           return undefined;
@@ -883,12 +857,12 @@ function getSwappedAchievement(
       }
     }
 
-    case AchievementType.TRINKET: {
+    case UnlockType.TRINKET: {
       switch (achievement.trinketType) {
         // 22
         case TrinketType.DAEMONS_TAIL: {
           if (!isHeartSubTypeUnlocked(HeartSubType.BLACK, false)) {
-            return getAchievement(AchievementType.HEART, HeartSubType.BLACK);
+            return getUnlock(UnlockType.HEART, HeartSubType.BLACK);
           }
 
           return undefined;
@@ -915,10 +889,7 @@ function getSwappedAchievement(
         // 61
         case TrinketType.LEFT_HAND: {
           if (!isChestPickupVariantUnlocked(PickupVariant.RED_CHEST, false)) {
-            return getAchievement(
-              AchievementType.CHEST,
-              PickupVariant.RED_CHEST,
-            );
+            return getUnlock(UnlockType.CHEST, PickupVariant.RED_CHEST);
           }
 
           return undefined;
@@ -927,10 +898,7 @@ function getSwappedAchievement(
         // 131
         case TrinketType.BLESSED_PENNY: {
           if (!isHeartSubTypeUnlocked(HeartSubType.HALF_SOUL, false)) {
-            return getAchievement(
-              AchievementType.HEART,
-              HeartSubType.HALF_SOUL,
-            );
+            return getUnlock(UnlockType.HEART, HeartSubType.HALF_SOUL);
           }
 
           return undefined;
@@ -941,10 +909,7 @@ function getSwappedAchievement(
           if (
             !isChestPickupVariantUnlocked(PickupVariant.LOCKED_CHEST, false)
           ) {
-            return getAchievement(
-              AchievementType.CHEST,
-              PickupVariant.LOCKED_CHEST,
-            );
+            return getUnlock(UnlockType.CHEST, PickupVariant.LOCKED_CHEST);
           }
 
           return undefined;
@@ -953,7 +918,7 @@ function getSwappedAchievement(
         // 168
         case TrinketType.HOLLOW_HEART: {
           if (!isHeartSubTypeUnlocked(HeartSubType.BONE, false)) {
-            return getAchievement(AchievementType.HEART, HeartSubType.BONE);
+            return getUnlock(UnlockType.HEART, HeartSubType.BONE);
           }
 
           return undefined;
@@ -965,12 +930,12 @@ function getSwappedAchievement(
       }
     }
 
-    case AchievementType.CARD: {
+    case UnlockType.CARD: {
       switch (achievement.cardType) {
         // 6
         case CardType.HIEROPHANT: {
           if (!isHeartSubTypeUnlocked(HeartSubType.SOUL, false)) {
-            return getAchievement(AchievementType.HEART, HeartSubType.SOUL);
+            return getUnlock(UnlockType.HEART, HeartSubType.SOUL);
           }
 
           return undefined;
@@ -979,10 +944,7 @@ function getSwappedAchievement(
         // 11
         case CardType.WHEEL_OF_FORTUNE: {
           if (!isSlotVariantUnlocked(SlotVariant.SLOT_MACHINE, false)) {
-            return getAchievement(
-              AchievementType.SLOT,
-              SlotVariant.SLOT_MACHINE,
-            );
+            return getUnlock(UnlockType.SLOT, SlotVariant.SLOT_MACHINE);
           }
 
           return undefined;
@@ -993,8 +955,8 @@ function getSwappedAchievement(
           if (
             !isSlotVariantUnlocked(SlotVariant.BLOOD_DONATION_MACHINE, false)
           ) {
-            return getAchievement(
-              AchievementType.SLOT,
+            return getUnlock(
+              UnlockType.SLOT,
               SlotVariant.BLOOD_DONATION_MACHINE,
             );
           }
@@ -1005,7 +967,7 @@ function getSwappedAchievement(
         // 21
         case CardType.JUDGEMENT: {
           if (!isSlotVariantUnlocked(SlotVariant.BEGGAR, false)) {
-            return getAchievement(AchievementType.SLOT, SlotVariant.BEGGAR);
+            return getUnlock(UnlockType.SLOT, SlotVariant.BEGGAR);
           }
 
           return undefined;
@@ -1014,7 +976,7 @@ function getSwappedAchievement(
         // 6
         case CardType.REVERSE_HIEROPHANT: {
           if (!isHeartSubTypeUnlocked(HeartSubType.BONE, false)) {
-            return getAchievement(AchievementType.HEART, HeartSubType.BONE);
+            return getUnlock(UnlockType.HEART, HeartSubType.BONE);
           }
 
           return undefined;
@@ -1025,10 +987,7 @@ function getSwappedAchievement(
           if (
             !isChestPickupVariantUnlocked(PickupVariant.LOCKED_CHEST, false)
           ) {
-            return getAchievement(
-              AchievementType.CHEST,
-              PickupVariant.LOCKED_CHEST,
-            );
+            return getUnlock(UnlockType.CHEST, PickupVariant.LOCKED_CHEST);
           }
 
           return undefined;
@@ -1046,8 +1005,8 @@ function getSwappedAchievement(
         // 72
         case CardType.REVERSE_TOWER: {
           if (!isGridEntityTypeUnlocked(GridEntityType.ROCK_TINTED, false)) {
-            return getAchievement(
-              AchievementType.GRID_ENTITY,
+            return getUnlock(
+              UnlockType.GRID_ENTITY,
               GridEntityType.ROCK_TINTED,
             );
           }
@@ -1058,10 +1017,7 @@ function getSwappedAchievement(
         // 76
         case CardType.REVERSE_JUDGEMENT: {
           if (!isSlotVariantUnlocked(SlotVariant.SHOP_RESTOCK_MACHINE, false)) {
-            return getAchievement(
-              AchievementType.SLOT,
-              SlotVariant.SHOP_RESTOCK_MACHINE,
-            );
+            return getUnlock(UnlockType.SLOT, SlotVariant.SHOP_RESTOCK_MACHINE);
           }
 
           return undefined;
@@ -1070,8 +1026,8 @@ function getSwappedAchievement(
         // 77
         case CardType.REVERSE_WORLD: {
           if (!isGridEntityTypeUnlocked(GridEntityType.CRAWL_SPACE, false)) {
-            return getAchievement(
-              AchievementType.GRID_ENTITY,
+            return getUnlock(
+              UnlockType.GRID_ENTITY,
               GridEntityType.CRAWL_SPACE,
             );
           }
@@ -1085,11 +1041,11 @@ function getSwappedAchievement(
       }
     }
 
-    case AchievementType.PILL_EFFECT: {
+    case UnlockType.PILL_EFFECT: {
       // Check to see if there is a worse pill effect to unlock.
       const worsePillEffect = getWorseLockedPillEffect(achievement.pillEffect);
       if (worsePillEffect !== undefined) {
-        return getAchievement(AchievementType.PILL_EFFECT, worsePillEffect);
+        return getUnlock(UnlockType.PILL_EFFECT, worsePillEffect);
       }
 
       return undefined;
@@ -1102,13 +1058,13 @@ function getSwappedAchievement(
 }
 
 function findObjectiveIDForAchievement(
-  achievementToMatch: Achievement,
+  achievementToMatch: Unlock,
 ): ObjectiveID | undefined {
   for (const entries of v.persistent.objectiveToAchievementMap) {
     const [objectiveID, achievement] = entries;
 
     switch (achievement.type) {
-      case AchievementType.CHARACTER: {
+      case UnlockType.CHARACTER: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.character === achievementToMatch.character
@@ -1119,7 +1075,7 @@ function findObjectiveIDForAchievement(
         break;
       }
 
-      case AchievementType.PATH: {
+      case UnlockType.PATH: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.unlockablePath === achievementToMatch.unlockablePath
@@ -1130,7 +1086,7 @@ function findObjectiveIDForAchievement(
         break;
       }
 
-      case AchievementType.ALT_FLOOR: {
+      case UnlockType.ALT_FLOOR: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.altFloor === achievementToMatch.altFloor
@@ -1141,7 +1097,7 @@ function findObjectiveIDForAchievement(
         break;
       }
 
-      case AchievementType.CHALLENGE: {
+      case UnlockType.CHALLENGE: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.challenge === achievementToMatch.challenge
@@ -1152,7 +1108,7 @@ function findObjectiveIDForAchievement(
         break;
       }
 
-      case AchievementType.COLLECTIBLE: {
+      case UnlockType.COLLECTIBLE: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.collectibleType === achievementToMatch.collectibleType
@@ -1163,7 +1119,7 @@ function findObjectiveIDForAchievement(
         break;
       }
 
-      case AchievementType.TRINKET: {
+      case UnlockType.TRINKET: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.trinketType === achievementToMatch.trinketType
@@ -1174,7 +1130,7 @@ function findObjectiveIDForAchievement(
         break;
       }
 
-      case AchievementType.CARD: {
+      case UnlockType.CARD: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.cardType === achievementToMatch.cardType
@@ -1185,7 +1141,7 @@ function findObjectiveIDForAchievement(
         break;
       }
 
-      case AchievementType.PILL_EFFECT: {
+      case UnlockType.PILL_EFFECT: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.pillEffect === achievementToMatch.pillEffect
@@ -1196,7 +1152,7 @@ function findObjectiveIDForAchievement(
         break;
       }
 
-      case AchievementType.HEART: {
+      case UnlockType.HEART: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.heartSubType === achievementToMatch.heartSubType
@@ -1207,7 +1163,7 @@ function findObjectiveIDForAchievement(
         break;
       }
 
-      case AchievementType.COIN: {
+      case UnlockType.COIN: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.coinSubType === achievementToMatch.coinSubType
@@ -1218,7 +1174,7 @@ function findObjectiveIDForAchievement(
         break;
       }
 
-      case AchievementType.BOMB: {
+      case UnlockType.BOMB: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.bombSubType === achievementToMatch.bombSubType
@@ -1229,7 +1185,7 @@ function findObjectiveIDForAchievement(
         break;
       }
 
-      case AchievementType.KEY: {
+      case UnlockType.KEY: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.keySubType === achievementToMatch.keySubType
@@ -1240,7 +1196,7 @@ function findObjectiveIDForAchievement(
         break;
       }
 
-      case AchievementType.BATTERY: {
+      case UnlockType.BATTERY: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.batterySubType === achievementToMatch.batterySubType
@@ -1251,7 +1207,7 @@ function findObjectiveIDForAchievement(
         break;
       }
 
-      case AchievementType.SACK: {
+      case UnlockType.SACK: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.sackSubType === achievementToMatch.sackSubType
@@ -1262,7 +1218,7 @@ function findObjectiveIDForAchievement(
         break;
       }
 
-      case AchievementType.CHEST: {
+      case UnlockType.CHEST: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.pickupVariant === achievementToMatch.pickupVariant
@@ -1273,7 +1229,7 @@ function findObjectiveIDForAchievement(
         break;
       }
 
-      case AchievementType.SLOT: {
+      case UnlockType.SLOT: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.slotVariant === achievementToMatch.slotVariant
@@ -1284,7 +1240,7 @@ function findObjectiveIDForAchievement(
         break;
       }
 
-      case AchievementType.GRID_ENTITY: {
+      case UnlockType.GRID_ENTITY: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.gridEntityType === achievementToMatch.gridEntityType
@@ -1295,7 +1251,7 @@ function findObjectiveIDForAchievement(
         break;
       }
 
-      case AchievementType.OTHER: {
+      case UnlockType.OTHER: {
         if (
           achievement.type === achievementToMatch.type &&
           achievement.kind === achievementToMatch.kind
@@ -1332,7 +1288,7 @@ function findObjectiveForCharacterAchievement(
   for (const entries of v.persistent.objectiveToAchievementMap) {
     const [objectiveID, achievement] = entries;
     if (
-      achievement.type === AchievementType.CHARACTER &&
+      achievement.type === UnlockType.CHARACTER &&
       achievement.character === character
     ) {
       return getObjectiveFromID(objectiveID);
@@ -1361,7 +1317,7 @@ function findObjectiveForCollectibleAchievement(
   for (const entries of v.persistent.objectiveToAchievementMap) {
     const [objectiveID, achievement] = entries;
     if (
-      achievement.type === AchievementType.COLLECTIBLE &&
+      achievement.type === UnlockType.COLLECTIBLE &&
       achievement.collectibleType === collectibleType
     ) {
       return getObjectiveFromID(objectiveID);
@@ -1573,7 +1529,7 @@ export function logSpoilerLog(): void {
     const completed = isObjectiveCompleted(objective);
     const completedText = completed ? "[C]" : "[X]";
     const objectiveText = getObjectiveText(objective).join(" ");
-    const achievementText = getAchievementText(achievement).join(" - ");
+    const achievementText = getUnlockText(achievement).join(" - ");
 
     log(
       `${i + 1}) ${completedText} ${objectiveText} --> ${achievementText}`,

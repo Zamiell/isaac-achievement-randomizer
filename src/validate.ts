@@ -1,11 +1,11 @@
 import { log } from "isaacscript-common";
 import { ALL_ACHIEVEMENTS } from "./achievements";
-import { ACHIEVEMENT_TYPES, OBJECTIVE_TYPES } from "./cachedEnums";
-import { AchievementType } from "./enums/AchievementType";
+import { OBJECTIVE_TYPES, UNLOCK_TYPES } from "./cachedEnums";
 import { ObjectiveType } from "./enums/ObjectiveType";
+import { UnlockType } from "./enums/UnlockType";
 import { ALL_OBJECTIVES } from "./objectives";
-import type { Achievement } from "./types/Achievement";
 import type { Objective } from "./types/Objective";
+import type { Unlock } from "./types/Unlock";
 
 export function validate(): void {
   if (ALL_OBJECTIVES.length === ALL_ACHIEVEMENTS.length) {
@@ -35,15 +35,13 @@ function logObjectives(objectives: readonly Objective[]) {
   }
 }
 
-function logAchievements(achievements: readonly Achievement[]) {
+function logAchievements(achievements: readonly Unlock[]) {
   log(`Logging all achievements (${achievements.length}):`);
 
-  for (const achievementType of ACHIEVEMENT_TYPES) {
+  for (const unlockType of UNLOCK_TYPES) {
     const thisTypeAchievements = achievements.filter(
-      (achievement) => achievement.type === achievementType,
+      (achievement) => achievement.type === unlockType,
     );
-    log(
-      `- ${AchievementType[achievementType]} - ${thisTypeAchievements.length}`,
-    );
+    log(`- ${UnlockType[unlockType]} - ${thisTypeAchievements.length}`);
   }
 }

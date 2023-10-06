@@ -13,17 +13,17 @@ import {
   shuffleArray,
 } from "isaacscript-common";
 import { ALL_ACHIEVEMENTS } from "./achievements";
-import { AchievementType } from "./enums/AchievementType";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
+import { UnlockType } from "./enums/UnlockType";
 import { UnlockablePath } from "./enums/UnlockablePath";
 import { ALL_OBJECTIVES } from "./objectives";
-import type { Achievement } from "./types/Achievement";
-import { getAchievement, getAchievementText } from "./types/Achievement";
 import type { CharacterObjective, Objective } from "./types/Objective";
 import { getObjective, getObjectiveText } from "./types/Objective";
 import type { ObjectiveID } from "./types/ObjectiveID";
 import { getObjectiveID } from "./types/ObjectiveID";
+import type { Unlock } from "./types/Unlock";
+import { getUnlock, getUnlockText } from "./types/Unlock";
 import { UNLOCKABLE_CHARACTERS } from "./unlockableCharacters";
 
 /** These are the objectives that The Polaroid and The Negative are gated behind. */
@@ -69,9 +69,9 @@ const HARD_CHARACTERS = [
   PlayerType.LOST_B, // 31
 ] as const;
 
-export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Achievement> {
+export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
   // When an achievement/objective is assigned, it is added to the following map.
-  const objectiveToAchievementMap = new Map<ObjectiveID, Achievement>();
+  const objectiveToAchievementMap = new Map<ObjectiveID, Unlock>();
 
   const achievements = copyArray(ALL_ACHIEVEMENTS);
   const objectives = copyArray(ALL_OBJECTIVES);
@@ -79,7 +79,7 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Achievement> {
   // The Polaroid and The Negative are guaranteed to be unlocked via an easy objective for Isaac.
   const easyObjectiveKinds = copyArray(EASY_OBJECTIVE_KINDS);
   for (const unlockablePath of EASY_UNLOCKABLE_PATHS) {
-    const achievement = getAchievement(AchievementType.PATH, unlockablePath);
+    const achievement = getUnlock(UnlockType.PATH, unlockablePath);
     removeAchievement(achievements, achievement);
 
     const randomEasyObjectiveKind = getRandomArrayElementAndRemove(
@@ -102,7 +102,7 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Achievement> {
   // Each character is guaranteed to unlock another character from a basic objective.
   let lastUnlockedCharacter = PlayerType.ISAAC;
   for (const character of unlockableCharacters) {
-    const achievement = getAchievement(AchievementType.CHARACTER, character);
+    const achievement = getUnlock(UnlockType.CHARACTER, character);
     removeAchievement(achievements, achievement);
 
     const lastCharacterObjectives = objectives.filter(
@@ -156,10 +156,7 @@ function inSecondHalfOfArray<T>(element: T, array: T[]): boolean {
   return index > (array.length - 1) / 2;
 }
 
-function removeAchievement(
-  achievements: Achievement[],
-  achievement: Achievement,
-) {
+function removeAchievement(achievements: Unlock[], achievement: Unlock) {
   const index = getAchievementIndex(achievements, achievement);
   const matchingAchievement = achievements[index];
   assertDefined(
@@ -171,13 +168,13 @@ function removeAchievement(
 }
 
 function getAchievementIndex(
-  achievements: Achievement[],
-  achievementToMatch: Achievement,
+  achievements: Unlock[],
+  achievementToMatch: Unlock,
 ): int {
   let index: int;
 
   switch (achievementToMatch.type) {
-    case AchievementType.PATH: {
+    case UnlockType.PATH: {
       index = achievements.findIndex(
         (achievement) =>
           achievement.type === achievementToMatch.type &&
@@ -186,7 +183,7 @@ function getAchievementIndex(
       break;
     }
 
-    case AchievementType.CHARACTER: {
+    case UnlockType.CHARACTER: {
       index = achievements.findIndex(
         (achievement) =>
           achievement.type === achievementToMatch.type &&
@@ -198,14 +195,14 @@ function getAchievementIndex(
     default: {
       return error(
         `Unhandled matching logic for achievement type: ${
-          AchievementType[achievementToMatch.type]
+          UnlockType[achievementToMatch.type]
         }`,
       );
     }
   }
 
   if (index === -1) {
-    const text = getAchievementText(achievementToMatch);
+    const text = getUnlockText(achievementToMatch);
     error(`Failed to find the achievement in the array: ${text}`);
   }
 

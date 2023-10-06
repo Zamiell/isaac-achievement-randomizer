@@ -1,4 +1,4 @@
-export enum OtherAchievementKind {
+export enum OtherUnlockKind {
   BEDS,
 
   SHOPKEEPERS,
@@ -19,63 +19,63 @@ export enum OtherAchievementKind {
   REWARD_PLATES, // 20.1
 }
 
-export function getOtherAchievementName(
-  otherAchievementKind: OtherAchievementKind,
+export function getOtherUnlockName(
+  otherUnlockKind: OtherUnlockKind,
 ): [string, string] {
-  switch (otherAchievementKind) {
-    case OtherAchievementKind.BEDS: {
+  switch (otherUnlockKind) {
+    case OtherUnlockKind.BEDS: {
       return ["pickup", "Beds"];
     }
 
-    case OtherAchievementKind.SHOPKEEPERS: {
+    case OtherUnlockKind.SHOPKEEPERS: {
       return ["entity", "Shopkeepers"];
     }
 
-    case OtherAchievementKind.GOLD_TRINKETS: {
+    case OtherUnlockKind.GOLD_TRINKETS: {
       return ["trinket type", "Gold Trinkets"];
     }
 
-    case OtherAchievementKind.GOLD_PILLS: {
+    case OtherUnlockKind.GOLD_PILLS: {
       return ["pill type", "Gold Pills"];
     }
 
-    case OtherAchievementKind.HORSE_PILLS: {
+    case OtherUnlockKind.HORSE_PILLS: {
       return ["pill type", "Horse Pills"];
     }
 
-    case OtherAchievementKind.URNS: {
+    case OtherUnlockKind.URNS: {
       return ["grid entity", "Urns"];
     }
 
-    case OtherAchievementKind.MUSHROOMS: {
+    case OtherUnlockKind.MUSHROOMS: {
       return ["grid entity", "Mushrooms"];
     }
 
-    case OtherAchievementKind.SKULLS: {
+    case OtherUnlockKind.SKULLS: {
       return ["grid entity", "Skulls"];
     }
 
-    case OtherAchievementKind.POLYPS: {
+    case OtherUnlockKind.POLYPS: {
       return ["grid entity", "Polyps"];
     }
 
-    case OtherAchievementKind.GOLDEN_POOP: {
+    case OtherUnlockKind.GOLDEN_POOP: {
       return ["grid entity", "Golden Poop"];
     }
 
-    case OtherAchievementKind.RAINBOW_POOP: {
+    case OtherUnlockKind.RAINBOW_POOP: {
       return ["grid entity", "Rainbow Poop"];
     }
 
-    case OtherAchievementKind.BLACK_POOP: {
+    case OtherUnlockKind.BLACK_POOP: {
       return ["grid entity", "Black Poop"];
     }
 
-    case OtherAchievementKind.CHARMING_POOP: {
+    case OtherUnlockKind.CHARMING_POOP: {
       return ["grid entity", "Charming Poop"];
     }
 
-    case OtherAchievementKind.REWARD_PLATES: {
+    case OtherUnlockKind.REWARD_PLATES: {
       return ["grid entity", "Reward Plates"];
     }
   }

@@ -17,7 +17,7 @@ import {
   isPoopGridEntityXMLType,
   setGridEntityType,
 } from "isaacscript-common";
-import { OtherAchievementKind } from "../../enums/OtherAchievementKind";
+import { OtherUnlockKind } from "../../enums/OtherUnlockKind";
 import { UnlockablePath } from "../../enums/UnlockablePath";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
@@ -106,7 +106,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
     PressurePlateVariant.REWARD_PLATE,
   )
   postGridEntityInitRewardPlate(gridEntity: GridEntity): void {
-    if (!isOtherAchievementUnlocked(OtherAchievementKind.REWARD_PLATES)) {
+    if (!isOtherAchievementUnlocked(OtherUnlockKind.REWARD_PLATES)) {
       setGridEntityType(gridEntity, GridEntityType.ROCK);
     }
   }
@@ -192,7 +192,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
   preRoomEntitySpawnRewardPlate():
     | [type: EntityType | GridEntityXMLType, variant: int, subType: int]
     | undefined {
-    return isOtherAchievementUnlocked(OtherAchievementKind.REWARD_PLATES)
+    return isOtherAchievementUnlocked(OtherUnlockKind.REWARD_PLATES)
       ? undefined
       : [GridEntityXMLType.ROCK, 0, 0];
   }
@@ -200,22 +200,22 @@ export class GridEntityRemoval extends RandomizerModFeature {
 
 function rockAltTypeToAchievementKind(
   rockAltType: RockAltType,
-): OtherAchievementKind | undefined {
+): OtherUnlockKind | undefined {
   switch (rockAltType) {
     case RockAltType.URN: {
-      return OtherAchievementKind.URNS;
+      return OtherUnlockKind.URNS;
     }
 
     case RockAltType.MUSHROOM: {
-      return OtherAchievementKind.MUSHROOMS;
+      return OtherUnlockKind.MUSHROOMS;
     }
 
     case RockAltType.SKULL: {
-      return OtherAchievementKind.SKULLS;
+      return OtherUnlockKind.SKULLS;
     }
 
     case RockAltType.POLYP: {
-      return OtherAchievementKind.POLYPS;
+      return OtherUnlockKind.POLYPS;
     }
 
     case RockAltType.BUCKET_DOWNPOUR:
@@ -227,26 +227,26 @@ function rockAltTypeToAchievementKind(
 
 function poopGridEntityVariantToAchievementKind(
   poopGridEntityVariant: PoopGridEntityVariant,
-): OtherAchievementKind | undefined {
+): OtherUnlockKind | undefined {
   switch (poopGridEntityVariant) {
     // 3
     case PoopGridEntityVariant.GOLDEN: {
-      return OtherAchievementKind.GOLDEN_POOP;
+      return OtherUnlockKind.GOLDEN_POOP;
     }
 
     // 4
     case PoopGridEntityVariant.RAINBOW: {
-      return OtherAchievementKind.RAINBOW_POOP;
+      return OtherUnlockKind.RAINBOW_POOP;
     }
 
     // 5
     case PoopGridEntityVariant.BLACK: {
-      return OtherAchievementKind.BLACK_POOP;
+      return OtherUnlockKind.BLACK_POOP;
     }
 
     // 11
     case PoopGridEntityVariant.CHARMING: {
-      return OtherAchievementKind.CHARMING_POOP;
+      return OtherUnlockKind.CHARMING_POOP;
     }
 
     default: {

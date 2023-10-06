@@ -8,8 +8,8 @@ import {
   sfxManager,
 } from "isaacscript-common";
 import { SoundEffectCustom } from "../../enums/SoundEffectCustom";
-import type { Achievement } from "../../types/Achievement";
-import { getAchievementText } from "../../types/Achievement";
+import type { Unlock } from "../../types/Unlock";
+import { getUnlockText } from "../../types/Unlock";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 
 const FONT = fonts.droid;
@@ -107,8 +107,8 @@ export class AchievementNotification extends RandomizerModFeature {
   }
 }
 
-export function showNewAchievement(achievement: Achievement): void {
-  const achievementText = getAchievementText(achievement);
+export function showNewAchievement(achievement: Unlock): void {
+  const achievementText = getUnlockText(achievement);
   v.run.queuedTexts.push(
     `You have unlocked a new ${achievementText[0]}:\n${achievementText[1]}`,
   );
