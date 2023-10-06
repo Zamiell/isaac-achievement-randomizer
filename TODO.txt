@@ -1,6 +1,5 @@
 TODO:
 
-- remove eden's blessing probably
 - add icon like R+ icon on left UI
 - about.md TODO
 - refactor big file AchievementTracker
