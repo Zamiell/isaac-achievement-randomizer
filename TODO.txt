@@ -1,7 +1,5 @@
 TODO:
 
-- test TMTRAINER unlock early bug - 268365970
-
 - let more time pass per frame on black screen with visual progress updates
 
 - add icon like R+ icon on left UI

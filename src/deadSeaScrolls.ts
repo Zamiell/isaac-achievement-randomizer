@@ -7,7 +7,7 @@ import {
   endRandomizer,
   isValidSituationForStartingRandomizer,
   startRandomizer,
-} from "./classes/features/AchievementTracker";
+} from "./classes/features/AchievementRandomizer";
 import {
   getPlaythroughNumCompletedRuns,
   getPlaythroughNumDeaths,

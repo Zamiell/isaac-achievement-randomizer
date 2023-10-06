@@ -6,6 +6,7 @@ import {
   setTracebackFunctionsGlobal,
 } from "isaacscript-common";
 import { AchievementNotification } from "./classes/features/AchievementNotification";
+import { AchievementRandomizer } from "./classes/features/AchievementRandomizer";
 import { AchievementTracker } from "./classes/features/AchievementTracker";
 import { CheckErrors } from "./classes/features/CheckErrors";
 import { ChillRoom } from "./classes/features/ChillRoom";
@@ -39,6 +40,7 @@ import { validate } from "./validate";
 
 const MOD_FEATURES = [
   AchievementNotification,
+  AchievementRandomizer,
   AchievementTracker,
   CheckErrors,
   ChillRoom,

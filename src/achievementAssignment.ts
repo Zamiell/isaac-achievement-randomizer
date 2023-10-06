@@ -12,6 +12,7 @@ import {
   getRandomArrayElementAndRemove,
   shuffleArray,
 } from "isaacscript-common";
+import { STARTING_CHARACTER } from "./constants";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { UnlockType } from "./enums/UnlockType";
@@ -76,7 +77,8 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
   const unlocks = copyArray(ALL_UNLOCKS);
   const objectives = copyArray(ALL_OBJECTIVES);
 
-  // The Polaroid and The Negative are guaranteed to be unlocked via an easy objective for Isaac.
+  // The Polaroid and The Negative are guaranteed to be unlocked via an easy objective for the
+  // starting character.
   const easyObjectiveKinds = copyArray(EASY_OBJECTIVE_KINDS);
   for (const unlockablePath of EASY_UNLOCKABLE_PATHS) {
     const unlock = getUnlock(UnlockType.PATH, unlockablePath);
@@ -88,7 +90,7 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
     );
     const objective = getObjective(
       ObjectiveType.CHARACTER,
-      PlayerType.ISAAC,
+      STARTING_CHARACTER,
       randomEasyObjectiveKind,
     );
     removeObjective(objectives, objective);
@@ -100,7 +102,7 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
   const unlockableCharacters = getUnlockableCharacters(rng);
 
   // Each character is guaranteed to unlock another character from a basic objective.
-  let lastUnlockedCharacter = PlayerType.ISAAC;
+  let lastUnlockedCharacter = STARTING_CHARACTER;
   for (const character of unlockableCharacters) {
     const unlock = getUnlock(UnlockType.CHARACTER, character);
     removeUnlock(unlocks, unlock);

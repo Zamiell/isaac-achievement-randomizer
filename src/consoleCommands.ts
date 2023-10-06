@@ -14,10 +14,12 @@ import {
 import { RANDOMIZER_MODES } from "./cachedEnums";
 import {
   isValidSituationForStartingRandomizer,
+  startRandomizer,
+} from "./classes/features/AchievementRandomizer";
+import {
   logSpoilerLog,
   setCharacterUnlocked,
   setCollectibleUnlocked,
-  startRandomizer,
 } from "./classes/features/AchievementTracker";
 import { RandomizerMode } from "./enums/RandomizerMode";
 import { mod } from "./mod";
