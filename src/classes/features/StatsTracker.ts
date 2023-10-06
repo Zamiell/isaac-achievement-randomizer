@@ -6,7 +6,6 @@ import {
   PriorityCallback,
   game,
   newRNG,
-  onAnyChallenge,
   onChallenge,
   repeat,
 } from "isaacscript-common";
@@ -143,17 +142,4 @@ export function getRandomizerRunSeedString(): string | undefined {
 
   const startSeed = rng.GetSeed();
   return Seeds.Seed2String(startSeed);
-}
-
-export function isOnCorrectRandomizerSeed(): boolean {
-  // Unfortunately, we cannot play on set seeds inside of challenges.
-  if (onAnyChallenge()) {
-    return true;
-  }
-
-  const seeds = game.GetSeeds();
-  const startSeedString = seeds.GetStartSeedString();
-  const correctRunSeedString = getRandomizerRunSeedString();
-
-  return startSeedString === correctRunSeedString;
 }
