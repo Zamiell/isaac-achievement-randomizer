@@ -3,7 +3,7 @@ import { CallbackCustom, ModCallbackCustom } from "isaacscript-common";
 import { EffectVariantCustom } from "../../enums/EffectVariantCustom";
 import { OtherAchievementKind } from "../../enums/OtherAchievementKind";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { isOtherAchievementUnlocked } from "./AchievementTracker";
+import { isOtherAchievementUnlocked } from "./achievementTracker/completedAchievements";
 
 export class NPCRemoval extends RandomizerModFeature {
   @CallbackCustom(

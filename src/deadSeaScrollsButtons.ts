@@ -32,6 +32,8 @@ import {
   getCompletedAchievements,
   getCompletedObjectives,
   getReachableNonStoryBossesSet,
+} from "./classes/features/AchievementTracker";
+import {
   isAltFloorUnlocked,
   isBatterySubTypeUnlocked,
   isBombSubTypeUnlocked,
@@ -50,7 +52,7 @@ import {
   isSackSubTypeUnlocked,
   isSlotVariantUnlocked,
   isTrinketTypeUnlocked,
-} from "./classes/features/AchievementTracker";
+} from "./classes/features/achievementTracker/completedAchievements";
 import {
   isBossObjectiveCompleted,
   isChallengeObjectiveCompleted,

@@ -98,7 +98,7 @@ import {
   isPillEffectUnlocked,
   isSackSubTypeUnlocked,
   isTrinketTypeUnlocked,
-} from "./AchievementTracker";
+} from "./achievementTracker/completedAchievements";
 import { isAllCharacterObjectivesCompleted } from "./achievementTracker/completedObjectives";
 
 /** This feature handles removing all of the pickups from the game that are not unlocked yet. */

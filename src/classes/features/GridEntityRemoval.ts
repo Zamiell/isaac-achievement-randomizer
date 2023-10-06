@@ -24,7 +24,7 @@ import {
   isGridEntityTypeUnlocked,
   isOtherAchievementUnlocked,
   isPathUnlocked,
-} from "./AchievementTracker";
+} from "./achievementTracker/completedAchievements";
 
 const POOP_ANM2_PATH = "gfx/grid/grid_poop.anm2";
 

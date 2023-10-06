@@ -3,7 +3,7 @@ import { EntityType } from "isaac-typescript-definitions";
 import { CallbackCustom, ModCallbackCustom } from "isaacscript-common";
 import { EffectVariantCustom } from "../../enums/EffectVariantCustom";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { isSlotVariantUnlocked } from "./AchievementTracker";
+import { isSlotVariantUnlocked } from "./achievementTracker/completedAchievements";
 
 export class SlotRemoval extends RandomizerModFeature {
   @CallbackCustom(ModCallbackCustom.PRE_ENTITY_SPAWN_FILTER, EntityType.SLOT)
