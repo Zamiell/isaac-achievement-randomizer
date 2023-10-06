@@ -48,6 +48,7 @@ export class PreventSaveAndQuit extends RandomizerModFeature {
   postGameStartedReorderedTrue(): void {
     mod.runNextRenderFrame(() => {
       logError("Illegal save and quit detected. Restarting the run.");
+      /// preForcedRestart(); // TODO
       restart();
     });
   }

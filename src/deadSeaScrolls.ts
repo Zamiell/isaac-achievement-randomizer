@@ -77,6 +77,7 @@ import {
 import { getOtherAchievementName } from "./enums/OtherAchievementKind";
 import { RandomizerMode } from "./enums/RandomizerMode";
 import { getPathName } from "./enums/UnlockablePath";
+import type { DSSMod } from "./lib/dssmenucore";
 import { init } from "./lib/dssmenucore";
 import { mod } from "./mod";
 import { NO_HIT_BOSSES } from "./objectives";
@@ -305,21 +306,13 @@ export function initDeadSeaScrolls(): void {
         {
           str: "casual (full random)",
           func: () => {
-            // The DSS menu text will continue to be drawn on the screen on top of the "Loading"
-            // text from this mod. So, disable DSS until the next run.
-            DSSMod.setEnabled(false);
-
-            startRandomizer(RandomizerMode.CASUAL, undefined);
+            startRandomizerFromDSS(RandomizerMode.CASUAL, DSSMod);
           },
         },
         {
           str: "hardcore (logic)",
           func: () => {
-            // The DSS menu text will continue to be drawn on the screen on top of the "Loading"
-            // text from this mod. So, disable DSS until the next run.
-            DSSMod.setEnabled(false);
-
-            startRandomizer(RandomizerMode.HARDCORE, undefined);
+            startRandomizerFromDSS(RandomizerMode.HARDCORE, DSSMod);
           },
         },
       ],
@@ -897,6 +890,17 @@ export function initDeadSeaScrolls(): void {
   );
 
   DeadSeaScrollsMenu.AddMenu(MOD_NAME, settings);
+}
+
+function startRandomizerFromDSS(
+  randomizerMode: RandomizerMode,
+  dssMod: DSSMod,
+) {
+  // The DSS menu text will continue to be drawn on the screen on top of the "Loading" text from
+  // this mod. So, disable DSS until the next run.
+  dssMod.setEnabled(false);
+
+  startRandomizer(randomizerMode, undefined);
 }
 
 // -------
