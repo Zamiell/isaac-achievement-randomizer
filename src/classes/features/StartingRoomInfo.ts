@@ -13,7 +13,7 @@ import {
 import { VERSION } from "../../constants";
 import { ALL_UNLOCKS } from "../../unlocks";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { getNumCompletedAchievements } from "./AchievementTracker";
+import { getNumCompletedUnlocks } from "./AchievementTracker";
 import {
   getPlaythroughNumDeaths,
   getPlaythroughTimeElapsed,
@@ -89,7 +89,7 @@ export class StartingRoomInfo extends RandomizerModFeature {
 
     this.drawCenteredText("Achievements:", topRightPosition);
     this.drawCenteredText(
-      `${getNumCompletedAchievements()} / ${ALL_UNLOCKS.length}`,
+      `${getNumCompletedUnlocks()} / ${ALL_UNLOCKS.length}`,
       topRightPosition.add(Vector(0, 30)),
       K_COLORS.Green,
     );

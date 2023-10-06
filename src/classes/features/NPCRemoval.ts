@@ -3,7 +3,7 @@ import { CallbackCustom, ModCallbackCustom } from "isaacscript-common";
 import { EffectVariantCustom } from "../../enums/EffectVariantCustom";
 import { OtherUnlockKind } from "../../enums/OtherUnlockKind";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { isOtherAchievementUnlocked } from "./achievementTracker/completedAchievements";
+import { isOtherUnlockKindUnlocked } from "./achievementTracker/completedUnlocks";
 
 export class NPCRemoval extends RandomizerModFeature {
   @CallbackCustom(
@@ -21,7 +21,7 @@ export class NPCRemoval extends RandomizerModFeature {
   ):
     | [entityType: EntityType, variant: int, subType: int, initSeed: Seed]
     | undefined {
-    return isOtherAchievementUnlocked(OtherUnlockKind.SHOPKEEPERS)
+    return isOtherUnlockKindUnlocked(OtherUnlockKind.SHOPKEEPERS)
       ? undefined
       : [EntityType.EFFECT, EffectVariantCustom.INVISIBLE_EFFECT, 0, initSeed];
   }

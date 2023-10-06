@@ -22,9 +22,9 @@ import { UnlockablePath } from "../../enums/UnlockablePath";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   isGridEntityTypeUnlocked,
-  isOtherAchievementUnlocked,
+  isOtherUnlockKindUnlocked,
   isPathUnlocked,
-} from "./achievementTracker/completedAchievements";
+} from "./achievementTracker/completedUnlocks";
 
 const POOP_ANM2_PATH = "gfx/grid/grid_poop.anm2";
 
@@ -57,7 +57,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (isOtherAchievementUnlocked(achievementKind)) {
+    if (isOtherUnlockKindUnlocked(achievementKind)) {
       return;
     }
 
@@ -77,7 +77,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (isOtherAchievementUnlocked(achievementKind)) {
+    if (isOtherUnlockKindUnlocked(achievementKind)) {
       return;
     }
 
@@ -106,7 +106,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
     PressurePlateVariant.REWARD_PLATE,
   )
   postGridEntityInitRewardPlate(gridEntity: GridEntity): void {
-    if (!isOtherAchievementUnlocked(OtherUnlockKind.REWARD_PLATES)) {
+    if (!isOtherUnlockKindUnlocked(OtherUnlockKind.REWARD_PLATES)) {
       setGridEntityType(gridEntity, GridEntityType.ROCK);
     }
   }
@@ -145,7 +145,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
       return undefined;
     }
 
-    if (isOtherAchievementUnlocked(achievementKind)) {
+    if (isOtherUnlockKindUnlocked(achievementKind)) {
       return undefined;
     }
 
@@ -165,7 +165,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
       return undefined;
     }
 
-    if (isOtherAchievementUnlocked(achievementKind)) {
+    if (isOtherUnlockKindUnlocked(achievementKind)) {
       return undefined;
     }
 
@@ -192,7 +192,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
   preRoomEntitySpawnRewardPlate():
     | [type: EntityType | GridEntityXMLType, variant: int, subType: int]
     | undefined {
-    return isOtherAchievementUnlocked(OtherUnlockKind.REWARD_PLATES)
+    return isOtherUnlockKindUnlocked(OtherUnlockKind.REWARD_PLATES)
       ? undefined
       : [GridEntityXMLType.ROCK, 0, 0];
   }

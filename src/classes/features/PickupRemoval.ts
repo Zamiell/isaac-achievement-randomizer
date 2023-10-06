@@ -77,6 +77,7 @@ import {
   UNLOCKABLE_TRINKET_TYPES,
 } from "../../unlockableTrinketTypes";
 import { RandomizerModFeature } from "../RandomizerModFeature";
+import { isAllCharacterObjectivesCompleted } from "./achievementTracker/completedObjectives";
 import {
   anyCardTypesUnlocked,
   anyPillEffectsUnlocked,
@@ -94,12 +95,11 @@ import {
   isCollectibleTypeUnlocked,
   isHeartSubTypeUnlocked,
   isKeySubTypeUnlocked,
-  isOtherAchievementUnlocked,
+  isOtherUnlockKindUnlocked,
   isPillEffectUnlocked,
   isSackSubTypeUnlocked,
   isTrinketTypeUnlocked,
-} from "./achievementTracker/completedAchievements";
-import { isAllCharacterObjectivesCompleted } from "./achievementTracker/completedObjectives";
+} from "./achievementTracker/completedUnlocks";
 
 /** This feature handles removing all of the pickups from the game that are not unlocked yet. */
 export class PickupRemoval extends RandomizerModFeature {
@@ -384,7 +384,7 @@ export class PickupRemoval extends RandomizerModFeature {
         trinketType !== TrinketType.NULL &&
         (!isTrinketTypeUnlocked(trinketType) ||
           (isGoldenTrinketType(trinketType) &&
-            !isOtherAchievementUnlocked(OtherUnlockKind.GOLD_TRINKETS)) ||
+            !isOtherUnlockKindUnlocked(OtherUnlockKind.GOLD_TRINKETS)) ||
           BANNED_TRINKET_TYPES_SET.has(trinketType) ||
           isEden(player))
       ) {
@@ -603,14 +603,14 @@ export class PickupRemoval extends RandomizerModFeature {
 
     if (
       isGoldPill(pillColor) &&
-      !isOtherAchievementUnlocked(OtherUnlockKind.GOLD_PILLS)
+      !isOtherUnlockKindUnlocked(OtherUnlockKind.GOLD_PILLS)
     ) {
       return [PickupVariant.PILL, FIRST_PILL_COLOR];
     }
 
     if (
       isHorsePill(pillColor) &&
-      !isOtherAchievementUnlocked(OtherUnlockKind.HORSE_PILLS)
+      !isOtherUnlockKindUnlocked(OtherUnlockKind.HORSE_PILLS)
     ) {
       const normalPillColor = getNormalPillColorFromHorse(pillColor);
       return [PickupVariant.PILL, normalPillColor];
@@ -694,7 +694,7 @@ export class PickupRemoval extends RandomizerModFeature {
     unlockedTrinketTypes: TrinketType[],
   ): [PickupVariant, int] | undefined {
     const normalizedTrinketType = getNormalTrinketType(trinketType);
-    const goldTrinketsUnlocked = isOtherAchievementUnlocked(
+    const goldTrinketsUnlocked = isOtherUnlockKindUnlocked(
       OtherUnlockKind.GOLD_TRINKETS,
     );
 
@@ -729,7 +729,7 @@ export class PickupRemoval extends RandomizerModFeature {
     PickupVariant.BED, // 380
   )
   postPickupSelectionBed(): [PickupVariant, int] | undefined {
-    return isOtherAchievementUnlocked(OtherUnlockKind.BEDS)
+    return isOtherUnlockKindUnlocked(OtherUnlockKind.BEDS)
       ? undefined
       : [PickupVariant.COIN, CoinSubType.PENNY];
   }

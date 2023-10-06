@@ -5,7 +5,7 @@ import {
 } from "isaacscript-common";
 import {
   endRandomizer,
-  getNumCompletedAchievements,
+  getNumCompletedUnlocks,
   isValidSituationForStartingRandomizer,
   startRandomizer,
 } from "./classes/features/AchievementTracker";
@@ -678,10 +678,10 @@ export function initDeadSeaScrolls(): void {
       noCursor: true,
       buttons: [
         {
-          str: "achievements:",
+          str: "unlocks:",
         },
         {
-          str: () => `${getNumCompletedAchievements()} / ${ALL_UNLOCKS.length}`,
+          str: () => `${getNumCompletedUnlocks()} / ${ALL_UNLOCKS.length}`,
           colorSelect: true,
           noSel: true,
         },

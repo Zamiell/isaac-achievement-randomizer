@@ -32,7 +32,7 @@ import {
   isChallengeUnlocked,
   isCharacterUnlocked,
   isPathUnlocked,
-} from "./achievementTracker/completedAchievements";
+} from "./achievementTracker/completedUnlocks";
 import { isRandomizerEnabled } from "./achievementTracker/v";
 import { hasErrors, v } from "./checkErrors/v";
 

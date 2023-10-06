@@ -29,10 +29,15 @@ import {
 import {
   canGetToBoss,
   canGetToCharacterObjectiveKind,
-  getCompletedAchievements,
   getCompletedObjectives,
+  getCompletedUnlocks,
   getReachableNonStoryBossesSet,
 } from "./classes/features/AchievementTracker";
+import {
+  isBossObjectiveCompleted,
+  isChallengeObjectiveCompleted,
+  isCharacterObjectiveCompleted,
+} from "./classes/features/achievementTracker/completedObjectives";
 import {
   isAltFloorUnlocked,
   isBatterySubTypeUnlocked,
@@ -46,18 +51,13 @@ import {
   isGridEntityTypeUnlocked,
   isHeartSubTypeUnlocked,
   isKeySubTypeUnlocked,
-  isOtherAchievementUnlocked,
+  isOtherUnlockKindUnlocked,
   isPathUnlocked,
   isPillEffectUnlocked,
   isSackSubTypeUnlocked,
   isSlotVariantUnlocked,
   isTrinketTypeUnlocked,
-} from "./classes/features/achievementTracker/completedAchievements";
-import {
-  isBossObjectiveCompleted,
-  isChallengeObjectiveCompleted,
-  isCharacterObjectiveCompleted,
-} from "./classes/features/achievementTracker/completedObjectives";
+} from "./classes/features/achievementTracker/completedUnlocks";
 import { getAltFloorName } from "./enums/AltFloor";
 import {
   CharacterObjectiveKind,
@@ -93,13 +93,13 @@ import { UNLOCKABLE_TRINKET_TYPES } from "./unlockableTrinketTypes";
 // -------------
 
 export function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
-  const completedAchievements = getCompletedAchievements();
-  completedAchievements.reverse();
+  const completedUnlocks = getCompletedUnlocks();
+  completedUnlocks.reverse();
 
   const completedObjectives = getCompletedObjectives();
   completedObjectives.reverse();
 
-  if (completedAchievements.length === 0) {
+  if (completedUnlocks.length === 0) {
     return [
       {
         str: "no achievements",
@@ -113,10 +113,10 @@ export function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const i of iRange(10)) {
-    const achievement = completedAchievements[i];
+    const unlock = completedUnlocks[i];
     const objective = completedObjectives[i];
 
-    if (achievement === undefined || objective === undefined) {
+    if (unlock === undefined || objective === undefined) {
       continue;
     }
 
@@ -137,9 +137,9 @@ export function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
       str: "",
     });
 
-    const achievementText = getUnlockText(achievement);
+    const unlockText = getUnlockText(unlock);
 
-    for (const [j, line] of achievementText.entries()) {
+    for (const [j, line] of unlockText.entries()) {
       const str =
         j === 0 ? `unlocked ${line.toLowerCase()}:` : line.toLowerCase();
 
@@ -709,14 +709,14 @@ export function getOtherUnlockButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const otherUnlockKind of OTHER_UNLOCK_KINDS) {
-    const otherAchievementName =
+    const otherUnlockName =
       getOtherUnlockName(otherUnlockKind)[1].toLowerCase();
-    const completed = isOtherAchievementUnlocked(otherUnlockKind, false);
+    const completed = isOtherUnlockKindUnlocked(otherUnlockKind, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
       {
-        str: otherAchievementName,
+        str: otherUnlockName,
       },
       {
         str: completedText,

@@ -31,7 +31,7 @@ import {
 } from "isaacscript-common";
 import { UnlockablePath } from "../../enums/UnlockablePath";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { isPathUnlocked } from "./achievementTracker/completedAchievements";
+import { isPathUnlocked } from "./achievementTracker/completedUnlocks";
 
 const GRID_INDEX_BLOCKING_LADDER_TO_BLACK_MARKET = 86;
 

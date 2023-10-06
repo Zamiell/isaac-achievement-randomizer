@@ -14,8 +14,8 @@ export const v = {
     objectiveToUnlockMap: new Map<ObjectiveID, Unlock>(),
 
     completedObjectives: [] as Objective[],
-    completedAchievements: [] as Unlock[],
-    completedAchievementsForRun: [] as Unlock[],
+    completedUnlocks: [] as Unlock[],
+    completedUnlocksForRun: [] as Unlock[],
   },
 };
 

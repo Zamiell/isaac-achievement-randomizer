@@ -70,17 +70,17 @@ const HARD_CHARACTERS = [
 ] as const;
 
 export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
-  // When an achievement/objective is assigned, it is added to the following map.
-  const objectiveToAchievementMap = new Map<ObjectiveID, Unlock>();
+  // When an objective/unlock is assigned, it is added to the following map.
+  const objectiveToUnlockMap = new Map<ObjectiveID, Unlock>();
 
-  const achievements = copyArray(ALL_UNLOCKS);
+  const unlocks = copyArray(ALL_UNLOCKS);
   const objectives = copyArray(ALL_OBJECTIVES);
 
   // The Polaroid and The Negative are guaranteed to be unlocked via an easy objective for Isaac.
   const easyObjectiveKinds = copyArray(EASY_OBJECTIVE_KINDS);
   for (const unlockablePath of EASY_UNLOCKABLE_PATHS) {
-    const achievement = getUnlock(UnlockType.PATH, unlockablePath);
-    removeUnlock(achievements, achievement);
+    const unlock = getUnlock(UnlockType.PATH, unlockablePath);
+    removeUnlock(unlocks, unlock);
 
     const randomEasyObjectiveKind = getRandomArrayElementAndRemove(
       easyObjectiveKinds,
@@ -94,7 +94,7 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
     removeObjective(objectives, objective);
 
     const objectiveID = getObjectiveID(objective);
-    objectiveToAchievementMap.set(objectiveID, achievement);
+    objectiveToUnlockMap.set(objectiveID, unlock);
   }
 
   const unlockableCharacters = getUnlockableCharacters(rng);
@@ -102,8 +102,8 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
   // Each character is guaranteed to unlock another character from a basic objective.
   let lastUnlockedCharacter = PlayerType.ISAAC;
   for (const character of unlockableCharacters) {
-    const achievement = getUnlock(UnlockType.CHARACTER, character);
-    removeUnlock(achievements, achievement);
+    const unlock = getUnlock(UnlockType.CHARACTER, character);
+    removeUnlock(unlocks, unlock);
 
     const lastCharacterObjectives = objectives.filter(
       (objective) =>
@@ -115,19 +115,19 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
     removeObjective(objectives, objective);
 
     const objectiveID = getObjectiveID(objective);
-    objectiveToAchievementMap.set(objectiveID, achievement);
+    objectiveToUnlockMap.set(objectiveID, unlock);
 
     lastUnlockedCharacter = character;
   }
 
   // Now, do the rest of the unlocks with no restrictions.
-  for (const achievement of achievements) {
+  for (const unlock of unlocks) {
     const objective = getRandomArrayElementAndRemove(objectives, rng);
     const objectiveID = getObjectiveID(objective);
-    objectiveToAchievementMap.set(objectiveID, achievement);
+    objectiveToUnlockMap.set(objectiveID, unlock);
   }
 
-  return objectiveToAchievementMap;
+  return objectiveToUnlockMap;
 }
 
 /** Returns a shuffled array with certain character restrictions. */
@@ -158,11 +158,8 @@ function inSecondHalfOfArray<T>(element: T, array: T[]): boolean {
 
 function removeUnlock(unlocks: Unlock[], unlock: Unlock) {
   const index = getUnlockIndex(unlocks, unlock);
-  const matchingAchievement = unlocks[index];
-  assertDefined(
-    matchingAchievement,
-    `Failed to find the achievement at index: ${index}`,
-  );
+  const matchingUnlock = unlocks[index];
+  assertDefined(matchingUnlock, `Failed to find the unlock at index: ${index}`);
 
   arrayRemoveIndexInPlace(unlocks, index);
 }

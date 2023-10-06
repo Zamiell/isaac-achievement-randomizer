@@ -84,9 +84,9 @@ const GOOD_COLLECTIBLES = new ReadonlySet([
   CollectibleType.TMTRAINER, // 721 (quality 0)
 ]);
 
-// ---------------------------------
-// Achievement - Character functions
-// ---------------------------------
+// ----------------------------
+// Unlock - Character functions
+// ----------------------------
 
 export function isCharacterUnlocked(
   character: PlayerType,
@@ -97,48 +97,46 @@ export function isCharacterUnlocked(
   }
 
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.CHARACTER &&
-      achievement.character === character,
+    (unlock) =>
+      unlock.type === UnlockType.CHARACTER && unlock.character === character,
   );
 }
 
-// ----------------------------
-// Achievement - Path functions
-// ----------------------------
+// -----------------------
+// Unlock - Path functions
+// -----------------------
 
 export function isPathUnlocked(
   unlockablePath: UnlockablePath,
   forRun = true,
 ): boolean {
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.PATH &&
-      achievement.unlockablePath === unlockablePath,
+    (unlock) =>
+      unlock.type === UnlockType.PATH &&
+      unlock.unlockablePath === unlockablePath,
   );
 }
 
-// ---------------------------------
-// Achievement - Alt floor functions
-// ---------------------------------
+// ----------------------------
+// Unlock - Alt floor functions
+// ----------------------------
 
 export function isAltFloorUnlocked(altFloor: AltFloor, forRun = true): boolean {
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.ALT_FLOOR &&
-      achievement.altFloor === altFloor,
+    (unlock) =>
+      unlock.type === UnlockType.ALT_FLOOR && unlock.altFloor === altFloor,
   );
 }
 
@@ -154,9 +152,9 @@ export function isStageTypeUnlocked(
   return isAltFloorUnlocked(altFloor);
 }
 
-// ---------------------------------
-// Achievement - Challenge functions
-// ---------------------------------
+// ----------------------------
+// Unlock - Challenge functions
+// ----------------------------
 
 export function isChallengeUnlocked(
   challenge: Challenge,
@@ -167,19 +165,18 @@ export function isChallengeUnlocked(
   }
 
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.CHALLENGE &&
-      achievement.challenge === challenge,
+    (unlock) =>
+      unlock.type === UnlockType.CHALLENGE && unlock.challenge === challenge,
   );
 }
 
-// -----------------------------------
-// Achievement - Collectible functions
-// -----------------------------------
+// ------------------------------
+// Unlock - Collectible functions
+// ------------------------------
 
 export function isCollectibleTypeUnlocked(
   collectibleType: CollectibleType,
@@ -190,13 +187,13 @@ export function isCollectibleTypeUnlocked(
   }
 
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.COLLECTIBLE &&
-      achievement.collectibleType === collectibleType,
+    (unlock) =>
+      unlock.type === UnlockType.COLLECTIBLE &&
+      unlock.collectibleType === collectibleType,
   );
 }
 
@@ -224,10 +221,8 @@ export function getUnlockedEdenPassiveCollectibleTypes(): CollectibleType[] {
 }
 
 function getUnlockedCollectibleTypes(): CollectibleType[] {
-  return filterMap(v.persistent.completedAchievementsForRun, (achievement) =>
-    achievement.type === UnlockType.COLLECTIBLE
-      ? achievement.collectibleType
-      : undefined,
+  return filterMap(v.persistent.completedUnlocksForRun, (unlock) =>
+    unlock.type === UnlockType.COLLECTIBLE ? unlock.collectibleType : undefined,
   );
 }
 
@@ -275,16 +270,16 @@ export function getWorseLockedCollectibleType(
   return undefined;
 }
 
-// -------------------------------
-// Achievement - Trinket functions
-// -------------------------------
+// --------------------------
+// Unlock - Trinket functions
+// --------------------------
 
 export function anyTrinketTypesUnlocked(forRun = true): boolean {
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
-  return array.some((achievement) => achievement.type === UnlockType.TRINKET);
+  return array.some((unlock) => unlock.type === UnlockType.TRINKET);
 }
 
 export function isTrinketTypeUnlocked(
@@ -296,55 +291,50 @@ export function isTrinketTypeUnlocked(
   }
 
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.TRINKET &&
-      achievement.trinketType === trinketType,
+    (unlock) =>
+      unlock.type === UnlockType.TRINKET && unlock.trinketType === trinketType,
   );
 }
 
 export function getUnlockedTrinketTypes(): TrinketType[] {
-  return filterMap(v.persistent.completedAchievementsForRun, (achievement) =>
-    achievement.type === UnlockType.TRINKET
-      ? achievement.trinketType
-      : undefined,
+  return filterMap(v.persistent.completedUnlocksForRun, (unlock) =>
+    unlock.type === UnlockType.TRINKET ? unlock.trinketType : undefined,
   );
 }
 
-// ----------------------------
-// Achievement - Card functions
-// ----------------------------
+// -----------------------
+// Unlock - Card functions
+// -----------------------
 
 export function anyCardTypesUnlocked(forRun = true): boolean {
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
-  return array.some((achievement) => achievement.type === UnlockType.CARD);
+  return array.some((unlock) => unlock.type === UnlockType.CARD);
 }
 
 export function anyCardsUnlocked(forRun = true): boolean {
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.CARD && isCard(achievement.cardType),
+    (unlock) => unlock.type === UnlockType.CARD && isCard(unlock.cardType),
   );
 }
 
 export function anyRunesUnlocked(forRun = true): boolean {
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.CARD && isRune(achievement.cardType),
+    (unlock) => unlock.type === UnlockType.CARD && isRune(unlock.cardType),
   );
 }
 
@@ -354,57 +344,54 @@ export function isCardTypeUnlocked(cardType: CardType, forRun = true): boolean {
   }
 
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.CARD && achievement.cardType === cardType,
+    (unlock) => unlock.type === UnlockType.CARD && unlock.cardType === cardType,
   );
 }
 
 export function getUnlockedCardTypes(): CardType[] {
-  return filterMap(v.persistent.completedAchievementsForRun, (achievement) =>
-    achievement.type === UnlockType.CARD ? achievement.cardType : undefined,
+  return filterMap(v.persistent.completedUnlocksForRun, (unlock) =>
+    unlock.type === UnlockType.CARD ? unlock.cardType : undefined,
   );
 }
 
-// -----------------------------------
-// Achievement - Pill effect functions
-// -----------------------------------
+// ------------------------------
+// Unlock - Pill effect functions
+// ------------------------------
 
 export function anyPillEffectsUnlocked(forRun = true): boolean {
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
-  return array.some(
-    (achievement) => achievement.type === UnlockType.PILL_EFFECT,
-  );
+  return array.some((unlock) => unlock.type === UnlockType.PILL_EFFECT);
 }
 
 export function anyGoodPillEffectsUnlocked(forRun = true): boolean {
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.PILL_EFFECT &&
-      getPillEffectType(achievement.pillEffect) ===
+    (unlock) =>
+      unlock.type === UnlockType.PILL_EFFECT &&
+      getPillEffectType(unlock.pillEffect) ===
         ItemConfigPillEffectType.POSITIVE,
   );
 }
 
 export function anyBadPillEffectsUnlocked(forRun = true): boolean {
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.PILL_EFFECT &&
-      getPillEffectType(achievement.pillEffect) ===
+    (unlock) =>
+      unlock.type === UnlockType.PILL_EFFECT &&
+      getPillEffectType(unlock.pillEffect) ===
         ItemConfigPillEffectType.NEGATIVE,
   );
 }
@@ -414,21 +401,19 @@ export function isPillEffectUnlocked(
   forRun = true,
 ): boolean {
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.PILL_EFFECT &&
-      achievement.pillEffect === pillEffect,
+    (unlock) =>
+      unlock.type === UnlockType.PILL_EFFECT &&
+      unlock.pillEffect === pillEffect,
   );
 }
 
 export function getUnlockedPillEffects(): PillEffect[] {
-  return filterMap(v.persistent.completedAchievementsForRun, (achievement) =>
-    achievement.type === UnlockType.PILL_EFFECT
-      ? achievement.pillEffect
-      : undefined,
+  return filterMap(v.persistent.completedUnlocksForRun, (unlock) =>
+    unlock.type === UnlockType.PILL_EFFECT ? unlock.pillEffect : undefined,
   );
 }
 
@@ -492,9 +477,9 @@ function getWorseItemConfigPillEffectTypes(
   }
 }
 
-// ------------------------------------
-// Achievement - Other pickup functions
-// ------------------------------------
+// -------------------------------
+// Unlock - Other pickup functions
+// -------------------------------
 
 export function isHeartSubTypeUnlocked(
   heartSubType: HeartSubType,
@@ -505,13 +490,12 @@ export function isHeartSubTypeUnlocked(
   }
 
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.HEART &&
-      achievement.heartSubType === heartSubType,
+    (unlock) =>
+      unlock.type === UnlockType.HEART && unlock.heartSubType === heartSubType,
   );
 }
 
@@ -524,13 +508,12 @@ export function isCoinSubTypeUnlocked(
   }
 
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.COIN &&
-      achievement.coinSubType === coinSubType,
+    (unlock) =>
+      unlock.type === UnlockType.COIN && unlock.coinSubType === coinSubType,
   );
 }
 
@@ -543,13 +526,12 @@ export function isBombSubTypeUnlocked(
   }
 
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.BOMB &&
-      achievement.bombSubType === bombSubType,
+    (unlock) =>
+      unlock.type === UnlockType.BOMB && unlock.bombSubType === bombSubType,
   );
 }
 
@@ -562,13 +544,12 @@ export function isKeySubTypeUnlocked(
   }
 
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.KEY &&
-      achievement.keySubType === keySubType,
+    (unlock) =>
+      unlock.type === UnlockType.KEY && unlock.keySubType === keySubType,
   );
 }
 
@@ -581,13 +562,13 @@ export function isBatterySubTypeUnlocked(
   }
 
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.BATTERY &&
-      achievement.batterySubType === batterySubType,
+    (unlock) =>
+      unlock.type === UnlockType.BATTERY &&
+      unlock.batterySubType === batterySubType,
   );
 }
 
@@ -600,13 +581,12 @@ export function isSackSubTypeUnlocked(
   }
 
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.SACK &&
-      achievement.sackSubType === sackSubType,
+    (unlock) =>
+      unlock.type === UnlockType.SACK && unlock.sackSubType === sackSubType,
   );
 }
 
@@ -619,19 +599,19 @@ export function isChestPickupVariantUnlocked(
   }
 
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.CHEST &&
-      achievement.pickupVariant === pickupVariant,
+    (unlock) =>
+      unlock.type === UnlockType.CHEST &&
+      unlock.pickupVariant === pickupVariant,
   );
 }
 
-// ----------------------------
-// Achievement - Slot functions
-// ----------------------------
+// -----------------------
+// Unlock - Slot functions
+// -----------------------
 
 export function isSlotVariantUnlocked(
   slotVariant: SlotVariant,
@@ -642,19 +622,18 @@ export function isSlotVariantUnlocked(
   }
 
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.SLOT &&
-      achievement.slotVariant === slotVariant,
+    (unlock) =>
+      unlock.type === UnlockType.SLOT && unlock.slotVariant === slotVariant,
   );
 }
 
-// -----------------------------------
-// Achievement - Grid entity functions
-// -----------------------------------
+// ------------------------------
+// Unlock - Grid entity functions
+// ------------------------------
 
 export function isGridEntityTypeUnlocked(
   gridEntityType: GridEntityType,
@@ -665,31 +644,30 @@ export function isGridEntityTypeUnlocked(
   }
 
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.GRID_ENTITY &&
-      achievement.gridEntityType === gridEntityType,
+    (unlock) =>
+      unlock.type === UnlockType.GRID_ENTITY &&
+      unlock.gridEntityType === gridEntityType,
   );
 }
 
-// -----------------------------
-// Achievement - Other functions
-// -----------------------------
+// ------------------------
+// Unlock - Other functions
+// ------------------------
 
-export function isOtherAchievementUnlocked(
+export function isOtherUnlockKindUnlocked(
   otherUnlockKind: OtherUnlockKind,
   forRun = true,
 ): boolean {
   const array = forRun
-    ? v.persistent.completedAchievementsForRun
-    : v.persistent.completedAchievements;
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
 
   return array.some(
-    (achievement) =>
-      achievement.type === UnlockType.OTHER &&
-      achievement.kind === otherUnlockKind,
+    (unlock) =>
+      unlock.type === UnlockType.OTHER && unlock.kind === otherUnlockKind,
   );
 }

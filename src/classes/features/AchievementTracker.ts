@@ -87,6 +87,12 @@ import { ALL_UNLOCKS } from "../../unlocks";
 import { showNewAchievement } from "./AchievementNotification";
 import { preForcedRestart, resetStats } from "./StatsTracker";
 import {
+  getNonCompletedBossObjective,
+  isBossObjectiveCompleted,
+  isChallengeObjectiveCompleted,
+  isCharacterObjectiveCompleted,
+} from "./achievementTracker/completedObjectives";
+import {
   anyBadPillEffectsUnlocked,
   anyCardTypesUnlocked,
   anyCardsUnlocked,
@@ -111,13 +117,7 @@ import {
   isSackSubTypeUnlocked,
   isSlotVariantUnlocked,
   isStageTypeUnlocked,
-} from "./achievementTracker/completedAchievements";
-import {
-  getNonCompletedBossObjective,
-  isBossObjectiveCompleted,
-  isChallengeObjectiveCompleted,
-  isCharacterObjectiveCompleted,
-} from "./achievementTracker/completedObjectives";
+} from "./achievementTracker/completedUnlocks";
 import { isRandomizerEnabled, v } from "./achievementTracker/v";
 import { hasErrors } from "./checkErrors/v";
 
@@ -306,7 +306,7 @@ export class AchievementTracker extends ModFeature {
     generatingRNG = undefined;
 
     // Reset the persistent variable relating to our playthrough.
-    v.persistent.completedAchievements = [];
+    v.persistent.completedUnlocks = [];
     v.persistent.completedObjectives = [];
     resetStats();
     preForcedRestart();
@@ -325,8 +325,8 @@ export class AchievementTracker extends ModFeature {
       return;
     }
 
-    v.persistent.completedAchievementsForRun = copyArray(
-      v.persistent.completedAchievements,
+    v.persistent.completedUnlocksForRun = copyArray(
+      v.persistent.completedUnlocks,
     );
   }
 }
@@ -370,12 +370,12 @@ export function getCompletedObjectives(): Objective[] {
   return v.persistent.completedObjectives;
 }
 
-export function getCompletedAchievements(): Unlock[] {
-  return v.persistent.completedAchievements;
+export function getCompletedUnlocks(): Unlock[] {
+  return v.persistent.completedUnlocks;
 }
 
-export function getNumCompletedAchievements(): int {
-  return v.persistent.completedAchievements.length;
+export function getNumCompletedUnlocks(): int {
+  return v.persistent.completedUnlocks.length;
 }
 
 function getAchievementMatchingObjective(
@@ -453,7 +453,7 @@ export function addObjective(objective: Objective, emulating = false): void {
     getUnlockID(originalAchievement) !== getUnlockID(swappedAchievement)
   );
 
-  v.persistent.completedAchievements.push(swappedAchievement);
+  v.persistent.completedUnlocks.push(swappedAchievement);
 
   if (!emulating) {
     log(
@@ -462,7 +462,7 @@ export function addObjective(objective: Objective, emulating = false): void {
   }
 
   if (emulating) {
-    v.persistent.completedAchievementsForRun.push(swappedAchievement);
+    v.persistent.completedUnlocksForRun.push(swappedAchievement);
   } else {
     showNewAchievement(swappedAchievement);
   }
@@ -1329,10 +1329,10 @@ function findObjectiveForCollectibleAchievement(
 
 /** Emulate a player playing through this randomizer seed to see if every achievement can unlock. */
 function isAchievementsBeatable(): boolean {
-  v.persistent.completedAchievements = [];
+  v.persistent.completedUnlocks = [];
   v.persistent.completedObjectives = [];
 
-  while (v.persistent.completedAchievements.length < ALL_UNLOCKS.length) {
+  while (v.persistent.completedUnlocks.length < ALL_UNLOCKS.length) {
     let unlockedSomething = false;
 
     for (const character of MAIN_CHARACTERS) {
@@ -1382,7 +1382,7 @@ function isAchievementsBeatable(): boolean {
 
     if (!unlockedSomething) {
       log(
-        `Failed to emulate beating seed ${v.persistent.seed}: ${v.persistent.completedAchievements.length} / ${ALL_UNLOCKS.length}`,
+        `Failed to emulate beating seed ${v.persistent.seed}: ${v.persistent.completedUnlocks.length} / ${ALL_UNLOCKS.length}`,
       );
       // logMissingObjectives();
 

@@ -12,7 +12,7 @@ import {
 import { ChallengeCustom } from "../../enums/ChallengeCustom";
 import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { isStageTypeUnlocked } from "./achievementTracker/completedAchievements";
+import { isStageTypeUnlocked } from "./achievementTracker/completedUnlocks";
 import { hasErrors } from "./checkErrors/v";
 
 export class StageTypeRemoval extends RandomizerModFeature {
