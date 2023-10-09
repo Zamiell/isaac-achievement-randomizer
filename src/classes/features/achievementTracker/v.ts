@@ -31,6 +31,10 @@ export function getRandomizerMode(): RandomizerMode {
   return v.persistent.randomizerMode;
 }
 
+export function isHardcoreMode(): boolean {
+  return v.persistent.randomizerMode === RandomizerMode.HARDCORE;
+}
+
 export function getCompletedObjectives(): Objective[] {
   return v.persistent.completedObjectives;
 }

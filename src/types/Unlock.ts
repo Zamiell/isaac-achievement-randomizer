@@ -49,12 +49,12 @@ interface CharacterUnlock {
   character: PlayerType;
 }
 
-interface PathUnlock {
+export interface PathUnlock {
   type: UnlockType.PATH;
   unlockablePath: UnlockablePath;
 }
 
-interface AltFloorUnlock {
+export interface AltFloorUnlock {
   type: UnlockType.ALT_FLOOR;
   altFloor: AltFloor;
 }
@@ -64,27 +64,27 @@ interface RoomUnlock {
   roomType: RoomType;
 }
 
-interface ChallengeUnlock {
+export interface ChallengeUnlock {
   type: UnlockType.CHALLENGE;
   challenge: Challenge;
 }
 
-interface CollectibleUnlock {
+export interface CollectibleUnlock {
   type: UnlockType.COLLECTIBLE;
   collectibleType: CollectibleType;
 }
 
-interface TrinketUnlock {
+export interface TrinketUnlock {
   type: UnlockType.TRINKET;
   trinketType: TrinketType;
 }
 
-interface CardUnlock {
+export interface CardUnlock {
   type: UnlockType.CARD;
   cardType: CardType;
 }
 
-interface PillEffectUnlock {
+export interface PillEffectUnlock {
   type: UnlockType.PILL_EFFECT;
   pillEffect: PillEffect;
 }

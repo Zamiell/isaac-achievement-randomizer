@@ -22,7 +22,7 @@ export interface CharacterObjective {
   kind: CharacterObjectiveKind;
 }
 
-export interface BossObjective {
+interface BossObjective {
   type: ObjectiveType.BOSS;
   bossID: BossID;
 }

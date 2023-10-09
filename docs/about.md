@@ -238,7 +238,11 @@ Also note that:
 
 ### Cards & Runes (96)
 
-- Every card/rune in the game is locked (except for Rune Shard, which will never spawn). If no cards/runes are unlocked, they will be converted to pennies.
+- Every card/rune in the game is locked, with the following exceptions:
+  - Chaos Card (#42) (would trivialize difficult objectives)
+  - Rune Shard (#55)
+
+If no cards/runes are unlocked, they will be converted to pennies.
 
 ### Pill Effects (50)
 

@@ -19,7 +19,6 @@ TODO:
 
 - casual / hardcore
 - unlockable hearts/etc in order
-- pill effects unlock in sub-order
 
 ------------------------------
 
@@ -74,19 +73,20 @@ OTHER POTENTIAL UNLOCKS:
 
 - champions that drop items - https://bindingofisaacrebirth.fandom.com/wiki/Monsters#Champions
 - special rooms - https://bindingofisaacrebirth.fandom.com/wiki/Rooms
+  - Arcades
+  - Curse Rooms
+  - Libraries
+  - Sacrifice Rooms
+  - Planetariums
+
   - Mini-Boss Room
   - Treasure Rooms
-  - Planetariums
   - Shops
-  - Arcades
   - Challenge Rooms
   - Boss Challenge Room
-  - Curse Rooms
-  - Sacrifice Rooms
   - Secret Rooms
   - Super Secret Rooms
   - Ultra Secret Rooms
-  - Libraries
   - Vaults
   - Dice Rooms
   - Clean Bedrooms
