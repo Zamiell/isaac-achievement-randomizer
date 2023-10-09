@@ -20,13 +20,13 @@ import {
   getRandomSeed,
   getScreenBottomRightPos,
   getScreenCenterPos,
+  isBeforeRenderFrame,
   isRepentanceStage,
   isStoryBossID,
   log,
   newRNG,
   newSprite,
   onAnyChallenge,
-  onOrPastRenderFrame,
   restart,
   setRunSeed,
   setUnseeded,
@@ -114,7 +114,7 @@ export class AchievementRandomizer extends RandomizerModFeature {
       return;
     }
 
-    if (!onOrPastRenderFrame(renderFrameToTryGenerate)) {
+    if (isBeforeRenderFrame(renderFrameToTryGenerate)) {
       return;
     }
     renderFrameToTryGenerate = undefined;

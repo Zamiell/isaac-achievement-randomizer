@@ -54,6 +54,18 @@
   // work similar to other compiled languages like Golang or Rust.
   "typescript.tsserver.experimental.enableProjectDiagnostics": true,
 
+  // Prevent exported functions from TypeScript itself to show up in auto-complete.
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "**/node_modules/@types/node",
+    "**/node_modules/typescript/**",
+    "typescript",
+  ],
+  "javascript.preferences.autoImportFileExcludePatterns": [
+    "**/node_modules/@types/node",
+    "**/node_modules/typescript/**",
+    "typescript",
+  ],
+
   // Automatically run the formatter when certain files are saved.
   "[javascript]": {
     "editor.codeActionsOnSave": {
