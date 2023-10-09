@@ -154,9 +154,12 @@ export function isValidSituationForStartingRandomizer(): boolean {
 }
 
 export function startRandomizer(
-  _randomizerMode: RandomizerMode,
+  randomizerMode: RandomizerMode,
   seed: Seed | undefined,
 ): void {
+  v.persistent.randomizerMode = randomizerMode;
+  log(`Set new randomizer mode: ${v.persistent.randomizerMode}`);
+
   if (seed === undefined) {
     seed = getRandomSeed();
   }
