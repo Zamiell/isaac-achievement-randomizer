@@ -1,8 +1,5 @@
 TODO:
 
-- strange key behind blue womb
-- BIBLE_TRACT / eternal hearts logic
-
 - LOGIC:
   - Planetarium before any planetarium item
   - Library before any book
@@ -10,7 +7,6 @@ TODO:
   - Curse before any curse room item
 
 - optimize randomization algorithm, track completed things
-- refactor nested switch statements
 
 - let more time pass per frame on black screen with visual progress updates
 

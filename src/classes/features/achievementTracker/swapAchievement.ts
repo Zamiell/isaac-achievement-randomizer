@@ -508,6 +508,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   TrinketType,
   () => Unlock | undefined
 >([
+  // 18
+  [
+    TrinketType.BIBLE_TRACT,
+    () =>
+      isHeartSubTypeUnlocked(HeartSubType.ETERNAL)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.ETERNAL),
+  ],
+
   // 22
   [
     TrinketType.DAEMONS_TAIL,
@@ -563,6 +572,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
       isHeartSubTypeUnlocked(HeartSubType.BONE, false)
         ? undefined
         : getUnlock(UnlockType.HEART, HeartSubType.BONE),
+  ],
+
+  // 175
+  [
+    TrinketType.STRANGE_KEY,
+    () =>
+      isPathUnlocked(UnlockablePath.BLUE_WOMB)
+        ? undefined
+        : getUnlock(UnlockType.PATH, UnlockablePath.BLUE_WOMB),
   ],
 ]);
 
