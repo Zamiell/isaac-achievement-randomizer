@@ -12,7 +12,6 @@ const GOOD_COLLECTIBLES = new ReadonlySet([
   CollectibleType.CHOCOLATE_MILK, // 69 (quality 3)
   CollectibleType.BOOK_OF_REVELATIONS, // 78 (quality 3)
   CollectibleType.RELIC, // 98 (quality 3)
-  CollectibleType.GNAWED_LEAF, // 210 (quality 1)
   CollectibleType.CRICKETS_BODY, // 224 (quality 3)
   CollectibleType.MONSTROS_LUNG, // 229 (quality 2)
   CollectibleType.DEATHS_TOUCH, // 237 (quality 3)
@@ -24,7 +23,6 @@ const GOOD_COLLECTIBLES = new ReadonlySet([
   CollectibleType.ROCK_BOTTOM, // 562 (quality 3)
   CollectibleType.SPIRIT_SWORD, // 579 (quality 3)
   CollectibleType.ECHO_CHAMBER, // 700 (quality 3)
-  CollectibleType.TMTRAINER, // 721 (quality 0)
 ]);
 
 const ADJUSTED_QUALITY_TO_VANILLA_COLLECTIBLE_TYPES_MAP: ReadonlyMap<

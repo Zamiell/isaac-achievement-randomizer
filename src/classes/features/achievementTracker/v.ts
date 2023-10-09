@@ -27,6 +27,10 @@ export function getRandomizerSeed(): Seed | undefined {
   return v.persistent.seed ?? undefined;
 }
 
+export function getRandomizerMode(): RandomizerMode {
+  return v.persistent.randomizerMode;
+}
+
 export function getCompletedObjectives(): Objective[] {
   return v.persistent.completedObjectives;
 }

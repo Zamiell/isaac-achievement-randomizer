@@ -12,20 +12,20 @@ import {
   getRandomArrayElementAndRemove,
   shuffleArray,
 } from "isaacscript-common";
+import { ALL_OBJECTIVES } from "./arrays/objectives";
+import { UNLOCKABLE_CHARACTERS } from "./arrays/unlockableCharacters";
+import { ALL_UNLOCKS } from "./arrays/unlocks";
 import { STARTING_CHARACTER } from "./constants";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { UnlockType } from "./enums/UnlockType";
 import { UnlockablePath } from "./enums/UnlockablePath";
-import { ALL_OBJECTIVES } from "./objectives";
 import type { CharacterObjective, Objective } from "./types/Objective";
 import { getObjective, getObjectiveText } from "./types/Objective";
 import type { ObjectiveID } from "./types/ObjectiveID";
 import { getObjectiveID } from "./types/ObjectiveID";
 import type { Unlock } from "./types/Unlock";
 import { getUnlock, getUnlockText } from "./types/Unlock";
-import { UNLOCKABLE_CHARACTERS } from "./unlockableCharacters";
-import { ALL_UNLOCKS } from "./unlocks";
 
 /** These are the objectives that The Polaroid and The Negative are gated behind. */
 const EASY_OBJECTIVE_KINDS = [

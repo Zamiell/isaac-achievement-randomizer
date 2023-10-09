@@ -3,6 +3,7 @@ import {
   Callback,
   KColorDefault,
   K_COLORS,
+  capitalizeFirstLetter,
   fonts,
   game,
   inStartingRoom,
@@ -10,8 +11,8 @@ import {
   newSprite,
   onFirstFloor,
 } from "isaacscript-common";
-import { VERSION } from "../../constants";
-import { ALL_UNLOCKS } from "../../unlocks";
+import { version } from "../../../package.json";
+import { ALL_UNLOCKS } from "../../arrays/unlocks";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   getPlaythroughNumDeaths,
@@ -19,6 +20,7 @@ import {
 } from "./StatsTracker";
 import {
   getNumCompletedUnlocks,
+  getRandomizerMode,
   getRandomizerSeed,
 } from "./achievementTracker/v";
 import { hasErrors } from "./checkErrors/v";
@@ -82,7 +84,9 @@ export class StartingRoomInfo extends RandomizerModFeature {
     const bottomLeftPosition = room.GetGridPosition(78);
     const bottomRightPosition = room.GetGridPosition(86);
 
-    this.drawCenteredText("Randomizer seed:", topLeftPosition);
+    const randomizerMode = getRandomizerMode();
+    const modeText = capitalizeFirstLetter(randomizerMode);
+    this.drawCenteredText(`${modeText} seed:`, topLeftPosition);
     this.drawCenteredText(
       seed.toString(),
       topLeftPosition.add(Vector(0, 30)),
@@ -101,7 +105,7 @@ export class StartingRoomInfo extends RandomizerModFeature {
 
     this.drawCenteredText("Mod version:", centerPosition);
     this.drawCenteredText(
-      VERSION,
+      version,
       centerPosition.add(Vector(0, 30)),
       K_COLORS.Green,
     );

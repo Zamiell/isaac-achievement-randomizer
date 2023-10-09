@@ -4,9 +4,9 @@ import {
   OTHER_UNLOCK_KINDS,
   UNLOCKABLE_PATHS,
   UNLOCK_TYPES,
-} from "./cachedEnums";
-import { UnlockType } from "./enums/UnlockType";
-import type { Unlock } from "./types/Unlock";
+} from "../cachedEnums";
+import { UnlockType } from "../enums/UnlockType";
+import type { Unlock } from "../types/Unlock";
 import { UNLOCKABLE_CARD_TYPES } from "./unlockableCardTypes";
 import { UNLOCKABLE_CHALLENGES } from "./unlockableChallenges";
 import { UNLOCKABLE_CHARACTERS } from "./unlockableCharacters";
@@ -21,6 +21,7 @@ import {
   UNLOCKABLE_KEY_SUB_TYPES,
   UNLOCKABLE_SACK_KEY_SUB_TYPES,
 } from "./unlockablePickupTypes";
+import { UNLOCKABLE_ROOM_TYPES } from "./unlockableRoomTypes";
 import { UNLOCKABLE_SLOT_VARIANTS } from "./unlockableSlotVariants";
 import { UNLOCKABLE_TRINKET_TYPES } from "./unlockableTrinketTypes";
 
@@ -58,6 +59,18 @@ export const ALL_UNLOCKS: readonly Unlock[] = (() => {
           const unlock: Unlock = {
             type: UnlockType.ALT_FLOOR,
             altFloor,
+          };
+          unlocks.push(unlock);
+        }
+
+        break;
+      }
+
+      case UnlockType.ROOM: {
+        for (const roomType of UNLOCKABLE_ROOM_TYPES) {
+          const unlock: Unlock = {
+            type: UnlockType.ROOM,
+            roomType,
           };
           unlocks.push(unlock);
         }

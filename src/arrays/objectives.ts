@@ -4,9 +4,9 @@ import {
   BOSS_IDS,
   CHARACTER_OBJECTIVE_KINDS,
   OBJECTIVE_TYPES,
-} from "./cachedEnums";
-import { ObjectiveType } from "./enums/ObjectiveType";
-import type { Objective } from "./types/Objective";
+} from "../cachedEnums";
+import { ObjectiveType } from "../enums/ObjectiveType";
+import type { Objective } from "../types/Objective";
 import { UNLOCKABLE_CHALLENGES } from "./unlockableChallenges";
 
 /** @see about.md */

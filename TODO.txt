@@ -1,27 +1,93 @@
 TODO:
 
+- LOGIC:
+  - Planetarium before any planetarium item
+  - Library before any book
+  - Sacrifice before any angel item
+  - Curse before any curse room item
+
 - optimize randomization algorithm, track completed things
 - refactor nested switch statements
-- add READ MANUAL to hardcore selection
 
 - let more time pass per frame on black screen with visual progress updates
 
 - add icon like R+ icon on left UI
 - about.md TODO
 
-- spiked chests / mimics should / haunted chests should start unlocked
-- ban Eden's Blessing
-- pill effects unlock in sub-order
 - casual / hardcore
 - unlockable hearts/etc in order
-
-- version isn't showing on rebirth item tracker
+- pill effects unlock in sub-order
 
 ------------------------------
 
-OTHER POTENTIAL ACHIEVEMENTS:
+OTHER POTENTIAL UNLOCKS:
 - characters start with their items
-- champions that drop items
+  0) Isaac - D6
+  1) Magdalene - Yum Heart
+  2) Cain - Lucky Foot
+  3) Judas - Book of Belial
+  4) Blue Baby - The Poop
+  5) Eve - Whore of Babylon
+  5) Eve - Razor Blade
+  5) Eve - Dead Bird
+  6) Samson - Bloody Lust
+  8) Lazarus - Anemic
+  9) Eden - active item
+  9 Eden - passive item 1
+  9) Eden - passive item 2
+  10) The Lost - Eternal D6
+  13) Lilith - Box of Friends
+  13) Lilith - Cambion Conception
+  14) Keeper - Wooden Nickel
+  15) Apollyon - The Void
+  18) Bethany - Book of Virtues
+  22) Magdalene - Yum Heart
+  24) Judas - Dark Arts
+  26) Eve - Sumptorium
+  29) Tainted Lazarus - Flip
+  30) Eden - active item
+  30) Eden - passive item 1
+  30) Eden - passive item 2
+  34) Apollyon - Abyss
+  36) Bethany - Lemegeton
+  37) Tainted Jacob - Anima Sola
+  1) Magdalene - pill
+  6) Samson - Child's Heart
+  7) Azazel - The Fool card
+  8) Lazarus - pill
+  28) Azazel - The Fool card
+  31) The Lost - Holy Card
+  0) Isaac - 1 bomb
+  2) Cain - 1 key
+  3) Judas - 3 coins
+  10) The Lost - 1 coin
+  14) Keeper - 1 coin
+  14) Keeper - 1 bomb
+  21) Isaac - 1 bomb
+  23) Cain - 1 key
+  24) Judas - 3 coins
+  32) The Lost - 1 coin
+  33) Keeper - 1 bomb
+
+- champions that drop items - https://bindingofisaacrebirth.fandom.com/wiki/Monsters#Champions
+- special rooms - https://bindingofisaacrebirth.fandom.com/wiki/Rooms
+  - Mini-Boss Room
+  - Treasure Rooms
+  - Planetariums
+  - Shops
+  - Arcades
+  - Challenge Rooms
+  - Boss Challenge Room
+  - Curse Rooms
+  - Sacrifice Rooms
+  - Secret Rooms
+  - Super Secret Rooms
+  - Ultra Secret Rooms
+  - Libraries
+  - Vaults
+  - Dice Rooms
+  - Clean Bedrooms
+  - Dirty Bedrooms
 
 OTHER POTENTIAL OBJECTIVES:
 - [would need 288 objectives to reduce no damage objectives by half]

@@ -16,7 +16,6 @@ This page explains how it works.
 1. [Unlock List](#unlock-list)
 1. [Modes](#modes)
 1. [Other Features](#other-features)
-1. [F.A.Q.](#faq-frequently-asked-questions)
 
 <br>
 
@@ -126,7 +125,7 @@ Additionally, the following bosses are excluded entirely:
 
 ### Challenge-Based Objectives (45)
 
-There is one unlock for completing each challenge.
+There is one unlock for completing each challenge. (Except for "DELETE THIS", which is not included in the mod.)
 
 ### Total Objectives
 
@@ -180,7 +179,7 @@ There are 1054 + 99 + 45 = 1198 objectives in total.
 
 ### Challenges (45)
 
-All challenges start off locked.
+All challenges start off locked. (Except for "DELETE THIS", which is not included in the mod.)
 
 ### Collectibles (697)
 
@@ -208,10 +207,13 @@ Every collectible in the game is locked, with the following exceptions:
   - Damocles Passive (#656)
   - Recall (#714)
   - Hold (#715)
-- Banned collectibles in this mod:
-  - Plan C (#475) (would trivialize some difficult boss objectives)
-  - Clicker (#482) (would break harder character objectives)
-  - R Key (#636) (would trivialize some difficult objectives)
+- Banned collectibles (since they would potentially trivialize difficult objectives):
+  - Gnawed Leaf (#210)
+  - Eden's Blessing (#381)
+  - Plan C (#475)
+  - Clicker (#482)
+  - R Key (#636)
+  - TMTRAINER (#721)
 
 Also note that:
 
@@ -236,7 +238,7 @@ Also note that:
 
 ### Cards & Runes (96)
 
-Every card/rune in the game is locked (except for Rune Shard, which will never spawn). If no cards/runes are unlocked, they will be converted to pennies.
+- Every card/rune in the game is locked (except for Rune Shard, which will never spawn). If no cards/runes are unlocked, they will be converted to pennies.
 
 ### Pill Effects (50)
 
@@ -276,8 +278,9 @@ Every card/rune in the game is locked (except for Rune Shard, which will never s
 ### Miscellaneous (5)
 
 - The following other things start out locked:
-  - Beds
-  - Shopkeepers
+  - Beds (5.380)
+  - Shopkeepers (17)
+  - Blue Fireplaces (33.2)
   - Golden Trinkets
   - Gold Pills
   - Horse Pills
@@ -305,19 +308,45 @@ In hardcore mode, we want to prevent the situation where you unlock powerful ite
 - Collectibles, trinkets, cards, and pill effects will progressively unlock based on their quality classification. (75% of 0 quality items must unlock first before 1 quality items, and so on.)
   - Since trinkets and cards do not have a vanilla quality classification, a custom one is computed for this one.
 - Hearts will unlock in the following order:
-  - TODO
+  - Gold Heart
+  - Scared Heart
+  - Heart
+  - Rotten Heart
+  - Heart (double)
+  - Heart (half soul)
+  - Heart (soul)
+  - Black Heart
+  - Heart (eternal)
+  - Bone Heart
 - Coins will unlock in the following order:
-  - TODO
+  - Sticky Nickel
+  - Double Penny
+  - Nickel
+  - Dime
+  - Lucky Penny
+  - Golden Penny
 - Bombs will unlock in the following order:
-  - TODO
+  - Double Bomb
+  - Golden Bomb
 - Keys will unlock in the following order:
-  - TODO
+  - Charged Key
+  - Key Ring
+  - Golden Key
 - Batteries will unlock in the following order:
-  - TODO
+  - Micro Battery
+  - Lil' Battery
+  - Mega Battery
+  - Golden Battery
 - Sacks will unlock in the following order:
-  - TODO
+  - Grab Bag
+  - Black Sack
 - Chests will unlock in the following order:
-  - TODO
+  - Locked Chest
+  - Bomb Chest
+  - Red Chest
+  - Eternal Chest
+  - Wooden Chest
+  - Mega Chest
 
 <br>
 
@@ -341,13 +370,9 @@ Unlike the timer in Racing+, the timer in this mod tracks in-game time. Thus, th
 
 ### Donation Machine Removal
 
-- The mod removed all Donation Machines from the game in order to increase the difficulty and prevent individual runs from influencing each other.
+- The mod removed all Donation Machines from the game in order to increase the difficulty and prevent individual runs from influencing each other. (Eden's Blessing is removed from the game for the same reason.)
 - Greed Donation Machines are also removed because they serve no purpose in this mod.
-- Additionally, the Karma trinket is removed from the game because it would serve no purpose.
-
-### Eden TMTRAINER Handling
-
-In this mod, Eden can never start with TMTRAINER. (This is a quality of life fix for a convention taken from the Isaac streaking community, because starting TMTRAINER is unfair for streaking purposes. For example, a TMTRAINER collectible could have the effect of `when enemy dies --> spawn another enemy`, making the run impossible to complete.)
+- The Karma trinket is removed from the game because it would serve no purpose.
 
 ### Pause Prevention
 
@@ -393,19 +418,5 @@ The mod provides several custom [console commands](https://bindingofisaacrebirth
 
 - `achievementRandomizer [mode] [seed]` - Starts a new playthrough using the specified seed. For example: `achievementRandomizer hardcore 12345`
 - `spoilerLog` - Writes out a spoiler log to the "log.txt" file. Note that the unlocks may not be accurate, since the mod swaps an unlock if it detects that you should not get it yet.
-
-<br>
-
-### F.A.Q. (Frequently Asked Questions)
-
-#### Why don't special rooms (e.g. Planetariums, Libraries, etc.) start off locked?
-
-The modding API does not allow for modifying floors or influencing the floor generation. Thus, this is a technical limitation that is difficult to overcome.
-
-There are several workarounds to this problem, but we have decided to not implement them:
-
-- Reseeding - If a floor has a locked special floor, it is possible for mods to reseed the floor (i.e. generate a new floor from scratch). With this solution, we would keep reseeding the floor over and over until we found one that had special rooms that satisfied our unlock conditions. However, reseeding in this way is very laggy. It also prevents Dream Catcher from working properly. There is also no guarantee that a valid floor would ever be created (depending on the constraints of which special rooms are chosen to be in the unlock pool).
-- Door Removal & Minimap Removal - It is possible for mods to delete the doors to the room and delete the icon from the minimap, which gives the appearance of the special room not existing. However, it is still possible to teleport inside of the room with the Teleport collectible, Telepills, and so on. This could be handled by manually moving the player out of the room and then re-playing the appropriate teleport animation. The main problem with this approach is that the floor has less rooms than it is supposed to. In other words, in a hypothetical where a floor had 4 / 7 locked special rooms, then only 3 special rooms would appear on the map and the floor would feel empty.
-- Data Replacement - It is possible for mods to replace the room data for certain rooms after the floor has already been generated. However, this requires either caching every special room layout in the game in code, or spending time at first boot to manually insert the data for every special room in the game into memory, which would be very laggy. Both solutions are fairly terrible and the benefits of the feature would not outweigh the enormous complexity required.
 
 <br>

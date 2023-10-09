@@ -32,6 +32,9 @@ import {
   setUnseeded,
 } from "isaacscript-common";
 import { getAchievementsForRNG } from "../../achievementAssignment";
+import { ALL_OBJECTIVES, NO_HIT_BOSSES } from "../../arrays/objectives";
+import { UNLOCKABLE_CHALLENGES } from "../../arrays/unlockableChallenges";
+import { ALL_UNLOCKS } from "../../arrays/unlocks";
 import { CHARACTER_OBJECTIVE_KINDS, STAGE_TYPES } from "../../cachedEnums";
 import { STARTING_CHARACTER } from "../../constants";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
@@ -42,11 +45,8 @@ import {
   getUnlockablePathFromCharacterObjectiveKind,
   getUnlockablePathFromStoryBoss,
 } from "../../enums/UnlockablePath";
-import { ALL_OBJECTIVES, NO_HIT_BOSSES } from "../../objectives";
 import { getObjective, getObjectiveText } from "../../types/Objective";
 import { getObjectiveID } from "../../types/ObjectiveID";
-import { UNLOCKABLE_CHALLENGES } from "../../unlockableChallenges";
-import { ALL_UNLOCKS } from "../../unlocks";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { preForcedRestart, resetStats } from "./StatsTracker";
 import { addObjective } from "./achievementTracker/addObjective";

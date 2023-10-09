@@ -1,11 +1,11 @@
 import { log } from "isaacscript-common";
+import { ALL_OBJECTIVES } from "./arrays/objectives";
+import { ALL_UNLOCKS } from "./arrays/unlocks";
 import { OBJECTIVE_TYPES, UNLOCK_TYPES } from "./cachedEnums";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { UnlockType } from "./enums/UnlockType";
-import { ALL_OBJECTIVES } from "./objectives";
 import type { Objective } from "./types/Objective";
 import type { Unlock } from "./types/Unlock";
-import { ALL_UNLOCKS } from "./unlocks";
 
 export function validate(): void {
   if (ALL_OBJECTIVES.length === ALL_UNLOCKS.length) {
@@ -18,8 +18,12 @@ export function validate(): void {
   let errorText = `There were ${ALL_OBJECTIVES.length} total objectives and ${ALL_UNLOCKS.length} total unlocks. You need `;
   errorText +=
     ALL_OBJECTIVES.length > ALL_UNLOCKS.length
-      ? `${ALL_OBJECTIVES.length - ALL_UNLOCKS.length} more unlocks.`
-      : `${ALL_UNLOCKS.length - ALL_OBJECTIVES.length} more objectives.`;
+      ? `${ALL_OBJECTIVES.length - ALL_UNLOCKS.length} more unlock(s) or ${
+          ALL_OBJECTIVES.length - ALL_UNLOCKS.length
+        } less objective(s).`
+      : `${ALL_UNLOCKS.length - ALL_OBJECTIVES.length} more objective(s) or ${
+          ALL_UNLOCKS.length - ALL_OBJECTIVES.length
+        } less objective(s).`;
 
   error(errorText);
 }

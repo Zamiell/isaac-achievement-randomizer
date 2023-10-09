@@ -20,6 +20,26 @@ import {
   iRange,
   isOdd,
 } from "isaacscript-common";
+import { NO_HIT_BOSSES } from "./arrays/objectives";
+import { UNLOCKABLE_CARD_TYPES } from "./arrays/unlockableCardTypes";
+import { UNLOCKABLE_CHALLENGES } from "./arrays/unlockableChallenges";
+import { UNLOCKABLE_CHARACTERS } from "./arrays/unlockableCharacters";
+import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./arrays/unlockableCollectibleTypes";
+import {
+  UNLOCKABLE_GRID_ENTITY_TYPES,
+  getGridEntityName,
+} from "./arrays/unlockableGridEntityTypes";
+import {
+  UNLOCKABLE_BATTERY_SUB_TYPES,
+  UNLOCKABLE_BOMB_SUB_TYPES,
+  UNLOCKABLE_CHEST_PICKUP_VARIANTS,
+  UNLOCKABLE_COIN_SUB_TYPES,
+  UNLOCKABLE_HEART_SUB_TYPES,
+  UNLOCKABLE_KEY_SUB_TYPES,
+  UNLOCKABLE_SACK_KEY_SUB_TYPES,
+} from "./arrays/unlockablePickupTypes";
+import { UNLOCKABLE_SLOT_VARIANTS } from "./arrays/unlockableSlotVariants";
+import { UNLOCKABLE_TRINKET_TYPES } from "./arrays/unlockableTrinketTypes";
 import {
   ALT_FLOORS,
   CHARACTER_OBJECTIVE_KINDS,
@@ -67,28 +87,8 @@ import {
 } from "./enums/CharacterObjectiveKind";
 import { getOtherUnlockName } from "./enums/OtherUnlockKind";
 import { getPathName } from "./enums/UnlockablePath";
-import { NO_HIT_BOSSES } from "./objectives";
 import { getObjectiveText } from "./types/Objective";
 import { getUnlockText } from "./types/Unlock";
-import { UNLOCKABLE_CARD_TYPES } from "./unlockableCardTypes";
-import { UNLOCKABLE_CHALLENGES } from "./unlockableChallenges";
-import { UNLOCKABLE_CHARACTERS } from "./unlockableCharacters";
-import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./unlockableCollectibleTypes";
-import {
-  UNLOCKABLE_GRID_ENTITY_TYPES,
-  getGridEntityName,
-} from "./unlockableGridEntityTypes";
-import {
-  UNLOCKABLE_BATTERY_SUB_TYPES,
-  UNLOCKABLE_BOMB_SUB_TYPES,
-  UNLOCKABLE_CHEST_PICKUP_VARIANTS,
-  UNLOCKABLE_COIN_SUB_TYPES,
-  UNLOCKABLE_HEART_SUB_TYPES,
-  UNLOCKABLE_KEY_SUB_TYPES,
-  UNLOCKABLE_SACK_KEY_SUB_TYPES,
-} from "./unlockablePickupTypes";
-import { UNLOCKABLE_SLOT_VARIANTS } from "./unlockableSlotVariants";
-import { UNLOCKABLE_TRINKET_TYPES } from "./unlockableTrinketTypes";
 
 // -------------
 // Miscellaneous

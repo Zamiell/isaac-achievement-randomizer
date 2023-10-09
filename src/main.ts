@@ -5,6 +5,7 @@ import {
   setLogFunctionsGlobal,
   setTracebackFunctionsGlobal,
 } from "isaacscript-common";
+import { version } from "../package.json";
 import { AchievementNotification } from "./classes/features/AchievementNotification";
 import { AchievementRandomizer } from "./classes/features/AchievementRandomizer";
 import { AchievementTracker } from "./classes/features/AchievementTracker";
@@ -68,7 +69,7 @@ const MOD_FEATURES = [
 ] as const;
 
 export function main(): void {
-  log(`${MOD_NAME} initialized.`);
+  welcomeBanner();
 
   validate();
 
@@ -88,4 +89,13 @@ export function main(): void {
   initDeadSeaScrolls();
   initModFeatures(mod, MOD_FEATURES);
   initConsoleCommands();
+}
+
+function welcomeBanner() {
+  const welcomeText = `${MOD_NAME} ${version} initialized.`;
+  const hyphens = "-".repeat(welcomeText.length);
+  const welcomeTextBorder = `+-${hyphens}-+`;
+  log(welcomeTextBorder);
+  log(`| ${welcomeText} |`);
+  log(welcomeTextBorder);
 }

@@ -9,8 +9,8 @@ import {
   log,
   logError,
 } from "isaacscript-common";
+import { ALL_OBJECTIVES } from "../../arrays/objectives";
 import { UnlockType } from "../../enums/UnlockType";
-import { ALL_OBJECTIVES } from "../../objectives";
 import type { Objective } from "../../types/Objective";
 import { getObjectiveFromID, getObjectiveText } from "../../types/Objective";
 import { getObjectiveID } from "../../types/ObjectiveID";

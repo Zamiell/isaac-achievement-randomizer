@@ -22,6 +22,10 @@ export function getUnlockID(unlock: Unlock): UnlockID {
       return `${unlock.type}.${unlock.altFloor}` as UnlockID;
     }
 
+    case UnlockType.ROOM: {
+      return `${unlock.type}.${unlock.roomType}` as UnlockID;
+    }
+
     case UnlockType.CHALLENGE: {
       return `${unlock.type}.${unlock.challenge}` as UnlockID;
     }

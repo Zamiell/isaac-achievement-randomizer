@@ -3,10 +3,10 @@ import type {
   Challenge,
   PlayerType,
 } from "isaac-typescript-definitions";
+import { NO_HIT_BOSSES } from "../../../arrays/objectives";
 import { CHARACTER_OBJECTIVE_KINDS } from "../../../cachedEnums";
 import type { CharacterObjectiveKind } from "../../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../../enums/ObjectiveType";
-import { NO_HIT_BOSSES } from "../../../objectives";
 import type { BossObjective, Objective } from "../../../types/Objective";
 import { v } from "./v";
 

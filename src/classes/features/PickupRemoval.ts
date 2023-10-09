@@ -60,22 +60,22 @@ import {
   setPlayerHealth,
   sfxManager,
 } from "isaacscript-common";
-import { POCKET_ITEM_SLOTS, TRINKET_SLOTS } from "../../cachedEnums";
-import { MOD_NAME } from "../../constants";
-import { OtherUnlockKind } from "../../enums/OtherUnlockKind";
-import { mod } from "../../mod";
 import {
   BANNED_COLLECTIBLE_TYPES,
   BANNED_COLLECTIBLE_TYPES_SET,
   NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS_SET,
   QUEST_COLLECTIBLE_TYPES_SET,
   UNLOCKABLE_COLLECTIBLE_TYPES,
-} from "../../unlockableCollectibleTypes";
+} from "../../arrays/unlockableCollectibleTypes";
 import {
   BANNED_TRINKET_TYPES,
   BANNED_TRINKET_TYPES_SET,
   UNLOCKABLE_TRINKET_TYPES,
-} from "../../unlockableTrinketTypes";
+} from "../../arrays/unlockableTrinketTypes";
+import { POCKET_ITEM_SLOTS, TRINKET_SLOTS } from "../../cachedEnums";
+import { MOD_NAME } from "../../constants";
+import { OtherUnlockKind } from "../../enums/OtherUnlockKind";
+import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { isAllCharacterObjectivesCompleted } from "./achievementTracker/completedObjectives";
 import {

@@ -3,6 +3,7 @@ import {
   assertDefined,
   getCharacterName,
 } from "isaacscript-common";
+import { ALL_UNLOCKS } from "./arrays/unlocks";
 import {
   endRandomizer,
   isValidSituationForStartingRandomizer,
@@ -49,7 +50,6 @@ import { RandomizerMode } from "./enums/RandomizerMode";
 import type { DSSMod } from "./lib/dssmenucore";
 import { init } from "./lib/dssmenucore";
 import { mod } from "./mod";
-import { ALL_UNLOCKS } from "./unlocks";
 
 const DSS_CHOICES = ["disabled", "enabled"] as const;
 
@@ -249,19 +249,41 @@ export function initDeadSeaScrolls(): void {
 
     selectMode: {
       title: "select mode",
-      fSize: 2,
       buttons: [
         {
-          str: "casual (full random)",
+          str: "casual",
           func: () => {
             startRandomizerFromDSS(RandomizerMode.CASUAL, DSSMod);
           },
         },
         {
-          str: "hardcore (logic)",
+          str: "(full random)",
+          noSel: true,
+          fSize: 2,
+        },
+        {
+          str: "",
+          noSel: true,
+        },
+        {
+          str: "hardcore",
           func: () => {
             startRandomizerFromDSS(RandomizerMode.HARDCORE, DSSMod);
           },
+        },
+        {
+          str: "(progressive unlocks)",
+          noSel: true,
+          fSize: 2,
+        },
+        {
+          str: "",
+          noSel: true,
+        },
+        {
+          str: "[read the manual for more info.]",
+          noSel: true,
+          fSize: 1,
         },
       ],
     },

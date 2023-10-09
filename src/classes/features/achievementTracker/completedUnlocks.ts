@@ -4,6 +4,7 @@ import type {
   CardType,
   Challenge,
   CoinSubType,
+  CollectibleType,
   GridEntityType,
   HeartSubType,
   KeySubType,
@@ -17,7 +18,6 @@ import type {
   TrinketType,
 } from "isaac-typescript-definitions";
 import {
-  CollectibleType,
   ItemConfigPillEffectType,
   ItemConfigTag,
 } from "isaac-typescript-definitions";
@@ -36,16 +36,11 @@ import {
   isPassiveOrFamiliarCollectible,
   isRune,
 } from "isaacscript-common";
-import type { AltFloor } from "../../../enums/AltFloor";
-import { getAltFloor } from "../../../enums/AltFloor";
-import type { OtherUnlockKind } from "../../../enums/OtherUnlockKind";
-import { UnlockType } from "../../../enums/UnlockType";
-import type { UnlockablePath } from "../../../enums/UnlockablePath";
-import { UNLOCKABLE_CARD_TYPES } from "../../../unlockableCardTypes";
-import { UNLOCKABLE_CHALLENGES } from "../../../unlockableChallenges";
-import { UNLOCKABLE_CHARACTERS } from "../../../unlockableCharacters";
-import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../../unlockableCollectibleTypes";
-import { UNLOCKABLE_GRID_ENTITY_TYPES } from "../../../unlockableGridEntityTypes";
+import { UNLOCKABLE_CARD_TYPES } from "../../../arrays/unlockableCardTypes";
+import { UNLOCKABLE_CHALLENGES } from "../../../arrays/unlockableChallenges";
+import { UNLOCKABLE_CHARACTERS } from "../../../arrays/unlockableCharacters";
+import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../../arrays/unlockableCollectibleTypes";
+import { UNLOCKABLE_GRID_ENTITY_TYPES } from "../../../arrays/unlockableGridEntityTypes";
 import {
   UNLOCKABLE_BATTERY_SUB_TYPES,
   UNLOCKABLE_BOMB_SUB_TYPES,
@@ -54,9 +49,14 @@ import {
   UNLOCKABLE_HEART_SUB_TYPES,
   UNLOCKABLE_KEY_SUB_TYPES,
   UNLOCKABLE_SACK_KEY_SUB_TYPES,
-} from "../../../unlockablePickupTypes";
-import { UNLOCKABLE_SLOT_VARIANTS } from "../../../unlockableSlotVariants";
-import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../../unlockableTrinketTypes";
+} from "../../../arrays/unlockablePickupTypes";
+import { UNLOCKABLE_SLOT_VARIANTS } from "../../../arrays/unlockableSlotVariants";
+import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../../arrays/unlockableTrinketTypes";
+import type { AltFloor } from "../../../enums/AltFloor";
+import { getAltFloor } from "../../../enums/AltFloor";
+import type { OtherUnlockKind } from "../../../enums/OtherUnlockKind";
+import { UnlockType } from "../../../enums/UnlockType";
+import type { UnlockablePath } from "../../../enums/UnlockablePath";
 import {
   getAdjustedCollectibleQuality,
   getAdjustedCollectibleTypesOfQuality,
@@ -196,8 +196,7 @@ export function getUnlockedEdenPassiveCollectibleTypes(): CollectibleType[] {
     (collectibleType) =>
       !isHiddenCollectible(collectibleType) &&
       !collectibleHasTag(collectibleType, ItemConfigTag.NO_EDEN) &&
-      isPassiveOrFamiliarCollectible(collectibleType) &&
-      collectibleType !== CollectibleType.TMTRAINER,
+      isPassiveOrFamiliarCollectible(collectibleType),
   );
 }
 

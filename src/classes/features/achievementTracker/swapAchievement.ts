@@ -27,13 +27,10 @@ import {
   UnlockablePath,
   getUnlockablePathFromStoryBoss,
 } from "../../../enums/UnlockablePath";
-import type { Objective } from "../../../types/Objective";
 import { getObjectiveFromID, getObjectiveText } from "../../../types/Objective";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
-import { getObjectiveID } from "../../../types/ObjectiveID";
 import type { Unlock } from "../../../types/Unlock";
 import { getUnlock, getUnlockText } from "../../../types/Unlock";
-import { getNonCompletedBossObjective } from "./completedObjectives";
 import {
   anyBadPillEffectsUnlocked,
   anyCardTypesUnlocked,
@@ -160,9 +157,6 @@ const CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP = new ReadonlyMap<
 
   // 44
   [Challenge.RED_REDEMPTION, [CollectibleType.RED_KEY]],
-
-  // 45
-  [Challenge.DELETE_THIS, [CollectibleType.TMTRAINER]],
 ]);
 
 export function checkSwapProblematicAchievement(
@@ -352,21 +346,6 @@ function getSwappedUnlock(unlock: Unlock): Unlock | undefined {
         case CollectibleType.HUMBLING_BUNDLE: {
           if (!isCoinSubTypeUnlocked(CoinSubType.DOUBLE_PACK, false)) {
             return getUnlock(UnlockType.COIN, CoinSubType.DOUBLE_PACK);
-          }
-
-          return undefined;
-        }
-
-        // 210
-        case CollectibleType.GNAWED_LEAF: {
-          const nonCompletedBossObjective = getNonCompletedBossObjective();
-          if (nonCompletedBossObjective !== undefined) {
-            const matchingUnlock = getUnlockMatchingObjective(
-              nonCompletedBossObjective,
-            );
-            if (matchingUnlock !== undefined) {
-              return matchingUnlock;
-            }
           }
 
           return undefined;
@@ -773,6 +752,10 @@ function findObjectiveIDForUnlock(
         break;
       }
 
+      case UnlockType.ROOM: {
+        break;
+      }
+
       case UnlockType.CHALLENGE: {
         if (
           unlock.type === unlockToMatch.type &&
@@ -937,18 +920,6 @@ function findObjectiveIDForUnlock(
 
         break;
       }
-    }
-  }
-
-  return undefined;
-}
-
-function getUnlockMatchingObjective(objective: Objective): Unlock | undefined {
-  const objectiveID = getObjectiveID(objective);
-
-  for (const [thisObjectiveID, unlock] of v.persistent.objectiveToUnlockMap) {
-    if (thisObjectiveID === objectiveID) {
-      return unlock;
     }
   }
 

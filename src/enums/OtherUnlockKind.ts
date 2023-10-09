@@ -1,7 +1,8 @@
 export enum OtherUnlockKind {
   BEDS,
-
   SHOPKEEPERS,
+  BLUE_FIREPLACES,
+
   GOLD_TRINKETS,
   GOLD_PILLS,
   HORSE_PILLS,
@@ -29,6 +30,10 @@ export function getOtherUnlockName(
 
     case OtherUnlockKind.SHOPKEEPERS: {
       return ["entity", "Shopkeepers"];
+    }
+
+    case OtherUnlockKind.BLUE_FIREPLACES: {
+      return ["entity", "Blue Fireplaces"];
     }
 
     case OtherUnlockKind.GOLD_TRINKETS: {

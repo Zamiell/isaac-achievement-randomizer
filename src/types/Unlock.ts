@@ -11,6 +11,7 @@ import type {
   PickupVariant,
   PillEffect,
   PlayerType,
+  RoomType,
   SackSubType,
   SlotVariant,
   TrinketType,
@@ -28,10 +29,13 @@ import {
   getHeartName,
   getKeyName,
   getPillEffectName,
+  getRoomTypeName,
   getSackName,
   getSlotName,
   getTrinketName,
 } from "isaacscript-common";
+import type { UNLOCKABLE_GRID_ENTITY_TYPES } from "../arrays/unlockableGridEntityTypes";
+import { getGridEntityName } from "../arrays/unlockableGridEntityTypes";
 import type { AltFloor } from "../enums/AltFloor";
 import { getAltFloorName } from "../enums/AltFloor";
 import type { OtherUnlockKind } from "../enums/OtherUnlockKind";
@@ -39,8 +43,6 @@ import { getOtherUnlockName } from "../enums/OtherUnlockKind";
 import { UnlockType } from "../enums/UnlockType";
 import type { UnlockablePath } from "../enums/UnlockablePath";
 import { getPathName } from "../enums/UnlockablePath";
-import type { UNLOCKABLE_GRID_ENTITY_TYPES } from "../unlockableGridEntityTypes";
-import { getGridEntityName } from "../unlockableGridEntityTypes";
 
 interface CharacterUnlock {
   type: UnlockType.CHARACTER;
@@ -55,6 +57,11 @@ interface PathUnlock {
 interface AltFloorUnlock {
   type: UnlockType.ALT_FLOOR;
   altFloor: AltFloor;
+}
+
+interface RoomUnlock {
+  type: UnlockType.ROOM;
+  roomType: RoomType;
 }
 
 interface ChallengeUnlock {
@@ -136,6 +143,7 @@ export type Unlock =
   | CharacterUnlock
   | PathUnlock
   | AltFloorUnlock
+  | RoomUnlock
   | ChallengeUnlock
   | CollectibleUnlock
   | TrinketUnlock
@@ -166,6 +174,10 @@ export function getUnlock(
   type: UnlockType.ALT_FLOOR,
   altFloor: AltFloor,
 ): AltFloorUnlock;
+export function getUnlock(
+  type: UnlockType.ROOM,
+  roomType: RoomType,
+): RoomUnlock;
 export function getUnlock(
   type: UnlockType.CHALLENGE,
   challenge: Challenge,
@@ -246,6 +258,13 @@ export function getUnlock(type: UnlockType, arg: int): Unlock {
       return {
         type,
         altFloor: arg,
+      };
+    }
+
+    case UnlockType.ROOM: {
+      return {
+        type,
+        roomType: arg,
       };
     }
 
@@ -368,6 +387,10 @@ export function getUnlockText(unlock: Unlock): [string, string] {
 
     case UnlockType.ALT_FLOOR: {
       return ["floor", getAltFloorName(unlock.altFloor)];
+    }
+
+    case UnlockType.ROOM: {
+      return ["room type", getRoomTypeName(unlock.roomType)];
     }
 
     case UnlockType.CHALLENGE: {
