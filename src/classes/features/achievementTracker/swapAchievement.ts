@@ -97,7 +97,7 @@ export function checkSwapProblematicAchievement(
     swappedObjectiveID,
     `Failed to find the objective ID for swapped unlock: ${getUnlockText(
       swappedUnlock,
-    )}`,
+    ).join(" - ")}`,
   );
 
   v.persistent.objectiveToUnlockMap.set(objectiveID, swappedUnlock);
@@ -807,6 +807,13 @@ function findObjectiveIDForUnlock(
       }
 
       case UnlockType.ROOM: {
+        if (
+          unlock.type === unlockToMatch.type &&
+          unlock.roomType === unlockToMatch.roomType
+        ) {
+          return objectiveID;
+        }
+
         break;
       }
 

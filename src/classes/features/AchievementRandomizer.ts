@@ -76,7 +76,6 @@ const BOSS_STAGES = [
 let generatingRNG: RNG | undefined;
 let renderFrameToTryGenerate: int | undefined;
 let numGenerationAttempts = 0;
-let numValidationIterations = 0;
 
 /**
  * This does the actual randomization after the player selects a starting seed for the playthrough
@@ -104,7 +103,7 @@ export class AchievementRandomizer extends RandomizerModFeature {
     const aboveCenterY = screenCenterPos.Y - 10;
     FONT.DrawString(text1, 0, aboveCenterY, KColorDefault, rightX, true);
 
-    const text2 = `(attempt #${numGenerationAttempts}, iteration #${numValidationIterations})`;
+    const text2 = `(attempt #${numGenerationAttempts})`;
     const belowCenterY = screenCenterPos.Y + 10;
     FONT.DrawString(text2, 0, belowCenterY, KColorDefault, rightX, true);
   }
@@ -194,11 +193,7 @@ function isAchievementsBeatable(): boolean {
   v.persistent.completedUnlocks = [];
   v.persistent.completedObjectives = [];
 
-  numValidationIterations = 0;
-
   while (v.persistent.completedUnlocks.length < ALL_UNLOCKS.length) {
-    numValidationIterations++;
-
     const unlockedSomething = tryUnlockEverythingReachable();
     if (!unlockedSomething) {
       log(
