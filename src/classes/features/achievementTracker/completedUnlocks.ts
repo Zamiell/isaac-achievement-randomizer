@@ -665,14 +665,6 @@ export function isChestPickupVariantUnlocked(
 // Unlock - Slot functions
 // -----------------------
 
-export function anySlotVariantUnlocked(forRun = true): boolean {
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
-
-  return array.some((unlock) => unlock.type === UnlockType.SLOT);
-}
-
 export function isSlotVariantUnlocked(
   slotVariant: SlotVariant,
   forRun = true,
