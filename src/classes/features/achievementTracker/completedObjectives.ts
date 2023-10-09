@@ -3,11 +3,10 @@ import type {
   Challenge,
   PlayerType,
 } from "isaac-typescript-definitions";
-import { NO_HIT_BOSSES } from "../../../arrays/objectives";
 import { CHARACTER_OBJECTIVE_KINDS } from "../../../cachedEnums";
 import type { CharacterObjectiveKind } from "../../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../../enums/ObjectiveType";
-import type { BossObjective, Objective } from "../../../types/Objective";
+import type { Objective } from "../../../types/Objective";
 import { v } from "./v";
 
 // -------
@@ -82,27 +81,6 @@ export function isBossObjectiveCompleted(bossID: BossID): boolean {
     (objective) =>
       objective.type === ObjectiveType.BOSS && objective.bossID === bossID,
   );
-}
-
-export function getNonCompletedBossObjective(): BossObjective | undefined {
-  const completedBossObjectives = v.persistent.completedObjectives.filter(
-    (objective) => objective.type === ObjectiveType.BOSS,
-  ) as BossObjective[];
-  const completedBossIDs = completedBossObjectives.map(
-    (objective) => objective.bossID,
-  );
-  const completedBossIDsSet = new Set(completedBossIDs);
-
-  for (const bossID of NO_HIT_BOSSES) {
-    if (!completedBossIDsSet.has(bossID)) {
-      return {
-        type: ObjectiveType.BOSS,
-        bossID,
-      };
-    }
-  }
-
-  return undefined;
 }
 
 // -------------------------------

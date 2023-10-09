@@ -57,10 +57,14 @@ import { getAltFloor } from "../../../enums/AltFloor";
 import type { OtherUnlockKind } from "../../../enums/OtherUnlockKind";
 import { UnlockType } from "../../../enums/UnlockType";
 import type { UnlockablePath } from "../../../enums/UnlockablePath";
+import { CARD_QUALITIES } from "../../../objects/cardQualities";
+import { TRINKET_QUALITIES } from "../../../objects/trinketQualities";
+import { getCardTypesOfQuality } from "./cardQuality";
 import {
   getAdjustedCollectibleQuality,
   getAdjustedCollectibleTypesOfQuality,
 } from "./collectibleQuality";
+import { getTrinketTypesOfQuality } from "./trinketQuality";
 import { v } from "./v";
 
 const QUALITY_THRESHOLD_PERCENT = 0.75;
@@ -283,6 +287,46 @@ export function getUnlockedTrinketTypes(): TrinketType[] {
   );
 }
 
+export function getWorseLockedTrinketType(
+  trinketType: TrinketType,
+): TrinketType | undefined {
+  assertNotNull(
+    v.persistent.seed,
+    "Failed to get a worse trinket type since the seed was null.",
+  );
+
+  const quality = TRINKET_QUALITIES[trinketType];
+
+  for (const lowerQualityInt of eRange(quality)) {
+    const lowerQuality = lowerQualityInt as Quality;
+    const lowerQualityTrinketTypes = getTrinketTypesOfQuality(lowerQuality);
+    const unlockedLowerQualityTrinketTypes = [
+      ...lowerQualityTrinketTypes,
+    ].filter((lowerQualityTrinketType) =>
+      isTrinketTypeUnlocked(lowerQualityTrinketType, false),
+    );
+
+    if (
+      unlockedLowerQualityTrinketTypes.length <
+      lowerQualityTrinketTypes.size * QUALITY_THRESHOLD_PERCENT
+    ) {
+      const lockedLowerQualityTrinketTypes = [
+        ...lowerQualityTrinketTypes,
+      ].filter(
+        (lowerQualityTrinketType) =>
+          !isTrinketTypeUnlocked(lowerQualityTrinketType, false),
+      );
+
+      return getRandomArrayElement(
+        lockedLowerQualityTrinketTypes,
+        v.persistent.seed,
+      );
+    }
+  }
+
+  return undefined;
+}
+
 // -----------------------
 // Unlock - Card functions
 // -----------------------
@@ -333,6 +377,42 @@ export function getUnlockedCardTypes(): CardType[] {
   return filterMap(v.persistent.completedUnlocksForRun, (unlock) =>
     unlock.type === UnlockType.CARD ? unlock.cardType : undefined,
   );
+}
+
+export function getWorseLockedCardType(
+  cardType: CardType,
+): CardType | undefined {
+  assertNotNull(
+    v.persistent.seed,
+    "Failed to get a worse card type since the seed was null.",
+  );
+
+  const quality = CARD_QUALITIES[cardType];
+
+  for (const lowerQualityInt of eRange(quality)) {
+    const lowerQuality = lowerQualityInt as Quality;
+    const lowerQualityCardTypes = getCardTypesOfQuality(lowerQuality);
+    const unlockedLowerQualityCardTypes = [...lowerQualityCardTypes].filter(
+      (lowerQualityCardType) => isCardTypeUnlocked(lowerQualityCardType, false),
+    );
+
+    if (
+      unlockedLowerQualityCardTypes.length <
+      lowerQualityCardTypes.size * QUALITY_THRESHOLD_PERCENT
+    ) {
+      const lockedLowerQualityCardTypes = [...lowerQualityCardTypes].filter(
+        (lowerQualityCardType) =>
+          !isCardTypeUnlocked(lowerQualityCardType, false),
+      );
+
+      return getRandomArrayElement(
+        lockedLowerQualityCardTypes,
+        v.persistent.seed,
+      );
+    }
+  }
+
+  return undefined;
 }
 
 // ------------------------------
@@ -402,7 +482,6 @@ export function getWorseLockedPillEffect(
     "Failed to get a worse pill effect since the seed was null.",
   );
 
-  // Some collectibles result in a won run and should be treated as maximum quality.
   const pillEffectType = getPillEffectType(pillEffect);
   const worsePillEffectTypes =
     getWorseItemConfigPillEffectTypes(pillEffectType);

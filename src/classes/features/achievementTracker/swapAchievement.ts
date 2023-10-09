@@ -39,8 +39,10 @@ import {
   anyPillEffectsUnlocked,
   anyRunesUnlocked,
   anyTrinketTypesUnlocked,
+  getWorseLockedCardType,
   getWorseLockedCollectibleType,
   getWorseLockedPillEffect,
+  getWorseLockedTrinketType,
   isAltFloorUnlocked,
   isBatterySubTypeUnlocked,
   isBombSubTypeUnlocked,
@@ -513,6 +515,12 @@ function getSwappedUnlock(unlock: Unlock): Unlock | undefined {
     }
 
     case UnlockType.TRINKET: {
+      // First, check to see if there is a worse trinket available to unlock.
+      const worseTrinketType = getWorseLockedTrinketType(unlock.trinketType);
+      if (worseTrinketType !== undefined) {
+        return getUnlock(UnlockType.TRINKET, worseTrinketType);
+      }
+
       switch (unlock.trinketType) {
         // 22
         case TrinketType.DAEMONS_TAIL: {
@@ -586,6 +594,12 @@ function getSwappedUnlock(unlock: Unlock): Unlock | undefined {
     }
 
     case UnlockType.CARD: {
+      // First, check to see if there is a worse trinket available to unlock.
+      const worseCardType = getWorseLockedCardType(unlock.cardType);
+      if (worseCardType !== undefined) {
+        return getUnlock(UnlockType.CARD, worseCardType);
+      }
+
       switch (unlock.cardType) {
         // 6
         case CardType.HIEROPHANT: {
