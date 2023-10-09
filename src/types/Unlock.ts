@@ -59,7 +59,7 @@ export interface AltFloorUnlock {
   altFloor: AltFloor;
 }
 
-export interface RoomUnlock {
+interface RoomUnlock {
   type: UnlockType.ROOM;
   roomType: RoomType;
 }
