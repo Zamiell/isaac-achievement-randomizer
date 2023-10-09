@@ -499,7 +499,7 @@ function getSwappedUnlockCollectible(unlock: Unlock): Unlock | undefined {
   // 10
   if (
     CURSE_ROOM_COLLECTIBLES.has(collectibleUnlock.collectibleType) &&
-    !isRoomTypeUnlocked(RoomType.CURSE)
+    !isRoomTypeUnlocked(RoomType.CURSE, false)
   ) {
     return getUnlock(UnlockType.ROOM, RoomType.CURSE);
   }
@@ -507,7 +507,7 @@ function getSwappedUnlockCollectible(unlock: Unlock): Unlock | undefined {
   // 12
   if (
     collectibleHasTag(collectibleUnlock.collectibleType, ItemConfigTag.BOOK) &&
-    !isRoomTypeUnlocked(RoomType.LIBRARY)
+    !isRoomTypeUnlocked(RoomType.LIBRARY, false)
   ) {
     return getUnlock(UnlockType.ROOM, RoomType.LIBRARY);
   }
@@ -515,7 +515,7 @@ function getSwappedUnlockCollectible(unlock: Unlock): Unlock | undefined {
   // 13
   if (
     ANGEL_ROOM_COLLECTIBLES.has(collectibleUnlock.collectibleType) &&
-    !isRoomTypeUnlocked(RoomType.SACRIFICE)
+    !isRoomTypeUnlocked(RoomType.SACRIFICE, false)
   ) {
     return getUnlock(UnlockType.ROOM, RoomType.SACRIFICE);
   }
@@ -523,7 +523,7 @@ function getSwappedUnlockCollectible(unlock: Unlock): Unlock | undefined {
   // 24
   if (
     PLANETARIUM_COLLECTIBLES.has(collectibleUnlock.collectibleType) &&
-    !isRoomTypeUnlocked(RoomType.PLANETARIUM)
+    !isRoomTypeUnlocked(RoomType.PLANETARIUM, false)
   ) {
     return getUnlock(UnlockType.ROOM, RoomType.PLANETARIUM);
   }
