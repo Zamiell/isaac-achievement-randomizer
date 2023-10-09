@@ -1,7 +1,5 @@
 TODO:
 
-- prevent typescript imports, probably because of "import typescript" plugin
-  - https://github.com/microsoft/TypeScript/issues/55111
 - optimize randomization algorithm, track completed things
 - refactor nested switch statements
 - add READ MANUAL to hardcore selection
