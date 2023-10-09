@@ -305,12 +305,12 @@ In casual mode, things will mostly unlock in a completely random order, with som
 
 This mode can make a randomizer playthrough extremely easy, because if your first unlock is an extremely powerful item (e.g. Mom's Knife), then each subsequent run will be trivialized (until the item pool is sufficiently diluted). If you want a challenge, do not play on this mode.
 
-### 2) Hardcore Mode (Logic)
+### 2) Hardcore Mode (Progressive Unlocks)
 
 In hardcore mode, we want to prevent the situation where you unlock powerful items early on in your playthrough.
 
-- Collectibles, trinkets, cards, and pill effects will progressively unlock based on their quality classification. (75% of 0 quality items must unlock first before 1 quality items, and so on.)
-  - Since trinkets and cards do not have a vanilla quality classification, a custom one is computed for this one.
+- Collectibles, trinkets, cards, and pill effects will progressively unlock based on their quality classification. (50% of 0 quality items must unlock first before 1 quality items, and so on.)
+  - Since trinkets and cards do not have vanilla quality classifications, custom qualities are computed.
 - Hearts will unlock in the following order:
   - Gold Heart
   - Scared Heart

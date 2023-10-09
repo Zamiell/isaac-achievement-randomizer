@@ -7,8 +7,10 @@ import {
   CollectibleType,
   GridEntityType,
   HeartSubType,
+  ItemConfigTag,
   PickupVariant,
   PillEffect,
+  RoomType,
   SackSubType,
   SlotVariant,
   TrinketType,
@@ -16,6 +18,7 @@ import {
 import {
   ReadonlyMap,
   assertDefined,
+  collectibleHasTag,
   getChallengeBoss,
   getChallengeCharacter,
   log,
@@ -27,6 +30,9 @@ import {
   UnlockablePath,
   getUnlockablePathFromStoryBoss,
 } from "../../../enums/UnlockablePath";
+import { ANGEL_ROOM_COLLECTIBLES } from "../../../sets/angelRoomCollectibles";
+import { CURSE_ROOM_COLLECTIBLES } from "../../../sets/curseRoomCollectibles";
+import { PLANETARIUM_COLLECTIBLES } from "../../../sets/planetariumCollectibles";
 import { getObjectiveFromID, getObjectiveText } from "../../../types/Objective";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
 import type {
@@ -63,6 +69,7 @@ import {
   isGridEntityTypeUnlocked,
   isHeartSubTypeUnlocked,
   isPathUnlocked,
+  isRoomTypeUnlocked,
   isSackSubTypeUnlocked,
   isSlotVariantUnlocked,
 } from "./completedUnlocks";
@@ -121,6 +128,7 @@ const SWAPPED_UNLOCK_FUNCTIONS = new ReadonlyMap<
   [UnlockType.TRINKET, getSwappedUnlockTrinket],
   [UnlockType.CARD, getSwappedUnlockCard],
   [UnlockType.PILL_EFFECT, getSwappedUnlockPillEffect],
+  [UnlockType.SLOT, getSwappedUnlockSlot],
 ]);
 
 function getSwappedUnlock(unlock: Unlock): Unlock | undefined {
@@ -488,7 +496,38 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
 function getSwappedUnlockCollectible(unlock: Unlock): Unlock | undefined {
   const collectibleUnlock = unlock as CollectibleUnlock;
 
-  // First, check to see if there is a worse collectible available to unlock.
+  // 10
+  if (
+    CURSE_ROOM_COLLECTIBLES.has(collectibleUnlock.collectibleType) &&
+    !isRoomTypeUnlocked(RoomType.CURSE)
+  ) {
+    return getUnlock(UnlockType.ROOM, RoomType.CURSE);
+  }
+
+  // 12
+  if (
+    collectibleHasTag(collectibleUnlock.collectibleType, ItemConfigTag.BOOK) &&
+    !isRoomTypeUnlocked(RoomType.LIBRARY)
+  ) {
+    return getUnlock(UnlockType.ROOM, RoomType.LIBRARY);
+  }
+
+  // 13
+  if (
+    ANGEL_ROOM_COLLECTIBLES.has(collectibleUnlock.collectibleType) &&
+    !isRoomTypeUnlocked(RoomType.SACRIFICE)
+  ) {
+    return getUnlock(UnlockType.ROOM, RoomType.SACRIFICE);
+  }
+
+  // 24
+  if (
+    PLANETARIUM_COLLECTIBLES.has(collectibleUnlock.collectibleType) &&
+    !isRoomTypeUnlocked(RoomType.PLANETARIUM)
+  ) {
+    return getUnlock(UnlockType.ROOM, RoomType.PLANETARIUM);
+  }
+
   if (isHardcoreMode()) {
     const worseCollectibleType = getWorseLockedCollectibleType(
       collectibleUnlock.collectibleType,
@@ -587,7 +626,6 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
 function getSwappedUnlockTrinket(unlock: Unlock): Unlock | undefined {
   const trinketUnlock = unlock as TrinketUnlock;
 
-  // First, check to see if there is a worse trinket available to unlock.
   if (isHardcoreMode()) {
     const worseTrinketType = getWorseLockedTrinketType(
       trinketUnlock.trinketType,
@@ -696,7 +734,6 @@ const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<
 function getSwappedUnlockCard(unlock: Unlock): Unlock | undefined {
   const cardUnlock = unlock as CardUnlock;
 
-  // First, check to see if there is a worse trinket available to unlock.
   if (isHardcoreMode()) {
     const worseCardType = getWorseLockedCardType(cardUnlock.cardType);
     if (worseCardType !== undefined) {
@@ -711,7 +748,6 @@ function getSwappedUnlockCard(unlock: Unlock): Unlock | undefined {
 function getSwappedUnlockPillEffect(unlock: Unlock): Unlock | undefined {
   const pillEffectUnlock = unlock as PillEffectUnlock;
 
-  // First, check to see if there is a worse pill effect to unlock.
   if (isHardcoreMode()) {
     const worsePillEffect = getWorseLockedPillEffect(
       pillEffectUnlock.pillEffect,
@@ -722,6 +758,12 @@ function getSwappedUnlockPillEffect(unlock: Unlock): Unlock | undefined {
   }
 
   return undefined;
+}
+
+function getSwappedUnlockSlot(): Unlock | undefined {
+  return isRoomTypeUnlocked(RoomType.ARCADE, false)
+    ? undefined
+    : getUnlock(UnlockType.ROOM, RoomType.ARCADE);
 }
 
 function findObjectiveIDForUnlock(

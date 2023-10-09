@@ -12,6 +12,7 @@ import type {
   PickupVariant,
   PillEffect,
   PlayerType,
+  RoomType,
   SackSubType,
   SlotVariant,
   StageType,
@@ -68,7 +69,7 @@ import { getPillEffectsOfQuality } from "./pillEffectQuality";
 import { getTrinketTypesOfQuality } from "./trinketQuality";
 import { v } from "./v";
 
-const QUALITY_THRESHOLD_PERCENT = 0.75;
+const QUALITY_THRESHOLD_PERCENT = 0.5;
 
 // ----------------------------
 // Unlock - Character functions
@@ -136,6 +137,20 @@ export function isStageTypeUnlocked(
   }
 
   return isAltFloorUnlocked(altFloor);
+}
+
+// -----------------------
+// Unlock - Room functions
+// -----------------------
+
+export function isRoomTypeUnlocked(roomType: RoomType, forRun = true): boolean {
+  const array = forRun
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
+
+  return array.some(
+    (unlock) => unlock.type === UnlockType.ROOM && unlock.roomType === roomType,
+  );
 }
 
 // ----------------------------
@@ -649,6 +664,14 @@ export function isChestPickupVariantUnlocked(
 // -----------------------
 // Unlock - Slot functions
 // -----------------------
+
+export function anySlotVariantUnlocked(forRun = true): boolean {
+  const array = forRun
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
+
+  return array.some((unlock) => unlock.type === UnlockType.SLOT);
+}
 
 export function isSlotVariantUnlocked(
   slotVariant: SlotVariant,

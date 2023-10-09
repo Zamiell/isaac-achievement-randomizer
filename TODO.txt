@@ -1,13 +1,8 @@
 TODO:
 
-- LOGIC:
-  - Planetarium before any planetarium item
-  - Library before any book
-  - Sacrifice before any angel item
-  - Curse before any curse room item
-
 - optimize randomization algorithm, track completed things
 
+- lock room feature, handle teleportation
 - let more time pass per frame on black screen with visual progress updates
 
 - add icon like R+ icon on left UI
