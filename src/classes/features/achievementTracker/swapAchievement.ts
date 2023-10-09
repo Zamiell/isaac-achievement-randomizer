@@ -63,10 +63,8 @@ const DEFAULT_TRINKET_UNLOCK = getUnlock(UnlockType.TRINKET, TrinketType.ERROR);
 
 const DEFAULT_CARD_UNLOCK = getUnlock(UnlockType.CARD, CardType.FOOL);
 
-const DEFAULT_PILL_UNLOCK = getUnlock(
-  UnlockType.PILL_EFFECT,
-  PillEffect.PARALYSIS,
-);
+/** X-Lax is the only pill with a class of "0-". */
+const DEFAULT_PILL_UNLOCK = getUnlock(UnlockType.PILL_EFFECT, PillEffect.X_LAX);
 
 const CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP = new ReadonlyMap<
   Challenge,

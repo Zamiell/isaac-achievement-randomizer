@@ -4,193 +4,193 @@ const DEFAULT_TRINKET_QUALITY = 0;
 
 export const TRINKET_QUALITIES = {
   [TrinketType.NULL]: DEFAULT_TRINKET_QUALITY, // 0
-  [TrinketType.SWALLOWED_PENNY]: 0, // 1
-  [TrinketType.PETRIFIED_POOP]: 0, // 2
-  [TrinketType.AAA_BATTERY]: 0, // 3
-  [TrinketType.BROKEN_REMOTE]: 0, // 4
+  [TrinketType.SWALLOWED_PENNY]: 3, // 1
+  [TrinketType.PETRIFIED_POOP]: 2, // 2
+  [TrinketType.AAA_BATTERY]: 2, // 3
+  [TrinketType.BROKEN_REMOTE]: 1, // 4
   [TrinketType.PURPLE_HEART]: 0, // 5
-  [TrinketType.BROKEN_MAGNET]: 0, // 6
-  [TrinketType.ROSARY_BEAD]: 0, // 7
+  [TrinketType.BROKEN_MAGNET]: 1, // 6
+  [TrinketType.ROSARY_BEAD]: 1, // 7
   [TrinketType.CARTRIDGE]: 0, // 8
   [TrinketType.PULSE_WORM]: 0, // 9
-  [TrinketType.WIGGLE_WORM]: 0, // 10
-  [TrinketType.RING_WORM]: 0, // 11
+  [TrinketType.WIGGLE_WORM]: 1, // 10
+  [TrinketType.RING_WORM]: 1, // 11
   [TrinketType.FLAT_WORM]: 0, // 12
-  [TrinketType.STORE_CREDIT]: 0, // 13
-  [TrinketType.CALLUS]: 0, // 14
-  [TrinketType.LUCKY_ROCK]: 0, // 15
+  [TrinketType.STORE_CREDIT]: 2, // 13
+  [TrinketType.CALLUS]: 1, // 14
+  [TrinketType.LUCKY_ROCK]: 3, // 15
   [TrinketType.MOMS_TOENAIL]: 0, // 16
-  [TrinketType.BLACK_LIPSTICK]: 0, // 17
-  [TrinketType.BIBLE_TRACT]: 0, // 18
-  [TrinketType.PAPER_CLIP]: 0, // 19
-  [TrinketType.MONKEY_PAW]: 0, // 20
-  [TrinketType.MYSTERIOUS_PAPER]: 0, // 21
-  [TrinketType.DAEMONS_TAIL]: 0, // 22
-  [TrinketType.MISSING_POSTER]: 0, // 23
-  [TrinketType.BUTT_PENNY]: 0, // 24
+  [TrinketType.BLACK_LIPSTICK]: 1, // 17
+  [TrinketType.BIBLE_TRACT]: 1, // 18
+  [TrinketType.PAPER_CLIP]: 2, // 19
+  [TrinketType.MONKEY_PAW]: 2, // 20
+  [TrinketType.MYSTERIOUS_PAPER]: 1, // 21
+  [TrinketType.DAEMONS_TAIL]: 2, // 22
+  [TrinketType.MISSING_POSTER]: 1, // 23
+  [TrinketType.BUTT_PENNY]: 1, // 24
   [TrinketType.MYSTERIOUS_CANDY]: 0, // 25
-  [TrinketType.HOOK_WORM]: 0, // 26
+  [TrinketType.HOOK_WORM]: 1, // 26
   [TrinketType.WHIP_WORM]: 0, // 27
   [TrinketType.BROKEN_ANKH]: 0, // 28
-  [TrinketType.FISH_HEAD]: 0, // 29
-  [TrinketType.PINKY_EYE]: 0, // 30
-  [TrinketType.PUSH_PIN]: 0, // 31
-  [TrinketType.LIBERTY_CAP]: 0, // 32
+  [TrinketType.FISH_HEAD]: 1, // 29
+  [TrinketType.PINKY_EYE]: 2, // 30
+  [TrinketType.PUSH_PIN]: 1, // 31
+  [TrinketType.LIBERTY_CAP]: 2, // 32
   [TrinketType.UMBILICAL_CORD]: 0, // 33
   [TrinketType.CHILDS_HEART]: 0, // 34
-  [TrinketType.CURVED_HORN]: 0, // 35
-  [TrinketType.RUSTED_KEY]: 0, // 36
-  [TrinketType.GOAT_HOOF]: 0, // 37
-  [TrinketType.MOMS_PEARL]: 0, // 38
-  [TrinketType.CANCER]: 0, // 39
-  [TrinketType.RED_PATCH]: 0, // 40
-  [TrinketType.MATCH_STICK]: 0, // 41
-  [TrinketType.LUCKY_TOE]: 0, // 42
+  [TrinketType.CURVED_HORN]: 4, // 35
+  [TrinketType.RUSTED_KEY]: 1, // 36
+  [TrinketType.GOAT_HOOF]: 3, // 37
+  [TrinketType.MOMS_PEARL]: 2, // 38
+  [TrinketType.CANCER]: 4, // 39
+  [TrinketType.RED_PATCH]: 1, // 40
+  [TrinketType.MATCH_STICK]: 1, // 41
+  [TrinketType.LUCKY_TOE]: 2, // 42
   [TrinketType.CURSED_SKULL]: 0, // 43
   [TrinketType.SAFETY_CAP]: 0, // 44
-  [TrinketType.ACE_OF_SPADES]: 0, // 45
+  [TrinketType.ACE_OF_SPADES]: 3, // 45
   [TrinketType.ISAACS_FORK]: 0, // 46
   // There is no `TrinketType` with a value of 47.
-  [TrinketType.MISSING_PAGE]: 0, // 48
-  [TrinketType.BLOODY_PENNY]: 0, // 49
-  [TrinketType.BURNT_PENNY]: 0, // 50
-  [TrinketType.FLAT_PENNY]: 0, // 51
-  [TrinketType.COUNTERFEIT_PENNY]: 0, // 52
-  [TrinketType.TICK]: 0, // 53
+  [TrinketType.MISSING_PAGE]: 1, // 48
+  [TrinketType.BLOODY_PENNY]: 2, // 49
+  [TrinketType.BURNT_PENNY]: 2, // 50
+  [TrinketType.FLAT_PENNY]: 2, // 51
+  [TrinketType.COUNTERFEIT_PENNY]: 2, // 52
+  [TrinketType.TICK]: 1, // 53
   [TrinketType.ISAACS_HEAD]: 0, // 54
-  [TrinketType.MAGGYS_FAITH]: 0, // 55
-  [TrinketType.JUDAS_TONGUE]: 0, // 56
-  [TrinketType.BLUE_BABYS_SOUL]: 0, // 57
-  [TrinketType.SAMSONS_LOCK]: 0, // 58
-  [TrinketType.CAINS_EYE]: 0, // 59
+  [TrinketType.MAGGYS_FAITH]: 2, // 55
+  [TrinketType.JUDAS_TONGUE]: 2, // 56
+  [TrinketType.BLUE_BABYS_SOUL]: 1, // 57
+  [TrinketType.SAMSONS_LOCK]: 1, // 58
+  [TrinketType.CAINS_EYE]: 1, // 59
   [TrinketType.EVES_BIRD_FOOT]: 0, // 60
-  [TrinketType.LEFT_HAND]: 0, // 61
-  [TrinketType.SHINY_ROCK]: 0, // 62
-  [TrinketType.SAFETY_SCISSORS]: 0, // 63
+  [TrinketType.LEFT_HAND]: 2, // 61
+  [TrinketType.SHINY_ROCK]: 1, // 62
+  [TrinketType.SAFETY_SCISSORS]: 3, // 63
   [TrinketType.RAINBOW_WORM]: 0, // 64
-  [TrinketType.TAPE_WORM]: 0, // 65
+  [TrinketType.TAPE_WORM]: 1, // 65
   [TrinketType.LAZY_WORM]: 0, // 66
-  [TrinketType.CRACKED_DICE]: 0, // 67
-  [TrinketType.SUPER_MAGNET]: 0, // 68
+  [TrinketType.CRACKED_DICE]: 2, // 67
+  [TrinketType.SUPER_MAGNET]: 1, // 68
   [TrinketType.FADED_POLAROID]: 0, // 69
   [TrinketType.LOUSE]: 0, // 70
-  [TrinketType.BOBS_BLADDER]: 0, // 71
-  [TrinketType.WATCH_BATTERY]: 0, // 72
-  [TrinketType.BLASTING_CAP]: 0, // 73
-  [TrinketType.STUD_FINDER]: 0, // 74
+  [TrinketType.BOBS_BLADDER]: 1, // 71
+  [TrinketType.WATCH_BATTERY]: 2, // 72
+  [TrinketType.BLASTING_CAP]: 1, // 73
+  [TrinketType.STUD_FINDER]: 1, // 74
   [TrinketType.ERROR]: 0, // 75
   [TrinketType.POKER_CHIP]: 0, // 76
   [TrinketType.BLISTER]: 0, // 77
-  [TrinketType.SECOND_HAND]: 0, // 78
-  [TrinketType.ENDLESS_NAMELESS]: 0, // 79
+  [TrinketType.SECOND_HAND]: 1, // 78
+  [TrinketType.ENDLESS_NAMELESS]: 3, // 79
   [TrinketType.BLACK_FEATHER]: 0, // 80
-  [TrinketType.BLIND_RAGE]: 0, // 81
+  [TrinketType.BLIND_RAGE]: 2, // 81
   [TrinketType.GOLDEN_HORSE_SHOE]: 0, // 82
-  [TrinketType.STORE_KEY]: 0, // 83
-  [TrinketType.RIB_OF_GREED]: 0, // 84
+  [TrinketType.STORE_KEY]: 1, // 83
+  [TrinketType.RIB_OF_GREED]: 2, // 84
   [TrinketType.KARMA]: 0, // 85
-  [TrinketType.LIL_LARVA]: 0, // 86
-  [TrinketType.MOMS_LOCKET]: 0, // 87
-  [TrinketType.NO]: 0, // 88
+  [TrinketType.LIL_LARVA]: 1, // 86
+  [TrinketType.MOMS_LOCKET]: 1, // 87
+  [TrinketType.NO]: 2, // 88
   [TrinketType.CHILD_LEASH]: 0, // 89
-  [TrinketType.BROWN_CAP]: 0, // 90
-  [TrinketType.MECONIUM]: 0, // 91
-  [TrinketType.CRACKED_CROWN]: 0, // 92
+  [TrinketType.BROWN_CAP]: 1, // 90
+  [TrinketType.MECONIUM]: 1, // 91
+  [TrinketType.CRACKED_CROWN]: 3, // 92
   [TrinketType.USED_DIAPER]: 0, // 93
-  [TrinketType.FISH_TAIL]: 0, // 94
-  [TrinketType.BLACK_TOOTH]: 0, // 95
+  [TrinketType.FISH_TAIL]: 2, // 94
+  [TrinketType.BLACK_TOOTH]: 2, // 95
   [TrinketType.OUROBOROS_WORM]: 0, // 96
   [TrinketType.TONSIL]: 0, // 97
-  [TrinketType.NOSE_GOBLIN]: 0, // 98
-  [TrinketType.SUPER_BALL]: 0, // 99
-  [TrinketType.VIBRANT_BULB]: 0, // 100
-  [TrinketType.DIM_BULB]: 0, // 101
-  [TrinketType.FRAGMENTED_CARD]: 0, // 102
+  [TrinketType.NOSE_GOBLIN]: 4, // 98
+  [TrinketType.SUPER_BALL]: 1, // 99
+  [TrinketType.VIBRANT_BULB]: 2, // 100
+  [TrinketType.DIM_BULB]: 1, // 101
+  [TrinketType.FRAGMENTED_CARD]: 3, // 102
   [TrinketType.EQUALITY]: 0, // 103
   [TrinketType.WISH_BONE]: 0, // 104
   [TrinketType.BAG_LUNCH]: 0, // 105
-  [TrinketType.LOST_CORK]: 0, // 106
+  [TrinketType.LOST_CORK]: 1, // 106
   [TrinketType.CROW_HEART]: 0, // 107
   [TrinketType.WALNUT]: 0, // 108
   [TrinketType.DUCT_TAPE]: 0, // 109
-  [TrinketType.SILVER_DOLLAR]: 0, // 110
-  [TrinketType.BLOODY_CROWN]: 0, // 111
-  [TrinketType.PAY_TO_WIN]: 0, // 112
-  [TrinketType.LOCUST_OF_WRATH]: 0, // 113
-  [TrinketType.LOCUST_OF_PESTILENCE]: 0, // 114
-  [TrinketType.LOCUST_OF_FAMINE]: 0, // 115
-  [TrinketType.LOCUST_OF_DEATH]: 0, // 116
-  [TrinketType.LOCUST_OF_CONQUEST]: 0, // 117
+  [TrinketType.SILVER_DOLLAR]: 2, // 110
+  [TrinketType.BLOODY_CROWN]: 1, // 111
+  [TrinketType.PAY_TO_WIN]: 3, // 112
+  [TrinketType.LOCUST_OF_WRATH]: 2, // 113
+  [TrinketType.LOCUST_OF_PESTILENCE]: 2, // 114
+  [TrinketType.LOCUST_OF_FAMINE]: 2, // 115
+  [TrinketType.LOCUST_OF_DEATH]: 2, // 116
+  [TrinketType.LOCUST_OF_CONQUEST]: 2, // 117
   [TrinketType.BAT_WING]: 0, // 118
-  [TrinketType.STEM_CELL]: 0, // 119
-  [TrinketType.HAIRPIN]: 0, // 120
-  [TrinketType.WOODEN_CROSS]: 0, // 121
-  [TrinketType.BUTTER]: 0, // 122
-  [TrinketType.FILIGREE_FEATHERS]: 0, // 123
-  [TrinketType.DOOR_STOP]: 0, // 124
+  [TrinketType.STEM_CELL]: 1, // 119
+  [TrinketType.HAIRPIN]: 2, // 120
+  [TrinketType.WOODEN_CROSS]: 3, // 121
+  [TrinketType.BUTTER]: 1, // 122
+  [TrinketType.FILIGREE_FEATHERS]: 3, // 123
+  [TrinketType.DOOR_STOP]: 1, // 124
   [TrinketType.EXTENSION_CORD]: 0, // 125
-  [TrinketType.ROTTEN_PENNY]: 0, // 126
-  [TrinketType.BABY_BENDER]: 0, // 127
-  [TrinketType.FINGER_BONE]: 0, // 128
-  [TrinketType.JAW_BREAKER]: 0, // 129
+  [TrinketType.ROTTEN_PENNY]: 2, // 126
+  [TrinketType.BABY_BENDER]: 2, // 127
+  [TrinketType.FINGER_BONE]: 1, // 128
+  [TrinketType.JAW_BREAKER]: 3, // 129
   [TrinketType.CHEWED_PEN]: 0, // 130
-  [TrinketType.BLESSED_PENNY]: 0, // 131
-  [TrinketType.BROKEN_SYRINGE]: 0, // 132
+  [TrinketType.BLESSED_PENNY]: 3, // 131
+  [TrinketType.BROKEN_SYRINGE]: 2, // 132
   [TrinketType.SHORT_FUSE]: 0, // 133
   [TrinketType.GIGANTE_BEAN]: 0, // 134
-  [TrinketType.LIGHTER]: 0, // 135
-  [TrinketType.BROKEN_PADLOCK]: 0, // 136
+  [TrinketType.LIGHTER]: 1, // 135
+  [TrinketType.BROKEN_PADLOCK]: 2, // 136
   [TrinketType.MYOSOTIS]: 0, // 137
   [TrinketType.M]: 0, // 138
   [TrinketType.TEARDROP_CHARM]: 0, // 139
-  [TrinketType.APPLE_OF_SODOM]: 0, // 140
-  [TrinketType.FORGOTTEN_LULLABY]: 0, // 141
+  [TrinketType.APPLE_OF_SODOM]: 1, // 140
+  [TrinketType.FORGOTTEN_LULLABY]: 2, // 141
   [TrinketType.BETHS_FAITH]: 0, // 142
-  [TrinketType.OLD_CAPACITOR]: 0, // 143
-  [TrinketType.BRAIN_WORM]: 0, // 144
-  [TrinketType.PERFECTION]: 0, // 145
-  [TrinketType.DEVILS_CROWN]: 0, // 146
-  [TrinketType.CHARGED_PENNY]: 0, // 147
+  [TrinketType.OLD_CAPACITOR]: 2, // 143
+  [TrinketType.BRAIN_WORM]: 4, // 144
+  [TrinketType.PERFECTION]: 3, // 145
+  [TrinketType.DEVILS_CROWN]: 2, // 146
+  [TrinketType.CHARGED_PENNY]: 2, // 147
   [TrinketType.FRIENDSHIP_NECKLACE]: 0, // 148
   [TrinketType.PANIC_BUTTON]: 0, // 149
-  [TrinketType.BLUE_KEY]: 0, // 150
-  [TrinketType.FLAT_FILE]: 0, // 151
-  [TrinketType.TELESCOPE_LENS]: 0, // 152
+  [TrinketType.BLUE_KEY]: 2, // 150
+  [TrinketType.FLAT_FILE]: 2, // 151
+  [TrinketType.TELESCOPE_LENS]: 2, // 152
   [TrinketType.MOMS_LOCK]: 0, // 153
-  [TrinketType.DICE_BAG]: 0, // 154
-  [TrinketType.HOLY_CROWN]: 0, // 155
-  [TrinketType.MOTHERS_KISS]: 0, // 156
+  [TrinketType.DICE_BAG]: 1, // 154
+  [TrinketType.HOLY_CROWN]: 1, // 155
+  [TrinketType.MOTHERS_KISS]: 1, // 156
   [TrinketType.TORN_CARD]: 0, // 157
-  [TrinketType.TORN_POCKET]: 0, // 158
-  [TrinketType.GILDED_KEY]: 0, // 159
-  [TrinketType.LUCKY_SACK]: 0, // 160
-  [TrinketType.WICKED_CROWN]: 0, // 161
-  [TrinketType.AZAZELS_STUMP]: 0, // 162
-  [TrinketType.DINGLE_BERRY]: 0, // 163
-  [TrinketType.RING_CAP]: 0, // 164
-  [TrinketType.NUH_UH]: 0, // 165
-  [TrinketType.MODELING_CLAY]: 0, // 166
-  [TrinketType.POLISHED_BONE]: 0, // 167
-  [TrinketType.HOLLOW_HEART]: 0, // 168
-  [TrinketType.KIDS_DRAWING]: 0, // 169
-  [TrinketType.CRYSTAL_KEY]: 0, // 170
-  [TrinketType.KEEPERS_BARGAIN]: 0, // 171
+  [TrinketType.TORN_POCKET]: 1, // 158
+  [TrinketType.GILDED_KEY]: 2, // 159
+  [TrinketType.LUCKY_SACK]: 1, // 160
+  [TrinketType.WICKED_CROWN]: 1, // 161
+  [TrinketType.AZAZELS_STUMP]: 1, // 162
+  [TrinketType.DINGLE_BERRY]: 2, // 163
+  [TrinketType.RING_CAP]: 2, // 164
+  [TrinketType.NUH_UH]: 1, // 165
+  [TrinketType.MODELING_CLAY]: 1, // 166
+  [TrinketType.POLISHED_BONE]: 2, // 167
+  [TrinketType.HOLLOW_HEART]: 4, // 168
+  [TrinketType.KIDS_DRAWING]: 1, // 169
+  [TrinketType.CRYSTAL_KEY]: 3, // 170
+  [TrinketType.KEEPERS_BARGAIN]: 1, // 171
   [TrinketType.CURSED_PENNY]: 0, // 172
-  [TrinketType.YOUR_SOUL]: 0, // 173
-  [TrinketType.NUMBER_MAGNET]: 0, // 174
+  [TrinketType.YOUR_SOUL]: 2, // 173
+  [TrinketType.NUMBER_MAGNET]: 3, // 174
   [TrinketType.STRANGE_KEY]: 0, // 175
-  [TrinketType.LIL_CLOT]: 0, // 176
-  [TrinketType.TEMPORARY_TATTOO]: 0, // 177
-  [TrinketType.SWALLOWED_M80]: 0, // 178
+  [TrinketType.LIL_CLOT]: 4, // 176
+  [TrinketType.TEMPORARY_TATTOO]: 1, // 177
+  [TrinketType.SWALLOWED_M80]: 2, // 178
   [TrinketType.RC_REMOTE]: 0, // 179
-  [TrinketType.FOUND_SOUL]: 0, // 180
+  [TrinketType.FOUND_SOUL]: 4, // 180
   [TrinketType.EXPANSION_PACK]: 0, // 181
   [TrinketType.BETHS_ESSENCE]: 0, // 182
-  [TrinketType.TWINS]: 0, // 183
-  [TrinketType.ADOPTION_PAPERS]: 0, // 184
-  [TrinketType.CRICKET_LEG]: 0, // 185
-  [TrinketType.APOLLYONS_BEST_FRIEND]: 0, // 186
-  [TrinketType.BROKEN_GLASSES]: 0, // 187
-  [TrinketType.ICE_CUBE]: 0, // 188
-  [TrinketType.SIGIL_OF_BAPHOMET]: 0, // 189
+  [TrinketType.TWINS]: 2, // 183
+  [TrinketType.ADOPTION_PAPERS]: 1, // 184
+  [TrinketType.CRICKET_LEG]: 2, // 185
+  [TrinketType.APOLLYONS_BEST_FRIEND]: 2, // 186
+  [TrinketType.BROKEN_GLASSES]: 1, // 187
+  [TrinketType.ICE_CUBE]: 3, // 188
+  [TrinketType.SIGIL_OF_BAPHOMET]: 4, // 189
 } as const satisfies Record<TrinketType, Quality>;

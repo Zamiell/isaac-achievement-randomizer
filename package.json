@@ -12,8 +12,8 @@
   "license": "GPL-3.0",
   "type": "commonjs",
   "dependencies": {
-    "isaac-typescript-definitions": "^27.0.0",
-    "isaacscript-common": "^61.0.1"
+    "isaac-typescript-definitions": "^28.0.0",
+    "isaacscript-common": "^62.0.0"
   },
   "devDependencies": {
     "isaacscript": "^3.14.1",
