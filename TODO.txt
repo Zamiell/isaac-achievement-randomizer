@@ -1,11 +1,9 @@
 TODO:
 
-- add explanation of "Attempt" to FAQ
 - add iterations to black screen
 - "This could take a few minutes."
 - fistula + teratoma
 - make it for lokis so that both lokii have to be alive for the no hit achievement
-- don't count deaths if you don't leave the first starting room
 - collectible sub menu by 50
 
 ------------------------------

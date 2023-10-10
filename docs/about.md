@@ -472,3 +472,9 @@ C:\Program Files (x86)\Steam\steamapps\common\The Binding of Isaac Rebirth\data\
 In this directory, there will be either a "save1.dat", "save2.dat", or "save3.dat" file, corresponding to which save slot that you play on.
 
 It is important that you backup this file after every run.
+
+### Why does the mod take so long to randomize the achievements at the beginning of a playthrough? What do "attempts" mean on the black screen?
+
+When you start a new randomizer playthrough, the mod assigns each objective to a random unlock. However, not all assignments are valid. For example, the mod might have randomly assigned the objective of "beat challenge #3" to the unlock of "unlock challenge #3". In this case, the playthrough seed would be unbeatable!
+
+After all of the achievements are randomized, the mod does a validation step: it pretends that it is a player and attempts to "beat" the seed by accomplishing all of the objectives that are reachable. (This part is pretty time intensive.) If the seed is not beatable, then the mod will start from scratch and randomize all of the objectives + achievements again. It will attempt to generate valid seeds until it finds one that is beatable. This is what the "attempts" count on the black screen refers to.
