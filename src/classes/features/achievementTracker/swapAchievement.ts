@@ -40,7 +40,10 @@ import {
 } from "../../../enums/UnlockablePath";
 import { ANGEL_ROOM_COLLECTIBLES } from "../../../sets/angelRoomCollectibles";
 import { CURSE_ROOM_COLLECTIBLES } from "../../../sets/curseRoomCollectibles";
+import { DICE_COLLECTIBLES } from "../../../sets/diceCollectibles";
+import { DICE_TRINKETS } from "../../../sets/diceTrinkets";
 import { PLANETARIUM_COLLECTIBLES } from "../../../sets/planetariumCollectibles";
+import { TREASURE_CHEST_COLLECTIBLES } from "../../../sets/treasureChestCollectibles";
 import { getObjectiveFromID, getObjectiveText } from "../../../types/Objective";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
 import type {
@@ -579,6 +582,22 @@ function getSwappedUnlockCollectible(unlock: Unlock): Unlock | undefined {
     return getUnlock(UnlockType.ROOM, RoomType.SACRIFICE);
   }
 
+  // 20
+  if (
+    TREASURE_CHEST_COLLECTIBLES.has(collectibleUnlock.collectibleType) &&
+    !isRoomTypeUnlocked(RoomType.VAULT, false)
+  ) {
+    return getUnlock(UnlockType.ROOM, RoomType.VAULT);
+  }
+
+  // 21
+  if (
+    DICE_COLLECTIBLES.has(collectibleUnlock.collectibleType) &&
+    !isRoomTypeUnlocked(RoomType.DICE, false)
+  ) {
+    return getUnlock(UnlockType.ROOM, RoomType.DICE);
+  }
+
   // 24
   if (
     PLANETARIUM_COLLECTIBLES.has(collectibleUnlock.collectibleType) &&
@@ -723,6 +742,14 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
 
 function getSwappedUnlockTrinket(unlock: Unlock): Unlock | undefined {
   const trinketUnlock = unlock as TrinketUnlock;
+
+  // 21
+  if (
+    DICE_TRINKETS.has(trinketUnlock.trinketType) &&
+    !isRoomTypeUnlocked(RoomType.DICE, false)
+  ) {
+    return getUnlock(UnlockType.ROOM, RoomType.DICE);
+  }
 
   if (isHardcoreMode()) {
     const worseTrinketType = getWorseLockedTrinketType(

@@ -190,7 +190,7 @@ The following alternate floors start out locked:
 - Ashpit
 - Gehenna
 
-### Room Types (5)
+### Room Types (6)
 
 The following room types start out locked:
 
@@ -198,6 +198,8 @@ The following room types start out locked:
 - Curse Room (#10) (unlocks before first Curse Room collectible)
 - Library Room (#12) (unlocks before first book collectible)
 - Sacrifice Room (#13) (unlocks before first Angel Room collectible)
+- Vault (#20) (unlocks before first golden chest collectible)
+- Dice Room (#21) (unlocks before first dice collectible/trinket)
 - Planetarium (#24) (unlocks before first Planetarium collectible)
 
 ### Challenges (44)
@@ -206,7 +208,7 @@ All challenges start off locked, with the following exceptions:
 
 - DELETE THIS (#45) (since TMTRAINER is banned)
 
-### Collectibles (694)
+### Collectibles (693)
 
 Every collectible in the game is locked, with the following exceptions:
 
@@ -237,6 +239,7 @@ Every collectible in the game is locked, with the following exceptions:
   - Eden's Blessing (#381)
   - Plan C (#475)
   - Clicker (#482)
+  - Metronome (#488)
   - R Key (#636)
   - TMTRAINER (#721)
 
@@ -251,6 +254,7 @@ Also note that:
 Every trinket in the game is locked, with the following exceptions:
 
 - Banned trinkets in this mod:
+  - Error (#75)
   - Karma (#85) (would be useless; see below)
   - 'M (#138) (would break collectible unlocks)
 
@@ -320,7 +324,7 @@ The following other things start out locked:
 
 ### Total Unlocks
 
-There are 33 + 10 + 11 + 5 + 44 + 694 + 186 + 95 + 50 + 35 + 15 + 13 + 6 = 1197 unlocks in total.
+There are 33 + 10 + 11 + 6 + 44 + 693 + 186 + 95 + 50 + 35 + 15 + 13 + 6 = 1197 unlocks in total.
 
 <br>
 

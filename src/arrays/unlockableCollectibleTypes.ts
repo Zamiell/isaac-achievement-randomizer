@@ -44,6 +44,7 @@ export const BANNED_COLLECTIBLE_TYPES = [
   CollectibleType.EDENS_BLESSING, // 381
   CollectibleType.PLAN_C, // 475
   CollectibleType.CLICKER, // 482
+  CollectibleType.METRONOME, // 488
   CollectibleType.R_KEY, // 636
   CollectibleType.TMTRAINER, // 721
 ] as const;

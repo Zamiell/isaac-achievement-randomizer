@@ -1,7 +1,6 @@
 TODO:
 
 - refactor "getWorse" functions
-- error / metronome
 - n/a
 
 ------------------------------
@@ -56,25 +55,7 @@ OTHER POTENTIAL UNLOCKS:
   33) Keeper - 1 bomb
 
 - champions that drop items - https://bindingofisaacrebirth.fandom.com/wiki/Monsters#Champions
-- special rooms - https://bindingofisaacrebirth.fandom.com/wiki/Rooms
-  - Arcades
-  - Curse Rooms
-  - Libraries
-  - Sacrifice Rooms
-  - Planetariums
-
-  - Mini-Boss Room
-  - Treasure Rooms
-  - Shops
-  - Challenge Rooms
-  - Boss Challenge Room
-  - Secret Rooms
-  - Super Secret Rooms
-  - Ultra Secret Rooms
-  - Vaults
-  - Dice Rooms
-  - Clean Bedrooms
-  - Dirty Bedrooms
+- see unlockableRoomTypes.ts
 
 OTHER POTENTIAL OBJECTIVES:
 - [would need 288 objectives to reduce no damage objectives by half]
