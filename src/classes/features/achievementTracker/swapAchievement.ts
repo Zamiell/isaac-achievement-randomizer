@@ -631,6 +631,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
         : getUnlock(UnlockType.CHEST, PickupVariant.RED_CHEST),
   ],
 
+  // 87
+  [
+    TrinketType.MOMS_LOCKET,
+    () =>
+      isHeartSubTypeUnlocked(HeartSubType.FULL, false)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.FULL),
+  ],
+
   // 91
   [
     TrinketType.MECONIUM,

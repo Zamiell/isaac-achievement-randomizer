@@ -37,7 +37,7 @@ The mod is not yet released on the Steam Workshop, since it is still in developm
 
 <br>
 
-### How To Compile
+## How To Compile
 
 If you are a developer, you can play the mod by compiling the TypeScript code into a "main.lua" file. Perform the following steps:
 
