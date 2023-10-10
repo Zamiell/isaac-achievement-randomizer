@@ -33,6 +33,14 @@ This page explains how it works.
 
 <br>
 
+## Alpha Warning ⚠️
+
+- The mod is currently in alpha, so it is not recommended that you play it. If you want to test the alpha version, then expect bugs, oversights, broken save files, uncompletable seeds, and so on.
+- [Backup your save file](#how-do-i-backuprestoreedit-my-randomizer-save-file) after every run.
+- Report any bugs that you encounter in [the Isaac Streaking Discord server](https://discord.gg/GwhUeQjHTF).
+
+<br>
+
 ## Design Principles
 
 We do not want to randomize the vanilla achievements. This is for several reasons:
@@ -40,7 +48,7 @@ We do not want to randomize the vanilla achievements. This is for several reason
 1. [Other mods](https://steamcommunity.com/sharedfiles/filedetails/?id=2838967057) have already done that.
 1. Some of the vanilla achievements do not make sense in the context of a player trying to "beat the game" in the least amount of death possible, like `The Scissors - Die 100 times` or `Mr. Resetter! - Reset 7 times in a row`. (This would make the minimum amount of deaths always be 100 and it is possible to complete the game in less than that.)
 1. Some vanilla achievements do not make sense in the context of a player trying to "beat the game" in the fastest time possible, like `Dedication - Participate in 31 Daily Challenges`. (This would make the minimum amount of time always be 31 days and it is possible to complete the game in less than that.)
-1. Some vanilla achievements are arbitrary conditions and are not very fun to play, like `They will charge you up... for a small fee - Donate to Battery Bums until they pay out with an item 5 times`. (If you are not lucky enough to get this achievement during your playthrough, the most consistent strategy is to reset as Tainted Keeper in Greed Mode until you see a Battery Bum in the shop. This is "busywork" and is not skill-based in any way.)
+1. Most vanilla achievements are arbitrary conditions and are not very fun to play, like `They will charge you up... for a small fee - Donate to Battery Bums until they pay out with an item 5 times`. (If you are not lucky enough to get this achievement during your playthrough, the most consistent strategy is to reset as Tainted Keeper in Greed Mode until you see a Battery Bum in the shop. This is "busywork" and is not skill-based in any way.)
 1. Many things are not gated behind vanilla achievements and it would be fun if they were (e.g. soul hearts, locked chests).
 
 Thus, this mod takes a completely different approach. We want each objective to be non-arbitrary, difficult, skill-based, and represent a meaningful accomplishment inside of the game. And we want as many unlockable things are possible.

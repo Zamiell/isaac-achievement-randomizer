@@ -33,7 +33,7 @@ For normal people, you can play the mod by subscribing to it on [the Steam Works
 
 -->
 
-The mod is not yet released on the Steam Workshop, since it is still in development. It will be released soon!
+The mod is not yet released on the Steam Workshop, since it is still in development. The alpha version will be released soon!
 
 <br>
 
