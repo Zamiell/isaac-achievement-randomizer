@@ -237,6 +237,20 @@ export class PickupRemoval extends RandomizerModFeature {
     }
   }
 
+  /** Some rooms have set cards, so we need to check for that case. */
+  // 34, 300
+  @Callback(ModCallback.POST_PICKUP_INIT, PickupVariant.CARD)
+  postPickupInitCard(pickup: EntityPickup): void {
+    const collectible = pickup as EntityPickupCollectible;
+    if (
+      !isCollectibleTypeUnlocked(collectible.SubType, true) ||
+      // Prevent e.g. Spindown Dice from producing banned collectibles.
+      BANNED_COLLECTIBLE_TYPES_SET.has(collectible.SubType)
+    ) {
+      setCollectibleSubType(collectible, CollectibleType.BREAKFAST);
+    }
+  }
+
   /**
    * Unlike other trinkets, we want to remove Perfection entirely instead of replace it with another
    * random unlocked trinket (in order to prevent bosses from awarding the player random trinkets).
@@ -593,9 +607,9 @@ export class PickupRemoval extends RandomizerModFeature {
 
   @CallbackCustom(
     ModCallbackCustom.POST_PICKUP_SELECTION_FILTER,
-    PickupVariant.TAROT_CARD, // 300
+    PickupVariant.CARD, // 300
   )
-  postPickupSelectionTarotCard(
+  postPickupSelectionCard(
     _pickup: EntityPickup,
     _pickupVariant: PickupVariant,
     subType: int,
