@@ -1,7 +1,6 @@
 import type { PlayerType } from "isaac-typescript-definitions";
 import {
   MAIN_CHARACTERS,
-  VANILLA_PILL_EFFECTS,
   getBatteryName,
   getBombName,
   getBossName,
@@ -38,6 +37,7 @@ import {
   UNLOCKABLE_KEY_SUB_TYPES,
   UNLOCKABLE_SACK_SUB_TYPES,
 } from "./arrays/unlockablePickupTypes";
+import { UNLOCKABLE_PILL_EFFECTS } from "./arrays/unlockablePillEffects";
 import { UNLOCKABLE_SLOT_VARIANTS } from "./arrays/unlockableSlotVariants";
 import { UNLOCKABLE_TRINKET_TYPES } from "./arrays/unlockableTrinketTypes";
 import {
@@ -459,7 +459,7 @@ export function getCardUnlockButtons(): DeadSeaScrollsButton[] {
 export function getPillEffectUnlockButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const pillEffect of VANILLA_PILL_EFFECTS) {
+  for (const pillEffect of UNLOCKABLE_PILL_EFFECTS) {
     const pillEffectName = getPillEffectName(pillEffect).toLowerCase();
     const pillEffectNameTruncated = getNameTruncated(pillEffectName);
     const completed = isPillEffectUnlocked(pillEffect, false);

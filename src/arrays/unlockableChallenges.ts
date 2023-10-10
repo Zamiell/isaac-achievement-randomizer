@@ -8,5 +8,5 @@ const BANNED_CHALLENGES = new ReadonlySet<Challenge>([
 
 export const UNLOCKABLE_CHALLENGES: readonly Challenge[] = CHALLENGES.filter(
   (challenge) =>
-    challenge !== Challenge.NULL && BANNED_CHALLENGES.has(challenge),
+    challenge !== Challenge.NULL && !BANNED_CHALLENGES.has(challenge),
 );

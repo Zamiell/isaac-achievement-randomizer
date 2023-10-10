@@ -141,14 +141,17 @@ export class CheckErrors extends ModFeature {
     checkAfterbirthPlus();
     checkIncompleteSave();
     checkOtherModsEnabled();
-    checkNormalMode();
-    checkNormalGreedMode();
-    checkSetSeed();
-    checkEasterEggs();
-    checkVictoryLap();
-    checkCharacterUnlocked();
-    checkChallengeUnlocked();
-    checkModeUnlocked();
+
+    if (isRandomizerEnabled()) {
+      checkNormalMode();
+      checkNormalGreedMode();
+      checkSetSeed();
+      checkEasterEggs();
+      checkVictoryLap();
+      checkCharacterUnlocked();
+      checkChallengeUnlocked();
+      checkModeUnlocked();
+    }
 
     if (hasErrors()) {
       removeAllDoors();
@@ -205,10 +208,6 @@ function checkOtherModsEnabled() {
 }
 
 function checkNormalMode() {
-  if (!isRandomizerEnabled()) {
-    return;
-  }
-
   // Some challenges are on normal mode.
   if (onAnyChallenge()) {
     return;
@@ -221,10 +220,6 @@ function checkNormalMode() {
 }
 
 function checkNormalGreedMode() {
-  if (!isRandomizerEnabled()) {
-    return;
-  }
-
   if (game.Difficulty === Difficulty.GREED) {
     log("Error: Normal Greed Mode (non-Greedier mode) detected.");
     v.run.normalGreedMode = true;
@@ -232,10 +227,6 @@ function checkNormalGreedMode() {
 }
 
 function checkSetSeed() {
-  if (!isRandomizerEnabled()) {
-    return;
-  }
-
   if (onSetSeed() && !IS_DEV) {
     const seeds = game.GetSeeds();
     const startSeedString = seeds.GetStartSeedString();
@@ -245,10 +236,6 @@ function checkSetSeed() {
 }
 
 function checkEasterEggs() {
-  if (!isRandomizerEnabled()) {
-    return;
-  }
-
   if (anyEasterEggEnabled()) {
     log("Error: Easter Egg detected.");
     v.run.hasEasterEggs = true;
@@ -256,10 +243,6 @@ function checkEasterEggs() {
 }
 
 function checkVictoryLap() {
-  if (!isRandomizerEnabled()) {
-    return;
-  }
-
   if (onVictoryLap()) {
     log("Error: Victory Lap detected.");
     v.run.onVictoryLap = true;
@@ -267,14 +250,10 @@ function checkVictoryLap() {
 }
 
 function checkCharacterUnlocked() {
-  if (!isRandomizerEnabled()) {
-    return;
-  }
-
   const player = Isaac.GetPlayer();
   const character = player.GetPlayerType();
 
-  if (!isCharacterUnlocked(character, true)) {
+  if (!isCharacterUnlocked(character, false)) {
     log(
       `Error: Locked character detected: ${PlayerType[character]} (${character})`,
     );
@@ -283,13 +262,9 @@ function checkCharacterUnlocked() {
 }
 
 function checkChallengeUnlocked() {
-  if (!isRandomizerEnabled()) {
-    return;
-  }
-
   const challenge = Isaac.GetChallenge();
 
-  if (!isChallengeUnlocked(challenge, true)) {
+  if (!isChallengeUnlocked(challenge, false)) {
     const challengeName = getChallengeName(challenge);
     log(`Error: Locked challenge detected: ${challengeName} (${challenge})`);
     v.run.lockedChallenge = true;
@@ -297,13 +272,9 @@ function checkChallengeUnlocked() {
 }
 
 function checkModeUnlocked() {
-  if (!isRandomizerEnabled()) {
-    return;
-  }
-
   if (
     game.Difficulty === Difficulty.GREEDIER &&
-    !isPathUnlocked(UnlockablePath.GREED_MODE, true)
+    !isPathUnlocked(UnlockablePath.GREED_MODE, false)
   ) {
     log("Error: Locked Greed Mode detected.");
     v.run.lockedMode = true;

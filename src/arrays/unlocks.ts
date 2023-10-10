@@ -1,4 +1,3 @@
-import { VANILLA_PILL_EFFECTS } from "isaacscript-common";
 import {
   ALT_FLOORS,
   OTHER_UNLOCK_KINDS,
@@ -21,6 +20,7 @@ import {
   UNLOCKABLE_KEY_SUB_TYPES,
   UNLOCKABLE_SACK_SUB_TYPES,
 } from "./unlockablePickupTypes";
+import { UNLOCKABLE_PILL_EFFECTS } from "./unlockablePillEffects";
 import { UNLOCKABLE_ROOM_TYPES } from "./unlockableRoomTypes";
 import { UNLOCKABLE_SLOT_VARIANTS } from "./unlockableSlotVariants";
 import { UNLOCKABLE_TRINKET_TYPES } from "./unlockableTrinketTypes";
@@ -127,7 +127,7 @@ export const ALL_UNLOCKS: readonly Unlock[] = (() => {
       }
 
       case UnlockType.PILL_EFFECT: {
-        for (const pillEffect of VANILLA_PILL_EFFECTS) {
+        for (const pillEffect of UNLOCKABLE_PILL_EFFECTS) {
           const unlock: Unlock = {
             type: UnlockType.PILL_EFFECT,
             pillEffect,

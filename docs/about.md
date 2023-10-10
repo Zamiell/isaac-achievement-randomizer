@@ -124,13 +124,15 @@ Additionally, the following bosses are excluded entirely:
 
 > Tip: A timer will appear on the screen if a boss is in the room and the corresponding objective has not yet been accomplished.
 
-### Challenge-Based Objectives (45)
+### Challenge-Based Objectives (44)
 
-There is one unlock for completing each challenge. (Except for "DELETE THIS", which is not included in the mod.)
+There is one unlock for completing each challenge, with the following exceptions:
+
+- DELETE THIS (#45) (since TMTRAINER is banned)
 
 ### Total Objectives
 
-There are 1054 + 99 + 45 = 1198 objectives in total.
+There are 1054 + 99 + 44 = 1197 objectives in total.
 
 <br>
 
@@ -149,40 +151,54 @@ There are 1054 + 99 + 45 = 1198 objectives in total.
 
 ### Paths (10)
 
-- The following things start off locked and are inaccessible:
-  - The Polaroid + The Chest
-  - The Negative + The Dark Room
-  - Key Piece 1 + Key Piece 2 + Mega Satan
-  - Boss Rush
-  - Blue Womb
-  - The Void
-  - Repentance floors
-  - The Ascent
-  - Greed Mode
-  - Black Markets
-- Isaac is guaranteed to unlock both The Chest & Dark Room from one of his easier objectives.
-- The rest can be randomly unlocked from any objective.
+The following things start off locked and are inaccessible:
+
+- The Polaroid + The Chest
+- The Negative + The Dark Room
+- Key Piece 1 + Key Piece 2 + Mega Satan
+- Boss Rush
+- Blue Womb
+- The Void
+- Repentance floors
+- The Ascent
+- Greed Mode
+- Black Markets
+
+Isaac is guaranteed to unlock both The Chest & Dark Room from one of his easier objectives. The rest can be randomly unlocked from any objective.
 
 ### Alternate Floors (11)
 
-- The following alternate floors start out locked:
-  - Cellar
-  - Burning Basement
-  - Catacombs
-  - Flooded Caves
-  - Necropolis
-  - Dank Depths
-  - Utero
-  - Scarred Womb
-  - Dross
-  - Ashpit
-  - Gehenna
+The following alternate floors start out locked:
 
-### Challenges (45)
+- Cellar
+- Burning Basement
+- Catacombs
+- Flooded Caves
+- Necropolis
+- Dank Depths
+- Utero
+- Scarred Womb
+- Dross
+- Ashpit
+- Gehenna
 
-All challenges start off locked. (Except for "DELETE THIS", which is not included in the mod.)
+### Room Types (5)
 
-### Collectibles (697)
+The following room types start out locked:
+
+- Arcade (#9) (unlocks before first slot machine)
+- Curse Room (#10) (unlocks before first Curse Room collectible)
+- Library Room (#12) (unlocks before first book collectible)
+- Sacrifice Room (#13) (unlocks before first Angel Room collectible)
+- Planetarium (#24) (unlocks before first Planetarium collectible)
+
+### Challenges (44)
+
+All challenges start off locked, with the following exceptions:
+
+- DELETE THIS (#45) (since TMTRAINER is banned)
+
+### Collectibles (694)
 
 Every collectible in the game is locked, with the following exceptions:
 
@@ -237,19 +253,20 @@ Also note that:
 - Even if Mysterious Paper (#21) or Missing Poster (#23) are unlocked, they are removed from pools until all of The Lost objectives are completed.
 - Even if Broken Ankh (#28) is unlocked, it is removed from pools until all of the Blue Baby objectives are completed.
 
-### Cards & Runes (96)
+### Cards & Runes (95)
 
-- Every card/rune in the game is locked, with the following exceptions:
-  - Chaos Card (#42) (would trivialize difficult objectives)
-  - Rune Shard (#55)
+Every card/rune in the game is locked, with the following exceptions:
+
+- Chaos Card (#42) (would trivialize difficult objectives)
+- Rune Shard (#55)
 
 If no cards/runes are unlocked, they will be converted to pennies.
 
 ### Pill Effects (50)
 
-- Every pill effect in the game is locked. If no pill effects are unlocked, pills will be converted to pennies.
+Every pill effect in the game is locked. If no pill effects are unlocked, pills will be converted to pennies.
 
-### Other Pickups (37)
+### Other Pickups (35)
 
 - Only half red heart pickups start out unlocked. Every other heart pickup in the game is locked. (11)
 - Only pennies start out unlocked. Every other coin in the game is locked. (6)
@@ -257,42 +274,45 @@ If no cards/runes are unlocked, they will be converted to pennies.
 - Only normal key pickups start out unlocked. Every other key pickup in the game is locked. (3)
 - Every battery type in the game is locked. Non-unlocked batteries are converted to pennies. (4)
 - Every sack type in the game is locked. Non-unlocked sacks are converted to pennies. (2)
-- Only normal chests start out unlocked. Every other chest type in the game is locked. (9)
+- Only normal chests start out unlocked. Every other chest type in the game is locked, except for Spiked Chests and Mimic Chests. (7)
+  - Old Chests and Mom's Chest are not unlockable since those chests do not randomly spawn.
 
 ### Slots (15)
 
-- Every slot entity (e.g. machines and beggars) is locked behind a random objective. Non-unlocked slot entities are removed.
+Every slot entity (e.g. machines and beggars) is locked behind a random objective. Non-unlocked slot entities are removed.
 
 ### Grid Entities (13)
 
-- The following grid entities start out locked:
-  - Tinted Rocks (4.0)
-  - Urns (6.0)
-  - Mushrooms (6.0)
-  - Skulls (6.0)
-  - Polyps (6.0)
-  - Golden Poop (14.3)
-  - Rainbow Poop (14.4)
-  - Black Poop (14.5)
-  - Charming Poop (14.11)
-  - Crawlspaces (18.0)
-  - Reward Plates (20.1)
-  - Super Tinted Rocks (22.0)
-  - Fool's Gold Rocks (27.0)
+The following grid entities start out locked:
 
-### Miscellaneous (5)
+- Tinted Rocks (#4.0)
+- Urns (#6.0)
+- Mushrooms (#6.0)
+- Skulls (#6.0)
+- Polyps (#6.0)
+- Golden Poop (#14.3)
+- Rainbow Poop (#14.4)
+- Black Poop (#14.5)
+- Charming Poop (#14.11)
+- Crawlspaces (#18.0)
+- Reward Plates (#20.1)
+- Super Tinted Rocks (#22.0)
+- Fool's Gold Rocks (#27.0)
 
-- The following other things start out locked:
-  - Beds (5.380)
-  - Shopkeepers (17)
-  - Blue Fireplaces (33.2)
-  - Golden Trinkets
-  - Gold Pills
-  - Horse Pills
+### Miscellaneous (6)
+
+The following other things start out locked:
+
+- Beds (#5.380)
+- Shopkeepers (#17)
+- Blue Fireplaces (#33.2)
+- Golden Trinkets
+- Gold Pills
+- Horse Pills
 
 ### Total Unlocks
 
-There are 33 + 10 + 11 + 45 + 697 + 186 + 96 + 50 + 37 + 15 + 13 + 5 = 1198 unlocks in total.
+There are 33 + 10 + 11 + 5 + 44 + 694 + 186 + 95 + 50 + 35 + 15 + 13 + 6 = 1197 unlocks in total.
 
 <br>
 

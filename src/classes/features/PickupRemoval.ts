@@ -25,22 +25,18 @@ import {
 import {
   Callback,
   CallbackCustom,
-  FIRST_PILL_COLOR,
   ModCallbackCustom,
   VANILLA_COLLECTIBLE_TYPES,
   game,
   getCollectibles,
   getGoldenTrinketType,
-  getNormalPillColorFromHorse,
   getNormalTrinketType,
   getRandomArrayElement,
   getRandomSetElement,
   inStartingRoom,
   isChestVariant,
   isEden,
-  isGoldPill,
   isGoldenTrinketType,
-  isHorsePill,
   isRune,
   isSuitCard,
   itemConfig,
@@ -84,7 +80,6 @@ import {
   getUnlockedCardTypes,
   getUnlockedEdenActiveCollectibleTypes,
   getUnlockedEdenPassiveCollectibleTypes,
-  getUnlockedPillEffects,
   getUnlockedTrinketTypes,
   isBatterySubTypeUnlocked,
   isBombSubTypeUnlocked,
@@ -256,27 +251,6 @@ export class PickupRemoval extends RandomizerModFeature {
     return isChestPickupVariantUnlocked(pickupVariant, true)
       ? undefined
       : [PickupVariant.CHEST, ChestSubType.CLOSED];
-  }
-
-  // 65
-  @Callback(ModCallback.GET_PILL_EFFECT)
-  getPillEffect(
-    pillEffect: PillEffect,
-    _pillColor: PillColor,
-  ): PillEffect | undefined {
-    if (isPillEffectUnlocked(pillEffect, true)) {
-      return undefined;
-    }
-
-    const unlockedPillEffects = getUnlockedPillEffects();
-
-    // If there are no unlocked pill effects, the pill will be replaced with a coin in the
-    // `POST_PICKUP_SELECTION_FILTER` callback.
-    if (unlockedPillEffects.length === 0) {
-      return undefined;
-    }
-
-    return getRandomArrayElement(unlockedPillEffects);
   }
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
@@ -583,39 +557,6 @@ export class PickupRemoval extends RandomizerModFeature {
     return isSackSubTypeUnlocked(sackSubType, true)
       ? undefined
       : [PickupVariant.COIN, CoinSubType.PENNY];
-  }
-
-  @CallbackCustom(
-    ModCallbackCustom.POST_PICKUP_SELECTION_FILTER,
-    PickupVariant.PILL, // 70
-  )
-  postPickupSelectionPill(
-    _pickup: EntityPickup,
-    _pickupVariant: PickupVariant,
-    subType: int,
-  ): [PickupVariant, int] | undefined {
-    if (!anyPillEffectsUnlocked(true)) {
-      return [PickupVariant.COIN, CoinSubType.PENNY];
-    }
-
-    const pillColor = subType as PillColor;
-
-    if (
-      isGoldPill(pillColor) &&
-      !isOtherUnlockKindUnlocked(OtherUnlockKind.GOLD_PILLS, true)
-    ) {
-      return [PickupVariant.PILL, FIRST_PILL_COLOR];
-    }
-
-    if (
-      isHorsePill(pillColor) &&
-      !isOtherUnlockKindUnlocked(OtherUnlockKind.HORSE_PILLS, true)
-    ) {
-      const normalPillColor = getNormalPillColorFromHorse(pillColor);
-      return [PickupVariant.PILL, normalPillColor];
-    }
-
-    return undefined;
   }
 
   @CallbackCustom(

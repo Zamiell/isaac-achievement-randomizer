@@ -21,6 +21,7 @@ import { NPCRemoval } from "./classes/features/NPCRemoval";
 import { ObjectiveDetection } from "./classes/features/ObjectiveDetection";
 import { PathRemoval } from "./classes/features/PathRemoval";
 import { PickupRemoval } from "./classes/features/PickupRemoval";
+import { PillRemoval } from "./classes/features/PillRemoval";
 import { PreventPause } from "./classes/features/PreventPause";
 import { PreventSaveAndQuit } from "./classes/features/PreventSaveAndQuit";
 import { PreventVictoryLapPopup } from "./classes/features/PreventVictoryLapPopup";
@@ -57,6 +58,7 @@ const MOD_FEATURES = [
   ObjectiveDetection,
   PathRemoval,
   PickupRemoval,
+  PillRemoval,
   PreventPause,
   PreventSaveAndQuit,
   PreventVictoryLapPopup,
