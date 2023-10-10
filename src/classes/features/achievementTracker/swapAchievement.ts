@@ -8,6 +8,7 @@ import {
   GridEntityType,
   HeartSubType,
   ItemConfigTag,
+  KeySubType,
   PickupVariant,
   PillEffect,
   RoomType,
@@ -28,6 +29,7 @@ import {
 import { UNLOCKABLE_ROOM_TYPES } from "../../../arrays/unlockableRoomTypes";
 import { ALT_FLOORS } from "../../../cachedEnums";
 import { AltFloor } from "../../../enums/AltFloor";
+import { OtherUnlockKind } from "../../../enums/OtherUnlockKind";
 import { UnlockType } from "../../../enums/UnlockType";
 import {
   UnlockablePath,
@@ -85,6 +87,8 @@ import {
   isCollectibleTypeUnlocked,
   isGridEntityTypeUnlocked,
   isHeartSubTypeUnlocked,
+  isKeySubTypeUnlocked,
+  isOtherUnlockKindUnlocked,
   isPathUnlocked,
   isRoomTypeUnlocked,
   isSackSubTypeUnlocked,
@@ -625,6 +629,35 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
       isChestPickupVariantUnlocked(PickupVariant.RED_CHEST, false)
         ? undefined
         : getUnlock(UnlockType.CHEST, PickupVariant.RED_CHEST),
+  ],
+
+  // 91
+  [
+    TrinketType.MECONIUM,
+    () =>
+      isOtherUnlockKindUnlocked(OtherUnlockKind.BLACK_POOP, false)
+        ? undefined
+        : getUnlock(UnlockType.OTHER, OtherUnlockKind.BLACK_POOP),
+  ],
+
+  // 103
+  [
+    TrinketType.EQUALITY,
+    () => {
+      if (!isCoinSubTypeUnlocked(CoinSubType.DOUBLE_PACK, false)) {
+        return getUnlock(UnlockType.COIN, CoinSubType.DOUBLE_PACK);
+      }
+
+      if (!isBombSubTypeUnlocked(BombSubType.DOUBLE_PACK, false)) {
+        return getUnlock(UnlockType.BOMB, BombSubType.DOUBLE_PACK);
+      }
+
+      if (!isKeySubTypeUnlocked(KeySubType.DOUBLE_PACK, false)) {
+        return getUnlock(UnlockType.KEY, KeySubType.DOUBLE_PACK);
+      }
+
+      return undefined;
+    },
   ],
 
   // 131

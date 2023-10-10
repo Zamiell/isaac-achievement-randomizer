@@ -1,6 +1,9 @@
 TODO:
 
-- n/a
+- make defined pill pool at the beginning of every run
+
+- fix about.md numbers
+- document room unlocks
 
 ------------------------------
 

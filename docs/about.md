@@ -16,6 +16,7 @@ This page explains how it works.
 1. [Unlock List](#unlock-list)
 1. [Modes](#modes)
 1. [Other Features](#other-features)
+1. [F.A.Q.](#faq-frequently-asked-questions)
 
 <br>
 
@@ -424,3 +425,17 @@ The mod provides several custom [console commands](https://bindingofisaacrebirth
 - `spoilerLog` - Writes out a spoiler log to the "log.txt" file. Note that the unlocks may not be accurate, since the mod swaps an unlock if it detects that you should not get it yet.
 
 <br>
+
+## F.A.Q. (Frequently Asked Questions)
+
+### How do I backup/restore/edit my randomizer save file?
+
+The achievement randomizer save data is located in the following directory:
+
+```text
+C:\Program Files (x86)\Steam\steamapps\common\The Binding of Isaac Rebirth\data\isaac-achievement-randomizer
+```
+
+In this directory, there will be either a "save1.dat", "save2.dat", or "save3.dat" file, corresponding to which save slot that you play on.
+
+It is important that you backup this file after every run.
