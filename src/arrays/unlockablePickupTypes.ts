@@ -10,9 +10,9 @@ import {
 
 export const UNLOCKABLE_HEART_SUB_TYPES = [
   HeartSubType.GOLDEN, // 7
+  HeartSubType.ROTTEN, // 12
   HeartSubType.SCARED, // 9
   HeartSubType.FULL, // 1
-  HeartSubType.ROTTEN, // 12
   HeartSubType.DOUBLE_PACK, // 5
   HeartSubType.HALF_SOUL, // 8
   HeartSubType.BLENDED, // 10

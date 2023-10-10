@@ -339,12 +339,13 @@ This mode can make a randomizer playthrough extremely easy, because if your firs
 In hardcore mode, we want to prevent the situation where you unlock powerful items early on in your playthrough.
 
 - Collectibles, trinkets, cards, and pill effects will progressively unlock based on their quality classification. (50% of 0 quality items must unlock first before 1 quality items, and so on.)
-  - Since trinkets and cards do not have vanilla quality classifications, custom qualities are computed.
+  - Since trinkets and cards do not have vanilla quality classifications, custom qualities were created by [Gamonymous](https://github.com/Rchardon) & [Moucheron Quipet](https://www.twitch.tv/moucheronquipet).
+  - A pill effect's quality is simply the pill effect class (e.g. positive/negative/neutral).
 - Hearts will unlock in the following order:
   - Gold Heart
+  - Rotten Heart
   - Scared Heart
   - Heart
-  - Rotten Heart
   - Heart (double)
   - Heart (half soul)
   - Heart (soul)
