@@ -565,7 +565,7 @@ export function getWorseLockedHeartSubType(
     const lowerQualityHeartSubType = UNLOCKABLE_HEART_SUB_TYPES[lowerQuality];
     if (
       lowerQualityHeartSubType !== undefined &&
-      !isHeartSubTypeUnlocked(lowerQualityHeartSubType)
+      !isHeartSubTypeUnlocked(lowerQualityHeartSubType, false)
     ) {
       return lowerQualityHeartSubType;
     }
@@ -606,7 +606,7 @@ export function getWorseLockedCoinSubType(
     const lowerQualityCoinSubType = UNLOCKABLE_COIN_SUB_TYPES[lowerQuality];
     if (
       lowerQualityCoinSubType !== undefined &&
-      !isCoinSubTypeUnlocked(lowerQualityCoinSubType)
+      !isCoinSubTypeUnlocked(lowerQualityCoinSubType, false)
     ) {
       return lowerQualityCoinSubType;
     }
@@ -647,7 +647,7 @@ export function getWorseLockedBombSubType(
     const lowerQualityBombSubType = UNLOCKABLE_BOMB_SUB_TYPES[lowerQuality];
     if (
       lowerQualityBombSubType !== undefined &&
-      !isBombSubTypeUnlocked(lowerQualityBombSubType)
+      !isBombSubTypeUnlocked(lowerQualityBombSubType, false)
     ) {
       return lowerQualityBombSubType;
     }
@@ -688,7 +688,7 @@ export function getWorseLockedKeySubType(
     const lowerQualityKeySubType = UNLOCKABLE_KEY_SUB_TYPES[lowerQuality];
     if (
       lowerQualityKeySubType !== undefined &&
-      !isKeySubTypeUnlocked(lowerQualityKeySubType)
+      !isKeySubTypeUnlocked(lowerQualityKeySubType, false)
     ) {
       return lowerQualityKeySubType;
     }
@@ -731,7 +731,7 @@ export function getWorseLockedBatterySubType(
       UNLOCKABLE_BATTERY_SUB_TYPES[lowerQuality];
     if (
       lowerQualityBatterySubType !== undefined &&
-      !isBatterySubTypeUnlocked(lowerQualityBatterySubType)
+      !isBatterySubTypeUnlocked(lowerQualityBatterySubType, false)
     ) {
       return lowerQualityBatterySubType;
     }
@@ -772,7 +772,7 @@ export function getWorseLockedSackSubType(
     const lowerQualitySackSubType = UNLOCKABLE_SACK_SUB_TYPES[lowerQuality];
     if (
       lowerQualitySackSubType !== undefined &&
-      !isSackSubTypeUnlocked(lowerQualitySackSubType)
+      !isSackSubTypeUnlocked(lowerQualitySackSubType, false)
     ) {
       return lowerQualitySackSubType;
     }
@@ -817,7 +817,7 @@ export function getWorseLockedChestPickupVariant(
       UNLOCKABLE_CHEST_PICKUP_VARIANTS[lowerQuality];
     if (
       lowerQualityChestPickupVariant !== undefined &&
-      !isChestPickupVariantUnlocked(lowerQualityChestPickupVariant)
+      !isChestPickupVariantUnlocked(lowerQualityChestPickupVariant, false)
     ) {
       return lowerQualityChestPickupVariant;
     }
