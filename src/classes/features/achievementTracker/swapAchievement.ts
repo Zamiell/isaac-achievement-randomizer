@@ -40,8 +40,11 @@ import {
 } from "../../../enums/UnlockablePath";
 import { ANGEL_ROOM_COLLECTIBLES } from "../../../sets/angelRoomCollectibles";
 import { CURSE_ROOM_COLLECTIBLES } from "../../../sets/curseRoomCollectibles";
-import { DICE_COLLECTIBLES } from "../../../sets/diceCollectibles";
-import { DICE_TRINKETS } from "../../../sets/diceTrinkets";
+import {
+  DICE_CARDS,
+  DICE_COLLECTIBLES,
+  DICE_TRINKETS,
+} from "../../../sets/diceObjects";
 import { PLANETARIUM_COLLECTIBLES } from "../../../sets/planetariumCollectibles";
 import { TREASURE_CHEST_COLLECTIBLES } from "../../../sets/treasureChestCollectibles";
 import { getObjectiveFromID, getObjectiveText } from "../../../types/Objective";
@@ -874,6 +877,14 @@ const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<
 
 function getSwappedUnlockCard(unlock: Unlock): Unlock | undefined {
   const cardUnlock = unlock as CardUnlock;
+
+  // 21
+  if (
+    DICE_CARDS.has(cardUnlock.cardType) &&
+    !isRoomTypeUnlocked(RoomType.DICE, false)
+  ) {
+    return getUnlock(UnlockType.ROOM, RoomType.DICE);
+  }
 
   if (isHardcoreMode()) {
     const worseCardType = getWorseLockedCardType(cardUnlock.cardType);
