@@ -190,7 +190,7 @@ The following alternate floors start out locked:
 - Ashpit
 - Gehenna
 
-### Room Types (6)
+### Room Types (7)
 
 The following room types start out locked:
 
@@ -249,7 +249,7 @@ Also note that:
 - Even if Judas' Shadow (#311) is unlocked, it is removed from pools until all of the Judas objectives are completed.
 - Even if Lazarus Rags (#332) is unlocked, it is removed from pools until all of the Lazarus objectives are completed.
 
-### Trinkets (186)
+### Trinkets (185)
 
 Every trinket in the game is locked, with the following exceptions:
 
@@ -324,7 +324,7 @@ The following other things start out locked:
 
 ### Total Unlocks
 
-There are 33 + 10 + 11 + 6 + 44 + 693 + 186 + 95 + 50 + 35 + 15 + 13 + 6 = 1197 unlocks in total.
+There are 33 + 10 + 11 + 7 + 44 + 693 + 185 + 95 + 50 + 35 + 15 + 13 + 6 = 1197 unlocks in total.
 
 <br>
 
