@@ -1,7 +1,6 @@
 import type {
   ActiveSlot,
   BatterySubType,
-  PillEffect,
   SackSubType,
   UseFlag,
 } from "isaac-typescript-definitions";
@@ -17,6 +16,7 @@ import {
   ModCallback,
   PickupVariant,
   PillColor,
+  PillEffect,
   PlayerItemAnimation,
   PlayerType,
   SoundEffect,
@@ -398,7 +398,10 @@ export class PickupRemoval extends RandomizerModFeature {
         const pillEffect = itemPool.GetPillEffect(pillColor, player);
         if (
           pillEffect !== -1 &&
-          (!isPillEffectUnlocked(pillEffect) || isEden(player))
+          (!anyPillEffectsUnlocked() ||
+            isEden(player) ||
+            (character === PlayerType.MAGDALENE &&
+              !isPillEffectUnlocked(PillEffect.SPEED_UP)))
         ) {
           player.SetPill(pocketItemSlot, PillColor.NULL);
         }

@@ -777,7 +777,7 @@ export function initDeadSeaScrolls(): void {
           fSize: 1,
         },
         {
-          str: "(zamiell is capitalized and has two l's.)",
+          str: "(zamiell has two l's on github.)",
           fSize: 1,
         },
       ],
