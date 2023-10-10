@@ -362,7 +362,6 @@ export class PickupRemoval extends RandomizerModFeature {
   }
 
   removeItemsFromInventory(): void {
-    const itemPool = game.GetItemPool();
     const player = Isaac.GetPlayer();
     const character = player.GetPlayerType();
 
@@ -394,17 +393,14 @@ export class PickupRemoval extends RandomizerModFeature {
 
     for (const pocketItemSlot of POCKET_ITEM_SLOTS) {
       const pillColor = player.GetPill(pocketItemSlot);
-      if (pillColor !== PillColor.NULL) {
-        const pillEffect = itemPool.GetPillEffect(pillColor, player);
-        if (
-          pillEffect !== -1 &&
-          (!anyPillEffectsUnlocked() ||
-            isEden(player) ||
-            (character === PlayerType.MAGDALENE &&
-              !isPillEffectUnlocked(PillEffect.SPEED_UP)))
-        ) {
-          player.SetPill(pocketItemSlot, PillColor.NULL);
-        }
+      if (
+        pillColor !== PillColor.NULL &&
+        (!anyPillEffectsUnlocked() ||
+          isEden(player) ||
+          (character === PlayerType.MAGDALENE &&
+            !isPillEffectUnlocked(PillEffect.SPEED_UP)))
+      ) {
+        player.SetPill(pocketItemSlot, PillColor.NULL);
       }
 
       const cardType = player.GetCard(pocketItemSlot);
