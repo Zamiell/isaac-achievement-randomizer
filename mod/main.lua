@@ -68876,7 +68876,7 @@ function AchievementRandomizer.prototype.checkDrawBlackScreen(self)
     local screenBottomRightPos = getScreenBottomRightPos(nil)
     local rightX = screenBottomRightPos.X
     local text1 = "Randomizing, please wait..."
-    local aboveCenterY = screenCenterPos.Y - 10
+    local aboveCenterY = screenCenterPos.Y - 20
     FONT:DrawString(
         text1,
         0,
@@ -68885,10 +68885,20 @@ function AchievementRandomizer.prototype.checkDrawBlackScreen(self)
         rightX,
         true
     )
-    local text2 = ("(attempt #" .. tostring(numGenerationAttempts)) .. ")"
-    local belowCenterY = screenCenterPos.Y + 10
+    local text2 = "Attempt: #" .. tostring(numGenerationAttempts)
+    local centerY = screenCenterPos.Y
     FONT:DrawString(
         text2,
+        0,
+        centerY,
+        KColorDefault,
+        rightX,
+        true
+    )
+    local text3 = "(This could take a few minutes.)"
+    local belowCenterY = screenCenterPos.Y + 20
+    FONT:DrawString(
+        text3,
         0,
         belowCenterY,
         KColorDefault,

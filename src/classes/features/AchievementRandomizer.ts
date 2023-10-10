@@ -100,12 +100,16 @@ export class AchievementRandomizer extends RandomizerModFeature {
     const rightX = screenBottomRightPos.X;
 
     const text1 = "Randomizing, please wait...";
-    const aboveCenterY = screenCenterPos.Y - 10;
+    const aboveCenterY = screenCenterPos.Y - 20;
     FONT.DrawString(text1, 0, aboveCenterY, KColorDefault, rightX, true);
 
-    const text2 = `(attempt #${numGenerationAttempts})`;
-    const belowCenterY = screenCenterPos.Y + 10;
-    FONT.DrawString(text2, 0, belowCenterY, KColorDefault, rightX, true);
+    const text2 = `Attempt: #${numGenerationAttempts}`;
+    const centerY = screenCenterPos.Y;
+    FONT.DrawString(text2, 0, centerY, KColorDefault, rightX, true);
+
+    const text3 = "(This could take a few minutes.)";
+    const belowCenterY = screenCenterPos.Y + 20;
+    FONT.DrawString(text3, 0, belowCenterY, KColorDefault, rightX, true);
   }
 
   checkGenerate(): void {
