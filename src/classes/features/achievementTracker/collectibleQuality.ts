@@ -8,7 +8,11 @@ import {
   getCollectibleQuality,
 } from "isaacscript-common";
 
-const GOOD_COLLECTIBLES = new ReadonlySet([
+const ADJUSTED_QUALITY_1_COLLECTIBLES = new ReadonlySet([
+  CollectibleType.CURSED_EYE, // 316 (quality 0)
+]);
+
+const ADJUSTED_QUALITY_4_COLLECTIBLES = new ReadonlySet([
   CollectibleType.CHOCOLATE_MILK, // 69 (quality 3)
   CollectibleType.BOOK_OF_REVELATIONS, // 78 (quality 3)
   CollectibleType.RELIC, // 98 (quality 3)
@@ -35,14 +39,20 @@ const ADJUSTED_QUALITY_TO_VANILLA_COLLECTIBLE_TYPES_MAP: ReadonlyMap<
     const collectibleTypes: CollectibleType[] = [];
 
     for (const collectibleType of VANILLA_COLLECTIBLE_TYPES) {
-      if (GOOD_COLLECTIBLES.has(collectibleType) && quality !== MAX_QUALITY) {
+      if (
+        (ADJUSTED_QUALITY_1_COLLECTIBLES.has(collectibleType) &&
+          quality !== 1) ||
+        (ADJUSTED_QUALITY_4_COLLECTIBLES.has(collectibleType) && quality !== 4)
+      ) {
         continue;
       }
 
       const collectibleTypeQuality = getCollectibleQuality(collectibleType);
       if (
         collectibleTypeQuality === quality ||
-        (GOOD_COLLECTIBLES.has(collectibleType) && quality === MAX_QUALITY)
+        (ADJUSTED_QUALITY_1_COLLECTIBLES.has(collectibleType) &&
+          quality === 1) ||
+        (ADJUSTED_QUALITY_4_COLLECTIBLES.has(collectibleType) && quality === 4)
       ) {
         collectibleTypes.push(collectibleType);
       }
@@ -58,7 +68,7 @@ const ADJUSTED_QUALITY_TO_VANILLA_COLLECTIBLE_TYPES_MAP: ReadonlyMap<
 export function getAdjustedCollectibleQuality(
   collectibleType: CollectibleType,
 ): Quality {
-  return GOOD_COLLECTIBLES.has(collectibleType)
+  return ADJUSTED_QUALITY_4_COLLECTIBLES.has(collectibleType)
     ? MAX_QUALITY
     : getCollectibleQuality(collectibleType);
 }

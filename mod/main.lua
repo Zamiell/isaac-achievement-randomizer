@@ -66698,7 +66698,8 @@ local ReadonlySet = ____isaacscript_2Dcommon.ReadonlySet
 local VANILLA_COLLECTIBLE_TYPES = ____isaacscript_2Dcommon.VANILLA_COLLECTIBLE_TYPES
 local assertDefined = ____isaacscript_2Dcommon.assertDefined
 local getCollectibleQuality = ____isaacscript_2Dcommon.getCollectibleQuality
-local GOOD_COLLECTIBLES = __TS__New(ReadonlySet, {
+local ADJUSTED_QUALITY_1_COLLECTIBLES = __TS__New(ReadonlySet, {CollectibleType.CURSED_EYE})
+local ADJUSTED_QUALITY_4_COLLECTIBLES = __TS__New(ReadonlySet, {
     CollectibleType.CHOCOLATE_MILK,
     CollectibleType.BOOK_OF_REVELATIONS,
     CollectibleType.RELIC,
@@ -66720,11 +66721,11 @@ local ADJUSTED_QUALITY_TO_VANILLA_COLLECTIBLE_TYPES_MAP = (function()
         local collectibleTypes = {}
         for ____, collectibleType in ipairs(VANILLA_COLLECTIBLE_TYPES) do
             do
-                if GOOD_COLLECTIBLES:has(collectibleType) and quality ~= MAX_QUALITY then
+                if ADJUSTED_QUALITY_1_COLLECTIBLES:has(collectibleType) and quality ~= 1 or ADJUSTED_QUALITY_4_COLLECTIBLES:has(collectibleType) and quality ~= 4 then
                     goto __continue4
                 end
                 local collectibleTypeQuality = getCollectibleQuality(nil, collectibleType)
-                if collectibleTypeQuality == quality or GOOD_COLLECTIBLES:has(collectibleType) and quality == MAX_QUALITY then
+                if collectibleTypeQuality == quality or ADJUSTED_QUALITY_1_COLLECTIBLES:has(collectibleType) and quality == 1 or ADJUSTED_QUALITY_4_COLLECTIBLES:has(collectibleType) and quality == 4 then
                     collectibleTypes[#collectibleTypes + 1] = collectibleType
                 end
             end
@@ -66736,7 +66737,7 @@ local ADJUSTED_QUALITY_TO_VANILLA_COLLECTIBLE_TYPES_MAP = (function()
 end)(nil)
 --- Some collectibles result in a won run and should be treated as maximum quality.
 function ____exports.getAdjustedCollectibleQuality(self, collectibleType)
-    return GOOD_COLLECTIBLES:has(collectibleType) and MAX_QUALITY or getCollectibleQuality(nil, collectibleType)
+    return ADJUSTED_QUALITY_4_COLLECTIBLES:has(collectibleType) and MAX_QUALITY or getCollectibleQuality(nil, collectibleType)
 end
 --- Some collectibles result in a won run and should be treated as maximum quality.
 function ____exports.getAdjustedCollectibleTypesOfQuality(self, quality)
