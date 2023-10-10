@@ -1,7 +1,3 @@
-// Randomizer algorithms are discussed here:
-// https://www.youtube.com/watch?v=vGIDzGvsrV8
-// We use "Random Fill" for this randomizer.
-
 import { PlayerType } from "isaac-typescript-definitions";
 import {
   ReadonlySet,

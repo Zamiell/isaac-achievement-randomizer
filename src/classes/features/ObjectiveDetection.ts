@@ -4,6 +4,7 @@ import {
   CollectibleType,
   EntityType,
   LevelStage,
+  LokiVariant,
   ModCallback,
   NPCState,
   PickupVariant,
@@ -299,8 +300,8 @@ export function hasTakenHitOnFloor(): boolean {
 }
 
 /**
- * Returns undefined if the player does not need the corresponding boss objective for the current
- * room.
+ * Returns undefined if the player does not need the corresponding boss objective or if the current
+ * situation is invalid for the objective.
  */
 export function getSecondsSinceLastDamage(): int | undefined {
   const room = game.GetRoom();
@@ -330,6 +331,15 @@ export function getSecondsSinceLastDamage(): int | undefined {
   const bosses = getNPCs(entityType, variant, -1, true);
   const aliveBosses = bosses.filter((boss) => !boss.IsDead());
   if (aliveBosses.length === 0) {
+    return;
+  }
+
+  // Lokii has a special objective condition, since dodging just one is too easy.
+  if (
+    entityType === EntityType.LOKI &&
+    variant === LokiVariant.LOKII &&
+    aliveBosses.length < 2
+  ) {
     return;
   }
 

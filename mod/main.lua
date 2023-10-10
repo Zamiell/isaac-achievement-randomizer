@@ -69948,6 +69948,7 @@ local BossID = ____isaac_2Dtypescript_2Ddefinitions.BossID
 local CollectibleType = ____isaac_2Dtypescript_2Ddefinitions.CollectibleType
 local EntityType = ____isaac_2Dtypescript_2Ddefinitions.EntityType
 local LevelStage = ____isaac_2Dtypescript_2Ddefinitions.LevelStage
+local LokiVariant = ____isaac_2Dtypescript_2Ddefinitions.LokiVariant
 local ModCallback = ____isaac_2Dtypescript_2Ddefinitions.ModCallback
 local NPCState = ____isaac_2Dtypescript_2Ddefinitions.NPCState
 local PickupVariant = ____isaac_2Dtypescript_2Ddefinitions.PickupVariant
@@ -70041,8 +70042,8 @@ function ____exports.objectiveDetectionPostRoomCleared(self)
         end
     until true
 end
---- Returns undefined if the player does not need the corresponding boss objective for the current
--- room.
+--- Returns undefined if the player does not need the corresponding boss objective or if the current
+-- situation is invalid for the objective.
 function ____exports.getSecondsSinceLastDamage(self)
     local room = game:GetRoom()
     local bossID = room:GetBossID()
@@ -70075,6 +70076,9 @@ function ____exports.getSecondsSinceLastDamage(self)
         function(____, boss) return not boss:IsDead() end
     )
     if #aliveBosses == 0 then
+        return
+    end
+    if entityType == EntityType.LOKI and variant == LokiVariant.LOKII and #aliveBosses < 2 then
         return
     end
     if v.room.usedPause or onFirstPhaseOfSatan(nil, bossID) or onFirstPhaseOfIsaacOrBlueBaby(nil, bossID) or onFirstPhaseOfHush(nil, bossID) then
