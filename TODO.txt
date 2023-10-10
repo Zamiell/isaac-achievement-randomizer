@@ -1,10 +1,15 @@
 TODO:
 
-- n/a
 - add explanation of "Attempt" to FAQ
 - add iterations to black screen
 - "This could take a few minutes."
 - fistula + teratoma
+- make it for lokis so that both lokii have to be alive for the no hit achievement
+- don't count deaths if you don't leave the first starting room
+- reverse wheel of fortune should unlock dice rooms
+- custom quality for Cursed Eye
+- check for postPickupInit card check for static lovers card
+- collectible sub menu by 50
 
 ------------------------------
 

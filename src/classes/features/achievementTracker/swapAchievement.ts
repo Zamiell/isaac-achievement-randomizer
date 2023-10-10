@@ -225,14 +225,17 @@ const CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP = new ReadonlyMap<
   Challenge,
   CollectibleType[]
 >([
-  // 6
+  // 3
   [
-    Challenge.SOLAR_SYSTEM,
+    Challenge.HEAD_TRAUMA,
     [
-      CollectibleType.DISTANT_ADMIRATION, // 57
-      CollectibleType.FOREVER_ALONE, // 128
+      CollectibleType.TINY_PLANET, // 233
+      CollectibleType.SOY_MILK, // 330
     ],
   ],
+
+  // 6
+  [Challenge.SOLAR_SYSTEM, [CollectibleType.DISTANT_ADMIRATION]],
 
   // 8
   [Challenge.CAT_GOT_YOUR_TONGUE, [CollectibleType.GUPPYS_HAIRBALL]],
@@ -245,6 +248,9 @@ const CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP = new ReadonlyMap<
       CollectibleType.NINE_VOLT, // 116
     ],
   ],
+
+  // 17
+  [Challenge.WAKA_WAKA, [CollectibleType.STRANGE_ATTRACTOR]],
 
   // 19
   [Challenge.FAMILY_MAN, [CollectibleType.BROTHER_BOBBY]],
