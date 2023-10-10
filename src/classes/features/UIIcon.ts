@@ -81,7 +81,7 @@ function getIconSpriteLayer(): IconSpriteLayer | undefined {
   return undefined;
 }
 
-export function getIconPosition(): Vector {
+function getIconPosition(): Vector {
   const HUDOffsetVector = getHUDOffsetVector();
   const player = Isaac.GetPlayer();
 
