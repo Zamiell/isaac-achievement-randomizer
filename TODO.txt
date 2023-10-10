@@ -1,7 +1,6 @@
 TODO:
 
-- add icon like R+ icon on left UI
-- unlockable hearts/etc in order
+- n/a
 
 ------------------------------
 

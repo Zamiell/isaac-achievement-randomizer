@@ -7,7 +7,6 @@ import {
   fonts,
   game,
   inStartingRoom,
-  isGreedMode,
   newSprite,
   onFirstFloor,
 } from "isaacscript-common";
@@ -28,8 +27,8 @@ import { hasErrors } from "./checkErrors/v";
 const FONT = fonts.teamMeatFont10;
 
 const MOD_ICON_SPRITE = newSprite(
-  "gfx/glowing_item.anm2",
-  "gfx/misc/shuffle_icon.png",
+  "gfx/misc/glowing-item.anm2",
+  "gfx/misc/shuffle-icon.png",
 );
 
 export class StartingRoomInfo extends RandomizerModFeature {
@@ -40,7 +39,7 @@ export class StartingRoomInfo extends RandomizerModFeature {
       return;
     }
 
-    if (isGreedMode()) {
+    if (game.IsGreedMode()) {
       return;
     }
 

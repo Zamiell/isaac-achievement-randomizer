@@ -32,6 +32,7 @@ import { StageTypeRemoval } from "./classes/features/StageTypeRemoval";
 import { StartingRoomInfo } from "./classes/features/StartingRoomInfo";
 import { StatsTracker } from "./classes/features/StatsTracker";
 import { Timer } from "./classes/features/Timer";
+import { UIIcon } from "./classes/features/UIIcon";
 import { VoidPortalRemoval } from "./classes/features/VoidPortalRemoval";
 import { initConsoleCommands } from "./consoleCommands";
 import { IS_DEV, MOD_NAME } from "./constants";
@@ -67,6 +68,7 @@ const MOD_FEATURES = [
   StartingRoomInfo,
   StatsTracker,
   Timer,
+  UIIcon,
   VoidPortalRemoval,
 ] as const;
 

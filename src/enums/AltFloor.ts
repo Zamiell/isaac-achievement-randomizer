@@ -1,5 +1,5 @@
 import { LevelStage, StageType } from "isaac-typescript-definitions";
-import { isGreedMode } from "isaacscript-common";
+import { game } from "isaacscript-common";
 
 export enum AltFloor {
   CELLAR,
@@ -19,7 +19,7 @@ export function getAltFloor(
   stage: LevelStage,
   stageType: StageType,
 ): AltFloor | undefined {
-  if (isGreedMode()) {
+  if (game.IsGreedMode()) {
     return getAltFloorGreedMode(stage, stageType);
   }
 
