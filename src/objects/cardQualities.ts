@@ -26,10 +26,10 @@ export const CARD_QUALITIES = {
   [CardType.SUN]: 3, // 20
   [CardType.JUDGEMENT]: 2, // 21
   [CardType.WORLD]: 1, // 22
-  [CardType.CLUBS_2]: 2, // 23
-  [CardType.DIAMONDS_2]: 3, // 24
-  [CardType.SPADES_2]: 2, // 25
-  [CardType.HEARTS_2]: 1, // 26
+  [CardType.TWO_OF_CLUBS]: 2, // 23
+  [CardType.TWO_OF_DIAMONDS]: 3, // 24
+  [CardType.TWO_OF_SPADES]: 2, // 25
+  [CardType.TWO_OF_HEARTS]: 1, // 26
   [CardType.ACE_OF_CLUBS]: 3, // 27
   [CardType.ACE_OF_DIAMONDS]: 3, // 28
   [CardType.ACE_OF_SPADES]: 3, // 29
@@ -84,21 +84,21 @@ export const CARD_QUALITIES = {
   [CardType.CRACKED_KEY]: 2, // 78
   [CardType.QUEEN_OF_HEARTS]: 2, // 79
   [CardType.WILD]: 3, // 80
-  [CardType.SOUL_ISAAC]: 4, // 81
-  [CardType.SOUL_MAGDALENE]: 1, // 82
-  [CardType.SOUL_CAIN]: 3, // 83
-  [CardType.SOUL_JUDAS]: 0, // 84
-  [CardType.SOUL_BLUE_BABY]: 1, // 85
-  [CardType.SOUL_EVE]: 2, // 86
-  [CardType.SOUL_SAMSON]: 3, // 87
-  [CardType.SOUL_AZAZEL]: 3, // 88
-  [CardType.SOUL_LAZARUS]: 2, // 89
-  [CardType.SOUL_EDEN]: 4, // 90
-  [CardType.SOUL_LOST]: 3, // 91
-  [CardType.SOUL_LILITH]: 3, // 92
-  [CardType.SOUL_KEEPER]: 2, // 93
-  [CardType.SOUL_APOLLYON]: 2, // 94
-  [CardType.SOUL_FORGOTTEN]: 2, // 95
-  [CardType.SOUL_BETHANY]: 0, // 96
-  [CardType.SOUL_JACOB]: 2, // 97
+  [CardType.SOUL_OF_ISAAC]: 4, // 81
+  [CardType.SOUL_OF_MAGDALENE]: 1, // 82
+  [CardType.SOUL_OF_CAIN]: 3, // 83
+  [CardType.SOUL_OF_JUDAS]: 0, // 84
+  [CardType.SOUL_OF_BLUE_BABY]: 1, // 85
+  [CardType.SOUL_OF_EVE]: 2, // 86
+  [CardType.SOUL_OF_SAMSON]: 3, // 87
+  [CardType.SOUL_OF_AZAZEL]: 3, // 88
+  [CardType.SOUL_OF_LAZARUS]: 2, // 89
+  [CardType.SOUL_OF_EDEN]: 4, // 90
+  [CardType.SOUL_OF_LOST]: 3, // 91
+  [CardType.SOUL_OF_LILITH]: 3, // 92
+  [CardType.SOUL_OF_KEEPER]: 2, // 93
+  [CardType.SOUL_OF_APOLLYON]: 2, // 94
+  [CardType.SOUL_OF_FORGOTTEN]: 2, // 95
+  [CardType.SOUL_OF_BETHANY]: 0, // 96
+  [CardType.SOUL_OF_JACOB_AND_ESAU]: 2, // 97
 } as const satisfies Record<CardType, Quality>;

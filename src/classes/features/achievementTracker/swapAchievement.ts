@@ -18,11 +18,14 @@ import {
 import {
   ReadonlyMap,
   assertDefined,
+  assertNotNull,
   collectibleHasTag,
   getChallengeBoss,
   getChallengeCharacter,
   log,
+  shuffleArray,
 } from "isaacscript-common";
+import { UNLOCKABLE_ROOM_TYPES } from "../../../arrays/unlockableRoomTypes";
 import { ALT_FLOORS } from "../../../cachedEnums";
 import { AltFloor } from "../../../enums/AltFloor";
 import { UnlockType } from "../../../enums/UnlockType";
@@ -302,7 +305,15 @@ function getSwappedUnlockChallenge(unlock: Unlock): Unlock | undefined {
     challengeUnlock.challenge,
   );
   if (requiredCollectibleTypes !== undefined) {
-    for (const collectibleType of requiredCollectibleTypes) {
+    assertNotNull(
+      v.persistent.seed,
+      "Failed to swap achievements due to the seed being null.",
+    );
+    const shuffledCollectibleTypes = shuffleArray(
+      requiredCollectibleTypes,
+      v.persistent.seed,
+    );
+    for (const collectibleType of shuffledCollectibleTypes) {
       if (!isCollectibleTypeUnlocked(collectibleType, false)) {
         return getUnlock(UnlockType.COLLECTIBLE, collectibleType);
       }
@@ -461,7 +472,12 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   [
     CollectibleType.DREAM_CATCHER,
     () => {
-      for (const altFloor of ALT_FLOORS) {
+      assertNotNull(
+        v.persistent.seed,
+        "Failed to swap achievements due to the seed being null.",
+      );
+      const shuffledAltFloors = shuffleArray(ALT_FLOORS, v.persistent.seed);
+      for (const altFloor of shuffledAltFloors) {
         if (!isAltFloorUnlocked(altFloor, false)) {
           return getUnlock(UnlockType.ALT_FLOOR, altFloor);
         }
@@ -470,6 +486,9 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
       return undefined;
     },
   ],
+
+  // 580
+  [CollectibleType.RED_KEY, swapAnyRoomUnlock],
 
   // 603
   [
@@ -712,6 +731,9 @@ const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<
         : getUnlock(UnlockType.GRID_ENTITY, GridEntityType.ROCK_TINTED),
   ],
 
+  // 74
+  [CardType.REVERSE_MOON, swapAnyRoomUnlock],
+
   // 76
   [
     CardType.REVERSE_JUDGEMENT,
@@ -729,6 +751,12 @@ const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<
         ? undefined
         : getUnlock(UnlockType.GRID_ENTITY, GridEntityType.CRAWL_SPACE),
   ],
+
+  // 78
+  [CardType.CRACKED_KEY, swapAnyRoomUnlock],
+
+  // 83
+  [CardType.SOUL_OF_CAIN, swapAnyRoomUnlock],
 ]);
 
 function getSwappedUnlockCard(unlock: Unlock): Unlock | undefined {
@@ -764,6 +792,24 @@ function getSwappedUnlockSlot(): Unlock | undefined {
   return isRoomTypeUnlocked(RoomType.ARCADE, false)
     ? undefined
     : getUnlock(UnlockType.ROOM, RoomType.ARCADE);
+}
+
+function swapAnyRoomUnlock() {
+  assertNotNull(
+    v.persistent.seed,
+    "Failed to swap achievements due to the seed being null.",
+  );
+  const shuffledRoomTypes = shuffleArray(
+    UNLOCKABLE_ROOM_TYPES,
+    v.persistent.seed,
+  );
+  for (const roomType of shuffledRoomTypes) {
+    if (!isRoomTypeUnlocked(roomType)) {
+      return getUnlock(UnlockType.ROOM, roomType);
+    }
+  }
+
+  return undefined;
 }
 
 function findObjectiveIDForUnlock(

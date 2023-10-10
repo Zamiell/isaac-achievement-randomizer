@@ -1,15 +1,11 @@
 TODO:
 
-- optimize randomization algorithm, track completed things
-
 - lock room feature, handle teleportation
-- let more time pass per frame on black screen with visual progress updates
 
 - add icon like R+ icon on left UI
-- about.md TODO
+- unlockable hearts/etc in order
 
 - casual / hardcore
-- unlockable hearts/etc in order
 
 ------------------------------
 

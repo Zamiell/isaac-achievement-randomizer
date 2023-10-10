@@ -25,6 +25,7 @@ import { PreventPause } from "./classes/features/PreventPause";
 import { PreventSaveAndQuit } from "./classes/features/PreventSaveAndQuit";
 import { PreventVictoryLapPopup } from "./classes/features/PreventVictoryLapPopup";
 import { RemoveDonationMachines } from "./classes/features/RemoveDonationMachines";
+import { RoomRemoval } from "./classes/features/RoomRemoval";
 import { SilenceMomDad } from "./classes/features/SilenceMomDad";
 import { SlotRemoval } from "./classes/features/SlotRemoval";
 import { StageTypeRemoval } from "./classes/features/StageTypeRemoval";
@@ -59,6 +60,7 @@ const MOD_FEATURES = [
   PreventSaveAndQuit,
   PreventVictoryLapPopup,
   RemoveDonationMachines,
+  RoomRemoval,
   SilenceMomDad,
   SlotRemoval,
   StageTypeRemoval,
