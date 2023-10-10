@@ -6194,8 +6194,8 @@ ____exports.PickupVariant.BROKEN_SHOVEL = 110
 ____exports.PickupVariant[____exports.PickupVariant.BROKEN_SHOVEL] = "BROKEN_SHOVEL"
 ____exports.PickupVariant.SHOP_ITEM = 150
 ____exports.PickupVariant[____exports.PickupVariant.SHOP_ITEM] = "SHOP_ITEM"
-____exports.PickupVariant.TAROT_CARD = 300
-____exports.PickupVariant[____exports.PickupVariant.TAROT_CARD] = "TAROT_CARD"
+____exports.PickupVariant.CARD = 300
+____exports.PickupVariant[____exports.PickupVariant.CARD] = "CARD"
 ____exports.PickupVariant.BIG_CHEST = 340
 ____exports.PickupVariant[____exports.PickupVariant.BIG_CHEST] = "BIG_CHEST"
 ____exports.PickupVariant.TRINKET = 350
@@ -9779,7 +9779,7 @@ ____exports.CollectibleType.STYE = 731
 ____exports.CollectibleType[____exports.CollectibleType.STYE] = "STYE"
 ____exports.CollectibleType.MOMS_RING = 732
 ____exports.CollectibleType[____exports.CollectibleType.MOMS_RING] = "MOMS_RING"
---- For `EntityType.PICKUP` (5), `PickupVariant.TAROT_CARD` (300).
+--- For `EntityType.PICKUP` (5), `PickupVariant.CARD` (300).
 -- 
 -- This is the sub-type of a card.
 -- 
@@ -22461,9 +22461,9 @@ end
 function ____exports.isCollectible(self, pickup)
     return pickup.Type == EntityType.PICKUP and pickup.Variant == PickupVariant.COLLECTIBLE
 end
---- For `PickupVariant.TAROT_CARD` (300).
+--- For `PickupVariant.CARD` (300).
 function ____exports.isCardPickup(self, pickup)
-    return pickup.Type == EntityType.PICKUP and pickup.Variant == PickupVariant.TAROT_CARD
+    return pickup.Type == EntityType.PICKUP and pickup.Variant == PickupVariant.CARD
 end
 --- For `PickupVariant.TRINKET` (350).
 function ____exports.isTrinket(self, pickup)
@@ -32550,7 +32550,7 @@ function ____exports.getCards(self, cardType)
     if cardType == nil then
         cardType = -1
     end
-    return getPickups(nil, PickupVariant.TAROT_CARD, cardType)
+    return getPickups(nil, PickupVariant.CARD, cardType)
 end
 --- Helper function to get all of the coin pickup entities in the room.
 -- 
@@ -32657,7 +32657,7 @@ function ____exports.removeAllCards(self, cardType, cap)
     if cardType == nil then
         cardType = -1
     end
-    return removeAllPickups(nil, PickupVariant.TAROT_CARD, cardType, cap)
+    return removeAllPickups(nil, PickupVariant.CARD, cardType, cap)
 end
 --- Helper function to remove all of the coins in the room.
 -- 
@@ -32782,14 +32782,14 @@ function ____exports.spawnBombPickupWithSeed(self, bombSubType, positionOrGridIn
         seedOrRNG
     )
 end
---- Helper function to spawn a `EntityType.PICKUP` (5) with variant `PickupVariant.TAROT_CARD` (300).
+--- Helper function to spawn a `EntityType.PICKUP` (5) with variant `PickupVariant.CARD` (300).
 function ____exports.spawnCard(self, cardType, positionOrGridIndex, velocity, spawner, seedOrRNG)
     if velocity == nil then
         velocity = VectorZero
     end
     return spawnPickup(
         nil,
-        PickupVariant.TAROT_CARD,
+        PickupVariant.CARD,
         cardType,
         positionOrGridIndex,
         velocity,
@@ -32797,8 +32797,8 @@ function ____exports.spawnCard(self, cardType, positionOrGridIndex, velocity, sp
         seedOrRNG
     )
 end
---- Helper function to spawn a `EntityType.PICKUP` (5) with variant `PickupVariant.TAROT_CARD` (300)
--- and a specific seed.
+--- Helper function to spawn a `EntityType.PICKUP` (5) with variant `PickupVariant.CARD` (300) and a
+-- specific seed.
 function ____exports.spawnCardWithSeed(self, cardType, positionOrGridIndex, seedOrRNG, velocity, spawner)
     if velocity == nil then
         velocity = VectorZero
@@ -64752,10 +64752,10 @@ local CardType = ____isaac_2Dtypescript_2Ddefinitions.CardType
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
 local ReadonlySet = ____isaacscript_2Dcommon.ReadonlySet
 local VANILLA_CARD_TYPES = ____isaacscript_2Dcommon.VANILLA_CARD_TYPES
-local BANNED_CARD_TYPES = __TS__New(ReadonlySet, {CardType.CHAOS, CardType.RUNE_SHARD})
+____exports.BANNED_CARD_TYPES = __TS__New(ReadonlySet, {CardType.CHAOS, CardType.RUNE_SHARD})
 ____exports.UNLOCKABLE_CARD_TYPES = __TS__ArrayFilter(
     VANILLA_CARD_TYPES,
-    function(____, cardType) return not BANNED_CARD_TYPES:has(cardType) end
+    function(____, cardType) return not ____exports.BANNED_CARD_TYPES:has(cardType) end
 )
 return ____exports
  end,
@@ -67977,9 +67977,11 @@ local function getSwappedPathUnlockAltFloorRepentance(self)
 end
 SWAPPED_UNLOCK_ALT_FLOOR_FUNCTIONS = __TS__New(ReadonlyMap, {{AltFloor.DROSS, getSwappedPathUnlockAltFloorRepentance}, {AltFloor.ASHPIT, getSwappedPathUnlockAltFloorRepentance}, {AltFloor.GEHENNA, getSwappedPathUnlockAltFloorRepentance}})
 CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP = __TS__New(ReadonlyMap, {
-    {Challenge.SOLAR_SYSTEM, {CollectibleType.DISTANT_ADMIRATION, CollectibleType.FOREVER_ALONE}},
+    {Challenge.HEAD_TRAUMA, {CollectibleType.TINY_PLANET, CollectibleType.SOY_MILK}},
+    {Challenge.SOLAR_SYSTEM, {CollectibleType.DISTANT_ADMIRATION}},
     {Challenge.CAT_GOT_YOUR_TONGUE, {CollectibleType.GUPPYS_HAIRBALL}},
     {Challenge.BEANS, {CollectibleType.BEAN, CollectibleType.NINE_VOLT}},
+    {Challenge.WAKA_WAKA, {CollectibleType.STRANGE_ATTRACTOR}},
     {Challenge.FAMILY_MAN, {CollectibleType.BROTHER_BOBBY}},
     {Challenge.BLUE_BOMBER, {CollectibleType.KAMIKAZE, CollectibleType.PYROMANIAC}},
     {Challenge.PAY_TO_PLAY, {CollectibleType.SACK_OF_PENNIES, CollectibleType.MONEY_EQUALS_POWER}},
@@ -70698,6 +70700,9 @@ local setCollectibleEmpty = ____isaacscript_2Dcommon.setCollectibleEmpty
 local setCollectibleSubType = ____isaacscript_2Dcommon.setCollectibleSubType
 local setPlayerHealth = ____isaacscript_2Dcommon.setPlayerHealth
 local sfxManager = ____isaacscript_2Dcommon.sfxManager
+local spawnCoinWithSeed = ____isaacscript_2Dcommon.spawnCoinWithSeed
+local ____unlockableCardTypes = require("src.arrays.unlockableCardTypes")
+local BANNED_CARD_TYPES = ____unlockableCardTypes.BANNED_CARD_TYPES
 local ____unlockableCollectibleTypes = require("src.arrays.unlockableCollectibleTypes")
 local BANNED_COLLECTIBLE_TYPES = ____unlockableCollectibleTypes.BANNED_COLLECTIBLE_TYPES
 local BANNED_COLLECTIBLE_TYPES_SET = ____unlockableCollectibleTypes.BANNED_COLLECTIBLE_TYPES_SET
@@ -70840,6 +70845,32 @@ __TS__DecorateLegacy(
     "postPickupInitCollectible",
     true
 )
+function PickupRemoval.prototype.postPickupInitCard(self, pickup)
+    local card = pickup
+    if not isCardTypeUnlocked(nil, card.SubType, true) or BANNED_CARD_TYPES:has(card.SubType) then
+        local cardTypes = getUnlockedCardTypes(nil)
+        if #cardTypes == 0 then
+            card:Remove()
+            spawnCoinWithSeed(nil, CoinSubType.PENNY, card.Position, card.InitSeed)
+        else
+            local newCardType = getRandomArrayElement(nil, cardTypes, card.InitSeed)
+            card:Morph(
+                card.Type,
+                card.Variant,
+                newCardType,
+                true,
+                true,
+                true
+            )
+        end
+    end
+end
+__TS__DecorateLegacy(
+    {Callback(nil, ModCallback.POST_PICKUP_INIT, PickupVariant.CARD)},
+    PickupRemoval.prototype,
+    "postPickupInitCard",
+    true
+)
 function PickupRemoval.prototype.postPickupInitPerfection(self, pickup)
     if not isTrinketTypeUnlocked(nil, TrinketType.PERFECTION, true) then
         pickup:Remove()
@@ -70945,9 +70976,9 @@ function PickupRemoval.prototype.removeItemsFromInventory(self)
         end
     end
     repeat
-        local ____switch54 = character
-        local ____cond54 = ____switch54 == PlayerType.EDEN or ____switch54 == PlayerType.EDEN_B
-        if ____cond54 then
+        local ____switch58 = character
+        local ____cond58 = ____switch58 == PlayerType.EDEN or ____switch58 == PlayerType.EDEN_B
+        if ____cond58 then
             do
                 self:emptyEdenInventory(player)
                 self:addEdenRandomCollectibles(player)
@@ -71107,7 +71138,7 @@ __TS__DecorateLegacy(
     "postPickupSelectionLilBattery",
     true
 )
-function PickupRemoval.prototype.postPickupSelectionTarotCard(self, _pickup, _pickupVariant, subType)
+function PickupRemoval.prototype.postPickupSelectionCard(self, _pickup, _pickupVariant, subType)
     if not anyCardTypesUnlocked(nil, true) then
         return {PickupVariant.COIN, CoinSubType.PENNY}
     end
@@ -71118,9 +71149,9 @@ function PickupRemoval.prototype.postPickupSelectionTarotCard(self, _pickup, _pi
     return nil
 end
 __TS__DecorateLegacy(
-    {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.TAROT_CARD)},
+    {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.CARD)},
     PickupRemoval.prototype,
-    "postPickupSelectionTarotCard",
+    "postPickupSelectionCard",
     true
 )
 function PickupRemoval.prototype.postPickupSelectionTrinket(self, _pickup, _pickupVariant, subType)
@@ -76848,7 +76879,7 @@ return {
     },
     license = "GPL-3.0",
     type = "commonjs",
-    dependencies = {["isaac-typescript-definitions"] = "^32.0.0", ["isaacscript-common"] = "^66.0.0"},
+    dependencies = {["isaac-typescript-definitions"] = "^33.0.0", ["isaacscript-common"] = "^67.0.0"},
     devDependencies = {
         isaacscript = "^3.14.2",
         ["isaacscript-lint"] = "^6.0.0",

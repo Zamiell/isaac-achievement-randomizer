@@ -55,7 +55,9 @@ import {
   setCollectibleSubType,
   setPlayerHealth,
   sfxManager,
+  spawnCoinWithSeed,
 } from "isaacscript-common";
+import { BANNED_CARD_TYPES } from "../../arrays/unlockableCardTypes";
 import {
   BANNED_COLLECTIBLE_TYPES,
   BANNED_COLLECTIBLE_TYPES_SET,
@@ -241,13 +243,20 @@ export class PickupRemoval extends RandomizerModFeature {
   // 34, 300
   @Callback(ModCallback.POST_PICKUP_INIT, PickupVariant.CARD)
   postPickupInitCard(pickup: EntityPickup): void {
-    const collectible = pickup as EntityPickupCollectible;
+    const card = pickup as EntityPickupCard;
+
     if (
-      !isCollectibleTypeUnlocked(collectible.SubType, true) ||
-      // Prevent e.g. Spindown Dice from producing banned collectibles.
-      BANNED_COLLECTIBLE_TYPES_SET.has(collectible.SubType)
+      !isCardTypeUnlocked(card.SubType, true) ||
+      BANNED_CARD_TYPES.has(card.SubType)
     ) {
-      setCollectibleSubType(collectible, CollectibleType.BREAKFAST);
+      const cardTypes = getUnlockedCardTypes();
+      if (cardTypes.length === 0) {
+        card.Remove();
+        spawnCoinWithSeed(CoinSubType.PENNY, card.Position, card.InitSeed);
+      } else {
+        const newCardType = getRandomArrayElement(cardTypes, card.InitSeed);
+        card.Morph(card.Type, card.Variant, newCardType, true, true, true);
+      }
     }
   }
 
