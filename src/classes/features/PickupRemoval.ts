@@ -237,6 +237,22 @@ export class PickupRemoval extends RandomizerModFeature {
     }
   }
 
+  /**
+   * Unlike other trinkets, we want to remove Perfection entirely instead of replace it with another
+   * random unlocked trinket (in order to prevent bosses from awarding the player random trinkets).
+   */
+  // 34, 350, 145
+  @CallbackCustom(
+    ModCallbackCustom.POST_PICKUP_INIT_FILTER,
+    PickupVariant.TRINKET,
+    TrinketType.PERFECTION,
+  )
+  postPickupInitPerfection(pickup: EntityPickup): void {
+    if (!isTrinketTypeUnlocked(TrinketType.PERFECTION, true)) {
+      pickup.Remove();
+    }
+  }
+
   // 37
   @Callback(ModCallback.POST_PICKUP_SELECTION)
   postPickupSelection(
@@ -639,7 +655,11 @@ export class PickupRemoval extends RandomizerModFeature {
       true,
     );
 
-    if (unlockedTrinketTypes.includes(normalizedTrinketType)) {
+    // Perfection should always be selected but will be conditionally removed after spawning.
+    if (
+      unlockedTrinketTypes.includes(normalizedTrinketType) ||
+      normalizedTrinketType === TrinketType.PERFECTION
+    ) {
       return goldTrinketsUnlocked
         ? undefined
         : [PickupVariant.TRINKET, normalizedTrinketType];
@@ -657,7 +677,11 @@ export class PickupRemoval extends RandomizerModFeature {
     trinketType: TrinketType,
     unlockedTrinketTypes: TrinketType[],
   ): [PickupVariant, int] | undefined {
-    if (unlockedTrinketTypes.includes(trinketType)) {
+    // Perfection should always be selected but will be conditionally removed after spawning.
+    if (
+      unlockedTrinketTypes.includes(trinketType) ||
+      trinketType === TrinketType.PERFECTION
+    ) {
       return undefined;
     }
 

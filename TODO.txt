@@ -1,6 +1,6 @@
 TODO:
 
-- remove perfection completely instead of replacing
+- n/a
 
 ------------------------------
 
