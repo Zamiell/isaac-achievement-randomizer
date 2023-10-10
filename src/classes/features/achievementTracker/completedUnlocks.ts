@@ -77,7 +77,7 @@ const QUALITY_THRESHOLD_PERCENT = 0.5;
 
 export function isCharacterUnlocked(
   character: PlayerType,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   if (!UNLOCKABLE_CHARACTERS.includes(character)) {
     return true;
@@ -99,7 +99,7 @@ export function isCharacterUnlocked(
 
 export function isPathUnlocked(
   unlockablePath: UnlockablePath,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   const array = forRun
     ? v.persistent.completedUnlocksForRun
@@ -116,7 +116,10 @@ export function isPathUnlocked(
 // Unlock - Alt floor functions
 // ----------------------------
 
-export function isAltFloorUnlocked(altFloor: AltFloor, forRun = true): boolean {
+export function isAltFloorUnlocked(
+  altFloor: AltFloor,
+  forRun: boolean,
+): boolean {
   const array = forRun
     ? v.persistent.completedUnlocksForRun
     : v.persistent.completedUnlocks;
@@ -130,20 +133,24 @@ export function isAltFloorUnlocked(altFloor: AltFloor, forRun = true): boolean {
 export function isStageTypeUnlocked(
   stage: LevelStage,
   stageType: StageType,
+  forRun: boolean,
 ): boolean {
   const altFloor = getAltFloor(stage, stageType);
   if (altFloor === undefined) {
     return true;
   }
 
-  return isAltFloorUnlocked(altFloor);
+  return isAltFloorUnlocked(altFloor, forRun);
 }
 
 // -----------------------
 // Unlock - Room functions
 // -----------------------
 
-export function isRoomTypeUnlocked(roomType: RoomType, forRun = true): boolean {
+export function isRoomTypeUnlocked(
+  roomType: RoomType,
+  forRun: boolean,
+): boolean {
   const array = forRun
     ? v.persistent.completedUnlocksForRun
     : v.persistent.completedUnlocks;
@@ -159,7 +166,7 @@ export function isRoomTypeUnlocked(roomType: RoomType, forRun = true): boolean {
 
 export function isChallengeUnlocked(
   challenge: Challenge,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   if (!UNLOCKABLE_CHALLENGES.includes(challenge)) {
     return true;
@@ -181,7 +188,7 @@ export function isChallengeUnlocked(
 
 export function isCollectibleTypeUnlocked(
   collectibleType: CollectibleType,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   if (ALWAYS_UNLOCKED_COLLECTIBLE_TYPES.has(collectibleType)) {
     return true;
@@ -271,7 +278,7 @@ export function getWorseLockedCollectibleType(
 // Unlock - Trinket functions
 // --------------------------
 
-export function anyTrinketTypesUnlocked(forRun = true): boolean {
+export function anyTrinketTypesUnlocked(forRun: boolean): boolean {
   const array = forRun
     ? v.persistent.completedUnlocksForRun
     : v.persistent.completedUnlocks;
@@ -281,7 +288,7 @@ export function anyTrinketTypesUnlocked(forRun = true): boolean {
 
 export function isTrinketTypeUnlocked(
   trinketType: TrinketType,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   if (ALWAYS_UNLOCKED_TRINKET_TYPES.has(trinketType)) {
     return true;
@@ -347,7 +354,7 @@ export function getWorseLockedTrinketType(
 // Unlock - Card functions
 // -----------------------
 
-export function anyCardTypesUnlocked(forRun = true): boolean {
+export function anyCardTypesUnlocked(forRun: boolean): boolean {
   const array = forRun
     ? v.persistent.completedUnlocksForRun
     : v.persistent.completedUnlocks;
@@ -355,7 +362,7 @@ export function anyCardTypesUnlocked(forRun = true): boolean {
   return array.some((unlock) => unlock.type === UnlockType.CARD);
 }
 
-export function anyCardsUnlocked(forRun = true): boolean {
+export function anyCardsUnlocked(forRun: boolean): boolean {
   const array = forRun
     ? v.persistent.completedUnlocksForRun
     : v.persistent.completedUnlocks;
@@ -365,7 +372,7 @@ export function anyCardsUnlocked(forRun = true): boolean {
   );
 }
 
-export function anyRunesUnlocked(forRun = true): boolean {
+export function anyRunesUnlocked(forRun: boolean): boolean {
   const array = forRun
     ? v.persistent.completedUnlocksForRun
     : v.persistent.completedUnlocks;
@@ -375,7 +382,10 @@ export function anyRunesUnlocked(forRun = true): boolean {
   );
 }
 
-export function isCardTypeUnlocked(cardType: CardType, forRun = true): boolean {
+export function isCardTypeUnlocked(
+  cardType: CardType,
+  forRun: boolean,
+): boolean {
   if (!UNLOCKABLE_CARD_TYPES.includes(cardType)) {
     return true;
   }
@@ -435,7 +445,7 @@ export function getWorseLockedCardType(
 // Unlock - Pill effect functions
 // ------------------------------
 
-export function anyPillEffectsUnlocked(forRun = true): boolean {
+export function anyPillEffectsUnlocked(forRun: boolean): boolean {
   const array = forRun
     ? v.persistent.completedUnlocksForRun
     : v.persistent.completedUnlocks;
@@ -443,7 +453,7 @@ export function anyPillEffectsUnlocked(forRun = true): boolean {
   return array.some((unlock) => unlock.type === UnlockType.PILL_EFFECT);
 }
 
-export function anyGoodPillEffectsUnlocked(forRun = true): boolean {
+export function anyGoodPillEffectsUnlocked(forRun: boolean): boolean {
   const array = forRun
     ? v.persistent.completedUnlocksForRun
     : v.persistent.completedUnlocks;
@@ -456,7 +466,7 @@ export function anyGoodPillEffectsUnlocked(forRun = true): boolean {
   );
 }
 
-export function anyBadPillEffectsUnlocked(forRun = true): boolean {
+export function anyBadPillEffectsUnlocked(forRun: boolean): boolean {
   const array = forRun
     ? v.persistent.completedUnlocksForRun
     : v.persistent.completedUnlocks;
@@ -471,7 +481,7 @@ export function anyBadPillEffectsUnlocked(forRun = true): boolean {
 
 export function isPillEffectUnlocked(
   pillEffect: PillEffect,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   const array = forRun
     ? v.persistent.completedUnlocksForRun
@@ -535,7 +545,7 @@ export function getWorseLockedPillEffect(
 
 export function isHeartSubTypeUnlocked(
   heartSubType: HeartSubType,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   if (!includes(UNLOCKABLE_HEART_SUB_TYPES, heartSubType)) {
     return true;
@@ -576,7 +586,7 @@ export function getWorseLockedHeartSubType(
 
 export function isCoinSubTypeUnlocked(
   coinSubType: CoinSubType,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   if (!includes(UNLOCKABLE_COIN_SUB_TYPES, coinSubType)) {
     return true;
@@ -617,7 +627,7 @@ export function getWorseLockedCoinSubType(
 
 export function isBombSubTypeUnlocked(
   bombSubType: BombSubType,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   if (!includes(UNLOCKABLE_BOMB_SUB_TYPES, bombSubType)) {
     return true;
@@ -658,7 +668,7 @@ export function getWorseLockedBombSubType(
 
 export function isKeySubTypeUnlocked(
   keySubType: KeySubType,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   if (!includes(UNLOCKABLE_KEY_SUB_TYPES, keySubType)) {
     return true;
@@ -699,7 +709,7 @@ export function getWorseLockedKeySubType(
 
 export function isBatterySubTypeUnlocked(
   batterySubType: BatterySubType,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   if (!includes(UNLOCKABLE_BATTERY_SUB_TYPES, batterySubType)) {
     return true;
@@ -742,7 +752,7 @@ export function getWorseLockedBatterySubType(
 
 export function isSackSubTypeUnlocked(
   sackSubType: SackSubType,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   if (!includes(UNLOCKABLE_SACK_SUB_TYPES, sackSubType)) {
     return true;
@@ -783,7 +793,7 @@ export function getWorseLockedSackSubType(
 
 export function isChestPickupVariantUnlocked(
   pickupVariant: PickupVariant,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   if (!includes(UNLOCKABLE_CHEST_PICKUP_VARIANTS, pickupVariant)) {
     return true;
@@ -832,7 +842,7 @@ export function getWorseLockedChestPickupVariant(
 
 export function isSlotVariantUnlocked(
   slotVariant: SlotVariant,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   if (!includes(UNLOCKABLE_SLOT_VARIANTS, slotVariant)) {
     return true;
@@ -854,7 +864,7 @@ export function isSlotVariantUnlocked(
 
 export function isGridEntityTypeUnlocked(
   gridEntityType: GridEntityType,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   if (!includes(UNLOCKABLE_GRID_ENTITY_TYPES, gridEntityType)) {
     return true;
@@ -877,7 +887,7 @@ export function isGridEntityTypeUnlocked(
 
 export function isOtherUnlockKindUnlocked(
   otherUnlockKind: OtherUnlockKind,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   const array = forRun
     ? v.persistent.completedUnlocksForRun

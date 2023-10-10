@@ -274,7 +274,7 @@ function checkCharacterUnlocked() {
   const player = Isaac.GetPlayer();
   const character = player.GetPlayerType();
 
-  if (!isCharacterUnlocked(character)) {
+  if (!isCharacterUnlocked(character, true)) {
     log(
       `Error: Locked character detected: ${PlayerType[character]} (${character})`,
     );
@@ -289,7 +289,7 @@ function checkChallengeUnlocked() {
 
   const challenge = Isaac.GetChallenge();
 
-  if (!isChallengeUnlocked(challenge)) {
+  if (!isChallengeUnlocked(challenge, true)) {
     const challengeName = getChallengeName(challenge);
     log(`Error: Locked challenge detected: ${challengeName} (${challenge})`);
     v.run.lockedChallenge = true;
@@ -303,7 +303,7 @@ function checkModeUnlocked() {
 
   if (
     game.Difficulty === Difficulty.GREEDIER &&
-    !isPathUnlocked(UnlockablePath.GREED_MODE)
+    !isPathUnlocked(UnlockablePath.GREED_MODE, true)
   ) {
     log("Error: Locked Greed Mode detected.");
     v.run.lockedMode = true;

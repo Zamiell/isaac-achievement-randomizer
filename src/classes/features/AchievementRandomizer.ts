@@ -216,7 +216,7 @@ function tryUnlockEverythingReachable(): boolean {
   let unlockedSomething = false;
 
   for (const character of MAIN_CHARACTERS) {
-    if (!isCharacterUnlocked(character)) {
+    if (!isCharacterUnlocked(character, false)) {
       continue;
     }
 
@@ -265,7 +265,7 @@ function tryUnlockEverythingReachable(): boolean {
 
 export function canGetToCharacterObjectiveKind(
   kind: CharacterObjectiveKind,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   // Handle special cases that require two or more unlockable paths.
   if (kind === CharacterObjectiveKind.DELIRIUM) {
@@ -299,13 +299,13 @@ export function getReachableNonStoryBossesSet(): Set<BossID> {
         continue;
       }
 
-      if (!isStageTypeUnlocked(stage, stageType)) {
+      if (!isStageTypeUnlocked(stage, stageType, false)) {
         continue;
       }
 
       if (
         isRepentanceStage(stageType) &&
-        !isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS)
+        !isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS, false)
       ) {
         continue;
       }
@@ -325,7 +325,7 @@ export function getReachableNonStoryBossesSet(): Set<BossID> {
 export function canGetToBoss(
   bossID: BossID,
   reachableBossesSet: Set<BossID>,
-  forRun = true,
+  forRun: boolean,
 ): boolean {
   if (!isStoryBossID(bossID)) {
     return reachableBossesSet.has(bossID);

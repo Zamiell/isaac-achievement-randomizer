@@ -34,7 +34,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
   postGridEntityInit(gridEntity: GridEntity): void {
     const gridEntityType = gridEntity.GetType();
 
-    if (isGridEntityTypeUnlocked(gridEntityType)) {
+    if (isGridEntityTypeUnlocked(gridEntityType, true)) {
       return;
     }
 
@@ -57,7 +57,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (isOtherUnlockKindUnlocked(otherUnlockKind)) {
+    if (isOtherUnlockKindUnlocked(otherUnlockKind, true)) {
       return;
     }
 
@@ -77,7 +77,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (isOtherUnlockKindUnlocked(otherUnlockKind)) {
+    if (isOtherUnlockKindUnlocked(otherUnlockKind, true)) {
       return;
     }
 
@@ -94,7 +94,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
     GridEntityType.ROCK_ALT_2,
   )
   postGridEntityInitRockAlt2(gridEntity: GridEntity): void {
-    if (!isPathUnlocked(UnlockablePath.ASCENT)) {
+    if (!isPathUnlocked(UnlockablePath.ASCENT, true)) {
       setGridEntityType(gridEntity, GridEntityType.ROCK);
     }
   }
@@ -106,7 +106,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
     PressurePlateVariant.REWARD_PLATE,
   )
   postGridEntityInitRewardPlate(gridEntity: GridEntity): void {
-    if (!isOtherUnlockKindUnlocked(OtherUnlockKind.REWARD_PLATES)) {
+    if (!isOtherUnlockKindUnlocked(OtherUnlockKind.REWARD_PLATES, true)) {
       setGridEntityType(gridEntity, GridEntityType.ROCK);
     }
   }
@@ -145,7 +145,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
       return undefined;
     }
 
-    if (isOtherUnlockKindUnlocked(otherUnlockKind)) {
+    if (isOtherUnlockKindUnlocked(otherUnlockKind, true)) {
       return undefined;
     }
 
@@ -165,7 +165,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
       return undefined;
     }
 
-    if (isOtherUnlockKindUnlocked(otherUnlockKind)) {
+    if (isOtherUnlockKindUnlocked(otherUnlockKind, true)) {
       return undefined;
     }
 
@@ -179,7 +179,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
   preRoomEntitySpawnRockAlt2():
     | [type: EntityType | GridEntityXMLType, variant: int, subType: int]
     | undefined {
-    return isPathUnlocked(UnlockablePath.ASCENT)
+    return isPathUnlocked(UnlockablePath.ASCENT, true)
       ? undefined
       : [GridEntityXMLType.ROCK, 0, 0];
   }
@@ -192,7 +192,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
   preRoomEntitySpawnRewardPlate():
     | [type: EntityType | GridEntityXMLType, variant: int, subType: int]
     | undefined {
-    return isOtherUnlockKindUnlocked(OtherUnlockKind.REWARD_PLATES)
+    return isOtherUnlockKindUnlocked(OtherUnlockKind.REWARD_PLATES, true)
       ? undefined
       : [GridEntityXMLType.ROCK, 0, 0];
   }

@@ -20,7 +20,7 @@ export class RoomRemoval extends RandomizerModFeature {
   @CallbackCustom(ModCallbackCustom.POST_NEW_ROOM_REORDERED)
   postNewRoomReordered(): void {
     for (const roomType of UNLOCKABLE_ROOM_TYPES) {
-      if (!isRoomTypeUnlocked(roomType)) {
+      if (!isRoomTypeUnlocked(roomType, true)) {
         this.checkForRoomType(roomType);
       }
     }

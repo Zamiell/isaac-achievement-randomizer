@@ -316,14 +316,14 @@ function getSwappedUnlockChallenge(unlock: Unlock): Unlock | undefined {
   const challengeUnlock = unlock as ChallengeUnlock;
 
   const challengeCharacter = getChallengeCharacter(challengeUnlock.challenge);
-  if (!isCharacterUnlocked(challengeCharacter)) {
+  if (!isCharacterUnlocked(challengeCharacter, false)) {
     return getUnlock(UnlockType.CHARACTER, challengeCharacter);
   }
 
   // All the challenge bosses are story bosses.
   const challengeBossID = getChallengeBoss(challengeUnlock.challenge);
   const unlockablePath = getUnlockablePathFromStoryBoss(challengeBossID);
-  if (unlockablePath !== undefined && !isPathUnlocked(unlockablePath)) {
+  if (unlockablePath !== undefined && !isPathUnlocked(unlockablePath, false)) {
     return getUnlock(UnlockType.PATH, unlockablePath);
   }
 
@@ -596,7 +596,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.BIBLE_TRACT,
     () =>
-      isHeartSubTypeUnlocked(HeartSubType.ETERNAL)
+      isHeartSubTypeUnlocked(HeartSubType.ETERNAL, false)
         ? undefined
         : getUnlock(UnlockType.HEART, HeartSubType.ETERNAL),
   ],
@@ -691,7 +691,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.STRANGE_KEY,
     () =>
-      isPathUnlocked(UnlockablePath.BLUE_WOMB)
+      isPathUnlocked(UnlockablePath.BLUE_WOMB, false)
         ? undefined
         : getUnlock(UnlockType.PATH, UnlockablePath.BLUE_WOMB),
   ],
@@ -956,7 +956,7 @@ function swapAnyRoomUnlock() {
     v.persistent.seed,
   );
   for (const roomType of shuffledRoomTypes) {
-    if (!isRoomTypeUnlocked(roomType)) {
+    if (!isRoomTypeUnlocked(roomType, false)) {
       return getUnlock(UnlockType.ROOM, roomType);
     }
   }

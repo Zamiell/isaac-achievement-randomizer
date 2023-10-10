@@ -57,7 +57,7 @@ export class PathRemoval extends RandomizerModFeature {
     TrapdoorVariant.VOID_PORTAL,
   )
   postGridEntityUpdateVoidPortal(gridEntity: GridEntity): void {
-    if (!isPathUnlocked(UnlockablePath.VOID)) {
+    if (!isPathUnlocked(UnlockablePath.VOID, true)) {
       removeGridEntity(gridEntity, false);
     }
   }
@@ -90,7 +90,7 @@ export class PathRemoval extends RandomizerModFeature {
         ? UnlockablePath.ASCENT
         : UnlockablePath.REPENTANCE_FLOORS;
 
-    if (!isPathUnlocked(unlockablePath)) {
+    if (!isPathUnlocked(unlockablePath, true)) {
       this.removeDoorAndSmoke(repentanceDoor);
     }
   }
@@ -101,7 +101,7 @@ export class PathRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (!isPathUnlocked(UnlockablePath.BLUE_WOMB)) {
+    if (!isPathUnlocked(UnlockablePath.BLUE_WOMB, true)) {
       this.removeDoorAndSmoke(blueWombDoor);
     }
   }
@@ -112,7 +112,7 @@ export class PathRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (!isPathUnlocked(UnlockablePath.VOID)) {
+    if (!isPathUnlocked(UnlockablePath.VOID, true)) {
       this.removeDoorAndSmoke(voidDoor);
     }
   }
@@ -123,7 +123,7 @@ export class PathRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (!isPathUnlocked(UnlockablePath.MEGA_SATAN)) {
+    if (!isPathUnlocked(UnlockablePath.MEGA_SATAN, true)) {
       this.removeDoorAndSmoke(megaSatanDoor);
     }
   }
@@ -134,7 +134,7 @@ export class PathRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (!isPathUnlocked(UnlockablePath.BOSS_RUSH)) {
+    if (!isPathUnlocked(UnlockablePath.BOSS_RUSH, true)) {
       this.removeDoorAndSmoke(bossRushDoor);
     }
   }
@@ -162,7 +162,7 @@ export class PathRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (!isPathUnlocked(UnlockablePath.BLACK_MARKETS)) {
+    if (!isPathUnlocked(UnlockablePath.BLACK_MARKETS, true)) {
       spawnGridEntity(
         GridEntityType.STATUE,
         GRID_INDEX_BLOCKING_LADDER_TO_BLACK_MARKET,
@@ -172,7 +172,10 @@ export class PathRemoval extends RandomizerModFeature {
 
   @CallbackCustom(ModCallbackCustom.POST_SACRIFICE)
   postSacrifice(_player: EntityPlayer, numSacrifices: int): void {
-    if (numSacrifices >= 11 && !isPathUnlocked(UnlockablePath.DARK_ROOM)) {
+    if (
+      numSacrifices >= 11 &&
+      !isPathUnlocked(UnlockablePath.DARK_ROOM, true)
+    ) {
       removeAllMatchingGridEntities(GridEntityType.SPIKES);
       v.level.removedSacrificeRoomSpikes = true;
     }
@@ -198,7 +201,7 @@ export class PathRemoval extends RandomizerModFeature {
 
     if (
       collectibleType === CollectibleType.POLAROID &&
-      !isPathUnlocked(UnlockablePath.CHEST)
+      !isPathUnlocked(UnlockablePath.CHEST, true)
     ) {
       return [
         EntityType.PICKUP,
@@ -210,7 +213,7 @@ export class PathRemoval extends RandomizerModFeature {
 
     if (
       collectibleType === CollectibleType.NEGATIVE &&
-      !isPathUnlocked(UnlockablePath.DARK_ROOM)
+      !isPathUnlocked(UnlockablePath.DARK_ROOM, true)
     ) {
       return [
         EntityType.PICKUP,
@@ -223,7 +226,7 @@ export class PathRemoval extends RandomizerModFeature {
     if (
       (collectibleType === CollectibleType.KEY_PIECE_1 ||
         collectibleType === CollectibleType.KEY_PIECE_2) &&
-      !isPathUnlocked(UnlockablePath.MEGA_SATAN)
+      !isPathUnlocked(UnlockablePath.MEGA_SATAN, true)
     ) {
       return [
         EntityType.PICKUP,

@@ -26,7 +26,7 @@ export class StageTypeRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (isStageTypeUnlocked(stage, stageType)) {
+    if (isStageTypeUnlocked(stage, stageType, true)) {
       return;
     }
 

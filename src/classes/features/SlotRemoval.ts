@@ -20,7 +20,7 @@ export class SlotRemoval extends RandomizerModFeature {
     | undefined {
     const slotVariant = variant as SlotVariant;
 
-    if (isSlotVariantUnlocked(slotVariant)) {
+    if (isSlotVariantUnlocked(slotVariant, true)) {
       return undefined;
     }
 

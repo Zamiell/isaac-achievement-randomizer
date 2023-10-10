@@ -22,7 +22,7 @@ export class NPCRemoval extends RandomizerModFeature {
   ):
     | [entityType: EntityType, variant: int, subType: int, initSeed: Seed]
     | undefined {
-    return isOtherUnlockKindUnlocked(OtherUnlockKind.SHOPKEEPERS)
+    return isOtherUnlockKindUnlocked(OtherUnlockKind.SHOPKEEPERS, true)
       ? undefined
       : [EntityType.EFFECT, EffectVariantCustom.INVISIBLE_EFFECT, 0, initSeed];
   }
@@ -44,7 +44,7 @@ export class NPCRemoval extends RandomizerModFeature {
   ):
     | [entityType: EntityType, variant: int, subType: int, initSeed: Seed]
     | undefined {
-    return isOtherUnlockKindUnlocked(OtherUnlockKind.BLUE_FIREPLACES)
+    return isOtherUnlockKindUnlocked(OtherUnlockKind.BLUE_FIREPLACES, true)
       ? undefined
       : [EntityType.FIREPLACE, FireplaceVariant.NORMAL, 0, initSeed];
   }

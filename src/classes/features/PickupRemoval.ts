@@ -112,7 +112,7 @@ export class PickupRemoval extends RandomizerModFeature {
     includeRunes: boolean,
     onlyRunes: boolean,
   ): CardType | undefined {
-    if (isCardTypeUnlocked(cardType)) {
+    if (isCardTypeUnlocked(cardType, true)) {
       return undefined;
     }
 
@@ -197,7 +197,7 @@ export class PickupRemoval extends RandomizerModFeature {
         }
 
         if (
-          !isCollectibleTypeUnlocked(newCollectibleType) ||
+          !isCollectibleTypeUnlocked(newCollectibleType, true) ||
           QUEST_COLLECTIBLE_TYPES_SET.has(newCollectibleType) ||
           NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS_SET.has(
             newCollectibleType,
@@ -234,7 +234,7 @@ export class PickupRemoval extends RandomizerModFeature {
   postPickupInitCollectible(pickup: EntityPickup): void {
     const collectible = pickup as EntityPickupCollectible;
     if (
-      !isCollectibleTypeUnlocked(collectible.SubType) ||
+      !isCollectibleTypeUnlocked(collectible.SubType, true) ||
       // Prevent e.g. Spindown Dice from producing banned collectibles.
       BANNED_COLLECTIBLE_TYPES_SET.has(collectible.SubType)
     ) {
@@ -253,7 +253,7 @@ export class PickupRemoval extends RandomizerModFeature {
       return undefined;
     }
 
-    return isChestPickupVariantUnlocked(pickupVariant)
+    return isChestPickupVariantUnlocked(pickupVariant, true)
       ? undefined
       : [PickupVariant.CHEST, ChestSubType.CLOSED];
   }
@@ -264,7 +264,7 @@ export class PickupRemoval extends RandomizerModFeature {
     pillEffect: PillEffect,
     _pillColor: PillColor,
   ): PillEffect | undefined {
-    if (isPillEffectUnlocked(pillEffect)) {
+    if (isPillEffectUnlocked(pillEffect, true)) {
       return undefined;
     }
 
@@ -294,7 +294,7 @@ export class PickupRemoval extends RandomizerModFeature {
     const itemPool = game.GetItemPool();
 
     for (const collectibleType of UNLOCKABLE_COLLECTIBLE_TYPES) {
-      if (!isCollectibleTypeUnlocked(collectibleType)) {
+      if (!isCollectibleTypeUnlocked(collectibleType, true)) {
         itemPool.RemoveCollectible(collectibleType);
       }
     }
@@ -302,7 +302,7 @@ export class PickupRemoval extends RandomizerModFeature {
     removeCollectibleFromPools(...BANNED_COLLECTIBLE_TYPES);
 
     for (const trinketType of UNLOCKABLE_TRINKET_TYPES) {
-      if (!isTrinketTypeUnlocked(trinketType)) {
+      if (!isTrinketTypeUnlocked(trinketType, true)) {
         itemPool.RemoveTrinket(trinketType);
       }
     }
@@ -368,7 +368,7 @@ export class PickupRemoval extends RandomizerModFeature {
     for (const collectibleType of VANILLA_COLLECTIBLE_TYPES) {
       if (
         player.HasCollectible(collectibleType) &&
-        (!isCollectibleTypeUnlocked(collectibleType) ||
+        (!isCollectibleTypeUnlocked(collectibleType, true) ||
           BANNED_COLLECTIBLE_TYPES_SET.has(collectibleType) ||
           isEden(player))
       ) {
@@ -381,9 +381,9 @@ export class PickupRemoval extends RandomizerModFeature {
       const trinketType = player.GetTrinket(trinketSlot);
       if (
         trinketType !== TrinketType.NULL &&
-        (!isTrinketTypeUnlocked(trinketType) ||
+        (!isTrinketTypeUnlocked(trinketType, true) ||
           (isGoldenTrinketType(trinketType) &&
-            !isOtherUnlockKindUnlocked(OtherUnlockKind.GOLD_TRINKETS)) ||
+            !isOtherUnlockKindUnlocked(OtherUnlockKind.GOLD_TRINKETS, true)) ||
           BANNED_TRINKET_TYPES_SET.has(trinketType) ||
           isEden(player))
       ) {
@@ -395,10 +395,10 @@ export class PickupRemoval extends RandomizerModFeature {
       const pillColor = player.GetPill(pocketItemSlot);
       if (
         pillColor !== PillColor.NULL &&
-        (!anyPillEffectsUnlocked() ||
+        (!anyPillEffectsUnlocked(true) ||
           isEden(player) ||
           (character === PlayerType.MAGDALENE &&
-            !isPillEffectUnlocked(PillEffect.SPEED_UP)))
+            !isPillEffectUnlocked(PillEffect.SPEED_UP, true)))
       ) {
         player.SetPill(pocketItemSlot, PillColor.NULL);
       }
@@ -406,7 +406,7 @@ export class PickupRemoval extends RandomizerModFeature {
       const cardType = player.GetCard(pocketItemSlot);
       if (
         cardType !== CardType.NULL &&
-        (!isCardTypeUnlocked(cardType) || isEden(player))
+        (!isCardTypeUnlocked(cardType, true) || isEden(player))
       ) {
         player.SetCard(pocketItemSlot, CardType.NULL);
       }
@@ -449,7 +449,7 @@ export class PickupRemoval extends RandomizerModFeature {
 
   addEdenRandomCollectibles(player: EntityPlayer): void {
     const character = player.GetPlayerType();
-    if (!isCharacterUnlocked(character)) {
+    if (!isCharacterUnlocked(character, true)) {
       return;
     }
 
@@ -492,14 +492,14 @@ export class PickupRemoval extends RandomizerModFeature {
 
     if (
       onChest() &&
-      !isChestPickupVariantUnlocked(PickupVariant.LOCKED_CHEST)
+      !isChestPickupVariantUnlocked(PickupVariant.LOCKED_CHEST, true)
     ) {
       removeAllPickups(PickupVariant.CHEST);
     }
 
     if (
       onDarkRoom() &&
-      !isChestPickupVariantUnlocked(PickupVariant.RED_CHEST)
+      !isChestPickupVariantUnlocked(PickupVariant.RED_CHEST, true)
     ) {
       removeAllPickups(PickupVariant.CHEST);
     }
@@ -516,7 +516,7 @@ export class PickupRemoval extends RandomizerModFeature {
   ): [PickupVariant, int] | undefined {
     const heartSubType = subType as HeartSubType;
 
-    return isHeartSubTypeUnlocked(heartSubType)
+    return isHeartSubTypeUnlocked(heartSubType, true)
       ? undefined
       : [PickupVariant.HEART, HeartSubType.HALF];
   }
@@ -532,7 +532,7 @@ export class PickupRemoval extends RandomizerModFeature {
   ): [PickupVariant, int] | undefined {
     const coinSubType = subType as CoinSubType;
 
-    return isCoinSubTypeUnlocked(coinSubType)
+    return isCoinSubTypeUnlocked(coinSubType, true)
       ? undefined
       : [PickupVariant.COIN, CoinSubType.PENNY];
   }
@@ -548,7 +548,7 @@ export class PickupRemoval extends RandomizerModFeature {
   ): [PickupVariant, int] | undefined {
     const keySubType = subType as KeySubType;
 
-    return isKeySubTypeUnlocked(keySubType)
+    return isKeySubTypeUnlocked(keySubType, true)
       ? undefined
       : [PickupVariant.KEY, KeySubType.NORMAL];
   }
@@ -564,7 +564,7 @@ export class PickupRemoval extends RandomizerModFeature {
   ): [PickupVariant, int] | undefined {
     const bombSubType = subType as BombSubType;
 
-    return isBombSubTypeUnlocked(bombSubType)
+    return isBombSubTypeUnlocked(bombSubType, true)
       ? undefined
       : [PickupVariant.BOMB, BombSubType.NORMAL];
   }
@@ -580,7 +580,7 @@ export class PickupRemoval extends RandomizerModFeature {
   ): [PickupVariant, int] | undefined {
     const sackSubType = subType as SackSubType;
 
-    return isSackSubTypeUnlocked(sackSubType)
+    return isSackSubTypeUnlocked(sackSubType, true)
       ? undefined
       : [PickupVariant.COIN, CoinSubType.PENNY];
   }
@@ -594,7 +594,7 @@ export class PickupRemoval extends RandomizerModFeature {
     _pickupVariant: PickupVariant,
     subType: int,
   ): [PickupVariant, int] | undefined {
-    if (!anyPillEffectsUnlocked()) {
+    if (!anyPillEffectsUnlocked(true)) {
       return [PickupVariant.COIN, CoinSubType.PENNY];
     }
 
@@ -602,14 +602,14 @@ export class PickupRemoval extends RandomizerModFeature {
 
     if (
       isGoldPill(pillColor) &&
-      !isOtherUnlockKindUnlocked(OtherUnlockKind.GOLD_PILLS)
+      !isOtherUnlockKindUnlocked(OtherUnlockKind.GOLD_PILLS, true)
     ) {
       return [PickupVariant.PILL, FIRST_PILL_COLOR];
     }
 
     if (
       isHorsePill(pillColor) &&
-      !isOtherUnlockKindUnlocked(OtherUnlockKind.HORSE_PILLS)
+      !isOtherUnlockKindUnlocked(OtherUnlockKind.HORSE_PILLS, true)
     ) {
       const normalPillColor = getNormalPillColorFromHorse(pillColor);
       return [PickupVariant.PILL, normalPillColor];
@@ -629,7 +629,7 @@ export class PickupRemoval extends RandomizerModFeature {
   ): [PickupVariant, int] | undefined {
     const batterySubType = subType as BatterySubType;
 
-    return isBatterySubTypeUnlocked(batterySubType)
+    return isBatterySubTypeUnlocked(batterySubType, true)
       ? undefined
       : [PickupVariant.COIN, CoinSubType.PENNY];
   }
@@ -643,7 +643,7 @@ export class PickupRemoval extends RandomizerModFeature {
     _pickupVariant: PickupVariant,
     subType: int,
   ): [PickupVariant, int] | undefined {
-    if (!anyCardTypesUnlocked()) {
+    if (!anyCardTypesUnlocked(true)) {
       return [PickupVariant.COIN, CoinSubType.PENNY];
     }
 
@@ -695,6 +695,7 @@ export class PickupRemoval extends RandomizerModFeature {
     const normalizedTrinketType = getNormalTrinketType(trinketType);
     const goldTrinketsUnlocked = isOtherUnlockKindUnlocked(
       OtherUnlockKind.GOLD_TRINKETS,
+      true,
     );
 
     if (unlockedTrinketTypes.includes(normalizedTrinketType)) {
@@ -728,7 +729,7 @@ export class PickupRemoval extends RandomizerModFeature {
     PickupVariant.BED, // 380
   )
   postPickupSelectionBed(): [PickupVariant, int] | undefined {
-    return isOtherUnlockKindUnlocked(OtherUnlockKind.BEDS)
+    return isOtherUnlockKindUnlocked(OtherUnlockKind.BEDS, true)
       ? undefined
       : [PickupVariant.COIN, CoinSubType.PENNY];
   }
