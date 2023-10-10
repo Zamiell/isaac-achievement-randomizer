@@ -19,7 +19,7 @@ import {
   UNLOCKABLE_COIN_SUB_TYPES,
   UNLOCKABLE_HEART_SUB_TYPES,
   UNLOCKABLE_KEY_SUB_TYPES,
-  UNLOCKABLE_SACK_KEY_SUB_TYPES,
+  UNLOCKABLE_SACK_SUB_TYPES,
 } from "./unlockablePickupTypes";
 import { UNLOCKABLE_ROOM_TYPES } from "./unlockableRoomTypes";
 import { UNLOCKABLE_SLOT_VARIANTS } from "./unlockableSlotVariants";
@@ -199,7 +199,7 @@ export const ALL_UNLOCKS: readonly Unlock[] = (() => {
       }
 
       case UnlockType.SACK: {
-        for (const sackSubType of UNLOCKABLE_SACK_KEY_SUB_TYPES) {
+        for (const sackSubType of UNLOCKABLE_SACK_SUB_TYPES) {
           const unlock: Unlock = {
             type: UnlockType.SACK,
             sackSubType,

@@ -57,7 +57,7 @@ export const UNLOCKABLE_BATTERY_SUB_TYPES = [
   BatterySubType.GOLDEN, // 4
 ] as const;
 
-export const UNLOCKABLE_SACK_KEY_SUB_TYPES = [
+export const UNLOCKABLE_SACK_SUB_TYPES = [
   SackSubType.NORMAL, // 1
   SackSubType.BLACK, // 2
 ] as const;

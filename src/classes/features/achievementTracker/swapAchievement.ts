@@ -40,11 +40,18 @@ import { getObjectiveFromID, getObjectiveText } from "../../../types/Objective";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
 import type {
   AltFloorUnlock,
+  BatteryUnlock,
+  BombUnlock,
   CardUnlock,
   ChallengeUnlock,
+  ChestUnlock,
+  CoinUnlock,
   CollectibleUnlock,
+  HeartUnlock,
+  KeyUnlock,
   PathUnlock,
   PillEffectUnlock,
+  SackUnlock,
   TrinketUnlock,
   Unlock,
 } from "../../../types/Unlock";
@@ -57,9 +64,16 @@ import {
   anyPillEffectsUnlocked,
   anyRunesUnlocked,
   anyTrinketTypesUnlocked,
+  getWorseLockedBatterySubType,
+  getWorseLockedBombSubType,
   getWorseLockedCardType,
+  getWorseLockedChestPickupVariant,
+  getWorseLockedCoinSubType,
   getWorseLockedCollectibleType,
+  getWorseLockedHeartSubType,
+  getWorseLockedKeySubType,
   getWorseLockedPillEffect,
+  getWorseLockedSackSubType,
   getWorseLockedTrinketType,
   isAltFloorUnlocked,
   isBatterySubTypeUnlocked,
@@ -120,22 +134,30 @@ export function checkSwapProblematicAchievement(
   return swappedUnlock;
 }
 
-const SWAPPED_UNLOCK_FUNCTIONS = new ReadonlyMap<
-  UnlockType,
-  (unlock: Unlock) => Unlock | undefined
->([
-  [UnlockType.PATH, getSwappedUnlockPath],
-  [UnlockType.ALT_FLOOR, getSwappedUnlockAltFloor],
-  [UnlockType.CHALLENGE, getSwappedUnlockChallenge],
-  [UnlockType.COLLECTIBLE, getSwappedUnlockCollectible],
-  [UnlockType.TRINKET, getSwappedUnlockTrinket],
-  [UnlockType.CARD, getSwappedUnlockCard],
-  [UnlockType.PILL_EFFECT, getSwappedUnlockPillEffect],
-  [UnlockType.SLOT, getSwappedUnlockSlot],
-]);
+const SWAPPED_UNLOCK_FUNCTIONS = {
+  [UnlockType.CHARACTER]: undefined,
+  [UnlockType.PATH]: getSwappedUnlockPath,
+  [UnlockType.ALT_FLOOR]: getSwappedUnlockAltFloor,
+  [UnlockType.ROOM]: undefined,
+  [UnlockType.CHALLENGE]: getSwappedUnlockChallenge,
+  [UnlockType.COLLECTIBLE]: getSwappedUnlockCollectible,
+  [UnlockType.TRINKET]: getSwappedUnlockTrinket,
+  [UnlockType.CARD]: getSwappedUnlockCard,
+  [UnlockType.PILL_EFFECT]: getSwappedUnlockPillEffect,
+  [UnlockType.HEART]: getSwappedUnlockHeart,
+  [UnlockType.COIN]: getSwappedUnlockCoin,
+  [UnlockType.BOMB]: getSwappedUnlockBomb,
+  [UnlockType.KEY]: getSwappedUnlockKey,
+  [UnlockType.BATTERY]: getSwappedUnlockBattery,
+  [UnlockType.SACK]: getSwappedUnlockSack,
+  [UnlockType.CHEST]: getSwappedUnlockChest,
+  [UnlockType.SLOT]: getSwappedUnlockSlot,
+  [UnlockType.GRID_ENTITY]: undefined,
+  [UnlockType.OTHER]: undefined,
+} as const satisfies Record<UnlockType, ((unlock: Unlock) => void) | undefined>;
 
 function getSwappedUnlock(unlock: Unlock): Unlock | undefined {
-  const func = SWAPPED_UNLOCK_FUNCTIONS.get(unlock.type);
+  const func = SWAPPED_UNLOCK_FUNCTIONS[unlock.type];
   return func === undefined ? undefined : func(unlock);
 }
 
@@ -782,6 +804,103 @@ function getSwappedUnlockPillEffect(unlock: Unlock): Unlock | undefined {
     );
     if (worsePillEffect !== undefined) {
       return getUnlock(UnlockType.PILL_EFFECT, worsePillEffect);
+    }
+  }
+
+  return undefined;
+}
+
+function getSwappedUnlockHeart(unlock: Unlock): Unlock | undefined {
+  const heartUnlock = unlock as HeartUnlock;
+
+  if (isHardcoreMode()) {
+    const worseHeartSubType = getWorseLockedHeartSubType(
+      heartUnlock.heartSubType,
+    );
+    if (worseHeartSubType !== undefined) {
+      return getUnlock(UnlockType.HEART, worseHeartSubType);
+    }
+  }
+
+  return undefined;
+}
+
+function getSwappedUnlockCoin(unlock: Unlock): Unlock | undefined {
+  const coinUnlock = unlock as CoinUnlock;
+
+  if (isHardcoreMode()) {
+    const worseCoinSubType = getWorseLockedCoinSubType(coinUnlock.coinSubType);
+    if (worseCoinSubType !== undefined) {
+      return getUnlock(UnlockType.COIN, worseCoinSubType);
+    }
+  }
+
+  return undefined;
+}
+
+function getSwappedUnlockBomb(unlock: Unlock): Unlock | undefined {
+  const bombUnlock = unlock as BombUnlock;
+
+  if (isHardcoreMode()) {
+    const worseBombSubType = getWorseLockedBombSubType(bombUnlock.bombSubType);
+    if (worseBombSubType !== undefined) {
+      return getUnlock(UnlockType.BOMB, worseBombSubType);
+    }
+  }
+
+  return undefined;
+}
+
+function getSwappedUnlockKey(unlock: Unlock): Unlock | undefined {
+  const keyUnlock = unlock as KeyUnlock;
+
+  if (isHardcoreMode()) {
+    const worseKeySubType = getWorseLockedKeySubType(keyUnlock.keySubType);
+    if (worseKeySubType !== undefined) {
+      return getUnlock(UnlockType.KEY, worseKeySubType);
+    }
+  }
+
+  return undefined;
+}
+
+function getSwappedUnlockBattery(unlock: Unlock): Unlock | undefined {
+  const batteryUnlock = unlock as BatteryUnlock;
+
+  if (isHardcoreMode()) {
+    const worseBatterySubType = getWorseLockedBatterySubType(
+      batteryUnlock.batterySubType,
+    );
+    if (worseBatterySubType !== undefined) {
+      return getUnlock(UnlockType.BATTERY, worseBatterySubType);
+    }
+  }
+
+  return undefined;
+}
+
+function getSwappedUnlockSack(unlock: Unlock): Unlock | undefined {
+  const sackUnlock = unlock as SackUnlock;
+
+  if (isHardcoreMode()) {
+    const worseSackSubType = getWorseLockedSackSubType(sackUnlock.sackSubType);
+    if (worseSackSubType !== undefined) {
+      return getUnlock(UnlockType.SACK, worseSackSubType);
+    }
+  }
+
+  return undefined;
+}
+
+function getSwappedUnlockChest(unlock: Unlock): Unlock | undefined {
+  const chestUnlock = unlock as ChestUnlock;
+
+  if (isHardcoreMode()) {
+    const worseChestPickupVariant = getWorseLockedChestPickupVariant(
+      chestUnlock.pickupVariant,
+    );
+    if (worseChestPickupVariant !== undefined) {
+      return getUnlock(UnlockType.CHEST, worseChestPickupVariant);
     }
   }
 

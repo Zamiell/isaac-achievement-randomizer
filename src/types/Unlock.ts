@@ -89,37 +89,37 @@ export interface PillEffectUnlock {
   pillEffect: PillEffect;
 }
 
-interface HeartUnlock {
+export interface HeartUnlock {
   type: UnlockType.HEART;
   heartSubType: HeartSubType;
 }
 
-interface CoinUnlock {
+export interface CoinUnlock {
   type: UnlockType.COIN;
   coinSubType: CoinSubType;
 }
 
-interface BombUnlock {
+export interface BombUnlock {
   type: UnlockType.BOMB;
   bombSubType: BombSubType;
 }
 
-interface KeyUnlock {
+export interface KeyUnlock {
   type: UnlockType.KEY;
   keySubType: KeySubType;
 }
 
-interface BatteryUnlock {
+export interface BatteryUnlock {
   type: UnlockType.BATTERY;
   batterySubType: BatterySubType;
 }
 
-interface SackUnlock {
+export interface SackUnlock {
   type: UnlockType.SACK;
   sackSubType: SackSubType;
 }
 
-interface ChestUnlock {
+export interface ChestUnlock {
   type: UnlockType.CHEST;
   pickupVariant: PickupVariant;
 }

@@ -36,7 +36,7 @@ import {
   UNLOCKABLE_COIN_SUB_TYPES,
   UNLOCKABLE_HEART_SUB_TYPES,
   UNLOCKABLE_KEY_SUB_TYPES,
-  UNLOCKABLE_SACK_KEY_SUB_TYPES,
+  UNLOCKABLE_SACK_SUB_TYPES,
 } from "./arrays/unlockablePickupTypes";
 import { UNLOCKABLE_SLOT_VARIANTS } from "./arrays/unlockableSlotVariants";
 import { UNLOCKABLE_TRINKET_TYPES } from "./arrays/unlockableTrinketTypes";
@@ -610,7 +610,7 @@ export function getBatteryUnlockButtons(): DeadSeaScrollsButton[] {
 export function getSackUnlockButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const sackSubType of UNLOCKABLE_SACK_KEY_SUB_TYPES) {
+  for (const sackSubType of UNLOCKABLE_SACK_SUB_TYPES) {
     const sackName = getSackName(sackSubType).toLowerCase();
     const completed = isSackSubTypeUnlocked(sackSubType, false);
     const completedText = getCompletedText(completed);

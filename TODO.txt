@@ -1,11 +1,7 @@
 TODO:
 
-- lock room feature, handle teleportation
-
 - add icon like R+ icon on left UI
 - unlockable hearts/etc in order
-
-- casual / hardcore
 
 ------------------------------
 

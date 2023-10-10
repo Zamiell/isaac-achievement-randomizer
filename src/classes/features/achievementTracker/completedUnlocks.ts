@@ -49,7 +49,7 @@ import {
   UNLOCKABLE_COIN_SUB_TYPES,
   UNLOCKABLE_HEART_SUB_TYPES,
   UNLOCKABLE_KEY_SUB_TYPES,
-  UNLOCKABLE_SACK_KEY_SUB_TYPES,
+  UNLOCKABLE_SACK_SUB_TYPES,
 } from "../../../arrays/unlockablePickupTypes";
 import { UNLOCKABLE_SLOT_VARIANTS } from "../../../arrays/unlockableSlotVariants";
 import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../../arrays/unlockableTrinketTypes";
@@ -551,6 +551,29 @@ export function isHeartSubTypeUnlocked(
   );
 }
 
+export function getWorseLockedHeartSubType(
+  heartSubType: HeartSubType,
+): HeartSubType | undefined {
+  const quality = UNLOCKABLE_HEART_SUB_TYPES.indexOf(
+    heartSubType as (typeof UNLOCKABLE_HEART_SUB_TYPES)[number],
+  );
+  if (quality === -1) {
+    error(`Failed to get the quality for heart sub-type: ${heartSubType}`);
+  }
+
+  for (const lowerQuality of eRange(quality)) {
+    const lowerQualityHeartSubType = UNLOCKABLE_HEART_SUB_TYPES[lowerQuality];
+    if (
+      lowerQualityHeartSubType !== undefined &&
+      !isHeartSubTypeUnlocked(lowerQualityHeartSubType)
+    ) {
+      return lowerQualityHeartSubType;
+    }
+  }
+
+  return undefined;
+}
+
 export function isCoinSubTypeUnlocked(
   coinSubType: CoinSubType,
   forRun = true,
@@ -567,6 +590,29 @@ export function isCoinSubTypeUnlocked(
     (unlock) =>
       unlock.type === UnlockType.COIN && unlock.coinSubType === coinSubType,
   );
+}
+
+export function getWorseLockedCoinSubType(
+  coinSubType: CoinSubType,
+): CoinSubType | undefined {
+  const quality = UNLOCKABLE_COIN_SUB_TYPES.indexOf(
+    coinSubType as (typeof UNLOCKABLE_COIN_SUB_TYPES)[number],
+  );
+  if (quality === -1) {
+    error(`Failed to get the quality for coin sub-type: ${coinSubType}`);
+  }
+
+  for (const lowerQuality of eRange(quality)) {
+    const lowerQualityCoinSubType = UNLOCKABLE_COIN_SUB_TYPES[lowerQuality];
+    if (
+      lowerQualityCoinSubType !== undefined &&
+      !isCoinSubTypeUnlocked(lowerQualityCoinSubType)
+    ) {
+      return lowerQualityCoinSubType;
+    }
+  }
+
+  return undefined;
 }
 
 export function isBombSubTypeUnlocked(
@@ -587,6 +633,29 @@ export function isBombSubTypeUnlocked(
   );
 }
 
+export function getWorseLockedBombSubType(
+  bombSubType: BombSubType,
+): BombSubType | undefined {
+  const quality = UNLOCKABLE_BOMB_SUB_TYPES.indexOf(
+    bombSubType as (typeof UNLOCKABLE_BOMB_SUB_TYPES)[number],
+  );
+  if (quality === -1) {
+    error(`Failed to get the quality for bomb sub-type: ${bombSubType}`);
+  }
+
+  for (const lowerQuality of eRange(quality)) {
+    const lowerQualityBombSubType = UNLOCKABLE_BOMB_SUB_TYPES[lowerQuality];
+    if (
+      lowerQualityBombSubType !== undefined &&
+      !isBombSubTypeUnlocked(lowerQualityBombSubType)
+    ) {
+      return lowerQualityBombSubType;
+    }
+  }
+
+  return undefined;
+}
+
 export function isKeySubTypeUnlocked(
   keySubType: KeySubType,
   forRun = true,
@@ -603,6 +672,29 @@ export function isKeySubTypeUnlocked(
     (unlock) =>
       unlock.type === UnlockType.KEY && unlock.keySubType === keySubType,
   );
+}
+
+export function getWorseLockedKeySubType(
+  keySubType: KeySubType,
+): KeySubType | undefined {
+  const quality = UNLOCKABLE_KEY_SUB_TYPES.indexOf(
+    keySubType as (typeof UNLOCKABLE_KEY_SUB_TYPES)[number],
+  );
+  if (quality === -1) {
+    error(`Failed to get the quality for key sub-type: ${keySubType}`);
+  }
+
+  for (const lowerQuality of eRange(quality)) {
+    const lowerQualityKeySubType = UNLOCKABLE_KEY_SUB_TYPES[lowerQuality];
+    if (
+      lowerQualityKeySubType !== undefined &&
+      !isKeySubTypeUnlocked(lowerQualityKeySubType)
+    ) {
+      return lowerQualityKeySubType;
+    }
+  }
+
+  return undefined;
 }
 
 export function isBatterySubTypeUnlocked(
@@ -624,11 +716,35 @@ export function isBatterySubTypeUnlocked(
   );
 }
 
+export function getWorseLockedBatterySubType(
+  batterySubType: BatterySubType,
+): BatterySubType | undefined {
+  const quality = UNLOCKABLE_BATTERY_SUB_TYPES.indexOf(
+    batterySubType as (typeof UNLOCKABLE_BATTERY_SUB_TYPES)[number],
+  );
+  if (quality === -1) {
+    error(`Failed to get the quality for battery sub-type: ${batterySubType}`);
+  }
+
+  for (const lowerQuality of eRange(quality)) {
+    const lowerQualityBatterySubType =
+      UNLOCKABLE_BATTERY_SUB_TYPES[lowerQuality];
+    if (
+      lowerQualityBatterySubType !== undefined &&
+      !isBatterySubTypeUnlocked(lowerQualityBatterySubType)
+    ) {
+      return lowerQualityBatterySubType;
+    }
+  }
+
+  return undefined;
+}
+
 export function isSackSubTypeUnlocked(
   sackSubType: SackSubType,
   forRun = true,
 ): boolean {
-  if (!includes(UNLOCKABLE_SACK_KEY_SUB_TYPES, sackSubType)) {
+  if (!includes(UNLOCKABLE_SACK_SUB_TYPES, sackSubType)) {
     return true;
   }
 
@@ -640,6 +756,29 @@ export function isSackSubTypeUnlocked(
     (unlock) =>
       unlock.type === UnlockType.SACK && unlock.sackSubType === sackSubType,
   );
+}
+
+export function getWorseLockedSackSubType(
+  sackSubType: SackSubType,
+): SackSubType | undefined {
+  const quality = UNLOCKABLE_SACK_SUB_TYPES.indexOf(
+    sackSubType as (typeof UNLOCKABLE_SACK_SUB_TYPES)[number],
+  );
+  if (quality === -1) {
+    error(`Failed to get the quality for battery sub-type: ${sackSubType}`);
+  }
+
+  for (const lowerQuality of eRange(quality)) {
+    const lowerQualitySackSubType = UNLOCKABLE_SACK_SUB_TYPES[lowerQuality];
+    if (
+      lowerQualitySackSubType !== undefined &&
+      !isSackSubTypeUnlocked(lowerQualitySackSubType)
+    ) {
+      return lowerQualitySackSubType;
+    }
+  }
+
+  return undefined;
 }
 
 export function isChestPickupVariantUnlocked(
@@ -659,6 +798,32 @@ export function isChestPickupVariantUnlocked(
       unlock.type === UnlockType.CHEST &&
       unlock.pickupVariant === pickupVariant,
   );
+}
+
+export function getWorseLockedChestPickupVariant(
+  pickupVariant: PickupVariant,
+): PickupVariant | undefined {
+  const quality = UNLOCKABLE_CHEST_PICKUP_VARIANTS.indexOf(
+    pickupVariant as (typeof UNLOCKABLE_CHEST_PICKUP_VARIANTS)[number],
+  );
+  if (quality === -1) {
+    error(
+      `Failed to get the quality for chest pickup variant: ${pickupVariant}`,
+    );
+  }
+
+  for (const lowerQuality of eRange(quality)) {
+    const lowerQualityChestPickupVariant =
+      UNLOCKABLE_CHEST_PICKUP_VARIANTS[lowerQuality];
+    if (
+      lowerQualityChestPickupVariant !== undefined &&
+      !isChestPickupVariantUnlocked(lowerQualityChestPickupVariant)
+    ) {
+      return lowerQualityChestPickupVariant;
+    }
+  }
+
+  return undefined;
 }
 
 // -----------------------
