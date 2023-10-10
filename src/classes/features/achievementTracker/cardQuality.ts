@@ -6,29 +6,27 @@ import {
 } from "isaacscript-common";
 import { CARD_QUALITIES } from "../../../objects/cardQualities";
 
-const QUALITY_TO_VANILLA_CARD_TYPES_MAP: ReadonlyMap<
-  Quality,
-  ReadonlySet<CardType>
-> = (() => {
-  const qualityToCardTypesMap = new Map<Quality, Set<CardType>>();
+const QUALITY_TO_VANILLA_CARD_TYPES_MAP: ReadonlyMap<Quality, CardType[]> =
+  (() => {
+    const qualityToCardTypesMap = new Map<Quality, CardType[]>();
 
-  for (const quality of QUALITIES) {
-    const cardTypesSet = new Set<CardType>();
+    for (const quality of QUALITIES) {
+      const cardTypes: CardType[] = [];
 
-    for (const cardType of VANILLA_CARD_TYPES) {
-      const cardTypeQuality = CARD_QUALITIES[cardType];
-      if (cardTypeQuality === quality) {
-        cardTypesSet.add(cardType);
+      for (const cardType of VANILLA_CARD_TYPES) {
+        const cardTypeQuality = CARD_QUALITIES[cardType];
+        if (cardTypeQuality === quality) {
+          cardTypes.push(cardType);
+        }
       }
+
+      qualityToCardTypesMap.set(quality, cardTypes);
     }
 
-    qualityToCardTypesMap.set(quality, cardTypesSet);
-  }
+    return qualityToCardTypesMap;
+  })();
 
-  return qualityToCardTypesMap;
-})();
-
-export function getCardTypesOfQuality(quality: Quality): ReadonlySet<CardType> {
+export function getCardTypesOfQuality(quality: Quality): CardType[] {
   const cardTypes = QUALITY_TO_VANILLA_CARD_TYPES_MAP.get(quality);
   assertDefined(
     cardTypes,

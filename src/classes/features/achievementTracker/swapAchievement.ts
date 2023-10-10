@@ -10,7 +10,6 @@ import {
   ItemConfigTag,
   KeySubType,
   PickupVariant,
-  PillEffect,
   RoomType,
   SackSubType,
   SlotVariant,
@@ -23,10 +22,14 @@ import {
   collectibleHasTag,
   getChallengeBoss,
   getChallengeCharacter,
+  getRandomArrayElement,
   log,
   shuffleArray,
 } from "isaacscript-common";
+import { UNLOCKABLE_CARD_TYPES } from "../../../arrays/unlockableCardTypes";
+import { UNLOCKABLE_PILL_EFFECTS } from "../../../arrays/unlockablePillEffects";
 import { UNLOCKABLE_ROOM_TYPES } from "../../../arrays/unlockableRoomTypes";
+import { UNLOCKABLE_TRINKET_TYPES } from "../../../arrays/unlockableTrinketTypes";
 import { ALT_FLOORS } from "../../../cachedEnums";
 import { AltFloor } from "../../../enums/AltFloor";
 import { OtherUnlockKind } from "../../../enums/OtherUnlockKind";
@@ -58,6 +61,7 @@ import type {
   Unlock,
 } from "../../../types/Unlock";
 import { getUnlock, getUnlockText } from "../../../types/Unlock";
+import { getCardTypesOfQuality } from "./cardQuality";
 import {
   anyBadPillEffectsUnlocked,
   anyCardTypesUnlocked,
@@ -94,14 +98,9 @@ import {
   isSackSubTypeUnlocked,
   isSlotVariantUnlocked,
 } from "./completedUnlocks";
+import { getPillEffectsOfQuality } from "./pillEffectQuality";
+import { getTrinketTypesOfQuality } from "./trinketQuality";
 import { isHardcoreMode, v } from "./v";
-
-const DEFAULT_TRINKET_UNLOCK = getUnlock(UnlockType.TRINKET, TrinketType.ERROR);
-
-const DEFAULT_CARD_UNLOCK = getUnlock(UnlockType.CARD, CardType.FOOL);
-
-/** X-Lax is the only pill with a class of "0-". */
-const DEFAULT_PILL_UNLOCK = getUnlock(UnlockType.PILL_EFFECT, PillEffect.X_LAX);
 
 export function checkSwapProblematicAchievement(
   unlock: Unlock,
@@ -356,7 +355,10 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   // 75
   [
     CollectibleType.PHD,
-    () => (anyGoodPillEffectsUnlocked(false) ? undefined : DEFAULT_PILL_UNLOCK),
+    () =>
+      anyGoodPillEffectsUnlocked(false)
+        ? undefined
+        : getRandomPillEffectUnlock(),
   ],
 
   // 84
@@ -371,7 +373,7 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   // 85
   [
     CollectibleType.DECK_OF_CARDS,
-    () => (anyCardsUnlocked(false) ? undefined : DEFAULT_CARD_UNLOCK),
+    () => (anyCardsUnlocked(false) ? undefined : getRandomCardUnlock()),
   ],
 
   // 102
@@ -379,7 +381,7 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
     CollectibleType.MOMS_BOTTLE_OF_PILLS,
     () => {
       if (!anyPillEffectsUnlocked(false)) {
-        return DEFAULT_PILL_UNLOCK;
+        return getRandomPillEffectUnlock();
       }
 
       return undefined;
@@ -389,13 +391,15 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   // 139
   [
     CollectibleType.MOMS_PURSE,
-    () => (anyTrinketTypesUnlocked(false) ? undefined : DEFAULT_TRINKET_UNLOCK),
+    () =>
+      anyTrinketTypesUnlocked(false) ? undefined : getRandomTrinketUnlock(),
   ],
 
   // 195
   [
     CollectibleType.MOMS_COIN_PURSE,
-    () => (anyPillEffectsUnlocked(false) ? undefined : DEFAULT_PILL_UNLOCK),
+    () =>
+      anyPillEffectsUnlocked(false) ? undefined : getRandomPillEffectUnlock(),
   ],
 
   // 203
@@ -419,13 +423,14 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   // 251
   [
     CollectibleType.STARTER_DECK,
-    () => (anyCardTypesUnlocked(false) ? undefined : DEFAULT_CARD_UNLOCK),
+    () => (anyCardTypesUnlocked(false) ? undefined : getRandomCardUnlock()),
   ],
 
   // 252
   [
     CollectibleType.LITTLE_BAGGY,
-    () => (anyPillEffectsUnlocked(false) ? undefined : DEFAULT_PILL_UNLOCK),
+    () =>
+      anyPillEffectsUnlocked(false) ? undefined : getRandomPillEffectUnlock(),
   ],
 
   // 263
@@ -440,13 +445,14 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   // 286
   [
     CollectibleType.BLANK_CARD,
-    () => (anyCardsUnlocked(false) ? undefined : DEFAULT_CARD_UNLOCK),
+    () => (anyCardsUnlocked(false) ? undefined : getRandomCardUnlock()),
   ],
 
   // 348
   [
     CollectibleType.PLACEBO,
-    () => (anyPillEffectsUnlocked(false) ? undefined : DEFAULT_PILL_UNLOCK),
+    () =>
+      anyPillEffectsUnlocked(false) ? undefined : getRandomPillEffectUnlock(),
   ],
 
   // 424
@@ -461,37 +467,42 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   // 439
   [
     CollectibleType.MOMS_BOX,
-    () => (anyTrinketTypesUnlocked(false) ? undefined : DEFAULT_TRINKET_UNLOCK),
+    () =>
+      anyTrinketTypesUnlocked(false) ? undefined : getRandomTrinketUnlock(),
   ],
 
   // 451
   [
     CollectibleType.TAROT_CLOTH,
-    () => (anyCardsUnlocked(false) ? undefined : DEFAULT_CARD_UNLOCK),
+    () => (anyCardsUnlocked(false) ? undefined : getRandomCardUnlock()),
   ],
 
   // 458
   [
     CollectibleType.BELLY_BUTTON,
-    () => (anyTrinketTypesUnlocked(false) ? undefined : DEFAULT_TRINKET_UNLOCK),
+    () =>
+      anyTrinketTypesUnlocked(false) ? undefined : getRandomTrinketUnlock(),
   ],
 
   // 479
   [
     CollectibleType.SMELTER,
-    () => (anyTrinketTypesUnlocked(false) ? undefined : DEFAULT_TRINKET_UNLOCK),
+    () =>
+      anyTrinketTypesUnlocked(false) ? undefined : getRandomTrinketUnlock(),
   ],
 
   // 491
   [
     CollectibleType.ACID_BABY,
-    () => (anyPillEffectsUnlocked(false) ? undefined : DEFAULT_PILL_UNLOCK),
+    () =>
+      anyPillEffectsUnlocked(false) ? undefined : getRandomPillEffectUnlock(),
   ],
 
   // 538
   [
     CollectibleType.MARBLES,
-    () => (anyTrinketTypesUnlocked(false) ? undefined : DEFAULT_TRINKET_UNLOCK),
+    () =>
+      anyTrinketTypesUnlocked(false) ? undefined : getRandomTrinketUnlock(),
   ],
 
   // 566
@@ -528,13 +539,16 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   // 624
   [
     CollectibleType.BOOSTER_PACK,
-    () => (anyCardsUnlocked(false) ? undefined : DEFAULT_CARD_UNLOCK),
+    () => (anyCardsUnlocked(false) ? undefined : getRandomCardUnlock()),
   ],
 
   // 654
   [
     CollectibleType.FALSE_PHD,
-    () => (anyBadPillEffectsUnlocked(false) ? undefined : DEFAULT_PILL_UNLOCK),
+    () =>
+      anyBadPillEffectsUnlocked(false)
+        ? undefined
+        : getRandomPillEffectUnlock(),
   ],
 ]);
 
@@ -613,13 +627,14 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   // 44
   [
     TrinketType.SAFETY_CAP,
-    () => (anyPillEffectsUnlocked(false) ? undefined : DEFAULT_PILL_UNLOCK),
+    () =>
+      anyPillEffectsUnlocked(false) ? undefined : getRandomPillEffectUnlock(),
   ],
 
   // 45
   [
     TrinketType.ACE_OF_SPADES,
-    () => (anyCardsUnlocked(false) ? undefined : DEFAULT_CARD_UNLOCK),
+    () => (anyCardsUnlocked(false) ? undefined : getRandomCardUnlock()),
   ],
 
   // 61
@@ -783,7 +798,8 @@ const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<
   // 70
   [
     CardType.REVERSE_TEMPERANCE,
-    () => (anyPillEffectsUnlocked(false) ? undefined : DEFAULT_PILL_UNLOCK),
+    () =>
+      anyPillEffectsUnlocked(false) ? undefined : getRandomPillEffectUnlock(),
   ],
 
   // 72
@@ -971,6 +987,45 @@ function swapAnyRoomUnlock() {
   }
 
   return undefined;
+}
+
+function getRandomTrinketUnlock(): TrinketUnlock {
+  const trinketTypes = isHardcoreMode()
+    ? getTrinketTypesOfQuality(0)
+    : UNLOCKABLE_TRINKET_TYPES;
+
+  const trinketType = getRandomArrayElement(trinketTypes);
+
+  return {
+    type: UnlockType.TRINKET,
+    trinketType,
+  };
+}
+
+function getRandomCardUnlock(): CardUnlock {
+  const cardTypes = isHardcoreMode()
+    ? getCardTypesOfQuality(0)
+    : UNLOCKABLE_CARD_TYPES;
+
+  const cardType = getRandomArrayElement(cardTypes);
+
+  return {
+    type: UnlockType.CARD,
+    cardType,
+  };
+}
+
+function getRandomPillEffectUnlock(): PillEffectUnlock {
+  const pillEffects = isHardcoreMode()
+    ? getPillEffectsOfQuality(0)
+    : UNLOCKABLE_PILL_EFFECTS;
+
+  const pillEffect = getRandomArrayElement(pillEffects);
+
+  return {
+    type: UnlockType.PILL_EFFECT,
+    pillEffect,
+  };
 }
 
 function findObjectiveIDForUnlock(

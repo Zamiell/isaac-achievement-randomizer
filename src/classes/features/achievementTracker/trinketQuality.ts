@@ -8,29 +8,27 @@ import { TRINKET_QUALITIES } from "../../../objects/trinketQualities";
 
 const QUALITY_TO_VANILLA_TRINKET_TYPES_MAP: ReadonlyMap<
   Quality,
-  ReadonlySet<TrinketType>
+  TrinketType[]
 > = (() => {
-  const qualityToTrinketTypesMap = new Map<Quality, Set<TrinketType>>();
+  const qualityToTrinketTypesMap = new Map<Quality, TrinketType[]>();
 
   for (const quality of QUALITIES) {
-    const trinketTypesSet = new Set<TrinketType>();
+    const trinketTypes: TrinketType[] = [];
 
     for (const trinketType of VANILLA_TRINKET_TYPES) {
       const trinketTypeQuality = TRINKET_QUALITIES[trinketType];
       if (trinketTypeQuality === quality) {
-        trinketTypesSet.add(trinketType);
+        trinketTypes.push(trinketType);
       }
     }
 
-    qualityToTrinketTypesMap.set(quality, trinketTypesSet);
+    qualityToTrinketTypesMap.set(quality, trinketTypes);
   }
 
   return qualityToTrinketTypesMap;
 })();
 
-export function getTrinketTypesOfQuality(
-  quality: Quality,
-): ReadonlySet<TrinketType> {
+export function getTrinketTypesOfQuality(quality: Quality): TrinketType[] {
   const trinketTypes = QUALITY_TO_VANILLA_TRINKET_TYPES_MAP.get(quality);
   assertDefined(
     trinketTypes,

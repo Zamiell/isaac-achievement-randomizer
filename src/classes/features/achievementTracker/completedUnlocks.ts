@@ -247,22 +247,20 @@ export function getWorseLockedCollectibleType(
     const lowerQuality = lowerQualityInt as Quality;
     const lowerQualityCollectibleTypes =
       getAdjustedCollectibleTypesOfQuality(lowerQuality);
-    const unlockedLowerQualityCollectibleTypes = [
-      ...lowerQualityCollectibleTypes,
-    ].filter((lowerQualityCollectibleType) =>
-      isCollectibleTypeUnlocked(lowerQualityCollectibleType, false),
-    );
+    const unlockedLowerQualityCollectibleTypes =
+      lowerQualityCollectibleTypes.filter((lowerQualityCollectibleType) =>
+        isCollectibleTypeUnlocked(lowerQualityCollectibleType, false),
+      );
 
     if (
       unlockedLowerQualityCollectibleTypes.length <
-      lowerQualityCollectibleTypes.size * QUALITY_THRESHOLD_PERCENT
+      lowerQualityCollectibleTypes.length * QUALITY_THRESHOLD_PERCENT
     ) {
-      const lockedLowerQualityCollectibleTypes = [
-        ...lowerQualityCollectibleTypes,
-      ].filter(
-        (lowerQualityCollectibleType) =>
-          !isCollectibleTypeUnlocked(lowerQualityCollectibleType, false),
-      );
+      const lockedLowerQualityCollectibleTypes =
+        lowerQualityCollectibleTypes.filter(
+          (lowerQualityCollectibleType) =>
+            !isCollectibleTypeUnlocked(lowerQualityCollectibleType, false),
+        );
 
       return getRandomArrayElement(
         lockedLowerQualityCollectibleTypes,
@@ -323,19 +321,16 @@ export function getWorseLockedTrinketType(
   for (const lowerQualityInt of eRange(quality)) {
     const lowerQuality = lowerQualityInt as Quality;
     const lowerQualityTrinketTypes = getTrinketTypesOfQuality(lowerQuality);
-    const unlockedLowerQualityTrinketTypes = [
-      ...lowerQualityTrinketTypes,
-    ].filter((lowerQualityTrinketType) =>
-      isTrinketTypeUnlocked(lowerQualityTrinketType, false),
+    const unlockedLowerQualityTrinketTypes = lowerQualityTrinketTypes.filter(
+      (lowerQualityTrinketType) =>
+        isTrinketTypeUnlocked(lowerQualityTrinketType, false),
     );
 
     if (
       unlockedLowerQualityTrinketTypes.length <
-      lowerQualityTrinketTypes.size * QUALITY_THRESHOLD_PERCENT
+      lowerQualityTrinketTypes.length * QUALITY_THRESHOLD_PERCENT
     ) {
-      const lockedLowerQualityTrinketTypes = [
-        ...lowerQualityTrinketTypes,
-      ].filter(
+      const lockedLowerQualityTrinketTypes = lowerQualityTrinketTypes.filter(
         (lowerQualityTrinketType) =>
           !isTrinketTypeUnlocked(lowerQualityTrinketType, false),
       );
@@ -418,15 +413,15 @@ export function getWorseLockedCardType(
   for (const lowerQualityInt of eRange(quality)) {
     const lowerQuality = lowerQualityInt as Quality;
     const lowerQualityCardTypes = getCardTypesOfQuality(lowerQuality);
-    const unlockedLowerQualityCardTypes = [...lowerQualityCardTypes].filter(
+    const unlockedLowerQualityCardTypes = lowerQualityCardTypes.filter(
       (lowerQualityCardType) => isCardTypeUnlocked(lowerQualityCardType, false),
     );
 
     if (
       unlockedLowerQualityCardTypes.length <
-      lowerQualityCardTypes.size * QUALITY_THRESHOLD_PERCENT
+      lowerQualityCardTypes.length * QUALITY_THRESHOLD_PERCENT
     ) {
-      const lockedLowerQualityCardTypes = [...lowerQualityCardTypes].filter(
+      const lockedLowerQualityCardTypes = lowerQualityCardTypes.filter(
         (lowerQualityCardType) =>
           !isCardTypeUnlocked(lowerQualityCardType, false),
       );
@@ -513,18 +508,16 @@ export function getWorseLockedPillEffect(
   for (const lowerQualityInt of eRange(quality)) {
     const lowerQuality = lowerQualityInt as Quality;
     const lowerQualityPillEffects = getPillEffectsOfQuality(lowerQuality);
-    const unlockedLowerQualityPillEffects = [...lowerQualityPillEffects].filter(
+    const unlockedLowerQualityPillEffects = lowerQualityPillEffects.filter(
       (lowerQualityPillEffect) =>
         isPillEffectUnlocked(lowerQualityPillEffect, false),
     );
 
     if (
       unlockedLowerQualityPillEffects.length <
-      lowerQualityPillEffects.size * QUALITY_THRESHOLD_PERCENT
+      lowerQualityPillEffects.length * QUALITY_THRESHOLD_PERCENT
     ) {
-      const lockedLowerQualityTrinketTypes = [
-        ...lowerQualityPillEffects,
-      ].filter(
+      const lockedLowerQualityTrinketTypes = lowerQualityPillEffects.filter(
         (lowerQualityPillEffect) =>
           !isPillEffectUnlocked(lowerQualityPillEffect, false),
       );

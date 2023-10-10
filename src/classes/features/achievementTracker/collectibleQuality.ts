@@ -27,12 +27,12 @@ const GOOD_COLLECTIBLES = new ReadonlySet([
 
 const ADJUSTED_QUALITY_TO_VANILLA_COLLECTIBLE_TYPES_MAP: ReadonlyMap<
   Quality,
-  ReadonlySet<CollectibleType>
+  CollectibleType[]
 > = (() => {
-  const qualityToCollectibleTypesMap = new Map<Quality, Set<CollectibleType>>();
+  const qualityToCollectibleTypesMap = new Map<Quality, CollectibleType[]>();
 
   for (const quality of QUALITIES) {
-    const collectibleTypesSet = new Set<CollectibleType>();
+    const collectibleTypes: CollectibleType[] = [];
 
     for (const collectibleType of VANILLA_COLLECTIBLE_TYPES) {
       if (GOOD_COLLECTIBLES.has(collectibleType) && quality !== MAX_QUALITY) {
@@ -44,11 +44,11 @@ const ADJUSTED_QUALITY_TO_VANILLA_COLLECTIBLE_TYPES_MAP: ReadonlyMap<
         collectibleTypeQuality === quality ||
         (GOOD_COLLECTIBLES.has(collectibleType) && quality === MAX_QUALITY)
       ) {
-        collectibleTypesSet.add(collectibleType);
+        collectibleTypes.push(collectibleType);
       }
     }
 
-    qualityToCollectibleTypesMap.set(quality, collectibleTypesSet);
+    qualityToCollectibleTypesMap.set(quality, collectibleTypes);
   }
 
   return qualityToCollectibleTypesMap;
@@ -66,7 +66,7 @@ export function getAdjustedCollectibleQuality(
 /** Some collectibles result in a won run and should be treated as maximum quality. */
 export function getAdjustedCollectibleTypesOfQuality(
   quality: Quality,
-): ReadonlySet<CollectibleType> {
+): CollectibleType[] {
   const collectibleTypes =
     ADJUSTED_QUALITY_TO_VANILLA_COLLECTIBLE_TYPES_MAP.get(quality);
   assertDefined(
