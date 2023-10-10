@@ -21,11 +21,10 @@ import {
   isRepentance,
   log,
   onAnyChallenge,
-  onSetSeed,
   onVictoryLap,
   removeAllDoors,
 } from "isaacscript-common";
-import { IS_DEV, MOD_NAME } from "../../constants";
+import { MOD_NAME } from "../../constants";
 import { UnlockablePath } from "../../enums/UnlockablePath";
 import { mod } from "../../mod";
 import {
@@ -77,10 +76,6 @@ export class CheckErrors extends ModFeature {
     } else if (v.run.normalGreedMode) {
       this.drawErrorText(
         `You are playing on Greed Mode, but you are only allowed to play ${MOD_NAME} on Greedier mode.`,
-      );
-    } else if (v.run.onSetSeed) {
-      this.drawErrorText(
-        `You are only allowed to play ${MOD_NAME} on random seeds.`,
       );
     } else if (v.run.hasEasterEggs) {
       this.drawErrorText(
@@ -145,7 +140,6 @@ export class CheckErrors extends ModFeature {
     if (isRandomizerEnabled()) {
       checkNormalMode();
       checkNormalGreedMode();
-      checkSetSeed();
       checkEasterEggs();
       checkVictoryLap();
       checkCharacterUnlocked();
@@ -223,15 +217,6 @@ function checkNormalGreedMode() {
   if (game.Difficulty === Difficulty.GREED) {
     log("Error: Normal Greed Mode (non-Greedier mode) detected.");
     v.run.normalGreedMode = true;
-  }
-}
-
-function checkSetSeed() {
-  if (onSetSeed() && !IS_DEV) {
-    const seeds = game.GetSeeds();
-    const startSeedString = seeds.GetStartSeedString();
-    log(`Error: Set seed detected: ${startSeedString}`);
-    v.run.onSetSeed = true;
   }
 }
 

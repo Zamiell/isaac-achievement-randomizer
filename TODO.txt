@@ -1,7 +1,10 @@
 TODO:
 
-- refactor "getWorse" functions
 - n/a
+- add explanation of "Attempt" to FAQ
+- add iterations to black screen
+- "This could take a few minutes."
+- fistula + teratoma
 
 ------------------------------
 

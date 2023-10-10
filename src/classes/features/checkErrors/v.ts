@@ -7,7 +7,6 @@ export const v = {
     otherModsEnabled: false,
     normalMode: false,
     normalGreedMode: false,
-    onSetSeed: false,
     hasEasterEggs: false,
     onVictoryLap: false,
     lockedCharacter: false,
