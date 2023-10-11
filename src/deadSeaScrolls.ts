@@ -2,7 +2,10 @@ import {
   MAIN_CHARACTERS,
   assertDefined,
   getCharacterName,
+  splitNumber,
 } from "isaacscript-common";
+import { NO_HIT_BOSSES } from "./arrays/objectives";
+import { UNLOCKABLE_CHALLENGES } from "./arrays/unlockableChallenges";
 import { ALL_UNLOCKS } from "./arrays/unlocks";
 import {
   endRandomizer,
@@ -22,6 +25,7 @@ import {
 import { MAX_SEED, MIN_SEED } from "./consoleCommands";
 import { MOD_NAME } from "./constants";
 import {
+  MENU_PAGE_SIZE,
   getAltFloorUnlockButtons,
   getBatteryUnlockButtons,
   getBombUnlockButtons,
@@ -43,6 +47,9 @@ import {
   getRecentAchievementsButtons,
   getSackUnlockButtons,
   getSlotUnlockButtons,
+  getSpecificBossObjectiveButtons,
+  getSpecificChallengeObjectiveButtons,
+  getSpecificChallengeUnlockButtons,
   getSpecificCharacterObjectiveButtons,
   getTrinketUnlockButtons,
 } from "./deadSeaScrollsButtons";
@@ -378,8 +385,6 @@ export function initDeadSeaScrolls(): void {
 
     bossObjectives: {
       title: "boss todo",
-      noCursor: true,
-      scroller: true,
       fSize: 2,
 
       /** @noSelf */
@@ -390,8 +395,6 @@ export function initDeadSeaScrolls(): void {
 
     challengeObjectives: {
       title: "challenge todo",
-      noCursor: true,
-      scroller: true,
       fSize: 2,
 
       /** @noSelf */
@@ -517,8 +520,6 @@ export function initDeadSeaScrolls(): void {
 
     challengeUnlocks: {
       title: "challenge unlocks",
-      noCursor: true,
-      scroller: true,
       fSize: 2,
 
       /** @noSelf */
@@ -821,7 +822,7 @@ export function initDeadSeaScrolls(): void {
   for (const character of MAIN_CHARACTERS) {
     const characterName = getCharacterName(character).toLowerCase();
 
-    directory[`character${character}`] = {
+    directory[`characterObjectives${character}`] = {
       title: characterName,
       noCursor: true,
       scroller: true,
@@ -830,6 +831,55 @@ export function initDeadSeaScrolls(): void {
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
         menu.buttons = getSpecificCharacterObjectiveButtons(character);
+      },
+    };
+  }
+
+  const bossChunks = splitNumber(NO_HIT_BOSSES.length, MENU_PAGE_SIZE);
+  for (const chunk of bossChunks) {
+    const [min, max] = chunk;
+
+    directory[`bossObjectives${min}`] = {
+      title: "boss todo",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getSpecificBossObjectiveButtons(min, max);
+      },
+    };
+  }
+
+  const challengeChunks = splitNumber(
+    UNLOCKABLE_CHALLENGES.length,
+    MENU_PAGE_SIZE,
+  );
+  for (const chunk of challengeChunks) {
+    const [min, max] = chunk;
+
+    directory[`challengeObjectives${min}`] = {
+      title: "challenge todo",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getSpecificChallengeObjectiveButtons(min, max);
+      },
+    };
+
+    directory[`challengeUnlocks${min}`] = {
+      title: "challenge unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getSpecificChallengeUnlockButtons(min, max);
       },
     };
   }

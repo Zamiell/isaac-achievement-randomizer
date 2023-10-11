@@ -29,6 +29,7 @@
     "**/.yarn/": true,
     "**/dist/": true,
     "**/node_modules/": true,
+    "LICENSE": true,
     // @template-customization-start
     "mod/main.lua": true,
     // @template-customization-end

@@ -3881,8 +3881,8 @@ __metadata:
   resolution: "isaac-achievement-randomizer@workspace:."
   dependencies:
     isaac-typescript-definitions: ^33.0.0
-    isaacscript: ^3.14.2
-    isaacscript-common: ^67.0.0
+    isaacscript: ^3.15.0
+    isaacscript-common: ^67.1.0
     isaacscript-lint: ^6.0.0
     isaacscript-spell: ^1.6.0
     isaacscript-tsconfig: ^4.0.0
@@ -3907,12 +3907,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common@npm:^67.0.0":
-  version: 67.0.0
-  resolution: "isaacscript-common@npm:67.0.0"
+"isaacscript-common@npm:^67.1.0":
+  version: 67.1.0
+  resolution: "isaacscript-common@npm:67.1.0"
   dependencies:
     isaac-typescript-definitions: ^33.0.0
-  checksum: c8bab3566915d17346df295e87e2480d39153de4335ff34e3a9c1df95d7d85359a067a3dde24934b8d7d9c7756c3f69b95687717e5914f9b0be8a07ebb5e2467
+  checksum: ef8393a8b2088a71b934f90eb01eb74465e20166865a2871818efdc237f6905500f226093e602b562dafebe8e945f4e41db649c49de2884ec5034b757c89500a
   languageName: node
   linkType: hard
 
@@ -3964,9 +3964,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript@npm:^3.14.2":
-  version: 3.14.2
-  resolution: "isaacscript@npm:3.14.2"
+"isaacscript@npm:^3.15.0":
+  version: 3.15.0
+  resolution: "isaacscript@npm:3.15.0"
   dependencies:
     ajv: ^8.12.0
     chalk: 4.1.2
@@ -3988,7 +3988,7 @@ __metadata:
     typescript: ">= 5.0.0"
   bin:
     isaacscript: src/main.js
-  checksum: c8da7898fc0f0d6b88e26bf097c48a1bd65ad9f036a5a628d951305a7f782a45a8f1ceb22d92970e87084578f8901e6fc1134d7338a897f578de8c287d5d1c73
+  checksum: 6dca6c6b91797886b8fa97588d61937cfca2b15c4fd36bbb57c66c7051b13a508a604bc1e3ae168f9d9f0a8d41a2c18768c508c5c1f2d72104e6c6319b64e7f9
   languageName: node
   linkType: hard
 

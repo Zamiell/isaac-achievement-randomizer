@@ -17405,10 +17405,10 @@ end
 --   print(i); // Prints "0", "1", "2"
 -- });
 -- ```
-____exports["repeat"] = function(self, n, func)
+____exports["repeat"] = function(self, num, func)
     do
         local i = 0
-        while i < n do
+        while i < num do
             func(nil, i)
             i = i + 1
         end
@@ -30666,10 +30666,10 @@ function ____exports.convertDecimalToBinary(self, num, minLength)
 end
 --- Helper function to count the number of bits that are set to 1 in a binary representation of a
 -- number.
-function ____exports.countSetBits(self, n)
+function ____exports.countSetBits(self, num)
     local count = 0
-    while n > 0 do
-        n = n & n - 1
+    while num > 0 do
+        num = num & num - 1
         count = count + 1
     end
     return count
@@ -32415,6 +32415,34 @@ function ____exports.sign(self, n)
         return -1
     end
     return 0
+end
+--- Breaks a number into chunks of a given size. This is similar to the `String.split` method, but
+-- for a number instead of a string.
+-- 
+-- For example, `splitNumber(90, 25)` would return an array with four elements:
+-- 
+-- - [1, 25]
+-- - [26, 50]
+-- - [51, 75]
+-- - [76, 90]
+-- 
+-- @param num The number to split into chunks. This must be a positive integer.
+-- @param size The size of each chunk. This must be a positive integer.
+function ____exports.splitNumber(self, num, size)
+    if num <= 0 then
+        error("The number to split needs to be a positive number and is instead: " .. tostring(num))
+    end
+    if size <= 0 then
+        error("The size to split needs to be a positive number and is instead: " .. tostring(num))
+    end
+    local chunks = {}
+    local min = 1
+    while min <= num do
+        local max = math.min(min + size - 1, num)
+        chunks[#chunks + 1] = {min, max}
+        min = max + 1
+    end
+    return chunks
 end
 function ____exports.tanh(self, x)
     return (math.exp(x) - math.exp(-x)) / (math.exp(x) + math.exp(-x))
@@ -70063,23 +70091,51 @@ function ____exports.getSecondsSinceLastDamage(self)
     if inBigRoom(nil) and not BOSSES_IN_BIG_ROOMS_SET:has(bossID) then
         return nil
     end
-    local entityType, variant = table.unpack(getEntityTypeVariantFromBossID(nil, bossID))
-    local bosses = getNPCs(
-        nil,
-        entityType,
-        variant,
-        -1,
-        true
-    )
-    local aliveBosses = __TS__ArrayFilter(
-        bosses,
-        function(____, boss) return not boss:IsDead() end
-    )
-    if #aliveBosses == 0 then
-        return
-    end
-    if entityType == EntityType.LOKI and variant == LokiVariant.LOKII and #aliveBosses < 2 then
-        return
+    if bossID == BossID.FISTULA or bossID == BossID.TERATOMA then
+        local bigPieces = getNPCs(
+            nil,
+            EntityType.FISTULA_BIG,
+            -1,
+            -1,
+            true
+        )
+        local mediumPieces = getNPCs(
+            nil,
+            EntityType.FISTULA_MEDIUM,
+            -1,
+            -1,
+            true
+        )
+        local smallPieces = getNPCs(
+            nil,
+            EntityType.FISTULA_SMALL,
+            -1,
+            -1,
+            true
+        )
+        local numPieces = #bigPieces + #mediumPieces + #smallPieces
+        if numPieces < 4 then
+            return
+        end
+    else
+        local entityType, variant = table.unpack(getEntityTypeVariantFromBossID(nil, bossID))
+        local bosses = getNPCs(
+            nil,
+            entityType,
+            variant,
+            -1,
+            true
+        )
+        local aliveBosses = __TS__ArrayFilter(
+            bosses,
+            function(____, boss) return not boss:IsDead() end
+        )
+        if #aliveBosses == 0 then
+            return
+        end
+        if entityType == EntityType.LOKI and variant == LokiVariant.LOKII and #aliveBosses < 2 then
+            return
+        end
     end
     if v.room.usedPause or onFirstPhaseOfSatan(nil, bossID) or onFirstPhaseOfIsaacOrBlueBaby(nil, bossID) or onFirstPhaseOfHush(nil, bossID) then
         return nil
@@ -72081,6 +72137,8 @@ local __TS__ArrayPush = ____lualib.__TS__ArrayPush
 local Set = ____lualib.Set
 local ____exports = {}
 local getNameTruncated, getCompletedText
+local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
+local BossID = ____isaac_2Dtypescript_2Ddefinitions.BossID
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
 local MAIN_CHARACTERS = ____isaacscript_2Dcommon.MAIN_CHARACTERS
 local getBatteryName = ____isaacscript_2Dcommon.getBatteryName
@@ -72100,6 +72158,7 @@ local getSlotName = ____isaacscript_2Dcommon.getSlotName
 local getTrinketName = ____isaacscript_2Dcommon.getTrinketName
 local iRange = ____isaacscript_2Dcommon.iRange
 local isOdd = ____isaacscript_2Dcommon.isOdd
+local splitNumber = ____isaacscript_2Dcommon.splitNumber
 local ____objectives = require("src.arrays.objectives")
 local NO_HIT_BOSSES = ____objectives.NO_HIT_BOSSES
 local ____unlockableCardTypes = require("src.arrays.unlockableCardTypes")
@@ -72181,6 +72240,7 @@ end
 function getCompletedText(self, completed)
     return completed and "^" or "x"
 end
+____exports.MENU_PAGE_SIZE = 25
 function ____exports.getRecentAchievementsButtons(self)
     local completedUnlocks = getCompletedUnlocks(nil)
     __TS__ArrayReverse(completedUnlocks)
@@ -72190,7 +72250,7 @@ function ____exports.getRecentAchievementsButtons(self)
         return {{str = "no achievements"}, {str = "unlocked yet."}}
     end
     local buttons = {}
-    for ____, i in ipairs(iRange(nil, 10)) do
+    for ____, i in ipairs(iRange(nil, 25)) do
         do
             local unlock = completedUnlocks[i + 1]
             local objective = completedObjectives[i + 1]
@@ -72230,7 +72290,7 @@ function ____exports.getCharacterObjectiveButtons(self)
         local characterName = string.lower(getCharacterName(nil, character))
         buttons[#buttons + 1] = {
             str = characterName,
-            dest = "character" .. tostring(character)
+            dest = "characterObjectives" .. tostring(character)
         }
     end
     return buttons
@@ -72260,9 +72320,25 @@ function ____exports.getSpecificCharacterObjectiveButtons(self, character)
 end
 function ____exports.getBossObjectiveButtons(self)
     local buttons = {}
+    local chunks = splitNumber(nil, #NO_HIT_BOSSES, ____exports.MENU_PAGE_SIZE)
+    for ____, chunk in ipairs(chunks) do
+        local min, max = table.unpack(chunk)
+        buttons[#buttons + 1] = {
+            str = (tostring(min) .. "-") .. tostring(max),
+            dest = "bossObjectives" .. tostring(min)
+        }
+    end
+    return buttons
+end
+function ____exports.getSpecificBossObjectiveButtons(self, min, max)
+    local buttons = {}
     local reachableBosses = getReachableNonStoryBossesSet(nil)
-    for ____, bossID in ipairs(NO_HIT_BOSSES) do
+    for ____, bossIDNum in ipairs(iRange(nil, min, max)) do
+        local bossID = bossIDNum
         local bossName = string.lower(getBossName(nil, bossID))
+        if bossID == BossID.MAUSOLEUM_MOMS_HEART then
+            bossName = "mom's heart (maus.)"
+        end
         local completed = isBossObjectiveCompleted(nil, bossID)
         local completedText = getCompletedText(nil, completed)
         __TS__ArrayPush(
@@ -72281,7 +72357,20 @@ function ____exports.getBossObjectiveButtons(self)
 end
 function ____exports.getChallengeObjectiveButtons(self)
     local buttons = {}
-    for ____, challenge in ipairs(UNLOCKABLE_CHALLENGES) do
+    local chunks = splitNumber(nil, #UNLOCKABLE_CHALLENGES, ____exports.MENU_PAGE_SIZE)
+    for ____, chunk in ipairs(chunks) do
+        local min, max = table.unpack(chunk)
+        buttons[#buttons + 1] = {
+            str = (tostring(min) .. "-") .. tostring(max),
+            dest = "challengeObjectives" .. tostring(min)
+        }
+    end
+    return buttons
+end
+function ____exports.getSpecificChallengeObjectiveButtons(self, min, max)
+    local buttons = {}
+    for ____, challengeNum in ipairs(iRange(nil, min, max)) do
+        local challenge = challengeNum
         local challengeName = string.lower(getChallengeName(nil, challenge))
         local challengeNameTruncated = getNameTruncated(nil, challengeName)
         local completed = isChallengeObjectiveCompleted(nil, challenge)
@@ -72332,7 +72421,20 @@ function ____exports.getAltFloorUnlockButtons(self)
 end
 function ____exports.getChallengeUnlockButtons(self)
     local buttons = {}
-    for ____, challenge in ipairs(UNLOCKABLE_CHALLENGES) do
+    local chunks = splitNumber(nil, #UNLOCKABLE_CHALLENGES, ____exports.MENU_PAGE_SIZE)
+    for ____, chunk in ipairs(chunks) do
+        local min, max = table.unpack(chunk)
+        buttons[#buttons + 1] = {
+            str = (tostring(min) .. "-") .. tostring(max),
+            dest = "challengeUnlocks" .. tostring(min)
+        }
+    end
+    return buttons
+end
+function ____exports.getSpecificChallengeUnlockButtons(self, min, max)
+    local buttons = {}
+    for ____, challengeNum in ipairs(iRange(nil, min, max)) do
+        local challenge = challengeNum
         local challengeName = string.lower(getChallengeName(nil, challenge))
         local challengeNameTruncated = getNameTruncated(nil, challengeName)
         local completed = isChallengeUnlocked(nil, challenge, false)
@@ -72511,6 +72613,11 @@ local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.sr
 local MAIN_CHARACTERS = ____isaacscript_2Dcommon.MAIN_CHARACTERS
 local assertDefined = ____isaacscript_2Dcommon.assertDefined
 local getCharacterName = ____isaacscript_2Dcommon.getCharacterName
+local splitNumber = ____isaacscript_2Dcommon.splitNumber
+local ____objectives = require("src.arrays.objectives")
+local NO_HIT_BOSSES = ____objectives.NO_HIT_BOSSES
+local ____unlockableChallenges = require("src.arrays.unlockableChallenges")
+local UNLOCKABLE_CHALLENGES = ____unlockableChallenges.UNLOCKABLE_CHALLENGES
 local ____unlocks = require("src.arrays.unlocks")
 local ALL_UNLOCKS = ____unlocks.ALL_UNLOCKS
 local ____AchievementRandomizer = require("src.classes.features.AchievementRandomizer")
@@ -72531,6 +72638,7 @@ local MIN_SEED = ____consoleCommands.MIN_SEED
 local ____constants = require("src.constants")
 local MOD_NAME = ____constants.MOD_NAME
 local ____deadSeaScrollsButtons = require("src.deadSeaScrollsButtons")
+local MENU_PAGE_SIZE = ____deadSeaScrollsButtons.MENU_PAGE_SIZE
 local getAltFloorUnlockButtons = ____deadSeaScrollsButtons.getAltFloorUnlockButtons
 local getBatteryUnlockButtons = ____deadSeaScrollsButtons.getBatteryUnlockButtons
 local getBombUnlockButtons = ____deadSeaScrollsButtons.getBombUnlockButtons
@@ -72552,6 +72660,9 @@ local getPillEffectUnlockButtons = ____deadSeaScrollsButtons.getPillEffectUnlock
 local getRecentAchievementsButtons = ____deadSeaScrollsButtons.getRecentAchievementsButtons
 local getSackUnlockButtons = ____deadSeaScrollsButtons.getSackUnlockButtons
 local getSlotUnlockButtons = ____deadSeaScrollsButtons.getSlotUnlockButtons
+local getSpecificBossObjectiveButtons = ____deadSeaScrollsButtons.getSpecificBossObjectiveButtons
+local getSpecificChallengeObjectiveButtons = ____deadSeaScrollsButtons.getSpecificChallengeObjectiveButtons
+local getSpecificChallengeUnlockButtons = ____deadSeaScrollsButtons.getSpecificChallengeUnlockButtons
 local getSpecificCharacterObjectiveButtons = ____deadSeaScrollsButtons.getSpecificCharacterObjectiveButtons
 local getTrinketUnlockButtons = ____deadSeaScrollsButtons.getTrinketUnlockButtons
 local ____RandomizerMode = require("src.enums.RandomizerMode")
@@ -72717,8 +72828,6 @@ function ____exports.initDeadSeaScrolls(self)
         },
         bossObjectives = {
             title = "boss todo",
-            noCursor = true,
-            scroller = true,
             fSize = 2,
             generate = function(menu)
                 menu.buttons = getBossObjectiveButtons(nil)
@@ -72726,8 +72835,6 @@ function ____exports.initDeadSeaScrolls(self)
         },
         challengeObjectives = {
             title = "challenge todo",
-            noCursor = true,
-            scroller = true,
             fSize = 2,
             generate = function(menu)
                 menu.buttons = getChallengeObjectiveButtons(nil)
@@ -72782,8 +72889,6 @@ function ____exports.initDeadSeaScrolls(self)
         },
         challengeUnlocks = {
             title = "challenge unlocks",
-            noCursor = true,
-            scroller = true,
             fSize = 2,
             generate = function(menu)
                 menu.buttons = getChallengeUnlockButtons(nil)
@@ -72971,13 +73076,48 @@ function ____exports.initDeadSeaScrolls(self)
     }
     for ____, character in ipairs(MAIN_CHARACTERS) do
         local characterName = string.lower(getCharacterName(nil, character))
-        directory["character" .. tostring(character)] = {
+        directory["characterObjectives" .. tostring(character)] = {
             title = characterName,
             noCursor = true,
             scroller = true,
             fSize = 2,
             generate = function(menu)
                 menu.buttons = getSpecificCharacterObjectiveButtons(nil, character)
+            end
+        }
+    end
+    local bossChunks = splitNumber(nil, #NO_HIT_BOSSES, MENU_PAGE_SIZE)
+    for ____, chunk in ipairs(bossChunks) do
+        local min, max = table.unpack(chunk)
+        directory["bossObjectives" .. tostring(min)] = {
+            title = "boss todo",
+            noCursor = true,
+            scroller = true,
+            fSize = 2,
+            generate = function(menu)
+                menu.buttons = getSpecificBossObjectiveButtons(nil, min, max)
+            end
+        }
+    end
+    local challengeChunks = splitNumber(nil, #UNLOCKABLE_CHALLENGES, MENU_PAGE_SIZE)
+    for ____, chunk in ipairs(challengeChunks) do
+        local min, max = table.unpack(chunk)
+        directory["challengeObjectives" .. tostring(min)] = {
+            title = "challenge todo",
+            noCursor = true,
+            scroller = true,
+            fSize = 2,
+            generate = function(menu)
+                menu.buttons = getSpecificChallengeObjectiveButtons(nil, min, max)
+            end
+        }
+        directory["challengeUnlocks" .. tostring(min)] = {
+            title = "challenge unlocks",
+            noCursor = true,
+            scroller = true,
+            fSize = 2,
+            generate = function(menu)
+                menu.buttons = getSpecificChallengeUnlockButtons(nil, min, max)
             end
         }
     end
@@ -76890,9 +77030,9 @@ return {
     },
     license = "GPL-3.0",
     type = "commonjs",
-    dependencies = {["isaac-typescript-definitions"] = "^33.0.0", ["isaacscript-common"] = "^67.0.0"},
+    dependencies = {["isaac-typescript-definitions"] = "^33.0.0", ["isaacscript-common"] = "^67.1.0"},
     devDependencies = {
-        isaacscript = "^3.14.2",
+        isaacscript = "^3.15.0",
         ["isaacscript-lint"] = "^6.0.0",
         ["isaacscript-spell"] = "^1.6.0",
         ["isaacscript-tsconfig"] = "^4.0.0",

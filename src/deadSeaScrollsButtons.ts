@@ -1,4 +1,5 @@
-import type { PlayerType } from "isaac-typescript-definitions";
+import type { Challenge, PlayerType } from "isaac-typescript-definitions";
+import { BossID } from "isaac-typescript-definitions";
 import {
   MAIN_CHARACTERS,
   getBatteryName,
@@ -18,6 +19,7 @@ import {
   getTrinketName,
   iRange,
   isOdd,
+  splitNumber,
 } from "isaacscript-common";
 import { NO_HIT_BOSSES } from "./arrays/objectives";
 import { UNLOCKABLE_CARD_TYPES } from "./arrays/unlockableCardTypes";
@@ -90,6 +92,8 @@ import { getPathName } from "./enums/UnlockablePath";
 import { getObjectiveText } from "./types/Objective";
 import { getUnlockText } from "./types/Unlock";
 
+export const MENU_PAGE_SIZE = 25;
+
 // -------------
 // Miscellaneous
 // -------------
@@ -114,7 +118,7 @@ export function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
 
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const i of iRange(10)) {
+  for (const i of iRange(25)) {
     const unlock = completedUnlocks[i];
     const objective = completedObjectives[i];
 
@@ -170,7 +174,7 @@ export function getCharacterObjectiveButtons(): DeadSeaScrollsButton[] {
     const characterName = getCharacterName(character).toLowerCase();
     buttons.push({
       str: characterName,
-      dest: `character${character}`,
+      dest: `characterObjectives${character}`,
     });
   }
 
@@ -216,10 +220,33 @@ export function getSpecificCharacterObjectiveButtons(
 export function getBossObjectiveButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
+  const chunks = splitNumber(NO_HIT_BOSSES.length, MENU_PAGE_SIZE);
+  for (const chunk of chunks) {
+    const [min, max] = chunk;
+    buttons.push({
+      str: `${min}-${max}`,
+      dest: `bossObjectives${min}`,
+    });
+  }
+
+  return buttons;
+}
+
+export function getSpecificBossObjectiveButtons(
+  min: int,
+  max: int,
+): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
   const reachableBosses = getReachableNonStoryBossesSet();
 
-  for (const bossID of NO_HIT_BOSSES) {
-    const bossName = getBossName(bossID).toLowerCase();
+  for (const bossIDNum of iRange(min, max)) {
+    const bossID = bossIDNum as BossID;
+
+    let bossName = getBossName(bossID).toLowerCase();
+    if (bossID === BossID.MAUSOLEUM_MOMS_HEART) {
+      bossName = "mom's heart (maus.)"; // cspell:ignore maus
+    }
     const completed = isBossObjectiveCompleted(bossID);
     const completedText = getCompletedText(completed);
 
@@ -248,7 +275,27 @@ export function getBossObjectiveButtons(): DeadSeaScrollsButton[] {
 export function getChallengeObjectiveButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const challenge of UNLOCKABLE_CHALLENGES) {
+  const chunks = splitNumber(UNLOCKABLE_CHALLENGES.length, MENU_PAGE_SIZE);
+  for (const chunk of chunks) {
+    const [min, max] = chunk;
+    buttons.push({
+      str: `${min}-${max}`,
+      dest: `challengeObjectives${min}`,
+    });
+  }
+
+  return buttons;
+}
+
+export function getSpecificChallengeObjectiveButtons(
+  min: int,
+  max: int,
+): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const challengeNum of iRange(min, max)) {
+    const challenge = challengeNum as Challenge;
+
     const challengeName = getChallengeName(challenge).toLowerCase();
     const challengeNameTruncated = getNameTruncated(challengeName);
     const completed = isChallengeObjectiveCompleted(challenge);
@@ -358,7 +405,27 @@ export function getAltFloorUnlockButtons(): DeadSeaScrollsButton[] {
 export function getChallengeUnlockButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const challenge of UNLOCKABLE_CHALLENGES) {
+  const chunks = splitNumber(UNLOCKABLE_CHALLENGES.length, MENU_PAGE_SIZE);
+  for (const chunk of chunks) {
+    const [min, max] = chunk;
+    buttons.push({
+      str: `${min}-${max}`,
+      dest: `challengeUnlocks${min}`,
+    });
+  }
+
+  return buttons;
+}
+
+export function getSpecificChallengeUnlockButtons(
+  min: int,
+  max: int,
+): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const challengeNum of iRange(min, max)) {
+    const challenge = challengeNum as Challenge;
+
     const challengeName = getChallengeName(challenge).toLowerCase();
     const challengeNameTruncated = getNameTruncated(challengeName);
     const completed = isChallengeUnlocked(challenge, false);

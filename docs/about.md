@@ -124,6 +124,12 @@ However, the following bosses have custom timer lengths:
 - Scourge (#85) - 1 minute
 - Rotgut (#87) - 1 minute
 
+The following bosses have custom conditions:
+
+- Fistula (#18) - Four or more pieces must be alive.
+- Teratoma (#33) - Four or more pieces must be alive.
+- Lokii (#31) - Both must be alive.
+
 Additionally, the following bosses are excluded entirely:
 
 - Delirium (#70) (would be unfair since the boss is poorly designed)

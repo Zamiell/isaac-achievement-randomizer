@@ -327,20 +327,31 @@ export function getSecondsSinceLastDamage(): int | undefined {
     return undefined;
   }
 
-  const [entityType, variant] = getEntityTypeVariantFromBossID(bossID);
-  const bosses = getNPCs(entityType, variant, -1, true);
-  const aliveBosses = bosses.filter((boss) => !boss.IsDead());
-  if (aliveBosses.length === 0) {
-    return;
-  }
+  if (bossID === BossID.FISTULA || bossID === BossID.TERATOMA) {
+    const bigPieces = getNPCs(EntityType.FISTULA_BIG, -1, -1, true);
+    const mediumPieces = getNPCs(EntityType.FISTULA_MEDIUM, -1, -1, true);
+    const smallPieces = getNPCs(EntityType.FISTULA_SMALL, -1, -1, true);
+    const numPieces =
+      bigPieces.length + mediumPieces.length + smallPieces.length;
+    if (numPieces < 4) {
+      return;
+    }
+  } else {
+    const [entityType, variant] = getEntityTypeVariantFromBossID(bossID);
+    const bosses = getNPCs(entityType, variant, -1, true);
+    const aliveBosses = bosses.filter((boss) => !boss.IsDead());
+    if (aliveBosses.length === 0) {
+      return;
+    }
 
-  // Lokii has a special objective condition, since dodging just one is too easy.
-  if (
-    entityType === EntityType.LOKI &&
-    variant === LokiVariant.LOKII &&
-    aliveBosses.length < 2
-  ) {
-    return;
+    // Lokii has a special objective condition, since dodging just one is too easy.
+    if (
+      entityType === EntityType.LOKI &&
+      variant === LokiVariant.LOKII &&
+      aliveBosses.length < 2
+    ) {
+      return;
+    }
   }
 
   if (
