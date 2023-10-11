@@ -1,11 +1,10 @@
 TODO:
 
+- pill effect menu is bugged
+- checkmark or x next to sub next
+
 - add iterations to black screen
   - Confirmed unlockable: N
-- show places to kill boss
-
-- collectible sub menu by 50
-  - checkmark or x next to sub next
 
 ------------------------------
 

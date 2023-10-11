@@ -205,8 +205,10 @@ export function isCollectibleTypeUnlocked(
   );
 }
 
-export function getUnlockedEdenActiveCollectibleTypes(): CollectibleType[] {
-  const unlockedCollectibleTypes = getUnlockedCollectibleTypes();
+export function getUnlockedEdenActiveCollectibleTypes(
+  forRun: boolean,
+): CollectibleType[] {
+  const unlockedCollectibleTypes = getUnlockedCollectibleTypes(forRun);
 
   return unlockedCollectibleTypes.filter(
     (collectibleType) =>
@@ -216,8 +218,10 @@ export function getUnlockedEdenActiveCollectibleTypes(): CollectibleType[] {
   );
 }
 
-export function getUnlockedEdenPassiveCollectibleTypes(): CollectibleType[] {
-  const unlockedCollectibleTypes = getUnlockedCollectibleTypes();
+export function getUnlockedEdenPassiveCollectibleTypes(
+  forRun: boolean,
+): CollectibleType[] {
+  const unlockedCollectibleTypes = getUnlockedCollectibleTypes(forRun);
 
   return unlockedCollectibleTypes.filter(
     (collectibleType) =>
@@ -227,8 +231,19 @@ export function getUnlockedEdenPassiveCollectibleTypes(): CollectibleType[] {
   );
 }
 
-function getUnlockedCollectibleTypes(): CollectibleType[] {
-  return filterMap(v.persistent.completedUnlocksForRun, (unlock) =>
+export function isActiveCollectibleUnlocked(forRun: boolean): boolean {
+  const collectibleTypes = getUnlockedCollectibleTypes(forRun);
+  return collectibleTypes.some((collectibleType) =>
+    isActiveCollectible(collectibleType),
+  );
+}
+
+function getUnlockedCollectibleTypes(forRun: boolean): CollectibleType[] {
+  const array = forRun
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
+
+  return filterMap(array, (unlock) =>
     unlock.type === UnlockType.COLLECTIBLE ? unlock.collectibleType : undefined,
   );
 }

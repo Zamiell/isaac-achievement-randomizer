@@ -1,12 +1,16 @@
 import {
+  LAST_VANILLA_CARD_TYPE,
+  LAST_VANILLA_COLLECTIBLE_TYPE,
+  LAST_VANILLA_PILL_EFFECT,
+  LAST_VANILLA_TRINKET_TYPE,
   MAIN_CHARACTERS,
   assertDefined,
   getCharacterName,
   splitNumber,
 } from "isaacscript-common";
-import { NO_HIT_BOSSES } from "./arrays/objectives";
 import { UNLOCKABLE_CHALLENGES } from "./arrays/unlockableChallenges";
 import { ALL_UNLOCKS } from "./arrays/unlocks";
+import { BOSS_IDS } from "./cachedEnums";
 import {
   endRandomizer,
   isValidSituationForStartingRandomizer,
@@ -48,9 +52,13 @@ import {
   getSackUnlockButtons,
   getSlotUnlockButtons,
   getSpecificBossObjectiveButtons,
+  getSpecificCardUnlockButtons,
   getSpecificChallengeObjectiveButtons,
   getSpecificChallengeUnlockButtons,
   getSpecificCharacterObjectiveButtons,
+  getSpecificCollectibleUnlockButtons,
+  getSpecificPillEffectUnlockButtons,
+  getSpecificTrinketUnlockButtons,
   getTrinketUnlockButtons,
 } from "./deadSeaScrollsButtons";
 import { RandomizerMode } from "./enums/RandomizerMode";
@@ -530,8 +538,6 @@ export function initDeadSeaScrolls(): void {
 
     collectibleUnlocks: {
       title: "collectible unlocks",
-      noCursor: true,
-      scroller: true,
       fSize: 2,
 
       /** @noSelf */
@@ -542,8 +548,6 @@ export function initDeadSeaScrolls(): void {
 
     trinketUnlocks: {
       title: "trinket unlocks",
-      noCursor: true,
-      scroller: true,
       fSize: 2,
 
       /** @noSelf */
@@ -554,8 +558,6 @@ export function initDeadSeaScrolls(): void {
 
     cardUnlocks: {
       title: "card unlocks",
-      noCursor: true,
-      scroller: true,
       fSize: 2,
 
       /** @noSelf */
@@ -566,8 +568,6 @@ export function initDeadSeaScrolls(): void {
 
     pillEffectUnlocks: {
       title: "pill effect unlocks",
-      noCursor: true,
-      scroller: true,
       fSize: 2,
 
       /** @noSelf */
@@ -835,7 +835,7 @@ export function initDeadSeaScrolls(): void {
     };
   }
 
-  const bossChunks = splitNumber(NO_HIT_BOSSES.length, MENU_PAGE_SIZE);
+  const bossChunks = splitNumber(BOSS_IDS.length, MENU_PAGE_SIZE);
   for (const chunk of bossChunks) {
     const [min, max] = chunk;
 
@@ -880,6 +880,80 @@ export function initDeadSeaScrolls(): void {
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
         menu.buttons = getSpecificChallengeUnlockButtons(min, max);
+      },
+    };
+  }
+
+  const collectibleChunks = splitNumber(
+    LAST_VANILLA_COLLECTIBLE_TYPE,
+    MENU_PAGE_SIZE,
+  );
+  for (const chunk of collectibleChunks) {
+    const [min, max] = chunk;
+
+    directory[`collectibleUnlocks${min}`] = {
+      title: "collectible unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getSpecificCollectibleUnlockButtons(min, max);
+      },
+    };
+  }
+
+  const trinketChunks = splitNumber(LAST_VANILLA_TRINKET_TYPE, MENU_PAGE_SIZE);
+  for (const chunk of trinketChunks) {
+    const [min, max] = chunk;
+
+    directory[`trinketUnlocks${min}`] = {
+      title: "trinket unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getSpecificTrinketUnlockButtons(min, max);
+      },
+    };
+  }
+
+  const cardChunks = splitNumber(LAST_VANILLA_CARD_TYPE, MENU_PAGE_SIZE);
+  for (const chunk of cardChunks) {
+    const [min, max] = chunk;
+
+    directory[`cardUnlocks${min}`] = {
+      title: "card unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getSpecificCardUnlockButtons(min, max);
+      },
+    };
+  }
+
+  const pillEffectChunks = splitNumber(
+    LAST_VANILLA_PILL_EFFECT,
+    MENU_PAGE_SIZE,
+  );
+  for (const chunk of pillEffectChunks) {
+    const [min, max] = chunk;
+
+    directory[`pillEffectUnlocks${min}`] = {
+      title: "pill effect unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getSpecificPillEffectUnlockButtons(min, max);
       },
     };
   }

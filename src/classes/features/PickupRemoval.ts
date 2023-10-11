@@ -470,8 +470,9 @@ export class PickupRemoval extends RandomizerModFeature {
     const startSeed = seeds.GetStartSeed();
     const rng = newRNG(startSeed);
 
-    const activeCollectibleTypes = getUnlockedEdenActiveCollectibleTypes();
-    const passiveCollectibleTypes = getUnlockedEdenPassiveCollectibleTypes();
+    const activeCollectibleTypes = getUnlockedEdenActiveCollectibleTypes(true);
+    const passiveCollectibleTypes =
+      getUnlockedEdenPassiveCollectibleTypes(true);
 
     const passiveCollectibleType = getRandomArrayElement(
       passiveCollectibleTypes,

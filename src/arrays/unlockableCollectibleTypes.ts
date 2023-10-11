@@ -1,5 +1,9 @@
 import { CollectibleType } from "isaac-typescript-definitions";
-import { ReadonlySet, VANILLA_COLLECTIBLE_TYPES } from "isaacscript-common";
+import {
+  ReadonlySet,
+  VANILLA_COLLECTIBLE_TYPES,
+  isActiveCollectible,
+} from "isaacscript-common";
 
 const BOSS_ROOM_EXCEPTIONS = [
   CollectibleType.BREAKFAST, // 25
@@ -65,4 +69,9 @@ export const UNLOCKABLE_COLLECTIBLE_TYPES: readonly CollectibleType[] =
   VANILLA_COLLECTIBLE_TYPES.filter(
     (collectibleType) =>
       !ALWAYS_UNLOCKED_COLLECTIBLE_TYPES.has(collectibleType),
+  );
+
+export const UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES: readonly CollectibleType[] =
+  UNLOCKABLE_COLLECTIBLE_TYPES.filter((collectibleType) =>
+    isActiveCollectible(collectibleType),
   );

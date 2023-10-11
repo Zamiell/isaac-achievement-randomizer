@@ -27,6 +27,7 @@ import {
   shuffleArray,
 } from "isaacscript-common";
 import { UNLOCKABLE_CARD_TYPES } from "../../../arrays/unlockableCardTypes";
+import { UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES } from "../../../arrays/unlockableCollectibleTypes";
 import { UNLOCKABLE_PILL_EFFECTS } from "../../../arrays/unlockablePillEffects";
 import { UNLOCKABLE_ROOM_TYPES } from "../../../arrays/unlockableRoomTypes";
 import { UNLOCKABLE_TRINKET_TYPES } from "../../../arrays/unlockableTrinketTypes";
@@ -87,6 +88,7 @@ import {
   getWorseLockedPillEffect,
   getWorseLockedSackSubType,
   getWorseLockedTrinketType,
+  isActiveCollectibleUnlocked,
   isAltFloorUnlocked,
   isBatterySubTypeUnlocked,
   isBombSubTypeUnlocked,
@@ -746,6 +748,26 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
       isPathUnlocked(UnlockablePath.BLUE_WOMB, false)
         ? undefined
         : getUnlock(UnlockType.PATH, UnlockablePath.BLUE_WOMB),
+  ],
+
+  // 181
+  [
+    TrinketType.EXPANSION_PACK,
+    () => {
+      if (isActiveCollectibleUnlocked(false)) {
+        return undefined;
+      }
+
+      assertNotNull(
+        v.persistent.seed,
+        "Failed to get a random active collectible since the seed was null.",
+      );
+      const collectibleType = getRandomArrayElement(
+        UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES,
+        v.persistent.seed,
+      );
+      return getUnlock(UnlockType.COLLECTIBLE, collectibleType);
+    },
   ],
 ]);
 

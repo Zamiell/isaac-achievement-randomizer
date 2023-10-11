@@ -1,6 +1,10 @@
-import type { Challenge, PlayerType } from "isaac-typescript-definitions";
+import type { PlayerType } from "isaac-typescript-definitions";
 import { BossID } from "isaac-typescript-definitions";
 import {
+  LAST_VANILLA_CARD_TYPE,
+  LAST_VANILLA_COLLECTIBLE_TYPE,
+  LAST_VANILLA_PILL_EFFECT,
+  LAST_VANILLA_TRINKET_TYPE,
   MAIN_CHARACTERS,
   getBatteryName,
   getBombName,
@@ -44,6 +48,7 @@ import { UNLOCKABLE_SLOT_VARIANTS } from "./arrays/unlockableSlotVariants";
 import { UNLOCKABLE_TRINKET_TYPES } from "./arrays/unlockableTrinketTypes";
 import {
   ALT_FLOORS,
+  BOSS_IDS,
   CHARACTER_OBJECTIVE_KINDS,
   OTHER_UNLOCK_KINDS,
   UNLOCKABLE_PATHS,
@@ -118,7 +123,7 @@ export function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
 
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const i of iRange(25)) {
+  for (const i of iRange(MENU_PAGE_SIZE)) {
     const unlock = completedUnlocks[i];
     const objective = completedObjectives[i];
 
@@ -220,7 +225,7 @@ export function getSpecificCharacterObjectiveButtons(
 export function getBossObjectiveButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  const chunks = splitNumber(NO_HIT_BOSSES.length, MENU_PAGE_SIZE);
+  const chunks = splitNumber(BOSS_IDS.length, MENU_PAGE_SIZE);
   for (const chunk of chunks) {
     const [min, max] = chunk;
     buttons.push({
@@ -240,8 +245,10 @@ export function getSpecificBossObjectiveButtons(
 
   const reachableBosses = getReachableNonStoryBossesSet();
 
-  for (const bossIDNum of iRange(min, max)) {
-    const bossID = bossIDNum as BossID;
+  for (const bossID of NO_HIT_BOSSES) {
+    if (bossID < min || bossID > max) {
+      continue;
+    }
 
     let bossName = getBossName(bossID).toLowerCase();
     if (bossID === BossID.MAUSOLEUM_MOMS_HEART) {
@@ -293,8 +300,10 @@ export function getSpecificChallengeObjectiveButtons(
 ): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const challengeNum of iRange(min, max)) {
-    const challenge = challengeNum as Challenge;
+  for (const challenge of UNLOCKABLE_CHALLENGES) {
+    if (challenge < min || challenge > max) {
+      continue;
+    }
 
     const challengeName = getChallengeName(challenge).toLowerCase();
     const challengeNameTruncated = getNameTruncated(challengeName);
@@ -423,8 +432,10 @@ export function getSpecificChallengeUnlockButtons(
 ): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const challengeNum of iRange(min, max)) {
-    const challenge = challengeNum as Challenge;
+  for (const challenge of UNLOCKABLE_CHALLENGES) {
+    if (challenge < min || challenge > max) {
+      continue;
+    }
 
     const challengeName = getChallengeName(challenge).toLowerCase();
     const challengeNameTruncated = getNameTruncated(challengeName);
@@ -451,7 +462,29 @@ export function getSpecificChallengeUnlockButtons(
 export function getCollectibleUnlockButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
+  const chunks = splitNumber(LAST_VANILLA_COLLECTIBLE_TYPE, MENU_PAGE_SIZE);
+  for (const chunk of chunks) {
+    const [min, max] = chunk;
+    buttons.push({
+      str: `${min}-${max}`,
+      dest: `collectibleUnlocks${min}`,
+    });
+  }
+
+  return buttons;
+}
+
+export function getSpecificCollectibleUnlockButtons(
+  min: int,
+  max: int,
+): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
   for (const collectibleType of UNLOCKABLE_COLLECTIBLE_TYPES) {
+    if (collectibleType < min || collectibleType > max) {
+      continue;
+    }
+
     const collectibleName = getCollectibleName(collectibleType).toLowerCase();
     const completed = isCollectibleTypeUnlocked(collectibleType, false);
     const completedText = getCompletedText(completed);
@@ -476,7 +509,29 @@ export function getCollectibleUnlockButtons(): DeadSeaScrollsButton[] {
 export function getTrinketUnlockButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
+  const chunks = splitNumber(LAST_VANILLA_TRINKET_TYPE, MENU_PAGE_SIZE);
+  for (const chunk of chunks) {
+    const [min, max] = chunk;
+    buttons.push({
+      str: `${min}-${max}`,
+      dest: `trinketUnlocks${min}`,
+    });
+  }
+
+  return buttons;
+}
+
+export function getSpecificTrinketUnlockButtons(
+  min: int,
+  max: int,
+): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
   for (const trinketType of UNLOCKABLE_TRINKET_TYPES) {
+    if (trinketType < min || trinketType > max) {
+      continue;
+    }
+
     const trinketName = getTrinketName(trinketType).toLowerCase();
     const completed = isTrinketTypeUnlocked(trinketType, false);
     const completedText = getCompletedText(completed);
@@ -501,7 +556,29 @@ export function getTrinketUnlockButtons(): DeadSeaScrollsButton[] {
 export function getCardUnlockButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
+  const chunks = splitNumber(LAST_VANILLA_CARD_TYPE, MENU_PAGE_SIZE);
+  for (const chunk of chunks) {
+    const [min, max] = chunk;
+    buttons.push({
+      str: `${min}-${max}`,
+      dest: `cardUnlocks${min}`,
+    });
+  }
+
+  return buttons;
+}
+
+export function getSpecificCardUnlockButtons(
+  min: int,
+  max: int,
+): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
   for (const cardType of UNLOCKABLE_CARD_TYPES) {
+    if (cardType < min || cardType > max) {
+      continue;
+    }
+
     const cardName = getCardName(cardType).toLowerCase();
     const completed = isCardTypeUnlocked(cardType, false);
     const completedText = getCompletedText(completed);
@@ -526,7 +603,29 @@ export function getCardUnlockButtons(): DeadSeaScrollsButton[] {
 export function getPillEffectUnlockButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
+  const chunks = splitNumber(LAST_VANILLA_PILL_EFFECT, MENU_PAGE_SIZE);
+  for (const chunk of chunks) {
+    const [min, max] = chunk;
+    buttons.push({
+      str: `${min}-${max}`,
+      dest: `pillEffectUnlocks${min}`,
+    });
+  }
+
+  return buttons;
+}
+
+export function getSpecificPillEffectUnlockButtons(
+  min: int,
+  max: int,
+): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
   for (const pillEffect of UNLOCKABLE_PILL_EFFECTS) {
+    if (pillEffect < min || pillEffect > max) {
+      continue;
+    }
+
     const pillEffectName = getPillEffectName(pillEffect).toLowerCase();
     const pillEffectNameTruncated = getNameTruncated(pillEffectName);
     const completed = isPillEffectUnlocked(pillEffect, false);

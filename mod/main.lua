@@ -64800,6 +64800,7 @@ local CollectibleType = ____isaac_2Dtypescript_2Ddefinitions.CollectibleType
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
 local ReadonlySet = ____isaacscript_2Dcommon.ReadonlySet
 local VANILLA_COLLECTIBLE_TYPES = ____isaacscript_2Dcommon.VANILLA_COLLECTIBLE_TYPES
+local isActiveCollectible = ____isaacscript_2Dcommon.isActiveCollectible
 local BOSS_ROOM_EXCEPTIONS = {
     CollectibleType.BREAKFAST,
     CollectibleType.WOODEN_SPOON,
@@ -64860,6 +64861,10 @@ ____exports.ALWAYS_UNLOCKED_COLLECTIBLE_TYPES = __TS__New(
 ____exports.UNLOCKABLE_COLLECTIBLE_TYPES = __TS__ArrayFilter(
     VANILLA_COLLECTIBLE_TYPES,
     function(____, collectibleType) return not ____exports.ALWAYS_UNLOCKED_COLLECTIBLE_TYPES:has(collectibleType) end
+)
+____exports.UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES = __TS__ArrayFilter(
+    ____exports.UNLOCKABLE_COLLECTIBLE_TYPES,
+    function(____, collectibleType) return isActiveCollectible(nil, collectibleType) end
 )
 return ____exports
  end,
@@ -66911,10 +66916,11 @@ local ____trinketQuality = require("src.classes.features.achievementTracker.trin
 local getTrinketTypesOfQuality = ____trinketQuality.getTrinketTypesOfQuality
 local ____v = require("src.classes.features.achievementTracker.v")
 local v = ____v.v
-function getUnlockedCollectibleTypes(self)
+function getUnlockedCollectibleTypes(self, forRun)
+    local array = forRun and v.persistent.completedUnlocksForRun or v.persistent.completedUnlocks
     return filterMap(
         nil,
-        v.persistent.completedUnlocksForRun,
+        array,
         function(____, unlock) return unlock.type == UnlockType.COLLECTIBLE and unlock.collectibleType or nil end
     )
 end
@@ -66977,18 +66983,25 @@ function ____exports.isCollectibleTypeUnlocked(self, collectibleType, forRun)
         function(____, unlock) return unlock.type == UnlockType.COLLECTIBLE and unlock.collectibleType == collectibleType end
     )
 end
-function ____exports.getUnlockedEdenActiveCollectibleTypes(self)
-    local unlockedCollectibleTypes = getUnlockedCollectibleTypes(nil)
+function ____exports.getUnlockedEdenActiveCollectibleTypes(self, forRun)
+    local unlockedCollectibleTypes = getUnlockedCollectibleTypes(nil, forRun)
     return __TS__ArrayFilter(
         unlockedCollectibleTypes,
         function(____, collectibleType) return not isHiddenCollectible(nil, collectibleType) and not collectibleHasTag(nil, collectibleType, ItemConfigTag.NO_EDEN) and isActiveCollectible(nil, collectibleType) end
     )
 end
-function ____exports.getUnlockedEdenPassiveCollectibleTypes(self)
-    local unlockedCollectibleTypes = getUnlockedCollectibleTypes(nil)
+function ____exports.getUnlockedEdenPassiveCollectibleTypes(self, forRun)
+    local unlockedCollectibleTypes = getUnlockedCollectibleTypes(nil, forRun)
     return __TS__ArrayFilter(
         unlockedCollectibleTypes,
         function(____, collectibleType) return not isHiddenCollectible(nil, collectibleType) and not collectibleHasTag(nil, collectibleType, ItemConfigTag.NO_EDEN) and isPassiveOrFamiliarCollectible(nil, collectibleType) end
+    )
+end
+function ____exports.isActiveCollectibleUnlocked(self, forRun)
+    local collectibleTypes = getUnlockedCollectibleTypes(nil, forRun)
+    return __TS__ArraySome(
+        collectibleTypes,
+        function(____, collectibleType) return isActiveCollectible(nil, collectibleType) end
     )
 end
 function ____exports.getWorseLockedCollectibleType(self, collectibleType)
@@ -67393,6 +67406,8 @@ local log = ____isaacscript_2Dcommon.log
 local shuffleArray = ____isaacscript_2Dcommon.shuffleArray
 local ____unlockableCardTypes = require("src.arrays.unlockableCardTypes")
 local UNLOCKABLE_CARD_TYPES = ____unlockableCardTypes.UNLOCKABLE_CARD_TYPES
+local ____unlockableCollectibleTypes = require("src.arrays.unlockableCollectibleTypes")
+local UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES = ____unlockableCollectibleTypes.UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES
 local ____unlockablePillEffects = require("src.arrays.unlockablePillEffects")
 local UNLOCKABLE_PILL_EFFECTS = ____unlockablePillEffects.UNLOCKABLE_PILL_EFFECTS
 local ____unlockableRoomTypes = require("src.arrays.unlockableRoomTypes")
@@ -67449,6 +67464,7 @@ local getWorseLockedKeySubType = ____completedUnlocks.getWorseLockedKeySubType
 local getWorseLockedPillEffect = ____completedUnlocks.getWorseLockedPillEffect
 local getWorseLockedSackSubType = ____completedUnlocks.getWorseLockedSackSubType
 local getWorseLockedTrinketType = ____completedUnlocks.getWorseLockedTrinketType
+local isActiveCollectibleUnlocked = ____completedUnlocks.isActiveCollectibleUnlocked
 local isAltFloorUnlocked = ____completedUnlocks.isAltFloorUnlocked
 local isBatterySubTypeUnlocked = ____completedUnlocks.isBatterySubTypeUnlocked
 local isBombSubTypeUnlocked = ____completedUnlocks.isBombSubTypeUnlocked
@@ -67720,9 +67736,9 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
     for ____, entries in __TS__Iterator(v.persistent.objectiveToUnlockMap) do
         local objectiveID, unlock = table.unpack(entries)
         repeat
-            local ____switch123 = unlock.type
-            local ____cond123 = ____switch123 == UnlockType.CHARACTER
-            if ____cond123 then
+            local ____switch125 = unlock.type
+            local ____cond125 = ____switch125 == UnlockType.CHARACTER
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.character == unlockToMatch.character then
                         return objectiveID
@@ -67730,8 +67746,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.PATH
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.PATH
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.unlockablePath == unlockToMatch.unlockablePath then
                         return objectiveID
@@ -67739,8 +67755,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.ALT_FLOOR
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.ALT_FLOOR
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.altFloor == unlockToMatch.altFloor then
                         return objectiveID
@@ -67748,8 +67764,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.ROOM
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.ROOM
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.roomType == unlockToMatch.roomType then
                         return objectiveID
@@ -67757,8 +67773,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.CHALLENGE
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.CHALLENGE
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.challenge == unlockToMatch.challenge then
                         return objectiveID
@@ -67766,8 +67782,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.COLLECTIBLE
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.COLLECTIBLE
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.collectibleType == unlockToMatch.collectibleType then
                         return objectiveID
@@ -67775,8 +67791,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.TRINKET
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.TRINKET
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.trinketType == unlockToMatch.trinketType then
                         return objectiveID
@@ -67784,8 +67800,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.CARD
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.CARD
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.cardType == unlockToMatch.cardType then
                         return objectiveID
@@ -67793,8 +67809,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.PILL_EFFECT
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.PILL_EFFECT
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.pillEffect == unlockToMatch.pillEffect then
                         return objectiveID
@@ -67802,8 +67818,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.HEART
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.HEART
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.heartSubType == unlockToMatch.heartSubType then
                         return objectiveID
@@ -67811,8 +67827,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.COIN
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.COIN
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.coinSubType == unlockToMatch.coinSubType then
                         return objectiveID
@@ -67820,8 +67836,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.BOMB
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.BOMB
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.bombSubType == unlockToMatch.bombSubType then
                         return objectiveID
@@ -67829,8 +67845,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.KEY
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.KEY
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.keySubType == unlockToMatch.keySubType then
                         return objectiveID
@@ -67838,8 +67854,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.BATTERY
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.BATTERY
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.batterySubType == unlockToMatch.batterySubType then
                         return objectiveID
@@ -67847,8 +67863,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.SACK
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.SACK
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.sackSubType == unlockToMatch.sackSubType then
                         return objectiveID
@@ -67856,8 +67872,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.CHEST
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.CHEST
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.pickupVariant == unlockToMatch.pickupVariant then
                         return objectiveID
@@ -67865,8 +67881,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.SLOT
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.SLOT
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.slotVariant == unlockToMatch.slotVariant then
                         return objectiveID
@@ -67874,8 +67890,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.GRID_ENTITY
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.GRID_ENTITY
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.gridEntityType == unlockToMatch.gridEntityType then
                         return objectiveID
@@ -67883,8 +67899,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond123 = ____cond123 or ____switch123 == UnlockType.OTHER
-            if ____cond123 then
+            ____cond125 = ____cond125 or ____switch125 == UnlockType.OTHER
+            if ____cond125 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.kind == unlockToMatch.kind then
                         return objectiveID
@@ -68460,6 +68476,17 @@ SWAPPED_UNLOCK_TRINKET_FUNCTIONS = __TS__New(
                     ____isPathUnlocked_result_40 = getUnlock(nil, UnlockType.PATH, UnlockablePath.BLUE_WOMB)
                 end
                 return ____isPathUnlocked_result_40
+            end
+        },
+        {
+            TrinketType.EXPANSION_PACK,
+            function()
+                if isActiveCollectibleUnlocked(nil, false) then
+                    return nil
+                end
+                assertNotNull(nil, v.persistent.seed, "Failed to get a random active collectible since the seed was null.")
+                local collectibleType = getRandomArrayElement(nil, UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES, v.persistent.seed)
+                return getUnlock(nil, UnlockType.COLLECTIBLE, collectibleType)
             end
         }
     }
@@ -71080,8 +71107,8 @@ function PickupRemoval.prototype.addEdenRandomCollectibles(self, player)
     local seeds = game:GetSeeds()
     local startSeed = seeds:GetStartSeed()
     local rng = newRNG(nil, startSeed)
-    local activeCollectibleTypes = getUnlockedEdenActiveCollectibleTypes(nil)
-    local passiveCollectibleTypes = getUnlockedEdenPassiveCollectibleTypes(nil)
+    local activeCollectibleTypes = getUnlockedEdenActiveCollectibleTypes(nil, true)
+    local passiveCollectibleTypes = getUnlockedEdenPassiveCollectibleTypes(nil, true)
     local passiveCollectibleType = getRandomArrayElement(nil, passiveCollectibleTypes, rng)
     local activeCollectibleType = #activeCollectibleTypes == 0 and getRandomArrayElement(nil, passiveCollectibleTypes, rng, {passiveCollectibleType}) or getRandomArrayElement(nil, activeCollectibleTypes, rng)
     player:AddCollectible(activeCollectibleType)
@@ -72140,6 +72167,10 @@ local getNameTruncated, getCompletedText
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
 local BossID = ____isaac_2Dtypescript_2Ddefinitions.BossID
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
+local LAST_VANILLA_CARD_TYPE = ____isaacscript_2Dcommon.LAST_VANILLA_CARD_TYPE
+local LAST_VANILLA_COLLECTIBLE_TYPE = ____isaacscript_2Dcommon.LAST_VANILLA_COLLECTIBLE_TYPE
+local LAST_VANILLA_PILL_EFFECT = ____isaacscript_2Dcommon.LAST_VANILLA_PILL_EFFECT
+local LAST_VANILLA_TRINKET_TYPE = ____isaacscript_2Dcommon.LAST_VANILLA_TRINKET_TYPE
 local MAIN_CHARACTERS = ____isaacscript_2Dcommon.MAIN_CHARACTERS
 local getBatteryName = ____isaacscript_2Dcommon.getBatteryName
 local getBombName = ____isaacscript_2Dcommon.getBombName
@@ -72188,6 +72219,7 @@ local ____unlockableTrinketTypes = require("src.arrays.unlockableTrinketTypes")
 local UNLOCKABLE_TRINKET_TYPES = ____unlockableTrinketTypes.UNLOCKABLE_TRINKET_TYPES
 local ____cachedEnums = require("src.cachedEnums")
 local ALT_FLOORS = ____cachedEnums.ALT_FLOORS
+local BOSS_IDS = ____cachedEnums.BOSS_IDS
 local CHARACTER_OBJECTIVE_KINDS = ____cachedEnums.CHARACTER_OBJECTIVE_KINDS
 local OTHER_UNLOCK_KINDS = ____cachedEnums.OTHER_UNLOCK_KINDS
 local UNLOCKABLE_PATHS = ____cachedEnums.UNLOCKABLE_PATHS
@@ -72250,7 +72282,7 @@ function ____exports.getRecentAchievementsButtons(self)
         return {{str = "no achievements"}, {str = "unlocked yet."}}
     end
     local buttons = {}
-    for ____, i in ipairs(iRange(nil, 25)) do
+    for ____, i in ipairs(iRange(nil, ____exports.MENU_PAGE_SIZE)) do
         do
             local unlock = completedUnlocks[i + 1]
             local objective = completedObjectives[i + 1]
@@ -72320,7 +72352,7 @@ function ____exports.getSpecificCharacterObjectiveButtons(self, character)
 end
 function ____exports.getBossObjectiveButtons(self)
     local buttons = {}
-    local chunks = splitNumber(nil, #NO_HIT_BOSSES, ____exports.MENU_PAGE_SIZE)
+    local chunks = splitNumber(nil, #BOSS_IDS, ____exports.MENU_PAGE_SIZE)
     for ____, chunk in ipairs(chunks) do
         local min, max = table.unpack(chunk)
         buttons[#buttons + 1] = {
@@ -72333,25 +72365,30 @@ end
 function ____exports.getSpecificBossObjectiveButtons(self, min, max)
     local buttons = {}
     local reachableBosses = getReachableNonStoryBossesSet(nil)
-    for ____, bossIDNum in ipairs(iRange(nil, min, max)) do
-        local bossID = bossIDNum
-        local bossName = string.lower(getBossName(nil, bossID))
-        if bossID == BossID.MAUSOLEUM_MOMS_HEART then
-            bossName = "mom's heart (maus.)"
+    for ____, bossID in ipairs(NO_HIT_BOSSES) do
+        do
+            if bossID < min or bossID > max then
+                goto __continue23
+            end
+            local bossName = string.lower(getBossName(nil, bossID))
+            if bossID == BossID.MAUSOLEUM_MOMS_HEART then
+                bossName = "mom's heart (maus.)"
+            end
+            local completed = isBossObjectiveCompleted(nil, bossID)
+            local completedText = getCompletedText(nil, completed)
+            __TS__ArrayPush(
+                buttons,
+                {str = (tostring(bossID) .. " - ") .. bossName},
+                {str = completedText, clr = completed and 0 or 3},
+                {
+                    str = "(inaccessible)",
+                    fSize = 1,
+                    displayIf = function() return not canGetToBoss(nil, bossID, reachableBosses, false) end
+                },
+                {str = ""}
+            )
         end
-        local completed = isBossObjectiveCompleted(nil, bossID)
-        local completedText = getCompletedText(nil, completed)
-        __TS__ArrayPush(
-            buttons,
-            {str = (tostring(bossID) .. " - ") .. bossName},
-            {str = completedText, clr = completed and 0 or 3},
-            {
-                str = "(inaccessible)",
-                fSize = 1,
-                displayIf = function() return not canGetToBoss(nil, bossID, reachableBosses, false) end
-            },
-            {str = ""}
-        )
+        ::__continue23::
     end
     return buttons
 end
@@ -72369,23 +72406,28 @@ function ____exports.getChallengeObjectiveButtons(self)
 end
 function ____exports.getSpecificChallengeObjectiveButtons(self, min, max)
     local buttons = {}
-    for ____, challengeNum in ipairs(iRange(nil, min, max)) do
-        local challenge = challengeNum
-        local challengeName = string.lower(getChallengeName(nil, challenge))
-        local challengeNameTruncated = getNameTruncated(nil, challengeName)
-        local completed = isChallengeObjectiveCompleted(nil, challenge)
-        local completedText = getCompletedText(nil, completed)
-        __TS__ArrayPush(
-            buttons,
-            {str = (tostring(challenge) .. " - ") .. challengeNameTruncated},
-            {str = completedText, clr = completed and 0 or 3},
-            {
-                str = "(inaccessible)",
-                fSize = 1,
-                displayIf = function() return not isChallengeUnlocked(nil, challenge, false) end
-            },
-            {str = ""}
-        )
+    for ____, challenge in ipairs(UNLOCKABLE_CHALLENGES) do
+        do
+            if challenge < min or challenge > max then
+                goto __continue32
+            end
+            local challengeName = string.lower(getChallengeName(nil, challenge))
+            local challengeNameTruncated = getNameTruncated(nil, challengeName)
+            local completed = isChallengeObjectiveCompleted(nil, challenge)
+            local completedText = getCompletedText(nil, completed)
+            __TS__ArrayPush(
+                buttons,
+                {str = (tostring(challenge) .. " - ") .. challengeNameTruncated},
+                {str = completedText, clr = completed and 0 or 3},
+                {
+                    str = "(inaccessible)",
+                    fSize = 1,
+                    displayIf = function() return not isChallengeUnlocked(nil, challenge, false) end
+                },
+                {str = ""}
+            )
+        end
+        ::__continue32::
     end
     return buttons
 end
@@ -72433,74 +72475,151 @@ function ____exports.getChallengeUnlockButtons(self)
 end
 function ____exports.getSpecificChallengeUnlockButtons(self, min, max)
     local buttons = {}
-    for ____, challengeNum in ipairs(iRange(nil, min, max)) do
-        local challenge = challengeNum
-        local challengeName = string.lower(getChallengeName(nil, challenge))
-        local challengeNameTruncated = getNameTruncated(nil, challengeName)
-        local completed = isChallengeUnlocked(nil, challenge, false)
-        local completedText = getCompletedText(nil, completed)
-        __TS__ArrayPush(
-            buttons,
-            {str = (tostring(challenge) .. " - ") .. challengeNameTruncated},
-            {str = completedText, clr = completed and 0 or 3},
-            {str = ""}
-        )
+    for ____, challenge in ipairs(UNLOCKABLE_CHALLENGES) do
+        do
+            if challenge < min or challenge > max then
+                goto __continue49
+            end
+            local challengeName = string.lower(getChallengeName(nil, challenge))
+            local challengeNameTruncated = getNameTruncated(nil, challengeName)
+            local completed = isChallengeUnlocked(nil, challenge, false)
+            local completedText = getCompletedText(nil, completed)
+            __TS__ArrayPush(
+                buttons,
+                {str = (tostring(challenge) .. " - ") .. challengeNameTruncated},
+                {str = completedText, clr = completed and 0 or 3},
+                {str = ""}
+            )
+        end
+        ::__continue49::
     end
     return buttons
 end
 function ____exports.getCollectibleUnlockButtons(self)
     local buttons = {}
+    local chunks = splitNumber(nil, LAST_VANILLA_COLLECTIBLE_TYPE, ____exports.MENU_PAGE_SIZE)
+    for ____, chunk in ipairs(chunks) do
+        local min, max = table.unpack(chunk)
+        buttons[#buttons + 1] = {
+            str = (tostring(min) .. "-") .. tostring(max),
+            dest = "collectibleUnlocks" .. tostring(min)
+        }
+    end
+    return buttons
+end
+function ____exports.getSpecificCollectibleUnlockButtons(self, min, max)
+    local buttons = {}
     for ____, collectibleType in ipairs(UNLOCKABLE_COLLECTIBLE_TYPES) do
-        local collectibleName = string.lower(getCollectibleName(nil, collectibleType))
-        local completed = isCollectibleTypeUnlocked(nil, collectibleType, false)
-        local completedText = getCompletedText(nil, completed)
-        __TS__ArrayPush(
-            buttons,
-            {str = (tostring(collectibleType) .. " - ") .. collectibleName},
-            {str = completedText, clr = completed and 0 or 3},
-            {str = ""}
-        )
+        do
+            if collectibleType < min or collectibleType > max then
+                goto __continue56
+            end
+            local collectibleName = string.lower(getCollectibleName(nil, collectibleType))
+            local completed = isCollectibleTypeUnlocked(nil, collectibleType, false)
+            local completedText = getCompletedText(nil, completed)
+            __TS__ArrayPush(
+                buttons,
+                {str = (tostring(collectibleType) .. " - ") .. collectibleName},
+                {str = completedText, clr = completed and 0 or 3},
+                {str = ""}
+            )
+        end
+        ::__continue56::
     end
     return buttons
 end
 function ____exports.getTrinketUnlockButtons(self)
     local buttons = {}
+    local chunks = splitNumber(nil, LAST_VANILLA_TRINKET_TYPE, ____exports.MENU_PAGE_SIZE)
+    for ____, chunk in ipairs(chunks) do
+        local min, max = table.unpack(chunk)
+        buttons[#buttons + 1] = {
+            str = (tostring(min) .. "-") .. tostring(max),
+            dest = "trinketUnlocks" .. tostring(min)
+        }
+    end
+    return buttons
+end
+function ____exports.getSpecificTrinketUnlockButtons(self, min, max)
+    local buttons = {}
     for ____, trinketType in ipairs(UNLOCKABLE_TRINKET_TYPES) do
-        local trinketName = string.lower(getTrinketName(nil, trinketType))
-        local completed = isTrinketTypeUnlocked(nil, trinketType, false)
-        local completedText = getCompletedText(nil, completed)
-        __TS__ArrayPush(
-            buttons,
-            {str = (tostring(trinketType) .. " - ") .. trinketName},
-            {str = completedText, clr = completed and 0 or 3},
-            {str = ""}
-        )
+        do
+            if trinketType < min or trinketType > max then
+                goto __continue63
+            end
+            local trinketName = string.lower(getTrinketName(nil, trinketType))
+            local completed = isTrinketTypeUnlocked(nil, trinketType, false)
+            local completedText = getCompletedText(nil, completed)
+            __TS__ArrayPush(
+                buttons,
+                {str = (tostring(trinketType) .. " - ") .. trinketName},
+                {str = completedText, clr = completed and 0 or 3},
+                {str = ""}
+            )
+        end
+        ::__continue63::
     end
     return buttons
 end
 function ____exports.getCardUnlockButtons(self)
     local buttons = {}
+    local chunks = splitNumber(nil, LAST_VANILLA_CARD_TYPE, ____exports.MENU_PAGE_SIZE)
+    for ____, chunk in ipairs(chunks) do
+        local min, max = table.unpack(chunk)
+        buttons[#buttons + 1] = {
+            str = (tostring(min) .. "-") .. tostring(max),
+            dest = "cardUnlocks" .. tostring(min)
+        }
+    end
+    return buttons
+end
+function ____exports.getSpecificCardUnlockButtons(self, min, max)
+    local buttons = {}
     for ____, cardType in ipairs(UNLOCKABLE_CARD_TYPES) do
-        local cardName = string.lower(getCardName(nil, cardType))
-        local completed = isCardTypeUnlocked(nil, cardType, false)
-        local completedText = getCompletedText(nil, completed)
-        __TS__ArrayPush(buttons, {str = cardName}, {str = completedText, clr = completed and 0 or 3}, {str = ""})
+        do
+            if cardType < min or cardType > max then
+                goto __continue70
+            end
+            local cardName = string.lower(getCardName(nil, cardType))
+            local completed = isCardTypeUnlocked(nil, cardType, false)
+            local completedText = getCompletedText(nil, completed)
+            __TS__ArrayPush(buttons, {str = cardName}, {str = completedText, clr = completed and 0 or 3}, {str = ""})
+        end
+        ::__continue70::
     end
     return buttons
 end
 function ____exports.getPillEffectUnlockButtons(self)
     local buttons = {}
+    local chunks = splitNumber(nil, LAST_VANILLA_PILL_EFFECT, ____exports.MENU_PAGE_SIZE)
+    for ____, chunk in ipairs(chunks) do
+        local min, max = table.unpack(chunk)
+        buttons[#buttons + 1] = {
+            str = (tostring(min) .. "-") .. tostring(max),
+            dest = "pillEffectUnlocks" .. tostring(min)
+        }
+    end
+    return buttons
+end
+function ____exports.getSpecificPillEffectUnlockButtons(self, min, max)
+    local buttons = {}
     for ____, pillEffect in ipairs(UNLOCKABLE_PILL_EFFECTS) do
-        local pillEffectName = string.lower(getPillEffectName(nil, pillEffect))
-        local pillEffectNameTruncated = getNameTruncated(nil, pillEffectName)
-        local completed = isPillEffectUnlocked(nil, pillEffect, false)
-        local completedText = getCompletedText(nil, completed)
-        __TS__ArrayPush(
-            buttons,
-            {str = (tostring(pillEffect) .. " - ") .. pillEffectNameTruncated},
-            {str = completedText, clr = completed and 0 or 3},
-            {str = ""}
-        )
+        do
+            if pillEffect < min or pillEffect > max then
+                goto __continue77
+            end
+            local pillEffectName = string.lower(getPillEffectName(nil, pillEffect))
+            local pillEffectNameTruncated = getNameTruncated(nil, pillEffectName)
+            local completed = isPillEffectUnlocked(nil, pillEffect, false)
+            local completedText = getCompletedText(nil, completed)
+            __TS__ArrayPush(
+                buttons,
+                {str = (tostring(pillEffect) .. " - ") .. pillEffectNameTruncated},
+                {str = completedText, clr = completed and 0 or 3},
+                {str = ""}
+            )
+        end
+        ::__continue77::
     end
     return buttons
 end
@@ -72610,16 +72729,20 @@ return ____exports
 local ____exports = {}
 local startRandomizerFromDSS
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
+local LAST_VANILLA_CARD_TYPE = ____isaacscript_2Dcommon.LAST_VANILLA_CARD_TYPE
+local LAST_VANILLA_COLLECTIBLE_TYPE = ____isaacscript_2Dcommon.LAST_VANILLA_COLLECTIBLE_TYPE
+local LAST_VANILLA_PILL_EFFECT = ____isaacscript_2Dcommon.LAST_VANILLA_PILL_EFFECT
+local LAST_VANILLA_TRINKET_TYPE = ____isaacscript_2Dcommon.LAST_VANILLA_TRINKET_TYPE
 local MAIN_CHARACTERS = ____isaacscript_2Dcommon.MAIN_CHARACTERS
 local assertDefined = ____isaacscript_2Dcommon.assertDefined
 local getCharacterName = ____isaacscript_2Dcommon.getCharacterName
 local splitNumber = ____isaacscript_2Dcommon.splitNumber
-local ____objectives = require("src.arrays.objectives")
-local NO_HIT_BOSSES = ____objectives.NO_HIT_BOSSES
 local ____unlockableChallenges = require("src.arrays.unlockableChallenges")
 local UNLOCKABLE_CHALLENGES = ____unlockableChallenges.UNLOCKABLE_CHALLENGES
 local ____unlocks = require("src.arrays.unlocks")
 local ALL_UNLOCKS = ____unlocks.ALL_UNLOCKS
+local ____cachedEnums = require("src.cachedEnums")
+local BOSS_IDS = ____cachedEnums.BOSS_IDS
 local ____AchievementRandomizer = require("src.classes.features.AchievementRandomizer")
 local endRandomizer = ____AchievementRandomizer.endRandomizer
 local isValidSituationForStartingRandomizer = ____AchievementRandomizer.isValidSituationForStartingRandomizer
@@ -72661,9 +72784,13 @@ local getRecentAchievementsButtons = ____deadSeaScrollsButtons.getRecentAchievem
 local getSackUnlockButtons = ____deadSeaScrollsButtons.getSackUnlockButtons
 local getSlotUnlockButtons = ____deadSeaScrollsButtons.getSlotUnlockButtons
 local getSpecificBossObjectiveButtons = ____deadSeaScrollsButtons.getSpecificBossObjectiveButtons
+local getSpecificCardUnlockButtons = ____deadSeaScrollsButtons.getSpecificCardUnlockButtons
 local getSpecificChallengeObjectiveButtons = ____deadSeaScrollsButtons.getSpecificChallengeObjectiveButtons
 local getSpecificChallengeUnlockButtons = ____deadSeaScrollsButtons.getSpecificChallengeUnlockButtons
 local getSpecificCharacterObjectiveButtons = ____deadSeaScrollsButtons.getSpecificCharacterObjectiveButtons
+local getSpecificCollectibleUnlockButtons = ____deadSeaScrollsButtons.getSpecificCollectibleUnlockButtons
+local getSpecificPillEffectUnlockButtons = ____deadSeaScrollsButtons.getSpecificPillEffectUnlockButtons
+local getSpecificTrinketUnlockButtons = ____deadSeaScrollsButtons.getSpecificTrinketUnlockButtons
 local getTrinketUnlockButtons = ____deadSeaScrollsButtons.getTrinketUnlockButtons
 local ____RandomizerMode = require("src.enums.RandomizerMode")
 local RandomizerMode = ____RandomizerMode.RandomizerMode
@@ -72896,8 +73023,6 @@ function ____exports.initDeadSeaScrolls(self)
         },
         collectibleUnlocks = {
             title = "collectible unlocks",
-            noCursor = true,
-            scroller = true,
             fSize = 2,
             generate = function(menu)
                 menu.buttons = getCollectibleUnlockButtons(nil)
@@ -72905,8 +73030,6 @@ function ____exports.initDeadSeaScrolls(self)
         },
         trinketUnlocks = {
             title = "trinket unlocks",
-            noCursor = true,
-            scroller = true,
             fSize = 2,
             generate = function(menu)
                 menu.buttons = getTrinketUnlockButtons(nil)
@@ -72914,8 +73037,6 @@ function ____exports.initDeadSeaScrolls(self)
         },
         cardUnlocks = {
             title = "card unlocks",
-            noCursor = true,
-            scroller = true,
             fSize = 2,
             generate = function(menu)
                 menu.buttons = getCardUnlockButtons(nil)
@@ -72923,8 +73044,6 @@ function ____exports.initDeadSeaScrolls(self)
         },
         pillEffectUnlocks = {
             title = "pill effect unlocks",
-            noCursor = true,
-            scroller = true,
             fSize = 2,
             generate = function(menu)
                 menu.buttons = getPillEffectUnlockButtons(nil)
@@ -73086,7 +73205,7 @@ function ____exports.initDeadSeaScrolls(self)
             end
         }
     end
-    local bossChunks = splitNumber(nil, #NO_HIT_BOSSES, MENU_PAGE_SIZE)
+    local bossChunks = splitNumber(nil, #BOSS_IDS, MENU_PAGE_SIZE)
     for ____, chunk in ipairs(bossChunks) do
         local min, max = table.unpack(chunk)
         directory["bossObjectives" .. tostring(min)] = {
@@ -73118,6 +73237,58 @@ function ____exports.initDeadSeaScrolls(self)
             fSize = 2,
             generate = function(menu)
                 menu.buttons = getSpecificChallengeUnlockButtons(nil, min, max)
+            end
+        }
+    end
+    local collectibleChunks = splitNumber(nil, LAST_VANILLA_COLLECTIBLE_TYPE, MENU_PAGE_SIZE)
+    for ____, chunk in ipairs(collectibleChunks) do
+        local min, max = table.unpack(chunk)
+        directory["collectibleUnlocks" .. tostring(min)] = {
+            title = "collectible unlocks",
+            noCursor = true,
+            scroller = true,
+            fSize = 2,
+            generate = function(menu)
+                menu.buttons = getSpecificCollectibleUnlockButtons(nil, min, max)
+            end
+        }
+    end
+    local trinketChunks = splitNumber(nil, LAST_VANILLA_TRINKET_TYPE, MENU_PAGE_SIZE)
+    for ____, chunk in ipairs(trinketChunks) do
+        local min, max = table.unpack(chunk)
+        directory["trinketUnlocks" .. tostring(min)] = {
+            title = "trinket unlocks",
+            noCursor = true,
+            scroller = true,
+            fSize = 2,
+            generate = function(menu)
+                menu.buttons = getSpecificTrinketUnlockButtons(nil, min, max)
+            end
+        }
+    end
+    local cardChunks = splitNumber(nil, LAST_VANILLA_CARD_TYPE, MENU_PAGE_SIZE)
+    for ____, chunk in ipairs(cardChunks) do
+        local min, max = table.unpack(chunk)
+        directory["cardUnlocks" .. tostring(min)] = {
+            title = "card unlocks",
+            noCursor = true,
+            scroller = true,
+            fSize = 2,
+            generate = function(menu)
+                menu.buttons = getSpecificCardUnlockButtons(nil, min, max)
+            end
+        }
+    end
+    local pillEffectChunks = splitNumber(nil, LAST_VANILLA_PILL_EFFECT, MENU_PAGE_SIZE)
+    for ____, chunk in ipairs(pillEffectChunks) do
+        local min, max = table.unpack(chunk)
+        directory["pillEffectUnlocks" .. tostring(min)] = {
+            title = "pill effect unlocks",
+            noCursor = true,
+            scroller = true,
+            fSize = 2,
+            generate = function(menu)
+                menu.buttons = getSpecificPillEffectUnlockButtons(nil, min, max)
             end
         }
     end
