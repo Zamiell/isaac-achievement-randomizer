@@ -100,6 +100,7 @@ import {
   isChestPickupVariantUnlocked,
   isCoinSubTypeUnlocked,
   isCollectibleTypeUnlocked,
+  isFamiliarCollectibleUnlocked,
   isGridEntityTypeUnlocked,
   isHeartSubTypeUnlocked,
   isKeySubTypeUnlocked,
@@ -721,7 +722,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.BABY_BENDER,
     () =>
-      isActiveCollectibleUnlocked(false)
+      isFamiliarCollectibleUnlocked(false)
         ? undefined
         : getRandomFamiliarCollectibleUnlock(),
   ],
@@ -739,7 +740,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.FORGOTTEN_LULLABY,
     () =>
-      isActiveCollectibleUnlocked(false)
+      isFamiliarCollectibleUnlocked(false)
         ? undefined
         : getRandomFamiliarCollectibleUnlock(),
   ],
@@ -775,7 +776,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.RC_REMOTE,
     () =>
-      isActiveCollectibleUnlocked(false)
+      isFamiliarCollectibleUnlocked(false)
         ? undefined
         : getRandomFamiliarCollectibleUnlock(),
   ],

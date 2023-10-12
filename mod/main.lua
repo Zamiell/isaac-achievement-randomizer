@@ -67550,6 +67550,7 @@ local isCharacterUnlocked = ____completedUnlocks.isCharacterUnlocked
 local isChestPickupVariantUnlocked = ____completedUnlocks.isChestPickupVariantUnlocked
 local isCoinSubTypeUnlocked = ____completedUnlocks.isCoinSubTypeUnlocked
 local isCollectibleTypeUnlocked = ____completedUnlocks.isCollectibleTypeUnlocked
+local isFamiliarCollectibleUnlocked = ____completedUnlocks.isFamiliarCollectibleUnlocked
 local isGridEntityTypeUnlocked = ____completedUnlocks.isGridEntityTypeUnlocked
 local isHeartSubTypeUnlocked = ____completedUnlocks.isHeartSubTypeUnlocked
 local isKeySubTypeUnlocked = ____completedUnlocks.isKeySubTypeUnlocked
@@ -68520,13 +68521,13 @@ SWAPPED_UNLOCK_TRINKET_FUNCTIONS = __TS__New(
         {
             TrinketType.BABY_BENDER,
             function()
-                local ____isActiveCollectibleUnlocked_result_37
-                if isActiveCollectibleUnlocked(nil, false) then
-                    ____isActiveCollectibleUnlocked_result_37 = nil
+                local ____isFamiliarCollectibleUnlocked_result_37
+                if isFamiliarCollectibleUnlocked(nil, false) then
+                    ____isFamiliarCollectibleUnlocked_result_37 = nil
                 else
-                    ____isActiveCollectibleUnlocked_result_37 = getRandomFamiliarCollectibleUnlock(nil)
+                    ____isFamiliarCollectibleUnlocked_result_37 = getRandomFamiliarCollectibleUnlock(nil)
                 end
-                return ____isActiveCollectibleUnlocked_result_37
+                return ____isFamiliarCollectibleUnlocked_result_37
             end
         },
         {
@@ -68544,13 +68545,13 @@ SWAPPED_UNLOCK_TRINKET_FUNCTIONS = __TS__New(
         {
             TrinketType.FORGOTTEN_LULLABY,
             function()
-                local ____isActiveCollectibleUnlocked_result_39
-                if isActiveCollectibleUnlocked(nil, false) then
-                    ____isActiveCollectibleUnlocked_result_39 = nil
+                local ____isFamiliarCollectibleUnlocked_result_39
+                if isFamiliarCollectibleUnlocked(nil, false) then
+                    ____isFamiliarCollectibleUnlocked_result_39 = nil
                 else
-                    ____isActiveCollectibleUnlocked_result_39 = getRandomFamiliarCollectibleUnlock(nil)
+                    ____isFamiliarCollectibleUnlocked_result_39 = getRandomFamiliarCollectibleUnlock(nil)
                 end
-                return ____isActiveCollectibleUnlocked_result_39
+                return ____isFamiliarCollectibleUnlocked_result_39
             end
         },
         {
@@ -68592,13 +68593,13 @@ SWAPPED_UNLOCK_TRINKET_FUNCTIONS = __TS__New(
         {
             TrinketType.RC_REMOTE,
             function()
-                local ____isActiveCollectibleUnlocked_result_43
-                if isActiveCollectibleUnlocked(nil, false) then
-                    ____isActiveCollectibleUnlocked_result_43 = nil
+                local ____isFamiliarCollectibleUnlocked_result_43
+                if isFamiliarCollectibleUnlocked(nil, false) then
+                    ____isFamiliarCollectibleUnlocked_result_43 = nil
                 else
-                    ____isActiveCollectibleUnlocked_result_43 = getRandomFamiliarCollectibleUnlock(nil)
+                    ____isFamiliarCollectibleUnlocked_result_43 = getRandomFamiliarCollectibleUnlock(nil)
                 end
-                return ____isActiveCollectibleUnlocked_result_43
+                return ____isFamiliarCollectibleUnlocked_result_43
             end
         },
         {
