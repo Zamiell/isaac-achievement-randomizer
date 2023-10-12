@@ -1283,20 +1283,24 @@ function getSwappedUnlockSlot(): Unlock | undefined {
     : getUnlock(UnlockType.ROOM, RoomType.ARCADE);
 }
 
+const SWAPPED_UNLOCK_OTHER_FUNCTIONS = new ReadonlyMap<
+  OtherUnlockKind,
+  () => Unlock | undefined
+>([
+  [
+    OtherUnlockKind.BLUE_FIREPLACES,
+    () =>
+      isHeartSubTypeUnlocked(HeartSubType.SOUL, false)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.SOUL),
+  ],
+]);
+
 function getSwappedUnlockOther(unlock: Unlock): Unlock | undefined {
   const otherUnlock = unlock as OtherUnlock;
 
-  switch (otherUnlock.kind) {
-    case OtherUnlockKind.BLUE_FIREPLACES: {
-      return isHeartSubTypeUnlocked(HeartSubType.SOUL, false)
-        ? undefined
-        : getUnlock(UnlockType.HEART, HeartSubType.SOUL);
-    }
-
-    default: {
-      return undefined;
-    }
-  }
+  const func = SWAPPED_UNLOCK_OTHER_FUNCTIONS.get(otherUnlock.kind);
+  return func === undefined ? undefined : func();
 }
 
 function swapAnyRoomUnlock() {
