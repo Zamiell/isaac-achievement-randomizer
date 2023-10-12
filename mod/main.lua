@@ -67748,6 +67748,9 @@ function getSwappedUnlockKey(self, unlock)
 end
 function getSwappedUnlockBattery(self, unlock)
     local batteryUnlock = unlock
+    if not isActiveCollectibleUnlocked(nil, false) then
+        return getRandomActiveCollectibleUnlock(nil)
+    end
     if isHardcoreMode(nil) then
         local worseBatterySubType = getWorseLockedBatterySubType(nil, batteryUnlock.batterySubType)
         if worseBatterySubType ~= nil then
@@ -67824,9 +67827,9 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
     for ____, entries in __TS__Iterator(v.persistent.objectiveToUnlockMap) do
         local objectiveID, unlock = table.unpack(entries)
         repeat
-            local ____switch144 = unlock.type
-            local ____cond144 = ____switch144 == UnlockType.CHARACTER
-            if ____cond144 then
+            local ____switch145 = unlock.type
+            local ____cond145 = ____switch145 == UnlockType.CHARACTER
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.character == unlockToMatch.character then
                         return objectiveID
@@ -67834,8 +67837,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.PATH
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.PATH
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.unlockablePath == unlockToMatch.unlockablePath then
                         return objectiveID
@@ -67843,8 +67846,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.ALT_FLOOR
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.ALT_FLOOR
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.altFloor == unlockToMatch.altFloor then
                         return objectiveID
@@ -67852,8 +67855,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.ROOM
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.ROOM
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.roomType == unlockToMatch.roomType then
                         return objectiveID
@@ -67861,8 +67864,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.CHALLENGE
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.CHALLENGE
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.challenge == unlockToMatch.challenge then
                         return objectiveID
@@ -67870,8 +67873,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.COLLECTIBLE
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.COLLECTIBLE
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.collectibleType == unlockToMatch.collectibleType then
                         return objectiveID
@@ -67879,8 +67882,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.TRINKET
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.TRINKET
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.trinketType == unlockToMatch.trinketType then
                         return objectiveID
@@ -67888,8 +67891,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.CARD
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.CARD
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.cardType == unlockToMatch.cardType then
                         return objectiveID
@@ -67897,8 +67900,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.PILL_EFFECT
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.PILL_EFFECT
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.pillEffect == unlockToMatch.pillEffect then
                         return objectiveID
@@ -67906,8 +67909,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.HEART
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.HEART
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.heartSubType == unlockToMatch.heartSubType then
                         return objectiveID
@@ -67915,8 +67918,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.COIN
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.COIN
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.coinSubType == unlockToMatch.coinSubType then
                         return objectiveID
@@ -67924,8 +67927,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.BOMB
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.BOMB
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.bombSubType == unlockToMatch.bombSubType then
                         return objectiveID
@@ -67933,8 +67936,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.KEY
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.KEY
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.keySubType == unlockToMatch.keySubType then
                         return objectiveID
@@ -67942,8 +67945,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.BATTERY
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.BATTERY
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.batterySubType == unlockToMatch.batterySubType then
                         return objectiveID
@@ -67951,8 +67954,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.SACK
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.SACK
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.sackSubType == unlockToMatch.sackSubType then
                         return objectiveID
@@ -67960,8 +67963,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.CHEST
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.CHEST
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.pickupVariant == unlockToMatch.pickupVariant then
                         return objectiveID
@@ -67969,8 +67972,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.SLOT
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.SLOT
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.slotVariant == unlockToMatch.slotVariant then
                         return objectiveID
@@ -67978,8 +67981,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.GRID_ENTITY
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.GRID_ENTITY
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.gridEntityType == unlockToMatch.gridEntityType then
                         return objectiveID
@@ -67987,8 +67990,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond144 = ____cond144 or ____switch144 == UnlockType.OTHER
-            if ____cond144 then
+            ____cond145 = ____cond145 or ____switch145 == UnlockType.OTHER
+            if ____cond145 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.kind == unlockToMatch.kind then
                         return objectiveID

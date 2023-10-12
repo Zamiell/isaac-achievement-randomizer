@@ -1146,6 +1146,10 @@ function getSwappedUnlockKey(unlock: Unlock): Unlock | undefined {
 function getSwappedUnlockBattery(unlock: Unlock): Unlock | undefined {
   const batteryUnlock = unlock as BatteryUnlock;
 
+  if (!isActiveCollectibleUnlocked(false)) {
+    return getRandomActiveCollectibleUnlock();
+  }
+
   if (isHardcoreMode()) {
     const worseBatterySubType = getWorseLockedBatterySubType(
       batteryUnlock.batterySubType,
