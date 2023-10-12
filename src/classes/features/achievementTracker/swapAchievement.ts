@@ -1,3 +1,8 @@
+// This file contains logic for "swapping" achievements. This allows us to prevent the situation
+// where you can unlock useless items. For example, if you unlock The Relic before unlocking soul
+// hearts, the unlock will be swapped and you will actually unlock soul hearts, and the objective
+// that would have normally unlocked soul hearts will instead unlock The Relic.
+
 import {
   BatterySubType,
   BombSubType,
