@@ -414,7 +414,7 @@ Unlike the timer in Racing+, the timer in this mod tracks in-game time. Thus, th
 
 ### Donation Machine Removal
 
-- The mod removed all Donation Machines from the game in order to increase the difficulty and prevent individual runs from influencing each other. (Eden's Blessing is removed from the game for the same reason.)
+- The mod removes all Donation Machines from the game in order to increase the difficulty and prevent individual runs from influencing each other. (Eden's Blessing is removed from the game for the same reason.)
 - Greed Donation Machines are also removed because they serve no purpose in this mod.
 - The Karma trinket is removed from the game because it would serve no purpose.
 
