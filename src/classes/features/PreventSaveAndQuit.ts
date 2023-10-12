@@ -1,6 +1,7 @@
 import {
   CoinSubType,
   CollectibleType,
+  EffectVariant,
   EntityType,
   ModCallback,
   PickupVariant,
@@ -11,6 +12,7 @@ import {
   ModCallbackCustom,
   anyPlayerHasCollectibleEffect,
   getCoins,
+  getRoomData,
   logError,
   restart,
 } from "isaacscript-common";
@@ -19,8 +21,8 @@ import { RandomizerModFeature } from "../RandomizerModFeature";
 import { preForcedRestart } from "./StatsTracker";
 
 /**
- * In addition to preventing saving and quitting, this feature also fixes softlocks in the vanilla
- * game.
+ * In addition to preventing saving and quitting, this feature also fixes crashes & softlocks in the
+ * vanilla game.
  */
 export class PreventSaveAndQuit extends RandomizerModFeature {
   // 1
@@ -42,6 +44,26 @@ export class PreventSaveAndQuit extends RandomizerModFeature {
         PickupVariant.COIN,
         CoinSubType.PENNY,
       );
+    }
+  }
+
+  /**
+   * Prevent portals from Lil Portal crashing the game.
+   *
+   * @see https://bindingofisaacrebirth.fandom.com/wiki/Lil_Portal
+   */
+  @Callback(ModCallback.POST_EFFECT_INIT, EffectVariant.PORTAL_TELEPORT)
+  postEffectInitPortalTeleport(effect: EntityEffect): void {
+    // Only consider portals that lead to specific rooms.
+    if (effect.SubType < 1000) {
+      return;
+    }
+
+    const roomGridIndex = effect.SubType - 1000;
+    const roomData = getRoomData(roomGridIndex);
+    if (roomData === undefined) {
+      // The destination room does not have data, so delete the portal.
+      effect.Remove();
     }
   }
 

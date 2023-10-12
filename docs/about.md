@@ -432,7 +432,11 @@ If you are allowed to save & quit, then you can do things like prevent incoming 
 
 ### Softlock Prevention
 
-Since saving & quitting is prevented, the mod will attempt to fix as many vanilla softlocks as possible. The following situations are fixed:
+Since saving & quitting is prevented, the mod will attempt to fix as many vanilla crashes & softlocks as possible. The following situations are fixed:
+
+#### Void Portal Crashes
+
+Portals from Lil' Portal that leads to invalid rooms will automatically be removed.
 
 #### Mega Mush + Lucky Pennies
 
