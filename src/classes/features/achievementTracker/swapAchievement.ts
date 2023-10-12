@@ -69,6 +69,7 @@ import type {
   CollectibleUnlock,
   HeartUnlock,
   KeyUnlock,
+  OtherUnlock,
   PathUnlock,
   PillEffectUnlock,
   SackUnlock,
@@ -173,7 +174,7 @@ const SWAPPED_UNLOCK_FUNCTIONS = {
   [UnlockType.CHEST]: getSwappedUnlockChest,
   [UnlockType.SLOT]: getSwappedUnlockSlot,
   [UnlockType.GRID_ENTITY]: undefined,
-  [UnlockType.OTHER]: undefined,
+  [UnlockType.OTHER]: getSwappedUnlockOther,
 } as const satisfies Record<UnlockType, ((unlock: Unlock) => void) | undefined>;
 
 function getSwappedUnlock(unlock: Unlock): Unlock | undefined {
@@ -1280,6 +1281,22 @@ function getSwappedUnlockSlot(): Unlock | undefined {
   return isRoomTypeUnlocked(RoomType.ARCADE, false)
     ? undefined
     : getUnlock(UnlockType.ROOM, RoomType.ARCADE);
+}
+
+function getSwappedUnlockOther(unlock: Unlock): Unlock | undefined {
+  const otherUnlock = unlock as OtherUnlock;
+
+  switch (otherUnlock.kind) {
+    case OtherUnlockKind.BLUE_FIREPLACES: {
+      return isHeartSubTypeUnlocked(HeartSubType.SOUL, false)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.SOUL);
+    }
+
+    default: {
+      return undefined;
+    }
+  }
 }
 
 function swapAnyRoomUnlock() {

@@ -134,7 +134,7 @@ interface GridEntityUnlock {
   gridEntityType: (typeof UNLOCKABLE_GRID_ENTITY_TYPES)[number];
 }
 
-interface OtherUnlock {
+export interface OtherUnlock {
   type: UnlockType.OTHER;
   kind: OtherUnlockKind;
 }
