@@ -852,6 +852,8 @@ export function initDeadSeaScrolls(): void {
     };
   }
 
+  // We can use `UNLOCKABLE_CHALLENGES.length` here because the only banned challenge is the final
+  // one. In other words, having the final page go to 45 would look like a bug.
   const challengeChunks = splitNumber(
     UNLOCKABLE_CHALLENGES.length,
     MENU_PAGE_SIZE,
@@ -941,6 +943,7 @@ export function initDeadSeaScrolls(): void {
   const pillEffectChunks = splitNumber(
     LAST_VANILLA_PILL_EFFECT,
     MENU_PAGE_SIZE,
+    true, // Pill effects start at 0.
   );
   for (const chunk of pillEffectChunks) {
     const [min, max] = chunk;

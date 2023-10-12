@@ -32454,7 +32454,12 @@ end
 -- 
 -- @param num The number to split into chunks. This must be a positive integer.
 -- @param size The size of each chunk. This must be a positive integer.
-function ____exports.splitNumber(self, num, size)
+-- @param startAtZero Whether to start at 0. Defaults to false. If true, the chunks will start at 0
+-- instead of 1.
+function ____exports.splitNumber(self, num, size, startAtZero)
+    if startAtZero == nil then
+        startAtZero = false
+    end
     if num <= 0 then
         error("The number to split needs to be a positive number and is instead: " .. tostring(num))
     end
@@ -32462,11 +32467,11 @@ function ____exports.splitNumber(self, num, size)
         error("The size to split needs to be a positive number and is instead: " .. tostring(num))
     end
     local chunks = {}
-    local min = 1
-    while min <= num do
-        local max = math.min(min + size - 1, num)
-        chunks[#chunks + 1] = {min, max}
-        min = max + 1
+    local start = startAtZero and 0 or 1
+    while start <= num do
+        local ____end = math.min(start + size - 1, num)
+        chunks[#chunks + 1] = {start, ____end}
+        start = start + size
     end
     return chunks
 end
@@ -65312,7 +65317,7 @@ function inSecondHalfOfArray(self, element, array)
 end
 function removeUnlock(self, unlocks, unlock)
     local index = getUnlockIndex(nil, unlocks, unlock)
-    local matchingUnlock = unlocks[index]
+    local matchingUnlock = unlocks[index + 1]
     assertDefined(
         nil,
         matchingUnlock,
@@ -65358,7 +65363,7 @@ function getUnlockIndex(self, unlocks, unlockToMatch)
 end
 function removeObjective(self, objectives, objective)
     local index = getObjectiveIndex(nil, objectives, objective)
-    local matchingObjective = objectives[index]
+    local matchingObjective = objectives[index + 1]
     assertDefined(
         nil,
         matchingObjective,
@@ -65464,7 +65469,7 @@ return ____exports
 local ____exports = {}
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
 local validateCustomEnum = ____isaacscript_2Dcommon.validateCustomEnum
-____exports.SoundEffectCustom = {GOLDEN_WALNUT = Isaac:GetSoundIdByName("Golden Walnut")}
+____exports.SoundEffectCustom = {GOLDEN_WALNUT = Isaac.GetSoundIdByName("Golden Walnut")}
 validateCustomEnum(nil, "SoundEffectCustom", ____exports.SoundEffectCustom)
 return ____exports
  end,
@@ -65487,11 +65492,7 @@ function ____exports.isRandomizerEnabled(self)
     return ____exports.v.persistent.seed ~= nil
 end
 function ____exports.getRandomizerSeed(self)
-    local ____exports_v_persistent_seed_0 = ____exports.v.persistent.seed
-    if ____exports_v_persistent_seed_0 == nil then
-        ____exports_v_persistent_seed_0 = nil
-    end
-    return ____exports_v_persistent_seed_0
+    return ____exports.v.persistent.seed or nil
 end
 function ____exports.getRandomizerMode(self)
     return ____exports.v.persistent.randomizerMode
@@ -65585,7 +65586,7 @@ function AchievementNotification.prototype.checkDequeueText(self)
         return
     end
     v.run.text = text
-    v.run.renderFrameSet = Isaac:GetFrameCount()
+    v.run.renderFrameSet = Isaac.GetFrameCount()
 end
 function AchievementNotification.prototype.checkDraw(self)
     local hud = game:GetHUD()
@@ -65614,7 +65615,7 @@ function AchievementNotification.prototype.checkDraw(self)
     end
 end
 function AchievementNotification.prototype.getFade(self, renderFrame)
-    local renderFrameCount = Isaac:GetFrameCount()
+    local renderFrameCount = Isaac.GetFrameCount()
     local elapsedFrames = renderFrameCount - renderFrame
     if elapsedFrames <= RENDER_FRAMES_BEFORE_FADE then
         return 1
@@ -65627,13 +65628,7 @@ function AchievementNotification.prototype.draw(self, text, fade)
     local y = screenBottomRightPos.Y * 0.25
     local lines = __TS__StringSplit(text, "\n")
     for ____, line in ipairs(lines) do
-        local color = KColor(
-            nil,
-            1,
-            1,
-            1,
-            fade
-        )
+        local color = KColor(1, 1, 1, fade)
         FONT:DrawString(
             line,
             0,
@@ -65657,7 +65652,7 @@ return ____exports
 local ____exports = {}
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
 local validateCustomEnum = ____isaacscript_2Dcommon.validateCustomEnum
-____exports.ChallengeCustom = {RANDOMIZER_CHILL_ROOM = Isaac:GetChallengeIdByName("Randomizer Chill Room")}
+____exports.ChallengeCustom = {RANDOMIZER_CHILL_ROOM = Isaac.GetChallengeIdByName("Randomizer Chill Room")}
 validateCustomEnum(nil, "ChallengeCustom", ____exports.ChallengeCustom)
 return ____exports
  end,
@@ -65784,32 +65779,32 @@ function ____exports.timerDraw(self, timerType, seconds)
     local second1 = timerValues.second1
     local second2 = timerValues.second2
     local sprites = spriteCollectionMap:getAndSetDefault(timerType)
-    local positionClock = Vector(nil, x + 34, y + 45)
+    local positionClock = Vector(x + 34, y + 45)
     sprites.clock:Render(positionClock)
     if hour2 > 0 then
         hourAdjustment2 = 2
         x = x + (DIGIT_LENGTH * 2 + hourAdjustment)
-        local positionHour1 = Vector(nil, x - DIGIT_LENGTH * 2 - hourAdjustment, y)
+        local positionHour1 = Vector(x - DIGIT_LENGTH * 2 - hourAdjustment, y)
         sprites.digits.hour1:SetFrame("Default", hour1)
         sprites.digits.hour1:Render(positionHour1)
-        local positionHour2 = Vector(nil, x - DIGIT_LENGTH - hourAdjustment, y)
+        local positionHour2 = Vector(x - DIGIT_LENGTH - hourAdjustment, y)
         sprites.digits.hour2:SetFrame("Default", hour2)
         sprites.digits.hour2:Render(positionHour2)
-        local positionColon = Vector(nil, x - DIGIT_LENGTH + 7, y + 19)
+        local positionColon = Vector(x - DIGIT_LENGTH + 7, y + 19)
         sprites.colons.afterHours:Render(positionColon)
     end
-    local positionMinute1 = Vector(nil, x, y)
+    local positionMinute1 = Vector(x, y)
     sprites.digits.minute1:SetFrame("Default", minute1)
     sprites.digits.minute1:Render(positionMinute1)
-    local positionMinute2 = Vector(nil, x + DIGIT_LENGTH, y)
+    local positionMinute2 = Vector(x + DIGIT_LENGTH, y)
     sprites.digits.minute2:SetFrame("Default", minute2)
     sprites.digits.minute2:Render(positionMinute2)
-    local positionColon1 = Vector(nil, x + DIGIT_LENGTH + 10, y + 19)
+    local positionColon1 = Vector(x + DIGIT_LENGTH + 10, y + 19)
     sprites.colons.afterMinutes:Render(positionColon1)
-    local positionSecond1 = Vector(nil, x + DIGIT_LENGTH + 11, y)
+    local positionSecond1 = Vector(x + DIGIT_LENGTH + 11, y)
     sprites.digits.second1:SetFrame("Default", second1)
     sprites.digits.second1:Render(positionSecond1)
-    local positionSecond2 = Vector(nil, x + DIGIT_LENGTH + 11 + DIGIT_LENGTH + 1 - hourAdjustment2, y)
+    local positionSecond2 = Vector(x + DIGIT_LENGTH + 11 + DIGIT_LENGTH + 1 - hourAdjustment2, y)
     sprites.digits.second2:SetFrame("Default", second2)
     sprites.digits.second2:Render(positionSecond2)
 end
@@ -65974,7 +65969,7 @@ function ____exports.getRandomizerRunSeedString(self)
         end
     )
     local startSeed = rng:GetSeed()
-    return Seeds:Seed2String(startSeed)
+    return Seeds.Seed2String(startSeed)
 end
 return ____exports
  end,
@@ -66799,13 +66794,7 @@ local ADJUSTED_QUALITY_TO_VANILLA_COLLECTIBLE_TYPES_MAP = (function()
 end)(nil)
 --- Some collectibles result in a won run and should be treated as maximum quality.
 function ____exports.getAdjustedCollectibleQuality(self, collectibleType)
-    local ____ADJUSTED_QUALITY_4_COLLECTIBLES_has_result_0
-    if ADJUSTED_QUALITY_4_COLLECTIBLES:has(collectibleType) then
-        ____ADJUSTED_QUALITY_4_COLLECTIBLES_has_result_0 = MAX_QUALITY
-    else
-        ____ADJUSTED_QUALITY_4_COLLECTIBLES_has_result_0 = getCollectibleQuality(nil, collectibleType)
-    end
-    return ____ADJUSTED_QUALITY_4_COLLECTIBLES_has_result_0
+    return ADJUSTED_QUALITY_4_COLLECTIBLES:has(collectibleType) and MAX_QUALITY or getCollectibleQuality(nil, collectibleType)
 end
 --- Some collectibles result in a won run and should be treated as maximum quality.
 function ____exports.getAdjustedCollectibleTypesOfQuality(self, quality)
@@ -66963,15 +66952,7 @@ function getUnlockedCollectibleTypes(self, forRun)
     return filterMap(
         nil,
         array,
-        function(____, unlock)
-            local ____temp_0
-            if unlock.type == UnlockType.COLLECTIBLE then
-                ____temp_0 = unlock.collectibleType
-            else
-                ____temp_0 = nil
-            end
-            return ____temp_0
-        end
+        function(____, unlock) return unlock.type == UnlockType.COLLECTIBLE and unlock.collectibleType or nil end
     )
 end
 local QUALITY_THRESHOLD_PERCENT = 0.5
@@ -67095,15 +67076,7 @@ function ____exports.getUnlockedTrinketTypes(self)
     return filterMap(
         nil,
         v.persistent.completedUnlocksForRun,
-        function(____, unlock)
-            local ____temp_1
-            if unlock.type == UnlockType.TRINKET then
-                ____temp_1 = unlock.trinketType
-            else
-                ____temp_1 = nil
-            end
-            return ____temp_1
-        end
+        function(____, unlock) return unlock.type == UnlockType.TRINKET and unlock.trinketType or nil end
     )
 end
 function ____exports.getWorseLockedTrinketType(self, trinketType)
@@ -67161,15 +67134,7 @@ function ____exports.getUnlockedCardTypes(self)
     return filterMap(
         nil,
         v.persistent.completedUnlocksForRun,
-        function(____, unlock)
-            local ____temp_2
-            if unlock.type == UnlockType.CARD then
-                ____temp_2 = unlock.cardType
-            else
-                ____temp_2 = nil
-            end
-            return ____temp_2
-        end
+        function(____, unlock) return unlock.type == UnlockType.CARD and unlock.cardType or nil end
     )
 end
 function ____exports.getWorseLockedCardType(self, cardType)
@@ -67224,15 +67189,7 @@ function ____exports.getUnlockedPillEffects(self)
     return filterMap(
         nil,
         v.persistent.completedUnlocksForRun,
-        function(____, unlock)
-            local ____temp_3
-            if unlock.type == UnlockType.PILL_EFFECT then
-                ____temp_3 = unlock.pillEffect
-            else
-                ____temp_3 = nil
-            end
-            return ____temp_3
-        end
+        function(____, unlock) return unlock.type == UnlockType.PILL_EFFECT and unlock.pillEffect or nil end
     )
 end
 function ____exports.getWorseLockedPillEffect(self, pillEffect)
@@ -67271,7 +67228,7 @@ function ____exports.getWorseLockedHeartSubType(self, heartSubType)
         error("Failed to get the quality for heart sub-type: " .. tostring(heartSubType))
     end
     for ____, lowerQuality in ipairs(eRange(nil, quality)) do
-        local lowerQualityHeartSubType = UNLOCKABLE_HEART_SUB_TYPES[lowerQuality]
+        local lowerQualityHeartSubType = UNLOCKABLE_HEART_SUB_TYPES[lowerQuality + 1]
         if lowerQualityHeartSubType ~= nil and not ____exports.isHeartSubTypeUnlocked(nil, lowerQualityHeartSubType, false) then
             return lowerQualityHeartSubType
         end
@@ -67294,7 +67251,7 @@ function ____exports.getWorseLockedCoinSubType(self, coinSubType)
         error("Failed to get the quality for coin sub-type: " .. tostring(coinSubType))
     end
     for ____, lowerQuality in ipairs(eRange(nil, quality)) do
-        local lowerQualityCoinSubType = UNLOCKABLE_COIN_SUB_TYPES[lowerQuality]
+        local lowerQualityCoinSubType = UNLOCKABLE_COIN_SUB_TYPES[lowerQuality + 1]
         if lowerQualityCoinSubType ~= nil and not ____exports.isCoinSubTypeUnlocked(nil, lowerQualityCoinSubType, false) then
             return lowerQualityCoinSubType
         end
@@ -67317,7 +67274,7 @@ function ____exports.getWorseLockedBombSubType(self, bombSubType)
         error("Failed to get the quality for bomb sub-type: " .. tostring(bombSubType))
     end
     for ____, lowerQuality in ipairs(eRange(nil, quality)) do
-        local lowerQualityBombSubType = UNLOCKABLE_BOMB_SUB_TYPES[lowerQuality]
+        local lowerQualityBombSubType = UNLOCKABLE_BOMB_SUB_TYPES[lowerQuality + 1]
         if lowerQualityBombSubType ~= nil and not ____exports.isBombSubTypeUnlocked(nil, lowerQualityBombSubType, false) then
             return lowerQualityBombSubType
         end
@@ -67340,7 +67297,7 @@ function ____exports.getWorseLockedKeySubType(self, keySubType)
         error("Failed to get the quality for key sub-type: " .. tostring(keySubType))
     end
     for ____, lowerQuality in ipairs(eRange(nil, quality)) do
-        local lowerQualityKeySubType = UNLOCKABLE_KEY_SUB_TYPES[lowerQuality]
+        local lowerQualityKeySubType = UNLOCKABLE_KEY_SUB_TYPES[lowerQuality + 1]
         if lowerQualityKeySubType ~= nil and not ____exports.isKeySubTypeUnlocked(nil, lowerQualityKeySubType, false) then
             return lowerQualityKeySubType
         end
@@ -67363,7 +67320,7 @@ function ____exports.getWorseLockedBatterySubType(self, batterySubType)
         error("Failed to get the quality for battery sub-type: " .. tostring(batterySubType))
     end
     for ____, lowerQuality in ipairs(eRange(nil, quality)) do
-        local lowerQualityBatterySubType = UNLOCKABLE_BATTERY_SUB_TYPES[lowerQuality]
+        local lowerQualityBatterySubType = UNLOCKABLE_BATTERY_SUB_TYPES[lowerQuality + 1]
         if lowerQualityBatterySubType ~= nil and not ____exports.isBatterySubTypeUnlocked(nil, lowerQualityBatterySubType, false) then
             return lowerQualityBatterySubType
         end
@@ -67386,7 +67343,7 @@ function ____exports.getWorseLockedSackSubType(self, sackSubType)
         error("Failed to get the quality for battery sub-type: " .. tostring(sackSubType))
     end
     for ____, lowerQuality in ipairs(eRange(nil, quality)) do
-        local lowerQualitySackSubType = UNLOCKABLE_SACK_SUB_TYPES[lowerQuality]
+        local lowerQualitySackSubType = UNLOCKABLE_SACK_SUB_TYPES[lowerQuality + 1]
         if lowerQualitySackSubType ~= nil and not ____exports.isSackSubTypeUnlocked(nil, lowerQualitySackSubType, false) then
             return lowerQualitySackSubType
         end
@@ -67409,7 +67366,7 @@ function ____exports.getWorseLockedChestPickupVariant(self, pickupVariant)
         error("Failed to get the quality for chest pickup variant: " .. tostring(pickupVariant))
     end
     for ____, lowerQuality in ipairs(eRange(nil, quality)) do
-        local lowerQualityChestPickupVariant = UNLOCKABLE_CHEST_PICKUP_VARIANTS[lowerQuality]
+        local lowerQualityChestPickupVariant = UNLOCKABLE_CHEST_PICKUP_VARIANTS[lowerQuality + 1]
         if lowerQualityChestPickupVariant ~= nil and not ____exports.isChestPickupVariantUnlocked(nil, lowerQualityChestPickupVariant, false) then
             return lowerQualityChestPickupVariant
         end
@@ -69047,7 +69004,7 @@ function AchievementRandomizer.prototype.checkGenerate(self)
     log((("Checking to see if randomizer seed " .. tostring(v.persistent.seed)) .. " is beatable. Attempt: #") .. tostring(numGenerationAttempts))
     if not isAchievementsBeatable(nil) then
         numGenerationAttempts = numGenerationAttempts + 1
-        local renderFrameCount = Isaac:GetFrameCount()
+        local renderFrameCount = Isaac.GetFrameCount()
         renderFrameToTryGenerate = renderFrameCount + 2
         return
     end
@@ -69073,13 +69030,13 @@ function ____exports.startRandomizer(self, randomizerMode, seed)
     end
     v.persistent.seed = seed
     log("Set new randomizer seed: " .. tostring(v.persistent.seed))
-    local renderFrameCount = Isaac:GetFrameCount()
+    local renderFrameCount = Isaac.GetFrameCount()
     generatingRNG = newRNG(nil, v.persistent.seed)
     renderFrameToTryGenerate = renderFrameCount + 1
     numGenerationAttempts = 1
     local hud = game:GetHUD()
     hud:SetVisible(false)
-    local player = Isaac:GetPlayer()
+    local player = Isaac.GetPlayer()
     player:AddControlsCooldown(GAME_FRAMES_PER_SECOND)
     player.Velocity = VectorZero
 end
@@ -69266,7 +69223,7 @@ local FEATURES = {
     ISCFeature.RUN_NEXT_RUN,
     ISCFeature.SAVE_DATA_MANAGER
 }
-local modVanilla = RegisterMod(nil, MOD_NAME, 1)
+local modVanilla = RegisterMod(MOD_NAME, 1)
 ____exports.mod = upgradeMod(nil, modVanilla, FEATURES)
 return ____exports
  end,
@@ -69329,7 +69286,7 @@ function checkIncompleteSave(self)
     local isCollectibleUnlocked = mod:isCollectibleUnlocked(INCOMPLETE_SAVE_COLLECTIBLE_TO_CHECK, INCOMPLETE_SAVE_ITEM_POOL_TO_CHECK)
     v.run.incompleteSave = not isCollectibleUnlocked
     if v.run.incompleteSave then
-        log(((((((("Error: Incomplete save file detected. Failed to get collectible " .. getCollectibleName(nil, INCOMPLETE_SAVE_COLLECTIBLE_TO_CHECK)) .. " (") .. tostring(INCOMPLETE_SAVE_COLLECTIBLE_TO_CHECK)) .. ") from pool ") .. tostring(ItemPoolType[INCOMPLETE_SAVE_ITEM_POOL_TO_CHECK])) .. " (") .. tostring(INCOMPLETE_SAVE_ITEM_POOL_TO_CHECK)) .. ").")
+        log(((((((("Error: Incomplete save file detected. Failed to get collectible " .. getCollectibleName(nil, INCOMPLETE_SAVE_COLLECTIBLE_TO_CHECK)) .. " (") .. tostring(INCOMPLETE_SAVE_COLLECTIBLE_TO_CHECK)) .. ") from pool ") .. ItemPoolType[INCOMPLETE_SAVE_ITEM_POOL_TO_CHECK]) .. " (") .. tostring(INCOMPLETE_SAVE_ITEM_POOL_TO_CHECK)) .. ").")
     end
 end
 function checkOtherModsEnabled(self)
@@ -69371,15 +69328,15 @@ function checkVictoryLap(self)
     end
 end
 function checkCharacterUnlocked(self)
-    local player = Isaac:GetPlayer()
+    local player = Isaac.GetPlayer()
     local character = player:GetPlayerType()
     if not isCharacterUnlocked(nil, character, false) then
-        log(((("Error: Locked character detected: " .. tostring(PlayerType[character])) .. " (") .. tostring(character)) .. ")")
+        log(((("Error: Locked character detected: " .. PlayerType[character]) .. " (") .. tostring(character)) .. ")")
         v.run.lockedCharacter = true
     end
 end
 function checkChallengeUnlocked(self)
-    local challenge = Isaac:GetChallenge()
+    local challenge = Isaac.GetChallenge()
     if not isChallengeUnlocked(nil, challenge, false) then
         local challengeName = getChallengeName(nil, challenge)
         log(((("Error: Locked challenge detected: " .. challengeName) .. " (") .. tostring(challenge)) .. ")")
@@ -69428,7 +69385,7 @@ function CheckErrors.prototype.postRender(self)
     elseif v.run.onVictoryLap then
         self:drawErrorText(("You are not allowed to play " .. MOD_NAME) .. " on a Victory Lap.")
     elseif v.run.lockedCharacter then
-        local player = Isaac:GetPlayer()
+        local player = Isaac.GetPlayer()
         local character = player:GetPlayerType()
         local characterName = getCharacterName(nil, character)
         self:drawErrorText(("You have not unlocked " .. characterName) .. " yet.")
@@ -69451,7 +69408,7 @@ function CheckErrors.prototype.drawErrorText(self, text)
     for ____, line in ipairs(__TS__StringSplit(text, "\n")) do
         local splitLines = self:getSplitLines(line)
         for ____, splitLine in ipairs(splitLines) do
-            Isaac:RenderText(
+            Isaac.RenderText(
                 splitLine,
                 x,
                 y,
@@ -69574,7 +69531,7 @@ __TS__DecorateLegacy(
 function ChillRoom.prototype.postGameStartedReorderedFalse(self)
     local hud = game:GetHUD()
     hud:SetVisible(false)
-    local player = Isaac:GetPlayer()
+    local player = Isaac.GetPlayer()
     player:AddBombs(-1)
     local level = game:GetLevel()
     local stageType = level:GetStageType()
@@ -69669,7 +69626,7 @@ local ____CreepRedSubTypeCustom = require("src.enums.CreepRedSubTypeCustom")
 local CreepRedSubTypeCustom = ____CreepRedSubTypeCustom.CreepRedSubTypeCustom
 local ____v = require("src.classes.features.achievementTracker.v")
 local isRandomizerEnabled = ____v.isRandomizerEnabled
-local BURNING_BASEMENT_COLOR = Color(nil, 0.5, 0.5, 0.5)
+local BURNING_BASEMENT_COLOR = Color(0.5, 0.5, 0.5)
 local TEST_SPRITE = newSprite(nil, "gfx/backdrop/controls_custom.anm2")
 TEST_SPRITE:SetFrame(2)
 --- We reimplement the controls graphic in the starting room so that it will not interfere with the
@@ -69696,7 +69653,7 @@ __TS__DecorateLegacy(
 )
 function DrawControls.prototype.shouldDrawControlsGraphic(self)
     local isGreedMode = game:IsGreedMode()
-    local challenge = Isaac:GetChallenge()
+    local challenge = Isaac.GetChallenge()
     return not isGreedMode and onFirstFloor(nil) and inStartingRoom(nil) and not isRandomizerEnabled(nil) and challenge ~= ChallengeCustom.RANDOMIZER_CHILL_ROOM
 end
 function DrawControls.prototype.drawControlsGraphic(self)
@@ -69710,16 +69667,10 @@ function DrawControls.prototype.drawControlsGraphic(self)
     controlsSprite:Load("gfx/backdrop/controls_custom.anm2", true)
     local defaultAnimation = controlsSprite:GetDefaultAnimation()
     controlsSprite:Play(defaultAnimation, true)
-    local player = Isaac:GetPlayer()
+    local player = Isaac.GetPlayer()
     local character = player:GetPlayerType()
     controlsSprite:SetFrame(character)
-    local ____onStageType_result_0
-    if onStageType(nil, StageType.AFTERBIRTH) then
-        ____onStageType_result_0 = BURNING_BASEMENT_COLOR
-    else
-        ____onStageType_result_0 = ColorDefault
-    end
-    controlsSprite.Color = ____onStageType_result_0
+    controlsSprite.Color = onStageType(nil, StageType.AFTERBIRTH) and BURNING_BASEMENT_COLOR or ColorDefault
 end
 return ____exports
  end,
@@ -69794,7 +69745,7 @@ function ForceSeeds.prototype.postGameStartedReorderedFalse(self)
     local newStartSeedString = getRandomizerRunSeedString(nil)
     if newStartSeedString ~= nil and oldStartSeedString ~= newStartSeedString then
         local numRuns = getPlaythroughNumCompletedRuns(nil)
-        log((("Incorrect seed for run #" .. tostring(numRuns)) .. ": ") .. tostring(oldStartSeedString))
+        log((("Incorrect seed for run #" .. tostring(numRuns)) .. ": ") .. oldStartSeedString)
         mod:runNextRenderFrame(function()
             preForcedRestart(nil)
             setRunSeed(nil, newStartSeedString)
@@ -69921,13 +69872,7 @@ function GridEntityRemoval.prototype.postGridEntityInit(self, gridEntity)
     if isGridEntityTypeUnlocked(nil, gridEntityType, true) then
         return
     end
-    local ____temp_0
-    if gridEntityType == GridEntityType.CRAWL_SPACE then
-        ____temp_0 = GridEntityType.DECORATION
-    else
-        ____temp_0 = GridEntityType.ROCK
-    end
-    local newGridEntityType = ____temp_0
+    local newGridEntityType = gridEntityType == GridEntityType.CRAWL_SPACE and GridEntityType.DECORATION or GridEntityType.ROCK
     setGridEntityType(nil, gridEntity, newGridEntityType)
 end
 __TS__DecorateLegacy(
@@ -70043,13 +69988,13 @@ __TS__DecorateLegacy(
     true
 )
 function GridEntityRemoval.prototype.preRoomEntitySpawnRockAlt2(self)
-    local ____isPathUnlocked_result_1
+    local ____isPathUnlocked_result_0
     if isPathUnlocked(nil, UnlockablePath.ASCENT, true) then
-        ____isPathUnlocked_result_1 = nil
+        ____isPathUnlocked_result_0 = nil
     else
-        ____isPathUnlocked_result_1 = {GridEntityXMLType.ROCK, 0, 0}
+        ____isPathUnlocked_result_0 = {GridEntityXMLType.ROCK, 0, 0}
     end
-    return ____isPathUnlocked_result_1
+    return ____isPathUnlocked_result_0
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.PRE_ROOM_ENTITY_SPAWN_FILTER, GridEntityXMLType.ROCK_ALT_2)},
@@ -70058,13 +70003,13 @@ __TS__DecorateLegacy(
     true
 )
 function GridEntityRemoval.prototype.preRoomEntitySpawnRewardPlate(self)
-    local ____isOtherUnlockKindUnlocked_result_2
+    local ____isOtherUnlockKindUnlocked_result_1
     if isOtherUnlockKindUnlocked(nil, OtherUnlockKind.REWARD_PLATES, true) then
-        ____isOtherUnlockKindUnlocked_result_2 = nil
+        ____isOtherUnlockKindUnlocked_result_1 = nil
     else
-        ____isOtherUnlockKindUnlocked_result_2 = {GridEntityXMLType.ROCK, 0, 0}
+        ____isOtherUnlockKindUnlocked_result_1 = {GridEntityXMLType.ROCK, 0, 0}
     end
-    return ____isOtherUnlockKindUnlocked_result_2
+    return ____isOtherUnlockKindUnlocked_result_1
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.PRE_ROOM_ENTITY_SPAWN_FILTER, GridEntityXMLType.PRESSURE_PLATE, PressurePlateVariant.REWARD_PLATE)},
@@ -70129,7 +70074,7 @@ local isBossObjectiveCompleted = ____completedObjectives.isBossObjectiveComplete
 function ____exports.objectiveDetectionPostRoomCleared(self)
     local room = game:GetRoom()
     local roomType = room:GetType()
-    local player = Isaac:GetPlayer()
+    local player = Isaac.GetPlayer()
     local character = player:GetPlayerType()
     repeat
         local ____switch20 = roomType
@@ -70401,7 +70346,7 @@ __TS__DecorateLegacy(
     true
 )
 function ObjectiveDetection.prototype.postPickupInitTrophy(self)
-    local challenge = Isaac:GetChallenge()
+    local challenge = Isaac.GetChallenge()
     local objective = getObjective(nil, ObjectiveType.CHALLENGE, challenge)
     addObjective(nil, objective)
 end
@@ -70486,17 +70431,11 @@ local isCharacterObjectiveCompleted = ____completedObjectives.isCharacterObjecti
 function getTopLeftUIPosition(self)
     local hudOffsetVector = getHUDOffsetVector(nil)
     local hasTaintedCharacterUI = anyPlayerIs(nil, PlayerType.ISAAC_B, PlayerType.BLUE_BABY_B)
-    local ____hasTaintedCharacterUI_0
-    if hasTaintedCharacterUI then
-        ____hasTaintedCharacterUI_0 = TAINTED_CHARACTER_UI_OFFSET
-    else
-        ____hasTaintedCharacterUI_0 = VectorZero
-    end
-    local taintedCharacterUIOffset = ____hasTaintedCharacterUI_0
-    return TOP_LEFT_UI_POSITION:add(hudOffsetVector):add(taintedCharacterUIOffset)
+    local taintedCharacterUIOffset = hasTaintedCharacterUI and TAINTED_CHARACTER_UI_OFFSET or VectorZero
+    return TOP_LEFT_UI_POSITION + hudOffsetVector + taintedCharacterUIOffset
 end
-TOP_LEFT_UI_POSITION = Vector(nil, 42, 77)
-TAINTED_CHARACTER_UI_OFFSET = Vector(nil, 4, 24)
+TOP_LEFT_UI_POSITION = Vector(42, 77)
+TAINTED_CHARACTER_UI_OFFSET = Vector(4, 24)
 local iconSprite = newSprite(nil, "gfx/crownoflight.anm2")
 ____exports.HitIcon = __TS__Class()
 local HitIcon = ____exports.HitIcon
@@ -70507,7 +70446,7 @@ function HitIcon.prototype.postRender(self)
     if kindNoHit == nil then
         return
     end
-    local player = Isaac:GetPlayer()
+    local player = Isaac.GetPlayer()
     local character = player:GetPlayerType()
     if isCharacterObjectiveCompleted(nil, character, kindNoHit) then
         return
@@ -70542,8 +70481,8 @@ local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.sr
 local validateCustomEnum = ____isaacscript_2Dcommon.validateCustomEnum
 --- For `EntityType.EFFECT` (1000).
 ____exports.EffectVariantCustom = {
-    INVISIBLE_EFFECT = Isaac:GetEntityVariantByName("Invisible Effect"),
-    ROOM_CLEAR_DELAY = Isaac:GetEntityVariantByName("Room Clear Delay Effect")
+    INVISIBLE_EFFECT = Isaac.GetEntityVariantByName("Invisible Effect"),
+    ROOM_CLEAR_DELAY = Isaac.GetEntityVariantByName("Room Clear Delay Effect")
 }
 validateCustomEnum(nil, "EffectVariantCustom", ____exports.EffectVariantCustom)
 return ____exports
@@ -70950,13 +70889,7 @@ function PickupRemoval.prototype.getCard(self, _rng, cardType, includePlayingCar
         function(____, unlockedCardType) return isRune(nil, unlockedCardType) end
     )
     if onlyRunes then
-        local ____temp_0
-        if #runeCardTypes == 0 then
-            ____temp_0 = CardType.RUNE_SHARD
-        else
-            ____temp_0 = getRandomArrayElement(nil, runeCardTypes)
-        end
-        return ____temp_0
+        return #runeCardTypes == 0 and CardType.RUNE_SHARD or getRandomArrayElement(nil, runeCardTypes)
     end
     local playingCardTypes = __TS__ArrayFilter(
         unlockedCardTypes,
@@ -71078,13 +71011,13 @@ function PickupRemoval.prototype.postPickupSelection(self, _pickup, pickupVarian
     if not isChestVariant(nil, pickupVariant) then
         return nil
     end
-    local ____isChestPickupVariantUnlocked_result_1
+    local ____isChestPickupVariantUnlocked_result_0
     if isChestPickupVariantUnlocked(nil, pickupVariant, true) then
-        ____isChestPickupVariantUnlocked_result_1 = nil
+        ____isChestPickupVariantUnlocked_result_0 = nil
     else
-        ____isChestPickupVariantUnlocked_result_1 = {PickupVariant.CHEST, ChestSubType.CLOSED}
+        ____isChestPickupVariantUnlocked_result_0 = {PickupVariant.CHEST, ChestSubType.CLOSED}
     end
-    return ____isChestPickupVariantUnlocked_result_1
+    return ____isChestPickupVariantUnlocked_result_0
 end
 __TS__DecorateLegacy(
     {Callback(nil, ModCallback.POST_PICKUP_SELECTION)},
@@ -71095,7 +71028,7 @@ __TS__DecorateLegacy(
 function PickupRemoval.prototype.postGameStartedReorderedFalse(self)
     local seeds = game:GetSeeds()
     local startSeedString = seeds:GetStartSeedString()
-    log((MOD_NAME .. " started on seed: ") .. tostring(startSeedString))
+    log((MOD_NAME .. " started on seed: ") .. startSeedString)
     self:removeItemsFromPools()
     self:removeItemsFromInventory()
 end
@@ -71143,7 +71076,7 @@ function PickupRemoval.prototype.conditionallyRemoveRevivalTrinket(self, itemPoo
     end
 end
 function PickupRemoval.prototype.removeItemsFromInventory(self)
-    local player = Isaac:GetPlayer()
+    local player = Isaac.GetPlayer()
     local character = player:GetPlayerType()
     for ____, collectibleType in ipairs(VANILLA_COLLECTIBLE_TYPES) do
         if player:HasCollectible(collectibleType) and (not isCollectibleTypeUnlocked(nil, collectibleType, true) or BANNED_COLLECTIBLE_TYPES_SET:has(collectibleType) or isEden(nil, player)) then
@@ -71208,13 +71141,7 @@ function PickupRemoval.prototype.addEdenRandomCollectibles(self, player)
     local activeCollectibleTypes = getUnlockedEdenActiveCollectibleTypes(nil, true)
     local passiveCollectibleTypes = getUnlockedEdenPassiveCollectibleTypes(nil, true)
     local passiveCollectibleType = getRandomArrayElement(nil, passiveCollectibleTypes, rng)
-    local ____temp_2
-    if #activeCollectibleTypes == 0 then
-        ____temp_2 = getRandomArrayElement(nil, passiveCollectibleTypes, rng, {passiveCollectibleType})
-    else
-        ____temp_2 = getRandomArrayElement(nil, activeCollectibleTypes, rng)
-    end
-    local activeCollectibleType = ____temp_2
+    local activeCollectibleType = #activeCollectibleTypes == 0 and getRandomArrayElement(nil, passiveCollectibleTypes, rng, {passiveCollectibleType}) or getRandomArrayElement(nil, activeCollectibleTypes, rng)
     player:AddCollectible(activeCollectibleType)
     player:AddCollectible(passiveCollectibleType)
 end
@@ -71242,13 +71169,13 @@ __TS__DecorateLegacy(
 )
 function PickupRemoval.prototype.postPickupSelectionHeart(self, _pickup, _pickupVariant, subType)
     local heartSubType = subType
-    local ____isHeartSubTypeUnlocked_result_3
+    local ____isHeartSubTypeUnlocked_result_1
     if isHeartSubTypeUnlocked(nil, heartSubType, true) then
-        ____isHeartSubTypeUnlocked_result_3 = nil
+        ____isHeartSubTypeUnlocked_result_1 = nil
     else
-        ____isHeartSubTypeUnlocked_result_3 = {PickupVariant.HEART, HeartSubType.HALF}
+        ____isHeartSubTypeUnlocked_result_1 = {PickupVariant.HEART, HeartSubType.HALF}
     end
-    return ____isHeartSubTypeUnlocked_result_3
+    return ____isHeartSubTypeUnlocked_result_1
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.HEART)},
@@ -71258,13 +71185,13 @@ __TS__DecorateLegacy(
 )
 function PickupRemoval.prototype.postPickupSelectionCoin(self, _pickup, _pickupVariant, subType)
     local coinSubType = subType
-    local ____isCoinSubTypeUnlocked_result_4
+    local ____isCoinSubTypeUnlocked_result_2
     if isCoinSubTypeUnlocked(nil, coinSubType, true) then
-        ____isCoinSubTypeUnlocked_result_4 = nil
+        ____isCoinSubTypeUnlocked_result_2 = nil
     else
-        ____isCoinSubTypeUnlocked_result_4 = {PickupVariant.COIN, CoinSubType.PENNY}
+        ____isCoinSubTypeUnlocked_result_2 = {PickupVariant.COIN, CoinSubType.PENNY}
     end
-    return ____isCoinSubTypeUnlocked_result_4
+    return ____isCoinSubTypeUnlocked_result_2
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.COIN)},
@@ -71274,13 +71201,13 @@ __TS__DecorateLegacy(
 )
 function PickupRemoval.prototype.postPickupSelectionKey(self, _pickup, _pickupVariant, subType)
     local keySubType = subType
-    local ____isKeySubTypeUnlocked_result_5
+    local ____isKeySubTypeUnlocked_result_3
     if isKeySubTypeUnlocked(nil, keySubType, true) then
-        ____isKeySubTypeUnlocked_result_5 = nil
+        ____isKeySubTypeUnlocked_result_3 = nil
     else
-        ____isKeySubTypeUnlocked_result_5 = {PickupVariant.KEY, KeySubType.NORMAL}
+        ____isKeySubTypeUnlocked_result_3 = {PickupVariant.KEY, KeySubType.NORMAL}
     end
-    return ____isKeySubTypeUnlocked_result_5
+    return ____isKeySubTypeUnlocked_result_3
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.KEY)},
@@ -71290,13 +71217,13 @@ __TS__DecorateLegacy(
 )
 function PickupRemoval.prototype.postPickupSelectionBomb(self, _pickup, _pickupVariant, subType)
     local bombSubType = subType
-    local ____isBombSubTypeUnlocked_result_6
+    local ____isBombSubTypeUnlocked_result_4
     if isBombSubTypeUnlocked(nil, bombSubType, true) then
-        ____isBombSubTypeUnlocked_result_6 = nil
+        ____isBombSubTypeUnlocked_result_4 = nil
     else
-        ____isBombSubTypeUnlocked_result_6 = {PickupVariant.BOMB, BombSubType.NORMAL}
+        ____isBombSubTypeUnlocked_result_4 = {PickupVariant.BOMB, BombSubType.NORMAL}
     end
-    return ____isBombSubTypeUnlocked_result_6
+    return ____isBombSubTypeUnlocked_result_4
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.BOMB)},
@@ -71306,13 +71233,13 @@ __TS__DecorateLegacy(
 )
 function PickupRemoval.prototype.postPickupSelectionSack(self, _pickup, _pickupVariant, subType)
     local sackSubType = subType
-    local ____isSackSubTypeUnlocked_result_7
+    local ____isSackSubTypeUnlocked_result_5
     if isSackSubTypeUnlocked(nil, sackSubType, true) then
-        ____isSackSubTypeUnlocked_result_7 = nil
+        ____isSackSubTypeUnlocked_result_5 = nil
     else
-        ____isSackSubTypeUnlocked_result_7 = {PickupVariant.COIN, CoinSubType.PENNY}
+        ____isSackSubTypeUnlocked_result_5 = {PickupVariant.COIN, CoinSubType.PENNY}
     end
-    return ____isSackSubTypeUnlocked_result_7
+    return ____isSackSubTypeUnlocked_result_5
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.SACK)},
@@ -71322,13 +71249,13 @@ __TS__DecorateLegacy(
 )
 function PickupRemoval.prototype.postPickupSelectionLilBattery(self, _pickup, _pickupVariant, subType)
     local batterySubType = subType
-    local ____isBatterySubTypeUnlocked_result_8
+    local ____isBatterySubTypeUnlocked_result_6
     if isBatterySubTypeUnlocked(nil, batterySubType, true) then
-        ____isBatterySubTypeUnlocked_result_8 = nil
+        ____isBatterySubTypeUnlocked_result_6 = nil
     else
-        ____isBatterySubTypeUnlocked_result_8 = {PickupVariant.COIN, CoinSubType.PENNY}
+        ____isBatterySubTypeUnlocked_result_6 = {PickupVariant.COIN, CoinSubType.PENNY}
     end
-    return ____isBatterySubTypeUnlocked_result_8
+    return ____isBatterySubTypeUnlocked_result_6
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.LIL_BATTERY)},
@@ -71358,13 +71285,13 @@ function PickupRemoval.prototype.postPickupSelectionTrinket(self, _pickup, _pick
     if #unlockedTrinketTypes == 0 then
         return {PickupVariant.COIN, CoinSubType.PENNY}
     end
-    local ____isGoldenTrinketType_result_9
+    local ____isGoldenTrinketType_result_7
     if isGoldenTrinketType(nil, trinketType) then
-        ____isGoldenTrinketType_result_9 = self:postPickupSelectionGoldTrinket(trinketType, unlockedTrinketTypes)
+        ____isGoldenTrinketType_result_7 = self:postPickupSelectionGoldTrinket(trinketType, unlockedTrinketTypes)
     else
-        ____isGoldenTrinketType_result_9 = self:postPickupSelectionNormalTrinket(trinketType, unlockedTrinketTypes)
+        ____isGoldenTrinketType_result_7 = self:postPickupSelectionNormalTrinket(trinketType, unlockedTrinketTypes)
     end
-    return ____isGoldenTrinketType_result_9
+    return ____isGoldenTrinketType_result_7
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.TRINKET)},
@@ -71376,22 +71303,16 @@ function PickupRemoval.prototype.postPickupSelectionGoldTrinket(self, trinketTyp
     local normalizedTrinketType = getNormalTrinketType(nil, trinketType)
     local goldTrinketsUnlocked = isOtherUnlockKindUnlocked(nil, OtherUnlockKind.GOLD_TRINKETS, true)
     if __TS__ArrayIncludes(unlockedTrinketTypes, normalizedTrinketType) or normalizedTrinketType == TrinketType.PERFECTION then
-        local ____goldTrinketsUnlocked_10
+        local ____goldTrinketsUnlocked_8
         if goldTrinketsUnlocked then
-            ____goldTrinketsUnlocked_10 = nil
+            ____goldTrinketsUnlocked_8 = nil
         else
-            ____goldTrinketsUnlocked_10 = {PickupVariant.TRINKET, normalizedTrinketType}
+            ____goldTrinketsUnlocked_8 = {PickupVariant.TRINKET, normalizedTrinketType}
         end
-        return ____goldTrinketsUnlocked_10
+        return ____goldTrinketsUnlocked_8
     end
     local newTrinketType = getRandomArrayElement(nil, unlockedTrinketTypes)
-    local ____goldTrinketsUnlocked_11
-    if goldTrinketsUnlocked then
-        ____goldTrinketsUnlocked_11 = getGoldenTrinketType(nil, newTrinketType)
-    else
-        ____goldTrinketsUnlocked_11 = newTrinketType
-    end
-    local trinketTypeToUse = ____goldTrinketsUnlocked_11
+    local trinketTypeToUse = goldTrinketsUnlocked and getGoldenTrinketType(nil, newTrinketType) or newTrinketType
     return {PickupVariant.TRINKET, trinketTypeToUse}
 end
 function PickupRemoval.prototype.postPickupSelectionNormalTrinket(self, trinketType, unlockedTrinketTypes)
@@ -71402,13 +71323,13 @@ function PickupRemoval.prototype.postPickupSelectionNormalTrinket(self, trinketT
     return {PickupVariant.TRINKET, newTrinketType}
 end
 function PickupRemoval.prototype.postPickupSelectionBed(self)
-    local ____isOtherUnlockKindUnlocked_result_12
+    local ____isOtherUnlockKindUnlocked_result_9
     if isOtherUnlockKindUnlocked(nil, OtherUnlockKind.BEDS, true) then
-        ____isOtherUnlockKindUnlocked_result_12 = nil
+        ____isOtherUnlockKindUnlocked_result_9 = nil
     else
-        ____isOtherUnlockKindUnlocked_result_12 = {PickupVariant.COIN, CoinSubType.PENNY}
+        ____isOtherUnlockKindUnlocked_result_9 = {PickupVariant.COIN, CoinSubType.PENNY}
     end
-    return ____isOtherUnlockKindUnlocked_result_12
+    return ____isOtherUnlockKindUnlocked_result_9
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.BED)},
@@ -71880,13 +71801,9 @@ function RoomRemoval.prototype.inBannedRoom(self)
         function(____, roomGridIndex) return not isRedKeyRoom(nil, roomGridIndex) end
     )
     local level = game:GetLevel()
-    local ____attachedRoomGridIndex_0 = attachedRoomGridIndex
-    if ____attachedRoomGridIndex_0 == nil then
-        ____attachedRoomGridIndex_0 = level:GetStartingRoomIndex()
-    end
-    local roomGridIndex = ____attachedRoomGridIndex_0
+    local roomGridIndex = attachedRoomGridIndex or level:GetStartingRoomIndex()
     changeRoom(nil, roomGridIndex)
-    local player = Isaac:GetPlayer()
+    local player = Isaac.GetPlayer()
     player:AnimateTeleport(false)
 end
 function RoomRemoval.prototype.outsideBannedRoom(self, bannedRoomType)
@@ -72013,15 +71930,9 @@ function StageTypeRemoval.prototype.postNewLevelReordered(self, stage, stageType
     if isStageTypeUnlocked(nil, stage, stageType, true) then
         return
     end
-    local ____temp_0
-    if stageType == StageType.REPENTANCE_B then
-        ____temp_0 = StageType.REPENTANCE
-    else
-        ____temp_0 = StageType.ORIGINAL
-    end
-    local newStageType = ____temp_0
-    log(((((("Locked stage type detected (" .. tostring(stageType)) .. "). Warping to: StageType.") .. tostring(StageType[newStageType])) .. " (") .. tostring(newStageType)) .. ")")
-    local player = Isaac:GetPlayer()
+    local newStageType = stageType == StageType.REPENTANCE_B and StageType.REPENTANCE or StageType.ORIGINAL
+    log(((((("Locked stage type detected (" .. tostring(stageType)) .. "). Warping to: StageType.") .. StageType[newStageType]) .. " (") .. tostring(newStageType)) .. ")")
+    local player = Isaac.GetPlayer()
     local playerHealth = getPlayerHealth(nil, player)
     player:AddEternalHearts(-1)
     goToStage(nil, stage, newStageType)
@@ -72120,33 +72031,33 @@ function StartingRoomInfo.prototype.postRender(self)
     self:drawCenteredText(modeText .. " seed:", topLeftPosition)
     self:drawCenteredText(
         tostring(seed),
-        topLeftPosition:add(Vector(nil, 0, 30)),
+        topLeftPosition + Vector(0, 30),
         K_COLORS.Green
     )
     self:drawCenteredText("Unlocks:", topRightPosition)
     self:drawCenteredText(
         (tostring(getNumCompletedUnlocks(nil)) .. " / ") .. tostring(#ALL_UNLOCKS),
-        topRightPosition:add(Vector(nil, 0, 30)),
+        topRightPosition + Vector(0, 30),
         K_COLORS.Green
     )
-    local position = Isaac:WorldToScreen(centerTopPosition):add(Vector(nil, 0, 10))
+    local position = Isaac.WorldToScreen(centerTopPosition) + Vector(0, 10)
     MOD_ICON_SPRITE:Render(position)
     self:drawCenteredText("Mod version:", centerPosition)
     self:drawCenteredText(
         version,
-        centerPosition:add(Vector(nil, 0, 30)),
+        centerPosition + Vector(0, 30),
         K_COLORS.Green
     )
     self:drawCenteredText("Deaths/resets:", bottomLeftPosition)
     self:drawCenteredText(
         tostring(getPlaythroughNumDeaths(nil)),
-        bottomLeftPosition:add(Vector(nil, 0, 30)),
+        bottomLeftPosition + Vector(0, 30),
         K_COLORS.Green
     )
     self:drawCenteredText("Total time:", bottomRightPosition)
     self:drawCenteredText(
         getPlaythroughTimeElapsed(nil),
-        bottomRightPosition:add(Vector(nil, 0, 30)),
+        bottomRightPosition + Vector(0, 30),
         K_COLORS.Green
     )
 end
@@ -72160,9 +72071,9 @@ function StartingRoomInfo.prototype.drawCenteredText(self, text, position, kColo
     if kColor == nil then
         kColor = KColorDefault
     end
-    local ____temp_0 = Isaac:WorldToRenderPosition(position)
-    local X = ____temp_0.X
-    local Y = ____temp_0.Y
+    local ____Isaac_WorldToRenderPosition_result_0 = Isaac.WorldToRenderPosition(position)
+    local X = ____Isaac_WorldToRenderPosition_result_0.X
+    local Y = ____Isaac_WorldToRenderPosition_result_0.Y
     local length = FONT:GetStringWidthUTF8(text)
     FONT:DrawString(text, X - length / 2, Y, kColor)
 end
@@ -72422,8 +72333,8 @@ function ____exports.getRecentAchievementsButtons(self)
     local buttons = {}
     for ____, i in ipairs(iRange(nil, ____exports.MENU_PAGE_SIZE)) do
         do
-            local unlock = completedUnlocks[i]
-            local objective = completedObjectives[i]
+            local unlock = completedUnlocks[i + 1]
+            local objective = completedObjectives[i + 1]
             if unlock == nil or objective == nil then
                 goto __continue4
             end
@@ -72729,7 +72640,7 @@ function ____exports.getSpecificCardUnlockButtons(self, min, max)
 end
 function ____exports.getPillEffectUnlockButtons(self)
     local buttons = {}
-    local chunks = splitNumber(nil, LAST_VANILLA_PILL_EFFECT, ____exports.MENU_PAGE_SIZE)
+    local chunks = splitNumber(nil, LAST_VANILLA_PILL_EFFECT, ____exports.MENU_PAGE_SIZE, true)
     for ____, chunk in ipairs(chunks) do
         local min, max = table.unpack(chunk)
         buttons[#buttons + 1] = {
@@ -72955,13 +72866,7 @@ function ____exports.initDeadSeaScrolls(self)
             buttons = {
                 {str = "current seed:", noSel = true},
                 {
-                    str = function()
-                        local ____getRandomizerSeed_result_0 = getRandomizerSeed(nil)
-                        if ____getRandomizerSeed_result_0 == nil then
-                            ____getRandomizerSeed_result_0 = "[disabled]"
-                        end
-                        return ____getRandomizerSeed_result_0
-                    end,
+                    str = function() return getRandomizerSeed(nil) or "[disabled]" end,
                     colorSelect = true,
                     noSel = true
                 },
@@ -73423,7 +73328,7 @@ function ____exports.initDeadSeaScrolls(self)
             end
         }
     end
-    local pillEffectChunks = splitNumber(nil, LAST_VANILLA_PILL_EFFECT, MENU_PAGE_SIZE)
+    local pillEffectChunks = splitNumber(nil, LAST_VANILLA_PILL_EFFECT, MENU_PAGE_SIZE, true)
     for ____, chunk in ipairs(pillEffectChunks) do
         local min, max = table.unpack(chunk)
         directory["pillEffectUnlocks" .. tostring(min)] = {
@@ -76996,20 +76901,20 @@ function getIconSpriteLayer(self)
 end
 function getIconPosition(self)
     local HUDOffsetVector = getHUDOffsetVector(nil)
-    local player = Isaac:GetPlayer()
-    local position = SPRITE_POSITION:add(HUDOffsetVector)
+    local player = Isaac.GetPlayer()
+    local position = SPRITE_POSITION + HUDOffsetVector
     if onAnyChallenge(nil) then
-        position = position:add(SPRITE_CHALLENGE_OFFSET)
+        position = position + SPRITE_CHALLENGE_OFFSET
     end
     if game.Difficulty == Difficulty.HARD then
-        position = position:add(SPRITE_DIFFICULTY_OFFSET)
+        position = position + SPRITE_DIFFICULTY_OFFSET
     elseif game:IsGreedMode() then
-        position = position:add(SPRITE_CHALLENGE_OFFSET)
+        position = position + SPRITE_CHALLENGE_OFFSET
     end
     if isBethany(nil, player) then
-        position = position:add(SPRITE_BETHANY_OFFSET)
+        position = position + SPRITE_BETHANY_OFFSET
     elseif isJacobOrEsau(nil, player) then
-        position = position:add(SPRITE_JACOB_ESAU_OFFSET)
+        position = position + SPRITE_JACOB_ESAU_OFFSET
     end
     return position
 end
@@ -77018,11 +76923,11 @@ IconSpriteLayer.NO_ACHIEVEMENTS_ICON = 0
 IconSpriteLayer[IconSpriteLayer.NO_ACHIEVEMENTS_ICON] = "NO_ACHIEVEMENTS_ICON"
 IconSpriteLayer.RANDOMIZER_ICON = 1
 IconSpriteLayer[IconSpriteLayer.RANDOMIZER_ICON] = "RANDOMIZER_ICON"
-SPRITE_POSITION = Vector(nil, 4, 72)
-SPRITE_CHALLENGE_OFFSET = Vector(nil, -3, 0)
-SPRITE_DIFFICULTY_OFFSET = Vector(nil, 13, 0)
-SPRITE_BETHANY_OFFSET = Vector(nil, 0, 10)
-SPRITE_JACOB_ESAU_OFFSET = Vector(nil, 0, 15)
+SPRITE_POSITION = Vector(4, 72)
+SPRITE_CHALLENGE_OFFSET = Vector(-3, 0)
+SPRITE_DIFFICULTY_OFFSET = Vector(13, 0)
+SPRITE_BETHANY_OFFSET = Vector(0, 10)
+SPRITE_JACOB_ESAU_OFFSET = Vector(0, 15)
 local ICON_SPRITE = newSprite(nil, "gfx/ui/no-achievements-icon/no-achievements-icon.anm2")
 --- In the "gfx/ui/hudpickups.png" file, we blank out the "No Achievements" icon. For every run, we
 -- draw an icon on top of where the "No Achievements" icon would normally be.
@@ -77345,7 +77250,7 @@ return {
     },
     license = "GPL-3.0",
     type = "commonjs",
-    dependencies = {["isaac-typescript-definitions"] = "^33.0.1", ["isaacscript-common"] = "^67.1.1"},
+    dependencies = {["isaac-typescript-definitions"] = "^33.0.1", ["isaacscript-common"] = "^67.2.0"},
     devDependencies = {
         isaacscript = "^3.15.0",
         ["isaacscript-lint"] = "^6.0.0",

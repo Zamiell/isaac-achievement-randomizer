@@ -1,9 +1,5 @@
 TODO:
 
-- add contiguous note for:
-  - CollectibleType
-
-- pill effect menu is bugged
 - checkmark or x next to sub next
 
 - add iterations to black screen

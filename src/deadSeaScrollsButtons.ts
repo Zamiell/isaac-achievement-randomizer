@@ -603,7 +603,8 @@ export function getSpecificCardUnlockButtons(
 export function getPillEffectUnlockButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  const chunks = splitNumber(LAST_VANILLA_PILL_EFFECT, MENU_PAGE_SIZE);
+  // Pill effects start at 0.
+  const chunks = splitNumber(LAST_VANILLA_PILL_EFFECT, MENU_PAGE_SIZE, true);
   for (const chunk of chunks) {
     const [min, max] = chunk;
     buttons.push({
