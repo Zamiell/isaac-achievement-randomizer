@@ -716,6 +716,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
         : getRandomActiveCollectibleUnlock(),
   ],
 
+  // 89
+  [
+    TrinketType.CHILD_LEASH,
+    () =>
+      isFamiliarCollectibleUnlocked(false)
+        ? undefined
+        : getRandomFamiliarCollectibleUnlock(),
+  ],
+
   // 91
   [
     TrinketType.MECONIUM,
@@ -763,6 +772,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
     },
   ],
 
+  // 109
+  [
+    TrinketType.DUCT_TAPE,
+    () =>
+      isFamiliarCollectibleUnlocked(false)
+        ? undefined
+        : getRandomFamiliarCollectibleUnlock(),
+  ],
+
   // 120
   [
     TrinketType.HAIRPIN,
@@ -779,6 +797,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
       isActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
+  ],
+
+  // 125
+  [
+    TrinketType.EXTENSION_CORD,
+    () =>
+      isFamiliarCollectibleUnlocked(false)
+        ? undefined
+        : getRandomFamiliarCollectibleUnlock(),
   ],
 
   // 127
@@ -824,6 +851,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
       isActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
+  ],
+
+  // 148
+  [
+    TrinketType.FRIENDSHIP_NECKLACE,
+    () =>
+      isFamiliarCollectibleUnlocked(false)
+        ? undefined
+        : getRandomFamiliarCollectibleUnlock(),
   ],
 
   // 149
@@ -878,6 +914,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
       isActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
+  ],
+
+  // 184
+  [
+    TrinketType.ADOPTION_PAPERS,
+    () =>
+      isFamiliarCollectibleUnlocked(false)
+        ? undefined
+        : getRandomFamiliarCollectibleUnlock(),
   ],
 ]);
 
