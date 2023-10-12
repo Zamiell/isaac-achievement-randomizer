@@ -640,6 +640,24 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   TrinketType,
   () => Unlock | undefined
 >([
+  // 3
+  [
+    TrinketType.AAA_BATTERY,
+    () =>
+      isActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
+  ],
+
+  // 4
+  [
+    TrinketType.BROKEN_REMOTE,
+    () =>
+      isActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
+  ],
+
   // 18
   [
     TrinketType.BIBLE_TRACT,
@@ -689,6 +707,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
         : getUnlock(UnlockType.HEART, HeartSubType.FULL),
   ],
 
+  // 88
+  [
+    TrinketType.NO,
+    () =>
+      isActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
+  ],
+
   // 91
   [
     TrinketType.MECONIUM,
@@ -696,6 +723,24 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
       isOtherUnlockKindUnlocked(OtherUnlockKind.BLACK_POOP, false)
         ? undefined
         : getUnlock(UnlockType.OTHER, OtherUnlockKind.BLACK_POOP),
+  ],
+
+  // 100
+  [
+    TrinketType.VIBRANT_BULB,
+    () =>
+      isActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
+  ],
+
+  // 101
+  [
+    TrinketType.DIM_BULB,
+    () =>
+      isActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
   ],
 
   // 103
@@ -716,6 +761,24 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
 
       return undefined;
     },
+  ],
+
+  // 120
+  [
+    TrinketType.HAIRPIN,
+    () =>
+      isActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
+  ],
+
+  // 122
+  [
+    TrinketType.BUTTER,
+    () =>
+      isActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
   ],
 
   // 127
@@ -743,6 +806,33 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
       isFamiliarCollectibleUnlocked(false)
         ? undefined
         : getRandomFamiliarCollectibleUnlock(),
+  ],
+
+  // 143
+  [
+    TrinketType.OLD_CAPACITOR,
+    () =>
+      isActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
+  ],
+
+  // 147
+  [
+    TrinketType.CHARGED_PENNY,
+    () =>
+      isActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
+  ],
+
+  // 149
+  [
+    TrinketType.PANIC_BUTTON,
+    () =>
+      isActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
   ],
 
   // 159
