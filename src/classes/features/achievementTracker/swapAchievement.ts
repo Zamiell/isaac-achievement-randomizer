@@ -375,6 +375,15 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   CollectibleType,
   () => Unlock | undefined
 >([
+  // 63
+  [
+    CollectibleType.BATTERY,
+    () =>
+      isActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
+  ],
+
   // 75
   [
     CollectibleType.PHD,
@@ -418,6 +427,15 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
 
       return undefined;
     },
+  ],
+
+  // 116
+  [
+    CollectibleType.NINE_VOLT,
+    () =>
+      isActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
   ],
 
   // 139
@@ -581,6 +599,15 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   [
     CollectibleType.BOOSTER_PACK,
     () => (anyCardsUnlocked(false) ? undefined : getRandomCardUnlock()),
+  ],
+
+  // 647
+  [
+    CollectibleType.FOUR_FIVE_VOLT,
+    () =>
+      isActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
   ],
 
   // 654
