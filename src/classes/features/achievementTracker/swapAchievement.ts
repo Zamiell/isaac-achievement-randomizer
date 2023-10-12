@@ -394,6 +394,15 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
     () => (anyCardsUnlocked(false) ? undefined : getRandomCardUnlock()),
   ],
 
+  // 98
+  [
+    CollectibleType.RELIC,
+    () =>
+      isHeartSubTypeUnlocked(HeartSubType.SOUL, false)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.SOUL),
+  ],
+
   // 102
   [
     CollectibleType.MOMS_BOTTLE_OF_PILLS,
