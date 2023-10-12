@@ -22,6 +22,11 @@ import {
   getPlaythroughTimeElapsed,
 } from "./classes/features/StatsTracker";
 import {
+  isAllBossObjectivesCompleted,
+  isAllChallengeObjectivesCompleted,
+  isAllCharactersObjectivesCompleted,
+} from "./classes/features/achievementTracker/completedObjectives";
+import {
   getNumCompletedUnlocks,
   getRandomizerSeed,
   isRandomizerEnabled,
@@ -42,6 +47,7 @@ import {
   getChestUnlockButtons,
   getCoinUnlockButtons,
   getCollectibleUnlockButtons,
+  getCompletedText,
   getGridEntityUnlockButtons,
   getHeartUnlockButtons,
   getKeyUnlockButtons,
@@ -367,15 +373,19 @@ export function initDeadSeaScrolls(): void {
       title: "objective list",
       buttons: [
         {
-          str: "characters",
+          str: `${getCompletedText(
+            isAllCharactersObjectivesCompleted(),
+          )} - characters`,
           dest: "characterObjectives",
         },
         {
-          str: "bosses",
+          str: `${getCompletedText(isAllBossObjectivesCompleted())} - bosses`,
           dest: "bossObjectives",
         },
         {
-          str: "challenges",
+          str: `${getCompletedText(
+            isAllChallengeObjectivesCompleted(),
+          )} - challenges`,
           dest: "challengeObjectives",
         },
       ],

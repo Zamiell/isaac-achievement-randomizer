@@ -59,8 +59,11 @@ import {
   getReachableNonStoryBossesSet,
 } from "./classes/features/AchievementRandomizer";
 import {
+  isAllCharacterObjectivesCompleted,
   isBossObjectiveCompleted,
+  isBossRangeObjectivesCompleted,
   isChallengeObjectiveCompleted,
+  isChallengeRangeObjectivesCompleted,
   isCharacterObjectiveCompleted,
 } from "./classes/features/achievementTracker/completedObjectives";
 import {
@@ -178,7 +181,9 @@ export function getCharacterObjectiveButtons(): DeadSeaScrollsButton[] {
   for (const character of MAIN_CHARACTERS) {
     const characterName = getCharacterName(character).toLowerCase();
     buttons.push({
-      str: characterName,
+      str: `${getCompletedText(
+        isAllCharacterObjectivesCompleted(character),
+      )} - ${characterName}`,
       dest: `characterObjectives${character}`,
     });
   }
@@ -228,8 +233,10 @@ export function getBossObjectiveButtons(): DeadSeaScrollsButton[] {
   const chunks = splitNumber(BOSS_IDS.length, MENU_PAGE_SIZE);
   for (const chunk of chunks) {
     const [min, max] = chunk;
+    const bossRangeCompleted = isBossRangeObjectivesCompleted(min, max);
+    const completedText = getCompletedText(bossRangeCompleted);
     buttons.push({
-      str: `${min}-${max}`,
+      str: `${completedText} - ${min}-${max}`,
       dest: `bossObjectives${min}`,
     });
   }
@@ -287,8 +294,13 @@ export function getChallengeObjectiveButtons(): DeadSeaScrollsButton[] {
   const chunks = splitNumber(UNLOCKABLE_CHALLENGES.length, MENU_PAGE_SIZE);
   for (const chunk of chunks) {
     const [min, max] = chunk;
+    const challengeRangeCompleted = isChallengeRangeObjectivesCompleted(
+      min,
+      max,
+    );
+    const completedText = getCompletedText(challengeRangeCompleted);
     buttons.push({
-      str: `${min}-${max}`,
+      str: `${completedText} - ${min}-${max}`,
       dest: `challengeObjectives${min}`,
     });
   }
@@ -913,6 +925,6 @@ function getNameTruncated(name: string): string {
 }
 
 /** We manually replaced the caret image in the "16font.png" file from a caret to a checkmark. */
-function getCompletedText(completed: boolean): string {
+export function getCompletedText(completed: boolean): string {
   return completed ? "^" : "x";
 }

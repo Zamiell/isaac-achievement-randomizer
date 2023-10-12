@@ -658,6 +658,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
         : getRandomActiveCollectibleUnlock(),
   ],
 
+  // 17
+  [
+    TrinketType.BLACK_LIPSTICK,
+    () =>
+      isHeartSubTypeUnlocked(HeartSubType.BLACK, false)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.BLACK),
+  ],
+
   // 18
   [
     TrinketType.BIBLE_TRACT,
@@ -667,6 +676,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
         : getUnlock(UnlockType.HEART, HeartSubType.ETERNAL),
   ],
 
+  // 20
+  [
+    TrinketType.MONKEY_PAW,
+    () =>
+      isHeartSubTypeUnlocked(HeartSubType.BLACK, false)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.BLACK),
+  ],
+
   // 22
   [
     TrinketType.DAEMONS_TAIL,
@@ -674,6 +692,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
       isHeartSubTypeUnlocked(HeartSubType.BLACK, false)
         ? undefined
         : getUnlock(UnlockType.HEART, HeartSubType.BLACK),
+  ],
+
+  // 38
+  [
+    TrinketType.MOMS_PEARL,
+    () =>
+      isHeartSubTypeUnlocked(HeartSubType.SOUL, false)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.SOUL),
   ],
 
   // 44
@@ -770,6 +797,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
 
       return undefined;
     },
+  ],
+
+  // 107
+  [
+    TrinketType.CROW_HEART,
+    () =>
+      isHeartSubTypeUnlocked(HeartSubType.HALF_SOUL, false)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.HALF_SOUL),
   ],
 
   // 109

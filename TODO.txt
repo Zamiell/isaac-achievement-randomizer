@@ -1,7 +1,5 @@
 TODO:
 
-- checkmark or x next to sub next
-
 - add iterations to black screen
   - Confirmed unlockable: N
 
