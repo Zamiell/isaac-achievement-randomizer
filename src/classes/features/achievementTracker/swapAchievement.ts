@@ -460,6 +460,15 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
         : getUnlock(UnlockType.CARD, CardType.RUNE_BLANK),
   ],
 
+  // 278
+  [
+    CollectibleType.DARK_BUM,
+    () =>
+      isHeartSubTypeUnlocked(HeartSubType.BLACK, false)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.BLACK),
+  ],
+
   // 286
   [
     CollectibleType.BLANK_CARD,
