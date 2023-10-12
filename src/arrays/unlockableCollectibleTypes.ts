@@ -3,6 +3,7 @@ import {
   ReadonlySet,
   VANILLA_COLLECTIBLE_TYPES,
   isActiveCollectible,
+  isFamiliarCollectible,
 } from "isaacscript-common";
 
 const BOSS_ROOM_EXCEPTIONS = [
@@ -74,4 +75,9 @@ export const UNLOCKABLE_COLLECTIBLE_TYPES: readonly CollectibleType[] =
 export const UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES: readonly CollectibleType[] =
   UNLOCKABLE_COLLECTIBLE_TYPES.filter((collectibleType) =>
     isActiveCollectible(collectibleType),
+  );
+
+export const UNLOCKABLE_FAMILIAR_COLLECTIBLE_TYPES: readonly CollectibleType[] =
+  UNLOCKABLE_COLLECTIBLE_TYPES.filter((collectibleType) =>
+    isFamiliarCollectible(collectibleType),
   );

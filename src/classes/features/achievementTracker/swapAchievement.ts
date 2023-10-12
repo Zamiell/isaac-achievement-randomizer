@@ -27,7 +27,10 @@ import {
   shuffleArray,
 } from "isaacscript-common";
 import { UNLOCKABLE_CARD_TYPES } from "../../../arrays/unlockableCardTypes";
-import { UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES } from "../../../arrays/unlockableCollectibleTypes";
+import {
+  UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES,
+  UNLOCKABLE_FAMILIAR_COLLECTIBLE_TYPES,
+} from "../../../arrays/unlockableCollectibleTypes";
 import { UNLOCKABLE_PILL_EFFECTS } from "../../../arrays/unlockablePillEffects";
 import { UNLOCKABLE_ROOM_TYPES } from "../../../arrays/unlockableRoomTypes";
 import { UNLOCKABLE_TRINKET_TYPES } from "../../../arrays/unlockableTrinketTypes";
@@ -714,6 +717,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
     },
   ],
 
+  // 127
+  [
+    TrinketType.BABY_BENDER,
+    () =>
+      isActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomFamiliarCollectibleUnlock(),
+  ],
+
   // 131
   [
     TrinketType.BLESSED_PENNY,
@@ -721,6 +733,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
       isHeartSubTypeUnlocked(HeartSubType.HALF_SOUL, false)
         ? undefined
         : getUnlock(UnlockType.HEART, HeartSubType.HALF_SOUL),
+  ],
+
+  // 141
+  [
+    TrinketType.FORGOTTEN_LULLABY,
+    () =>
+      isActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomFamiliarCollectibleUnlock(),
   ],
 
   // 159
@@ -750,24 +771,22 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
         : getUnlock(UnlockType.PATH, UnlockablePath.BLUE_WOMB),
   ],
 
+  // 179
+  [
+    TrinketType.RC_REMOTE,
+    () =>
+      isActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomFamiliarCollectibleUnlock(),
+  ],
+
   // 181
   [
     TrinketType.EXPANSION_PACK,
-    () => {
-      if (isActiveCollectibleUnlocked(false)) {
-        return undefined;
-      }
-
-      assertNotNull(
-        v.persistent.seed,
-        "Failed to get a random active collectible since the seed was null.",
-      );
-      const collectibleType = getRandomArrayElement(
-        UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES,
-        v.persistent.seed,
-      );
-      return getUnlock(UnlockType.COLLECTIBLE, collectibleType);
-    },
+    () =>
+      isActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
   ],
 ]);
 
@@ -1053,6 +1072,30 @@ function swapAnyRoomUnlock() {
   }
 
   return undefined;
+}
+
+function getRandomActiveCollectibleUnlock(): CollectibleUnlock {
+  assertNotNull(
+    v.persistent.seed,
+    "Failed to get a random active collectible since the seed was null.",
+  );
+  const collectibleType = getRandomArrayElement(
+    UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES,
+    v.persistent.seed,
+  );
+  return getUnlock(UnlockType.COLLECTIBLE, collectibleType);
+}
+
+function getRandomFamiliarCollectibleUnlock(): CollectibleUnlock {
+  assertNotNull(
+    v.persistent.seed,
+    "Failed to get a random familiar collectible since the seed was null.",
+  );
+  const collectibleType = getRandomArrayElement(
+    UNLOCKABLE_FAMILIAR_COLLECTIBLE_TYPES,
+    v.persistent.seed,
+  );
+  return getUnlock(UnlockType.COLLECTIBLE, collectibleType);
 }
 
 function getRandomTrinketUnlock(): TrinketUnlock {

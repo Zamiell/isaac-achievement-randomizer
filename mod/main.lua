@@ -25132,7 +25132,7 @@ function ____exports.getVanillaCollectibleTypesOfQuality(self, quality)
     )
     return collectibleTypes
 end
---- Returns true if the item type in the item config is equal to `ItemType.ITEM_ACTIVE`.
+--- Returns true if the item type in the item config is equal to `ItemType.ACTIVE`.
 function ____exports.isActiveCollectible(self, collectibleType)
     local itemType = ____exports.getCollectibleItemType(nil, collectibleType)
     return itemType == ItemType.ACTIVE
@@ -25156,6 +25156,11 @@ function ____exports.isBlindCollectible(self, collectible)
     local frame = sprite:GetFrame()
     questionMarkSprite:SetFrame(animation, frame)
     return ____exports.collectibleSpriteEquals(nil, sprite, questionMarkSprite)
+end
+--- Returns true if the item type in the item config is equal to `ItemType.FAMILIAR`.
+function ____exports.isFamiliarCollectible(self, collectibleType)
+    local itemType = ____exports.getCollectibleItemType(nil, collectibleType)
+    return itemType == ItemType.FAMILIAR
 end
 --- Returns whether the given collectible is a "glitched" item. All items are replaced by glitched
 -- items once a player has TMTRAINER. However, glitched items can also "naturally" appear in secret
@@ -64367,6 +64372,7 @@ return ____exports
 ["src.arrays.objectives"] = function(...) 
 local ____lualib = require("lualib_bundle")
 local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
+local __TS__Iterator = ____lualib.__TS__Iterator
 local ____exports = {}
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
 local BossID = ____isaac_2Dtypescript_2Ddefinitions.BossID
@@ -64394,7 +64400,7 @@ ____exports.ALL_OBJECTIVES = (function()
             local ____cond5 = ____switch5 == ObjectiveType.CHARACTER
             if ____cond5 then
                 do
-                    for ____, character in ipairs(MAIN_CHARACTERS) do
+                    for ____, character in __TS__Iterator(MAIN_CHARACTERS) do
                         for ____, kind in ipairs(CHARACTER_OBJECTIVE_KINDS) do
                             local objective = {type = ObjectiveType.CHARACTER, character = character, kind = kind}
                             objectives[#objectives + 1] = objective
@@ -64430,17 +64436,12 @@ end)(nil)
 return ____exports
  end,
 ["src.arrays.unlockableCharacters"] = function(...) 
-local ____lualib = require("lualib_bundle")
-local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
 local ____exports = {}
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
 local MAIN_CHARACTERS = ____isaacscript_2Dcommon.MAIN_CHARACTERS
 local ____constants = require("src.constants")
 local STARTING_CHARACTER = ____constants.STARTING_CHARACTER
-____exports.UNLOCKABLE_CHARACTERS = __TS__ArrayFilter(
-    MAIN_CHARACTERS,
-    function(____, character) return character ~= STARTING_CHARACTER end
-)
+____exports.UNLOCKABLE_CHARACTERS = MAIN_CHARACTERS:filter(function(____, character) return character ~= STARTING_CHARACTER end)
 return ____exports
  end,
 ["src.arrays.unlockableGridEntityTypes"] = function(...) 
@@ -64804,7 +64805,6 @@ return ____exports
 ["src.arrays.unlockableCardTypes"] = function(...) 
 local ____lualib = require("lualib_bundle")
 local __TS__New = ____lualib.__TS__New
-local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
 local ____exports = {}
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
 local CardType = ____isaac_2Dtypescript_2Ddefinitions.CardType
@@ -64812,10 +64812,7 @@ local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.sr
 local ReadonlySet = ____isaacscript_2Dcommon.ReadonlySet
 local VANILLA_CARD_TYPES = ____isaacscript_2Dcommon.VANILLA_CARD_TYPES
 ____exports.BANNED_CARD_TYPES = __TS__New(ReadonlySet, {CardType.CHAOS, CardType.RUNE_SHARD})
-____exports.UNLOCKABLE_CARD_TYPES = __TS__ArrayFilter(
-    VANILLA_CARD_TYPES,
-    function(____, cardType) return not ____exports.BANNED_CARD_TYPES:has(cardType) end
-)
+____exports.UNLOCKABLE_CARD_TYPES = VANILLA_CARD_TYPES:filter(function(____, cardType) return not ____exports.BANNED_CARD_TYPES:has(cardType) end)
 return ____exports
  end,
 ["src.arrays.unlockableCollectibleTypes"] = function(...) 
@@ -64832,6 +64829,7 @@ local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.sr
 local ReadonlySet = ____isaacscript_2Dcommon.ReadonlySet
 local VANILLA_COLLECTIBLE_TYPES = ____isaacscript_2Dcommon.VANILLA_COLLECTIBLE_TYPES
 local isActiveCollectible = ____isaacscript_2Dcommon.isActiveCollectible
+local isFamiliarCollectible = ____isaacscript_2Dcommon.isFamiliarCollectible
 local BOSS_ROOM_EXCEPTIONS = {
     CollectibleType.BREAKFAST,
     CollectibleType.WOODEN_SPOON,
@@ -64889,13 +64887,14 @@ ____exports.ALWAYS_UNLOCKED_COLLECTIBLE_TYPES = __TS__New(
     ____ReadonlySet_1,
     {__TS__SparseArraySpread(____array_0)}
 )
-____exports.UNLOCKABLE_COLLECTIBLE_TYPES = __TS__ArrayFilter(
-    VANILLA_COLLECTIBLE_TYPES,
-    function(____, collectibleType) return not ____exports.ALWAYS_UNLOCKED_COLLECTIBLE_TYPES:has(collectibleType) end
-)
+____exports.UNLOCKABLE_COLLECTIBLE_TYPES = VANILLA_COLLECTIBLE_TYPES:filter(function(____, collectibleType) return not ____exports.ALWAYS_UNLOCKED_COLLECTIBLE_TYPES:has(collectibleType) end)
 ____exports.UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES = __TS__ArrayFilter(
     ____exports.UNLOCKABLE_COLLECTIBLE_TYPES,
     function(____, collectibleType) return isActiveCollectible(nil, collectibleType) end
+)
+____exports.UNLOCKABLE_FAMILIAR_COLLECTIBLE_TYPES = __TS__ArrayFilter(
+    ____exports.UNLOCKABLE_COLLECTIBLE_TYPES,
+    function(____, collectibleType) return isFamiliarCollectible(nil, collectibleType) end
 )
 return ____exports
  end,
@@ -64994,7 +64993,6 @@ return ____exports
 ["src.arrays.unlockableTrinketTypes"] = function(...) 
 local ____lualib = require("lualib_bundle")
 local __TS__New = ____lualib.__TS__New
-local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
 local ____exports = {}
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
 local TrinketType = ____isaac_2Dtypescript_2Ddefinitions.TrinketType
@@ -65007,10 +65005,7 @@ ____exports.ALWAYS_UNLOCKED_TRINKET_TYPES = __TS__New(
     ReadonlySet,
     {table.unpack(____exports.BANNED_TRINKET_TYPES)}
 )
-____exports.UNLOCKABLE_TRINKET_TYPES = __TS__ArrayFilter(
-    VANILLA_TRINKET_TYPES,
-    function(____, trinketType) return not ____exports.ALWAYS_UNLOCKED_TRINKET_TYPES:has(trinketType) end
-)
+____exports.UNLOCKABLE_TRINKET_TYPES = VANILLA_TRINKET_TYPES:filter(function(____, trinketType) return not ____exports.ALWAYS_UNLOCKED_TRINKET_TYPES:has(trinketType) end)
 return ____exports
  end,
 ["src.arrays.unlocks"] = function(...) 
@@ -65253,7 +65248,7 @@ return ____exports
 local ____lualib = require("lualib_bundle")
 local __TS__New = ____lualib.__TS__New
 local Map = ____lualib.Map
-local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
+local __TS__Iterator = ____lualib.__TS__Iterator
 local __TS__ArrayEvery = ____lualib.__TS__ArrayEvery
 local __TS__ArrayIndexOf = ____lualib.__TS__ArrayIndexOf
 local __TS__ArrayFindIndex = ____lualib.__TS__ArrayFindIndex
@@ -65446,17 +65441,14 @@ function ____exports.getAchievementsForRNG(self, rng)
     for ____, character in ipairs(unlockableCharacters) do
         local unlock = getUnlock(nil, UnlockType.CHARACTER, character)
         removeUnlock(nil, unlocks, unlock)
-        local lastCharacterObjectives = __TS__ArrayFilter(
-            objectives,
-            function(____, objective) return objective.type == ObjectiveType.CHARACTER and objective.character == lastUnlockedCharacter and BASIC_CHARACTER_OBJECTIVES:has(objective.kind) end
-        )
+        local lastCharacterObjectives = objectives:filter(function(____, objective) return objective.type == ObjectiveType.CHARACTER and objective.character == lastUnlockedCharacter and BASIC_CHARACTER_OBJECTIVES:has(objective.kind) end)
         local objective = getRandomArrayElement(nil, lastCharacterObjectives, rng)
         removeObjective(nil, objectives, objective)
         local objectiveID = getObjectiveID(nil, objective)
         objectiveToUnlockMap:set(objectiveID, unlock)
         lastUnlockedCharacter = character
     end
-    for ____, unlock in ipairs(unlocks) do
+    for ____, unlock in __TS__Iterator(unlocks) do
         local objective = getRandomArrayElementAndRemove(nil, objectives, rng)
         local objectiveID = getObjectiveID(nil, objective)
         objectiveToUnlockMap:set(objectiveID, unlock)
@@ -66489,6 +66481,7 @@ return ____exports
 local ____lualib = require("lualib_bundle")
 local Map = ____lualib.Map
 local __TS__New = ____lualib.__TS__New
+local __TS__Iterator = ____lualib.__TS__Iterator
 local ____exports = {}
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
 local QUALITIES = ____isaacscript_2Dcommon.QUALITIES
@@ -66498,9 +66491,9 @@ local ____cardQualities = require("src.objects.cardQualities")
 local CARD_QUALITIES = ____cardQualities.CARD_QUALITIES
 local QUALITY_TO_VANILLA_CARD_TYPES_MAP = (function()
     local qualityToCardTypesMap = __TS__New(Map)
-    for ____, quality in ipairs(QUALITIES) do
+    for ____, quality in __TS__Iterator(QUALITIES) do
         local cardTypes = {}
-        for ____, cardType in ipairs(VANILLA_CARD_TYPES) do
+        for ____, cardType in __TS__Iterator(VANILLA_CARD_TYPES) do
             local cardTypeQuality = CARD_QUALITIES[cardType]
             if cardTypeQuality == quality then
                 cardTypes[#cardTypes + 1] = cardType
@@ -66522,6 +66515,8 @@ end
 return ____exports
  end,
 ["src.arrays.pillEffectQualities"] = function(...) 
+local ____lualib = require("lualib_bundle")
+local __TS__Iterator = ____lualib.__TS__Iterator
 local ____exports = {}
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
 local ItemConfigPillEffectType = ____isaac_2Dtypescript_2Ddefinitions.ItemConfigPillEffectType
@@ -66535,7 +66530,7 @@ local PILL_EFFECT_TYPE_TO_QUALITY = {[ItemConfigPillEffectType.POSITIVE] = 2, [I
 -- enough pills per quality to make the N% threshold check provide enough variety.)
 ____exports.PILL_EFFECT_QUALITIES = (function()
     local pillEffectQualities = {}
-    for ____, pillEffect in ipairs(VANILLA_PILL_EFFECTS) do
+    for ____, pillEffect in __TS__Iterator(VANILLA_PILL_EFFECTS) do
         local pillEffectType = getPillEffectType(nil, pillEffect)
         pillEffectQualities[pillEffect] = PILL_EFFECT_TYPE_TO_QUALITY[pillEffectType]
     end
@@ -66745,6 +66740,7 @@ return ____exports
 local ____lualib = require("lualib_bundle")
 local __TS__New = ____lualib.__TS__New
 local Map = ____lualib.Map
+local __TS__Iterator = ____lualib.__TS__Iterator
 local ____exports = {}
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
 local CollectibleType = ____isaac_2Dtypescript_2Ddefinitions.CollectibleType
@@ -66774,9 +66770,9 @@ local ADJUSTED_QUALITY_4_COLLECTIBLES = __TS__New(ReadonlySet, {
 })
 local ADJUSTED_QUALITY_TO_VANILLA_COLLECTIBLE_TYPES_MAP = (function()
     local qualityToCollectibleTypesMap = __TS__New(Map)
-    for ____, quality in ipairs(QUALITIES) do
+    for ____, quality in __TS__Iterator(QUALITIES) do
         local collectibleTypes = {}
-        for ____, collectibleType in ipairs(VANILLA_COLLECTIBLE_TYPES) do
+        for ____, collectibleType in __TS__Iterator(VANILLA_COLLECTIBLE_TYPES) do
             do
                 if ADJUSTED_QUALITY_1_COLLECTIBLES:has(collectibleType) and quality ~= 1 or ADJUSTED_QUALITY_4_COLLECTIBLES:has(collectibleType) and quality ~= 4 then
                     goto __continue4
@@ -66794,7 +66790,13 @@ local ADJUSTED_QUALITY_TO_VANILLA_COLLECTIBLE_TYPES_MAP = (function()
 end)(nil)
 --- Some collectibles result in a won run and should be treated as maximum quality.
 function ____exports.getAdjustedCollectibleQuality(self, collectibleType)
-    return ADJUSTED_QUALITY_4_COLLECTIBLES:has(collectibleType) and MAX_QUALITY or getCollectibleQuality(nil, collectibleType)
+    local ____ADJUSTED_QUALITY_4_COLLECTIBLES_has_result_0
+    if ADJUSTED_QUALITY_4_COLLECTIBLES:has(collectibleType) then
+        ____ADJUSTED_QUALITY_4_COLLECTIBLES_has_result_0 = MAX_QUALITY
+    else
+        ____ADJUSTED_QUALITY_4_COLLECTIBLES_has_result_0 = getCollectibleQuality(nil, collectibleType)
+    end
+    return ____ADJUSTED_QUALITY_4_COLLECTIBLES_has_result_0
 end
 --- Some collectibles result in a won run and should be treated as maximum quality.
 function ____exports.getAdjustedCollectibleTypesOfQuality(self, quality)
@@ -66812,6 +66814,7 @@ return ____exports
 local ____lualib = require("lualib_bundle")
 local Map = ____lualib.Map
 local __TS__New = ____lualib.__TS__New
+local __TS__Iterator = ____lualib.__TS__Iterator
 local ____exports = {}
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
 local QUALITIES = ____isaacscript_2Dcommon.QUALITIES
@@ -66821,9 +66824,9 @@ local ____pillEffectQualities = require("src.arrays.pillEffectQualities")
 local PILL_EFFECT_QUALITIES = ____pillEffectQualities.PILL_EFFECT_QUALITIES
 local QUALITY_TO_VANILLA_PILL_EFFECTS_MAP = (function()
     local qualityToPillEffectsMap = __TS__New(Map)
-    for ____, quality in ipairs(QUALITIES) do
+    for ____, quality in __TS__Iterator(QUALITIES) do
         local pillEffects = {}
-        for ____, pillEffect in ipairs(VANILLA_PILL_EFFECTS) do
+        for ____, pillEffect in __TS__Iterator(VANILLA_PILL_EFFECTS) do
             local pillEffectQuality = PILL_EFFECT_QUALITIES[pillEffect]
             if pillEffectQuality == quality then
                 pillEffects[#pillEffects + 1] = pillEffect
@@ -66848,6 +66851,7 @@ return ____exports
 local ____lualib = require("lualib_bundle")
 local Map = ____lualib.Map
 local __TS__New = ____lualib.__TS__New
+local __TS__Iterator = ____lualib.__TS__Iterator
 local ____exports = {}
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
 local QUALITIES = ____isaacscript_2Dcommon.QUALITIES
@@ -66857,9 +66861,9 @@ local ____trinketQualities = require("src.objects.trinketQualities")
 local TRINKET_QUALITIES = ____trinketQualities.TRINKET_QUALITIES
 local QUALITY_TO_VANILLA_TRINKET_TYPES_MAP = (function()
     local qualityToTrinketTypesMap = __TS__New(Map)
-    for ____, quality in ipairs(QUALITIES) do
+    for ____, quality in __TS__Iterator(QUALITIES) do
         local trinketTypes = {}
-        for ____, trinketType in ipairs(VANILLA_TRINKET_TYPES) do
+        for ____, trinketType in __TS__Iterator(VANILLA_TRINKET_TYPES) do
             local trinketTypeQuality = TRINKET_QUALITIES[trinketType]
             if trinketTypeQuality == quality then
                 trinketTypes[#trinketTypes + 1] = trinketType
@@ -66885,6 +66889,7 @@ local ____lualib = require("lualib_bundle")
 local __TS__ArrayIncludes = ____lualib.__TS__ArrayIncludes
 local __TS__ArraySome = ____lualib.__TS__ArraySome
 local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
+local __TS__Iterator = ____lualib.__TS__Iterator
 local __TS__ArrayIndexOf = ____lualib.__TS__ArrayIndexOf
 local ____exports = {}
 local getUnlockedCollectibleTypes
@@ -66901,6 +66906,7 @@ local getRandomArrayElement = ____isaacscript_2Dcommon.getRandomArrayElement
 local includes = ____isaacscript_2Dcommon.includes
 local isActiveCollectible = ____isaacscript_2Dcommon.isActiveCollectible
 local isCard = ____isaacscript_2Dcommon.isCard
+local isFamiliarCollectible = ____isaacscript_2Dcommon.isFamiliarCollectible
 local isHiddenCollectible = ____isaacscript_2Dcommon.isHiddenCollectible
 local isPassiveOrFamiliarCollectible = ____isaacscript_2Dcommon.isPassiveOrFamiliarCollectible
 local isRune = ____isaacscript_2Dcommon.isRune
@@ -66952,7 +66958,15 @@ function getUnlockedCollectibleTypes(self, forRun)
     return filterMap(
         nil,
         array,
-        function(____, unlock) return unlock.type == UnlockType.COLLECTIBLE and unlock.collectibleType or nil end
+        function(____, unlock)
+            local ____temp_0
+            if unlock.type == UnlockType.COLLECTIBLE then
+                ____temp_0 = unlock.collectibleType
+            else
+                ____temp_0 = nil
+            end
+            return ____temp_0
+        end
     )
 end
 local QUALITY_THRESHOLD_PERCENT = 0.5
@@ -67035,10 +67049,17 @@ function ____exports.isActiveCollectibleUnlocked(self, forRun)
         function(____, collectibleType) return isActiveCollectible(nil, collectibleType) end
     )
 end
+function ____exports.isFamiliarCollectibleUnlocked(self, forRun)
+    local collectibleTypes = getUnlockedCollectibleTypes(nil, forRun)
+    return __TS__ArraySome(
+        collectibleTypes,
+        function(____, collectibleType) return isFamiliarCollectible(nil, collectibleType) end
+    )
+end
 function ____exports.getWorseLockedCollectibleType(self, collectibleType)
     assertNotNull(nil, v.persistent.seed, "Failed to get a worse collectible type since the seed was null.")
     local quality = getAdjustedCollectibleQuality(nil, collectibleType)
-    for ____, lowerQualityInt in ipairs(eRange(nil, quality)) do
+    for ____, lowerQualityInt in __TS__Iterator(eRange(nil, quality)) do
         local lowerQuality = lowerQualityInt
         local lowerQualityCollectibleTypes = getAdjustedCollectibleTypesOfQuality(nil, lowerQuality)
         local unlockedLowerQualityCollectibleTypes = __TS__ArrayFilter(
@@ -67076,13 +67097,21 @@ function ____exports.getUnlockedTrinketTypes(self)
     return filterMap(
         nil,
         v.persistent.completedUnlocksForRun,
-        function(____, unlock) return unlock.type == UnlockType.TRINKET and unlock.trinketType or nil end
+        function(____, unlock)
+            local ____temp_1
+            if unlock.type == UnlockType.TRINKET then
+                ____temp_1 = unlock.trinketType
+            else
+                ____temp_1 = nil
+            end
+            return ____temp_1
+        end
     )
 end
 function ____exports.getWorseLockedTrinketType(self, trinketType)
     assertNotNull(nil, v.persistent.seed, "Failed to get a worse trinket type since the seed was null.")
     local quality = TRINKET_QUALITIES[trinketType]
-    for ____, lowerQualityInt in ipairs(eRange(nil, quality)) do
+    for ____, lowerQualityInt in __TS__Iterator(eRange(nil, quality)) do
         local lowerQuality = lowerQualityInt
         local lowerQualityTrinketTypes = getTrinketTypesOfQuality(nil, lowerQuality)
         local unlockedLowerQualityTrinketTypes = __TS__ArrayFilter(
@@ -67134,13 +67163,21 @@ function ____exports.getUnlockedCardTypes(self)
     return filterMap(
         nil,
         v.persistent.completedUnlocksForRun,
-        function(____, unlock) return unlock.type == UnlockType.CARD and unlock.cardType or nil end
+        function(____, unlock)
+            local ____temp_2
+            if unlock.type == UnlockType.CARD then
+                ____temp_2 = unlock.cardType
+            else
+                ____temp_2 = nil
+            end
+            return ____temp_2
+        end
     )
 end
 function ____exports.getWorseLockedCardType(self, cardType)
     assertNotNull(nil, v.persistent.seed, "Failed to get a worse card type since the seed was null.")
     local quality = CARD_QUALITIES[cardType]
-    for ____, lowerQualityInt in ipairs(eRange(nil, quality)) do
+    for ____, lowerQualityInt in __TS__Iterator(eRange(nil, quality)) do
         local lowerQuality = lowerQualityInt
         local lowerQualityCardTypes = getCardTypesOfQuality(nil, lowerQuality)
         local unlockedLowerQualityCardTypes = __TS__ArrayFilter(
@@ -67189,13 +67226,21 @@ function ____exports.getUnlockedPillEffects(self)
     return filterMap(
         nil,
         v.persistent.completedUnlocksForRun,
-        function(____, unlock) return unlock.type == UnlockType.PILL_EFFECT and unlock.pillEffect or nil end
+        function(____, unlock)
+            local ____temp_3
+            if unlock.type == UnlockType.PILL_EFFECT then
+                ____temp_3 = unlock.pillEffect
+            else
+                ____temp_3 = nil
+            end
+            return ____temp_3
+        end
     )
 end
 function ____exports.getWorseLockedPillEffect(self, pillEffect)
     assertNotNull(nil, v.persistent.seed, "Failed to get a worse pill effect since the seed was null.")
     local quality = PILL_EFFECT_QUALITIES[pillEffect]
-    for ____, lowerQualityInt in ipairs(eRange(nil, quality)) do
+    for ____, lowerQualityInt in __TS__Iterator(eRange(nil, quality)) do
         local lowerQuality = lowerQualityInt
         local lowerQualityPillEffects = getPillEffectsOfQuality(nil, lowerQuality)
         local unlockedLowerQualityPillEffects = __TS__ArrayFilter(
@@ -67227,8 +67272,8 @@ function ____exports.getWorseLockedHeartSubType(self, heartSubType)
     if quality == -1 then
         error("Failed to get the quality for heart sub-type: " .. tostring(heartSubType))
     end
-    for ____, lowerQuality in ipairs(eRange(nil, quality)) do
-        local lowerQualityHeartSubType = UNLOCKABLE_HEART_SUB_TYPES[lowerQuality + 1]
+    for ____, lowerQuality in __TS__Iterator(eRange(nil, quality)) do
+        local lowerQualityHeartSubType = UNLOCKABLE_HEART_SUB_TYPES[lowerQuality]
         if lowerQualityHeartSubType ~= nil and not ____exports.isHeartSubTypeUnlocked(nil, lowerQualityHeartSubType, false) then
             return lowerQualityHeartSubType
         end
@@ -67250,8 +67295,8 @@ function ____exports.getWorseLockedCoinSubType(self, coinSubType)
     if quality == -1 then
         error("Failed to get the quality for coin sub-type: " .. tostring(coinSubType))
     end
-    for ____, lowerQuality in ipairs(eRange(nil, quality)) do
-        local lowerQualityCoinSubType = UNLOCKABLE_COIN_SUB_TYPES[lowerQuality + 1]
+    for ____, lowerQuality in __TS__Iterator(eRange(nil, quality)) do
+        local lowerQualityCoinSubType = UNLOCKABLE_COIN_SUB_TYPES[lowerQuality]
         if lowerQualityCoinSubType ~= nil and not ____exports.isCoinSubTypeUnlocked(nil, lowerQualityCoinSubType, false) then
             return lowerQualityCoinSubType
         end
@@ -67273,8 +67318,8 @@ function ____exports.getWorseLockedBombSubType(self, bombSubType)
     if quality == -1 then
         error("Failed to get the quality for bomb sub-type: " .. tostring(bombSubType))
     end
-    for ____, lowerQuality in ipairs(eRange(nil, quality)) do
-        local lowerQualityBombSubType = UNLOCKABLE_BOMB_SUB_TYPES[lowerQuality + 1]
+    for ____, lowerQuality in __TS__Iterator(eRange(nil, quality)) do
+        local lowerQualityBombSubType = UNLOCKABLE_BOMB_SUB_TYPES[lowerQuality]
         if lowerQualityBombSubType ~= nil and not ____exports.isBombSubTypeUnlocked(nil, lowerQualityBombSubType, false) then
             return lowerQualityBombSubType
         end
@@ -67296,8 +67341,8 @@ function ____exports.getWorseLockedKeySubType(self, keySubType)
     if quality == -1 then
         error("Failed to get the quality for key sub-type: " .. tostring(keySubType))
     end
-    for ____, lowerQuality in ipairs(eRange(nil, quality)) do
-        local lowerQualityKeySubType = UNLOCKABLE_KEY_SUB_TYPES[lowerQuality + 1]
+    for ____, lowerQuality in __TS__Iterator(eRange(nil, quality)) do
+        local lowerQualityKeySubType = UNLOCKABLE_KEY_SUB_TYPES[lowerQuality]
         if lowerQualityKeySubType ~= nil and not ____exports.isKeySubTypeUnlocked(nil, lowerQualityKeySubType, false) then
             return lowerQualityKeySubType
         end
@@ -67319,8 +67364,8 @@ function ____exports.getWorseLockedBatterySubType(self, batterySubType)
     if quality == -1 then
         error("Failed to get the quality for battery sub-type: " .. tostring(batterySubType))
     end
-    for ____, lowerQuality in ipairs(eRange(nil, quality)) do
-        local lowerQualityBatterySubType = UNLOCKABLE_BATTERY_SUB_TYPES[lowerQuality + 1]
+    for ____, lowerQuality in __TS__Iterator(eRange(nil, quality)) do
+        local lowerQualityBatterySubType = UNLOCKABLE_BATTERY_SUB_TYPES[lowerQuality]
         if lowerQualityBatterySubType ~= nil and not ____exports.isBatterySubTypeUnlocked(nil, lowerQualityBatterySubType, false) then
             return lowerQualityBatterySubType
         end
@@ -67342,8 +67387,8 @@ function ____exports.getWorseLockedSackSubType(self, sackSubType)
     if quality == -1 then
         error("Failed to get the quality for battery sub-type: " .. tostring(sackSubType))
     end
-    for ____, lowerQuality in ipairs(eRange(nil, quality)) do
-        local lowerQualitySackSubType = UNLOCKABLE_SACK_SUB_TYPES[lowerQuality + 1]
+    for ____, lowerQuality in __TS__Iterator(eRange(nil, quality)) do
+        local lowerQualitySackSubType = UNLOCKABLE_SACK_SUB_TYPES[lowerQuality]
         if lowerQualitySackSubType ~= nil and not ____exports.isSackSubTypeUnlocked(nil, lowerQualitySackSubType, false) then
             return lowerQualitySackSubType
         end
@@ -67365,8 +67410,8 @@ function ____exports.getWorseLockedChestPickupVariant(self, pickupVariant)
     if quality == -1 then
         error("Failed to get the quality for chest pickup variant: " .. tostring(pickupVariant))
     end
-    for ____, lowerQuality in ipairs(eRange(nil, quality)) do
-        local lowerQualityChestPickupVariant = UNLOCKABLE_CHEST_PICKUP_VARIANTS[lowerQuality + 1]
+    for ____, lowerQuality in __TS__Iterator(eRange(nil, quality)) do
+        local lowerQualityChestPickupVariant = UNLOCKABLE_CHEST_PICKUP_VARIANTS[lowerQuality]
         if lowerQualityChestPickupVariant ~= nil and not ____exports.isChestPickupVariantUnlocked(nil, lowerQualityChestPickupVariant, false) then
             return lowerQualityChestPickupVariant
         end
@@ -67408,7 +67453,7 @@ local __TS__ArrayJoin = ____lualib.__TS__ArrayJoin
 local __TS__New = ____lualib.__TS__New
 local __TS__Iterator = ____lualib.__TS__Iterator
 local ____exports = {}
-local getSwappedUnlock, getSwappedUnlockPath, getSwappedUnlockAltFloor, getSwappedUnlockChallenge, getSwappedUnlockCollectible, getSwappedUnlockTrinket, getSwappedUnlockCard, getSwappedUnlockPillEffect, getSwappedUnlockHeart, getSwappedUnlockCoin, getSwappedUnlockBomb, getSwappedUnlockKey, getSwappedUnlockBattery, getSwappedUnlockSack, getSwappedUnlockChest, getSwappedUnlockSlot, swapAnyRoomUnlock, getRandomTrinketUnlock, getRandomCardUnlock, getRandomPillEffectUnlock, findObjectiveIDForUnlock, SWAPPED_UNLOCK_FUNCTIONS, SWAPPED_UNLOCK_PATH_FUNCTIONS, SWAPPED_UNLOCK_ALT_FLOOR_FUNCTIONS, CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP, SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS, SWAPPED_UNLOCK_TRINKET_FUNCTIONS, SWAPPED_UNLOCK_CARD_FUNCTIONS
+local getSwappedUnlock, getSwappedUnlockPath, getSwappedUnlockAltFloor, getSwappedUnlockChallenge, getSwappedUnlockCollectible, getSwappedUnlockTrinket, getSwappedUnlockCard, getSwappedUnlockPillEffect, getSwappedUnlockHeart, getSwappedUnlockCoin, getSwappedUnlockBomb, getSwappedUnlockKey, getSwappedUnlockBattery, getSwappedUnlockSack, getSwappedUnlockChest, getSwappedUnlockSlot, swapAnyRoomUnlock, getRandomActiveCollectibleUnlock, getRandomFamiliarCollectibleUnlock, getRandomTrinketUnlock, getRandomCardUnlock, getRandomPillEffectUnlock, findObjectiveIDForUnlock, SWAPPED_UNLOCK_FUNCTIONS, SWAPPED_UNLOCK_PATH_FUNCTIONS, SWAPPED_UNLOCK_ALT_FLOOR_FUNCTIONS, CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP, SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS, SWAPPED_UNLOCK_TRINKET_FUNCTIONS, SWAPPED_UNLOCK_CARD_FUNCTIONS
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
 local BatterySubType = ____isaac_2Dtypescript_2Ddefinitions.BatterySubType
 local BombSubType = ____isaac_2Dtypescript_2Ddefinitions.BombSubType
@@ -67439,6 +67484,7 @@ local ____unlockableCardTypes = require("src.arrays.unlockableCardTypes")
 local UNLOCKABLE_CARD_TYPES = ____unlockableCardTypes.UNLOCKABLE_CARD_TYPES
 local ____unlockableCollectibleTypes = require("src.arrays.unlockableCollectibleTypes")
 local UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES = ____unlockableCollectibleTypes.UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES
+local UNLOCKABLE_FAMILIAR_COLLECTIBLE_TYPES = ____unlockableCollectibleTypes.UNLOCKABLE_FAMILIAR_COLLECTIBLE_TYPES
 local ____unlockablePillEffects = require("src.arrays.unlockablePillEffects")
 local UNLOCKABLE_PILL_EFFECTS = ____unlockablePillEffects.UNLOCKABLE_PILL_EFFECTS
 local ____unlockableRoomTypes = require("src.arrays.unlockableRoomTypes")
@@ -67566,7 +67612,7 @@ function getSwappedUnlockChallenge(self, unlock)
     if requiredCollectibleTypes ~= nil then
         assertNotNull(nil, v.persistent.seed, "Failed to swap achievements due to the seed being null.")
         local shuffledCollectibleTypes = shuffleArray(nil, requiredCollectibleTypes, v.persistent.seed)
-        for ____, collectibleType in ipairs(shuffledCollectibleTypes) do
+        for ____, collectibleType in __TS__Iterator(shuffledCollectibleTypes) do
             if not isCollectibleTypeUnlocked(nil, collectibleType, false) then
                 return getUnlock(nil, UnlockType.COLLECTIBLE, collectibleType)
             end
@@ -67621,13 +67667,13 @@ function getSwappedUnlockTrinket(self, unlock)
         end
     end
     local func = SWAPPED_UNLOCK_TRINKET_FUNCTIONS:get(trinketUnlock.trinketType)
-    local ____temp_41
+    local ____temp_45
     if func == nil then
-        ____temp_41 = nil
+        ____temp_45 = nil
     else
-        ____temp_41 = func(nil)
+        ____temp_45 = func(nil)
     end
-    return ____temp_41
+    return ____temp_45
 end
 function getSwappedUnlockCard(self, unlock)
     local cardUnlock = unlock
@@ -67641,13 +67687,13 @@ function getSwappedUnlockCard(self, unlock)
         end
     end
     local func = SWAPPED_UNLOCK_CARD_FUNCTIONS:get(cardUnlock.cardType)
-    local ____temp_52
+    local ____temp_56
     if func == nil then
-        ____temp_52 = nil
+        ____temp_56 = nil
     else
-        ____temp_52 = func(nil)
+        ____temp_56 = func(nil)
     end
-    return ____temp_52
+    return ____temp_56
 end
 function getSwappedUnlockPillEffect(self, unlock)
     local pillEffectUnlock = unlock
@@ -67730,23 +67776,33 @@ function getSwappedUnlockChest(self, unlock)
     return nil
 end
 function getSwappedUnlockSlot(self)
-    local ____isRoomTypeUnlocked_result_53
+    local ____isRoomTypeUnlocked_result_57
     if isRoomTypeUnlocked(nil, RoomType.ARCADE, false) then
-        ____isRoomTypeUnlocked_result_53 = nil
+        ____isRoomTypeUnlocked_result_57 = nil
     else
-        ____isRoomTypeUnlocked_result_53 = getUnlock(nil, UnlockType.ROOM, RoomType.ARCADE)
+        ____isRoomTypeUnlocked_result_57 = getUnlock(nil, UnlockType.ROOM, RoomType.ARCADE)
     end
-    return ____isRoomTypeUnlocked_result_53
+    return ____isRoomTypeUnlocked_result_57
 end
 function swapAnyRoomUnlock(self)
     assertNotNull(nil, v.persistent.seed, "Failed to swap achievements due to the seed being null.")
     local shuffledRoomTypes = shuffleArray(nil, UNLOCKABLE_ROOM_TYPES, v.persistent.seed)
-    for ____, roomType in ipairs(shuffledRoomTypes) do
+    for ____, roomType in __TS__Iterator(shuffledRoomTypes) do
         if not isRoomTypeUnlocked(nil, roomType, false) then
             return getUnlock(nil, UnlockType.ROOM, roomType)
         end
     end
     return nil
+end
+function getRandomActiveCollectibleUnlock(self)
+    assertNotNull(nil, v.persistent.seed, "Failed to get a random active collectible since the seed was null.")
+    local collectibleType = getRandomArrayElement(nil, UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES, v.persistent.seed)
+    return getUnlock(nil, UnlockType.COLLECTIBLE, collectibleType)
+end
+function getRandomFamiliarCollectibleUnlock(self)
+    assertNotNull(nil, v.persistent.seed, "Failed to get a random familiar collectible since the seed was null.")
+    local collectibleType = getRandomArrayElement(nil, UNLOCKABLE_FAMILIAR_COLLECTIBLE_TYPES, v.persistent.seed)
+    return getUnlock(nil, UnlockType.COLLECTIBLE, collectibleType)
 end
 function getRandomTrinketUnlock(self)
     local trinketTypes = isHardcoreMode(nil) and getTrinketTypesOfQuality(nil, 0) or UNLOCKABLE_TRINKET_TYPES
@@ -67767,9 +67823,9 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
     for ____, entries in __TS__Iterator(v.persistent.objectiveToUnlockMap) do
         local objectiveID, unlock = table.unpack(entries)
         repeat
-            local ____switch125 = unlock.type
-            local ____cond125 = ____switch125 == UnlockType.CHARACTER
-            if ____cond125 then
+            local ____switch129 = unlock.type
+            local ____cond129 = ____switch129 == UnlockType.CHARACTER
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.character == unlockToMatch.character then
                         return objectiveID
@@ -67777,8 +67833,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.PATH
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.PATH
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.unlockablePath == unlockToMatch.unlockablePath then
                         return objectiveID
@@ -67786,8 +67842,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.ALT_FLOOR
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.ALT_FLOOR
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.altFloor == unlockToMatch.altFloor then
                         return objectiveID
@@ -67795,8 +67851,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.ROOM
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.ROOM
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.roomType == unlockToMatch.roomType then
                         return objectiveID
@@ -67804,8 +67860,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.CHALLENGE
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.CHALLENGE
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.challenge == unlockToMatch.challenge then
                         return objectiveID
@@ -67813,8 +67869,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.COLLECTIBLE
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.COLLECTIBLE
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.collectibleType == unlockToMatch.collectibleType then
                         return objectiveID
@@ -67822,8 +67878,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.TRINKET
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.TRINKET
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.trinketType == unlockToMatch.trinketType then
                         return objectiveID
@@ -67831,8 +67887,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.CARD
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.CARD
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.cardType == unlockToMatch.cardType then
                         return objectiveID
@@ -67840,8 +67896,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.PILL_EFFECT
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.PILL_EFFECT
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.pillEffect == unlockToMatch.pillEffect then
                         return objectiveID
@@ -67849,8 +67905,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.HEART
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.HEART
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.heartSubType == unlockToMatch.heartSubType then
                         return objectiveID
@@ -67858,8 +67914,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.COIN
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.COIN
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.coinSubType == unlockToMatch.coinSubType then
                         return objectiveID
@@ -67867,8 +67923,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.BOMB
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.BOMB
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.bombSubType == unlockToMatch.bombSubType then
                         return objectiveID
@@ -67876,8 +67932,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.KEY
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.KEY
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.keySubType == unlockToMatch.keySubType then
                         return objectiveID
@@ -67885,8 +67941,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.BATTERY
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.BATTERY
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.batterySubType == unlockToMatch.batterySubType then
                         return objectiveID
@@ -67894,8 +67950,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.SACK
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.SACK
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.sackSubType == unlockToMatch.sackSubType then
                         return objectiveID
@@ -67903,8 +67959,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.CHEST
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.CHEST
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.pickupVariant == unlockToMatch.pickupVariant then
                         return objectiveID
@@ -67912,8 +67968,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.SLOT
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.SLOT
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.slotVariant == unlockToMatch.slotVariant then
                         return objectiveID
@@ -67921,8 +67977,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.GRID_ENTITY
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.GRID_ENTITY
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.gridEntityType == unlockToMatch.gridEntityType then
                         return objectiveID
@@ -67930,8 +67986,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond125 = ____cond125 or ____switch125 == UnlockType.OTHER
-            if ____cond125 then
+            ____cond129 = ____cond129 or ____switch129 == UnlockType.OTHER
+            if ____cond129 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.kind == unlockToMatch.kind then
                         return objectiveID
@@ -67960,19 +68016,19 @@ function ____exports.checkSwapProblematicAchievement(self, unlock, objectiveID, 
     v.persistent.objectiveToUnlockMap:set(objectiveID, swappedUnlock)
     v.persistent.objectiveToUnlockMap:set(swappedObjectiveID, unlock)
     if not emulating then
-        log("Swapped objectives:")
+        log(nil, "Swapped objectives:")
         local objective1 = getObjectiveFromID(nil, objectiveID)
         local objective1Text = table.concat(
             getObjectiveText(nil, objective1),
             " "
         )
-        log("1) " .. objective1Text)
+        log(nil, "1) " .. objective1Text)
         local objective2 = getObjectiveFromID(nil, swappedObjectiveID)
         local objective2Text = table.concat(
             getObjectiveText(nil, objective2),
             " "
         )
-        log("2) " .. objective2Text)
+        log(nil, "2) " .. objective2Text)
     end
     return swappedUnlock
 end
@@ -68312,7 +68368,7 @@ SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = __TS__New(
             function()
                 assertNotNull(nil, v.persistent.seed, "Failed to swap achievements due to the seed being null.")
                 local shuffledAltFloors = shuffleArray(nil, ALT_FLOORS, v.persistent.seed)
-                for ____, altFloor in ipairs(shuffledAltFloors) do
+                for ____, altFloor in __TS__Iterator(shuffledAltFloors) do
                     if not isAltFloorUnlocked(nil, altFloor, false) then
                         return getUnlock(nil, UnlockType.ALT_FLOOR, altFloor)
                     end
@@ -68462,62 +68518,99 @@ SWAPPED_UNLOCK_TRINKET_FUNCTIONS = __TS__New(
             end
         },
         {
+            TrinketType.BABY_BENDER,
+            function()
+                local ____isActiveCollectibleUnlocked_result_37
+                if isActiveCollectibleUnlocked(nil, false) then
+                    ____isActiveCollectibleUnlocked_result_37 = nil
+                else
+                    ____isActiveCollectibleUnlocked_result_37 = getRandomFamiliarCollectibleUnlock(nil)
+                end
+                return ____isActiveCollectibleUnlocked_result_37
+            end
+        },
+        {
             TrinketType.BLESSED_PENNY,
             function()
-                local ____isHeartSubTypeUnlocked_result_37
+                local ____isHeartSubTypeUnlocked_result_38
                 if isHeartSubTypeUnlocked(nil, HeartSubType.HALF_SOUL, false) then
-                    ____isHeartSubTypeUnlocked_result_37 = nil
+                    ____isHeartSubTypeUnlocked_result_38 = nil
                 else
-                    ____isHeartSubTypeUnlocked_result_37 = getUnlock(nil, UnlockType.HEART, HeartSubType.HALF_SOUL)
+                    ____isHeartSubTypeUnlocked_result_38 = getUnlock(nil, UnlockType.HEART, HeartSubType.HALF_SOUL)
                 end
-                return ____isHeartSubTypeUnlocked_result_37
+                return ____isHeartSubTypeUnlocked_result_38
+            end
+        },
+        {
+            TrinketType.FORGOTTEN_LULLABY,
+            function()
+                local ____isActiveCollectibleUnlocked_result_39
+                if isActiveCollectibleUnlocked(nil, false) then
+                    ____isActiveCollectibleUnlocked_result_39 = nil
+                else
+                    ____isActiveCollectibleUnlocked_result_39 = getRandomFamiliarCollectibleUnlock(nil)
+                end
+                return ____isActiveCollectibleUnlocked_result_39
             end
         },
         {
             TrinketType.GILDED_KEY,
             function()
-                local ____isChestPickupVariantUnlocked_result_38
+                local ____isChestPickupVariantUnlocked_result_40
                 if isChestPickupVariantUnlocked(nil, PickupVariant.LOCKED_CHEST, false) then
-                    ____isChestPickupVariantUnlocked_result_38 = nil
+                    ____isChestPickupVariantUnlocked_result_40 = nil
                 else
-                    ____isChestPickupVariantUnlocked_result_38 = getUnlock(nil, UnlockType.CHEST, PickupVariant.LOCKED_CHEST)
+                    ____isChestPickupVariantUnlocked_result_40 = getUnlock(nil, UnlockType.CHEST, PickupVariant.LOCKED_CHEST)
                 end
-                return ____isChestPickupVariantUnlocked_result_38
+                return ____isChestPickupVariantUnlocked_result_40
             end
         },
         {
             TrinketType.HOLLOW_HEART,
             function()
-                local ____isHeartSubTypeUnlocked_result_39
+                local ____isHeartSubTypeUnlocked_result_41
                 if isHeartSubTypeUnlocked(nil, HeartSubType.BONE, false) then
-                    ____isHeartSubTypeUnlocked_result_39 = nil
+                    ____isHeartSubTypeUnlocked_result_41 = nil
                 else
-                    ____isHeartSubTypeUnlocked_result_39 = getUnlock(nil, UnlockType.HEART, HeartSubType.BONE)
+                    ____isHeartSubTypeUnlocked_result_41 = getUnlock(nil, UnlockType.HEART, HeartSubType.BONE)
                 end
-                return ____isHeartSubTypeUnlocked_result_39
+                return ____isHeartSubTypeUnlocked_result_41
             end
         },
         {
             TrinketType.STRANGE_KEY,
             function()
-                local ____isPathUnlocked_result_40
+                local ____isPathUnlocked_result_42
                 if isPathUnlocked(nil, UnlockablePath.BLUE_WOMB, false) then
-                    ____isPathUnlocked_result_40 = nil
+                    ____isPathUnlocked_result_42 = nil
                 else
-                    ____isPathUnlocked_result_40 = getUnlock(nil, UnlockType.PATH, UnlockablePath.BLUE_WOMB)
+                    ____isPathUnlocked_result_42 = getUnlock(nil, UnlockType.PATH, UnlockablePath.BLUE_WOMB)
                 end
-                return ____isPathUnlocked_result_40
+                return ____isPathUnlocked_result_42
+            end
+        },
+        {
+            TrinketType.RC_REMOTE,
+            function()
+                local ____isActiveCollectibleUnlocked_result_43
+                if isActiveCollectibleUnlocked(nil, false) then
+                    ____isActiveCollectibleUnlocked_result_43 = nil
+                else
+                    ____isActiveCollectibleUnlocked_result_43 = getRandomFamiliarCollectibleUnlock(nil)
+                end
+                return ____isActiveCollectibleUnlocked_result_43
             end
         },
         {
             TrinketType.EXPANSION_PACK,
             function()
+                local ____isActiveCollectibleUnlocked_result_44
                 if isActiveCollectibleUnlocked(nil, false) then
-                    return nil
+                    ____isActiveCollectibleUnlocked_result_44 = nil
+                else
+                    ____isActiveCollectibleUnlocked_result_44 = getRandomActiveCollectibleUnlock(nil)
                 end
-                assertNotNull(nil, v.persistent.seed, "Failed to get a random active collectible since the seed was null.")
-                local collectibleType = getRandomArrayElement(nil, UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES, v.persistent.seed)
-                return getUnlock(nil, UnlockType.COLLECTIBLE, collectibleType)
+                return ____isActiveCollectibleUnlocked_result_44
             end
         }
     }
@@ -68528,122 +68621,122 @@ SWAPPED_UNLOCK_CARD_FUNCTIONS = __TS__New(
         {
             CardType.HIEROPHANT,
             function()
-                local ____isHeartSubTypeUnlocked_result_42
-                if isHeartSubTypeUnlocked(nil, HeartSubType.SOUL, false) then
-                    ____isHeartSubTypeUnlocked_result_42 = nil
-                else
-                    ____isHeartSubTypeUnlocked_result_42 = getUnlock(nil, UnlockType.HEART, HeartSubType.SOUL)
-                end
-                return ____isHeartSubTypeUnlocked_result_42
-            end
-        },
-        {
-            CardType.WHEEL_OF_FORTUNE,
-            function()
-                local ____isSlotVariantUnlocked_result_43
-                if isSlotVariantUnlocked(nil, SlotVariant.SLOT_MACHINE, false) then
-                    ____isSlotVariantUnlocked_result_43 = nil
-                else
-                    ____isSlotVariantUnlocked_result_43 = getUnlock(nil, UnlockType.SLOT, SlotVariant.SLOT_MACHINE)
-                end
-                return ____isSlotVariantUnlocked_result_43
-            end
-        },
-        {
-            CardType.TEMPERANCE,
-            function()
-                local ____isSlotVariantUnlocked_result_44
-                if isSlotVariantUnlocked(nil, SlotVariant.BLOOD_DONATION_MACHINE, false) then
-                    ____isSlotVariantUnlocked_result_44 = nil
-                else
-                    ____isSlotVariantUnlocked_result_44 = getUnlock(nil, UnlockType.SLOT, SlotVariant.BLOOD_DONATION_MACHINE)
-                end
-                return ____isSlotVariantUnlocked_result_44
-            end
-        },
-        {
-            CardType.JUDGEMENT,
-            function()
-                local ____isSlotVariantUnlocked_result_45
-                if isSlotVariantUnlocked(nil, SlotVariant.BEGGAR, false) then
-                    ____isSlotVariantUnlocked_result_45 = nil
-                else
-                    ____isSlotVariantUnlocked_result_45 = getUnlock(nil, UnlockType.SLOT, SlotVariant.BEGGAR)
-                end
-                return ____isSlotVariantUnlocked_result_45
-            end
-        },
-        {
-            CardType.REVERSE_HIEROPHANT,
-            function()
                 local ____isHeartSubTypeUnlocked_result_46
-                if isHeartSubTypeUnlocked(nil, HeartSubType.BONE, false) then
+                if isHeartSubTypeUnlocked(nil, HeartSubType.SOUL, false) then
                     ____isHeartSubTypeUnlocked_result_46 = nil
                 else
-                    ____isHeartSubTypeUnlocked_result_46 = getUnlock(nil, UnlockType.HEART, HeartSubType.BONE)
+                    ____isHeartSubTypeUnlocked_result_46 = getUnlock(nil, UnlockType.HEART, HeartSubType.SOUL)
                 end
                 return ____isHeartSubTypeUnlocked_result_46
             end
         },
         {
+            CardType.WHEEL_OF_FORTUNE,
+            function()
+                local ____isSlotVariantUnlocked_result_47
+                if isSlotVariantUnlocked(nil, SlotVariant.SLOT_MACHINE, false) then
+                    ____isSlotVariantUnlocked_result_47 = nil
+                else
+                    ____isSlotVariantUnlocked_result_47 = getUnlock(nil, UnlockType.SLOT, SlotVariant.SLOT_MACHINE)
+                end
+                return ____isSlotVariantUnlocked_result_47
+            end
+        },
+        {
+            CardType.TEMPERANCE,
+            function()
+                local ____isSlotVariantUnlocked_result_48
+                if isSlotVariantUnlocked(nil, SlotVariant.BLOOD_DONATION_MACHINE, false) then
+                    ____isSlotVariantUnlocked_result_48 = nil
+                else
+                    ____isSlotVariantUnlocked_result_48 = getUnlock(nil, UnlockType.SLOT, SlotVariant.BLOOD_DONATION_MACHINE)
+                end
+                return ____isSlotVariantUnlocked_result_48
+            end
+        },
+        {
+            CardType.JUDGEMENT,
+            function()
+                local ____isSlotVariantUnlocked_result_49
+                if isSlotVariantUnlocked(nil, SlotVariant.BEGGAR, false) then
+                    ____isSlotVariantUnlocked_result_49 = nil
+                else
+                    ____isSlotVariantUnlocked_result_49 = getUnlock(nil, UnlockType.SLOT, SlotVariant.BEGGAR)
+                end
+                return ____isSlotVariantUnlocked_result_49
+            end
+        },
+        {
+            CardType.REVERSE_HIEROPHANT,
+            function()
+                local ____isHeartSubTypeUnlocked_result_50
+                if isHeartSubTypeUnlocked(nil, HeartSubType.BONE, false) then
+                    ____isHeartSubTypeUnlocked_result_50 = nil
+                else
+                    ____isHeartSubTypeUnlocked_result_50 = getUnlock(nil, UnlockType.HEART, HeartSubType.BONE)
+                end
+                return ____isHeartSubTypeUnlocked_result_50
+            end
+        },
+        {
             CardType.REVERSE_JUSTICE,
             function()
-                local ____isChestPickupVariantUnlocked_result_47
+                local ____isChestPickupVariantUnlocked_result_51
                 if isChestPickupVariantUnlocked(nil, PickupVariant.LOCKED_CHEST, false) then
-                    ____isChestPickupVariantUnlocked_result_47 = nil
+                    ____isChestPickupVariantUnlocked_result_51 = nil
                 else
-                    ____isChestPickupVariantUnlocked_result_47 = getUnlock(nil, UnlockType.CHEST, PickupVariant.LOCKED_CHEST)
+                    ____isChestPickupVariantUnlocked_result_51 = getUnlock(nil, UnlockType.CHEST, PickupVariant.LOCKED_CHEST)
                 end
-                return ____isChestPickupVariantUnlocked_result_47
+                return ____isChestPickupVariantUnlocked_result_51
             end
         },
         {
             CardType.REVERSE_TEMPERANCE,
             function()
-                local ____anyPillEffectsUnlocked_result_48
+                local ____anyPillEffectsUnlocked_result_52
                 if anyPillEffectsUnlocked(nil, false) then
-                    ____anyPillEffectsUnlocked_result_48 = nil
+                    ____anyPillEffectsUnlocked_result_52 = nil
                 else
-                    ____anyPillEffectsUnlocked_result_48 = getRandomPillEffectUnlock(nil)
+                    ____anyPillEffectsUnlocked_result_52 = getRandomPillEffectUnlock(nil)
                 end
-                return ____anyPillEffectsUnlocked_result_48
+                return ____anyPillEffectsUnlocked_result_52
             end
         },
         {
             CardType.REVERSE_TOWER,
             function()
-                local ____isGridEntityTypeUnlocked_result_49
+                local ____isGridEntityTypeUnlocked_result_53
                 if isGridEntityTypeUnlocked(nil, GridEntityType.ROCK_TINTED, false) then
-                    ____isGridEntityTypeUnlocked_result_49 = nil
+                    ____isGridEntityTypeUnlocked_result_53 = nil
                 else
-                    ____isGridEntityTypeUnlocked_result_49 = getUnlock(nil, UnlockType.GRID_ENTITY, GridEntityType.ROCK_TINTED)
+                    ____isGridEntityTypeUnlocked_result_53 = getUnlock(nil, UnlockType.GRID_ENTITY, GridEntityType.ROCK_TINTED)
                 end
-                return ____isGridEntityTypeUnlocked_result_49
+                return ____isGridEntityTypeUnlocked_result_53
             end
         },
         {CardType.REVERSE_MOON, swapAnyRoomUnlock},
         {
             CardType.REVERSE_JUDGEMENT,
             function()
-                local ____isSlotVariantUnlocked_result_50
+                local ____isSlotVariantUnlocked_result_54
                 if isSlotVariantUnlocked(nil, SlotVariant.SHOP_RESTOCK_MACHINE, false) then
-                    ____isSlotVariantUnlocked_result_50 = nil
+                    ____isSlotVariantUnlocked_result_54 = nil
                 else
-                    ____isSlotVariantUnlocked_result_50 = getUnlock(nil, UnlockType.SLOT, SlotVariant.SHOP_RESTOCK_MACHINE)
+                    ____isSlotVariantUnlocked_result_54 = getUnlock(nil, UnlockType.SLOT, SlotVariant.SHOP_RESTOCK_MACHINE)
                 end
-                return ____isSlotVariantUnlocked_result_50
+                return ____isSlotVariantUnlocked_result_54
             end
         },
         {
             CardType.REVERSE_WORLD,
             function()
-                local ____isGridEntityTypeUnlocked_result_51
+                local ____isGridEntityTypeUnlocked_result_55
                 if isGridEntityTypeUnlocked(nil, GridEntityType.CRAWL_SPACE, false) then
-                    ____isGridEntityTypeUnlocked_result_51 = nil
+                    ____isGridEntityTypeUnlocked_result_55 = nil
                 else
-                    ____isGridEntityTypeUnlocked_result_51 = getUnlock(nil, UnlockType.GRID_ENTITY, GridEntityType.CRAWL_SPACE)
+                    ____isGridEntityTypeUnlocked_result_55 = getUnlock(nil, UnlockType.GRID_ENTITY, GridEntityType.CRAWL_SPACE)
                 end
-                return ____isGridEntityTypeUnlocked_result_51
+                return ____isGridEntityTypeUnlocked_result_55
             end
         },
         {CardType.CRACKED_KEY, swapAnyRoomUnlock},
@@ -68700,7 +68793,7 @@ function ____exports.addObjective(self, objective, emulating)
             getObjectiveText(nil, objective),
             " "
         )
-        log("Accomplished objective: " .. objectiveText)
+        log(nil, "Accomplished objective: " .. objectiveText)
     end
     local objectiveID = getObjectiveID(nil, objective)
     local unlock = v.persistent.objectiveToUnlockMap:get(objectiveID)
@@ -68715,7 +68808,7 @@ function ____exports.addObjective(self, objective, emulating)
                     getUnlockText(nil, originalUnlock),
                     " - "
                 )
-                log("Checking unlock swap for: " .. unlockText)
+                log(nil, "Checking unlock swap for: " .. unlockText)
             end
             swappedUnlock = checkSwapProblematicAchievement(nil, originalUnlock, objectiveID, emulating)
             if not emulating then
@@ -68723,7 +68816,7 @@ function ____exports.addObjective(self, objective, emulating)
                     getUnlockText(nil, swappedUnlock),
                     " - "
                 )
-                log("Swapped unlock is: " .. unlockText)
+                log(nil, "Swapped unlock is: " .. unlockText)
             end
         end
     until not (getUnlockID(nil, originalUnlock) ~= getUnlockID(nil, swappedUnlock))
@@ -68734,7 +68827,7 @@ function ____exports.addObjective(self, objective, emulating)
             getUnlockText(nil, originalUnlock),
             " - "
         )
-        log("Granted unlock: " .. unlockText)
+        log(nil, "Granted unlock: " .. unlockText)
     end
     if emulating then
         local ____v_persistent_completedUnlocksForRun_2 = v.persistent.completedUnlocksForRun
@@ -68750,12 +68843,12 @@ local ____lualib = require("lualib_bundle")
 local __TS__Class = ____lualib.__TS__Class
 local __TS__ClassExtends = ____lualib.__TS__ClassExtends
 local __TS__DecorateLegacy = ____lualib.__TS__DecorateLegacy
+local __TS__Iterator = ____lualib.__TS__Iterator
 local Set = ____lualib.Set
 local __TS__New = ____lualib.__TS__New
 local __TS__ArrayMap = ____lualib.__TS__ArrayMap
 local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
 local __TS__ArrayEntries = ____lualib.__TS__ArrayEntries
-local __TS__Iterator = ____lualib.__TS__Iterator
 local ____exports = {}
 local isAchievementsBeatable, tryUnlockEverythingReachable, BOSS_STAGES
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
@@ -68840,7 +68933,10 @@ function isAchievementsBeatable(self)
     while #v.persistent.completedUnlocks < #ALL_UNLOCKS do
         local unlockedSomething = tryUnlockEverythingReachable(nil)
         if not unlockedSomething then
-            log((((("Failed to emulate beating seed " .. tostring(v.persistent.seed)) .. ": ") .. tostring(#v.persistent.completedUnlocks)) .. " / ") .. tostring(#ALL_UNLOCKS))
+            log(
+                nil,
+                (((("Failed to emulate beating seed " .. tostring(v.persistent.seed)) .. ": ") .. tostring(#v.persistent.completedUnlocks)) .. " / ") .. tostring(#ALL_UNLOCKS)
+            )
             return false
         end
     end
@@ -68848,7 +68944,7 @@ function isAchievementsBeatable(self)
 end
 function tryUnlockEverythingReachable(self)
     local unlockedSomething = false
-    for ____, character in ipairs(MAIN_CHARACTERS) do
+    for ____, character in __TS__Iterator(MAIN_CHARACTERS) do
         do
             if not isCharacterUnlocked(nil, character, false) then
                 goto __continue17
@@ -69001,7 +69097,10 @@ function AchievementRandomizer.prototype.checkGenerate(self)
     end
     renderFrameToTryGenerate = nil
     v.persistent.objectiveToUnlockMap = getAchievementsForRNG(nil, generatingRNG)
-    log((("Checking to see if randomizer seed " .. tostring(v.persistent.seed)) .. " is beatable. Attempt: #") .. tostring(numGenerationAttempts))
+    log(
+        nil,
+        (("Checking to see if randomizer seed " .. tostring(v.persistent.seed)) .. " is beatable. Attempt: #") .. tostring(numGenerationAttempts)
+    )
     if not isAchievementsBeatable(nil) then
         numGenerationAttempts = numGenerationAttempts + 1
         local renderFrameCount = Isaac.GetFrameCount()
@@ -69024,12 +69123,15 @@ function ____exports.isValidSituationForStartingRandomizer(self)
 end
 function ____exports.startRandomizer(self, randomizerMode, seed)
     v.persistent.randomizerMode = randomizerMode
-    log("Set new randomizer mode: " .. v.persistent.randomizerMode)
+    log(nil, "Set new randomizer mode: " .. v.persistent.randomizerMode)
     if seed == nil then
         seed = getRandomSeed(nil)
     end
     v.persistent.seed = seed
-    log("Set new randomizer seed: " .. tostring(v.persistent.seed))
+    log(
+        nil,
+        "Set new randomizer seed: " .. tostring(v.persistent.seed)
+    )
     local renderFrameCount = Isaac.GetFrameCount()
     generatingRNG = newRNG(nil, v.persistent.seed)
     renderFrameToTryGenerate = renderFrameCount + 1
@@ -69046,7 +69148,7 @@ function ____exports.endRandomizer(self)
     restart(nil, STARTING_CHARACTER)
 end
 local function _logMissingObjectives(self)
-    log("Missing objectives:")
+    log(nil, "Missing objectives:")
     local completedObjectiveIDs = __TS__ArrayMap(
         v.persistent.completedObjectives,
         function(____, objective) return getObjectiveID(nil, objective) end
@@ -69066,7 +69168,10 @@ local function _logMissingObjectives(self)
             getObjectiveText(nil, objective),
             " "
         )
-        log((tostring(i + 1) .. ") ") .. objectiveText)
+        log(
+            nil,
+            (tostring(i + 1) .. ") ") .. objectiveText
+        )
     end
 end
 return ____exports
@@ -69149,7 +69254,7 @@ function ____exports.setCharacterUnlocked(self, character)
     local objective = findObjectiveForCharacterUnlock(nil, character)
     if objective == nil then
         local characterName = getCharacterName(nil, character)
-        error("Failed to find the objective to unlock character: " .. characterName)
+        error("Failed to find the objective to unlock character: " .. tostring(characterName))
     end
     addObjective(nil, objective)
 end
@@ -69158,25 +69263,26 @@ function ____exports.setCollectibleUnlocked(self, collectibleType)
     local objective = findObjectiveForCollectibleUnlock(nil, collectibleType)
     if objective == nil then
         local collectibleName = getCollectibleName(nil, collectibleType)
-        error("Failed to find the objective to unlock character: " .. collectibleName)
+        error("Failed to find the objective to unlock character: " .. tostring(collectibleName))
     end
     addObjective(nil, objective)
 end
 function ____exports.logSpoilerLog(self)
     if v.persistent.seed == nil then
-        logError("The randomizer is not active, so you cannot make a spoiler log.")
+        logError(nil, "The randomizer is not active, so you cannot make a spoiler log.")
         return
     end
     local line = string.rep(
         "-",
         math.floor(40)
     )
-    log(line, false)
+    log(nil, line, false)
     log(
+        nil,
         "Spoiler log for randomizer seed: " .. tostring(v.persistent.seed),
         false
     )
-    log(line, false)
+    log(nil, line, false)
     for ____, ____value in __TS__Iterator(__TS__ArrayEntries(ALL_OBJECTIVES)) do
         local i = ____value[1]
         local objective = ____value[2]
@@ -69194,11 +69300,12 @@ function ____exports.logSpoilerLog(self)
             " - "
         )
         log(
+            nil,
             (((((tostring(i + 1) .. ") ") .. completedText) .. " ") .. objectiveText) .. " --> ") .. unlockText,
             false
         )
     end
-    log(line, false)
+    log(nil, line, false)
 end
 return ____exports
  end,
@@ -69278,7 +69385,7 @@ local hasErrors = ____v.hasErrors
 local v = ____v.v
 function checkAfterbirthPlus(self)
     if not isRepentance(nil) then
-        log("Error: Afterbirth+ detected.")
+        log(nil, "Error: Afterbirth+ detected.")
         v.run.afterbirthPlus = true
     end
 end
@@ -69286,17 +69393,23 @@ function checkIncompleteSave(self)
     local isCollectibleUnlocked = mod:isCollectibleUnlocked(INCOMPLETE_SAVE_COLLECTIBLE_TO_CHECK, INCOMPLETE_SAVE_ITEM_POOL_TO_CHECK)
     v.run.incompleteSave = not isCollectibleUnlocked
     if v.run.incompleteSave then
-        log(((((((("Error: Incomplete save file detected. Failed to get collectible " .. getCollectibleName(nil, INCOMPLETE_SAVE_COLLECTIBLE_TO_CHECK)) .. " (") .. tostring(INCOMPLETE_SAVE_COLLECTIBLE_TO_CHECK)) .. ") from pool ") .. ItemPoolType[INCOMPLETE_SAVE_ITEM_POOL_TO_CHECK]) .. " (") .. tostring(INCOMPLETE_SAVE_ITEM_POOL_TO_CHECK)) .. ").")
+        log(
+            nil,
+            ((((((("Error: Incomplete save file detected. Failed to get collectible " .. tostring(getCollectibleName(nil, INCOMPLETE_SAVE_COLLECTIBLE_TO_CHECK))) .. " (") .. tostring(INCOMPLETE_SAVE_COLLECTIBLE_TO_CHECK)) .. ") from pool ") .. ItemPoolType[INCOMPLETE_SAVE_ITEM_POOL_TO_CHECK]) .. " (") .. tostring(INCOMPLETE_SAVE_ITEM_POOL_TO_CHECK)) .. ")."
+        )
     end
 end
 function checkOtherModsEnabled(self)
     local lastCollectibleType = mod:getLastCollectibleType()
     if lastCollectibleType ~= LAST_VANILLA_COLLECTIBLE_TYPE then
-        log(((("Error: Other mods detected. (The highest collectible ID is " .. tostring(lastCollectibleType)) .. ", but it should be ") .. tostring(LAST_VANILLA_COLLECTIBLE_TYPE)) .. ".)")
+        log(
+            nil,
+            ((("Error: Other mods detected. (The highest collectible ID is " .. tostring(lastCollectibleType)) .. ", but it should be ") .. tostring(LAST_VANILLA_COLLECTIBLE_TYPE)) .. ".)"
+        )
         v.run.otherModsEnabled = true
     end
     if StageAPI ~= nil then
-        log("Error: StageAPI detected.")
+        log(nil, "Error: StageAPI detected.")
         v.run.otherModsEnabled = true
     end
 end
@@ -69305,25 +69418,25 @@ function checkNormalMode(self)
         return
     end
     if game.Difficulty == Difficulty.NORMAL then
-        log("Error: Normal mode (non-hard mode) detected.")
+        log(nil, "Error: Normal mode (non-hard mode) detected.")
         v.run.normalMode = true
     end
 end
 function checkNormalGreedMode(self)
     if game.Difficulty == Difficulty.GREED then
-        log("Error: Normal Greed Mode (non-Greedier mode) detected.")
+        log(nil, "Error: Normal Greed Mode (non-Greedier mode) detected.")
         v.run.normalGreedMode = true
     end
 end
 function checkEasterEggs(self)
     if anyEasterEggEnabled(nil) then
-        log("Error: Easter Egg detected.")
+        log(nil, "Error: Easter Egg detected.")
         v.run.hasEasterEggs = true
     end
 end
 function checkVictoryLap(self)
     if onVictoryLap(nil) then
-        log("Error: Victory Lap detected.")
+        log(nil, "Error: Victory Lap detected.")
         v.run.onVictoryLap = true
     end
 end
@@ -69331,7 +69444,10 @@ function checkCharacterUnlocked(self)
     local player = Isaac.GetPlayer()
     local character = player:GetPlayerType()
     if not isCharacterUnlocked(nil, character, false) then
-        log(((("Error: Locked character detected: " .. PlayerType[character]) .. " (") .. tostring(character)) .. ")")
+        log(
+            nil,
+            ((("Error: Locked character detected: " .. PlayerType[character]) .. " (") .. tostring(character)) .. ")"
+        )
         v.run.lockedCharacter = true
     end
 end
@@ -69339,13 +69455,16 @@ function checkChallengeUnlocked(self)
     local challenge = Isaac.GetChallenge()
     if not isChallengeUnlocked(nil, challenge, false) then
         local challengeName = getChallengeName(nil, challenge)
-        log(((("Error: Locked challenge detected: " .. challengeName) .. " (") .. tostring(challenge)) .. ")")
+        log(
+            nil,
+            ((("Error: Locked challenge detected: " .. tostring(challengeName)) .. " (") .. tostring(challenge)) .. ")"
+        )
         v.run.lockedChallenge = true
     end
 end
 function checkModeUnlocked(self)
     if game.Difficulty == Difficulty.GREEDIER and not isPathUnlocked(nil, UnlockablePath.GREED_MODE, false) then
-        log("Error: Locked Greed Mode detected.")
+        log(nil, "Error: Locked Greed Mode detected.")
         v.run.lockedMode = true
     end
 end
@@ -69388,7 +69507,7 @@ function CheckErrors.prototype.postRender(self)
         local player = Isaac.GetPlayer()
         local character = player:GetPlayerType()
         local characterName = getCharacterName(nil, character)
-        self:drawErrorText(("You have not unlocked " .. characterName) .. " yet.")
+        self:drawErrorText(("You have not unlocked " .. tostring(characterName)) .. " yet.")
     elseif v.run.lockedChallenge then
         self:drawErrorText("You have not unlocked this challenge yet.")
     elseif v.run.lockedMode then
@@ -69745,7 +69864,10 @@ function ForceSeeds.prototype.postGameStartedReorderedFalse(self)
     local newStartSeedString = getRandomizerRunSeedString(nil)
     if newStartSeedString ~= nil and oldStartSeedString ~= newStartSeedString then
         local numRuns = getPlaythroughNumCompletedRuns(nil)
-        log((("Incorrect seed for run #" .. tostring(numRuns)) .. ": ") .. oldStartSeedString)
+        log(
+            nil,
+            (("Incorrect seed for run #" .. tostring(numRuns)) .. ": ") .. tostring(oldStartSeedString)
+        )
         mod:runNextRenderFrame(function()
             preForcedRestart(nil)
             setRunSeed(nil, newStartSeedString)
@@ -70025,8 +70147,6 @@ local __TS__New = ____lualib.__TS__New
 local __TS__Class = ____lualib.__TS__Class
 local __TS__ClassExtends = ____lualib.__TS__ClassExtends
 local __TS__DecorateLegacy = ____lualib.__TS__DecorateLegacy
-local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
-local __TS__ArrayEvery = ____lualib.__TS__ArrayEvery
 local ____exports = {}
 local onFirstPhaseOfSatan, onFirstPhaseOfIsaacOrBlueBaby, onFirstPhaseOfHush, BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND, STAGE_TO_CHARACTER_OBJECTIVE_KIND, STAGE_TO_CHARACTER_OBJECTIVE_KIND_REPENTANCE, BOSSES_IN_BIG_ROOMS_SET, v
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
@@ -70171,7 +70291,7 @@ function ____exports.getSecondsSinceLastDamage(self)
             -1,
             true
         )
-        local numPieces = #bigPieces + #mediumPieces + #smallPieces
+        local numPieces = bigPieces.length + mediumPieces.length + smallPieces.length
         if numPieces < 4 then
             return
         end
@@ -70184,14 +70304,11 @@ function ____exports.getSecondsSinceLastDamage(self)
             -1,
             true
         )
-        local aliveBosses = __TS__ArrayFilter(
-            bosses,
-            function(____, boss) return not boss:IsDead() end
-        )
-        if #aliveBosses == 0 then
+        local aliveBosses = bosses:filter(function(____, boss) return not boss:IsDead() end)
+        if aliveBosses.length == 0 then
             return
         end
-        if entityType == EntityType.LOKI and variant == LokiVariant.LOKII and #aliveBosses < 2 then
+        if entityType == EntityType.LOKI and variant == LokiVariant.LOKII and aliveBosses.length < 2 then
             return
         end
     end
@@ -70207,13 +70324,10 @@ function onFirstPhaseOfSatan(self, bossID)
         return false
     end
     local satans = getNPCs(nil, EntityType.SATAN)
-    if #satans == 0 then
+    if satans.length == 0 then
         return false
     end
-    return __TS__ArrayEvery(
-        satans,
-        function(____, satan) return satan.State == NPCState.IDLE end
-    )
+    return satans:every(function(____, satan) return satan.State == NPCState.IDLE end)
 end
 function onFirstPhaseOfIsaacOrBlueBaby(self, bossID)
     return (bossID == BossID.ISAAC or bossID == BossID.BLUE_BABY) and v.room.onFirstPhaseOfIsaac
@@ -70226,7 +70340,13 @@ function ____exports.getCharacterObjectiveKindNoHit(self)
         return nil
     end
     local repentanceStage = onRepentanceStage(nil)
-    local stageToCharacterObjectiveKind = repentanceStage and STAGE_TO_CHARACTER_OBJECTIVE_KIND_REPENTANCE or STAGE_TO_CHARACTER_OBJECTIVE_KIND
+    local ____repentanceStage_0
+    if repentanceStage then
+        ____repentanceStage_0 = STAGE_TO_CHARACTER_OBJECTIVE_KIND_REPENTANCE
+    else
+        ____repentanceStage_0 = STAGE_TO_CHARACTER_OBJECTIVE_KIND
+    end
+    local stageToCharacterObjectiveKind = ____repentanceStage_0
     local level = game:GetLevel()
     local stage = level:GetStage()
     return stageToCharacterObjectiveKind:get(stage)
@@ -70579,6 +70699,7 @@ local ____lualib = require("lualib_bundle")
 local __TS__Class = ____lualib.__TS__Class
 local __TS__ClassExtends = ____lualib.__TS__ClassExtends
 local __TS__DecorateLegacy = ____lualib.__TS__DecorateLegacy
+local __TS__Iterator = ____lualib.__TS__Iterator
 local ____exports = {}
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
 local CollectibleType = ____isaac_2Dtypescript_2Ddefinitions.CollectibleType
@@ -70713,7 +70834,7 @@ function PathRemoval.prototype.checkBossRushDoor(self)
 end
 function PathRemoval.prototype.removeDoorAndSmoke(self, door)
     removeDoor(nil, door)
-    for ____, effect in ipairs(getEffects(nil, EffectVariant.DUST_CLOUD)) do
+    for ____, effect in __TS__Iterator(getEffects(nil, EffectVariant.DUST_CLOUD)) do
         if effect.Position:Distance(door.Position) < DISTANCE_OF_GRID_TILE then
             effect.Visible = false
         end
@@ -70773,6 +70894,7 @@ local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
 local Set = ____lualib.Set
 local __TS__New = ____lualib.__TS__New
 local __TS__DecorateLegacy = ____lualib.__TS__DecorateLegacy
+local __TS__Iterator = ____lualib.__TS__Iterator
 local __TS__ArrayIncludes = ____lualib.__TS__ArrayIncludes
 local ____exports = {}
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
@@ -70918,7 +71040,7 @@ __TS__DecorateLegacy(
     true
 )
 function PickupRemoval.prototype.preUseItemSpindownDice(self, _collectibleType, _rng, player, _useFlags, _activeSlot, _customVarData)
-    for ____, collectible in ipairs(getCollectibles(nil)) do
+    for ____, collectible in __TS__Iterator(getCollectibles(nil)) do
         do
             if collectible.SubType == CollectibleType.DADS_NOTE then
                 goto __continue16
@@ -71028,7 +71150,10 @@ __TS__DecorateLegacy(
 function PickupRemoval.prototype.postGameStartedReorderedFalse(self)
     local seeds = game:GetSeeds()
     local startSeedString = seeds:GetStartSeedString()
-    log((MOD_NAME .. " started on seed: ") .. startSeedString)
+    log(
+        nil,
+        (MOD_NAME .. " started on seed: ") .. tostring(startSeedString)
+    )
     self:removeItemsFromPools()
     self:removeItemsFromInventory()
 end
@@ -71078,7 +71203,7 @@ end
 function PickupRemoval.prototype.removeItemsFromInventory(self)
     local player = Isaac.GetPlayer()
     local character = player:GetPlayerType()
-    for ____, collectibleType in ipairs(VANILLA_COLLECTIBLE_TYPES) do
+    for ____, collectibleType in __TS__Iterator(VANILLA_COLLECTIBLE_TYPES) do
         if player:HasCollectible(collectibleType) and (not isCollectibleTypeUnlocked(nil, collectibleType, true) or BANNED_COLLECTIBLE_TYPES_SET:has(collectibleType) or isEden(nil, player)) then
             player:RemoveCollectible(collectibleType)
             rebirthItemTrackerRemoveCollectible(nil, collectibleType)
@@ -71141,7 +71266,13 @@ function PickupRemoval.prototype.addEdenRandomCollectibles(self, player)
     local activeCollectibleTypes = getUnlockedEdenActiveCollectibleTypes(nil, true)
     local passiveCollectibleTypes = getUnlockedEdenPassiveCollectibleTypes(nil, true)
     local passiveCollectibleType = getRandomArrayElement(nil, passiveCollectibleTypes, rng)
-    local activeCollectibleType = #activeCollectibleTypes == 0 and getRandomArrayElement(nil, passiveCollectibleTypes, rng, {passiveCollectibleType}) or getRandomArrayElement(nil, activeCollectibleTypes, rng)
+    local ____temp_1
+    if #activeCollectibleTypes == 0 then
+        ____temp_1 = getRandomArrayElement(nil, passiveCollectibleTypes, rng, {passiveCollectibleType})
+    else
+        ____temp_1 = getRandomArrayElement(nil, activeCollectibleTypes, rng)
+    end
+    local activeCollectibleType = ____temp_1
     player:AddCollectible(activeCollectibleType)
     player:AddCollectible(passiveCollectibleType)
 end
@@ -71169,13 +71300,13 @@ __TS__DecorateLegacy(
 )
 function PickupRemoval.prototype.postPickupSelectionHeart(self, _pickup, _pickupVariant, subType)
     local heartSubType = subType
-    local ____isHeartSubTypeUnlocked_result_1
+    local ____isHeartSubTypeUnlocked_result_2
     if isHeartSubTypeUnlocked(nil, heartSubType, true) then
-        ____isHeartSubTypeUnlocked_result_1 = nil
+        ____isHeartSubTypeUnlocked_result_2 = nil
     else
-        ____isHeartSubTypeUnlocked_result_1 = {PickupVariant.HEART, HeartSubType.HALF}
+        ____isHeartSubTypeUnlocked_result_2 = {PickupVariant.HEART, HeartSubType.HALF}
     end
-    return ____isHeartSubTypeUnlocked_result_1
+    return ____isHeartSubTypeUnlocked_result_2
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.HEART)},
@@ -71185,13 +71316,13 @@ __TS__DecorateLegacy(
 )
 function PickupRemoval.prototype.postPickupSelectionCoin(self, _pickup, _pickupVariant, subType)
     local coinSubType = subType
-    local ____isCoinSubTypeUnlocked_result_2
+    local ____isCoinSubTypeUnlocked_result_3
     if isCoinSubTypeUnlocked(nil, coinSubType, true) then
-        ____isCoinSubTypeUnlocked_result_2 = nil
+        ____isCoinSubTypeUnlocked_result_3 = nil
     else
-        ____isCoinSubTypeUnlocked_result_2 = {PickupVariant.COIN, CoinSubType.PENNY}
+        ____isCoinSubTypeUnlocked_result_3 = {PickupVariant.COIN, CoinSubType.PENNY}
     end
-    return ____isCoinSubTypeUnlocked_result_2
+    return ____isCoinSubTypeUnlocked_result_3
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.COIN)},
@@ -71201,13 +71332,13 @@ __TS__DecorateLegacy(
 )
 function PickupRemoval.prototype.postPickupSelectionKey(self, _pickup, _pickupVariant, subType)
     local keySubType = subType
-    local ____isKeySubTypeUnlocked_result_3
+    local ____isKeySubTypeUnlocked_result_4
     if isKeySubTypeUnlocked(nil, keySubType, true) then
-        ____isKeySubTypeUnlocked_result_3 = nil
+        ____isKeySubTypeUnlocked_result_4 = nil
     else
-        ____isKeySubTypeUnlocked_result_3 = {PickupVariant.KEY, KeySubType.NORMAL}
+        ____isKeySubTypeUnlocked_result_4 = {PickupVariant.KEY, KeySubType.NORMAL}
     end
-    return ____isKeySubTypeUnlocked_result_3
+    return ____isKeySubTypeUnlocked_result_4
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.KEY)},
@@ -71217,13 +71348,13 @@ __TS__DecorateLegacy(
 )
 function PickupRemoval.prototype.postPickupSelectionBomb(self, _pickup, _pickupVariant, subType)
     local bombSubType = subType
-    local ____isBombSubTypeUnlocked_result_4
+    local ____isBombSubTypeUnlocked_result_5
     if isBombSubTypeUnlocked(nil, bombSubType, true) then
-        ____isBombSubTypeUnlocked_result_4 = nil
+        ____isBombSubTypeUnlocked_result_5 = nil
     else
-        ____isBombSubTypeUnlocked_result_4 = {PickupVariant.BOMB, BombSubType.NORMAL}
+        ____isBombSubTypeUnlocked_result_5 = {PickupVariant.BOMB, BombSubType.NORMAL}
     end
-    return ____isBombSubTypeUnlocked_result_4
+    return ____isBombSubTypeUnlocked_result_5
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.BOMB)},
@@ -71233,13 +71364,13 @@ __TS__DecorateLegacy(
 )
 function PickupRemoval.prototype.postPickupSelectionSack(self, _pickup, _pickupVariant, subType)
     local sackSubType = subType
-    local ____isSackSubTypeUnlocked_result_5
+    local ____isSackSubTypeUnlocked_result_6
     if isSackSubTypeUnlocked(nil, sackSubType, true) then
-        ____isSackSubTypeUnlocked_result_5 = nil
+        ____isSackSubTypeUnlocked_result_6 = nil
     else
-        ____isSackSubTypeUnlocked_result_5 = {PickupVariant.COIN, CoinSubType.PENNY}
+        ____isSackSubTypeUnlocked_result_6 = {PickupVariant.COIN, CoinSubType.PENNY}
     end
-    return ____isSackSubTypeUnlocked_result_5
+    return ____isSackSubTypeUnlocked_result_6
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.SACK)},
@@ -71249,13 +71380,13 @@ __TS__DecorateLegacy(
 )
 function PickupRemoval.prototype.postPickupSelectionLilBattery(self, _pickup, _pickupVariant, subType)
     local batterySubType = subType
-    local ____isBatterySubTypeUnlocked_result_6
+    local ____isBatterySubTypeUnlocked_result_7
     if isBatterySubTypeUnlocked(nil, batterySubType, true) then
-        ____isBatterySubTypeUnlocked_result_6 = nil
+        ____isBatterySubTypeUnlocked_result_7 = nil
     else
-        ____isBatterySubTypeUnlocked_result_6 = {PickupVariant.COIN, CoinSubType.PENNY}
+        ____isBatterySubTypeUnlocked_result_7 = {PickupVariant.COIN, CoinSubType.PENNY}
     end
-    return ____isBatterySubTypeUnlocked_result_6
+    return ____isBatterySubTypeUnlocked_result_7
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.LIL_BATTERY)},
@@ -71285,13 +71416,13 @@ function PickupRemoval.prototype.postPickupSelectionTrinket(self, _pickup, _pick
     if #unlockedTrinketTypes == 0 then
         return {PickupVariant.COIN, CoinSubType.PENNY}
     end
-    local ____isGoldenTrinketType_result_7
+    local ____isGoldenTrinketType_result_8
     if isGoldenTrinketType(nil, trinketType) then
-        ____isGoldenTrinketType_result_7 = self:postPickupSelectionGoldTrinket(trinketType, unlockedTrinketTypes)
+        ____isGoldenTrinketType_result_8 = self:postPickupSelectionGoldTrinket(trinketType, unlockedTrinketTypes)
     else
-        ____isGoldenTrinketType_result_7 = self:postPickupSelectionNormalTrinket(trinketType, unlockedTrinketTypes)
+        ____isGoldenTrinketType_result_8 = self:postPickupSelectionNormalTrinket(trinketType, unlockedTrinketTypes)
     end
-    return ____isGoldenTrinketType_result_7
+    return ____isGoldenTrinketType_result_8
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.TRINKET)},
@@ -71303,16 +71434,22 @@ function PickupRemoval.prototype.postPickupSelectionGoldTrinket(self, trinketTyp
     local normalizedTrinketType = getNormalTrinketType(nil, trinketType)
     local goldTrinketsUnlocked = isOtherUnlockKindUnlocked(nil, OtherUnlockKind.GOLD_TRINKETS, true)
     if __TS__ArrayIncludes(unlockedTrinketTypes, normalizedTrinketType) or normalizedTrinketType == TrinketType.PERFECTION then
-        local ____goldTrinketsUnlocked_8
+        local ____goldTrinketsUnlocked_9
         if goldTrinketsUnlocked then
-            ____goldTrinketsUnlocked_8 = nil
+            ____goldTrinketsUnlocked_9 = nil
         else
-            ____goldTrinketsUnlocked_8 = {PickupVariant.TRINKET, normalizedTrinketType}
+            ____goldTrinketsUnlocked_9 = {PickupVariant.TRINKET, normalizedTrinketType}
         end
-        return ____goldTrinketsUnlocked_8
+        return ____goldTrinketsUnlocked_9
     end
     local newTrinketType = getRandomArrayElement(nil, unlockedTrinketTypes)
-    local trinketTypeToUse = goldTrinketsUnlocked and getGoldenTrinketType(nil, newTrinketType) or newTrinketType
+    local ____goldTrinketsUnlocked_10
+    if goldTrinketsUnlocked then
+        ____goldTrinketsUnlocked_10 = getGoldenTrinketType(nil, newTrinketType)
+    else
+        ____goldTrinketsUnlocked_10 = newTrinketType
+    end
+    local trinketTypeToUse = ____goldTrinketsUnlocked_10
     return {PickupVariant.TRINKET, trinketTypeToUse}
 end
 function PickupRemoval.prototype.postPickupSelectionNormalTrinket(self, trinketType, unlockedTrinketTypes)
@@ -71323,13 +71460,13 @@ function PickupRemoval.prototype.postPickupSelectionNormalTrinket(self, trinketT
     return {PickupVariant.TRINKET, newTrinketType}
 end
 function PickupRemoval.prototype.postPickupSelectionBed(self)
-    local ____isOtherUnlockKindUnlocked_result_9
+    local ____isOtherUnlockKindUnlocked_result_11
     if isOtherUnlockKindUnlocked(nil, OtherUnlockKind.BEDS, true) then
-        ____isOtherUnlockKindUnlocked_result_9 = nil
+        ____isOtherUnlockKindUnlocked_result_11 = nil
     else
-        ____isOtherUnlockKindUnlocked_result_9 = {PickupVariant.COIN, CoinSubType.PENNY}
+        ____isOtherUnlockKindUnlocked_result_11 = {PickupVariant.COIN, CoinSubType.PENNY}
     end
-    return ____isOtherUnlockKindUnlocked_result_9
+    return ____isOtherUnlockKindUnlocked_result_11
 end
 __TS__DecorateLegacy(
     {CallbackCustom(nil, ModCallbackCustom.POST_PICKUP_SELECTION_FILTER, PickupVariant.BED)},
@@ -71347,6 +71484,7 @@ local __TS__Class = ____lualib.__TS__Class
 local __TS__ClassExtends = ____lualib.__TS__ClassExtends
 local __TS__Spread = ____lualib.__TS__Spread
 local __TS__DecorateLegacy = ____lualib.__TS__DecorateLegacy
+local __TS__Iterator = ____lualib.__TS__Iterator
 local ____exports = {}
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
 local CoinSubType = ____isaac_2Dtypescript_2Ddefinitions.CoinSubType
@@ -71403,7 +71541,7 @@ function PillRemoval.prototype.initPillPool(self)
     local startSeed = seeds:GetStartSeed()
     local pillEffectsForRun = shuffleArray(nil, unlockedPillEffects, startSeed)
     local pillColor = FIRST_PILL_COLOR
-    for ____, pillEffect in ipairs(pillEffectsForRun) do
+    for ____, pillEffect in __TS__Iterator(pillEffectsForRun) do
         v.run.pillPool:set(pillColor, pillEffect)
         pillColor = pillColor + 1
     end
@@ -71444,7 +71582,6 @@ local ____lualib = require("lualib_bundle")
 local __TS__Class = ____lualib.__TS__Class
 local __TS__ClassExtends = ____lualib.__TS__ClassExtends
 local __TS__DecorateLegacy = ____lualib.__TS__DecorateLegacy
-local __TS__ArraySome = ____lualib.__TS__ArraySome
 local ____exports = {}
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
 local ButtonAction = ____isaac_2Dtypescript_2Ddefinitions.ButtonAction
@@ -71501,22 +71638,16 @@ function PreventPause.prototype.isRoomDangerous(self)
         return true
     end
     local entities = getEntities(nil)
-    if __TS__ArraySome(
-        entities,
-        function(____, entity) return entity:IsActiveEnemy(false) and not entity:HasEntityFlags(EntityFlag.FRIENDLY) end
-    ) then
+    if entities:some(function(____, entity) return entity:IsActiveEnemy(false) and not entity:HasEntityFlags(EntityFlag.FRIENDLY) end) then
         return true
     end
-    if __TS__ArraySome(
-        entities,
-        function(____, entity)
-            local projectile = entity:ToProjectile()
-            if projectile == nil then
-                return false
-            end
-            return not projectile:HasProjectileFlags(ProjectileFlag.CANT_HIT_PLAYER)
+    if entities:some(function(____, entity)
+        local projectile = entity:ToProjectile()
+        if projectile == nil then
+            return false
         end
-    ) then
+        return not projectile:HasProjectileFlags(ProjectileFlag.CANT_HIT_PLAYER)
+    end) then
         return true
     end
     return false
@@ -71528,6 +71659,7 @@ local ____lualib = require("lualib_bundle")
 local __TS__Class = ____lualib.__TS__Class
 local __TS__ClassExtends = ____lualib.__TS__ClassExtends
 local __TS__DecorateLegacy = ____lualib.__TS__DecorateLegacy
+local __TS__Iterator = ____lualib.__TS__Iterator
 local ____exports = {}
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
 local CoinSubType = ____isaac_2Dtypescript_2Ddefinitions.CoinSubType
@@ -71571,7 +71703,7 @@ function PreventSaveAndQuit.prototype.fixMegaMushLuckyPennySoftlock(self)
         return
     end
     local luckyPennies = getCoins(nil, CoinSubType.LUCKY_PENNY)
-    for ____, luckyPenny in ipairs(luckyPennies) do
+    for ____, luckyPenny in __TS__Iterator(luckyPennies) do
         luckyPenny:Morph(EntityType.PICKUP, PickupVariant.COIN, CoinSubType.PENNY)
     end
 end
@@ -71593,7 +71725,7 @@ __TS__DecorateLegacy(
 )
 function PreventSaveAndQuit.prototype.postGameStartedReorderedTrue(self)
     mod:runNextRenderFrame(function()
-        logError("Illegal save and quit detected. Restarting the run.")
+        logError(nil, "Illegal save and quit detected. Restarting the run.")
         preForcedRestart(nil)
         restart(nil)
     end)
@@ -71611,8 +71743,6 @@ local ____lualib = require("lualib_bundle")
 local __TS__Class = ____lualib.__TS__Class
 local __TS__ClassExtends = ____lualib.__TS__ClassExtends
 local __TS__DecorateLegacy = ____lualib.__TS__DecorateLegacy
-local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
-local __TS__ArrayEvery = ____lualib.__TS__ArrayEvery
 local ____exports = {}
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
 local EntityFlag = ____isaac_2Dtypescript_2Ddefinitions.EntityFlag
@@ -71685,14 +71815,8 @@ function PreventVictoryLapPopup.prototype.inUnclearedLambBossRoom(self)
 end
 function PreventVictoryLapPopup.prototype.isAllLambEntitiesDead(self)
     local lambs = getNPCs(nil, EntityType.LAMB)
-    local filteredLambs = __TS__ArrayFilter(
-        lambs,
-        function(____, lamb) return not lamb:HasEntityFlags(EntityFlag.FRIENDLY) and not (lamb.Variant == asNumber(nil, LambVariant.BODY) and lamb:IsInvincible()) end
-    )
-    return __TS__ArrayEvery(
-        filteredLambs,
-        function(____, lamb) return lamb:IsDead() end
-    )
+    local filteredLambs = lambs:filter(function(____, lamb) return not lamb:HasEntityFlags(EntityFlag.FRIENDLY) and not (lamb.Variant == asNumber(nil, LambVariant.BODY) and lamb:IsInvincible()) end)
+    return filteredLambs:every(function(____, lamb) return lamb:IsDead() end)
 end
 function PreventVictoryLapPopup.prototype.spawnRoomClearDelayEffect(self)
     local effect = spawnEffect(nil, EffectVariantCustom.ROOM_CLEAR_DELAY, 0, VectorZero)
@@ -71750,7 +71874,8 @@ local ____lualib = require("lualib_bundle")
 local __TS__Class = ____lualib.__TS__Class
 local __TS__ClassExtends = ____lualib.__TS__ClassExtends
 local __TS__DecorateLegacy = ____lualib.__TS__DecorateLegacy
-local __TS__ArrayFind = ____lualib.__TS__ArrayFind
+local __TS__Spread = ____lualib.__TS__Spread
+local __TS__Iterator = ____lualib.__TS__Iterator
 local ____exports = {}
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
 local CallbackCustom = ____isaacscript_2Dcommon.CallbackCustom
@@ -71796,12 +71921,13 @@ function RoomRemoval.prototype.checkForRoomType(self, bannedRoomType)
 end
 function RoomRemoval.prototype.inBannedRoom(self)
     local roomGridIndexes = getAdjacentExistingRoomGridIndexes(nil)
-    local attachedRoomGridIndex = __TS__ArrayFind(
-        roomGridIndexes,
-        function(____, roomGridIndex) return not isRedKeyRoom(nil, roomGridIndex) end
-    )
+    local attachedRoomGridIndex = roomGridIndexes:find(function(____, roomGridIndex) return not isRedKeyRoom(nil, roomGridIndex) end)
     local level = game:GetLevel()
-    local roomGridIndex = attachedRoomGridIndex or level:GetStartingRoomIndex()
+    local ____attachedRoomGridIndex_0 = attachedRoomGridIndex
+    if ____attachedRoomGridIndex_0 == nil then
+        ____attachedRoomGridIndex_0 = level:GetStartingRoomIndex()
+    end
+    local roomGridIndex = ____attachedRoomGridIndex_0
     changeRoom(nil, roomGridIndex)
     local player = Isaac.GetPlayer()
     player:AnimateTeleport(false)
@@ -71810,13 +71936,13 @@ function RoomRemoval.prototype.outsideBannedRoom(self, bannedRoomType)
     local bannedRoomGridIndexes = getRoomGridIndexesForType(nil, bannedRoomType)
     local doorsToBannedRooms = getDoorsToRoomIndex(
         nil,
-        table.unpack(bannedRoomGridIndexes)
+        __TS__Spread(bannedRoomGridIndexes)
     )
     removeDoors(
         nil,
-        table.unpack(doorsToBannedRooms)
+        __TS__Spread(doorsToBannedRooms)
     )
-    for ____, roomGridIndex in ipairs(bannedRoomGridIndexes) do
+    for ____, roomGridIndex in __TS__Iterator(bannedRoomGridIndexes) do
         hideRoomOnMinimap(nil, roomGridIndex)
     end
 end
@@ -71931,7 +72057,10 @@ function StageTypeRemoval.prototype.postNewLevelReordered(self, stage, stageType
         return
     end
     local newStageType = stageType == StageType.REPENTANCE_B and StageType.REPENTANCE or StageType.ORIGINAL
-    log(((((("Locked stage type detected (" .. tostring(stageType)) .. "). Warping to: StageType.") .. StageType[newStageType]) .. " (") .. tostring(newStageType)) .. ")")
+    log(
+        nil,
+        ((((("Locked stage type detected (" .. tostring(stageType)) .. "). Warping to: StageType.") .. StageType[newStageType]) .. " (") .. tostring(newStageType)) .. ")"
+    )
     local player = Isaac.GetPlayer()
     local playerHealth = getPlayerHealth(nil, player)
     player:AddEternalHearts(-1)
@@ -72028,16 +72157,19 @@ function StartingRoomInfo.prototype.postRender(self)
     local bottomRightPosition = room:GetGridPosition(86)
     local randomizerMode = getRandomizerMode(nil)
     local modeText = capitalizeFirstLetter(nil, randomizerMode)
-    self:drawCenteredText(modeText .. " seed:", topLeftPosition)
+    self:drawCenteredText(
+        tostring(modeText) .. " seed:",
+        topLeftPosition
+    )
     self:drawCenteredText(
         tostring(seed),
-        topLeftPosition + Vector(0, 30),
+        topLeftPosition:add(Vector(0, 30)),
         K_COLORS.Green
     )
     self:drawCenteredText("Unlocks:", topRightPosition)
     self:drawCenteredText(
         (tostring(getNumCompletedUnlocks(nil)) .. " / ") .. tostring(#ALL_UNLOCKS),
-        topRightPosition + Vector(0, 30),
+        topRightPosition:add(Vector(0, 30)),
         K_COLORS.Green
     )
     local position = Isaac.WorldToScreen(centerTopPosition) + Vector(0, 10)
@@ -72045,19 +72177,19 @@ function StartingRoomInfo.prototype.postRender(self)
     self:drawCenteredText("Mod version:", centerPosition)
     self:drawCenteredText(
         version,
-        centerPosition + Vector(0, 30),
+        centerPosition:add(Vector(0, 30)),
         K_COLORS.Green
     )
     self:drawCenteredText("Deaths/resets:", bottomLeftPosition)
     self:drawCenteredText(
         tostring(getPlaythroughNumDeaths(nil)),
-        bottomLeftPosition + Vector(0, 30),
+        bottomLeftPosition:add(Vector(0, 30)),
         K_COLORS.Green
     )
     self:drawCenteredText("Total time:", bottomRightPosition)
     self:drawCenteredText(
         getPlaythroughTimeElapsed(nil),
-        bottomRightPosition + Vector(0, 30),
+        bottomRightPosition:add(Vector(0, 30)),
         K_COLORS.Green
     )
 end
@@ -72161,7 +72293,7 @@ function unlockCharacter(self, params)
             print("Unknown character: " .. params)
             return
         end
-        character = match[2]
+        character = match[1]
     else
         if num < FIRST_CHARACTER or num > LAST_VANILLA_CHARACTER then
             print("Invalid character number: " .. tostring(num))
@@ -72171,7 +72303,7 @@ function unlockCharacter(self, params)
     end
     setCharacterUnlocked(nil, character)
     local characterName = getCharacterName(nil, character)
-    print(((("Unlocked character: " .. characterName) .. " (") .. tostring(character)) .. ")")
+    print(((("Unlocked character: " .. tostring(characterName)) .. " (") .. tostring(character)) .. ")")
 end
 function unlockCollectible(self, params)
     if params == "" then
@@ -72186,13 +72318,13 @@ function unlockCollectible(self, params)
             print("Unknown collectible: " .. params)
             return
         end
-        collectibleType = match[2]
+        collectibleType = match[1]
     else
         collectibleType = asCollectibleType(nil, collectibleTypeNumber)
     end
     setCollectibleUnlocked(nil, collectibleType)
     local collectibleName = getCollectibleName(nil, collectibleType)
-    print(((("Unlocked collectible: " .. collectibleName) .. " (") .. tostring(collectibleType)) .. ")")
+    print(((("Unlocked collectible: " .. tostring(collectibleName)) .. " (") .. tostring(collectibleType)) .. ")")
 end
 ____exports.MIN_SEED = 1
 ____exports.MAX_SEED = 4294967295
@@ -72331,10 +72463,10 @@ function ____exports.getRecentAchievementsButtons(self)
         return {{str = "no achievements"}, {str = "unlocked yet."}}
     end
     local buttons = {}
-    for ____, i in ipairs(iRange(nil, ____exports.MENU_PAGE_SIZE)) do
+    for ____, i in __TS__Iterator(iRange(nil, ____exports.MENU_PAGE_SIZE)) do
         do
-            local unlock = completedUnlocks[i + 1]
-            local objective = completedObjectives[i + 1]
+            local unlock = completedUnlocks[i]
+            local objective = completedObjectives[i]
             if unlock == nil or objective == nil then
                 goto __continue4
             end
@@ -72367,8 +72499,8 @@ function ____exports.getRecentAchievementsButtons(self)
 end
 function ____exports.getCharacterObjectiveButtons(self)
     local buttons = {}
-    for ____, character in ipairs(MAIN_CHARACTERS) do
-        local characterName = string.lower(getCharacterName(nil, character))
+    for ____, character in __TS__Iterator(MAIN_CHARACTERS) do
+        local characterName = getCharacterName(nil, character):toLowerCase()
         buttons[#buttons + 1] = {
             str = characterName,
             dest = "characterObjectives" .. tostring(character)
@@ -72402,7 +72534,7 @@ end
 function ____exports.getBossObjectiveButtons(self)
     local buttons = {}
     local chunks = splitNumber(nil, #BOSS_IDS, ____exports.MENU_PAGE_SIZE)
-    for ____, chunk in ipairs(chunks) do
+    for ____, chunk in __TS__Iterator(chunks) do
         local min, max = table.unpack(chunk)
         buttons[#buttons + 1] = {
             str = (tostring(min) .. "-") .. tostring(max),
@@ -72419,7 +72551,7 @@ function ____exports.getSpecificBossObjectiveButtons(self, min, max)
             if bossID < min or bossID > max then
                 goto __continue23
             end
-            local bossName = string.lower(getBossName(nil, bossID))
+            local bossName = getBossName(nil, bossID):toLowerCase()
             if bossID == BossID.MAUSOLEUM_MOMS_HEART then
                 bossName = "mom's heart (maus.)"
             end
@@ -72427,7 +72559,7 @@ function ____exports.getSpecificBossObjectiveButtons(self, min, max)
             local completedText = getCompletedText(nil, completed)
             __TS__ArrayPush(
                 buttons,
-                {str = (tostring(bossID) .. " - ") .. bossName},
+                {str = (tostring(bossID) .. " - ") .. tostring(bossName)},
                 {str = completedText, clr = completed and 0 or 3},
                 {
                     str = "(inaccessible)",
@@ -72444,7 +72576,7 @@ end
 function ____exports.getChallengeObjectiveButtons(self)
     local buttons = {}
     local chunks = splitNumber(nil, #UNLOCKABLE_CHALLENGES, ____exports.MENU_PAGE_SIZE)
-    for ____, chunk in ipairs(chunks) do
+    for ____, chunk in __TS__Iterator(chunks) do
         local min, max = table.unpack(chunk)
         buttons[#buttons + 1] = {
             str = (tostring(min) .. "-") .. tostring(max),
@@ -72460,7 +72592,7 @@ function ____exports.getSpecificChallengeObjectiveButtons(self, min, max)
             if challenge < min or challenge > max then
                 goto __continue32
             end
-            local challengeName = string.lower(getChallengeName(nil, challenge))
+            local challengeName = getChallengeName(nil, challenge):toLowerCase()
             local challengeNameTruncated = getNameTruncated(nil, challengeName)
             local completed = isChallengeObjectiveCompleted(nil, challenge)
             local completedText = getCompletedText(nil, completed)
@@ -72483,7 +72615,7 @@ end
 function ____exports.getCharacterUnlockButtons(self)
     local buttons = {}
     for ____, character in ipairs(UNLOCKABLE_CHARACTERS) do
-        local characterName = string.lower(getCharacterName(nil, character))
+        local characterName = getCharacterName(nil, character):toLowerCase()
         local completed = isCharacterUnlocked(nil, character, false)
         local completedText = getCompletedText(nil, completed)
         __TS__ArrayPush(buttons, {str = characterName}, {str = completedText, clr = completed and 0 or 3}, {str = ""})
@@ -72513,7 +72645,7 @@ end
 function ____exports.getChallengeUnlockButtons(self)
     local buttons = {}
     local chunks = splitNumber(nil, #UNLOCKABLE_CHALLENGES, ____exports.MENU_PAGE_SIZE)
-    for ____, chunk in ipairs(chunks) do
+    for ____, chunk in __TS__Iterator(chunks) do
         local min, max = table.unpack(chunk)
         buttons[#buttons + 1] = {
             str = (tostring(min) .. "-") .. tostring(max),
@@ -72529,7 +72661,7 @@ function ____exports.getSpecificChallengeUnlockButtons(self, min, max)
             if challenge < min or challenge > max then
                 goto __continue49
             end
-            local challengeName = string.lower(getChallengeName(nil, challenge))
+            local challengeName = getChallengeName(nil, challenge):toLowerCase()
             local challengeNameTruncated = getNameTruncated(nil, challengeName)
             local completed = isChallengeUnlocked(nil, challenge, false)
             local completedText = getCompletedText(nil, completed)
@@ -72547,7 +72679,7 @@ end
 function ____exports.getCollectibleUnlockButtons(self)
     local buttons = {}
     local chunks = splitNumber(nil, LAST_VANILLA_COLLECTIBLE_TYPE, ____exports.MENU_PAGE_SIZE)
-    for ____, chunk in ipairs(chunks) do
+    for ____, chunk in __TS__Iterator(chunks) do
         local min, max = table.unpack(chunk)
         buttons[#buttons + 1] = {
             str = (tostring(min) .. "-") .. tostring(max),
@@ -72563,12 +72695,12 @@ function ____exports.getSpecificCollectibleUnlockButtons(self, min, max)
             if collectibleType < min or collectibleType > max then
                 goto __continue56
             end
-            local collectibleName = string.lower(getCollectibleName(nil, collectibleType))
+            local collectibleName = getCollectibleName(nil, collectibleType):toLowerCase()
             local completed = isCollectibleTypeUnlocked(nil, collectibleType, false)
             local completedText = getCompletedText(nil, completed)
             __TS__ArrayPush(
                 buttons,
-                {str = (tostring(collectibleType) .. " - ") .. collectibleName},
+                {str = (tostring(collectibleType) .. " - ") .. tostring(collectibleName)},
                 {str = completedText, clr = completed and 0 or 3},
                 {str = ""}
             )
@@ -72580,7 +72712,7 @@ end
 function ____exports.getTrinketUnlockButtons(self)
     local buttons = {}
     local chunks = splitNumber(nil, LAST_VANILLA_TRINKET_TYPE, ____exports.MENU_PAGE_SIZE)
-    for ____, chunk in ipairs(chunks) do
+    for ____, chunk in __TS__Iterator(chunks) do
         local min, max = table.unpack(chunk)
         buttons[#buttons + 1] = {
             str = (tostring(min) .. "-") .. tostring(max),
@@ -72596,12 +72728,12 @@ function ____exports.getSpecificTrinketUnlockButtons(self, min, max)
             if trinketType < min or trinketType > max then
                 goto __continue63
             end
-            local trinketName = string.lower(getTrinketName(nil, trinketType))
+            local trinketName = getTrinketName(nil, trinketType):toLowerCase()
             local completed = isTrinketTypeUnlocked(nil, trinketType, false)
             local completedText = getCompletedText(nil, completed)
             __TS__ArrayPush(
                 buttons,
-                {str = (tostring(trinketType) .. " - ") .. trinketName},
+                {str = (tostring(trinketType) .. " - ") .. tostring(trinketName)},
                 {str = completedText, clr = completed and 0 or 3},
                 {str = ""}
             )
@@ -72613,7 +72745,7 @@ end
 function ____exports.getCardUnlockButtons(self)
     local buttons = {}
     local chunks = splitNumber(nil, LAST_VANILLA_CARD_TYPE, ____exports.MENU_PAGE_SIZE)
-    for ____, chunk in ipairs(chunks) do
+    for ____, chunk in __TS__Iterator(chunks) do
         local min, max = table.unpack(chunk)
         buttons[#buttons + 1] = {
             str = (tostring(min) .. "-") .. tostring(max),
@@ -72629,7 +72761,7 @@ function ____exports.getSpecificCardUnlockButtons(self, min, max)
             if cardType < min or cardType > max then
                 goto __continue70
             end
-            local cardName = string.lower(getCardName(nil, cardType))
+            local cardName = getCardName(nil, cardType):toLowerCase()
             local completed = isCardTypeUnlocked(nil, cardType, false)
             local completedText = getCompletedText(nil, completed)
             __TS__ArrayPush(buttons, {str = cardName}, {str = completedText, clr = completed and 0 or 3}, {str = ""})
@@ -72641,7 +72773,7 @@ end
 function ____exports.getPillEffectUnlockButtons(self)
     local buttons = {}
     local chunks = splitNumber(nil, LAST_VANILLA_PILL_EFFECT, ____exports.MENU_PAGE_SIZE, true)
-    for ____, chunk in ipairs(chunks) do
+    for ____, chunk in __TS__Iterator(chunks) do
         local min, max = table.unpack(chunk)
         buttons[#buttons + 1] = {
             str = (tostring(min) .. "-") .. tostring(max),
@@ -72657,7 +72789,7 @@ function ____exports.getSpecificPillEffectUnlockButtons(self, min, max)
             if pillEffect < min or pillEffect > max then
                 goto __continue77
             end
-            local pillEffectName = string.lower(getPillEffectName(nil, pillEffect))
+            local pillEffectName = getPillEffectName(nil, pillEffect):toLowerCase()
             local pillEffectNameTruncated = getNameTruncated(nil, pillEffectName)
             local completed = isPillEffectUnlocked(nil, pillEffect, false)
             local completedText = getCompletedText(nil, completed)
@@ -72675,7 +72807,7 @@ end
 function ____exports.getHeartUnlockButtons(self)
     local buttons = {}
     for ____, heartSubType in ipairs(UNLOCKABLE_HEART_SUB_TYPES) do
-        local heartName = string.lower(getHeartName(nil, heartSubType))
+        local heartName = getHeartName(nil, heartSubType):toLowerCase()
         local completed = isHeartSubTypeUnlocked(nil, heartSubType, false)
         local completedText = getCompletedText(nil, completed)
         __TS__ArrayPush(buttons, {str = heartName}, {str = completedText, clr = completed and 0 or 3}, {str = ""})
@@ -72685,7 +72817,7 @@ end
 function ____exports.getCoinUnlockButtons(self)
     local buttons = {}
     for ____, coinSubType in ipairs(UNLOCKABLE_COIN_SUB_TYPES) do
-        local coinName = string.lower(getCoinName(nil, coinSubType))
+        local coinName = getCoinName(nil, coinSubType):toLowerCase()
         local completed = isCoinSubTypeUnlocked(nil, coinSubType, false)
         local completedText = getCompletedText(nil, completed)
         __TS__ArrayPush(buttons, {str = coinName}, {str = completedText, clr = completed and 0 or 3}, {str = ""})
@@ -72695,7 +72827,7 @@ end
 function ____exports.getBombUnlockButtons(self)
     local buttons = {}
     for ____, bombSubType in ipairs(UNLOCKABLE_BOMB_SUB_TYPES) do
-        local bombName = string.lower(getBombName(nil, bombSubType))
+        local bombName = getBombName(nil, bombSubType):toLowerCase()
         local completed = isBombSubTypeUnlocked(nil, bombSubType, false)
         local completedText = getCompletedText(nil, completed)
         __TS__ArrayPush(buttons, {str = bombName}, {str = completedText, clr = completed and 0 or 3}, {str = ""})
@@ -72705,7 +72837,7 @@ end
 function ____exports.getKeyUnlockButtons(self)
     local buttons = {}
     for ____, keySubType in ipairs(UNLOCKABLE_KEY_SUB_TYPES) do
-        local keyName = string.lower(getKeyName(nil, keySubType))
+        local keyName = getKeyName(nil, keySubType):toLowerCase()
         local completed = isKeySubTypeUnlocked(nil, keySubType, false)
         local completedText = getCompletedText(nil, completed)
         __TS__ArrayPush(buttons, {str = keyName}, {str = completedText, clr = completed and 0 or 3}, {str = ""})
@@ -72715,7 +72847,7 @@ end
 function ____exports.getBatteryUnlockButtons(self)
     local buttons = {}
     for ____, batterySubType in ipairs(UNLOCKABLE_BATTERY_SUB_TYPES) do
-        local batteryName = string.lower(getBatteryName(nil, batterySubType))
+        local batteryName = getBatteryName(nil, batterySubType):toLowerCase()
         local completed = isBatterySubTypeUnlocked(nil, batterySubType, false)
         local completedText = getCompletedText(nil, completed)
         __TS__ArrayPush(buttons, {str = batteryName}, {str = completedText, clr = completed and 0 or 3}, {str = ""})
@@ -72725,7 +72857,7 @@ end
 function ____exports.getSackUnlockButtons(self)
     local buttons = {}
     for ____, sackSubType in ipairs(UNLOCKABLE_SACK_SUB_TYPES) do
-        local sackName = string.lower(getSackName(nil, sackSubType))
+        local sackName = getSackName(nil, sackSubType):toLowerCase()
         local completed = isSackSubTypeUnlocked(nil, sackSubType, false)
         local completedText = getCompletedText(nil, completed)
         __TS__ArrayPush(buttons, {str = sackName}, {str = completedText, clr = completed and 0 or 3}, {str = ""})
@@ -72735,7 +72867,7 @@ end
 function ____exports.getChestUnlockButtons(self)
     local buttons = {}
     for ____, pickupVariant in ipairs(UNLOCKABLE_CHEST_PICKUP_VARIANTS) do
-        local chestName = string.lower(getChestName(nil, pickupVariant))
+        local chestName = getChestName(nil, pickupVariant):toLowerCase()
         local completed = isChestPickupVariantUnlocked(nil, pickupVariant, false)
         local completedText = getCompletedText(nil, completed)
         __TS__ArrayPush(buttons, {str = chestName}, {str = completedText, clr = completed and 0 or 3}, {str = ""})
@@ -72745,7 +72877,7 @@ end
 function ____exports.getSlotUnlockButtons(self)
     local buttons = {}
     for ____, slotVariant in ipairs(UNLOCKABLE_SLOT_VARIANTS) do
-        local slotName = string.lower(getSlotName(nil, slotVariant))
+        local slotName = getSlotName(nil, slotVariant):toLowerCase()
         local completed = isSlotVariantUnlocked(nil, slotVariant, false)
         local completedText = getCompletedText(nil, completed)
         __TS__ArrayPush(buttons, {str = slotName}, {str = completedText, clr = completed and 0 or 3}, {str = ""})
@@ -72775,6 +72907,8 @@ end
 return ____exports
  end,
 ["src.deadSeaScrolls"] = function(...) 
+local ____lualib = require("lualib_bundle")
+local __TS__Iterator = ____lualib.__TS__Iterator
 local ____exports = {}
 local startRandomizerFromDSS
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
@@ -73242,8 +73376,8 @@ function ____exports.initDeadSeaScrolls(self)
             DSSMod.menuBuzzerButton
         }}
     }
-    for ____, character in ipairs(MAIN_CHARACTERS) do
-        local characterName = string.lower(getCharacterName(nil, character))
+    for ____, character in __TS__Iterator(MAIN_CHARACTERS) do
+        local characterName = getCharacterName(nil, character):toLowerCase()
         directory["characterObjectives" .. tostring(character)] = {
             title = characterName,
             noCursor = true,
@@ -73255,7 +73389,7 @@ function ____exports.initDeadSeaScrolls(self)
         }
     end
     local bossChunks = splitNumber(nil, #BOSS_IDS, MENU_PAGE_SIZE)
-    for ____, chunk in ipairs(bossChunks) do
+    for ____, chunk in __TS__Iterator(bossChunks) do
         local min, max = table.unpack(chunk)
         directory["bossObjectives" .. tostring(min)] = {
             title = "boss todo",
@@ -73268,7 +73402,7 @@ function ____exports.initDeadSeaScrolls(self)
         }
     end
     local challengeChunks = splitNumber(nil, #UNLOCKABLE_CHALLENGES, MENU_PAGE_SIZE)
-    for ____, chunk in ipairs(challengeChunks) do
+    for ____, chunk in __TS__Iterator(challengeChunks) do
         local min, max = table.unpack(chunk)
         directory["challengeObjectives" .. tostring(min)] = {
             title = "challenge todo",
@@ -73290,7 +73424,7 @@ function ____exports.initDeadSeaScrolls(self)
         }
     end
     local collectibleChunks = splitNumber(nil, LAST_VANILLA_COLLECTIBLE_TYPE, MENU_PAGE_SIZE)
-    for ____, chunk in ipairs(collectibleChunks) do
+    for ____, chunk in __TS__Iterator(collectibleChunks) do
         local min, max = table.unpack(chunk)
         directory["collectibleUnlocks" .. tostring(min)] = {
             title = "collectible unlocks",
@@ -73303,7 +73437,7 @@ function ____exports.initDeadSeaScrolls(self)
         }
     end
     local trinketChunks = splitNumber(nil, LAST_VANILLA_TRINKET_TYPE, MENU_PAGE_SIZE)
-    for ____, chunk in ipairs(trinketChunks) do
+    for ____, chunk in __TS__Iterator(trinketChunks) do
         local min, max = table.unpack(chunk)
         directory["trinketUnlocks" .. tostring(min)] = {
             title = "trinket unlocks",
@@ -73316,7 +73450,7 @@ function ____exports.initDeadSeaScrolls(self)
         }
     end
     local cardChunks = splitNumber(nil, LAST_VANILLA_CARD_TYPE, MENU_PAGE_SIZE)
-    for ____, chunk in ipairs(cardChunks) do
+    for ____, chunk in __TS__Iterator(cardChunks) do
         local min, max = table.unpack(chunk)
         directory["cardUnlocks" .. tostring(min)] = {
             title = "card unlocks",
@@ -73329,7 +73463,7 @@ function ____exports.initDeadSeaScrolls(self)
         }
     end
     local pillEffectChunks = splitNumber(nil, LAST_VANILLA_PILL_EFFECT, MENU_PAGE_SIZE, true)
-    for ____, chunk in ipairs(pillEffectChunks) do
+    for ____, chunk in __TS__Iterator(pillEffectChunks) do
         local min, max = table.unpack(chunk)
         directory["pillEffectUnlocks" .. tostring(min)] = {
             title = "pill effect unlocks",
@@ -77027,9 +77161,9 @@ function ____exports.debugFunction(self, params)
     setTracebackFunctionsGlobal(nil)
     mod:saveDataManagerSetGlobal()
     print("Executing debug function.")
-    log("Entering debug function.")
+    log(nil, "Entering debug function.")
     debugCode(nil, params)
-    log("Exiting debug function.")
+    log(nil, "Exiting debug function.")
 end
 return ____exports
  end,
@@ -77052,23 +77186,35 @@ local ObjectiveType = ____ObjectiveType.ObjectiveType
 local ____UnlockType = require("src.enums.UnlockType")
 local UnlockType = ____UnlockType.UnlockType
 function logObjectives(self, objectives)
-    log(("Logging all objectives (" .. tostring(#objectives)) .. "):")
+    log(
+        nil,
+        ("Logging all objectives (" .. tostring(#objectives)) .. "):"
+    )
     for ____, objectiveType in ipairs(OBJECTIVE_TYPES) do
         local thisTypeObjectives = __TS__ArrayFilter(
             objectives,
             function(____, objective) return objective.type == objectiveType end
         )
-        log((("- " .. ObjectiveType[objectiveType]) .. " - ") .. tostring(#thisTypeObjectives))
+        log(
+            nil,
+            (("- " .. ObjectiveType[objectiveType]) .. " - ") .. tostring(#thisTypeObjectives)
+        )
     end
 end
 function logUnlocks(self, unlocks)
-    log(("Logging all unlocks (" .. tostring(#unlocks)) .. "):")
+    log(
+        nil,
+        ("Logging all unlocks (" .. tostring(#unlocks)) .. "):"
+    )
     for ____, unlockType in ipairs(UNLOCK_TYPES) do
         local thisTypeUnlocks = __TS__ArrayFilter(
             unlocks,
             function(____, unlock) return unlock.type == unlockType end
         )
-        log((("- " .. UnlockType[unlockType]) .. " - ") .. tostring(#thisTypeUnlocks))
+        log(
+            nil,
+            (("- " .. UnlockType[unlockType]) .. " - ") .. tostring(#thisTypeUnlocks)
+        )
     end
 end
 function ____exports.validate(self)
@@ -77175,9 +77321,9 @@ function welcomeBanner(self)
         math.floor(#welcomeText)
     )
     local welcomeTextBorder = ("+-" .. hyphens) .. "-+"
-    log(welcomeTextBorder)
-    log(("| " .. welcomeText) .. " |")
-    log(welcomeTextBorder)
+    log(nil, welcomeTextBorder)
+    log(nil, ("| " .. welcomeText) .. " |")
+    log(nil, welcomeTextBorder)
 end
 local MOD_FEATURES = {
     AchievementNotification,
@@ -77250,7 +77396,7 @@ return {
     },
     license = "GPL-3.0",
     type = "commonjs",
-    dependencies = {["isaac-typescript-definitions"] = "^33.0.1", ["isaacscript-common"] = "^67.2.0"},
+    dependencies = {["isaac-typescript-definitions"] = "^33.0.1", ["isaacscript-common"] = "^67.3.0"},
     devDependencies = {
         isaacscript = "^3.15.0",
         ["isaacscript-lint"] = "^6.0.0",

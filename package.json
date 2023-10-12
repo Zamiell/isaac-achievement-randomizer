@@ -13,7 +13,7 @@
   "type": "commonjs",
   "dependencies": {
     "isaac-typescript-definitions": "^33.0.1",
-    "isaacscript-common": "^67.2.0"
+    "isaacscript-common": "^67.3.0"
   },
   "devDependencies": {
     "isaacscript": "^3.15.0",

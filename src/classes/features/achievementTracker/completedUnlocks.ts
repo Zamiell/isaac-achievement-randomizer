@@ -32,6 +32,7 @@ import {
   includes,
   isActiveCollectible,
   isCard,
+  isFamiliarCollectible,
   isHiddenCollectible,
   isPassiveOrFamiliarCollectible,
   isRune,
@@ -235,6 +236,13 @@ export function isActiveCollectibleUnlocked(forRun: boolean): boolean {
   const collectibleTypes = getUnlockedCollectibleTypes(forRun);
   return collectibleTypes.some((collectibleType) =>
     isActiveCollectible(collectibleType),
+  );
+}
+
+export function isFamiliarCollectibleUnlocked(forRun: boolean): boolean {
+  const collectibleTypes = getUnlockedCollectibleTypes(forRun);
+  return collectibleTypes.some((collectibleType) =>
+    isFamiliarCollectible(collectibleType),
   );
 }
 

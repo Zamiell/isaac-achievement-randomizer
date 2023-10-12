@@ -282,6 +282,8 @@ export function getSpecificBossObjectiveButtons(
 export function getChallengeObjectiveButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
+  // We can use `UNLOCKABLE_CHALLENGES.length` here because the only banned challenge is the final
+  // one. In other words, having the final page go to 45 would look like a bug.
   const chunks = splitNumber(UNLOCKABLE_CHALLENGES.length, MENU_PAGE_SIZE);
   for (const chunk of chunks) {
     const [min, max] = chunk;
@@ -414,6 +416,8 @@ export function getAltFloorUnlockButtons(): DeadSeaScrollsButton[] {
 export function getChallengeUnlockButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
+  // We can use `UNLOCKABLE_CHALLENGES.length` here because the only banned challenge is the final
+  // one. In other words, having the final page go to 45 would look like a bug.
   const chunks = splitNumber(UNLOCKABLE_CHALLENGES.length, MENU_PAGE_SIZE);
   for (const chunk of chunks) {
     const [min, max] = chunk;
