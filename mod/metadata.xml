@@ -3,16 +3,15 @@
 <metadata>
   <name>Achievement Randomizer</name>
   <directory>isaac-achievement-randomizer</directory>
-  <description>
-    [h1][b]Achievement Randomizer[/b][/h1]
+  <id>3050399093</id>
+  <description>[h1][b]Achievement Randomizer[/b][/h1]
 
 Achievement Randomizer is a mod that gives you the experience of playing through the game from scratch, unlocking each item one by one in a randomized way.
 
 This does [b]not[/b] use the vanilla achievements; it provides a completely customized experience. For a full explanation, check out [url=https://github.com/Zamiell/isaac-achievement-randomizer/blob/main/docs/about.md]the manual on GitHub[/url].
 
-For technical support or general questions, please [b]do not post a comment here[/b]. Instead, post in the &quot;#randomizer-general&quot; channel on the [url=https://discord.gg/GwhUeQjHTF]Isaac streaking Discord server[/url]. To report bugs, please post in the &quot;#randomizer-bugs&quot; channel.
-  </description>
-  <version>1.0</version>
+For technical support or general questions, please [b]do not post a comment here[/b]. Instead, post in the &quot;#randomizer-general&quot; channel on the [url=https://discord.gg/GwhUeQjHTF]Isaac streaking Discord server[/url]. To report bugs, please post in the &quot;#randomizer-bugs&quot; channel.</description>
+  <version>0.0.1</version>
   <visibility>Public</visibility>
   <tag id="Lua" />
   <tag id="Tweaks" />
