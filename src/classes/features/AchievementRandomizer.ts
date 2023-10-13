@@ -33,7 +33,7 @@ import {
   setUnseeded,
 } from "isaacscript-common";
 import { getAchievementsForRNG } from "../../achievementAssignment";
-import { ALL_OBJECTIVE_IDS } from "../../arrays/objectives";
+import { ALL_OBJECTIVES } from "../../arrays/objectives";
 import { ALL_UNLOCKS } from "../../arrays/unlocks";
 import { STAGE_TYPES } from "../../cachedEnums";
 import { STARTING_CHARACTER } from "../../constants";
@@ -51,17 +51,17 @@ import type {
   CharacterObjective,
   Objective,
 } from "../../types/Objective";
-import { getObjectiveText } from "../../types/Objective";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { preForcedRestart, resetStats } from "./StatsTracker";
 import { addObjective } from "./achievementTracker/addObjective";
+import { isObjectiveCompleted } from "./achievementTracker/completedObjectives";
 import {
   isChallengeUnlocked,
   isCharacterUnlocked,
   isPathUnlocked,
   isStageTypeUnlocked,
 } from "./achievementTracker/completedUnlocks";
-import { getUncompletedObjectives, v } from "./achievementTracker/v";
+import { v } from "./achievementTracker/v";
 
 const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
 const FONT = fonts.droid;
@@ -143,7 +143,6 @@ export class AchievementRandomizer extends RandomizerModFeature {
 
     v.persistent.completedObjectives = [];
     v.persistent.completedUnlocks = [];
-    v.persistent.uncompletedObjectives = new Set(ALL_OBJECTIVE_IDS);
 
     generationTime = 0;
     renderFrameToTestSeed = Isaac.GetFrameCount();
@@ -200,7 +199,6 @@ export class AchievementRandomizer extends RandomizerModFeature {
     // Reset the persistent variable relating to our playthrough.
     v.persistent.completedObjectives = [];
     v.persistent.completedUnlocks = [];
-    v.persistent.uncompletedObjectives = new Set(ALL_OBJECTIVE_IDS);
     resetStats();
     preForcedRestart();
 
@@ -351,8 +349,11 @@ function tryCompleteUncompletedObjectives(): boolean {
 
   const reachableNonStoryBossesSet = getReachableNonStoryBossesSet();
 
-  const uncompletedObjectives = getUncompletedObjectives();
-  for (const objective of uncompletedObjectives) {
+  for (const objective of ALL_OBJECTIVES) {
+    if (isObjectiveCompleted(objective)) {
+      continue;
+    }
+
     const func = OBJECTIVE_ACCESS_FUNCTIONS[objective.type];
     if (func(objective, reachableNonStoryBossesSet)) {
       addObjective(objective, true);
@@ -393,15 +394,4 @@ export function getReachableNonStoryBossesSet(): Set<BossID> {
   }
 
   return reachableNonStoryBossesSet;
-}
-
-function _logUncompletedObjectives() {
-  log("Missing objectives:");
-
-  const uncompletedObjectives = getUncompletedObjectives();
-
-  for (const [i, objective] of uncompletedObjectives.entries()) {
-    const objectiveText = getObjectiveText(objective).join(" ");
-    log(`${i + 1}) ${objectiveText}`);
-  }
 }

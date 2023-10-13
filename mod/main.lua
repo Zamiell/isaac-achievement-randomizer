@@ -65442,24 +65442,16 @@ return ____exports
 local ____lualib = require("lualib_bundle")
 local Map = ____lualib.Map
 local __TS__New = ____lualib.__TS__New
-local Set = ____lualib.Set
-local __TS__Spread = ____lualib.__TS__Spread
-local __TS__ArrayMap = ____lualib.__TS__ArrayMap
 local ____exports = {}
-local ____objectives = require("src.arrays.objectives")
-local ALL_OBJECTIVES = ____objectives.ALL_OBJECTIVES
 local ____RandomizerMode = require("src.enums.RandomizerMode")
 local RandomizerMode = ____RandomizerMode.RandomizerMode
-local ____Objective = require("src.types.Objective")
-local getObjectiveFromID = ____Objective.getObjectiveFromID
 ____exports.v = {persistent = {
     seed = nil,
     randomizerMode = RandomizerMode.CASUAL,
     objectiveToUnlockMap = __TS__New(Map),
     completedObjectives = {},
     completedUnlocks = {},
-    completedUnlocksForRun = {},
-    uncompletedObjectives = __TS__New(Set)
+    completedUnlocksForRun = {}
 }}
 function ____exports.isRandomizerEnabled(self)
     return ____exports.v.persistent.seed ~= nil
@@ -65481,15 +65473,6 @@ function ____exports.getCompletedUnlocks(self)
 end
 function ____exports.getNumCompletedUnlocks(self)
     return #____exports.v.persistent.completedUnlocks
-end
-function ____exports.getUncompletedObjectives(self)
-    if #____exports.v.persistent.completedObjectives == 0 then
-        return ALL_OBJECTIVES
-    end
-    return __TS__ArrayMap(
-        {__TS__Spread(____exports.v.persistent.uncompletedObjectives)},
-        function(____, objectiveID) return getObjectiveFromID(nil, objectiveID) end
-    )
 end
 return ____exports
  end,
@@ -69590,7 +69573,6 @@ function ____exports.addObjective(self, objective, emulating)
     local objectiveID = getObjectiveID(nil, objective)
     local ____v_persistent_completedObjectives_0 = v.persistent.completedObjectives
     ____v_persistent_completedObjectives_0[#____v_persistent_completedObjectives_0 + 1] = objective
-    v.persistent.uncompletedObjectives:delete(objectiveID)
     if not emulating then
         local objectiveText = table.concat(
             getObjectiveText(nil, objective),
@@ -69647,8 +69629,6 @@ local __TS__ClassExtends = ____lualib.__TS__ClassExtends
 local __TS__DecorateLegacy = ____lualib.__TS__DecorateLegacy
 local Set = ____lualib.Set
 local __TS__New = ____lualib.__TS__New
-local __TS__ArrayEntries = ____lualib.__TS__ArrayEntries
-local __TS__Iterator = ____lualib.__TS__Iterator
 local ____exports = {}
 local characterObjectiveFunc, bossObjectiveFunc, challengeObjectiveFunc, tryCompleteUncompletedObjectives, BOSS_STAGES, OBJECTIVE_ACCESS_FUNCTIONS
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
@@ -69685,7 +69665,7 @@ local setUnseeded = ____isaacscript_2Dcommon.setUnseeded
 local ____achievementAssignment = require("src.achievementAssignment")
 local getAchievementsForRNG = ____achievementAssignment.getAchievementsForRNG
 local ____objectives = require("src.arrays.objectives")
-local ALL_OBJECTIVE_IDS = ____objectives.ALL_OBJECTIVE_IDS
+local ALL_OBJECTIVES = ____objectives.ALL_OBJECTIVES
 local ____unlocks = require("src.arrays.unlocks")
 local ALL_UNLOCKS = ____unlocks.ALL_UNLOCKS
 local ____cachedEnums = require("src.cachedEnums")
@@ -69700,8 +69680,6 @@ local ____UnlockablePath = require("src.enums.UnlockablePath")
 local UnlockablePath = ____UnlockablePath.UnlockablePath
 local getUnlockablePathFromCharacterObjectiveKind = ____UnlockablePath.getUnlockablePathFromCharacterObjectiveKind
 local getUnlockablePathFromStoryBoss = ____UnlockablePath.getUnlockablePathFromStoryBoss
-local ____Objective = require("src.types.Objective")
-local getObjectiveText = ____Objective.getObjectiveText
 local ____RandomizerModFeature = require("src.classes.RandomizerModFeature")
 local RandomizerModFeature = ____RandomizerModFeature.RandomizerModFeature
 local ____StatsTracker = require("src.classes.features.StatsTracker")
@@ -69709,13 +69687,14 @@ local preForcedRestart = ____StatsTracker.preForcedRestart
 local resetStats = ____StatsTracker.resetStats
 local ____addObjective = require("src.classes.features.achievementTracker.addObjective")
 local addObjective = ____addObjective.addObjective
+local ____completedObjectives = require("src.classes.features.achievementTracker.completedObjectives")
+local isObjectiveCompleted = ____completedObjectives.isObjectiveCompleted
 local ____completedUnlocks = require("src.classes.features.achievementTracker.completedUnlocks")
 local isChallengeUnlocked = ____completedUnlocks.isChallengeUnlocked
 local isCharacterUnlocked = ____completedUnlocks.isCharacterUnlocked
 local isPathUnlocked = ____completedUnlocks.isPathUnlocked
 local isStageTypeUnlocked = ____completedUnlocks.isStageTypeUnlocked
 local ____v = require("src.classes.features.achievementTracker.v")
-local getUncompletedObjectives = ____v.getUncompletedObjectives
 local v = ____v.v
 function characterObjectiveFunc(self, objective)
     local characterObjective = objective
@@ -69761,13 +69740,18 @@ end
 function tryCompleteUncompletedObjectives(self)
     local unlockedSomething = false
     local reachableNonStoryBossesSet = ____exports.getReachableNonStoryBossesSet(nil)
-    local uncompletedObjectives = getUncompletedObjectives(nil)
-    for ____, objective in ipairs(uncompletedObjectives) do
-        local func = OBJECTIVE_ACCESS_FUNCTIONS[objective.type]
-        if func(nil, objective, reachableNonStoryBossesSet) then
-            addObjective(nil, objective, true)
-            unlockedSomething = true
+    for ____, objective in ipairs(ALL_OBJECTIVES) do
+        do
+            if isObjectiveCompleted(nil, objective) then
+                goto __continue32
+            end
+            local func = OBJECTIVE_ACCESS_FUNCTIONS[objective.type]
+            if func(nil, objective, reachableNonStoryBossesSet) then
+                addObjective(nil, objective, true)
+                unlockedSomething = true
+            end
         end
+        ::__continue32::
     end
     return unlockedSomething
 end
@@ -69777,21 +69761,21 @@ function ____exports.getReachableNonStoryBossesSet(self)
         for ____, stageType in ipairs(STAGE_TYPES) do
             do
                 if stageType == StageType.GREED_MODE then
-                    goto __continue37
+                    goto __continue38
                 end
                 if not isStageTypeUnlocked(nil, stage, stageType, false) then
-                    goto __continue37
+                    goto __continue38
                 end
                 if isRepentanceStage(nil, stageType) and not isPathUnlocked(nil, UnlockablePath.REPENTANCE_FLOORS, false) then
-                    goto __continue37
+                    goto __continue38
                 end
                 local bossSet = getBossSet(nil, stage, stageType)
                 if bossSet == nil then
-                    goto __continue37
+                    goto __continue38
                 end
                 addSetsToSet(nil, reachableNonStoryBossesSet, bossSet)
             end
-            ::__continue37::
+            ::__continue38::
         end
     end
     return reachableNonStoryBossesSet
@@ -69885,7 +69869,6 @@ function AchievementRandomizer.prototype.checkGenerate(self)
     log(((("Generated achievements for seed: " .. tostring(v.persistent.seed)) .. " (attempt #") .. tostring(numGenerationAttempts)) .. ")")
     v.persistent.completedObjectives = {}
     v.persistent.completedUnlocks = {}
-    v.persistent.uncompletedObjectives = __TS__New(Set, ALL_OBJECTIVE_IDS)
     generationTime = 0
     renderFrameToTestSeed = Isaac.GetFrameCount()
 end
@@ -69921,7 +69904,6 @@ function AchievementRandomizer.prototype.checkTestSeed(self)
     generationTime = 0
     v.persistent.completedObjectives = {}
     v.persistent.completedUnlocks = {}
-    v.persistent.uncompletedObjectives = __TS__New(Set, ALL_OBJECTIVE_IDS)
     resetStats(nil)
     preForcedRestart(nil)
     local rng = newRNG(nil, v.persistent.seed)
@@ -69957,19 +69939,6 @@ function ____exports.endRandomizer(self)
     restart(nil, STARTING_CHARACTER)
 end
 OBJECTIVE_ACCESS_FUNCTIONS = {[ObjectiveType.CHARACTER] = characterObjectiveFunc, [ObjectiveType.BOSS] = bossObjectiveFunc, [ObjectiveType.CHALLENGE] = challengeObjectiveFunc}
-local function _logUncompletedObjectives(self)
-    log("Missing objectives:")
-    local uncompletedObjectives = getUncompletedObjectives(nil)
-    for ____, ____value in __TS__Iterator(__TS__ArrayEntries(uncompletedObjectives)) do
-        local i = ____value[1]
-        local objective = ____value[2]
-        local objectiveText = table.concat(
-            getObjectiveText(nil, objective),
-            " "
-        )
-        log((tostring(i + 1) .. ") ") .. objectiveText)
-    end
-end
 return ____exports
  end,
 ["src.classes.features.AchievementTracker"] = function(...) 

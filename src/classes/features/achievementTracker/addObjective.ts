@@ -32,7 +32,6 @@ export function addObjective(objective: Objective, emulating = false): void {
   const objectiveID = getObjectiveID(objective);
 
   v.persistent.completedObjectives.push(objective);
-  v.persistent.uncompletedObjectives.delete(objectiveID);
 
   if (!emulating) {
     const objectiveText = getObjectiveText(objective).join(" ");
