@@ -9,6 +9,9 @@ thumbs.db
 # Per-user IsaacScript settings
 isaacscript.json
 
+# The transpiled Lua output
+mod/main.lua
+
 # Python cache
 __pycache__
 
