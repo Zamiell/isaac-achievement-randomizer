@@ -7,8 +7,6 @@ import {
 } from "../cachedEnums";
 import { ObjectiveType } from "../enums/ObjectiveType";
 import type { Objective } from "../types/Objective";
-import type { ObjectiveID } from "../types/ObjectiveID";
-import { getObjectiveID } from "../types/ObjectiveID";
 import { UNLOCKABLE_CHALLENGES } from "./unlockableChallenges";
 
 /** @see about.md */
@@ -70,7 +68,3 @@ export const ALL_OBJECTIVES: readonly Objective[] = (() => {
 
   return objectives;
 })();
-
-export const ALL_OBJECTIVE_IDS: readonly ObjectiveID[] = ALL_OBJECTIVES.map(
-  (objective) => getObjectiveID(objective),
-);

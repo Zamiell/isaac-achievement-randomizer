@@ -64313,7 +64313,6 @@ return ____exports
 local ____lualib = require("lualib_bundle")
 local __TS__New = ____lualib.__TS__New
 local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
-local __TS__ArrayMap = ____lualib.__TS__ArrayMap
 local ____exports = {}
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
 local BossID = ____isaac_2Dtypescript_2Ddefinitions.BossID
@@ -64326,8 +64325,6 @@ local CHARACTER_OBJECTIVE_KINDS = ____cachedEnums.CHARACTER_OBJECTIVE_KINDS
 local OBJECTIVE_TYPES = ____cachedEnums.OBJECTIVE_TYPES
 local ____ObjectiveType = require("src.enums.ObjectiveType")
 local ObjectiveType = ____ObjectiveType.ObjectiveType
-local ____ObjectiveID = require("src.types.ObjectiveID")
-local getObjectiveID = ____ObjectiveID.getObjectiveID
 local ____unlockableChallenges = require("src.arrays.unlockableChallenges")
 local UNLOCKABLE_CHALLENGES = ____unlockableChallenges.UNLOCKABLE_CHALLENGES
 ---
@@ -64378,10 +64375,6 @@ ____exports.ALL_OBJECTIVES = (function()
     end
     return objectives
 end)(nil)
-____exports.ALL_OBJECTIVE_IDS = __TS__ArrayMap(
-    ____exports.ALL_OBJECTIVES,
-    function(____, objective) return getObjectiveID(nil, objective) end
-)
 return ____exports
  end,
 ["src.arrays.unlockableCharacters"] = function(...) 
