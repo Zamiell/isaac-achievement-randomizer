@@ -6,7 +6,7 @@ import {
   isFamiliarCollectible,
 } from "isaacscript-common";
 
-const BOSS_ROOM_EXCEPTIONS = [
+const BOSS_ROOM_COLLECTIBLE_TYPE_EXCEPTIONS = [
   CollectibleType.BREAKFAST, // 25
   CollectibleType.WOODEN_SPOON, // 27
   CollectibleType.MOMS_UNDERWEAR, // 29
@@ -37,7 +37,6 @@ const NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS = [
   CollectibleType.BROKEN_GLASS_CANNON, // 474
   CollectibleType.DAMOCLES_PASSIVE, // 656
   CollectibleType.RECALL, // 714
-  CollectibleType.HOLD, // 715
 ] as const;
 
 export const NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS_SET =
@@ -60,7 +59,7 @@ export const BANNED_COLLECTIBLE_TYPES_SET = new ReadonlySet<CollectibleType>(
 
 export const ALWAYS_UNLOCKED_COLLECTIBLE_TYPES =
   new ReadonlySet<CollectibleType>([
-    ...BOSS_ROOM_EXCEPTIONS,
+    ...BOSS_ROOM_COLLECTIBLE_TYPE_EXCEPTIONS,
     ...QUEST_COLLECTIBLE_TYPES,
     ...NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS,
     ...BANNED_COLLECTIBLE_TYPES,

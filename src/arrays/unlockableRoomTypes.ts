@@ -6,7 +6,7 @@ export const UNLOCKABLE_ROOM_TYPES = [
   RoomType.LIBRARY, // 12
   RoomType.SACRIFICE, // 13
   RoomType.VAULT, // 20
-  RoomType.DICE, // 21
+  /// RoomType.DICE, // 21 (uncomment if one more unlock is needed)
   RoomType.PLANETARIUM, // 24
 ] as const;
 

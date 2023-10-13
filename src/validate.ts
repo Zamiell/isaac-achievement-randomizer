@@ -23,7 +23,7 @@ export function validate(): void {
         } less objective(s).`
       : `${ALL_UNLOCKS.length - ALL_OBJECTIVES.length} more objective(s) or ${
           ALL_UNLOCKS.length - ALL_OBJECTIVES.length
-        } less objective(s).`;
+        } less unlock(s).`;
 
   error(errorText);
 }

@@ -33,9 +33,9 @@ This page explains how it works.
 
 <br>
 
-## Alpha Warning ⚠️
+## Beta Warning ⚠️
 
-- The mod is currently in alpha, so it is not recommended that you play it. If you want to test the alpha version, then expect bugs, oversights, broken save files, uncompletable seeds, and so on.
+- The mod is currently in beta, so it is not recommended that you play it. If you want to test the beta version, then expect bugs, oversights, broken save files, uncompletable seeds, and so on.
 - [Backup your save file](#how-do-i-backuprestoreedit-my-randomizer-save-file) after every run.
 - Report any bugs that you encounter in [the Isaac Streaking Discord server](https://discord.gg/GwhUeQjHTF).
 
@@ -205,7 +205,7 @@ The following room types start out locked:
 - Library Room (#12) (unlocks before first book collectible)
 - Sacrifice Room (#13) (unlocks before first Angel Room collectible)
 - Vault (#20) (unlocks before first golden chest collectible)
-- Dice Room (#21) (unlocks before first dice collectible/trinket)
+<!-- - Dice Room (#21) (unlocks before first dice collectible/trinket) -->
 - Planetarium (#24) (unlocks before first Planetarium collectible)
 
 ### Challenges (44)
@@ -214,7 +214,7 @@ All challenges start off locked, with the following exceptions:
 
 - DELETE THIS (#45) (since TMTRAINER is banned)
 
-### Collectibles (693)
+### Collectibles (694)
 
 Every collectible in the game is locked, with the following exceptions:
 
@@ -239,7 +239,6 @@ Every collectible in the game is locked, with the following exceptions:
   - Broken Glass Cannon (#474)
   - Damocles Passive (#656)
   - Recall (#714)
-  - Hold (#715)
 - Banned collectibles (since they would potentially trivialize difficult objectives):
   - Gnawed Leaf (#210)
   - Eden's Blessing (#381)
@@ -330,7 +329,7 @@ The following other things start out locked:
 
 ### Total Unlocks
 
-There are 33 + 10 + 11 + 7 + 44 + 693 + 185 + 95 + 50 + 35 + 15 + 13 + 6 = 1197 unlocks in total.
+There are 33 + 10 + 11 + 7 + 44 + 694 + 185 + 95 + 50 + 35 + 15 + 13 + 6 = 1197 unlocks in total.
 
 <br>
 

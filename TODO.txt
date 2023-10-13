@@ -1,7 +1,6 @@
 TODO:
 
 - check ultra greed / ultra greedier achievements
-- tainted bb logic for hold
 
 ------------------------------
 
