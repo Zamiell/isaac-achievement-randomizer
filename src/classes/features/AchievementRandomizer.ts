@@ -1,9 +1,11 @@
-import type { PlayerType } from "isaac-typescript-definitions";
 import {
   BossID,
+  CardType,
+  CollectibleType,
   Difficulty,
   LevelStage,
   ModCallback,
+  PlayerType,
   StageType,
 } from "isaac-typescript-definitions";
 import {
@@ -56,8 +58,10 @@ import { preForcedRestart, resetStats } from "./StatsTracker";
 import { addObjective } from "./achievementTracker/addObjective";
 import { isObjectiveCompleted } from "./achievementTracker/completedObjectives";
 import {
+  isCardTypeUnlocked,
   isChallengeUnlocked,
   isCharacterUnlocked,
+  isCollectibleTypeUnlocked,
   isPathUnlocked,
   isStageTypeUnlocked,
 } from "./achievementTracker/completedUnlocks";
@@ -264,6 +268,31 @@ const OBJECTIVE_ACCESS_FUNCTIONS = {
 
 function characterObjectiveFunc(objective: Objective): boolean {
   const characterObjective = objective as CharacterObjective;
+
+  // Ensure that helper items can be unlocked by a separate character.
+  switch (characterObjective.character) {
+    // 31
+    case PlayerType.LOST_B: {
+      if (!isCardTypeUnlocked(CardType.HOLY, false)) {
+        return false;
+      }
+
+      break;
+    }
+
+    // 37
+    case PlayerType.JACOB_B: {
+      if (!isCollectibleTypeUnlocked(CollectibleType.ANIMA_SOLA, false)) {
+        return false;
+      }
+
+      break;
+    }
+
+    default: {
+      break;
+    }
+  }
 
   return canGetToCharacterObjective(
     characterObjective.character,
