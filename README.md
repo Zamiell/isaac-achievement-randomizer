@@ -13,7 +13,7 @@ Achievement Randomizer is a mod for [_The Binding of Isaac: Repentance_](https:/
 
 ## Credits
 
-The mod was designed by Zamiel and [Gamonymous](https://github.com/Rchardon).
+The mod was designed by Zamiel and [Gamonymous](https://github.com/Rchardon), with some help from [Moucheron Quipet](https://www.twitch.tv/moucheronquipet).
 
 It is written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacScript](https://isaacscript.github.io/) framework.
 
