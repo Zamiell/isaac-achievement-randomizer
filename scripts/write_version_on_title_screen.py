@@ -21,7 +21,7 @@ TITLE_MENU_FILE_2 = "titlemenu_2.png"  # For the "Stop Playing!" title screen.
 LARGE_FONT = ImageFont.truetype(TITLE_FONT_PATH, 9)
 SMALL_FONT = ImageFont.truetype(TITLE_FONT_PATH, 6)
 URL_FONT = ImageFont.truetype(URL_FONT_PATH, 11)
-ALPHA_FONT = ImageFont.truetype(URL_FONT_PATH, 14)
+BETA_FONT = ImageFont.truetype(URL_FONT_PATH, 14)
 COLOR = (67, 93, 145)
 
 
@@ -59,8 +59,8 @@ def write_version(version):
     # Draw the beta text.
     beta_x = 415
     beta_y = 255
-    width, height = title_draw.textsize("ALPHA", font=ALPHA_FONT)
-    title_draw.text((beta_x - width / 2, beta_y), "ALPHA", COLOR, font=ALPHA_FONT)
+    width, height = title_draw.textsize("BETA", font=BETA_FONT)
+    title_draw.text((beta_x - width / 2, beta_y), "BETA", COLOR, font=BETA_FONT)
 
     # Write the finished title screen.
     title_menu_file_1_path = os.path.join(MAIN_MENU_DIRECTORY_PATH, TITLE_MENU_FILE_1)

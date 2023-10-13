@@ -196,7 +196,7 @@ The following alternate floors start out locked:
 - Ashpit
 - Gehenna
 
-### Room Types (7)
+### Room Types (6)
 
 The following room types start out locked:
 
@@ -329,7 +329,7 @@ The following other things start out locked:
 
 ### Total Unlocks
 
-There are 33 + 10 + 11 + 7 + 44 + 694 + 185 + 95 + 50 + 35 + 15 + 13 + 6 = 1197 unlocks in total.
+There are 33 + 10 + 11 + 6 + 44 + 694 + 185 + 95 + 50 + 35 + 15 + 13 + 6 = 1197 unlocks in total.
 
 <br>
 
