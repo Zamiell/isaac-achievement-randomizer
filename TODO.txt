@@ -1,7 +1,5 @@
 TODO:
 
-- check ultra greed / ultra greedier achievements
-- mode on stats screen
 - checkboxes for banned items
 
 ------------------------------
