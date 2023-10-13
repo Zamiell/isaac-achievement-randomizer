@@ -1,3 +1,4 @@
+import type { PlayerType } from "isaac-typescript-definitions";
 import {
   BossID,
   Difficulty,
@@ -9,8 +10,6 @@ import {
   Callback,
   GAME_FRAMES_PER_SECOND,
   KColorDefault,
-  MAIN_CHARACTERS,
-  ReadonlySet,
   VectorZero,
   addSetsToSet,
   clearChallenge,
@@ -20,6 +19,8 @@ import {
   getRandomSeed,
   getScreenBottomRightPos,
   getScreenCenterPos,
+  getTime,
+  isBeforeGameFrame,
   isBeforeRenderFrame,
   isRepentanceStage,
   isStoryBossID,
@@ -32,10 +33,9 @@ import {
   setUnseeded,
 } from "isaacscript-common";
 import { getAchievementsForRNG } from "../../achievementAssignment";
-import { ALL_OBJECTIVES, NO_HIT_BOSSES } from "../../arrays/objectives";
-import { UNLOCKABLE_CHALLENGES } from "../../arrays/unlockableChallenges";
+import { ALL_OBJECTIVE_IDS } from "../../arrays/objectives";
 import { ALL_UNLOCKS } from "../../arrays/unlocks";
-import { CHARACTER_OBJECTIVE_KINDS, STAGE_TYPES } from "../../cachedEnums";
+import { STAGE_TYPES } from "../../cachedEnums";
 import { STARTING_CHARACTER } from "../../constants";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
@@ -45,23 +45,23 @@ import {
   getUnlockablePathFromCharacterObjectiveKind,
   getUnlockablePathFromStoryBoss,
 } from "../../enums/UnlockablePath";
-import { getObjective, getObjectiveText } from "../../types/Objective";
-import { getObjectiveID } from "../../types/ObjectiveID";
+import type {
+  BossObjective,
+  ChallengeObjective,
+  CharacterObjective,
+  Objective,
+} from "../../types/Objective";
+import { getObjectiveText } from "../../types/Objective";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { preForcedRestart, resetStats } from "./StatsTracker";
 import { addObjective } from "./achievementTracker/addObjective";
-import {
-  isBossObjectiveCompleted,
-  isChallengeObjectiveCompleted,
-  isCharacterObjectiveCompleted,
-} from "./achievementTracker/completedObjectives";
 import {
   isChallengeUnlocked,
   isCharacterUnlocked,
   isPathUnlocked,
   isStageTypeUnlocked,
 } from "./achievementTracker/completedUnlocks";
-import { v } from "./achievementTracker/v";
+import { getUncompletedObjectives, v } from "./achievementTracker/v";
 
 const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
 const FONT = fonts.droid;
@@ -74,7 +74,9 @@ const BOSS_STAGES = [
 ] as const;
 
 let generatingRNG: RNG | undefined;
+let generationTime = 0;
 let renderFrameToTryGenerate: int | undefined;
+let renderFrameToTestSeed: int | undefined;
 let numGenerationAttempts = 0;
 
 /**
@@ -86,6 +88,7 @@ export class AchievementRandomizer extends RandomizerModFeature {
   postRender(): void {
     this.checkDrawBlackScreen();
     this.checkGenerate();
+    this.checkTestSeed();
   }
 
   checkDrawBlackScreen(): void {
@@ -100,16 +103,20 @@ export class AchievementRandomizer extends RandomizerModFeature {
     const rightX = screenBottomRightPos.X;
 
     const text1 = "Randomizing, please wait...";
-    const aboveCenterY = screenCenterPos.Y - 20;
-    FONT.DrawString(text1, 0, aboveCenterY, KColorDefault, rightX, true);
+    const text1Y = screenCenterPos.Y - 30;
+    FONT.DrawString(text1, 0, text1Y, KColorDefault, rightX, true);
 
     const text2 = `Attempt: #${numGenerationAttempts}`;
-    const centerY = screenCenterPos.Y;
-    FONT.DrawString(text2, 0, centerY, KColorDefault, rightX, true);
+    const text2Y = screenCenterPos.Y - 10;
+    FONT.DrawString(text2, 0, text2Y, KColorDefault, rightX, true);
 
-    const text3 = "(This could take a few minutes.)";
-    const belowCenterY = screenCenterPos.Y + 20;
-    FONT.DrawString(text3, 0, belowCenterY, KColorDefault, rightX, true);
+    const text3 = `Confirmed objective completable: ${v.persistent.completedUnlocks.length} / ${ALL_UNLOCKS.length}`;
+    const text3Y = screenCenterPos.Y + 10;
+    FONT.DrawString(text3, 0, text3Y, KColorDefault, rightX, true);
+
+    const text4 = "(This could take a few minutes.)";
+    const text4Y = screenCenterPos.Y + 30;
+    FONT.DrawString(text4, 0, text4Y, KColorDefault, rightX, true);
   }
 
   checkGenerate(): void {
@@ -117,30 +124,83 @@ export class AchievementRandomizer extends RandomizerModFeature {
       return;
     }
 
-    if (isBeforeRenderFrame(renderFrameToTryGenerate)) {
+    if (isBeforeGameFrame(1)) {
+      return;
+    }
+
+    if (
+      renderFrameToTryGenerate === undefined ||
+      isBeforeRenderFrame(renderFrameToTryGenerate)
+    ) {
       return;
     }
     renderFrameToTryGenerate = undefined;
 
     v.persistent.objectiveToUnlockMap = getAchievementsForRNG(generatingRNG);
     log(
-      `Checking to see if randomizer seed ${v.persistent.seed} is beatable. Attempt: #${numGenerationAttempts}`,
+      `Generated achievements for seed: ${v.persistent.seed} (attempt #${numGenerationAttempts})`,
     );
 
-    if (!isAchievementsBeatable()) {
-      numGenerationAttempts++;
+    v.persistent.completedObjectives = [];
+    v.persistent.completedUnlocks = [];
+    v.persistent.uncompletedObjectives = new Set(ALL_OBJECTIVE_IDS);
 
-      const renderFrameCount = Isaac.GetFrameCount();
-      renderFrameToTryGenerate = renderFrameCount + 2;
+    generationTime = 0;
+    renderFrameToTestSeed = Isaac.GetFrameCount();
+  }
+
+  checkTestSeed(): void {
+    if (generatingRNG === undefined || v.persistent.seed === null) {
+      return;
+    }
+
+    if (isBeforeGameFrame(1)) {
+      return;
+    }
+
+    if (
+      renderFrameToTestSeed === undefined ||
+      isBeforeRenderFrame(renderFrameToTestSeed)
+    ) {
+      return;
+    }
+    renderFrameToTestSeed = undefined;
+
+    const renderFrameCount = Isaac.GetFrameCount();
+
+    const startTime = getTime(false);
+    const unlockedSomething = tryCompleteUncompletedObjectives();
+    const finishTime = getTime(false);
+
+    const elapsedTime = finishTime - startTime;
+    generationTime += elapsedTime;
+
+    if (!unlockedSomething) {
+      log(
+        `Failed to emulate beating seed ${v.persistent.seed}: ${v.persistent.completedUnlocks.length} / ${ALL_UNLOCKS.length}. Milliseconds taken: ${generationTime}`,
+      );
+      // logMissingObjectives();
+
+      numGenerationAttempts++;
+      renderFrameToTryGenerate = renderFrameCount + 1;
 
       return;
     }
 
+    if (v.persistent.completedUnlocks.length < ALL_UNLOCKS.length) {
+      renderFrameToTestSeed = renderFrameCount + 1;
+      return;
+    }
+
+    log(`Generation complete. Milliseconds taken: ${generationTime}`);
+
     generatingRNG = undefined;
+    generationTime = 0;
 
     // Reset the persistent variable relating to our playthrough.
-    v.persistent.completedUnlocks = [];
     v.persistent.completedObjectives = [];
+    v.persistent.completedUnlocks = [];
+    v.persistent.uncompletedObjectives = new Set(ALL_OBJECTIVE_IDS);
     resetStats();
     preForcedRestart();
 
@@ -195,82 +255,34 @@ export function endRandomizer(): void {
   restart(STARTING_CHARACTER);
 }
 
-/** Emulate a player playing through this randomizer seed to see if every objective is possible. */
-function isAchievementsBeatable(): boolean {
-  v.persistent.completedUnlocks = [];
-  v.persistent.completedObjectives = [];
+const OBJECTIVE_ACCESS_FUNCTIONS = {
+  [ObjectiveType.CHARACTER]: characterObjectiveFunc,
+  [ObjectiveType.BOSS]: bossObjectiveFunc,
+  [ObjectiveType.CHALLENGE]: challengeObjectiveFunc,
+} as const satisfies Record<
+  ObjectiveType,
+  (objective: Objective, reachableNonStoryBossesSet: Set<BossID>) => boolean
+>;
 
-  while (v.persistent.completedUnlocks.length < ALL_UNLOCKS.length) {
-    const unlockedSomething = tryUnlockEverythingReachable();
-    if (!unlockedSomething) {
-      log(
-        `Failed to emulate beating seed ${v.persistent.seed}: ${v.persistent.completedUnlocks.length} / ${ALL_UNLOCKS.length}`,
-      );
-      // logMissingObjectives();
+function characterObjectiveFunc(objective: Objective): boolean {
+  const characterObjective = objective as CharacterObjective;
 
-      return false;
-    }
-  }
-
-  return true;
+  return canGetToCharacterObjective(
+    characterObjective.character,
+    characterObjective.kind,
+    false,
+  );
 }
 
-/** @returns Whether unlocking one or more things was successful. */
-function tryUnlockEverythingReachable(): boolean {
-  let unlockedSomething = false;
-
-  for (const character of MAIN_CHARACTERS) {
-    if (!isCharacterUnlocked(character, false)) {
-      continue;
-    }
-
-    for (const kind of CHARACTER_OBJECTIVE_KINDS) {
-      if (
-        canGetToCharacterObjectiveKind(kind, false) &&
-        !isCharacterObjectiveCompleted(character, kind)
-      ) {
-        const objective = getObjective(
-          ObjectiveType.CHARACTER,
-          character,
-          kind,
-        );
-        addObjective(objective, true);
-        unlockedSomething = true;
-      }
-    }
-  }
-
-  const reachableNonStoryBossesSet = getReachableNonStoryBossesSet();
-
-  for (const bossID of NO_HIT_BOSSES) {
-    if (
-      canGetToBoss(bossID, reachableNonStoryBossesSet, false) &&
-      !isBossObjectiveCompleted(bossID)
-    ) {
-      const objective = getObjective(ObjectiveType.BOSS, bossID);
-      addObjective(objective, true);
-      unlockedSomething = true;
-    }
-  }
-
-  for (const challenge of UNLOCKABLE_CHALLENGES) {
-    if (
-      isChallengeUnlocked(challenge, false) &&
-      !isChallengeObjectiveCompleted(challenge)
-    ) {
-      const objective = getObjective(ObjectiveType.CHALLENGE, challenge);
-      addObjective(objective, true);
-      unlockedSomething = true;
-    }
-  }
-
-  return unlockedSomething;
-}
-
-export function canGetToCharacterObjectiveKind(
+export function canGetToCharacterObjective(
+  character: PlayerType,
   kind: CharacterObjectiveKind,
   forRun: boolean,
 ): boolean {
+  if (!isCharacterUnlocked(character, forRun)) {
+    return false;
+  }
+
   // Handle special cases that require two or more unlockable paths.
   if (kind === CharacterObjectiveKind.DELIRIUM) {
     return (
@@ -292,6 +304,63 @@ export function canGetToCharacterObjectiveKind(
   }
 
   return isPathUnlocked(unlockablePath, forRun);
+}
+
+function bossObjectiveFunc(
+  objective: Objective,
+  reachableNonStoryBossesSet: Set<BossID>,
+): boolean {
+  const bossObjective = objective as BossObjective;
+  return canGetToBoss(bossObjective.bossID, reachableNonStoryBossesSet, false);
+}
+
+export function canGetToBoss(
+  bossID: BossID,
+  reachableBossesSet: Set<BossID>,
+  forRun: boolean,
+): boolean {
+  if (!isStoryBossID(bossID)) {
+    return reachableBossesSet.has(bossID);
+  }
+
+  // Handle the special case of Delirium, which requires two separate paths to be unlocked. (Since
+  // the mod manually removes void portals, getting to Delirium requires going through Blue Womb.)
+  if (bossID === BossID.DELIRIUM) {
+    return (
+      isPathUnlocked(UnlockablePath.BLUE_WOMB, forRun) &&
+      isPathUnlocked(UnlockablePath.VOID, forRun)
+    );
+  }
+
+  const unlockablePath = getUnlockablePathFromStoryBoss(bossID);
+  if (unlockablePath === undefined) {
+    return true;
+  }
+
+  return isPathUnlocked(unlockablePath, forRun);
+}
+
+function challengeObjectiveFunc(objective: Objective): boolean {
+  const challengeObjective = objective as ChallengeObjective;
+  return isChallengeUnlocked(challengeObjective.challenge, false);
+}
+
+/** @returns Whether unlocking one or more things was successful. */
+function tryCompleteUncompletedObjectives(): boolean {
+  let unlockedSomething = false;
+
+  const reachableNonStoryBossesSet = getReachableNonStoryBossesSet();
+
+  const uncompletedObjectives = getUncompletedObjectives();
+  for (const objective of uncompletedObjectives) {
+    const func = OBJECTIVE_ACCESS_FUNCTIONS[objective.type];
+    if (func(objective, reachableNonStoryBossesSet)) {
+      addObjective(objective, true);
+      unlockedSomething = true;
+    }
+  }
+
+  return unlockedSomething;
 }
 
 export function getReachableNonStoryBossesSet(): Set<BossID> {
@@ -326,46 +395,12 @@ export function getReachableNonStoryBossesSet(): Set<BossID> {
   return reachableNonStoryBossesSet;
 }
 
-export function canGetToBoss(
-  bossID: BossID,
-  reachableBossesSet: Set<BossID>,
-  forRun: boolean,
-): boolean {
-  if (!isStoryBossID(bossID)) {
-    return reachableBossesSet.has(bossID);
-  }
-
-  // Handle the special case of Delirium, which requires two separate paths to be unlocked. (Since
-  // the mod manually removes void portals, getting to Delirium requires going through Blue Womb.)
-  if (bossID === BossID.DELIRIUM) {
-    return (
-      isPathUnlocked(UnlockablePath.BLUE_WOMB, forRun) &&
-      isPathUnlocked(UnlockablePath.VOID, forRun)
-    );
-  }
-
-  const unlockablePath = getUnlockablePathFromStoryBoss(bossID);
-  if (unlockablePath === undefined) {
-    return true;
-  }
-
-  return isPathUnlocked(unlockablePath, forRun);
-}
-
-function _logMissingObjectives() {
+function _logUncompletedObjectives() {
   log("Missing objectives:");
 
-  const completedObjectiveIDs = v.persistent.completedObjectives.map(
-    (objective) => getObjectiveID(objective),
-  );
-  const completedObjectiveIDsSet = new ReadonlySet(completedObjectiveIDs);
+  const uncompletedObjectives = getUncompletedObjectives();
 
-  const missingObjectives = ALL_OBJECTIVES.filter((objective) => {
-    const objectiveID = getObjectiveID(objective);
-    return !completedObjectiveIDsSet.has(objectiveID);
-  });
-
-  for (const [i, objective] of missingObjectives.entries()) {
+  for (const [i, objective] of uncompletedObjectives.entries()) {
     const objectiveText = getObjectiveText(objective).join(" ");
     log(`${i + 1}) ${objectiveText}`);
   }

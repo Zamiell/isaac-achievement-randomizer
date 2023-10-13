@@ -29,14 +29,16 @@ export function addObjective(objective: Objective, emulating = false): void {
     return;
   }
 
+  const objectiveID = getObjectiveID(objective);
+
   v.persistent.completedObjectives.push(objective);
+  v.persistent.uncompletedObjectives.delete(objectiveID);
 
   if (!emulating) {
     const objectiveText = getObjectiveText(objective).join(" ");
     log(`Accomplished objective: ${objectiveText}`);
   }
 
-  const objectiveID = getObjectiveID(objective);
   const unlock = v.persistent.objectiveToUnlockMap.get(objectiveID);
   assertDefined(
     unlock,

@@ -1676,7 +1676,9 @@ function getRandomFamiliarCollectibleUnlock(): CollectibleUnlock {
 
 function getRandomTrinketUnlock(): TrinketUnlock {
   const trinketTypes = isHardcoreMode()
-    ? getTrinketTypesOfQuality(0)
+    ? getTrinketTypesOfQuality(0).filter((trinketType) =>
+        UNLOCKABLE_TRINKET_TYPES.includes(trinketType),
+      )
     : UNLOCKABLE_TRINKET_TYPES;
 
   const trinketType = getRandomArrayElement(trinketTypes);
@@ -1689,7 +1691,9 @@ function getRandomTrinketUnlock(): TrinketUnlock {
 
 function getRandomCardUnlock(): CardUnlock {
   const cardTypes = isHardcoreMode()
-    ? getCardTypesOfQuality(0)
+    ? getCardTypesOfQuality(0).filter((cardType) =>
+        UNLOCKABLE_CARD_TYPES.includes(cardType),
+      )
     : UNLOCKABLE_CARD_TYPES;
 
   const cardType = getRandomArrayElement(cardTypes);
@@ -1702,7 +1706,9 @@ function getRandomCardUnlock(): CardUnlock {
 
 function getRandomRuneUnlock(): CardUnlock {
   const cardTypes = isHardcoreMode()
-    ? getRunesOfQuality(0)
+    ? getRunesOfQuality(0).filter((cardType) =>
+        UNLOCKABLE_CARD_TYPES.includes(cardType),
+      )
     : UNLOCKABLE_RUNE_CARD_TYPES;
 
   const cardType = getRandomArrayElement(cardTypes);
@@ -1715,7 +1721,9 @@ function getRandomRuneUnlock(): CardUnlock {
 
 function getRandomPillEffectUnlock(): PillEffectUnlock {
   const pillEffects = isHardcoreMode()
-    ? getPillEffectsOfQuality(0)
+    ? getPillEffectsOfQuality(0).filter((pillEffect) =>
+        UNLOCKABLE_PILL_EFFECTS.includes(pillEffect),
+      )
     : UNLOCKABLE_PILL_EFFECTS;
 
   // We never want to randomly unlock Vurp, since that could lead to infinite loops.

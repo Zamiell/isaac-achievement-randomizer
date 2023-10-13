@@ -1,7 +1,11 @@
 TODO:
 
-- add iterations to black screen
-  - Confirmed unlockable: N
+- optimize tryUnlockEverythingReachable
+
+- check ultra greed / ultra greedier achievements
+- tainted bb logic for hold
+- logic for holy card + tLost
+- logic for anima sola + tJacob
 
 ------------------------------
 

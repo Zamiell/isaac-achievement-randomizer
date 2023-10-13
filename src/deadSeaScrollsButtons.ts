@@ -55,7 +55,7 @@ import {
 } from "./cachedEnums";
 import {
   canGetToBoss,
-  canGetToCharacterObjectiveKind,
+  canGetToCharacterObjective,
   getReachableNonStoryBossesSet,
 } from "./classes/features/AchievementRandomizer";
 import {
@@ -216,7 +216,7 @@ export function getSpecificCharacterObjectiveButtons(
       {
         str: "(inaccessible)",
         fSize: 1,
-        displayIf: () => !canGetToCharacterObjectiveKind(kind, false),
+        displayIf: () => !canGetToCharacterObjective(character, kind, false),
       },
       {
         str: "",

@@ -1,5 +1,7 @@
+import { ALL_OBJECTIVES } from "../../../arrays/objectives";
 import { RandomizerMode } from "../../../enums/RandomizerMode";
 import type { Objective } from "../../../types/Objective";
+import { getObjectiveFromID } from "../../../types/Objective";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
 import type { Unlock } from "../../../types/Unlock";
 
@@ -16,6 +18,8 @@ export const v = {
     completedObjectives: [] as Objective[],
     completedUnlocks: [] as Unlock[],
     completedUnlocksForRun: [] as Unlock[],
+
+    uncompletedObjectives: new Set<ObjectiveID>(),
   },
 };
 
@@ -45,4 +49,14 @@ export function getCompletedUnlocks(): Unlock[] {
 
 export function getNumCompletedUnlocks(): int {
   return v.persistent.completedUnlocks.length;
+}
+
+export function getUncompletedObjectives(): readonly Objective[] {
+  if (v.persistent.completedObjectives.length === 0) {
+    return ALL_OBJECTIVES;
+  }
+
+  return [...v.persistent.uncompletedObjectives].map((objectiveID) =>
+    getObjectiveFromID(objectiveID),
+  );
 }

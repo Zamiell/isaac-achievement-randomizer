@@ -74,7 +74,7 @@ function achievementRandomizer(params: string) {
   // Close the console by restarting the game.
   restart();
   mod.runNextRun(() => {
-    mod.runNextGameFrame(() => {
+    mod.runNextRenderFrame(() => {
       startRandomizer(randomizerMode, seed);
     });
   });

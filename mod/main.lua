@@ -35265,68 +35265,38 @@ function ____exports.getElapsedRoomFramesSince(self, roomFrameCount)
 end
 --- Helper function to check if the current game frame count is higher than a specific game frame
 -- count.
--- 
--- This returns false if the submitted game frame count is null or undefined.
 function ____exports.isAfterGameFrame(self, gameFrameCount)
-    if gameFrameCount == nil or gameFrameCount == nil then
-        return false
-    end
     local thisGameFrameCount = game:GetFrameCount()
     return thisGameFrameCount > gameFrameCount
 end
 --- Helper function to check if the current render frame count is higher than a specific render frame
 -- count.
--- 
--- This returns false if the submitted render frame count is null or undefined.
 function ____exports.isAfterRenderFrame(self, renderFrameCount)
-    if renderFrameCount == nil or renderFrameCount == nil then
-        return false
-    end
     local thisRenderFrameCount = Isaac.GetFrameCount()
     return thisRenderFrameCount > renderFrameCount
 end
 --- Helper function to check if the current room frame count is higher than a specific room frame
 -- count.
--- 
--- This returns false if the submitted room frame count is null or undefined.
 function ____exports.isAfterRoomFrame(self, roomFrameCount)
-    if roomFrameCount == nil or roomFrameCount == nil then
-        return false
-    end
     local room = game:GetRoom()
     local thisGameFrameCount = room:GetFrameCount()
     return thisGameFrameCount > roomFrameCount
 end
 --- Helper function to check if the current game frame count is lower than a specific game frame
 -- count.
--- 
--- This returns false if the submitted game frame count is null or undefined.
 function ____exports.isBeforeGameFrame(self, gameFrameCount)
-    if gameFrameCount == nil or gameFrameCount == nil then
-        return false
-    end
     local thisGameFrameCount = game:GetFrameCount()
     return thisGameFrameCount < gameFrameCount
 end
 --- Helper function to check if the current render frame count is lower than a specific render frame
 -- count.
--- 
--- This returns false if the submitted render frame count is null or undefined.
 function ____exports.isBeforeRenderFrame(self, renderFrameCount)
-    if renderFrameCount == nil or renderFrameCount == nil then
-        return false
-    end
     local thisRenderFrameCount = Isaac.GetFrameCount()
     return thisRenderFrameCount < renderFrameCount
 end
 --- Helper function to check if the current room frame count is lower than a specific room frame
 -- count.
--- 
--- This returns false if the submitted room frame count is null or undefined.
 function ____exports.isBeforeRoomFrame(self, roomFrameCount)
-    if roomFrameCount == nil or roomFrameCount == nil then
-        return false
-    end
     local room = game:GetRoom()
     local thisGameFrameCount = room:GetFrameCount()
     return thisGameFrameCount < roomFrameCount
@@ -35334,7 +35304,7 @@ end
 --- Helper function to check if the current game frame count is exactly equal to a specific game
 -- frame count.
 -- 
--- This returns false if the submitted game frame count is null or undefined.
+-- This returns false if the submitted render frame count is null or undefined.
 function ____exports.onGameFrame(self, gameFrameCount)
     if gameFrameCount == nil or gameFrameCount == nil then
         return false
@@ -35344,68 +35314,38 @@ function ____exports.onGameFrame(self, gameFrameCount)
 end
 --- Helper function to check if the current game frame count is equal to or higher than a specific
 -- game frame count.
--- 
--- This returns false if the submitted game frame count is null or undefined.
 function ____exports.onOrAfterGameFrame(self, gameFrameCount)
-    if gameFrameCount == nil or gameFrameCount == nil then
-        return false
-    end
     local thisGameFrameCount = game:GetFrameCount()
     return thisGameFrameCount >= gameFrameCount
 end
 --- Helper function to check if the current render frame count is equal to or higher than a specific
 -- render frame count.
--- 
--- This returns false if the submitted render frame count is null or undefined.
 function ____exports.onOrAfterRenderFrame(self, renderFrameCount)
-    if renderFrameCount == nil or renderFrameCount == nil then
-        return false
-    end
     local thisRenderFrameCount = Isaac.GetFrameCount()
     return thisRenderFrameCount >= renderFrameCount
 end
 --- Helper function to check if the current room frame count is equal to or higher than a specific
 -- room frame count.
--- 
--- This returns false if the submitted room frame count is null or undefined.
 function ____exports.onOrAfterRoomFrame(self, roomFrameCount)
-    if roomFrameCount == nil or roomFrameCount == nil then
-        return false
-    end
     local room = game:GetRoom()
     local thisGameFrameCount = room:GetFrameCount()
     return thisGameFrameCount >= roomFrameCount
 end
 --- Helper function to check if the current game frame count is equal to or lower than a specific
 -- game frame count.
--- 
--- This returns false if the submitted game frame count is null or undefined.
 function ____exports.onOrBeforeGameFrame(self, gameFrameCount)
-    if gameFrameCount == nil or gameFrameCount == nil then
-        return false
-    end
     local thisGameFrameCount = game:GetFrameCount()
     return thisGameFrameCount <= gameFrameCount
 end
 --- Helper function to check if the current render frame count is equal to or lower than a specific
 -- render frame count.
--- 
--- This returns false if the submitted render frame count is null or undefined.
 function ____exports.onOrBeforeRenderFrame(self, renderFrameCount)
-    if renderFrameCount == nil or renderFrameCount == nil then
-        return false
-    end
     local thisRenderFrameCount = Isaac.GetFrameCount()
     return thisRenderFrameCount <= renderFrameCount
 end
 --- Helper function to check if the current room frame count is equal to or lower than a specific
 -- room frame count.
--- 
--- This returns false if the submitted room frame count is null or undefined.
 function ____exports.onOrBeforeRoomFrame(self, roomFrameCount)
-    if roomFrameCount == nil or roomFrameCount == nil then
-        return false
-    end
     local room = game:GetRoom()
     local thisGameFrameCount = room:GetFrameCount()
     return thisGameFrameCount <= roomFrameCount
@@ -64371,25 +64311,31 @@ return ____exports
  end,
 ["src.arrays.objectives"] = function(...) 
 local ____lualib = require("lualib_bundle")
+local __TS__New = ____lualib.__TS__New
 local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
+local __TS__ArrayMap = ____lualib.__TS__ArrayMap
 local ____exports = {}
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
 local BossID = ____isaac_2Dtypescript_2Ddefinitions.BossID
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
 local MAIN_CHARACTERS = ____isaacscript_2Dcommon.MAIN_CHARACTERS
+local ReadonlySet = ____isaacscript_2Dcommon.ReadonlySet
 local ____cachedEnums = require("src.cachedEnums")
 local BOSS_IDS = ____cachedEnums.BOSS_IDS
 local CHARACTER_OBJECTIVE_KINDS = ____cachedEnums.CHARACTER_OBJECTIVE_KINDS
 local OBJECTIVE_TYPES = ____cachedEnums.OBJECTIVE_TYPES
 local ____ObjectiveType = require("src.enums.ObjectiveType")
 local ObjectiveType = ____ObjectiveType.ObjectiveType
+local ____ObjectiveID = require("src.types.ObjectiveID")
+local getObjectiveID = ____ObjectiveID.getObjectiveID
 local ____unlockableChallenges = require("src.arrays.unlockableChallenges")
 local UNLOCKABLE_CHALLENGES = ____unlockableChallenges.UNLOCKABLE_CHALLENGES
 ---
 -- @see about.md
+local NO_HIT_EXCEPTION_BOSSES = __TS__New(ReadonlySet, {BossID.MOMS_HEART, BossID.DELIRIUM, BossID.RAGLICH})
 ____exports.NO_HIT_BOSSES = __TS__ArrayFilter(
     BOSS_IDS,
-    function(____, bossID) return bossID ~= BossID.DELIRIUM and bossID ~= BossID.ULTRA_GREEDIER and bossID ~= BossID.RAGLICH end
+    function(____, bossID) return not NO_HIT_EXCEPTION_BOSSES:has(bossID) end
 )
 ____exports.ALL_OBJECTIVES = (function()
     local objectives = {}
@@ -64432,6 +64378,10 @@ ____exports.ALL_OBJECTIVES = (function()
     end
     return objectives
 end)(nil)
+____exports.ALL_OBJECTIVE_IDS = __TS__ArrayMap(
+    ____exports.ALL_OBJECTIVES,
+    function(____, objective) return getObjectiveID(nil, objective) end
+)
 return ____exports
  end,
 ["src.arrays.unlockableCharacters"] = function(...) 
@@ -65492,16 +65442,24 @@ return ____exports
 local ____lualib = require("lualib_bundle")
 local Map = ____lualib.Map
 local __TS__New = ____lualib.__TS__New
+local Set = ____lualib.Set
+local __TS__Spread = ____lualib.__TS__Spread
+local __TS__ArrayMap = ____lualib.__TS__ArrayMap
 local ____exports = {}
+local ____objectives = require("src.arrays.objectives")
+local ALL_OBJECTIVES = ____objectives.ALL_OBJECTIVES
 local ____RandomizerMode = require("src.enums.RandomizerMode")
 local RandomizerMode = ____RandomizerMode.RandomizerMode
+local ____Objective = require("src.types.Objective")
+local getObjectiveFromID = ____Objective.getObjectiveFromID
 ____exports.v = {persistent = {
     seed = nil,
     randomizerMode = RandomizerMode.CASUAL,
     objectiveToUnlockMap = __TS__New(Map),
     completedObjectives = {},
     completedUnlocks = {},
-    completedUnlocksForRun = {}
+    completedUnlocksForRun = {},
+    uncompletedObjectives = __TS__New(Set)
 }}
 function ____exports.isRandomizerEnabled(self)
     return ____exports.v.persistent.seed ~= nil
@@ -65523,6 +65481,15 @@ function ____exports.getCompletedUnlocks(self)
 end
 function ____exports.getNumCompletedUnlocks(self)
     return #____exports.v.persistent.completedUnlocks
+end
+function ____exports.getUncompletedObjectives(self)
+    if #____exports.v.persistent.completedObjectives == 0 then
+        return ALL_OBJECTIVES
+    end
+    return __TS__ArrayMap(
+        {__TS__Spread(____exports.v.persistent.uncompletedObjectives)},
+        function(____, objectiveID) return getObjectiveFromID(nil, objectiveID) end
+    )
 end
 return ____exports
  end,
@@ -67497,6 +67464,8 @@ return ____exports
 local ____lualib = require("lualib_bundle")
 local __TS__ArrayJoin = ____lualib.__TS__ArrayJoin
 local __TS__New = ____lualib.__TS__New
+local __TS__ArrayIncludes = ____lualib.__TS__ArrayIncludes
+local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
 local __TS__Iterator = ____lualib.__TS__Iterator
 local ____exports = {}
 local getSwappedUnlock, getSwappedUnlockPath, getSwappedUnlockAltFloor, getSwappedUnlockChallenge, getSwappedUnlockCollectible, getSwappedUnlockTrinket, getSwappedUnlockCard, getSwappedUnlockPillEffect, getSwappedUnlockHeart, getSwappedUnlockCoin, getSwappedUnlockBomb, getSwappedUnlockKey, getSwappedUnlockBattery, getSwappedUnlockSack, getSwappedUnlockChest, getSwappedUnlockSlot, getSwappedUnlockOther, swapAnyRoomUnlock, getRandomActiveCollectibleUnlock, getRandomFamiliarCollectibleUnlock, getRandomTrinketUnlock, getRandomCardUnlock, getRandomRuneUnlock, getRandomPillEffectUnlock, findObjectiveIDForUnlock, SWAPPED_UNLOCK_FUNCTIONS, SWAPPED_UNLOCK_PATH_FUNCTIONS, SWAPPED_UNLOCK_ALT_FLOOR_FUNCTIONS, CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP, SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS, SWAPPED_UNLOCK_TRINKET_FUNCTIONS, SWAPPED_UNLOCK_CARD_FUNCTIONS, SWAPPED_PILL_EFFECT_FUNCTIONS, SWAPPED_UNLOCK_OTHER_FUNCTIONS
@@ -67879,22 +67848,34 @@ function getRandomFamiliarCollectibleUnlock(self)
     return getUnlock(nil, UnlockType.COLLECTIBLE, collectibleType)
 end
 function getRandomTrinketUnlock(self)
-    local trinketTypes = isHardcoreMode(nil) and getTrinketTypesOfQuality(nil, 0) or UNLOCKABLE_TRINKET_TYPES
+    local trinketTypes = isHardcoreMode(nil) and __TS__ArrayFilter(
+        getTrinketTypesOfQuality(nil, 0),
+        function(____, trinketType) return __TS__ArrayIncludes(UNLOCKABLE_TRINKET_TYPES, trinketType) end
+    ) or UNLOCKABLE_TRINKET_TYPES
     local trinketType = getRandomArrayElement(nil, trinketTypes)
     return {type = UnlockType.TRINKET, trinketType = trinketType}
 end
 function getRandomCardUnlock(self)
-    local cardTypes = isHardcoreMode(nil) and getCardTypesOfQuality(nil, 0) or UNLOCKABLE_CARD_TYPES
+    local cardTypes = isHardcoreMode(nil) and __TS__ArrayFilter(
+        getCardTypesOfQuality(nil, 0),
+        function(____, cardType) return __TS__ArrayIncludes(UNLOCKABLE_CARD_TYPES, cardType) end
+    ) or UNLOCKABLE_CARD_TYPES
     local cardType = getRandomArrayElement(nil, cardTypes)
     return {type = UnlockType.CARD, cardType = cardType}
 end
 function getRandomRuneUnlock(self)
-    local cardTypes = isHardcoreMode(nil) and getRunesOfQuality(nil, 0) or UNLOCKABLE_RUNE_CARD_TYPES
+    local cardTypes = isHardcoreMode(nil) and __TS__ArrayFilter(
+        getRunesOfQuality(nil, 0),
+        function(____, cardType) return __TS__ArrayIncludes(UNLOCKABLE_CARD_TYPES, cardType) end
+    ) or UNLOCKABLE_RUNE_CARD_TYPES
     local cardType = getRandomArrayElement(nil, cardTypes)
     return {type = UnlockType.CARD, cardType = cardType}
 end
 function getRandomPillEffectUnlock(self)
-    local pillEffects = isHardcoreMode(nil) and getPillEffectsOfQuality(nil, 0) or UNLOCKABLE_PILL_EFFECTS
+    local pillEffects = isHardcoreMode(nil) and __TS__ArrayFilter(
+        getPillEffectsOfQuality(nil, 0),
+        function(____, pillEffect) return __TS__ArrayIncludes(UNLOCKABLE_PILL_EFFECTS, pillEffect) end
+    ) or UNLOCKABLE_PILL_EFFECTS
     local modifiedPillEffects = arrayRemove(nil, pillEffects, PillEffect.VURP)
     local pillEffect = getRandomArrayElement(nil, modifiedPillEffects)
     return {type = UnlockType.PILL_EFFECT, pillEffect = pillEffect}
@@ -67903,9 +67884,9 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
     for ____, entries in __TS__Iterator(v.persistent.objectiveToUnlockMap) do
         local objectiveID, unlock = table.unpack(entries)
         repeat
-            local ____switch193 = unlock.type
-            local ____cond193 = ____switch193 == UnlockType.CHARACTER
-            if ____cond193 then
+            local ____switch197 = unlock.type
+            local ____cond197 = ____switch197 == UnlockType.CHARACTER
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.character == unlockToMatch.character then
                         return objectiveID
@@ -67913,8 +67894,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.PATH
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.PATH
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.unlockablePath == unlockToMatch.unlockablePath then
                         return objectiveID
@@ -67922,8 +67903,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.ALT_FLOOR
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.ALT_FLOOR
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.altFloor == unlockToMatch.altFloor then
                         return objectiveID
@@ -67931,8 +67912,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.ROOM
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.ROOM
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.roomType == unlockToMatch.roomType then
                         return objectiveID
@@ -67940,8 +67921,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.CHALLENGE
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.CHALLENGE
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.challenge == unlockToMatch.challenge then
                         return objectiveID
@@ -67949,8 +67930,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.COLLECTIBLE
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.COLLECTIBLE
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.collectibleType == unlockToMatch.collectibleType then
                         return objectiveID
@@ -67958,8 +67939,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.TRINKET
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.TRINKET
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.trinketType == unlockToMatch.trinketType then
                         return objectiveID
@@ -67967,8 +67948,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.CARD
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.CARD
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.cardType == unlockToMatch.cardType then
                         return objectiveID
@@ -67976,8 +67957,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.PILL_EFFECT
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.PILL_EFFECT
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.pillEffect == unlockToMatch.pillEffect then
                         return objectiveID
@@ -67985,8 +67966,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.HEART
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.HEART
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.heartSubType == unlockToMatch.heartSubType then
                         return objectiveID
@@ -67994,8 +67975,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.COIN
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.COIN
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.coinSubType == unlockToMatch.coinSubType then
                         return objectiveID
@@ -68003,8 +67984,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.BOMB
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.BOMB
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.bombSubType == unlockToMatch.bombSubType then
                         return objectiveID
@@ -68012,8 +67993,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.KEY
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.KEY
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.keySubType == unlockToMatch.keySubType then
                         return objectiveID
@@ -68021,8 +68002,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.BATTERY
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.BATTERY
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.batterySubType == unlockToMatch.batterySubType then
                         return objectiveID
@@ -68030,8 +68011,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.SACK
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.SACK
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.sackSubType == unlockToMatch.sackSubType then
                         return objectiveID
@@ -68039,8 +68020,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.CHEST
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.CHEST
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.pickupVariant == unlockToMatch.pickupVariant then
                         return objectiveID
@@ -68048,8 +68029,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.SLOT
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.SLOT
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.slotVariant == unlockToMatch.slotVariant then
                         return objectiveID
@@ -68057,8 +68038,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.GRID_ENTITY
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.GRID_ENTITY
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.gridEntityType == unlockToMatch.gridEntityType then
                         return objectiveID
@@ -68066,8 +68047,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond193 = ____cond193 or ____switch193 == UnlockType.OTHER
-            if ____cond193 then
+            ____cond197 = ____cond197 or ____switch197 == UnlockType.OTHER
+            if ____cond197 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.kind == unlockToMatch.kind then
                         return objectiveID
@@ -69606,8 +69587,10 @@ function ____exports.addObjective(self, objective, emulating)
     if isObjectiveCompleted(nil, objective) then
         return
     end
+    local objectiveID = getObjectiveID(nil, objective)
     local ____v_persistent_completedObjectives_0 = v.persistent.completedObjectives
     ____v_persistent_completedObjectives_0[#____v_persistent_completedObjectives_0 + 1] = objective
+    v.persistent.uncompletedObjectives:delete(objectiveID)
     if not emulating then
         local objectiveText = table.concat(
             getObjectiveText(nil, objective),
@@ -69615,7 +69598,6 @@ function ____exports.addObjective(self, objective, emulating)
         )
         log("Accomplished objective: " .. objectiveText)
     end
-    local objectiveID = getObjectiveID(nil, objective)
     local unlock = v.persistent.objectiveToUnlockMap:get(objectiveID)
     assertDefined(nil, unlock, "Failed to get the unlock corresponding to objective ID: " .. objectiveID)
     local originalUnlock = unlock
@@ -69665,12 +69647,10 @@ local __TS__ClassExtends = ____lualib.__TS__ClassExtends
 local __TS__DecorateLegacy = ____lualib.__TS__DecorateLegacy
 local Set = ____lualib.Set
 local __TS__New = ____lualib.__TS__New
-local __TS__ArrayMap = ____lualib.__TS__ArrayMap
-local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
 local __TS__ArrayEntries = ____lualib.__TS__ArrayEntries
 local __TS__Iterator = ____lualib.__TS__Iterator
 local ____exports = {}
-local isAchievementsBeatable, tryUnlockEverythingReachable, BOSS_STAGES
+local characterObjectiveFunc, bossObjectiveFunc, challengeObjectiveFunc, tryCompleteUncompletedObjectives, BOSS_STAGES, OBJECTIVE_ACCESS_FUNCTIONS
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
 local BossID = ____isaac_2Dtypescript_2Ddefinitions.BossID
 local Difficulty = ____isaac_2Dtypescript_2Ddefinitions.Difficulty
@@ -69681,8 +69661,6 @@ local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.sr
 local Callback = ____isaacscript_2Dcommon.Callback
 local GAME_FRAMES_PER_SECOND = ____isaacscript_2Dcommon.GAME_FRAMES_PER_SECOND
 local KColorDefault = ____isaacscript_2Dcommon.KColorDefault
-local MAIN_CHARACTERS = ____isaacscript_2Dcommon.MAIN_CHARACTERS
-local ReadonlySet = ____isaacscript_2Dcommon.ReadonlySet
 local VectorZero = ____isaacscript_2Dcommon.VectorZero
 local addSetsToSet = ____isaacscript_2Dcommon.addSetsToSet
 local clearChallenge = ____isaacscript_2Dcommon.clearChallenge
@@ -69692,6 +69670,8 @@ local getBossSet = ____isaacscript_2Dcommon.getBossSet
 local getRandomSeed = ____isaacscript_2Dcommon.getRandomSeed
 local getScreenBottomRightPos = ____isaacscript_2Dcommon.getScreenBottomRightPos
 local getScreenCenterPos = ____isaacscript_2Dcommon.getScreenCenterPos
+local getTime = ____isaacscript_2Dcommon.getTime
+local isBeforeGameFrame = ____isaacscript_2Dcommon.isBeforeGameFrame
 local isBeforeRenderFrame = ____isaacscript_2Dcommon.isBeforeRenderFrame
 local isRepentanceStage = ____isaacscript_2Dcommon.isRepentanceStage
 local isStoryBossID = ____isaacscript_2Dcommon.isStoryBossID
@@ -69705,14 +69685,10 @@ local setUnseeded = ____isaacscript_2Dcommon.setUnseeded
 local ____achievementAssignment = require("src.achievementAssignment")
 local getAchievementsForRNG = ____achievementAssignment.getAchievementsForRNG
 local ____objectives = require("src.arrays.objectives")
-local ALL_OBJECTIVES = ____objectives.ALL_OBJECTIVES
-local NO_HIT_BOSSES = ____objectives.NO_HIT_BOSSES
-local ____unlockableChallenges = require("src.arrays.unlockableChallenges")
-local UNLOCKABLE_CHALLENGES = ____unlockableChallenges.UNLOCKABLE_CHALLENGES
+local ALL_OBJECTIVE_IDS = ____objectives.ALL_OBJECTIVE_IDS
 local ____unlocks = require("src.arrays.unlocks")
 local ALL_UNLOCKS = ____unlocks.ALL_UNLOCKS
 local ____cachedEnums = require("src.cachedEnums")
-local CHARACTER_OBJECTIVE_KINDS = ____cachedEnums.CHARACTER_OBJECTIVE_KINDS
 local STAGE_TYPES = ____cachedEnums.STAGE_TYPES
 local ____constants = require("src.constants")
 local STARTING_CHARACTER = ____constants.STARTING_CHARACTER
@@ -69725,10 +69701,7 @@ local UnlockablePath = ____UnlockablePath.UnlockablePath
 local getUnlockablePathFromCharacterObjectiveKind = ____UnlockablePath.getUnlockablePathFromCharacterObjectiveKind
 local getUnlockablePathFromStoryBoss = ____UnlockablePath.getUnlockablePathFromStoryBoss
 local ____Objective = require("src.types.Objective")
-local getObjective = ____Objective.getObjective
 local getObjectiveText = ____Objective.getObjectiveText
-local ____ObjectiveID = require("src.types.ObjectiveID")
-local getObjectiveID = ____ObjectiveID.getObjectiveID
 local ____RandomizerModFeature = require("src.classes.RandomizerModFeature")
 local RandomizerModFeature = ____RandomizerModFeature.RandomizerModFeature
 local ____StatsTracker = require("src.classes.features.StatsTracker")
@@ -69736,64 +69709,22 @@ local preForcedRestart = ____StatsTracker.preForcedRestart
 local resetStats = ____StatsTracker.resetStats
 local ____addObjective = require("src.classes.features.achievementTracker.addObjective")
 local addObjective = ____addObjective.addObjective
-local ____completedObjectives = require("src.classes.features.achievementTracker.completedObjectives")
-local isBossObjectiveCompleted = ____completedObjectives.isBossObjectiveCompleted
-local isChallengeObjectiveCompleted = ____completedObjectives.isChallengeObjectiveCompleted
-local isCharacterObjectiveCompleted = ____completedObjectives.isCharacterObjectiveCompleted
 local ____completedUnlocks = require("src.classes.features.achievementTracker.completedUnlocks")
 local isChallengeUnlocked = ____completedUnlocks.isChallengeUnlocked
 local isCharacterUnlocked = ____completedUnlocks.isCharacterUnlocked
 local isPathUnlocked = ____completedUnlocks.isPathUnlocked
 local isStageTypeUnlocked = ____completedUnlocks.isStageTypeUnlocked
 local ____v = require("src.classes.features.achievementTracker.v")
+local getUncompletedObjectives = ____v.getUncompletedObjectives
 local v = ____v.v
-function isAchievementsBeatable(self)
-    v.persistent.completedUnlocks = {}
-    v.persistent.completedObjectives = {}
-    while #v.persistent.completedUnlocks < #ALL_UNLOCKS do
-        local unlockedSomething = tryUnlockEverythingReachable(nil)
-        if not unlockedSomething then
-            log((((("Failed to emulate beating seed " .. tostring(v.persistent.seed)) .. ": ") .. tostring(#v.persistent.completedUnlocks)) .. " / ") .. tostring(#ALL_UNLOCKS))
-            return false
-        end
-    end
-    return true
+function characterObjectiveFunc(self, objective)
+    local characterObjective = objective
+    return ____exports.canGetToCharacterObjective(nil, characterObjective.character, characterObjective.kind, false)
 end
-function tryUnlockEverythingReachable(self)
-    local unlockedSomething = false
-    for ____, character in ipairs(MAIN_CHARACTERS) do
-        do
-            if not isCharacterUnlocked(nil, character, false) then
-                goto __continue17
-            end
-            for ____, kind in ipairs(CHARACTER_OBJECTIVE_KINDS) do
-                if ____exports.canGetToCharacterObjectiveKind(nil, kind, false) and not isCharacterObjectiveCompleted(nil, character, kind) then
-                    local objective = getObjective(nil, ObjectiveType.CHARACTER, character, kind)
-                    addObjective(nil, objective, true)
-                    unlockedSomething = true
-                end
-            end
-        end
-        ::__continue17::
+function ____exports.canGetToCharacterObjective(self, character, kind, forRun)
+    if not isCharacterUnlocked(nil, character, forRun) then
+        return false
     end
-    local reachableNonStoryBossesSet = ____exports.getReachableNonStoryBossesSet(nil)
-    for ____, bossID in ipairs(NO_HIT_BOSSES) do
-        if ____exports.canGetToBoss(nil, bossID, reachableNonStoryBossesSet, false) and not isBossObjectiveCompleted(nil, bossID) then
-            local objective = getObjective(nil, ObjectiveType.BOSS, bossID)
-            addObjective(nil, objective, true)
-            unlockedSomething = true
-        end
-    end
-    for ____, challenge in ipairs(UNLOCKABLE_CHALLENGES) do
-        if isChallengeUnlocked(nil, challenge, false) and not isChallengeObjectiveCompleted(nil, challenge) then
-            local objective = getObjective(nil, ObjectiveType.CHALLENGE, challenge)
-            addObjective(nil, objective, true)
-            unlockedSomething = true
-        end
-    end
-    return unlockedSomething
-end
-function ____exports.canGetToCharacterObjectiveKind(self, kind, forRun)
     if kind == CharacterObjectiveKind.DELIRIUM then
         return isPathUnlocked(nil, UnlockablePath.BLUE_WOMB, forRun) and isPathUnlocked(nil, UnlockablePath.VOID, forRun)
     end
@@ -69806,30 +69737,9 @@ function ____exports.canGetToCharacterObjectiveKind(self, kind, forRun)
     end
     return isPathUnlocked(nil, unlockablePath, forRun)
 end
-function ____exports.getReachableNonStoryBossesSet(self)
-    local reachableNonStoryBossesSet = __TS__New(Set)
-    for ____, stage in ipairs(BOSS_STAGES) do
-        for ____, stageType in ipairs(STAGE_TYPES) do
-            do
-                if stageType == StageType.GREED_MODE then
-                    goto __continue35
-                end
-                if not isStageTypeUnlocked(nil, stage, stageType, false) then
-                    goto __continue35
-                end
-                if isRepentanceStage(nil, stageType) and not isPathUnlocked(nil, UnlockablePath.REPENTANCE_FLOORS, false) then
-                    goto __continue35
-                end
-                local bossSet = getBossSet(nil, stage, stageType)
-                if bossSet == nil then
-                    goto __continue35
-                end
-                addSetsToSet(nil, reachableNonStoryBossesSet, bossSet)
-            end
-            ::__continue35::
-        end
-    end
-    return reachableNonStoryBossesSet
+function bossObjectiveFunc(self, objective, reachableNonStoryBossesSet)
+    local bossObjective = objective
+    return ____exports.canGetToBoss(nil, bossObjective.bossID, reachableNonStoryBossesSet, false)
 end
 function ____exports.canGetToBoss(self, bossID, reachableBossesSet, forRun)
     if not isStoryBossID(nil, bossID) then
@@ -69844,11 +69754,55 @@ function ____exports.canGetToBoss(self, bossID, reachableBossesSet, forRun)
     end
     return isPathUnlocked(nil, unlockablePath, forRun)
 end
+function challengeObjectiveFunc(self, objective)
+    local challengeObjective = objective
+    return isChallengeUnlocked(nil, challengeObjective.challenge, false)
+end
+function tryCompleteUncompletedObjectives(self)
+    local unlockedSomething = false
+    local reachableNonStoryBossesSet = ____exports.getReachableNonStoryBossesSet(nil)
+    local uncompletedObjectives = getUncompletedObjectives(nil)
+    for ____, objective in ipairs(uncompletedObjectives) do
+        local func = OBJECTIVE_ACCESS_FUNCTIONS[objective.type]
+        if func(nil, objective, reachableNonStoryBossesSet) then
+            addObjective(nil, objective, true)
+            unlockedSomething = true
+        end
+    end
+    return unlockedSomething
+end
+function ____exports.getReachableNonStoryBossesSet(self)
+    local reachableNonStoryBossesSet = __TS__New(Set)
+    for ____, stage in ipairs(BOSS_STAGES) do
+        for ____, stageType in ipairs(STAGE_TYPES) do
+            do
+                if stageType == StageType.GREED_MODE then
+                    goto __continue37
+                end
+                if not isStageTypeUnlocked(nil, stage, stageType, false) then
+                    goto __continue37
+                end
+                if isRepentanceStage(nil, stageType) and not isPathUnlocked(nil, UnlockablePath.REPENTANCE_FLOORS, false) then
+                    goto __continue37
+                end
+                local bossSet = getBossSet(nil, stage, stageType)
+                if bossSet == nil then
+                    goto __continue37
+                end
+                addSetsToSet(nil, reachableNonStoryBossesSet, bossSet)
+            end
+            ::__continue37::
+        end
+    end
+    return reachableNonStoryBossesSet
+end
 local BLACK_SPRITE = newSprite(nil, "gfx/misc/black.anm2")
 local FONT = fonts.droid
 BOSS_STAGES = {LevelStage.BASEMENT_1, LevelStage.CAVES_1, LevelStage.DEPTHS_1, LevelStage.WOMB_1}
 local generatingRNG
+local generationTime = 0
 local renderFrameToTryGenerate
+local renderFrameToTestSeed
 local numGenerationAttempts = 0
 --- This does the actual randomization after the player selects a starting seed for the playthrough
 -- (and draws the black screen).
@@ -69859,6 +69813,7 @@ __TS__ClassExtends(AchievementRandomizer, RandomizerModFeature)
 function AchievementRandomizer.prototype.postRender(self)
     self:checkDrawBlackScreen()
     self:checkGenerate()
+    self:checkTestSeed()
 end
 __TS__DecorateLegacy(
     {Callback(nil, ModCallback.POST_RENDER)},
@@ -69875,31 +69830,41 @@ function AchievementRandomizer.prototype.checkDrawBlackScreen(self)
     local screenBottomRightPos = getScreenBottomRightPos(nil)
     local rightX = screenBottomRightPos.X
     local text1 = "Randomizing, please wait..."
-    local aboveCenterY = screenCenterPos.Y - 20
+    local text1Y = screenCenterPos.Y - 30
     FONT:DrawString(
         text1,
         0,
-        aboveCenterY,
+        text1Y,
         KColorDefault,
         rightX,
         true
     )
     local text2 = "Attempt: #" .. tostring(numGenerationAttempts)
-    local centerY = screenCenterPos.Y
+    local text2Y = screenCenterPos.Y - 10
     FONT:DrawString(
         text2,
         0,
-        centerY,
+        text2Y,
         KColorDefault,
         rightX,
         true
     )
-    local text3 = "(This could take a few minutes.)"
-    local belowCenterY = screenCenterPos.Y + 20
+    local text3 = (("Confirmed objective completable: " .. tostring(#v.persistent.completedUnlocks)) .. " / ") .. tostring(#ALL_UNLOCKS)
+    local text3Y = screenCenterPos.Y + 10
     FONT:DrawString(
         text3,
         0,
-        belowCenterY,
+        text3Y,
+        KColorDefault,
+        rightX,
+        true
+    )
+    local text4 = "(This could take a few minutes.)"
+    local text4Y = screenCenterPos.Y + 30
+    FONT:DrawString(
+        text4,
+        0,
+        text4Y,
         KColorDefault,
         rightX,
         true
@@ -69909,21 +69874,54 @@ function AchievementRandomizer.prototype.checkGenerate(self)
     if generatingRNG == nil or v.persistent.seed == nil then
         return
     end
-    if isBeforeRenderFrame(nil, renderFrameToTryGenerate) then
+    if isBeforeGameFrame(nil, 1) then
+        return
+    end
+    if renderFrameToTryGenerate == nil or isBeforeRenderFrame(nil, renderFrameToTryGenerate) then
         return
     end
     renderFrameToTryGenerate = nil
     v.persistent.objectiveToUnlockMap = getAchievementsForRNG(nil, generatingRNG)
-    log((("Checking to see if randomizer seed " .. tostring(v.persistent.seed)) .. " is beatable. Attempt: #") .. tostring(numGenerationAttempts))
-    if not isAchievementsBeatable(nil) then
-        numGenerationAttempts = numGenerationAttempts + 1
-        local renderFrameCount = Isaac.GetFrameCount()
-        renderFrameToTryGenerate = renderFrameCount + 2
+    log(((("Generated achievements for seed: " .. tostring(v.persistent.seed)) .. " (attempt #") .. tostring(numGenerationAttempts)) .. ")")
+    v.persistent.completedObjectives = {}
+    v.persistent.completedUnlocks = {}
+    v.persistent.uncompletedObjectives = __TS__New(Set, ALL_OBJECTIVE_IDS)
+    generationTime = 0
+    renderFrameToTestSeed = Isaac.GetFrameCount()
+end
+function AchievementRandomizer.prototype.checkTestSeed(self)
+    if generatingRNG == nil or v.persistent.seed == nil then
         return
     end
+    if isBeforeGameFrame(nil, 1) then
+        return
+    end
+    if renderFrameToTestSeed == nil or isBeforeRenderFrame(nil, renderFrameToTestSeed) then
+        return
+    end
+    renderFrameToTestSeed = nil
+    local renderFrameCount = Isaac.GetFrameCount()
+    local startTime = getTime(nil, false)
+    local unlockedSomething = tryCompleteUncompletedObjectives(nil)
+    local finishTime = getTime(nil, false)
+    local elapsedTime = finishTime - startTime
+    generationTime = generationTime + elapsedTime
+    if not unlockedSomething then
+        log((((((("Failed to emulate beating seed " .. tostring(v.persistent.seed)) .. ": ") .. tostring(#v.persistent.completedUnlocks)) .. " / ") .. tostring(#ALL_UNLOCKS)) .. ". Milliseconds taken: ") .. tostring(generationTime))
+        numGenerationAttempts = numGenerationAttempts + 1
+        renderFrameToTryGenerate = renderFrameCount + 1
+        return
+    end
+    if #v.persistent.completedUnlocks < #ALL_UNLOCKS then
+        renderFrameToTestSeed = renderFrameCount + 1
+        return
+    end
+    log("Generation complete. Milliseconds taken: " .. tostring(generationTime))
     generatingRNG = nil
-    v.persistent.completedUnlocks = {}
+    generationTime = 0
     v.persistent.completedObjectives = {}
+    v.persistent.completedUnlocks = {}
+    v.persistent.uncompletedObjectives = __TS__New(Set, ALL_OBJECTIVE_IDS)
     resetStats(nil)
     preForcedRestart(nil)
     local rng = newRNG(nil, v.persistent.seed)
@@ -69958,21 +69956,11 @@ function ____exports.endRandomizer(self)
     setUnseeded(nil)
     restart(nil, STARTING_CHARACTER)
 end
-local function _logMissingObjectives(self)
+OBJECTIVE_ACCESS_FUNCTIONS = {[ObjectiveType.CHARACTER] = characterObjectiveFunc, [ObjectiveType.BOSS] = bossObjectiveFunc, [ObjectiveType.CHALLENGE] = challengeObjectiveFunc}
+local function _logUncompletedObjectives(self)
     log("Missing objectives:")
-    local completedObjectiveIDs = __TS__ArrayMap(
-        v.persistent.completedObjectives,
-        function(____, objective) return getObjectiveID(nil, objective) end
-    )
-    local completedObjectiveIDsSet = __TS__New(ReadonlySet, completedObjectiveIDs)
-    local missingObjectives = __TS__ArrayFilter(
-        ALL_OBJECTIVES,
-        function(____, objective)
-            local objectiveID = getObjectiveID(nil, objective)
-            return not completedObjectiveIDsSet:has(objectiveID)
-        end
-    )
-    for ____, ____value in __TS__Iterator(__TS__ArrayEntries(missingObjectives)) do
+    local uncompletedObjectives = getUncompletedObjectives(nil)
+    for ____, ____value in __TS__Iterator(__TS__ArrayEntries(uncompletedObjectives)) do
         local i = ____value[1]
         local objective = ____value[2]
         local objectiveText = table.concat(
@@ -73053,7 +73041,7 @@ function achievementRandomizer(self, params)
     end
     restart(nil)
     mod:runNextRun(function()
-        mod:runNextGameFrame(function()
+        mod:runNextRenderFrame(function()
             startRandomizer(nil, randomizerMode, seed)
         end)
     end)
@@ -73187,7 +73175,7 @@ local OTHER_UNLOCK_KINDS = ____cachedEnums.OTHER_UNLOCK_KINDS
 local UNLOCKABLE_PATHS = ____cachedEnums.UNLOCKABLE_PATHS
 local ____AchievementRandomizer = require("src.classes.features.AchievementRandomizer")
 local canGetToBoss = ____AchievementRandomizer.canGetToBoss
-local canGetToCharacterObjectiveKind = ____AchievementRandomizer.canGetToCharacterObjectiveKind
+local canGetToCharacterObjective = ____AchievementRandomizer.canGetToCharacterObjective
 local getReachableNonStoryBossesSet = ____AchievementRandomizer.getReachableNonStoryBossesSet
 local ____completedObjectives = require("src.classes.features.achievementTracker.completedObjectives")
 local isAllCharacterObjectivesCompleted = ____completedObjectives.isAllCharacterObjectivesCompleted
@@ -73312,7 +73300,7 @@ function ____exports.getSpecificCharacterObjectiveButtons(self, character)
             {
                 str = "(inaccessible)",
                 fSize = 1,
-                displayIf = function() return not canGetToCharacterObjectiveKind(nil, kind, false) end
+                displayIf = function() return not canGetToCharacterObjective(nil, character, kind, false) end
             },
             {str = ""}
         )
@@ -78204,10 +78192,10 @@ return {
     },
     license = "GPL-3.0",
     type = "commonjs",
-    dependencies = {["isaac-typescript-definitions"] = "^33.0.1", ["isaacscript-common"] = "^67.3.0"},
+    dependencies = {["isaac-typescript-definitions"] = "^33.0.1", ["isaacscript-common"] = "^68.0.0"},
     devDependencies = {
-        isaacscript = "^3.15.0",
-        ["isaacscript-lint"] = "^6.0.0",
+        isaacscript = "^3.15.1",
+        ["isaacscript-lint"] = "^6.1.0",
         ["isaacscript-spell"] = "^1.6.0",
         ["isaacscript-tsconfig"] = "^4.0.0",
         typescript = "^5.2.2",

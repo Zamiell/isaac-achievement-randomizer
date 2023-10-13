@@ -132,8 +132,8 @@ The following bosses have custom conditions:
 
 Additionally, the following bosses are excluded entirely:
 
+- Mom's Heart (#8) (inaccessible on a fully unlocked save file)
 - Delirium (#70) (would be unfair since the boss is poorly designed)
-- Ultra Greedier (#71) (not included since Ultra Greed is included)
 - Raglich (#98) (unfinished boss)
 
 > Tip: A timer will appear on the screen if a boss is in the room and the corresponding objective has not yet been accomplished.
