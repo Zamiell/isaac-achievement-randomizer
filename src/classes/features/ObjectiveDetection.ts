@@ -9,6 +9,7 @@ import {
   NPCState,
   PickupVariant,
   RoomType,
+  UltraGreedVariant,
 } from "isaac-typescript-definitions";
 import {
   Callback,
@@ -17,6 +18,7 @@ import {
   ModCallbackCustom,
   ReadonlyMap,
   ReadonlySet,
+  doesEntityExist,
   game,
   getBossID,
   getEntityTypeVariantFromBossID,
@@ -92,7 +94,9 @@ const STAGE_TO_CHARACTER_OBJECTIVE_KIND_REPENTANCE = new ReadonlyMap<
 const BOSSES_IN_BIG_ROOMS_SET = new ReadonlySet([
   BossID.MR_FRED, // 53
   BossID.MEGA_SATAN, // 55
+  BossID.ULTRA_GREED, // 62
   BossID.DELIRIUM, // 70
+  BossID.ULTRA_GREEDIER, // 71
   BossID.TUFF_TWINS, // 80
   BossID.GREAT_GIDEON, // 83
   BossID.MOTHER, // 88
@@ -305,9 +309,18 @@ export function hasTakenHitOnFloor(): boolean {
  */
 export function getSecondsSinceLastDamage(): int | undefined {
   const room = game.GetRoom();
-  const bossID = room.GetBossID();
+  let bossID = room.GetBossID();
   if (bossID === 0) {
     return undefined;
+  }
+
+  // Modify the boss ID, if applicable.
+  if (
+    bossID === BossID.ULTRA_GREED &&
+    doesEntityExist(EntityType.ULTRA_GREED, UltraGreedVariant.ULTRA_GREEDIER)
+  ) {
+    // The Ultra Greed room holds both Ultra Greed and Ultra Greedier.
+    bossID = BossID.ULTRA_GREEDIER;
   }
 
   if (isBossObjectiveCompleted(bossID)) {
@@ -327,40 +340,86 @@ export function getSecondsSinceLastDamage(): int | undefined {
     return undefined;
   }
 
-  if (bossID === BossID.FISTULA || bossID === BossID.TERATOMA) {
-    const bigPieces = getNPCs(EntityType.FISTULA_BIG, -1, -1, true);
-    const mediumPieces = getNPCs(EntityType.FISTULA_MEDIUM, -1, -1, true);
-    const smallPieces = getNPCs(EntityType.FISTULA_SMALL, -1, -1, true);
-    const numPieces =
-      bigPieces.length + mediumPieces.length + smallPieces.length;
-    if (numPieces < 4) {
-      return;
-    }
-  } else {
-    const [entityType, variant] = getEntityTypeVariantFromBossID(bossID);
-    const bosses = getNPCs(entityType, variant, -1, true);
-    const aliveBosses = bosses.filter((boss) => !boss.IsDead());
-    if (aliveBosses.length === 0) {
-      return;
+  if (v.room.usedPause) {
+    return undefined;
+  }
+
+  // Boss-specific checks.
+  switch (bossID) {
+    // 24
+    case BossID.SATAN: {
+      if (onFirstPhaseOfSatan()) {
+        return undefined;
+      }
+
+      break;
     }
 
-    // Lokii has a special objective condition, since dodging just one is too easy.
-    if (
-      entityType === EntityType.LOKI &&
-      variant === LokiVariant.LOKII &&
-      aliveBosses.length < 2
-    ) {
-      return;
+    // 39, 40
+    case BossID.ISAAC:
+    case BossID.BLUE_BABY: {
+      if (v.room.onFirstPhaseOfIsaac) {
+        return undefined;
+      }
+
+      break;
+    }
+
+    // 63
+    case BossID.HUSH: {
+      if (v.room.onFirstPhaseOfHush) {
+        return undefined;
+      }
+
+      break;
+    }
+
+    default: {
+      break;
     }
   }
 
-  if (
-    v.room.usedPause ||
-    onFirstPhaseOfSatan(bossID) || // 24
-    onFirstPhaseOfIsaacOrBlueBaby(bossID) || // 39, 40
-    onFirstPhaseOfHush(bossID) // 63
-  ) {
-    return undefined;
+  // Verify the boss is alive.
+  switch (bossID) {
+    // 18, 33
+    case BossID.FISTULA:
+    case BossID.TERATOMA: {
+      const bigPieces = getNPCs(EntityType.FISTULA_BIG, -1, -1, true);
+      const mediumPieces = getNPCs(EntityType.FISTULA_MEDIUM, -1, -1, true);
+      const smallPieces = getNPCs(EntityType.FISTULA_SMALL, -1, -1, true);
+      const pieces = [...bigPieces, ...mediumPieces, ...smallPieces];
+      const aliveBosses = pieces.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length < 4) {
+        return;
+      }
+
+      break;
+    }
+
+    // 31
+    case BossID.LOKII: {
+      const lokiis = getNPCs(EntityType.LOKI, LokiVariant.LOKII, -1, true);
+      const aliveBosses = lokiis.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length < 2) {
+        return;
+      }
+
+      break;
+    }
+
+    default: {
+      const [entityType, variant] = getEntityTypeVariantFromBossID(bossID);
+      const bosses = getNPCs(entityType, variant, -1, true);
+      const aliveBosses = bosses.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length === 0) {
+        return;
+      }
+
+      break;
+    }
   }
 
   const roomFrameCount = room.GetFrameCount();
@@ -369,28 +428,13 @@ export function getSecondsSinceLastDamage(): int | undefined {
   return elapsedGameFrames / GAME_FRAMES_PER_SECOND;
 }
 
-function onFirstPhaseOfSatan(bossID: BossID): boolean {
-  if (bossID !== BossID.SATAN) {
-    return false;
-  }
-
+function onFirstPhaseOfSatan(): boolean {
   const satans = getNPCs(EntityType.SATAN);
   if (satans.length === 0) {
     return false;
   }
 
   return satans.every((satan) => satan.State === NPCState.IDLE);
-}
-
-function onFirstPhaseOfIsaacOrBlueBaby(bossID: BossID): boolean {
-  return (
-    (bossID === BossID.ISAAC || bossID === BossID.BLUE_BABY) &&
-    v.room.onFirstPhaseOfIsaac
-  );
-}
-
-function onFirstPhaseOfHush(bossID: BossID): boolean {
-  return bossID === BossID.HUSH && v.room.onFirstPhaseOfHush;
 }
 
 export function getCharacterObjectiveKindNoHit():
