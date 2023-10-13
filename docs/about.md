@@ -110,7 +110,7 @@ Additionally, each character will unlock something upon clearing the following f
 
 > Tip: A Crown of Light icon will appear next to the coin count UI when the "no hit" objective has not yet been accomplished for the particular character and floor combination.
 
-### Boss-Based Objectives (99)
+### Boss-Based Objectives (100)
 
 There is one unlock for surviving for 2 minutes without taking a hit for each boss.
 
@@ -146,7 +146,7 @@ There is one unlock for completing each challenge, with the following exceptions
 
 ### Total Objectives
 
-There are 1054 + 99 + 44 = 1197 objectives in total.
+There are 1054 + 100 + 44 = 1198 objectives in total.
 
 <br>
 
@@ -196,7 +196,7 @@ The following alternate floors start out locked:
 - Ashpit
 - Gehenna
 
-### Room Types (6)
+### Room Types (7)
 
 The following room types start out locked:
 
@@ -205,7 +205,7 @@ The following room types start out locked:
 - Library Room (#12) (unlocks before first book collectible)
 - Sacrifice Room (#13) (unlocks before first Angel Room collectible)
 - Vault (#20) (unlocks before first golden chest collectible)
-<!-- - Dice Room (#21) (unlocks before first dice collectible/trinket) -->
+- Dice Room (#21) (unlocks before first dice collectible/trinket)
 - Planetarium (#24) (unlocks before first Planetarium collectible)
 
 ### Challenges (44)
@@ -329,7 +329,7 @@ The following other things start out locked:
 
 ### Total Unlocks
 
-There are 33 + 10 + 11 + 6 + 44 + 694 + 185 + 95 + 50 + 35 + 15 + 13 + 6 = 1197 unlocks in total.
+There are 33 + 10 + 11 + 7 + 44 + 694 + 185 + 95 + 50 + 35 + 15 + 13 + 6 = 1198 unlocks in total.
 
 <br>
 

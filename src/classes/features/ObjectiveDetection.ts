@@ -5,6 +5,7 @@ import {
   EntityType,
   LevelStage,
   LokiVariant,
+  MinibossID,
   ModCallback,
   NPCState,
   PickupVariant,
@@ -25,11 +26,13 @@ import {
   getRoomSubType,
   inBeastRoom,
   inBigRoom,
+  inRoomType,
   isFirstPlayer,
   isSelfDamage,
   onAnyChallenge,
   onRepentanceStage,
 } from "isaacscript-common";
+import { BossIDCustom } from "../../enums/BossIDCustom";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import {
@@ -149,7 +152,7 @@ export class ObjectiveDetection extends RandomizerModFeature {
   }
 
   checkBossNoHit(): void {
-    const bossID = getBossID();
+    const bossID = getModifiedBossID();
     if (bossID === undefined) {
       return;
     }
@@ -306,7 +309,7 @@ export function hasTakenHitOnFloor(): boolean {
  * situation is invalid for the objective.
  */
 export function getSecondsSinceLastDamage(): int | undefined {
-  const bossID = getBossID();
+  const bossID = getModifiedBossID();
   if (bossID === undefined) {
     return undefined;
   }
@@ -442,4 +445,23 @@ export function getCharacterObjectiveKindNoHit():
   const stage = level.GetStage();
 
   return stageToCharacterObjectiveKind.get(stage);
+}
+
+export function getModifiedBossID(): BossID | undefined {
+  // First, check for mini-bosses.
+  if (inRoomType(RoomType.MINI_BOSS)) {
+    const roomSubType = getRoomSubType();
+
+    switch (roomSubType) {
+      case MinibossID.KRAMPUS: {
+        return BossIDCustom.KRAMPUS;
+      }
+
+      default: {
+        return undefined;
+      }
+    }
+  }
+
+  return getBossID();
 }

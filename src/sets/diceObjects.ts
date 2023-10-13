@@ -5,7 +5,6 @@ import {
 } from "isaac-typescript-definitions";
 import { ReadonlySet } from "isaacscript-common";
 
-// ts-prune-ignore-next
 export const DICE_COLLECTIBLES = new ReadonlySet<CollectibleType>([
   CollectibleType.D6, // 105
   CollectibleType.D20, // 166
@@ -21,13 +20,11 @@ export const DICE_COLLECTIBLES = new ReadonlySet<CollectibleType>([
   CollectibleType.SPINDOWN_DICE, // 723
 ]);
 
-// ts-prune-ignore-next
 export const DICE_TRINKETS = new ReadonlySet<TrinketType>([
   TrinketType.CRACKED_DICE, // 67
   TrinketType.DICE_BAG, // 154
 ]);
 
-// ts-prune-ignore-next
 export const DICE_CARDS = new ReadonlySet<CardType>([
   CardType.REVERSE_WHEEL_OF_FORTUNE, // 66
 ]);

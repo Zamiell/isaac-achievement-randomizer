@@ -39,6 +39,7 @@ import { ALL_OBJECTIVES } from "../../arrays/objectives";
 import { ALL_UNLOCKS } from "../../arrays/unlocks";
 import { STAGE_TYPES } from "../../cachedEnums";
 import { STARTING_CHARACTER } from "../../constants";
+import { BossIDCustom } from "../../enums/BossIDCustom";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { RandomizerMode } from "../../enums/RandomizerMode";
@@ -346,6 +347,10 @@ export function canGetToBoss(
   reachableBossesSet: Set<BossID>,
   forRun: boolean,
 ): boolean {
+  if (bossID === BossIDCustom.KRAMPUS) {
+    return true;
+  }
+
   if (!isStoryBossID(bossID)) {
     return reachableBossesSet.has(bossID);
   }

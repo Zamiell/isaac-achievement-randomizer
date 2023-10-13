@@ -1,11 +1,14 @@
 import { ModCallback } from "isaac-typescript-definitions";
-import { Callback, getBossID } from "isaacscript-common";
+import { Callback } from "isaacscript-common";
 import { isTimerEnabled } from "../../deadSeaScrolls";
 import { TimerType } from "../../enums/TimerType";
 import { timerDraw } from "../../timer";
 import { getNumSecondsForBossObjective } from "../../types/Objective";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { getSecondsSinceLastDamage } from "./ObjectiveDetection";
+import {
+  getModifiedBossID,
+  getSecondsSinceLastDamage,
+} from "./ObjectiveDetection";
 import { getPlaythroughSecondsElapsed } from "./StatsTracker";
 
 export class Timer extends RandomizerModFeature {
@@ -23,7 +26,7 @@ export class Timer extends RandomizerModFeature {
   }
 
   drawNoHitTimer(): void {
-    const bossID = getBossID();
+    const bossID = getModifiedBossID();
     if (bossID === undefined) {
       return;
     }

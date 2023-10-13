@@ -5,6 +5,7 @@ import {
   CHARACTER_OBJECTIVE_KINDS,
   OBJECTIVE_TYPES,
 } from "../cachedEnums";
+import { BossIDCustom } from "../enums/BossIDCustom";
 import { ObjectiveType } from "../enums/ObjectiveType";
 import type { Objective } from "../types/Objective";
 import { UNLOCKABLE_CHALLENGES } from "./unlockableChallenges";
@@ -18,7 +19,8 @@ const NO_HIT_EXCEPTION_BOSSES = new ReadonlySet([
 
 export const NO_HIT_BOSSES: readonly BossID[] = BOSS_IDS.filter(
   (bossID) => !NO_HIT_EXCEPTION_BOSSES.has(bossID),
-);
+  // eslint-disable-next-line unicorn/prefer-spread
+).concat(BossIDCustom.KRAMPUS);
 
 export const ALL_OBJECTIVES: readonly Objective[] = (() => {
   const objectives: Objective[] = [];
