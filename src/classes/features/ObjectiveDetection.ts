@@ -308,25 +308,16 @@ export function hasTakenHitOnFloor(): boolean {
  * situation is invalid for the objective.
  */
 export function getSecondsSinceLastDamage(): int | undefined {
-  const room = game.GetRoom();
-  let bossID = room.GetBossID();
-  if (bossID === 0) {
+  const bossID = getRealBossID();
+  if (bossID === undefined) {
     return undefined;
-  }
-
-  // Modify the boss ID, if applicable.
-  if (
-    bossID === BossID.ULTRA_GREED &&
-    doesEntityExist(EntityType.ULTRA_GREED, UltraGreedVariant.ULTRA_GREEDIER)
-  ) {
-    // The Ultra Greed room holds both Ultra Greed and Ultra Greedier.
-    bossID = BossID.ULTRA_GREEDIER;
   }
 
   if (isBossObjectiveCompleted(bossID)) {
     return undefined;
   }
 
+  const room = game.GetRoom();
   const isClear = room.IsClear();
   if (isClear) {
     return undefined;
@@ -426,6 +417,26 @@ export function getSecondsSinceLastDamage(): int | undefined {
   const elapsedGameFrames = roomFrameCount - v.room.tookDamageRoomFrame;
 
   return elapsedGameFrames / GAME_FRAMES_PER_SECOND;
+}
+
+function getRealBossID(): BossID | undefined {
+  const room = game.GetRoom();
+  const bossID = room.GetBossID();
+
+  if (bossID === 0) {
+    return undefined;
+  }
+
+  // Modify the boss ID, if applicable.
+  if (
+    bossID === BossID.ULTRA_GREED &&
+    doesEntityExist(EntityType.ULTRA_GREED, UltraGreedVariant.ULTRA_GREEDIER)
+  ) {
+    // The Ultra Greed room holds both Ultra Greed and Ultra Greedier.
+    return BossID.ULTRA_GREEDIER;
+  }
+
+  return bossID;
 }
 
 function onFirstPhaseOfSatan(): boolean {
