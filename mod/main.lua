@@ -64816,10 +64816,15 @@ local CardType = ____isaac_2Dtypescript_2Ddefinitions.CardType
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
 local ReadonlySet = ____isaacscript_2Dcommon.ReadonlySet
 local VANILLA_CARD_TYPES = ____isaacscript_2Dcommon.VANILLA_CARD_TYPES
+local isRune = ____isaacscript_2Dcommon.isRune
 ____exports.BANNED_CARD_TYPES = __TS__New(ReadonlySet, {CardType.CHAOS, CardType.RUNE_SHARD})
 ____exports.UNLOCKABLE_CARD_TYPES = __TS__ArrayFilter(
     VANILLA_CARD_TYPES,
     function(____, cardType) return not ____exports.BANNED_CARD_TYPES:has(cardType) end
+)
+____exports.UNLOCKABLE_RUNE_CARD_TYPES = __TS__ArrayFilter(
+    ____exports.UNLOCKABLE_CARD_TYPES,
+    function(____, cardType) return isRune(nil, cardType) end
 )
 return ____exports
  end,
@@ -66541,11 +66546,13 @@ return ____exports
 local ____lualib = require("lualib_bundle")
 local Map = ____lualib.Map
 local __TS__New = ____lualib.__TS__New
+local __TS__ArrayFilter = ____lualib.__TS__ArrayFilter
 local ____exports = {}
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
 local QUALITIES = ____isaacscript_2Dcommon.QUALITIES
 local VANILLA_CARD_TYPES = ____isaacscript_2Dcommon.VANILLA_CARD_TYPES
 local assertDefined = ____isaacscript_2Dcommon.assertDefined
+local isRune = ____isaacscript_2Dcommon.isRune
 local ____cardQualities = require("src.objects.cardQualities")
 local CARD_QUALITIES = ____cardQualities.CARD_QUALITIES
 local QUALITY_TO_VANILLA_CARD_TYPES_MAP = (function()
@@ -66570,6 +66577,13 @@ function ____exports.getCardTypesOfQuality(self, quality)
         "Failed to get the card types of quality: " .. tostring(quality)
     )
     return cardTypes
+end
+function ____exports.getRunesOfQuality(self, quality)
+    local cardTypes = ____exports.getCardTypesOfQuality(nil, quality)
+    return __TS__ArrayFilter(
+        cardTypes,
+        function(____, cardType) return isRune(nil, cardType) end
+    )
 end
 return ____exports
  end,
@@ -66941,6 +66955,7 @@ local __TS__ArrayIndexOf = ____lualib.__TS__ArrayIndexOf
 local ____exports = {}
 local getUnlockedCollectibleTypes
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
+local HeartSubType = ____isaac_2Dtypescript_2Ddefinitions.HeartSubType
 local ItemConfigPillEffectType = ____isaac_2Dtypescript_2Ddefinitions.ItemConfigPillEffectType
 local ItemConfigTag = ____isaac_2Dtypescript_2Ddefinitions.ItemConfigTag
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
@@ -67008,7 +67023,16 @@ function getUnlockedCollectibleTypes(self, forRun)
         function(____, unlock) return unlock.type == UnlockType.COLLECTIBLE and unlock.collectibleType or nil end
     )
 end
+function ____exports.getUnlockedCardTypes(self, forRun)
+    local array = forRun and v.persistent.completedUnlocksForRun or v.persistent.completedUnlocks
+    return filterMap(
+        nil,
+        array,
+        function(____, unlock) return unlock.type == UnlockType.CARD and unlock.cardType or nil end
+    )
+end
 local QUALITY_THRESHOLD_PERCENT = 0.5
+local SOUL_HEART_SUB_TYPES = {HeartSubType.SOUL, HeartSubType.BLACK, HeartSubType.HALF_SOUL, HeartSubType.BLENDED}
 function ____exports.isCharacterUnlocked(self, character, forRun)
     if not __TS__ArrayIncludes(UNLOCKABLE_CHARACTERS, character) then
         return true
@@ -67081,14 +67105,14 @@ function ____exports.getUnlockedEdenPassiveCollectibleTypes(self, forRun)
         function(____, collectibleType) return not isHiddenCollectible(nil, collectibleType) and not collectibleHasTag(nil, collectibleType, ItemConfigTag.NO_EDEN) and isPassiveOrFamiliarCollectible(nil, collectibleType) end
     )
 end
-function ____exports.isActiveCollectibleUnlocked(self, forRun)
+function ____exports.anyActiveCollectibleUnlocked(self, forRun)
     local collectibleTypes = getUnlockedCollectibleTypes(nil, forRun)
     return __TS__ArraySome(
         collectibleTypes,
         function(____, collectibleType) return isActiveCollectible(nil, collectibleType) end
     )
 end
-function ____exports.isFamiliarCollectibleUnlocked(self, forRun)
+function ____exports.anyFamiliarCollectibleUnlocked(self, forRun)
     local collectibleTypes = getUnlockedCollectibleTypes(nil, forRun)
     return __TS__ArraySome(
         collectibleTypes,
@@ -67190,12 +67214,13 @@ function ____exports.isCardTypeUnlocked(self, cardType, forRun)
         function(____, unlock) return unlock.type == UnlockType.CARD and unlock.cardType == cardType end
     )
 end
-function ____exports.getUnlockedCardTypes(self)
-    return filterMap(
-        nil,
-        v.persistent.completedUnlocksForRun,
-        function(____, unlock) return unlock.type == UnlockType.CARD and unlock.cardType or nil end
+function ____exports.getNumCardsUnlocked(self, forRun)
+    local unlockedCardTypes = ____exports.getUnlockedCardTypes(nil, forRun)
+    local unlockedCards = __TS__ArrayFilter(
+        unlockedCardTypes,
+        function(____, cardType) return isCard(nil, cardType) end
     )
+    return #unlockedCards
 end
 function ____exports.getWorseLockedCardType(self, cardType)
     assertNotNull(nil, v.persistent.seed, "Failed to get a worse card type since the seed was null.")
@@ -67280,6 +67305,12 @@ function ____exports.isHeartSubTypeUnlocked(self, heartSubType, forRun)
     return __TS__ArraySome(
         array,
         function(____, unlock) return unlock.type == UnlockType.HEART and unlock.heartSubType == heartSubType end
+    )
+end
+function ____exports.anySoulHeartUnlocked(self, forRun)
+    return __TS__ArraySome(
+        SOUL_HEART_SUB_TYPES,
+        function(____, heartSubType) return ____exports.isHeartSubTypeUnlocked(nil, heartSubType, forRun) end
     )
 end
 function ____exports.getWorseLockedHeartSubType(self, heartSubType)
@@ -67468,7 +67499,7 @@ local __TS__ArrayJoin = ____lualib.__TS__ArrayJoin
 local __TS__New = ____lualib.__TS__New
 local __TS__Iterator = ____lualib.__TS__Iterator
 local ____exports = {}
-local getSwappedUnlock, getSwappedUnlockPath, getSwappedUnlockAltFloor, getSwappedUnlockChallenge, getSwappedUnlockCollectible, getSwappedUnlockTrinket, getSwappedUnlockCard, getSwappedUnlockPillEffect, getSwappedUnlockHeart, getSwappedUnlockCoin, getSwappedUnlockBomb, getSwappedUnlockKey, getSwappedUnlockBattery, getSwappedUnlockSack, getSwappedUnlockChest, getSwappedUnlockSlot, getSwappedUnlockOther, swapAnyRoomUnlock, getRandomActiveCollectibleUnlock, getRandomFamiliarCollectibleUnlock, getRandomTrinketUnlock, getRandomCardUnlock, getRandomPillEffectUnlock, findObjectiveIDForUnlock, SWAPPED_UNLOCK_FUNCTIONS, SWAPPED_UNLOCK_PATH_FUNCTIONS, SWAPPED_UNLOCK_ALT_FLOOR_FUNCTIONS, CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP, SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS, SWAPPED_UNLOCK_TRINKET_FUNCTIONS, SWAPPED_UNLOCK_CARD_FUNCTIONS, SWAPPED_UNLOCK_OTHER_FUNCTIONS
+local getSwappedUnlock, getSwappedUnlockPath, getSwappedUnlockAltFloor, getSwappedUnlockChallenge, getSwappedUnlockCollectible, getSwappedUnlockTrinket, getSwappedUnlockCard, getSwappedUnlockPillEffect, getSwappedUnlockHeart, getSwappedUnlockCoin, getSwappedUnlockBomb, getSwappedUnlockKey, getSwappedUnlockBattery, getSwappedUnlockSack, getSwappedUnlockChest, getSwappedUnlockSlot, getSwappedUnlockOther, swapAnyRoomUnlock, getRandomActiveCollectibleUnlock, getRandomFamiliarCollectibleUnlock, getRandomTrinketUnlock, getRandomCardUnlock, getRandomRuneUnlock, getRandomPillEffectUnlock, findObjectiveIDForUnlock, SWAPPED_UNLOCK_FUNCTIONS, SWAPPED_UNLOCK_PATH_FUNCTIONS, SWAPPED_UNLOCK_ALT_FLOOR_FUNCTIONS, CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP, SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS, SWAPPED_UNLOCK_TRINKET_FUNCTIONS, SWAPPED_UNLOCK_CARD_FUNCTIONS, SWAPPED_PILL_EFFECT_FUNCTIONS, SWAPPED_UNLOCK_OTHER_FUNCTIONS
 local ____isaac_2Dtypescript_2Ddefinitions = require("lua_modules.isaac-typescript-definitions.dist.src.index")
 local BatterySubType = ____isaac_2Dtypescript_2Ddefinitions.BatterySubType
 local BombSubType = ____isaac_2Dtypescript_2Ddefinitions.BombSubType
@@ -67481,12 +67512,14 @@ local HeartSubType = ____isaac_2Dtypescript_2Ddefinitions.HeartSubType
 local ItemConfigTag = ____isaac_2Dtypescript_2Ddefinitions.ItemConfigTag
 local KeySubType = ____isaac_2Dtypescript_2Ddefinitions.KeySubType
 local PickupVariant = ____isaac_2Dtypescript_2Ddefinitions.PickupVariant
+local PillEffect = ____isaac_2Dtypescript_2Ddefinitions.PillEffect
 local RoomType = ____isaac_2Dtypescript_2Ddefinitions.RoomType
 local SackSubType = ____isaac_2Dtypescript_2Ddefinitions.SackSubType
 local SlotVariant = ____isaac_2Dtypescript_2Ddefinitions.SlotVariant
 local TrinketType = ____isaac_2Dtypescript_2Ddefinitions.TrinketType
 local ____isaacscript_2Dcommon = require("lua_modules.isaacscript-common.dist.src.index")
 local ReadonlyMap = ____isaacscript_2Dcommon.ReadonlyMap
+local arrayRemove = ____isaacscript_2Dcommon.arrayRemove
 local assertDefined = ____isaacscript_2Dcommon.assertDefined
 local assertNotNull = ____isaacscript_2Dcommon.assertNotNull
 local collectibleHasTag = ____isaacscript_2Dcommon.collectibleHasTag
@@ -67497,6 +67530,7 @@ local log = ____isaacscript_2Dcommon.log
 local shuffleArray = ____isaacscript_2Dcommon.shuffleArray
 local ____unlockableCardTypes = require("src.arrays.unlockableCardTypes")
 local UNLOCKABLE_CARD_TYPES = ____unlockableCardTypes.UNLOCKABLE_CARD_TYPES
+local UNLOCKABLE_RUNE_CARD_TYPES = ____unlockableCardTypes.UNLOCKABLE_RUNE_CARD_TYPES
 local ____unlockableCollectibleTypes = require("src.arrays.unlockableCollectibleTypes")
 local UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES = ____unlockableCollectibleTypes.UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES
 local UNLOCKABLE_FAMILIAR_COLLECTIBLE_TYPES = ____unlockableCollectibleTypes.UNLOCKABLE_FAMILIAR_COLLECTIBLE_TYPES
@@ -67537,14 +67571,19 @@ local getUnlock = ____Unlock.getUnlock
 local getUnlockText = ____Unlock.getUnlockText
 local ____cardQuality = require("src.classes.features.achievementTracker.cardQuality")
 local getCardTypesOfQuality = ____cardQuality.getCardTypesOfQuality
+local getRunesOfQuality = ____cardQuality.getRunesOfQuality
 local ____completedUnlocks = require("src.classes.features.achievementTracker.completedUnlocks")
+local anyActiveCollectibleUnlocked = ____completedUnlocks.anyActiveCollectibleUnlocked
 local anyBadPillEffectsUnlocked = ____completedUnlocks.anyBadPillEffectsUnlocked
 local anyCardTypesUnlocked = ____completedUnlocks.anyCardTypesUnlocked
 local anyCardsUnlocked = ____completedUnlocks.anyCardsUnlocked
+local anyFamiliarCollectibleUnlocked = ____completedUnlocks.anyFamiliarCollectibleUnlocked
 local anyGoodPillEffectsUnlocked = ____completedUnlocks.anyGoodPillEffectsUnlocked
 local anyPillEffectsUnlocked = ____completedUnlocks.anyPillEffectsUnlocked
 local anyRunesUnlocked = ____completedUnlocks.anyRunesUnlocked
+local anySoulHeartUnlocked = ____completedUnlocks.anySoulHeartUnlocked
 local anyTrinketTypesUnlocked = ____completedUnlocks.anyTrinketTypesUnlocked
+local getNumCardsUnlocked = ____completedUnlocks.getNumCardsUnlocked
 local getWorseLockedBatterySubType = ____completedUnlocks.getWorseLockedBatterySubType
 local getWorseLockedBombSubType = ____completedUnlocks.getWorseLockedBombSubType
 local getWorseLockedCardType = ____completedUnlocks.getWorseLockedCardType
@@ -67556,7 +67595,6 @@ local getWorseLockedKeySubType = ____completedUnlocks.getWorseLockedKeySubType
 local getWorseLockedPillEffect = ____completedUnlocks.getWorseLockedPillEffect
 local getWorseLockedSackSubType = ____completedUnlocks.getWorseLockedSackSubType
 local getWorseLockedTrinketType = ____completedUnlocks.getWorseLockedTrinketType
-local isActiveCollectibleUnlocked = ____completedUnlocks.isActiveCollectibleUnlocked
 local isAltFloorUnlocked = ____completedUnlocks.isAltFloorUnlocked
 local isBatterySubTypeUnlocked = ____completedUnlocks.isBatterySubTypeUnlocked
 local isBombSubTypeUnlocked = ____completedUnlocks.isBombSubTypeUnlocked
@@ -67565,7 +67603,6 @@ local isCharacterUnlocked = ____completedUnlocks.isCharacterUnlocked
 local isChestPickupVariantUnlocked = ____completedUnlocks.isChestPickupVariantUnlocked
 local isCoinSubTypeUnlocked = ____completedUnlocks.isCoinSubTypeUnlocked
 local isCollectibleTypeUnlocked = ____completedUnlocks.isCollectibleTypeUnlocked
-local isFamiliarCollectibleUnlocked = ____completedUnlocks.isFamiliarCollectibleUnlocked
 local isGridEntityTypeUnlocked = ____completedUnlocks.isGridEntityTypeUnlocked
 local isHeartSubTypeUnlocked = ____completedUnlocks.isHeartSubTypeUnlocked
 local isKeySubTypeUnlocked = ____completedUnlocks.isKeySubTypeUnlocked
@@ -67663,13 +67700,13 @@ function getSwappedUnlockCollectible(self, unlock)
         end
     end
     local func = SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS:get(collectibleUnlock.collectibleType)
-    local ____temp_34
+    local ____temp_58
     if func == nil then
-        ____temp_34 = nil
+        ____temp_58 = nil
     else
-        ____temp_34 = func(nil)
+        ____temp_58 = func(nil)
     end
-    return ____temp_34
+    return ____temp_58
 end
 function getSwappedUnlockTrinket(self, unlock)
     local trinketUnlock = unlock
@@ -67683,13 +67720,13 @@ function getSwappedUnlockTrinket(self, unlock)
         end
     end
     local func = SWAPPED_UNLOCK_TRINKET_FUNCTIONS:get(trinketUnlock.trinketType)
-    local ____temp_69
+    local ____temp_99
     if func == nil then
-        ____temp_69 = nil
+        ____temp_99 = nil
     else
-        ____temp_69 = func(nil)
+        ____temp_99 = func(nil)
     end
-    return ____temp_69
+    return ____temp_99
 end
 function getSwappedUnlockCard(self, unlock)
     local cardUnlock = unlock
@@ -67703,13 +67740,13 @@ function getSwappedUnlockCard(self, unlock)
         end
     end
     local func = SWAPPED_UNLOCK_CARD_FUNCTIONS:get(cardUnlock.cardType)
-    local ____temp_80
+    local ____temp_113
     if func == nil then
-        ____temp_80 = nil
+        ____temp_113 = nil
     else
-        ____temp_80 = func(nil)
+        ____temp_113 = func(nil)
     end
-    return ____temp_80
+    return ____temp_113
 end
 function getSwappedUnlockPillEffect(self, unlock)
     local pillEffectUnlock = unlock
@@ -67719,7 +67756,14 @@ function getSwappedUnlockPillEffect(self, unlock)
             return getUnlock(nil, UnlockType.PILL_EFFECT, worsePillEffect)
         end
     end
-    return nil
+    local func = SWAPPED_PILL_EFFECT_FUNCTIONS:get(pillEffectUnlock.pillEffect)
+    local ____temp_117
+    if func == nil then
+        ____temp_117 = nil
+    else
+        ____temp_117 = func(nil)
+    end
+    return ____temp_117
 end
 function getSwappedUnlockHeart(self, unlock)
     local heartUnlock = unlock
@@ -67763,7 +67807,7 @@ function getSwappedUnlockKey(self, unlock)
 end
 function getSwappedUnlockBattery(self, unlock)
     local batteryUnlock = unlock
-    if not isActiveCollectibleUnlocked(nil, false) then
+    if not anyActiveCollectibleUnlocked(nil, false) then
         return getRandomActiveCollectibleUnlock(nil)
     end
     if isHardcoreMode(nil) then
@@ -67795,24 +67839,24 @@ function getSwappedUnlockChest(self, unlock)
     return nil
 end
 function getSwappedUnlockSlot(self)
-    local ____isRoomTypeUnlocked_result_81
+    local ____isRoomTypeUnlocked_result_118
     if isRoomTypeUnlocked(nil, RoomType.ARCADE, false) then
-        ____isRoomTypeUnlocked_result_81 = nil
+        ____isRoomTypeUnlocked_result_118 = nil
     else
-        ____isRoomTypeUnlocked_result_81 = getUnlock(nil, UnlockType.ROOM, RoomType.ARCADE)
+        ____isRoomTypeUnlocked_result_118 = getUnlock(nil, UnlockType.ROOM, RoomType.ARCADE)
     end
-    return ____isRoomTypeUnlocked_result_81
+    return ____isRoomTypeUnlocked_result_118
 end
 function getSwappedUnlockOther(self, unlock)
     local otherUnlock = unlock
     local func = SWAPPED_UNLOCK_OTHER_FUNCTIONS:get(otherUnlock.kind)
-    local ____temp_83
+    local ____temp_120
     if func == nil then
-        ____temp_83 = nil
+        ____temp_120 = nil
     else
-        ____temp_83 = func(nil)
+        ____temp_120 = func(nil)
     end
-    return ____temp_83
+    return ____temp_120
 end
 function swapAnyRoomUnlock(self)
     assertNotNull(nil, v.persistent.seed, "Failed to swap achievements due to the seed being null.")
@@ -67844,18 +67888,24 @@ function getRandomCardUnlock(self)
     local cardType = getRandomArrayElement(nil, cardTypes)
     return {type = UnlockType.CARD, cardType = cardType}
 end
+function getRandomRuneUnlock(self)
+    local cardTypes = isHardcoreMode(nil) and getRunesOfQuality(nil, 0) or UNLOCKABLE_RUNE_CARD_TYPES
+    local cardType = getRandomArrayElement(nil, cardTypes)
+    return {type = UnlockType.CARD, cardType = cardType}
+end
 function getRandomPillEffectUnlock(self)
     local pillEffects = isHardcoreMode(nil) and getPillEffectsOfQuality(nil, 0) or UNLOCKABLE_PILL_EFFECTS
-    local pillEffect = getRandomArrayElement(nil, pillEffects)
+    local modifiedPillEffects = arrayRemove(nil, pillEffects, PillEffect.VURP)
+    local pillEffect = getRandomArrayElement(nil, modifiedPillEffects)
     return {type = UnlockType.PILL_EFFECT, pillEffect = pillEffect}
 end
 function findObjectiveIDForUnlock(self, unlockToMatch)
     for ____, entries in __TS__Iterator(v.persistent.objectiveToUnlockMap) do
         local objectiveID, unlock = table.unpack(entries)
         repeat
-            local ____switch156 = unlock.type
-            local ____cond156 = ____switch156 == UnlockType.CHARACTER
-            if ____cond156 then
+            local ____switch193 = unlock.type
+            local ____cond193 = ____switch193 == UnlockType.CHARACTER
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.character == unlockToMatch.character then
                         return objectiveID
@@ -67863,8 +67913,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.PATH
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.PATH
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.unlockablePath == unlockToMatch.unlockablePath then
                         return objectiveID
@@ -67872,8 +67922,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.ALT_FLOOR
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.ALT_FLOOR
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.altFloor == unlockToMatch.altFloor then
                         return objectiveID
@@ -67881,8 +67931,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.ROOM
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.ROOM
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.roomType == unlockToMatch.roomType then
                         return objectiveID
@@ -67890,8 +67940,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.CHALLENGE
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.CHALLENGE
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.challenge == unlockToMatch.challenge then
                         return objectiveID
@@ -67899,8 +67949,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.COLLECTIBLE
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.COLLECTIBLE
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.collectibleType == unlockToMatch.collectibleType then
                         return objectiveID
@@ -67908,8 +67958,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.TRINKET
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.TRINKET
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.trinketType == unlockToMatch.trinketType then
                         return objectiveID
@@ -67917,8 +67967,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.CARD
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.CARD
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.cardType == unlockToMatch.cardType then
                         return objectiveID
@@ -67926,8 +67976,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.PILL_EFFECT
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.PILL_EFFECT
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.pillEffect == unlockToMatch.pillEffect then
                         return objectiveID
@@ -67935,8 +67985,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.HEART
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.HEART
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.heartSubType == unlockToMatch.heartSubType then
                         return objectiveID
@@ -67944,8 +67994,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.COIN
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.COIN
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.coinSubType == unlockToMatch.coinSubType then
                         return objectiveID
@@ -67953,8 +68003,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.BOMB
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.BOMB
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.bombSubType == unlockToMatch.bombSubType then
                         return objectiveID
@@ -67962,8 +68012,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.KEY
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.KEY
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.keySubType == unlockToMatch.keySubType then
                         return objectiveID
@@ -67971,8 +68021,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.BATTERY
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.BATTERY
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.batterySubType == unlockToMatch.batterySubType then
                         return objectiveID
@@ -67980,8 +68030,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.SACK
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.SACK
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.sackSubType == unlockToMatch.sackSubType then
                         return objectiveID
@@ -67989,8 +68039,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.CHEST
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.CHEST
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.pickupVariant == unlockToMatch.pickupVariant then
                         return objectiveID
@@ -67998,8 +68048,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.SLOT
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.SLOT
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.slotVariant == unlockToMatch.slotVariant then
                         return objectiveID
@@ -68007,8 +68057,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.GRID_ENTITY
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.GRID_ENTITY
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.gridEntityType == unlockToMatch.gridEntityType then
                         return objectiveID
@@ -68016,8 +68066,8 @@ function findObjectiveIDForUnlock(self, unlockToMatch)
                     break
                 end
             end
-            ____cond156 = ____cond156 or ____switch156 == UnlockType.OTHER
-            if ____cond156 then
+            ____cond193 = ____cond193 or ____switch193 == UnlockType.OTHER
+            if ____cond193 then
                 do
                     if unlock.type == unlockToMatch.type and unlock.kind == unlockToMatch.kind then
                         return objectiveID
@@ -68157,63 +68207,99 @@ SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = __TS__New(
     ReadonlyMap,
     {
         {
+            CollectibleType.SKATOLE,
+            function()
+                local ____isSlotVariantUnlocked_result_7
+                if isSlotVariantUnlocked(nil, SlotVariant.SHELL_GAME, false) then
+                    ____isSlotVariantUnlocked_result_7 = nil
+                else
+                    ____isSlotVariantUnlocked_result_7 = getUnlock(nil, UnlockType.SLOT, SlotVariant.SHELL_GAME)
+                end
+                return ____isSlotVariantUnlocked_result_7
+            end
+        },
+        {
+            CollectibleType.DOLLAR,
+            function()
+                local ____isSlotVariantUnlocked_result_8
+                if isSlotVariantUnlocked(nil, SlotVariant.SLOT_MACHINE, false) then
+                    ____isSlotVariantUnlocked_result_8 = nil
+                else
+                    ____isSlotVariantUnlocked_result_8 = getUnlock(nil, UnlockType.SLOT, SlotVariant.SLOT_MACHINE)
+                end
+                return ____isSlotVariantUnlocked_result_8
+            end
+        },
+        {
             CollectibleType.BATTERY,
             function()
-                local ____isActiveCollectibleUnlocked_result_7
-                if isActiveCollectibleUnlocked(nil, false) then
-                    ____isActiveCollectibleUnlocked_result_7 = nil
+                local ____anyActiveCollectibleUnlocked_result_9
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_9 = nil
                 else
-                    ____isActiveCollectibleUnlocked_result_7 = getRandomActiveCollectibleUnlock(nil)
+                    ____anyActiveCollectibleUnlocked_result_9 = getRandomActiveCollectibleUnlock(nil)
                 end
-                return ____isActiveCollectibleUnlocked_result_7
+                return ____anyActiveCollectibleUnlocked_result_9
             end
         },
         {
             CollectibleType.PHD,
             function()
-                local ____anyGoodPillEffectsUnlocked_result_8
+                local ____anyGoodPillEffectsUnlocked_result_10
                 if anyGoodPillEffectsUnlocked(nil, false) then
-                    ____anyGoodPillEffectsUnlocked_result_8 = nil
+                    ____anyGoodPillEffectsUnlocked_result_10 = nil
                 else
-                    ____anyGoodPillEffectsUnlocked_result_8 = getRandomPillEffectUnlock(nil)
+                    ____anyGoodPillEffectsUnlocked_result_10 = getRandomPillEffectUnlock(nil)
                 end
-                return ____anyGoodPillEffectsUnlocked_result_8
+                return ____anyGoodPillEffectsUnlocked_result_10
             end
         },
         {
             CollectibleType.WE_NEED_TO_GO_DEEPER,
             function()
-                local ____isGridEntityTypeUnlocked_result_9
+                local ____isGridEntityTypeUnlocked_result_11
                 if isGridEntityTypeUnlocked(nil, GridEntityType.CRAWL_SPACE, false) then
-                    ____isGridEntityTypeUnlocked_result_9 = nil
+                    ____isGridEntityTypeUnlocked_result_11 = nil
                 else
-                    ____isGridEntityTypeUnlocked_result_9 = getUnlock(nil, UnlockType.GRID_ENTITY, GridEntityType.CRAWL_SPACE)
+                    ____isGridEntityTypeUnlocked_result_11 = getUnlock(nil, UnlockType.GRID_ENTITY, GridEntityType.CRAWL_SPACE)
                 end
-                return ____isGridEntityTypeUnlocked_result_9
+                return ____isGridEntityTypeUnlocked_result_11
             end
         },
         {
             CollectibleType.DECK_OF_CARDS,
             function()
-                local ____anyCardsUnlocked_result_10
+                local ____anyCardsUnlocked_result_12
                 if anyCardsUnlocked(nil, false) then
-                    ____anyCardsUnlocked_result_10 = nil
+                    ____anyCardsUnlocked_result_12 = nil
                 else
-                    ____anyCardsUnlocked_result_10 = getRandomCardUnlock(nil)
+                    ____anyCardsUnlocked_result_12 = getRandomCardUnlock(nil)
                 end
-                return ____anyCardsUnlocked_result_10
+                return ____anyCardsUnlocked_result_12
+            end
+        },
+        {
+            CollectibleType.SMALL_ROCK,
+            function()
+                local ____isGridEntityTypeUnlocked_result_13
+                if isGridEntityTypeUnlocked(nil, GridEntityType.ROCK_TINTED, false) then
+                    ____isGridEntityTypeUnlocked_result_13 = nil
+                else
+                    ____isGridEntityTypeUnlocked_result_13 = getUnlock(nil, UnlockType.GRID_ENTITY, GridEntityType.ROCK_TINTED)
+                end
+                return ____isGridEntityTypeUnlocked_result_13
             end
         },
         {
             CollectibleType.RELIC,
             function()
-                local ____isHeartSubTypeUnlocked_result_11
+                local ____isHeartSubTypeUnlocked_result_14
                 if isHeartSubTypeUnlocked(nil, HeartSubType.SOUL, false) then
-                    ____isHeartSubTypeUnlocked_result_11 = nil
+                    ____isHeartSubTypeUnlocked_result_14 = nil
                 else
-                    ____isHeartSubTypeUnlocked_result_11 = getUnlock(nil, UnlockType.HEART, HeartSubType.SOUL)
+                    ____isHeartSubTypeUnlocked_result_14 = getUnlock(nil, UnlockType.HEART, HeartSubType.SOUL)
                 end
-                return ____isHeartSubTypeUnlocked_result_11
+                return ____isHeartSubTypeUnlocked_result_14
             end
         },
         {
@@ -68228,125 +68314,89 @@ SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = __TS__New(
         {
             CollectibleType.NINE_VOLT,
             function()
-                local ____isActiveCollectibleUnlocked_result_12
-                if isActiveCollectibleUnlocked(nil, false) then
-                    ____isActiveCollectibleUnlocked_result_12 = nil
+                local ____anyActiveCollectibleUnlocked_result_15
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_15 = nil
                 else
-                    ____isActiveCollectibleUnlocked_result_12 = getRandomActiveCollectibleUnlock(nil)
+                    ____anyActiveCollectibleUnlocked_result_15 = getRandomActiveCollectibleUnlock(nil)
                 end
-                return ____isActiveCollectibleUnlocked_result_12
+                return ____anyActiveCollectibleUnlocked_result_15
+            end
+        },
+        {
+            CollectibleType.BLOOD_BAG,
+            function()
+                local ____isSlotVariantUnlocked_result_16
+                if isSlotVariantUnlocked(nil, SlotVariant.BLOOD_DONATION_MACHINE, false) then
+                    ____isSlotVariantUnlocked_result_16 = nil
+                else
+                    ____isSlotVariantUnlocked_result_16 = getUnlock(nil, UnlockType.SLOT, SlotVariant.BLOOD_DONATION_MACHINE)
+                end
+                return ____isSlotVariantUnlocked_result_16
+            end
+        },
+        {
+            CollectibleType.IV_BAG,
+            function()
+                local ____isSlotVariantUnlocked_result_17
+                if isSlotVariantUnlocked(nil, SlotVariant.BLOOD_DONATION_MACHINE, false) then
+                    ____isSlotVariantUnlocked_result_17 = nil
+                else
+                    ____isSlotVariantUnlocked_result_17 = getUnlock(nil, UnlockType.SLOT, SlotVariant.BLOOD_DONATION_MACHINE)
+                end
+                return ____isSlotVariantUnlocked_result_17
             end
         },
         {
             CollectibleType.MOMS_PURSE,
             function()
-                local ____anyTrinketTypesUnlocked_result_13
+                local ____anyTrinketTypesUnlocked_result_18
                 if anyTrinketTypesUnlocked(nil, false) then
-                    ____anyTrinketTypesUnlocked_result_13 = nil
+                    ____anyTrinketTypesUnlocked_result_18 = nil
                 else
-                    ____anyTrinketTypesUnlocked_result_13 = getRandomTrinketUnlock(nil)
+                    ____anyTrinketTypesUnlocked_result_18 = getRandomTrinketUnlock(nil)
                 end
-                return ____anyTrinketTypesUnlocked_result_13
+                return ____anyTrinketTypesUnlocked_result_18
+            end
+        },
+        {
+            CollectibleType.HABIT,
+            function()
+                local ____anyActiveCollectibleUnlocked_result_19
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_19 = nil
+                else
+                    ____anyActiveCollectibleUnlocked_result_19 = getRandomActiveCollectibleUnlock(nil)
+                end
+                return ____anyActiveCollectibleUnlocked_result_19
+            end
+        },
+        {
+            CollectibleType.CRYSTAL_BALL,
+            function()
+                local ____isSlotVariantUnlocked_result_20
+                if isSlotVariantUnlocked(nil, SlotVariant.FORTUNE_TELLING_MACHINE, false) then
+                    ____isSlotVariantUnlocked_result_20 = nil
+                else
+                    ____isSlotVariantUnlocked_result_20 = getUnlock(nil, UnlockType.SLOT, SlotVariant.FORTUNE_TELLING_MACHINE)
+                end
+                return ____isSlotVariantUnlocked_result_20
+            end
+        },
+        {
+            CollectibleType.MITRE,
+            function()
+                local ____isHeartSubTypeUnlocked_result_21
+                if isHeartSubTypeUnlocked(nil, HeartSubType.SOUL, false) then
+                    ____isHeartSubTypeUnlocked_result_21 = nil
+                else
+                    ____isHeartSubTypeUnlocked_result_21 = getUnlock(nil, UnlockType.HEART, HeartSubType.SOUL)
+                end
+                return ____isHeartSubTypeUnlocked_result_21
             end
         },
         {
             CollectibleType.MOMS_COIN_PURSE,
-            function()
-                local ____anyPillEffectsUnlocked_result_14
-                if anyPillEffectsUnlocked(nil, false) then
-                    ____anyPillEffectsUnlocked_result_14 = nil
-                else
-                    ____anyPillEffectsUnlocked_result_14 = getRandomPillEffectUnlock(nil)
-                end
-                return ____anyPillEffectsUnlocked_result_14
-            end
-        },
-        {
-            CollectibleType.HUMBLING_BUNDLE,
-            function()
-                local ____isCoinSubTypeUnlocked_result_15
-                if isCoinSubTypeUnlocked(nil, CoinSubType.DOUBLE_PACK, false) then
-                    ____isCoinSubTypeUnlocked_result_15 = nil
-                else
-                    ____isCoinSubTypeUnlocked_result_15 = getUnlock(nil, UnlockType.COIN, CoinSubType.DOUBLE_PACK)
-                end
-                return ____isCoinSubTypeUnlocked_result_15
-            end
-        },
-        {
-            CollectibleType.BOGO_BOMBS,
-            function()
-                local ____isBombSubTypeUnlocked_result_16
-                if isBombSubTypeUnlocked(nil, BombSubType.DOUBLE_PACK, false) then
-                    ____isBombSubTypeUnlocked_result_16 = nil
-                else
-                    ____isBombSubTypeUnlocked_result_16 = getUnlock(nil, UnlockType.BOMB, BombSubType.DOUBLE_PACK)
-                end
-                return ____isBombSubTypeUnlocked_result_16
-            end
-        },
-        {
-            CollectibleType.STARTER_DECK,
-            function()
-                local ____anyCardTypesUnlocked_result_17
-                if anyCardTypesUnlocked(nil, false) then
-                    ____anyCardTypesUnlocked_result_17 = nil
-                else
-                    ____anyCardTypesUnlocked_result_17 = getRandomCardUnlock(nil)
-                end
-                return ____anyCardTypesUnlocked_result_17
-            end
-        },
-        {
-            CollectibleType.LITTLE_BAGGY,
-            function()
-                local ____anyPillEffectsUnlocked_result_18
-                if anyPillEffectsUnlocked(nil, false) then
-                    ____anyPillEffectsUnlocked_result_18 = nil
-                else
-                    ____anyPillEffectsUnlocked_result_18 = getRandomPillEffectUnlock(nil)
-                end
-                return ____anyPillEffectsUnlocked_result_18
-            end
-        },
-        {
-            CollectibleType.CLEAR_RUNE,
-            function()
-                local ____anyRunesUnlocked_result_19
-                if anyRunesUnlocked(nil, false) then
-                    ____anyRunesUnlocked_result_19 = nil
-                else
-                    ____anyRunesUnlocked_result_19 = getUnlock(nil, UnlockType.CARD, CardType.RUNE_BLANK)
-                end
-                return ____anyRunesUnlocked_result_19
-            end
-        },
-        {
-            CollectibleType.DARK_BUM,
-            function()
-                local ____isHeartSubTypeUnlocked_result_20
-                if isHeartSubTypeUnlocked(nil, HeartSubType.BLACK, false) then
-                    ____isHeartSubTypeUnlocked_result_20 = nil
-                else
-                    ____isHeartSubTypeUnlocked_result_20 = getUnlock(nil, UnlockType.HEART, HeartSubType.BLACK)
-                end
-                return ____isHeartSubTypeUnlocked_result_20
-            end
-        },
-        {
-            CollectibleType.BLANK_CARD,
-            function()
-                local ____anyCardsUnlocked_result_21
-                if anyCardsUnlocked(nil, false) then
-                    ____anyCardsUnlocked_result_21 = nil
-                else
-                    ____anyCardsUnlocked_result_21 = getRandomCardUnlock(nil)
-                end
-                return ____anyCardsUnlocked_result_21
-            end
-        },
-        {
-            CollectibleType.PLACEBO,
             function()
                 local ____anyPillEffectsUnlocked_result_22
                 if anyPillEffectsUnlocked(nil, false) then
@@ -68358,87 +68408,327 @@ SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = __TS__New(
             end
         },
         {
+            CollectibleType.HUMBLING_BUNDLE,
+            function()
+                local ____isCoinSubTypeUnlocked_result_23
+                if isCoinSubTypeUnlocked(nil, CoinSubType.DOUBLE_PACK, false) then
+                    ____isCoinSubTypeUnlocked_result_23 = nil
+                else
+                    ____isCoinSubTypeUnlocked_result_23 = getUnlock(nil, UnlockType.COIN, CoinSubType.DOUBLE_PACK)
+                end
+                return ____isCoinSubTypeUnlocked_result_23
+            end
+        },
+        {
+            CollectibleType.SHARP_PLUG,
+            function()
+                local ____anyActiveCollectibleUnlocked_result_24
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_24 = nil
+                else
+                    ____anyActiveCollectibleUnlocked_result_24 = getRandomActiveCollectibleUnlock(nil)
+                end
+                return ____anyActiveCollectibleUnlocked_result_24
+            end
+        },
+        {
+            CollectibleType.BOGO_BOMBS,
+            function()
+                local ____isBombSubTypeUnlocked_result_25
+                if isBombSubTypeUnlocked(nil, BombSubType.DOUBLE_PACK, false) then
+                    ____isBombSubTypeUnlocked_result_25 = nil
+                else
+                    ____isBombSubTypeUnlocked_result_25 = getUnlock(nil, UnlockType.BOMB, BombSubType.DOUBLE_PACK)
+                end
+                return ____isBombSubTypeUnlocked_result_25
+            end
+        },
+        {
+            CollectibleType.STARTER_DECK,
+            function()
+                local ____anyCardTypesUnlocked_result_26
+                if anyCardTypesUnlocked(nil, false) then
+                    ____anyCardTypesUnlocked_result_26 = nil
+                else
+                    ____anyCardTypesUnlocked_result_26 = getRandomCardUnlock(nil)
+                end
+                return ____anyCardTypesUnlocked_result_26
+            end
+        },
+        {
+            CollectibleType.LITTLE_BAGGY,
+            function()
+                local ____anyPillEffectsUnlocked_result_27
+                if anyPillEffectsUnlocked(nil, false) then
+                    ____anyPillEffectsUnlocked_result_27 = nil
+                else
+                    ____anyPillEffectsUnlocked_result_27 = getRandomPillEffectUnlock(nil)
+                end
+                return ____anyPillEffectsUnlocked_result_27
+            end
+        },
+        {
+            CollectibleType.CLEAR_RUNE,
+            function()
+                local ____anyRunesUnlocked_result_28
+                if anyRunesUnlocked(nil, false) then
+                    ____anyRunesUnlocked_result_28 = nil
+                else
+                    ____anyRunesUnlocked_result_28 = getUnlock(nil, UnlockType.CARD, CardType.RUNE_BLANK)
+                end
+                return ____anyRunesUnlocked_result_28
+            end
+        },
+        {
+            CollectibleType.DARK_BUM,
+            function()
+                local ____isHeartSubTypeUnlocked_result_29
+                if isHeartSubTypeUnlocked(nil, HeartSubType.BLACK, false) then
+                    ____isHeartSubTypeUnlocked_result_29 = nil
+                else
+                    ____isHeartSubTypeUnlocked_result_29 = getUnlock(nil, UnlockType.HEART, HeartSubType.BLACK)
+                end
+                return ____isHeartSubTypeUnlocked_result_29
+            end
+        },
+        {
+            CollectibleType.BLANK_CARD,
+            function()
+                local ____anyCardsUnlocked_result_30
+                if anyCardsUnlocked(nil, false) then
+                    ____anyCardsUnlocked_result_30 = nil
+                else
+                    ____anyCardsUnlocked_result_30 = getRandomCardUnlock(nil)
+                end
+                return ____anyCardsUnlocked_result_30
+            end
+        },
+        {
+            CollectibleType.CONVERTER,
+            function()
+                local ____anySoulHeartUnlocked_result_31
+                if anySoulHeartUnlocked(nil, false) then
+                    ____anySoulHeartUnlocked_result_31 = nil
+                else
+                    ____anySoulHeartUnlocked_result_31 = getUnlock(nil, UnlockType.HEART, HeartSubType.HALF_SOUL)
+                end
+                return ____anySoulHeartUnlocked_result_31
+            end
+        },
+        {
+            CollectibleType.PLACEBO,
+            function()
+                local ____anyPillEffectsUnlocked_result_32
+                if anyPillEffectsUnlocked(nil, false) then
+                    ____anyPillEffectsUnlocked_result_32 = nil
+                else
+                    ____anyPillEffectsUnlocked_result_32 = getRandomPillEffectUnlock(nil)
+                end
+                return ____anyPillEffectsUnlocked_result_32
+            end
+        },
+        {
+            CollectibleType.CAR_BATTERY,
+            function()
+                local ____anyActiveCollectibleUnlocked_result_33
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_33 = nil
+                else
+                    ____anyActiveCollectibleUnlocked_result_33 = getRandomActiveCollectibleUnlock(nil)
+                end
+                return ____anyActiveCollectibleUnlocked_result_33
+            end
+        },
+        {
+            CollectibleType.RUNE_BAG,
+            function()
+                local ____anyRunesUnlocked_result_34
+                if anyRunesUnlocked(nil, false) then
+                    ____anyRunesUnlocked_result_34 = nil
+                else
+                    ____anyRunesUnlocked_result_34 = getRandomRuneUnlock(nil)
+                end
+                return ____anyRunesUnlocked_result_34
+            end
+        },
+        {
             CollectibleType.SACK_HEAD,
             function()
-                local ____isSackSubTypeUnlocked_result_23
+                local ____isSackSubTypeUnlocked_result_35
                 if isSackSubTypeUnlocked(nil, SackSubType.NORMAL, false) then
-                    ____isSackSubTypeUnlocked_result_23 = nil
+                    ____isSackSubTypeUnlocked_result_35 = nil
                 else
-                    ____isSackSubTypeUnlocked_result_23 = getUnlock(nil, UnlockType.SACK, SackSubType.NORMAL)
+                    ____isSackSubTypeUnlocked_result_35 = getUnlock(nil, UnlockType.SACK, SackSubType.NORMAL)
                 end
-                return ____isSackSubTypeUnlocked_result_23
+                return ____isSackSubTypeUnlocked_result_35
             end
         },
         {
             CollectibleType.MOMS_BOX,
             function()
-                local ____anyTrinketTypesUnlocked_result_24
+                local ____anyTrinketTypesUnlocked_result_36
                 if anyTrinketTypesUnlocked(nil, false) then
-                    ____anyTrinketTypesUnlocked_result_24 = nil
+                    ____anyTrinketTypesUnlocked_result_36 = nil
                 else
-                    ____anyTrinketTypesUnlocked_result_24 = getRandomTrinketUnlock(nil)
+                    ____anyTrinketTypesUnlocked_result_36 = getRandomTrinketUnlock(nil)
                 end
-                return ____anyTrinketTypesUnlocked_result_24
+                return ____anyTrinketTypesUnlocked_result_36
+            end
+        },
+        {
+            CollectibleType.SHARD_OF_GLASS,
+            function()
+                local ____isHeartSubTypeUnlocked_result_37
+                if isHeartSubTypeUnlocked(nil, HeartSubType.FULL, false) then
+                    ____isHeartSubTypeUnlocked_result_37 = nil
+                else
+                    ____isHeartSubTypeUnlocked_result_37 = getUnlock(nil, UnlockType.HEART, HeartSubType.FULL)
+                end
+                return ____isHeartSubTypeUnlocked_result_37
             end
         },
         {
             CollectibleType.TAROT_CLOTH,
             function()
-                local ____anyCardsUnlocked_result_25
+                local ____anyCardsUnlocked_result_38
                 if anyCardsUnlocked(nil, false) then
-                    ____anyCardsUnlocked_result_25 = nil
+                    ____anyCardsUnlocked_result_38 = nil
                 else
-                    ____anyCardsUnlocked_result_25 = getRandomCardUnlock(nil)
+                    ____anyCardsUnlocked_result_38 = getRandomCardUnlock(nil)
                 end
-                return ____anyCardsUnlocked_result_25
+                return ____anyCardsUnlocked_result_38
             end
         },
         {
             CollectibleType.BELLY_BUTTON,
             function()
-                local ____anyTrinketTypesUnlocked_result_26
+                local ____anyTrinketTypesUnlocked_result_39
                 if anyTrinketTypesUnlocked(nil, false) then
-                    ____anyTrinketTypesUnlocked_result_26 = nil
+                    ____anyTrinketTypesUnlocked_result_39 = nil
                 else
-                    ____anyTrinketTypesUnlocked_result_26 = getRandomTrinketUnlock(nil)
+                    ____anyTrinketTypesUnlocked_result_39 = getRandomTrinketUnlock(nil)
                 end
-                return ____anyTrinketTypesUnlocked_result_26
+                return ____anyTrinketTypesUnlocked_result_39
+            end
+        },
+        {
+            CollectibleType.KING_BABY,
+            function()
+                local ____anyFamiliarCollectibleUnlocked_result_40
+                if anyFamiliarCollectibleUnlocked(nil, false) then
+                    ____anyFamiliarCollectibleUnlocked_result_40 = nil
+                else
+                    ____anyFamiliarCollectibleUnlocked_result_40 = getRandomFamiliarCollectibleUnlock(nil)
+                end
+                return ____anyFamiliarCollectibleUnlocked_result_40
             end
         },
         {
             CollectibleType.SMELTER,
             function()
-                local ____anyTrinketTypesUnlocked_result_27
+                local ____anyTrinketTypesUnlocked_result_41
                 if anyTrinketTypesUnlocked(nil, false) then
-                    ____anyTrinketTypesUnlocked_result_27 = nil
+                    ____anyTrinketTypesUnlocked_result_41 = nil
                 else
-                    ____anyTrinketTypesUnlocked_result_27 = getRandomTrinketUnlock(nil)
+                    ____anyTrinketTypesUnlocked_result_41 = getRandomTrinketUnlock(nil)
                 end
-                return ____anyTrinketTypesUnlocked_result_27
+                return ____anyTrinketTypesUnlocked_result_41
+            end
+        },
+        {
+            CollectibleType.WAIT_WHAT,
+            function()
+                local ____isCollectibleTypeUnlocked_result_42
+                if isCollectibleTypeUnlocked(nil, CollectibleType.BUTTER_BEAN, false) then
+                    ____isCollectibleTypeUnlocked_result_42 = nil
+                else
+                    ____isCollectibleTypeUnlocked_result_42 = getUnlock(nil, UnlockType.COLLECTIBLE, CollectibleType.BUTTER_BEAN)
+                end
+                return ____isCollectibleTypeUnlocked_result_42
             end
         },
         {
             CollectibleType.ACID_BABY,
             function()
-                local ____anyPillEffectsUnlocked_result_28
+                local ____anyPillEffectsUnlocked_result_43
                 if anyPillEffectsUnlocked(nil, false) then
-                    ____anyPillEffectsUnlocked_result_28 = nil
+                    ____anyPillEffectsUnlocked_result_43 = nil
                 else
-                    ____anyPillEffectsUnlocked_result_28 = getRandomPillEffectUnlock(nil)
+                    ____anyPillEffectsUnlocked_result_43 = getRandomPillEffectUnlock(nil)
                 end
-                return ____anyPillEffectsUnlocked_result_28
+                return ____anyPillEffectsUnlocked_result_43
+            end
+        },
+        {
+            CollectibleType.SACK_OF_SACKS,
+            function()
+                local ____isSackSubTypeUnlocked_result_44
+                if isSackSubTypeUnlocked(nil, SackSubType.NORMAL, false) then
+                    ____isSackSubTypeUnlocked_result_44 = nil
+                else
+                    ____isSackSubTypeUnlocked_result_44 = getUnlock(nil, UnlockType.SACK, SackSubType.NORMAL)
+                end
+                return ____isSackSubTypeUnlocked_result_44
+            end
+        },
+        {
+            CollectibleType.JUMPER_CABLES,
+            function()
+                local ____anyActiveCollectibleUnlocked_result_45
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_45 = nil
+                else
+                    ____anyActiveCollectibleUnlocked_result_45 = getRandomActiveCollectibleUnlock(nil)
+                end
+                return ____anyActiveCollectibleUnlocked_result_45
+            end
+        },
+        {
+            CollectibleType.SCHOOLBAG,
+            function()
+                local ____anyActiveCollectibleUnlocked_result_46
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_46 = nil
+                else
+                    ____anyActiveCollectibleUnlocked_result_46 = getRandomActiveCollectibleUnlock(nil)
+                end
+                return ____anyActiveCollectibleUnlocked_result_46
+            end
+        },
+        {
+            CollectibleType.SACRIFICIAL_ALTAR,
+            function()
+                local ____anyFamiliarCollectibleUnlocked_result_47
+                if anyFamiliarCollectibleUnlocked(nil, false) then
+                    ____anyFamiliarCollectibleUnlocked_result_47 = nil
+                else
+                    ____anyFamiliarCollectibleUnlocked_result_47 = getRandomFamiliarCollectibleUnlock(nil)
+                end
+                return ____anyFamiliarCollectibleUnlocked_result_47
             end
         },
         {
             CollectibleType.MARBLES,
             function()
-                local ____anyTrinketTypesUnlocked_result_29
+                local ____anyTrinketTypesUnlocked_result_48
                 if anyTrinketTypesUnlocked(nil, false) then
-                    ____anyTrinketTypesUnlocked_result_29 = nil
+                    ____anyTrinketTypesUnlocked_result_48 = nil
                 else
-                    ____anyTrinketTypesUnlocked_result_29 = getRandomTrinketUnlock(nil)
+                    ____anyTrinketTypesUnlocked_result_48 = getRandomTrinketUnlock(nil)
                 end
-                return ____anyTrinketTypesUnlocked_result_29
+                return ____anyTrinketTypesUnlocked_result_48
+            end
+        },
+        {
+            CollectibleType.FORTUNE_COOKIE,
+            function()
+                local ____isHeartSubTypeUnlocked_result_49
+                if isHeartSubTypeUnlocked(nil, HeartSubType.SOUL, false) then
+                    ____isHeartSubTypeUnlocked_result_49 = nil
+                else
+                    ____isHeartSubTypeUnlocked_result_49 = getUnlock(nil, UnlockType.HEART, HeartSubType.SOUL)
+                end
+                return ____isHeartSubTypeUnlocked_result_49
             end
         },
         {
@@ -68456,51 +68746,99 @@ SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = __TS__New(
         },
         {CollectibleType.RED_KEY, swapAnyRoomUnlock},
         {
+            CollectibleType.VOODOO_HEAD,
+            function()
+                local ____isRoomTypeUnlocked_result_50
+                if isRoomTypeUnlocked(nil, RoomType.CURSE, false) then
+                    ____isRoomTypeUnlocked_result_50 = nil
+                else
+                    ____isRoomTypeUnlocked_result_50 = getUnlock(nil, UnlockType.ROOM, RoomType.CURSE)
+                end
+                return ____isRoomTypeUnlocked_result_50
+            end
+        },
+        {
             CollectibleType.BATTERY_PACK,
             function()
-                local ____isBatterySubTypeUnlocked_result_30
+                local ____isBatterySubTypeUnlocked_result_51
                 if isBatterySubTypeUnlocked(nil, BatterySubType.NORMAL, false) then
-                    ____isBatterySubTypeUnlocked_result_30 = nil
+                    ____isBatterySubTypeUnlocked_result_51 = nil
                 else
-                    ____isBatterySubTypeUnlocked_result_30 = getUnlock(nil, UnlockType.BATTERY, BatterySubType.NORMAL)
+                    ____isBatterySubTypeUnlocked_result_51 = getUnlock(nil, UnlockType.BATTERY, BatterySubType.NORMAL)
                 end
-                return ____isBatterySubTypeUnlocked_result_30
+                return ____isBatterySubTypeUnlocked_result_51
             end
         },
         {
             CollectibleType.BOOSTER_PACK,
             function()
-                local ____anyCardsUnlocked_result_31
+                local ____anyCardsUnlocked_result_52
                 if anyCardsUnlocked(nil, false) then
-                    ____anyCardsUnlocked_result_31 = nil
+                    ____anyCardsUnlocked_result_52 = nil
                 else
-                    ____anyCardsUnlocked_result_31 = getRandomCardUnlock(nil)
+                    ____anyCardsUnlocked_result_52 = getRandomCardUnlock(nil)
                 end
-                return ____anyCardsUnlocked_result_31
+                return ____anyCardsUnlocked_result_52
             end
         },
         {
             CollectibleType.FOUR_FIVE_VOLT,
             function()
-                local ____isActiveCollectibleUnlocked_result_32
-                if isActiveCollectibleUnlocked(nil, false) then
-                    ____isActiveCollectibleUnlocked_result_32 = nil
+                local ____anyActiveCollectibleUnlocked_result_53
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_53 = nil
                 else
-                    ____isActiveCollectibleUnlocked_result_32 = getRandomActiveCollectibleUnlock(nil)
+                    ____anyActiveCollectibleUnlocked_result_53 = getRandomActiveCollectibleUnlock(nil)
                 end
-                return ____isActiveCollectibleUnlocked_result_32
+                return ____anyActiveCollectibleUnlocked_result_53
             end
         },
         {
             CollectibleType.FALSE_PHD,
             function()
-                local ____anyBadPillEffectsUnlocked_result_33
+                local ____anyBadPillEffectsUnlocked_result_54
                 if anyBadPillEffectsUnlocked(nil, false) then
-                    ____anyBadPillEffectsUnlocked_result_33 = nil
+                    ____anyBadPillEffectsUnlocked_result_54 = nil
                 else
-                    ____anyBadPillEffectsUnlocked_result_33 = getRandomPillEffectUnlock(nil)
+                    ____anyBadPillEffectsUnlocked_result_54 = getRandomPillEffectUnlock(nil)
                 end
-                return ____anyBadPillEffectsUnlocked_result_33
+                return ____anyBadPillEffectsUnlocked_result_54
+            end
+        },
+        {
+            CollectibleType.REDEMPTION,
+            function()
+                local ____temp_55
+                if isRoomTypeUnlocked(nil, RoomType.SACRIFICE, false) or isSlotVariantUnlocked(nil, SlotVariant.CONFESSIONAL, false) then
+                    ____temp_55 = nil
+                else
+                    ____temp_55 = getUnlock(nil, UnlockType.ROOM, RoomType.SACRIFICE)
+                end
+                return ____temp_55
+            end
+        },
+        {
+            CollectibleType.SOUL_LOCKET,
+            function()
+                local ____anySoulHeartUnlocked_result_56
+                if anySoulHeartUnlocked(nil, false) then
+                    ____anySoulHeartUnlocked_result_56 = nil
+                else
+                    ____anySoulHeartUnlocked_result_56 = getUnlock(nil, UnlockType.HEART, HeartSubType.HALF_SOUL)
+                end
+                return ____anySoulHeartUnlocked_result_56
+            end
+        },
+        {
+            CollectibleType.ECHO_CHAMBER,
+            function()
+                local ____temp_57
+                if anyCardTypesUnlocked(nil, false) or anyPillEffectsUnlocked(nil, false) then
+                    ____temp_57 = nil
+                else
+                    ____temp_57 = getRandomPillEffectUnlock(nil)
+                end
+                return ____temp_57
             end
         }
     }
@@ -68511,193 +68849,229 @@ SWAPPED_UNLOCK_TRINKET_FUNCTIONS = __TS__New(
         {
             TrinketType.AAA_BATTERY,
             function()
-                local ____isActiveCollectibleUnlocked_result_35
-                if isActiveCollectibleUnlocked(nil, false) then
-                    ____isActiveCollectibleUnlocked_result_35 = nil
+                local ____anyActiveCollectibleUnlocked_result_59
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_59 = nil
                 else
-                    ____isActiveCollectibleUnlocked_result_35 = getRandomActiveCollectibleUnlock(nil)
+                    ____anyActiveCollectibleUnlocked_result_59 = getRandomActiveCollectibleUnlock(nil)
                 end
-                return ____isActiveCollectibleUnlocked_result_35
+                return ____anyActiveCollectibleUnlocked_result_59
             end
         },
         {
             TrinketType.BROKEN_REMOTE,
             function()
-                local ____isActiveCollectibleUnlocked_result_36
-                if isActiveCollectibleUnlocked(nil, false) then
-                    ____isActiveCollectibleUnlocked_result_36 = nil
+                local ____anyActiveCollectibleUnlocked_result_60
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_60 = nil
                 else
-                    ____isActiveCollectibleUnlocked_result_36 = getRandomActiveCollectibleUnlock(nil)
+                    ____anyActiveCollectibleUnlocked_result_60 = getRandomActiveCollectibleUnlock(nil)
                 end
-                return ____isActiveCollectibleUnlocked_result_36
+                return ____anyActiveCollectibleUnlocked_result_60
             end
         },
         {
             TrinketType.BLACK_LIPSTICK,
             function()
-                local ____isHeartSubTypeUnlocked_result_37
+                local ____isHeartSubTypeUnlocked_result_61
                 if isHeartSubTypeUnlocked(nil, HeartSubType.BLACK, false) then
-                    ____isHeartSubTypeUnlocked_result_37 = nil
+                    ____isHeartSubTypeUnlocked_result_61 = nil
                 else
-                    ____isHeartSubTypeUnlocked_result_37 = getUnlock(nil, UnlockType.HEART, HeartSubType.BLACK)
+                    ____isHeartSubTypeUnlocked_result_61 = getUnlock(nil, UnlockType.HEART, HeartSubType.BLACK)
                 end
-                return ____isHeartSubTypeUnlocked_result_37
+                return ____isHeartSubTypeUnlocked_result_61
             end
         },
         {
             TrinketType.BIBLE_TRACT,
             function()
-                local ____isHeartSubTypeUnlocked_result_38
+                local ____isHeartSubTypeUnlocked_result_62
                 if isHeartSubTypeUnlocked(nil, HeartSubType.ETERNAL, false) then
-                    ____isHeartSubTypeUnlocked_result_38 = nil
+                    ____isHeartSubTypeUnlocked_result_62 = nil
                 else
-                    ____isHeartSubTypeUnlocked_result_38 = getUnlock(nil, UnlockType.HEART, HeartSubType.ETERNAL)
+                    ____isHeartSubTypeUnlocked_result_62 = getUnlock(nil, UnlockType.HEART, HeartSubType.ETERNAL)
                 end
-                return ____isHeartSubTypeUnlocked_result_38
+                return ____isHeartSubTypeUnlocked_result_62
+            end
+        },
+        {
+            TrinketType.PAPER_CLIP,
+            function()
+                local ____isChestPickupVariantUnlocked_result_63
+                if isChestPickupVariantUnlocked(nil, PickupVariant.LOCKED_CHEST, false) then
+                    ____isChestPickupVariantUnlocked_result_63 = nil
+                else
+                    ____isChestPickupVariantUnlocked_result_63 = getUnlock(nil, UnlockType.CHEST, PickupVariant.LOCKED_CHEST)
+                end
+                return ____isChestPickupVariantUnlocked_result_63
             end
         },
         {
             TrinketType.MONKEY_PAW,
             function()
-                local ____isHeartSubTypeUnlocked_result_39
+                local ____isHeartSubTypeUnlocked_result_64
                 if isHeartSubTypeUnlocked(nil, HeartSubType.BLACK, false) then
-                    ____isHeartSubTypeUnlocked_result_39 = nil
+                    ____isHeartSubTypeUnlocked_result_64 = nil
                 else
-                    ____isHeartSubTypeUnlocked_result_39 = getUnlock(nil, UnlockType.HEART, HeartSubType.BLACK)
+                    ____isHeartSubTypeUnlocked_result_64 = getUnlock(nil, UnlockType.HEART, HeartSubType.BLACK)
                 end
-                return ____isHeartSubTypeUnlocked_result_39
+                return ____isHeartSubTypeUnlocked_result_64
             end
         },
         {
             TrinketType.DAEMONS_TAIL,
             function()
-                local ____isHeartSubTypeUnlocked_result_40
+                local ____isHeartSubTypeUnlocked_result_65
                 if isHeartSubTypeUnlocked(nil, HeartSubType.BLACK, false) then
-                    ____isHeartSubTypeUnlocked_result_40 = nil
+                    ____isHeartSubTypeUnlocked_result_65 = nil
                 else
-                    ____isHeartSubTypeUnlocked_result_40 = getUnlock(nil, UnlockType.HEART, HeartSubType.BLACK)
+                    ____isHeartSubTypeUnlocked_result_65 = getUnlock(nil, UnlockType.HEART, HeartSubType.BLACK)
                 end
-                return ____isHeartSubTypeUnlocked_result_40
+                return ____isHeartSubTypeUnlocked_result_65
             end
         },
         {
             TrinketType.MOMS_PEARL,
             function()
-                local ____isHeartSubTypeUnlocked_result_41
+                local ____isHeartSubTypeUnlocked_result_66
                 if isHeartSubTypeUnlocked(nil, HeartSubType.SOUL, false) then
-                    ____isHeartSubTypeUnlocked_result_41 = nil
+                    ____isHeartSubTypeUnlocked_result_66 = nil
                 else
-                    ____isHeartSubTypeUnlocked_result_41 = getUnlock(nil, UnlockType.HEART, HeartSubType.SOUL)
+                    ____isHeartSubTypeUnlocked_result_66 = getUnlock(nil, UnlockType.HEART, HeartSubType.SOUL)
                 end
-                return ____isHeartSubTypeUnlocked_result_41
+                return ____isHeartSubTypeUnlocked_result_66
             end
         },
         {
             TrinketType.SAFETY_CAP,
             function()
-                local ____anyPillEffectsUnlocked_result_42
+                local ____anyPillEffectsUnlocked_result_67
                 if anyPillEffectsUnlocked(nil, false) then
-                    ____anyPillEffectsUnlocked_result_42 = nil
+                    ____anyPillEffectsUnlocked_result_67 = nil
                 else
-                    ____anyPillEffectsUnlocked_result_42 = getRandomPillEffectUnlock(nil)
+                    ____anyPillEffectsUnlocked_result_67 = getRandomPillEffectUnlock(nil)
                 end
-                return ____anyPillEffectsUnlocked_result_42
+                return ____anyPillEffectsUnlocked_result_67
             end
         },
         {
             TrinketType.ACE_OF_SPADES,
             function()
-                local ____anyCardsUnlocked_result_43
+                local ____anyCardsUnlocked_result_68
                 if anyCardsUnlocked(nil, false) then
-                    ____anyCardsUnlocked_result_43 = nil
+                    ____anyCardsUnlocked_result_68 = nil
                 else
-                    ____anyCardsUnlocked_result_43 = getRandomCardUnlock(nil)
+                    ____anyCardsUnlocked_result_68 = getRandomCardUnlock(nil)
                 end
-                return ____anyCardsUnlocked_result_43
+                return ____anyCardsUnlocked_result_68
             end
         },
         {
             TrinketType.LEFT_HAND,
             function()
-                local ____isChestPickupVariantUnlocked_result_44
+                local ____isChestPickupVariantUnlocked_result_69
                 if isChestPickupVariantUnlocked(nil, PickupVariant.RED_CHEST, false) then
-                    ____isChestPickupVariantUnlocked_result_44 = nil
+                    ____isChestPickupVariantUnlocked_result_69 = nil
                 else
-                    ____isChestPickupVariantUnlocked_result_44 = getUnlock(nil, UnlockType.CHEST, PickupVariant.RED_CHEST)
+                    ____isChestPickupVariantUnlocked_result_69 = getUnlock(nil, UnlockType.CHEST, PickupVariant.RED_CHEST)
                 end
-                return ____isChestPickupVariantUnlocked_result_44
+                return ____isChestPickupVariantUnlocked_result_69
+            end
+        },
+        {
+            TrinketType.ENDLESS_NAMELESS,
+            function()
+                local ____temp_70
+                if anyCardTypesUnlocked(nil, false) or anyPillEffectsUnlocked(nil, false) then
+                    ____temp_70 = nil
+                else
+                    ____temp_70 = getRandomPillEffectUnlock(nil)
+                end
+                return ____temp_70
+            end
+        },
+        {
+            TrinketType.BLACK_FEATHER,
+            function()
+                local ____isCollectibleTypeUnlocked_result_71
+                if isCollectibleTypeUnlocked(nil, CollectibleType.MISSING_PAGE_2, false) then
+                    ____isCollectibleTypeUnlocked_result_71 = nil
+                else
+                    ____isCollectibleTypeUnlocked_result_71 = getUnlock(nil, UnlockType.COLLECTIBLE, CollectibleType.MISSING_PAGE_2)
+                end
+                return ____isCollectibleTypeUnlocked_result_71
             end
         },
         {
             TrinketType.MOMS_LOCKET,
             function()
-                local ____isHeartSubTypeUnlocked_result_45
+                local ____isHeartSubTypeUnlocked_result_72
                 if isHeartSubTypeUnlocked(nil, HeartSubType.FULL, false) then
-                    ____isHeartSubTypeUnlocked_result_45 = nil
+                    ____isHeartSubTypeUnlocked_result_72 = nil
                 else
-                    ____isHeartSubTypeUnlocked_result_45 = getUnlock(nil, UnlockType.HEART, HeartSubType.FULL)
+                    ____isHeartSubTypeUnlocked_result_72 = getUnlock(nil, UnlockType.HEART, HeartSubType.FULL)
                 end
-                return ____isHeartSubTypeUnlocked_result_45
+                return ____isHeartSubTypeUnlocked_result_72
             end
         },
         {
             TrinketType.NO,
             function()
-                local ____isActiveCollectibleUnlocked_result_46
-                if isActiveCollectibleUnlocked(nil, false) then
-                    ____isActiveCollectibleUnlocked_result_46 = nil
+                local ____anyActiveCollectibleUnlocked_result_73
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_73 = nil
                 else
-                    ____isActiveCollectibleUnlocked_result_46 = getRandomActiveCollectibleUnlock(nil)
+                    ____anyActiveCollectibleUnlocked_result_73 = getRandomActiveCollectibleUnlock(nil)
                 end
-                return ____isActiveCollectibleUnlocked_result_46
+                return ____anyActiveCollectibleUnlocked_result_73
             end
         },
         {
             TrinketType.CHILD_LEASH,
             function()
-                local ____isFamiliarCollectibleUnlocked_result_47
-                if isFamiliarCollectibleUnlocked(nil, false) then
-                    ____isFamiliarCollectibleUnlocked_result_47 = nil
+                local ____anyFamiliarCollectibleUnlocked_result_74
+                if anyFamiliarCollectibleUnlocked(nil, false) then
+                    ____anyFamiliarCollectibleUnlocked_result_74 = nil
                 else
-                    ____isFamiliarCollectibleUnlocked_result_47 = getRandomFamiliarCollectibleUnlock(nil)
+                    ____anyFamiliarCollectibleUnlocked_result_74 = getRandomFamiliarCollectibleUnlock(nil)
                 end
-                return ____isFamiliarCollectibleUnlocked_result_47
+                return ____anyFamiliarCollectibleUnlocked_result_74
             end
         },
         {
             TrinketType.MECONIUM,
             function()
-                local ____isOtherUnlockKindUnlocked_result_48
+                local ____isOtherUnlockKindUnlocked_result_75
                 if isOtherUnlockKindUnlocked(nil, OtherUnlockKind.BLACK_POOP, false) then
-                    ____isOtherUnlockKindUnlocked_result_48 = nil
+                    ____isOtherUnlockKindUnlocked_result_75 = nil
                 else
-                    ____isOtherUnlockKindUnlocked_result_48 = getUnlock(nil, UnlockType.OTHER, OtherUnlockKind.BLACK_POOP)
+                    ____isOtherUnlockKindUnlocked_result_75 = getUnlock(nil, UnlockType.OTHER, OtherUnlockKind.BLACK_POOP)
                 end
-                return ____isOtherUnlockKindUnlocked_result_48
+                return ____isOtherUnlockKindUnlocked_result_75
             end
         },
         {
             TrinketType.VIBRANT_BULB,
             function()
-                local ____isActiveCollectibleUnlocked_result_49
-                if isActiveCollectibleUnlocked(nil, false) then
-                    ____isActiveCollectibleUnlocked_result_49 = nil
+                local ____anyActiveCollectibleUnlocked_result_76
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_76 = nil
                 else
-                    ____isActiveCollectibleUnlocked_result_49 = getRandomActiveCollectibleUnlock(nil)
+                    ____anyActiveCollectibleUnlocked_result_76 = getRandomActiveCollectibleUnlock(nil)
                 end
-                return ____isActiveCollectibleUnlocked_result_49
+                return ____anyActiveCollectibleUnlocked_result_76
             end
         },
         {
             TrinketType.DIM_BULB,
             function()
-                local ____isActiveCollectibleUnlocked_result_50
-                if isActiveCollectibleUnlocked(nil, false) then
-                    ____isActiveCollectibleUnlocked_result_50 = nil
+                local ____anyActiveCollectibleUnlocked_result_77
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_77 = nil
                 else
-                    ____isActiveCollectibleUnlocked_result_50 = getRandomActiveCollectibleUnlock(nil)
+                    ____anyActiveCollectibleUnlocked_result_77 = getRandomActiveCollectibleUnlock(nil)
                 end
-                return ____isActiveCollectibleUnlocked_result_50
+                return ____anyActiveCollectibleUnlocked_result_77
             end
         },
         {
@@ -68718,217 +69092,253 @@ SWAPPED_UNLOCK_TRINKET_FUNCTIONS = __TS__New(
         {
             TrinketType.CROW_HEART,
             function()
-                local ____isHeartSubTypeUnlocked_result_51
+                local ____isHeartSubTypeUnlocked_result_78
                 if isHeartSubTypeUnlocked(nil, HeartSubType.HALF_SOUL, false) then
-                    ____isHeartSubTypeUnlocked_result_51 = nil
+                    ____isHeartSubTypeUnlocked_result_78 = nil
                 else
-                    ____isHeartSubTypeUnlocked_result_51 = getUnlock(nil, UnlockType.HEART, HeartSubType.HALF_SOUL)
+                    ____isHeartSubTypeUnlocked_result_78 = getUnlock(nil, UnlockType.HEART, HeartSubType.HALF_SOUL)
                 end
-                return ____isHeartSubTypeUnlocked_result_51
+                return ____isHeartSubTypeUnlocked_result_78
             end
         },
         {
             TrinketType.DUCT_TAPE,
             function()
-                local ____isFamiliarCollectibleUnlocked_result_52
-                if isFamiliarCollectibleUnlocked(nil, false) then
-                    ____isFamiliarCollectibleUnlocked_result_52 = nil
+                local ____anyFamiliarCollectibleUnlocked_result_79
+                if anyFamiliarCollectibleUnlocked(nil, false) then
+                    ____anyFamiliarCollectibleUnlocked_result_79 = nil
                 else
-                    ____isFamiliarCollectibleUnlocked_result_52 = getRandomFamiliarCollectibleUnlock(nil)
+                    ____anyFamiliarCollectibleUnlocked_result_79 = getRandomFamiliarCollectibleUnlock(nil)
                 end
-                return ____isFamiliarCollectibleUnlocked_result_52
+                return ____anyFamiliarCollectibleUnlocked_result_79
+            end
+        },
+        {
+            TrinketType.PAY_TO_WIN,
+            function()
+                local ____isSlotVariantUnlocked_result_80
+                if isSlotVariantUnlocked(nil, SlotVariant.SHOP_RESTOCK_MACHINE, false) then
+                    ____isSlotVariantUnlocked_result_80 = nil
+                else
+                    ____isSlotVariantUnlocked_result_80 = getUnlock(nil, UnlockType.SLOT, SlotVariant.SHOP_RESTOCK_MACHINE)
+                end
+                return ____isSlotVariantUnlocked_result_80
             end
         },
         {
             TrinketType.HAIRPIN,
             function()
-                local ____isActiveCollectibleUnlocked_result_53
-                if isActiveCollectibleUnlocked(nil, false) then
-                    ____isActiveCollectibleUnlocked_result_53 = nil
+                local ____anyActiveCollectibleUnlocked_result_81
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_81 = nil
                 else
-                    ____isActiveCollectibleUnlocked_result_53 = getRandomActiveCollectibleUnlock(nil)
+                    ____anyActiveCollectibleUnlocked_result_81 = getRandomActiveCollectibleUnlock(nil)
                 end
-                return ____isActiveCollectibleUnlocked_result_53
+                return ____anyActiveCollectibleUnlocked_result_81
             end
         },
         {
             TrinketType.BUTTER,
             function()
-                local ____isActiveCollectibleUnlocked_result_54
-                if isActiveCollectibleUnlocked(nil, false) then
-                    ____isActiveCollectibleUnlocked_result_54 = nil
+                local ____anyActiveCollectibleUnlocked_result_82
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_82 = nil
                 else
-                    ____isActiveCollectibleUnlocked_result_54 = getRandomActiveCollectibleUnlock(nil)
+                    ____anyActiveCollectibleUnlocked_result_82 = getRandomActiveCollectibleUnlock(nil)
                 end
-                return ____isActiveCollectibleUnlocked_result_54
+                return ____anyActiveCollectibleUnlocked_result_82
             end
         },
         {
             TrinketType.EXTENSION_CORD,
             function()
-                local ____isFamiliarCollectibleUnlocked_result_55
-                if isFamiliarCollectibleUnlocked(nil, false) then
-                    ____isFamiliarCollectibleUnlocked_result_55 = nil
+                local ____anyFamiliarCollectibleUnlocked_result_83
+                if anyFamiliarCollectibleUnlocked(nil, false) then
+                    ____anyFamiliarCollectibleUnlocked_result_83 = nil
                 else
-                    ____isFamiliarCollectibleUnlocked_result_55 = getRandomFamiliarCollectibleUnlock(nil)
+                    ____anyFamiliarCollectibleUnlocked_result_83 = getRandomFamiliarCollectibleUnlock(nil)
                 end
-                return ____isFamiliarCollectibleUnlocked_result_55
+                return ____anyFamiliarCollectibleUnlocked_result_83
             end
         },
         {
             TrinketType.BABY_BENDER,
             function()
-                local ____isFamiliarCollectibleUnlocked_result_56
-                if isFamiliarCollectibleUnlocked(nil, false) then
-                    ____isFamiliarCollectibleUnlocked_result_56 = nil
+                local ____anyFamiliarCollectibleUnlocked_result_84
+                if anyFamiliarCollectibleUnlocked(nil, false) then
+                    ____anyFamiliarCollectibleUnlocked_result_84 = nil
                 else
-                    ____isFamiliarCollectibleUnlocked_result_56 = getRandomFamiliarCollectibleUnlock(nil)
+                    ____anyFamiliarCollectibleUnlocked_result_84 = getRandomFamiliarCollectibleUnlock(nil)
                 end
-                return ____isFamiliarCollectibleUnlocked_result_56
+                return ____anyFamiliarCollectibleUnlocked_result_84
             end
         },
         {
             TrinketType.BLESSED_PENNY,
             function()
-                local ____isHeartSubTypeUnlocked_result_57
+                local ____isHeartSubTypeUnlocked_result_85
                 if isHeartSubTypeUnlocked(nil, HeartSubType.HALF_SOUL, false) then
-                    ____isHeartSubTypeUnlocked_result_57 = nil
+                    ____isHeartSubTypeUnlocked_result_85 = nil
                 else
-                    ____isHeartSubTypeUnlocked_result_57 = getUnlock(nil, UnlockType.HEART, HeartSubType.HALF_SOUL)
+                    ____isHeartSubTypeUnlocked_result_85 = getUnlock(nil, UnlockType.HEART, HeartSubType.HALF_SOUL)
                 end
-                return ____isHeartSubTypeUnlocked_result_57
+                return ____isHeartSubTypeUnlocked_result_85
             end
         },
         {
             TrinketType.FORGOTTEN_LULLABY,
             function()
-                local ____isFamiliarCollectibleUnlocked_result_58
-                if isFamiliarCollectibleUnlocked(nil, false) then
-                    ____isFamiliarCollectibleUnlocked_result_58 = nil
+                local ____anyFamiliarCollectibleUnlocked_result_86
+                if anyFamiliarCollectibleUnlocked(nil, false) then
+                    ____anyFamiliarCollectibleUnlocked_result_86 = nil
                 else
-                    ____isFamiliarCollectibleUnlocked_result_58 = getRandomFamiliarCollectibleUnlock(nil)
+                    ____anyFamiliarCollectibleUnlocked_result_86 = getRandomFamiliarCollectibleUnlock(nil)
                 end
-                return ____isFamiliarCollectibleUnlocked_result_58
+                return ____anyFamiliarCollectibleUnlocked_result_86
             end
         },
         {
             TrinketType.OLD_CAPACITOR,
             function()
-                local ____isActiveCollectibleUnlocked_result_59
-                if isActiveCollectibleUnlocked(nil, false) then
-                    ____isActiveCollectibleUnlocked_result_59 = nil
+                local ____anyActiveCollectibleUnlocked_result_87
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_87 = nil
                 else
-                    ____isActiveCollectibleUnlocked_result_59 = getRandomActiveCollectibleUnlock(nil)
+                    ____anyActiveCollectibleUnlocked_result_87 = getRandomActiveCollectibleUnlock(nil)
                 end
-                return ____isActiveCollectibleUnlocked_result_59
+                return ____anyActiveCollectibleUnlocked_result_87
             end
         },
         {
             TrinketType.CHARGED_PENNY,
             function()
-                local ____isActiveCollectibleUnlocked_result_60
-                if isActiveCollectibleUnlocked(nil, false) then
-                    ____isActiveCollectibleUnlocked_result_60 = nil
+                local ____anyActiveCollectibleUnlocked_result_88
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_88 = nil
                 else
-                    ____isActiveCollectibleUnlocked_result_60 = getRandomActiveCollectibleUnlock(nil)
+                    ____anyActiveCollectibleUnlocked_result_88 = getRandomActiveCollectibleUnlock(nil)
                 end
-                return ____isActiveCollectibleUnlocked_result_60
+                return ____anyActiveCollectibleUnlocked_result_88
             end
         },
         {
             TrinketType.FRIENDSHIP_NECKLACE,
             function()
-                local ____isFamiliarCollectibleUnlocked_result_61
-                if isFamiliarCollectibleUnlocked(nil, false) then
-                    ____isFamiliarCollectibleUnlocked_result_61 = nil
+                local ____anyFamiliarCollectibleUnlocked_result_89
+                if anyFamiliarCollectibleUnlocked(nil, false) then
+                    ____anyFamiliarCollectibleUnlocked_result_89 = nil
                 else
-                    ____isFamiliarCollectibleUnlocked_result_61 = getRandomFamiliarCollectibleUnlock(nil)
+                    ____anyFamiliarCollectibleUnlocked_result_89 = getRandomFamiliarCollectibleUnlock(nil)
                 end
-                return ____isFamiliarCollectibleUnlocked_result_61
+                return ____anyFamiliarCollectibleUnlocked_result_89
             end
         },
         {
             TrinketType.PANIC_BUTTON,
             function()
-                local ____isActiveCollectibleUnlocked_result_62
-                if isActiveCollectibleUnlocked(nil, false) then
-                    ____isActiveCollectibleUnlocked_result_62 = nil
+                local ____anyActiveCollectibleUnlocked_result_90
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_90 = nil
                 else
-                    ____isActiveCollectibleUnlocked_result_62 = getRandomActiveCollectibleUnlock(nil)
+                    ____anyActiveCollectibleUnlocked_result_90 = getRandomActiveCollectibleUnlock(nil)
                 end
-                return ____isActiveCollectibleUnlocked_result_62
+                return ____anyActiveCollectibleUnlocked_result_90
+            end
+        },
+        {
+            TrinketType.TELESCOPE_LENS,
+            function()
+                local ____isRoomTypeUnlocked_result_91
+                if isRoomTypeUnlocked(nil, RoomType.PLANETARIUM, false) then
+                    ____isRoomTypeUnlocked_result_91 = nil
+                else
+                    ____isRoomTypeUnlocked_result_91 = getUnlock(nil, UnlockType.ROOM, RoomType.PLANETARIUM)
+                end
+                return ____isRoomTypeUnlocked_result_91
             end
         },
         {
             TrinketType.GILDED_KEY,
             function()
-                local ____isChestPickupVariantUnlocked_result_63
+                local ____isChestPickupVariantUnlocked_result_92
                 if isChestPickupVariantUnlocked(nil, PickupVariant.LOCKED_CHEST, false) then
-                    ____isChestPickupVariantUnlocked_result_63 = nil
+                    ____isChestPickupVariantUnlocked_result_92 = nil
                 else
-                    ____isChestPickupVariantUnlocked_result_63 = getUnlock(nil, UnlockType.CHEST, PickupVariant.LOCKED_CHEST)
+                    ____isChestPickupVariantUnlocked_result_92 = getUnlock(nil, UnlockType.CHEST, PickupVariant.LOCKED_CHEST)
                 end
-                return ____isChestPickupVariantUnlocked_result_63
+                return ____isChestPickupVariantUnlocked_result_92
+            end
+        },
+        {
+            TrinketType.LUCKY_SACK,
+            function()
+                local ____isSackSubTypeUnlocked_result_93
+                if isSackSubTypeUnlocked(nil, SackSubType.NORMAL, false) then
+                    ____isSackSubTypeUnlocked_result_93 = nil
+                else
+                    ____isSackSubTypeUnlocked_result_93 = getUnlock(nil, UnlockType.SACK, SackSubType.NORMAL)
+                end
+                return ____isSackSubTypeUnlocked_result_93
             end
         },
         {
             TrinketType.HOLLOW_HEART,
             function()
-                local ____isHeartSubTypeUnlocked_result_64
+                local ____isHeartSubTypeUnlocked_result_94
                 if isHeartSubTypeUnlocked(nil, HeartSubType.BONE, false) then
-                    ____isHeartSubTypeUnlocked_result_64 = nil
+                    ____isHeartSubTypeUnlocked_result_94 = nil
                 else
-                    ____isHeartSubTypeUnlocked_result_64 = getUnlock(nil, UnlockType.HEART, HeartSubType.BONE)
+                    ____isHeartSubTypeUnlocked_result_94 = getUnlock(nil, UnlockType.HEART, HeartSubType.BONE)
                 end
-                return ____isHeartSubTypeUnlocked_result_64
+                return ____isHeartSubTypeUnlocked_result_94
             end
         },
         {
             TrinketType.STRANGE_KEY,
             function()
-                local ____isPathUnlocked_result_65
+                local ____isPathUnlocked_result_95
                 if isPathUnlocked(nil, UnlockablePath.BLUE_WOMB, false) then
-                    ____isPathUnlocked_result_65 = nil
+                    ____isPathUnlocked_result_95 = nil
                 else
-                    ____isPathUnlocked_result_65 = getUnlock(nil, UnlockType.PATH, UnlockablePath.BLUE_WOMB)
+                    ____isPathUnlocked_result_95 = getUnlock(nil, UnlockType.PATH, UnlockablePath.BLUE_WOMB)
                 end
-                return ____isPathUnlocked_result_65
+                return ____isPathUnlocked_result_95
             end
         },
         {
             TrinketType.RC_REMOTE,
             function()
-                local ____isFamiliarCollectibleUnlocked_result_66
-                if isFamiliarCollectibleUnlocked(nil, false) then
-                    ____isFamiliarCollectibleUnlocked_result_66 = nil
+                local ____anyFamiliarCollectibleUnlocked_result_96
+                if anyFamiliarCollectibleUnlocked(nil, false) then
+                    ____anyFamiliarCollectibleUnlocked_result_96 = nil
                 else
-                    ____isFamiliarCollectibleUnlocked_result_66 = getRandomFamiliarCollectibleUnlock(nil)
+                    ____anyFamiliarCollectibleUnlocked_result_96 = getRandomFamiliarCollectibleUnlock(nil)
                 end
-                return ____isFamiliarCollectibleUnlocked_result_66
+                return ____anyFamiliarCollectibleUnlocked_result_96
             end
         },
         {
             TrinketType.EXPANSION_PACK,
             function()
-                local ____isActiveCollectibleUnlocked_result_67
-                if isActiveCollectibleUnlocked(nil, false) then
-                    ____isActiveCollectibleUnlocked_result_67 = nil
+                local ____anyActiveCollectibleUnlocked_result_97
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_97 = nil
                 else
-                    ____isActiveCollectibleUnlocked_result_67 = getRandomActiveCollectibleUnlock(nil)
+                    ____anyActiveCollectibleUnlocked_result_97 = getRandomActiveCollectibleUnlock(nil)
                 end
-                return ____isActiveCollectibleUnlocked_result_67
+                return ____anyActiveCollectibleUnlocked_result_97
             end
         },
         {
             TrinketType.ADOPTION_PAPERS,
             function()
-                local ____isFamiliarCollectibleUnlocked_result_68
-                if isFamiliarCollectibleUnlocked(nil, false) then
-                    ____isFamiliarCollectibleUnlocked_result_68 = nil
+                local ____anyFamiliarCollectibleUnlocked_result_98
+                if anyFamiliarCollectibleUnlocked(nil, false) then
+                    ____anyFamiliarCollectibleUnlocked_result_98 = nil
                 else
-                    ____isFamiliarCollectibleUnlocked_result_68 = getRandomFamiliarCollectibleUnlock(nil)
+                    ____anyFamiliarCollectibleUnlocked_result_98 = getRandomFamiliarCollectibleUnlock(nil)
                 end
-                return ____isFamiliarCollectibleUnlocked_result_68
+                return ____anyFamiliarCollectibleUnlocked_result_98
             end
         }
     }
@@ -68939,126 +69349,203 @@ SWAPPED_UNLOCK_CARD_FUNCTIONS = __TS__New(
         {
             CardType.HIEROPHANT,
             function()
-                local ____isHeartSubTypeUnlocked_result_70
+                local ____isHeartSubTypeUnlocked_result_100
                 if isHeartSubTypeUnlocked(nil, HeartSubType.SOUL, false) then
-                    ____isHeartSubTypeUnlocked_result_70 = nil
+                    ____isHeartSubTypeUnlocked_result_100 = nil
                 else
-                    ____isHeartSubTypeUnlocked_result_70 = getUnlock(nil, UnlockType.HEART, HeartSubType.SOUL)
+                    ____isHeartSubTypeUnlocked_result_100 = getUnlock(nil, UnlockType.HEART, HeartSubType.SOUL)
                 end
-                return ____isHeartSubTypeUnlocked_result_70
+                return ____isHeartSubTypeUnlocked_result_100
             end
         },
         {
             CardType.WHEEL_OF_FORTUNE,
             function()
-                local ____isSlotVariantUnlocked_result_71
+                local ____isSlotVariantUnlocked_result_101
                 if isSlotVariantUnlocked(nil, SlotVariant.SLOT_MACHINE, false) then
-                    ____isSlotVariantUnlocked_result_71 = nil
+                    ____isSlotVariantUnlocked_result_101 = nil
                 else
-                    ____isSlotVariantUnlocked_result_71 = getUnlock(nil, UnlockType.SLOT, SlotVariant.SLOT_MACHINE)
+                    ____isSlotVariantUnlocked_result_101 = getUnlock(nil, UnlockType.SLOT, SlotVariant.SLOT_MACHINE)
                 end
-                return ____isSlotVariantUnlocked_result_71
+                return ____isSlotVariantUnlocked_result_101
             end
         },
         {
             CardType.TEMPERANCE,
             function()
-                local ____isSlotVariantUnlocked_result_72
+                local ____isSlotVariantUnlocked_result_102
                 if isSlotVariantUnlocked(nil, SlotVariant.BLOOD_DONATION_MACHINE, false) then
-                    ____isSlotVariantUnlocked_result_72 = nil
+                    ____isSlotVariantUnlocked_result_102 = nil
                 else
-                    ____isSlotVariantUnlocked_result_72 = getUnlock(nil, UnlockType.SLOT, SlotVariant.BLOOD_DONATION_MACHINE)
+                    ____isSlotVariantUnlocked_result_102 = getUnlock(nil, UnlockType.SLOT, SlotVariant.BLOOD_DONATION_MACHINE)
                 end
-                return ____isSlotVariantUnlocked_result_72
+                return ____isSlotVariantUnlocked_result_102
             end
         },
         {
             CardType.JUDGEMENT,
             function()
-                local ____isSlotVariantUnlocked_result_73
+                local ____isSlotVariantUnlocked_result_103
                 if isSlotVariantUnlocked(nil, SlotVariant.BEGGAR, false) then
-                    ____isSlotVariantUnlocked_result_73 = nil
+                    ____isSlotVariantUnlocked_result_103 = nil
                 else
-                    ____isSlotVariantUnlocked_result_73 = getUnlock(nil, UnlockType.SLOT, SlotVariant.BEGGAR)
+                    ____isSlotVariantUnlocked_result_103 = getUnlock(nil, UnlockType.SLOT, SlotVariant.BEGGAR)
                 end
-                return ____isSlotVariantUnlocked_result_73
+                return ____isSlotVariantUnlocked_result_103
+            end
+        },
+        {
+            CardType.QUESTION_MARK,
+            function()
+                local ____anyActiveCollectibleUnlocked_result_104
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_104 = nil
+                else
+                    ____anyActiveCollectibleUnlocked_result_104 = getRandomActiveCollectibleUnlock(nil)
+                end
+                return ____anyActiveCollectibleUnlocked_result_104
+            end
+        },
+        {
+            CardType.ANCIENT_RECALL,
+            function()
+                local ____temp_105
+                if getNumCardsUnlocked(nil, false) >= 10 then
+                    ____temp_105 = nil
+                else
+                    ____temp_105 = getRandomCardUnlock(nil)
+                end
+                return ____temp_105
             end
         },
         {
             CardType.REVERSE_HIEROPHANT,
             function()
-                local ____isHeartSubTypeUnlocked_result_74
+                local ____isHeartSubTypeUnlocked_result_106
                 if isHeartSubTypeUnlocked(nil, HeartSubType.BONE, false) then
-                    ____isHeartSubTypeUnlocked_result_74 = nil
+                    ____isHeartSubTypeUnlocked_result_106 = nil
                 else
-                    ____isHeartSubTypeUnlocked_result_74 = getUnlock(nil, UnlockType.HEART, HeartSubType.BONE)
+                    ____isHeartSubTypeUnlocked_result_106 = getUnlock(nil, UnlockType.HEART, HeartSubType.BONE)
                 end
-                return ____isHeartSubTypeUnlocked_result_74
+                return ____isHeartSubTypeUnlocked_result_106
             end
         },
         {
             CardType.REVERSE_JUSTICE,
             function()
-                local ____isChestPickupVariantUnlocked_result_75
+                local ____isChestPickupVariantUnlocked_result_107
                 if isChestPickupVariantUnlocked(nil, PickupVariant.LOCKED_CHEST, false) then
-                    ____isChestPickupVariantUnlocked_result_75 = nil
+                    ____isChestPickupVariantUnlocked_result_107 = nil
                 else
-                    ____isChestPickupVariantUnlocked_result_75 = getUnlock(nil, UnlockType.CHEST, PickupVariant.LOCKED_CHEST)
+                    ____isChestPickupVariantUnlocked_result_107 = getUnlock(nil, UnlockType.CHEST, PickupVariant.LOCKED_CHEST)
                 end
-                return ____isChestPickupVariantUnlocked_result_75
+                return ____isChestPickupVariantUnlocked_result_107
+            end
+        },
+        {
+            CardType.REVERSE_HERMIT,
+            function()
+                local ____isCoinSubTypeUnlocked_result_108
+                if isCoinSubTypeUnlocked(nil, CoinSubType.NICKEL, false) then
+                    ____isCoinSubTypeUnlocked_result_108 = nil
+                else
+                    ____isCoinSubTypeUnlocked_result_108 = getUnlock(nil, UnlockType.COIN, CoinSubType.NICKEL)
+                end
+                return ____isCoinSubTypeUnlocked_result_108
             end
         },
         {
             CardType.REVERSE_TEMPERANCE,
             function()
-                local ____anyPillEffectsUnlocked_result_76
+                local ____anyPillEffectsUnlocked_result_109
                 if anyPillEffectsUnlocked(nil, false) then
-                    ____anyPillEffectsUnlocked_result_76 = nil
+                    ____anyPillEffectsUnlocked_result_109 = nil
                 else
-                    ____anyPillEffectsUnlocked_result_76 = getRandomPillEffectUnlock(nil)
+                    ____anyPillEffectsUnlocked_result_109 = getRandomPillEffectUnlock(nil)
                 end
-                return ____anyPillEffectsUnlocked_result_76
+                return ____anyPillEffectsUnlocked_result_109
             end
         },
         {
             CardType.REVERSE_TOWER,
             function()
-                local ____isGridEntityTypeUnlocked_result_77
+                local ____isGridEntityTypeUnlocked_result_110
                 if isGridEntityTypeUnlocked(nil, GridEntityType.ROCK_TINTED, false) then
-                    ____isGridEntityTypeUnlocked_result_77 = nil
+                    ____isGridEntityTypeUnlocked_result_110 = nil
                 else
-                    ____isGridEntityTypeUnlocked_result_77 = getUnlock(nil, UnlockType.GRID_ENTITY, GridEntityType.ROCK_TINTED)
+                    ____isGridEntityTypeUnlocked_result_110 = getUnlock(nil, UnlockType.GRID_ENTITY, GridEntityType.ROCK_TINTED)
                 end
-                return ____isGridEntityTypeUnlocked_result_77
+                return ____isGridEntityTypeUnlocked_result_110
             end
         },
         {CardType.REVERSE_MOON, swapAnyRoomUnlock},
         {
             CardType.REVERSE_JUDGEMENT,
             function()
-                local ____isSlotVariantUnlocked_result_78
+                local ____isSlotVariantUnlocked_result_111
                 if isSlotVariantUnlocked(nil, SlotVariant.SHOP_RESTOCK_MACHINE, false) then
-                    ____isSlotVariantUnlocked_result_78 = nil
+                    ____isSlotVariantUnlocked_result_111 = nil
                 else
-                    ____isSlotVariantUnlocked_result_78 = getUnlock(nil, UnlockType.SLOT, SlotVariant.SHOP_RESTOCK_MACHINE)
+                    ____isSlotVariantUnlocked_result_111 = getUnlock(nil, UnlockType.SLOT, SlotVariant.SHOP_RESTOCK_MACHINE)
                 end
-                return ____isSlotVariantUnlocked_result_78
+                return ____isSlotVariantUnlocked_result_111
             end
         },
         {
             CardType.REVERSE_WORLD,
             function()
-                local ____isGridEntityTypeUnlocked_result_79
+                local ____isGridEntityTypeUnlocked_result_112
                 if isGridEntityTypeUnlocked(nil, GridEntityType.CRAWL_SPACE, false) then
-                    ____isGridEntityTypeUnlocked_result_79 = nil
+                    ____isGridEntityTypeUnlocked_result_112 = nil
                 else
-                    ____isGridEntityTypeUnlocked_result_79 = getUnlock(nil, UnlockType.GRID_ENTITY, GridEntityType.CRAWL_SPACE)
+                    ____isGridEntityTypeUnlocked_result_112 = getUnlock(nil, UnlockType.GRID_ENTITY, GridEntityType.CRAWL_SPACE)
                 end
-                return ____isGridEntityTypeUnlocked_result_79
+                return ____isGridEntityTypeUnlocked_result_112
             end
         },
         {CardType.CRACKED_KEY, swapAnyRoomUnlock},
         {CardType.SOUL_OF_CAIN, swapAnyRoomUnlock}
+    }
+)
+SWAPPED_PILL_EFFECT_FUNCTIONS = __TS__New(
+    ReadonlyMap,
+    {
+        {
+            PillEffect.FORTY_EIGHT_HOUR_ENERGY,
+            function()
+                local ____anyActiveCollectibleUnlocked_result_114
+                if anyActiveCollectibleUnlocked(nil, false) then
+                    ____anyActiveCollectibleUnlocked_result_114 = nil
+                else
+                    ____anyActiveCollectibleUnlocked_result_114 = getRandomActiveCollectibleUnlock(nil)
+                end
+                return ____anyActiveCollectibleUnlocked_result_114
+            end
+        },
+        {
+            PillEffect.GULP,
+            function()
+                local ____anyTrinketTypesUnlocked_result_115
+                if anyTrinketTypesUnlocked(nil, false) then
+                    ____anyTrinketTypesUnlocked_result_115 = nil
+                else
+                    ____anyTrinketTypesUnlocked_result_115 = getRandomTrinketUnlock(nil)
+                end
+                return ____anyTrinketTypesUnlocked_result_115
+            end
+        },
+        {
+            PillEffect.VURP,
+            function()
+                local ____anyPillEffectsUnlocked_result_116
+                if anyPillEffectsUnlocked(nil, false) then
+                    ____anyPillEffectsUnlocked_result_116 = nil
+                else
+                    ____anyPillEffectsUnlocked_result_116 = getRandomPillEffectUnlock(nil)
+                end
+                return ____anyPillEffectsUnlocked_result_116
+            end
+        }
     }
 )
 SWAPPED_UNLOCK_OTHER_FUNCTIONS = __TS__New(
@@ -69066,13 +69553,13 @@ SWAPPED_UNLOCK_OTHER_FUNCTIONS = __TS__New(
     {{
         OtherUnlockKind.BLUE_FIREPLACES,
         function()
-            local ____isHeartSubTypeUnlocked_result_82
+            local ____isHeartSubTypeUnlocked_result_119
             if isHeartSubTypeUnlocked(nil, HeartSubType.SOUL, false) then
-                ____isHeartSubTypeUnlocked_result_82 = nil
+                ____isHeartSubTypeUnlocked_result_119 = nil
             else
-                ____isHeartSubTypeUnlocked_result_82 = getUnlock(nil, UnlockType.HEART, HeartSubType.SOUL)
+                ____isHeartSubTypeUnlocked_result_119 = getUnlock(nil, UnlockType.HEART, HeartSubType.SOUL)
             end
-            return ____isHeartSubTypeUnlocked_result_82
+            return ____isHeartSubTypeUnlocked_result_119
         end
     }}
 )
@@ -71306,7 +71793,7 @@ function PickupRemoval.prototype.getCard(self, _rng, cardType, includePlayingCar
     if isCardTypeUnlocked(nil, cardType, true) then
         return nil
     end
-    local unlockedCardTypes = getUnlockedCardTypes(nil)
+    local unlockedCardTypes = getUnlockedCardTypes(nil, true)
     if #unlockedCardTypes == 0 then
         return nil
     end
@@ -71399,7 +71886,7 @@ __TS__DecorateLegacy(
 function PickupRemoval.prototype.postPickupInitCard(self, pickup)
     local card = pickup
     if not isCardTypeUnlocked(nil, card.SubType, true) or BANNED_CARD_TYPES:has(card.SubType) then
-        local cardTypes = getUnlockedCardTypes(nil)
+        local cardTypes = getUnlockedCardTypes(nil, true)
         if #cardTypes == 0 then
             card:Remove()
             spawnCoinWithSeed(nil, CoinSubType.PENNY, card.Position, card.InitSeed)

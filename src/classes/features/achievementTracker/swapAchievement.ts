@@ -15,6 +15,7 @@ import {
   ItemConfigTag,
   KeySubType,
   PickupVariant,
+  PillEffect,
   RoomType,
   SackSubType,
   SlotVariant,
@@ -22,6 +23,7 @@ import {
 } from "isaac-typescript-definitions";
 import {
   ReadonlyMap,
+  arrayRemove,
   assertDefined,
   assertNotNull,
   collectibleHasTag,
@@ -31,7 +33,10 @@ import {
   log,
   shuffleArray,
 } from "isaacscript-common";
-import { UNLOCKABLE_CARD_TYPES } from "../../../arrays/unlockableCardTypes";
+import {
+  UNLOCKABLE_CARD_TYPES,
+  UNLOCKABLE_RUNE_CARD_TYPES,
+} from "../../../arrays/unlockableCardTypes";
 import {
   UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES,
   UNLOCKABLE_FAMILIAR_COLLECTIBLE_TYPES,
@@ -77,15 +82,19 @@ import type {
   Unlock,
 } from "../../../types/Unlock";
 import { getUnlock, getUnlockText } from "../../../types/Unlock";
-import { getCardTypesOfQuality } from "./cardQuality";
+import { getCardTypesOfQuality, getRunesOfQuality } from "./cardQuality";
 import {
+  anyActiveCollectibleUnlocked,
   anyBadPillEffectsUnlocked,
   anyCardTypesUnlocked,
   anyCardsUnlocked,
+  anyFamiliarCollectibleUnlocked,
   anyGoodPillEffectsUnlocked,
   anyPillEffectsUnlocked,
   anyRunesUnlocked,
+  anySoulHeartUnlocked,
   anyTrinketTypesUnlocked,
+  getNumCardsUnlocked,
   getWorseLockedBatterySubType,
   getWorseLockedBombSubType,
   getWorseLockedCardType,
@@ -97,7 +106,6 @@ import {
   getWorseLockedPillEffect,
   getWorseLockedSackSubType,
   getWorseLockedTrinketType,
-  isActiveCollectibleUnlocked,
   isAltFloorUnlocked,
   isBatterySubTypeUnlocked,
   isBombSubTypeUnlocked,
@@ -106,7 +114,6 @@ import {
   isChestPickupVariantUnlocked,
   isCoinSubTypeUnlocked,
   isCollectibleTypeUnlocked,
-  isFamiliarCollectibleUnlocked,
   isGridEntityTypeUnlocked,
   isHeartSubTypeUnlocked,
   isKeySubTypeUnlocked,
@@ -376,11 +383,29 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   CollectibleType,
   () => Unlock | undefined
 >([
+  // 9
+  [
+    CollectibleType.SKATOLE,
+    () =>
+      isSlotVariantUnlocked(SlotVariant.SHELL_GAME, false)
+        ? undefined
+        : getUnlock(UnlockType.SLOT, SlotVariant.SHELL_GAME),
+  ],
+
+  // 18
+  [
+    CollectibleType.DOLLAR,
+    () =>
+      isSlotVariantUnlocked(SlotVariant.SLOT_MACHINE, false)
+        ? undefined
+        : getUnlock(UnlockType.SLOT, SlotVariant.SLOT_MACHINE),
+  ],
+
   // 63
   [
     CollectibleType.BATTERY,
     () =>
-      isActiveCollectibleUnlocked(false)
+      anyActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
   ],
@@ -409,6 +434,15 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
     () => (anyCardsUnlocked(false) ? undefined : getRandomCardUnlock()),
   ],
 
+  // 90
+  [
+    CollectibleType.SMALL_ROCK,
+    () =>
+      isGridEntityTypeUnlocked(GridEntityType.ROCK_TINTED, false)
+        ? undefined
+        : getUnlock(UnlockType.GRID_ENTITY, GridEntityType.ROCK_TINTED),
+  ],
+
   // 98
   [
     CollectibleType.RELIC,
@@ -434,9 +468,27 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   [
     CollectibleType.NINE_VOLT,
     () =>
-      isActiveCollectibleUnlocked(false)
+      anyActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
+  ],
+
+  // 119
+  [
+    CollectibleType.BLOOD_BAG,
+    () =>
+      isSlotVariantUnlocked(SlotVariant.BLOOD_DONATION_MACHINE, false)
+        ? undefined
+        : getUnlock(UnlockType.SLOT, SlotVariant.BLOOD_DONATION_MACHINE),
+  ],
+
+  // 135
+  [
+    CollectibleType.IV_BAG,
+    () =>
+      isSlotVariantUnlocked(SlotVariant.BLOOD_DONATION_MACHINE, false)
+        ? undefined
+        : getUnlock(UnlockType.SLOT, SlotVariant.BLOOD_DONATION_MACHINE),
   ],
 
   // 139
@@ -444,6 +496,33 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
     CollectibleType.MOMS_PURSE,
     () =>
       anyTrinketTypesUnlocked(false) ? undefined : getRandomTrinketUnlock(),
+  ],
+
+  // 156
+  [
+    CollectibleType.HABIT,
+    () =>
+      anyActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
+  ],
+
+  // 158
+  [
+    CollectibleType.CRYSTAL_BALL,
+    () =>
+      isSlotVariantUnlocked(SlotVariant.FORTUNE_TELLING_MACHINE, false)
+        ? undefined
+        : getUnlock(UnlockType.SLOT, SlotVariant.FORTUNE_TELLING_MACHINE),
+  ],
+
+  // 173
+  [
+    CollectibleType.MITRE,
+    () =>
+      isHeartSubTypeUnlocked(HeartSubType.SOUL, false)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.SOUL),
   ],
 
   // 195
@@ -460,6 +539,15 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
       isCoinSubTypeUnlocked(CoinSubType.DOUBLE_PACK, false)
         ? undefined
         : getUnlock(UnlockType.COIN, CoinSubType.DOUBLE_PACK),
+  ],
+
+  // 205
+  [
+    CollectibleType.SHARP_PLUG,
+    () =>
+      anyActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
   ],
 
   // 250
@@ -508,11 +596,35 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
     () => (anyCardsUnlocked(false) ? undefined : getRandomCardUnlock()),
   ],
 
+  // 296
+  [
+    CollectibleType.CONVERTER,
+    () =>
+      anySoulHeartUnlocked(false)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.HALF_SOUL),
+  ],
+
   // 348
   [
     CollectibleType.PLACEBO,
     () =>
       anyPillEffectsUnlocked(false) ? undefined : getRandomPillEffectUnlock(),
+  ],
+
+  // 356
+  [
+    CollectibleType.CAR_BATTERY,
+    () =>
+      anyActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
+  ],
+
+  // 389
+  [
+    CollectibleType.RUNE_BAG,
+    () => (anyRunesUnlocked(false) ? undefined : getRandomRuneUnlock()),
   ],
 
   // 424
@@ -531,6 +643,15 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
       anyTrinketTypesUnlocked(false) ? undefined : getRandomTrinketUnlock(),
   ],
 
+  // 448
+  [
+    CollectibleType.SHARD_OF_GLASS,
+    () =>
+      isHeartSubTypeUnlocked(HeartSubType.FULL, false)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.FULL),
+  ],
+
   // 451
   [
     CollectibleType.TAROT_CLOTH,
@@ -544,11 +665,29 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
       anyTrinketTypesUnlocked(false) ? undefined : getRandomTrinketUnlock(),
   ],
 
+  // 472
+  [
+    CollectibleType.KING_BABY,
+    () =>
+      anyFamiliarCollectibleUnlocked(false)
+        ? undefined
+        : getRandomFamiliarCollectibleUnlock(),
+  ],
+
   // 479
   [
     CollectibleType.SMELTER,
     () =>
       anyTrinketTypesUnlocked(false) ? undefined : getRandomTrinketUnlock(),
+  ],
+
+  // 484
+  [
+    CollectibleType.WAIT_WHAT,
+    () =>
+      isCollectibleTypeUnlocked(CollectibleType.BUTTER_BEAN, false)
+        ? undefined
+        : getUnlock(UnlockType.COLLECTIBLE, CollectibleType.BUTTER_BEAN),
   ],
 
   // 491
@@ -558,11 +697,56 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
       anyPillEffectsUnlocked(false) ? undefined : getRandomPillEffectUnlock(),
   ],
 
+  // 500
+  [
+    CollectibleType.SACK_OF_SACKS,
+    () =>
+      isSackSubTypeUnlocked(SackSubType.NORMAL, false)
+        ? undefined
+        : getUnlock(UnlockType.SACK, SackSubType.NORMAL),
+  ],
+
+  // 520
+  [
+    CollectibleType.JUMPER_CABLES,
+    () =>
+      anyActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
+  ],
+
+  // 534
+  [
+    CollectibleType.SCHOOLBAG,
+    () =>
+      anyActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
+  ],
+
+  // 536
+  [
+    CollectibleType.SACRIFICIAL_ALTAR,
+    () =>
+      anyFamiliarCollectibleUnlocked(false)
+        ? undefined
+        : getRandomFamiliarCollectibleUnlock(),
+  ],
+
   // 538
   [
     CollectibleType.MARBLES,
     () =>
       anyTrinketTypesUnlocked(false) ? undefined : getRandomTrinketUnlock(),
+  ],
+
+  // 557
+  [
+    CollectibleType.FORTUNE_COOKIE,
+    () =>
+      isHeartSubTypeUnlocked(HeartSubType.SOUL, false)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.SOUL),
   ],
 
   // 566
@@ -587,6 +771,15 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   // 580
   [CollectibleType.RED_KEY, swapAnyRoomUnlock],
 
+  // 580
+  [
+    CollectibleType.VOODOO_HEAD,
+    () =>
+      isRoomTypeUnlocked(RoomType.CURSE, false)
+        ? undefined
+        : getUnlock(UnlockType.ROOM, RoomType.CURSE),
+  ],
+
   // 603
   [
     CollectibleType.BATTERY_PACK,
@@ -606,7 +799,7 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   [
     CollectibleType.FOUR_FIVE_VOLT,
     () =>
-      isActiveCollectibleUnlocked(false)
+      anyActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
   ],
@@ -616,6 +809,34 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
     CollectibleType.FALSE_PHD,
     () =>
       anyBadPillEffectsUnlocked(false)
+        ? undefined
+        : getRandomPillEffectUnlock(),
+  ],
+
+  // 673
+  [
+    CollectibleType.REDEMPTION,
+    () =>
+      isRoomTypeUnlocked(RoomType.SACRIFICE, false) ||
+      isSlotVariantUnlocked(SlotVariant.CONFESSIONAL, false)
+        ? undefined
+        : getUnlock(UnlockType.ROOM, RoomType.SACRIFICE),
+  ],
+
+  // 686
+  [
+    CollectibleType.SOUL_LOCKET,
+    () =>
+      anySoulHeartUnlocked(false)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.HALF_SOUL),
+  ],
+
+  // 700
+  [
+    CollectibleType.ECHO_CHAMBER,
+    () =>
+      anyCardTypesUnlocked(false) || anyPillEffectsUnlocked(false)
         ? undefined
         : getRandomPillEffectUnlock(),
   ],
@@ -695,7 +916,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.AAA_BATTERY,
     () =>
-      isActiveCollectibleUnlocked(false)
+      anyActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
   ],
@@ -704,7 +925,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.BROKEN_REMOTE,
     () =>
-      isActiveCollectibleUnlocked(false)
+      anyActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
   ],
@@ -725,6 +946,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
       isHeartSubTypeUnlocked(HeartSubType.ETERNAL, false)
         ? undefined
         : getUnlock(UnlockType.HEART, HeartSubType.ETERNAL),
+  ],
+
+  // 19
+  [
+    TrinketType.PAPER_CLIP,
+    () =>
+      isChestPickupVariantUnlocked(PickupVariant.LOCKED_CHEST, false)
+        ? undefined
+        : getUnlock(UnlockType.CHEST, PickupVariant.LOCKED_CHEST),
   ],
 
   // 20
@@ -776,6 +1006,24 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
         : getUnlock(UnlockType.CHEST, PickupVariant.RED_CHEST),
   ],
 
+  // 79
+  [
+    TrinketType.ENDLESS_NAMELESS,
+    () =>
+      anyCardTypesUnlocked(false) || anyPillEffectsUnlocked(false)
+        ? undefined
+        : getRandomPillEffectUnlock(),
+  ],
+
+  // 80
+  [
+    TrinketType.BLACK_FEATHER,
+    () =>
+      isCollectibleTypeUnlocked(CollectibleType.MISSING_PAGE_2, false)
+        ? undefined
+        : getUnlock(UnlockType.COLLECTIBLE, CollectibleType.MISSING_PAGE_2),
+  ],
+
   // 87
   [
     TrinketType.MOMS_LOCKET,
@@ -789,7 +1037,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.NO,
     () =>
-      isActiveCollectibleUnlocked(false)
+      anyActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
   ],
@@ -798,7 +1046,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.CHILD_LEASH,
     () =>
-      isFamiliarCollectibleUnlocked(false)
+      anyFamiliarCollectibleUnlocked(false)
         ? undefined
         : getRandomFamiliarCollectibleUnlock(),
   ],
@@ -816,7 +1064,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.VIBRANT_BULB,
     () =>
-      isActiveCollectibleUnlocked(false)
+      anyActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
   ],
@@ -825,7 +1073,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.DIM_BULB,
     () =>
-      isActiveCollectibleUnlocked(false)
+      anyActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
   ],
@@ -863,16 +1111,25 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.DUCT_TAPE,
     () =>
-      isFamiliarCollectibleUnlocked(false)
+      anyFamiliarCollectibleUnlocked(false)
         ? undefined
         : getRandomFamiliarCollectibleUnlock(),
+  ],
+
+  // 112
+  [
+    TrinketType.PAY_TO_WIN,
+    () =>
+      isSlotVariantUnlocked(SlotVariant.SHOP_RESTOCK_MACHINE, false)
+        ? undefined
+        : getUnlock(UnlockType.SLOT, SlotVariant.SHOP_RESTOCK_MACHINE),
   ],
 
   // 120
   [
     TrinketType.HAIRPIN,
     () =>
-      isActiveCollectibleUnlocked(false)
+      anyActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
   ],
@@ -881,7 +1138,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.BUTTER,
     () =>
-      isActiveCollectibleUnlocked(false)
+      anyActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
   ],
@@ -890,7 +1147,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.EXTENSION_CORD,
     () =>
-      isFamiliarCollectibleUnlocked(false)
+      anyFamiliarCollectibleUnlocked(false)
         ? undefined
         : getRandomFamiliarCollectibleUnlock(),
   ],
@@ -899,7 +1156,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.BABY_BENDER,
     () =>
-      isFamiliarCollectibleUnlocked(false)
+      anyFamiliarCollectibleUnlocked(false)
         ? undefined
         : getRandomFamiliarCollectibleUnlock(),
   ],
@@ -917,7 +1174,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.FORGOTTEN_LULLABY,
     () =>
-      isFamiliarCollectibleUnlocked(false)
+      anyFamiliarCollectibleUnlocked(false)
         ? undefined
         : getRandomFamiliarCollectibleUnlock(),
   ],
@@ -926,7 +1183,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.OLD_CAPACITOR,
     () =>
-      isActiveCollectibleUnlocked(false)
+      anyActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
   ],
@@ -935,7 +1192,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.CHARGED_PENNY,
     () =>
-      isActiveCollectibleUnlocked(false)
+      anyActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
   ],
@@ -944,7 +1201,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.FRIENDSHIP_NECKLACE,
     () =>
-      isFamiliarCollectibleUnlocked(false)
+      anyFamiliarCollectibleUnlocked(false)
         ? undefined
         : getRandomFamiliarCollectibleUnlock(),
   ],
@@ -953,9 +1210,18 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.PANIC_BUTTON,
     () =>
-      isActiveCollectibleUnlocked(false)
+      anyActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
+  ],
+
+  // 152
+  [
+    TrinketType.TELESCOPE_LENS,
+    () =>
+      isRoomTypeUnlocked(RoomType.PLANETARIUM, false)
+        ? undefined
+        : getUnlock(UnlockType.ROOM, RoomType.PLANETARIUM),
   ],
 
   // 159
@@ -965,6 +1231,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
       isChestPickupVariantUnlocked(PickupVariant.LOCKED_CHEST, false)
         ? undefined
         : getUnlock(UnlockType.CHEST, PickupVariant.LOCKED_CHEST),
+  ],
+
+  // 160
+  [
+    TrinketType.LUCKY_SACK,
+    () =>
+      isSackSubTypeUnlocked(SackSubType.NORMAL, false)
+        ? undefined
+        : getUnlock(UnlockType.SACK, SackSubType.NORMAL),
   ],
 
   // 168
@@ -989,7 +1264,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.RC_REMOTE,
     () =>
-      isFamiliarCollectibleUnlocked(false)
+      anyFamiliarCollectibleUnlocked(false)
         ? undefined
         : getRandomFamiliarCollectibleUnlock(),
   ],
@@ -998,7 +1273,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.EXPANSION_PACK,
     () =>
-      isActiveCollectibleUnlocked(false)
+      anyActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
   ],
@@ -1007,7 +1282,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.ADOPTION_PAPERS,
     () =>
-      isFamiliarCollectibleUnlocked(false)
+      anyFamiliarCollectibleUnlocked(false)
         ? undefined
         : getRandomFamiliarCollectibleUnlock(),
   ],
@@ -1077,6 +1352,22 @@ const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<
         : getUnlock(UnlockType.SLOT, SlotVariant.BEGGAR),
   ],
 
+  // 48
+  [
+    CardType.QUESTION_MARK,
+    () =>
+      anyActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
+  ],
+
+  // 53
+  [
+    CardType.ANCIENT_RECALL,
+    () =>
+      getNumCardsUnlocked(false) >= 10 ? undefined : getRandomCardUnlock(),
+  ],
+
   // 61
   [
     CardType.REVERSE_HIEROPHANT,
@@ -1093,6 +1384,15 @@ const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<
       isChestPickupVariantUnlocked(PickupVariant.LOCKED_CHEST, false)
         ? undefined
         : getUnlock(UnlockType.CHEST, PickupVariant.LOCKED_CHEST),
+  ],
+
+  // 65
+  [
+    CardType.REVERSE_HERMIT,
+    () =>
+      isCoinSubTypeUnlocked(CoinSubType.NICKEL, false)
+        ? undefined
+        : getUnlock(UnlockType.COIN, CoinSubType.NICKEL),
   ],
 
   // 70
@@ -1161,6 +1461,34 @@ function getSwappedUnlockCard(unlock: Unlock): Unlock | undefined {
   return func === undefined ? undefined : func();
 }
 
+const SWAPPED_PILL_EFFECT_FUNCTIONS = new ReadonlyMap<
+  PillEffect,
+  () => Unlock | undefined
+>([
+  // 20
+  [
+    PillEffect.FORTY_EIGHT_HOUR_ENERGY,
+    () =>
+      anyActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
+  ],
+
+  // 43
+  [
+    PillEffect.GULP,
+    () =>
+      anyTrinketTypesUnlocked(false) ? undefined : getRandomTrinketUnlock(),
+  ],
+
+  // 46
+  [
+    PillEffect.VURP,
+    () =>
+      anyPillEffectsUnlocked(false) ? undefined : getRandomPillEffectUnlock(),
+  ],
+]);
+
 function getSwappedUnlockPillEffect(unlock: Unlock): Unlock | undefined {
   const pillEffectUnlock = unlock as PillEffectUnlock;
 
@@ -1173,7 +1501,8 @@ function getSwappedUnlockPillEffect(unlock: Unlock): Unlock | undefined {
     }
   }
 
-  return undefined;
+  const func = SWAPPED_PILL_EFFECT_FUNCTIONS.get(pillEffectUnlock.pillEffect);
+  return func === undefined ? undefined : func();
 }
 
 function getSwappedUnlockHeart(unlock: Unlock): Unlock | undefined {
@@ -1233,7 +1562,7 @@ function getSwappedUnlockKey(unlock: Unlock): Unlock | undefined {
 function getSwappedUnlockBattery(unlock: Unlock): Unlock | undefined {
   const batteryUnlock = unlock as BatteryUnlock;
 
-  if (!isActiveCollectibleUnlocked(false)) {
+  if (!anyActiveCollectibleUnlocked(false)) {
     return getRandomActiveCollectibleUnlock();
   }
 
@@ -1371,12 +1700,28 @@ function getRandomCardUnlock(): CardUnlock {
   };
 }
 
+function getRandomRuneUnlock(): CardUnlock {
+  const cardTypes = isHardcoreMode()
+    ? getRunesOfQuality(0)
+    : UNLOCKABLE_RUNE_CARD_TYPES;
+
+  const cardType = getRandomArrayElement(cardTypes);
+
+  return {
+    type: UnlockType.CARD,
+    cardType,
+  };
+}
+
 function getRandomPillEffectUnlock(): PillEffectUnlock {
   const pillEffects = isHardcoreMode()
     ? getPillEffectsOfQuality(0)
     : UNLOCKABLE_PILL_EFFECTS;
 
-  const pillEffect = getRandomArrayElement(pillEffects);
+  // We never want to randomly unlock Vurp, since that could lead to infinite loops.
+  const modifiedPillEffects = arrayRemove(pillEffects, PillEffect.VURP);
+
+  const pillEffect = getRandomArrayElement(modifiedPillEffects);
 
   return {
     type: UnlockType.PILL_EFFECT,

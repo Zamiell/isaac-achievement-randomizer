@@ -6,7 +6,6 @@ import type {
   CoinSubType,
   CollectibleType,
   GridEntityType,
-  HeartSubType,
   KeySubType,
   LevelStage,
   PickupVariant,
@@ -19,6 +18,7 @@ import type {
   TrinketType,
 } from "isaac-typescript-definitions";
 import {
+  HeartSubType,
   ItemConfigPillEffectType,
   ItemConfigTag,
 } from "isaac-typescript-definitions";
@@ -71,6 +71,13 @@ import { getTrinketTypesOfQuality } from "./trinketQuality";
 import { v } from "./v";
 
 const QUALITY_THRESHOLD_PERCENT = 0.5;
+
+const SOUL_HEART_SUB_TYPES = [
+  HeartSubType.SOUL, // 3
+  HeartSubType.BLACK, // 6
+  HeartSubType.HALF_SOUL, // 8
+  HeartSubType.BLENDED, // 10
+] as const;
 
 // ----------------------------
 // Unlock - Character functions
@@ -232,14 +239,14 @@ export function getUnlockedEdenPassiveCollectibleTypes(
   );
 }
 
-export function isActiveCollectibleUnlocked(forRun: boolean): boolean {
+export function anyActiveCollectibleUnlocked(forRun: boolean): boolean {
   const collectibleTypes = getUnlockedCollectibleTypes(forRun);
   return collectibleTypes.some((collectibleType) =>
     isActiveCollectible(collectibleType),
   );
 }
 
-export function isFamiliarCollectibleUnlocked(forRun: boolean): boolean {
+export function anyFamiliarCollectibleUnlocked(forRun: boolean): boolean {
   const collectibleTypes = getUnlockedCollectibleTypes(forRun);
   return collectibleTypes.some((collectibleType) =>
     isFamiliarCollectible(collectibleType),
@@ -417,8 +424,20 @@ export function isCardTypeUnlocked(
   );
 }
 
-export function getUnlockedCardTypes(): CardType[] {
-  return filterMap(v.persistent.completedUnlocksForRun, (unlock) =>
+export function getNumCardsUnlocked(forRun: boolean): int {
+  const unlockedCardTypes = getUnlockedCardTypes(forRun);
+  const unlockedCards = unlockedCardTypes.filter((cardType) =>
+    isCard(cardType),
+  );
+  return unlockedCards.length;
+}
+
+export function getUnlockedCardTypes(forRun: boolean): CardType[] {
+  const array = forRun
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
+
+  return filterMap(array, (unlock) =>
     unlock.type === UnlockType.CARD ? unlock.cardType : undefined,
   );
 }
@@ -574,6 +593,12 @@ export function isHeartSubTypeUnlocked(
   return array.some(
     (unlock) =>
       unlock.type === UnlockType.HEART && unlock.heartSubType === heartSubType,
+  );
+}
+
+export function anySoulHeartUnlocked(forRun: boolean): boolean {
+  return SOUL_HEART_SUB_TYPES.some((heartSubType) =>
+    isHeartSubTypeUnlocked(heartSubType, forRun),
   );
 }
 

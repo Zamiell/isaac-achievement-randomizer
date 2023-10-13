@@ -3,6 +3,7 @@ import {
   QUALITIES,
   VANILLA_CARD_TYPES,
   assertDefined,
+  isRune,
 } from "isaacscript-common";
 import { CARD_QUALITIES } from "../../../objects/cardQualities";
 
@@ -34,4 +35,9 @@ export function getCardTypesOfQuality(quality: Quality): CardType[] {
   );
 
   return cardTypes;
+}
+
+export function getRunesOfQuality(quality: Quality): CardType[] {
+  const cardTypes = getCardTypesOfQuality(quality);
+  return cardTypes.filter((cardType) => isRune(cardType));
 }

@@ -113,7 +113,7 @@ export class PickupRemoval extends RandomizerModFeature {
       return undefined;
     }
 
-    const unlockedCardTypes = getUnlockedCardTypes();
+    const unlockedCardTypes = getUnlockedCardTypes(true);
 
     // If there are no unlocked card types, the card will be replaced with a coin in the
     // `POST_PICKUP_SELECTION_FILTER` callback.
@@ -249,7 +249,7 @@ export class PickupRemoval extends RandomizerModFeature {
       !isCardTypeUnlocked(card.SubType, true) ||
       BANNED_CARD_TYPES.has(card.SubType)
     ) {
-      const cardTypes = getUnlockedCardTypes();
+      const cardTypes = getUnlockedCardTypes(true);
       if (cardTypes.length === 0) {
         card.Remove();
         spawnCoinWithSeed(CoinSubType.PENNY, card.Position, card.InitSeed);
