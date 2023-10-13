@@ -11,6 +11,8 @@ import {
 } from "isaacscript-common";
 import { ALL_OBJECTIVES } from "../../arrays/objectives";
 import { UnlockType } from "../../enums/UnlockType";
+import type { UnlockablePath } from "../../enums/UnlockablePath";
+import { getPathName } from "../../enums/UnlockablePath";
 import type { Objective } from "../../types/Objective";
 import { getObjectiveFromID, getObjectiveText } from "../../types/Objective";
 import { getObjectiveID } from "../../types/ObjectiveID";
@@ -40,7 +42,9 @@ export function setCharacterUnlocked(character: PlayerType): void {
   const objective = findObjectiveForCharacterUnlock(character);
   if (objective === undefined) {
     const characterName = getCharacterName(character);
-    error(`Failed to find the objective to unlock character: ${characterName}`);
+    error(
+      `Failed to find the objective to unlock character: ${characterName} (${character})`,
+    );
   }
 
   addObjective(objective);
@@ -63,12 +67,41 @@ function findObjectiveForCharacterUnlock(
 }
 
 /** Only used for debugging. */
+export function setPathUnlocked(unlockablePath: UnlockablePath): void {
+  const objective = findObjectiveForPathUnlock(unlockablePath);
+  if (objective === undefined) {
+    const pathName = getPathName(unlockablePath);
+    error(
+      `Failed to find the objective to unlock path: ${pathName} (${unlockablePath})`,
+    );
+  }
+
+  addObjective(objective);
+}
+
+function findObjectiveForPathUnlock(
+  unlockablePath: UnlockablePath,
+): Objective | undefined {
+  for (const entries of v.persistent.objectiveToUnlockMap) {
+    const [objectiveID, unlock] = entries;
+    if (
+      unlock.type === UnlockType.PATH &&
+      unlock.unlockablePath === unlockablePath
+    ) {
+      return getObjectiveFromID(objectiveID);
+    }
+  }
+
+  return undefined;
+}
+
+/** Only used for debugging. */
 export function setCollectibleUnlocked(collectibleType: CollectibleType): void {
   const objective = findObjectiveForCollectibleUnlock(collectibleType);
   if (objective === undefined) {
     const collectibleName = getCollectibleName(collectibleType);
     error(
-      `Failed to find the objective to unlock character: ${collectibleName}`,
+      `Failed to find the objective to unlock collectible: ${collectibleName} (${collectibleType})`,
     );
   }
 

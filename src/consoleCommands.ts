@@ -20,8 +20,11 @@ import {
   logSpoilerLog,
   setCharacterUnlocked,
   setCollectibleUnlocked,
+  setPathUnlocked,
 } from "./classes/features/AchievementTracker";
+import { isRandomizerEnabled } from "./classes/features/achievementTracker/v";
 import { RandomizerMode } from "./enums/RandomizerMode";
+import { UnlockablePath, getPathName } from "./enums/UnlockablePath";
 import { mod } from "./mod";
 
 export const MIN_SEED = 1;
@@ -32,9 +35,17 @@ export function initConsoleCommands(): void {
   mod.addConsoleCommand("spoilerLog", spoilerLog);
   mod.addConsoleCommand("unlockCharacter", unlockCharacter);
   mod.addConsoleCommand("unlockCollectible", unlockCollectible);
+  mod.addConsoleCommand("unlockPath", unlockPath);
 }
 
 function achievementRandomizer(params: string) {
+  if (isRandomizerEnabled()) {
+    print(
+      "Error: You are currently in a randomizer playthrough. If you want to start a new one, you must first exit the current playthrough.",
+    );
+    return;
+  }
+
   const [randomizerMode, seedString] = params.split(" ");
 
   if (randomizerMode === undefined || seedString === undefined) {
@@ -81,10 +92,24 @@ function achievementRandomizer(params: string) {
 }
 
 function spoilerLog(_params: string) {
+  if (!isRandomizerEnabled()) {
+    print(
+      "Error: You are not currently in a randomizer playthrough, so you can not print out the spoiler log.",
+    );
+    return;
+  }
+
   logSpoilerLog();
 }
 
 function unlockCharacter(params: string) {
+  if (!isRandomizerEnabled()) {
+    print(
+      "Error: You are not currently in a randomizer playthrough, so you can not unlock anything.",
+    );
+    return;
+  }
+
   if (params === "") {
     print("You must specify a character name or number.");
     return;
@@ -116,6 +141,13 @@ function unlockCharacter(params: string) {
 }
 
 function unlockCollectible(params: string) {
+  if (!isRandomizerEnabled()) {
+    print(
+      "Error: You are not currently in a randomizer playthrough, so you can not unlock anything.",
+    );
+    return;
+  }
+
   if (params === "") {
     print(
       "You must specify the collectible name or the number corresponding to the collectible type.",
@@ -141,4 +173,35 @@ function unlockCollectible(params: string) {
 
   const collectibleName = getCollectibleName(collectibleType);
   print(`Unlocked collectible: ${collectibleName} (${collectibleType})`);
+}
+
+function unlockPath(params: string) {
+  if (!isRandomizerEnabled()) {
+    print(
+      "Error: You are not currently in a randomizer playthrough, so you can not unlock anything.",
+    );
+    return;
+  }
+
+  if (params === "") {
+    print("You must specify the number corresponding to the path.");
+    return;
+  }
+
+  const unlockablePathNumber = tonumber(params);
+  if (unlockablePathNumber === undefined) {
+    print(`That is not a valid number: ${params}`);
+    return;
+  }
+
+  if (!isEnumValue(unlockablePathNumber, UnlockablePath)) {
+    print(`Invalid path number: ${params}`);
+    return;
+  }
+
+  const unlockablePath = unlockablePathNumber as UnlockablePath;
+  setPathUnlocked(unlockablePath);
+
+  const pathName = getPathName(unlockablePath);
+  print(`Unlocked path: ${pathName} (${unlockablePath})`);
 }

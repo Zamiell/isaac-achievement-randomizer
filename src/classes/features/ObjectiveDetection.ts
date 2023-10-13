@@ -9,7 +9,6 @@ import {
   NPCState,
   PickupVariant,
   RoomType,
-  UltraGreedVariant,
 } from "isaac-typescript-definitions";
 import {
   Callback,
@@ -18,7 +17,6 @@ import {
   ModCallbackCustom,
   ReadonlyMap,
   ReadonlySet,
-  doesEntityExist,
   game,
   getBossID,
   getEntityTypeVariantFromBossID,
@@ -152,7 +150,7 @@ export class ObjectiveDetection extends RandomizerModFeature {
 
   checkBossNoHit(): void {
     const bossID = getBossID();
-    if (bossID === 0) {
+    if (bossID === undefined) {
       return;
     }
 
@@ -308,7 +306,7 @@ export function hasTakenHitOnFloor(): boolean {
  * situation is invalid for the objective.
  */
 export function getSecondsSinceLastDamage(): int | undefined {
-  const bossID = getRealBossID();
+  const bossID = getBossID();
   if (bossID === undefined) {
     return undefined;
   }
@@ -417,26 +415,6 @@ export function getSecondsSinceLastDamage(): int | undefined {
   const elapsedGameFrames = roomFrameCount - v.room.tookDamageRoomFrame;
 
   return elapsedGameFrames / GAME_FRAMES_PER_SECOND;
-}
-
-function getRealBossID(): BossID | undefined {
-  const room = game.GetRoom();
-  const bossID = room.GetBossID();
-
-  if (bossID === 0) {
-    return undefined;
-  }
-
-  // Modify the boss ID, if applicable.
-  if (
-    bossID === BossID.ULTRA_GREED &&
-    doesEntityExist(EntityType.ULTRA_GREED, UltraGreedVariant.ULTRA_GREEDIER)
-  ) {
-    // The Ultra Greed room holds both Ultra Greed and Ultra Greedier.
-    return BossID.ULTRA_GREEDIER;
-  }
-
-  return bossID;
 }
 
 function onFirstPhaseOfSatan(): boolean {

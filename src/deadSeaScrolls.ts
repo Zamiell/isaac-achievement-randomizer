@@ -28,6 +28,7 @@ import {
 } from "./classes/features/achievementTracker/completedObjectives";
 import {
   getNumCompletedUnlocks,
+  getRandomizerMode,
   getRandomizerSeed,
   isRandomizerEnabled,
 } from "./classes/features/achievementTracker/v";
@@ -709,7 +710,20 @@ export function initDeadSeaScrolls(): void {
     stats: {
       title: "stats",
       noCursor: true,
+      scroller: true,
+      fSize: 2,
       buttons: [
+        {
+          str: "mode:",
+        },
+        {
+          str: () => getRandomizerMode(),
+          colorSelect: true,
+          noSel: true,
+        },
+        {
+          str: "",
+        },
         {
           str: "unlocks:",
         },
@@ -750,6 +764,9 @@ export function initDeadSeaScrolls(): void {
           str: getPlaythroughTimeElapsed,
           colorSelect: true,
           noSel: true,
+        },
+        {
+          str: "",
         },
       ],
     },

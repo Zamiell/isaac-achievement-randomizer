@@ -24,7 +24,7 @@ export class Timer extends RandomizerModFeature {
 
   drawNoHitTimer(): void {
     const bossID = getBossID();
-    if (bossID === 0) {
+    if (bossID === undefined) {
       return;
     }
 
