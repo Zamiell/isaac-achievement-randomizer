@@ -45,15 +45,15 @@ Achievement Randomizer is open source and anyone can help contribute to make the
 - Clone your forked repository:
   - `cd [the path where you want the code to live]` (optional)
   - If you already have an SSH key pair and have the public key attached to your GitHub profile, then use the following command to clone the repository via SSH:
-    - `git clone git@github.com:[username]/racing-plus.git`
+    - `git clone git@github.com:[username]/isaac-achievement-randomizer.git`
     - (Replace "[username]" with your GitHub username.)
   - If you do not already have an SSH key pair, then use the following command to clone the repository via HTTPS:
-    - `git clone https://github.com/[username]/racing-plus.git`
+    - `git clone https://github.com/[username]/isaac-achievement-randomizer.git`
     - (Replace "[username]" with your GitHub username.)
 - Enter the cloned repository:
-  - `cd racing-plus`
+  - `cd isaac-achievement-randomizer`
 - Install Yarn, if you have not done so already:
-  - `npm install --global yarn`
+  - `corepack enable`
 - Install dependencies:
   - `yarn install`
 - Run IsaacScript, which will compile the mod and copy it to your "mods" folder:
