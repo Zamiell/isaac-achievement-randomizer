@@ -27,27 +27,34 @@ For questions about playing the mod, or reporting bugs, or if you want to help d
 
 ## How To Play
 
-<!--
-
-For normal people, you can play the mod by subscribing to it on [the Steam Workshop](https://steamcommunity.com/app/250900/workshop/). (Subscribing to the mod will automatically download and install it once you launch the game.)
-
--->
-
-The mod is not yet released on the Steam Workshop, since it is still in development. The alpha version will be released soon!
+For normal people, you can play the mod by subscribing to it on [the Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3050399093). (Subscribing to the mod will automatically download and install it once you launch the game.)
 
 <br>
 
-## How To Compile
+## Installation for Development
 
-If you are a developer, you can play the mod by compiling the TypeScript code into a "main.lua" file. Perform the following steps:
+Achievement Randomizer is open source and anyone can help contribute to make the mod better. If you are interested in helping, this section will help you get started. If you get stuck, post a message in the `#randomizer-development` channel on the [Isaac Streaking Discord server](https://discord.gg/GwhUeQjHTF).
 
-- Download and install [Node.js](https://nodejs.org/en/download/) (Windows Installer .msi, 64-bit).
-- Download and install [Git](https://git-scm.com/download/win) (64-bit Git for Windows setup).
-- Download (or clone) this repository:
-  - Click on the "Code" button in the top-right-corner of this page.
-  - Click on "Download ZIP".
-- Unzip the zip file to a new directory.
-- Open up the repository folder and double-click on the `run.sh` script. If prompted, choose to open it with Git for Windows. You will see a Git Bash terminal window open.
-- The script might ask you some questions, like which save file that you use for testing.
-- If the script is successful, you will see "Compilation successful." (You can continue to leave the terminal window open; it will monitor for changes in your project, and recompile if necessary.)
-- Completely close Isaac if it is already open, and then open the game again, and the mod should be in the list of mods. You can now play or test the mod.
+- Before working with this repository, you should first become a familiar with IsaacScript. Follow the steps on [the IsaacScript getting started documentation](https://isaacscript.github.io/docs/getting-started). Once you have created a test mod and verified in-game that everything works the way it should, read on.
+- Download and install [Git](https://git-scm.com/), if you do not have it already.
+- Open a new [command prompt window](https://www.howtogeek.com/235101/10-ways-to-open-the-command-prompt-in-windows-10/). (Or, feel free to use Windows Terminal, PowerShell, Git Bash, etc.)
+- Configure Git, if you have not done so already:
+  - `git config --global user.name "Your_Username"`
+  - `git config --global user.email "your@email.com"`
+- Fork the repository by clicking on the button in the top-right-hand-corner of the repository page.
+- Clone your forked repository:
+  - `cd [the path where you want the code to live]` (optional)
+  - If you already have an SSH key pair and have the public key attached to your GitHub profile, then use the following command to clone the repository via SSH:
+    - `git clone git@github.com:[username]/racing-plus.git`
+    - (Replace "[username]" with your GitHub username.)
+  - If you do not already have an SSH key pair, then use the following command to clone the repository via HTTPS:
+    - `git clone https://github.com/[username]/racing-plus.git`
+    - (Replace "[username]" with your GitHub username.)
+- Enter the cloned repository:
+  - `cd racing-plus`
+- Install Yarn, if you have not done so already:
+  - `npm install --global yarn`
+- Install dependencies:
+  - `yarn install`
+- Run IsaacScript, which will compile the mod and copy it to your "mods" folder:
+  - `npx isaacscript`
