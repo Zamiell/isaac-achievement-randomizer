@@ -54,11 +54,6 @@ import {
 } from "../../../enums/UnlockablePath";
 import { ANGEL_ROOM_COLLECTIBLES } from "../../../sets/angelRoomCollectibles";
 import { CURSE_ROOM_COLLECTIBLES } from "../../../sets/curseRoomCollectibles";
-import {
-  DICE_CARDS,
-  DICE_COLLECTIBLES,
-  DICE_TRINKETS,
-} from "../../../sets/diceObjects";
 import { PLANETARIUM_COLLECTIBLES } from "../../../sets/planetariumCollectibles";
 import { TREASURE_CHEST_COLLECTIBLES } from "../../../sets/treasureChestCollectibles";
 import { getObjectiveFromID, getObjectiveText } from "../../../types/Objective";
@@ -877,6 +872,7 @@ function getSwappedUnlockCollectible(unlock: Unlock): Unlock | undefined {
     return getUnlock(UnlockType.ROOM, RoomType.VAULT);
   }
 
+  /*
   // 21
   if (
     DICE_COLLECTIBLES.has(collectibleUnlock.collectibleType) &&
@@ -884,6 +880,7 @@ function getSwappedUnlockCollectible(unlock: Unlock): Unlock | undefined {
   ) {
     return getUnlock(UnlockType.ROOM, RoomType.DICE);
   }
+  */
 
   // 24
   if (
@@ -1291,6 +1288,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
 function getSwappedUnlockTrinket(unlock: Unlock): Unlock | undefined {
   const trinketUnlock = unlock as TrinketUnlock;
 
+  /*
   // 21
   if (
     DICE_TRINKETS.has(trinketUnlock.trinketType) &&
@@ -1298,6 +1296,7 @@ function getSwappedUnlockTrinket(unlock: Unlock): Unlock | undefined {
   ) {
     return getUnlock(UnlockType.ROOM, RoomType.DICE);
   }
+  */
 
   if (isHardcoreMode()) {
     const worseTrinketType = getWorseLockedTrinketType(
@@ -1442,6 +1441,7 @@ const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<
 function getSwappedUnlockCard(unlock: Unlock): Unlock | undefined {
   const cardUnlock = unlock as CardUnlock;
 
+  /*
   // 21
   if (
     DICE_CARDS.has(cardUnlock.cardType) &&
@@ -1449,6 +1449,7 @@ function getSwappedUnlockCard(unlock: Unlock): Unlock | undefined {
   ) {
     return getUnlock(UnlockType.ROOM, RoomType.DICE);
   }
+  */
 
   if (isHardcoreMode()) {
     const worseCardType = getWorseLockedCardType(cardUnlock.cardType);
