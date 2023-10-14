@@ -395,6 +395,13 @@ In hardcore mode, we want to prevent the situation where you unlock powerful ite
 
 <br>
 
+## Randomization Behavior
+
+- Unlocking new things will never apply to the current run and will only apply to subsequent runs.
+  - For example, if you unlock The Polaroid on Basement 1 and go on to kill Mom, she will still not drop The Polaroid because it will only be unlocked on the next run.
+
+<br>
+
 ## Other Features
 
 ### Dead Sea Scrolls Integration <!-- deadSeaScrolls.ts -->
@@ -474,6 +481,10 @@ C:\Program Files (x86)\Steam\steamapps\common\The Binding of Isaac Rebirth\data\
 In this directory, there will be either a "save1.dat", "save2.dat", or "save3.dat" file, corresponding to which save slot that you play on.
 
 It is important that you backup this file after every run.
+
+### What is the latest version?
+
+The latest version can always be found [on the Steam Workshop change notes page](https://steamcommunity.com/sharedfiles/filedetails/changelog/3050399093).
 
 ### Why does the mod take so long to randomize the achievements at the beginning of a playthrough?
 

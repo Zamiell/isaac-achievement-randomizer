@@ -1,5 +1,9 @@
 TODO:
 
+- go through no hit exceptions
+- chests replaced with coins
+- suppress 2 min achievement until room is cleared
+
 - flipped rooms
 - checkboxes for banned items
 

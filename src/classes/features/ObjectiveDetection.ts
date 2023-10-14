@@ -97,6 +97,7 @@ const BOSSES_IN_BIG_ROOMS_SET = new ReadonlySet([
   BossID.MR_FRED, // 53
   BossID.MEGA_SATAN, // 55
   BossID.ULTRA_GREED, // 62
+  BossID.HUSH, // 63
   BossID.DELIRIUM, // 70
   BossID.ULTRA_GREEDIER, // 71
   BossID.TUFF_TWINS, // 80

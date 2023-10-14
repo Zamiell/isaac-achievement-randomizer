@@ -31,6 +31,7 @@ import {
   inStartingRoom,
   isChestVariant,
   isGoldenTrinketType,
+  isQuestCollectible,
   isRune,
   isSuitCard,
   itemConfig,
@@ -208,13 +209,19 @@ export class PickupRemoval extends RandomizerModFeature {
   // 34, 100
   @Callback(ModCallback.POST_PICKUP_INIT, PickupVariant.COLLECTIBLE)
   postPickupInitCollectible(pickup: EntityPickup): void {
+    Isaac.DebugString(`GETTING HERE - POST_PICKUP_INIT - ${pickup.SubType}`);
+
     const collectible = pickup as EntityPickupCollectible;
     if (
       !isCollectibleTypeUnlocked(collectible.SubType, true) ||
       // Prevent e.g. Spindown Dice from producing banned collectibles.
       BANNED_COLLECTIBLE_TYPES_SET.has(collectible.SubType)
     ) {
-      setCollectibleSubType(collectible, CollectibleType.BREAKFAST);
+      if (isQuestCollectible(collectible.SubType)) {
+        collectible.Remove();
+      } else {
+        setCollectibleSubType(collectible, CollectibleType.BREAKFAST);
+      }
     }
   }
 

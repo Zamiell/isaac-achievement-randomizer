@@ -14,6 +14,7 @@ import {
   CallbackCustom,
   DISTANCE_OF_GRID_TILE,
   ModCallbackCustom,
+  ReadonlyMap,
   getBlueWombDoor,
   getBossRushDoor,
   getEffects,
@@ -29,11 +30,77 @@ import {
   removeGridEntity,
   spawnGridEntity,
 } from "isaacscript-common";
+import { PickupVariantCustom } from "../../enums/PickupVariantCustom";
 import { UnlockablePath } from "../../enums/UnlockablePath";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { isPathUnlocked } from "./achievementTracker/completedUnlocks";
 
 const GRID_INDEX_BLOCKING_LADDER_TO_BLACK_MARKET = 86;
+
+const COLLECTIBLE_REPLACEMENT_FUNCTIONS = new ReadonlyMap<
+  CollectibleType,
+  (
+    initSeed: Seed,
+  ) =>
+    | [entityType: EntityType, variant: int, subType: int, initSeed: Seed]
+    | undefined
+>([
+  // 238
+  [
+    CollectibleType.KEY_PIECE_1,
+    (initSeed: Seed) =>
+      isPathUnlocked(UnlockablePath.MEGA_SATAN, true)
+        ? undefined
+        : [
+            EntityType.PICKUP,
+            PickupVariantCustom.INVISIBLE_PICKUP,
+            0,
+            initSeed,
+          ],
+  ],
+
+  // 239
+  [
+    CollectibleType.KEY_PIECE_2,
+    (initSeed: Seed) =>
+      isPathUnlocked(UnlockablePath.MEGA_SATAN, true)
+        ? undefined
+        : [
+            EntityType.PICKUP,
+            PickupVariantCustom.INVISIBLE_PICKUP,
+            0,
+            initSeed,
+          ],
+  ],
+
+  // 327
+  [
+    CollectibleType.POLAROID,
+    (initSeed: Seed) =>
+      isPathUnlocked(UnlockablePath.CHEST, true)
+        ? undefined
+        : [
+            EntityType.PICKUP,
+            PickupVariantCustom.INVISIBLE_PICKUP,
+            0,
+            initSeed,
+          ],
+  ],
+
+  // 328
+  [
+    CollectibleType.NEGATIVE,
+    (initSeed: Seed) =>
+      isPathUnlocked(UnlockablePath.DARK_ROOM, true)
+        ? undefined
+        : [
+            EntityType.PICKUP,
+            PickupVariantCustom.INVISIBLE_PICKUP,
+            0,
+            initSeed,
+          ],
+  ],
+]);
 
 const v = {
   level: {
@@ -199,43 +266,7 @@ export class PathRemoval extends RandomizerModFeature {
     | undefined {
     const collectibleType = subType as CollectibleType;
 
-    if (
-      collectibleType === CollectibleType.POLAROID &&
-      !isPathUnlocked(UnlockablePath.CHEST, true)
-    ) {
-      return [
-        EntityType.PICKUP,
-        PickupVariant.COLLECTIBLE,
-        CollectibleType.NULL,
-        initSeed,
-      ];
-    }
-
-    if (
-      collectibleType === CollectibleType.NEGATIVE &&
-      !isPathUnlocked(UnlockablePath.DARK_ROOM, true)
-    ) {
-      return [
-        EntityType.PICKUP,
-        PickupVariant.COLLECTIBLE,
-        CollectibleType.NULL,
-        initSeed,
-      ];
-    }
-
-    if (
-      (collectibleType === CollectibleType.KEY_PIECE_1 ||
-        collectibleType === CollectibleType.KEY_PIECE_2) &&
-      !isPathUnlocked(UnlockablePath.MEGA_SATAN, true)
-    ) {
-      return [
-        EntityType.PICKUP,
-        PickupVariant.COLLECTIBLE,
-        CollectibleType.NULL,
-        initSeed,
-      ];
-    }
-
-    return undefined;
+    const func = COLLECTIBLE_REPLACEMENT_FUNCTIONS.get(collectibleType);
+    return func === undefined ? undefined : func(initSeed);
   }
 }

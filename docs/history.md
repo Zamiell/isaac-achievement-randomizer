@@ -3,6 +3,11 @@
 <!-- cspell:ignore Erbear,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.1.1_ - October 13th, 2023 (Unreleased)
+
+- Locked quest collectibles are now deleted (instead of being replaced with Breakfast).
+- Fixed the bug where Hush's objective would not trigger properly.
+
 ### _v0.1.0_ - October 13th, 2023
 
 - Purple fires are now a separate unlock.
