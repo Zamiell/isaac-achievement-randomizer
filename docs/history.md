@@ -2,6 +2,10 @@
 
 <!-- markdownlint-disable MD001 -->
 
+### _v0.0.4_ - October 13th, 2023
+
+- Fixed the bug where gold trinkets, gold pills, and horse pills did not have proper unlock logic. (Thanks Gamonymous)
+
 ### _v0.0.3_ - October 13th, 2023
 
 - The pause prevention and save & quit prevention features are removed.
