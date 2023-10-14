@@ -1,6 +1,6 @@
 TODO:
 
-- purple fire behind separate unlock, uriel + gab
+- flipped rooms
 - checkboxes for banned items
 
 ------------------------------

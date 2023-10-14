@@ -51,7 +51,7 @@ We do not want to randomize the vanilla achievements. This is for several reason
 1. Most vanilla achievements are arbitrary conditions and are not very fun to play, like `They will charge you up... for a small fee - Donate to Battery Bums until they pay out with an item 5 times`. (If you are not lucky enough to get this achievement during your playthrough, the most consistent strategy is to reset as Tainted Keeper in Greed Mode until you see a Battery Bum in the shop. This is "busywork" and is not skill-based in any way.)
 1. Many things are not gated behind vanilla achievements and it would be fun if they were (e.g. soul hearts, locked chests).
 
-Thus, this mod takes a completely different approach. We want each objective to be non-arbitrary, difficult, skill-based, and represent a meaningful accomplishment inside of the game. And we want as many unlockable things are possible.
+Thus, this mod takes a completely different approach. We want each objective to be non-arbitrary, difficult, and represent a meaningful accomplishment inside of the game. And we want to unlockable as many things as possible.
 
 <br>
 
