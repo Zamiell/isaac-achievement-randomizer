@@ -1,26 +1,9 @@
-import { BossID } from "isaac-typescript-definitions";
-import { MAIN_CHARACTERS, ReadonlySet } from "isaacscript-common";
-import {
-  BOSS_IDS,
-  CHARACTER_OBJECTIVE_KINDS,
-  OBJECTIVE_TYPES,
-} from "../cachedEnums";
-import { BossIDCustom } from "../enums/BossIDCustom";
+import { MAIN_CHARACTERS } from "isaacscript-common";
+import { CHARACTER_OBJECTIVE_KINDS, OBJECTIVE_TYPES } from "../cachedEnums";
 import { ObjectiveType } from "../enums/ObjectiveType";
 import type { Objective } from "../types/Objective";
+import { NO_HIT_BOSSES } from "./noHitBosses";
 import { UNLOCKABLE_CHALLENGES } from "./unlockableChallenges";
-
-/** @see about.md */
-const NO_HIT_EXCEPTION_BOSSES = new ReadonlySet([
-  BossID.MOMS_HEART, // 8
-  BossID.DELIRIUM, // 70
-  BossID.RAGLICH, // 98
-]);
-
-export const NO_HIT_BOSSES: readonly BossID[] = BOSS_IDS.filter(
-  (bossID) => !NO_HIT_EXCEPTION_BOSSES.has(bossID),
-  // eslint-disable-next-line unicorn/prefer-spread
-).concat(...Object.values(BossIDCustom));
 
 export const ALL_OBJECTIVES: readonly Objective[] = (() => {
   const objectives: Objective[] = [];

@@ -24,7 +24,7 @@ import {
   isOdd,
   splitNumber,
 } from "isaacscript-common";
-import { NO_HIT_BOSSES } from "./arrays/objectives";
+import { NO_HIT_BOSSES } from "./arrays/noHitBosses";
 import { UNLOCKABLE_CARD_TYPES } from "./arrays/unlockableCardTypes";
 import { UNLOCKABLE_CHALLENGES } from "./arrays/unlockableChallenges";
 import { UNLOCKABLE_CHARACTERS } from "./arrays/unlockableCharacters";

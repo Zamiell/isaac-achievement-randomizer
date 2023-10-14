@@ -1,5 +1,6 @@
 import type { DamageFlag } from "isaac-typescript-definitions";
 import {
+  BabyVariant,
   BeastVariant,
   BossID,
   CollectibleType,
@@ -11,6 +12,7 @@ import {
   ModCallback,
   NPCState,
   PickupVariant,
+  PrideVariant,
   RoomType,
 } from "isaac-typescript-definitions";
 import {
@@ -516,14 +518,37 @@ export function getSecondsSinceLastDamage(): int | undefined {
       break;
     }
 
+    case BossIDCustom.ULTRA_PRIDE: {
+      const ultraPrides = getNPCs(
+        EntityType.PRIDE,
+        PrideVariant.ULTRA_PRIDE,
+        -1,
+        true,
+      );
+      const ultraPrideBabies = getNPCs(
+        EntityType.BABY,
+        BabyVariant.ULTRA_PRIDE_BABY,
+        -1,
+        true,
+      );
+      const totalNPCs = [...ultraPrides, ...ultraPrideBabies];
+      const aliveBosses = totalNPCs.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length === 0) {
+        return;
+      }
+
+      break;
+    }
+
     case BossIDCustom.KRAMPUS: {
-      const krampuses = getNPCs(
+      const fallens = getNPCs(
         EntityType.FALLEN,
         FallenVariant.KRAMPUS,
         -1,
         true,
       );
-      const aliveBosses = krampuses.filter((boss) => !boss.IsDead());
+      const aliveBosses = fallens.filter((boss) => !boss.IsDead());
 
       if (aliveBosses.length === 0) {
         return;
@@ -555,13 +580,13 @@ export function getSecondsSinceLastDamage(): int | undefined {
     }
 
     case BossIDCustom.ULTRA_FAMINE: {
-      const ultraHorsemen = getNPCs(
+      const ultraFamines = getNPCs(
         EntityType.BEAST,
         BeastVariant.ULTRA_FAMINE,
         -1,
         true,
       );
-      const aliveBosses = ultraHorsemen.filter((boss) => !boss.IsDead());
+      const aliveBosses = ultraFamines.filter((boss) => !boss.IsDead());
 
       if (aliveBosses.length === 0) {
         return;
@@ -571,13 +596,13 @@ export function getSecondsSinceLastDamage(): int | undefined {
     }
 
     case BossIDCustom.ULTRA_PESTILENCE: {
-      const ultraHorsemen = getNPCs(
+      const ultraPestilences = getNPCs(
         EntityType.BEAST,
         BeastVariant.ULTRA_PESTILENCE,
         -1,
         true,
       );
-      const aliveBosses = ultraHorsemen.filter((boss) => !boss.IsDead());
+      const aliveBosses = ultraPestilences.filter((boss) => !boss.IsDead());
 
       if (aliveBosses.length === 0) {
         return;
@@ -587,13 +612,13 @@ export function getSecondsSinceLastDamage(): int | undefined {
     }
 
     case BossIDCustom.ULTRA_WAR: {
-      const ultraHorsemen = getNPCs(
+      const ultraWars = getNPCs(
         EntityType.BEAST,
         BeastVariant.ULTRA_WAR,
         -1,
         true,
       );
-      const aliveBosses = ultraHorsemen.filter((boss) => !boss.IsDead());
+      const aliveBosses = ultraWars.filter((boss) => !boss.IsDead());
 
       if (aliveBosses.length === 0) {
         return;
@@ -603,13 +628,13 @@ export function getSecondsSinceLastDamage(): int | undefined {
     }
 
     case BossIDCustom.ULTRA_DEATH: {
-      const ultraHorsemen = getNPCs(
+      const ultraDeaths = getNPCs(
         EntityType.BEAST,
         BeastVariant.ULTRA_DEATH,
         -1,
         true,
       );
-      const aliveBosses = ultraHorsemen.filter((boss) => !boss.IsDead());
+      const aliveBosses = ultraDeaths.filter((boss) => !boss.IsDead());
 
       if (aliveBosses.length === 0) {
         return;
@@ -674,6 +699,10 @@ export function getModifiedBossID(): BossID | undefined {
       const roomSubType = getRoomSubType();
 
       switch (roomSubType) {
+        case MinibossID.ULTRA_PRIDE: {
+          return BossIDCustom.ULTRA_PRIDE;
+        }
+
         case MinibossID.KRAMPUS: {
           return BossIDCustom.KRAMPUS;
         }

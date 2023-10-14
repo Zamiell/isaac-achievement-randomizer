@@ -7,9 +7,9 @@
 
 - Each of the 4 ultra horseman are now an objective.
 - Krampus is now an objective.
+- C.H.A.D., Triachnid, and Gish are no longer an objective (since they are extremely rare).
 - Chest unlocks are revamped such that no chests start out unlocked and all chests are unlockable (including spiked/mimics).
 - Locked chests are now converted to pennies.
-- Clean bedrooms and dirty bedrooms are now unlocks. (They unlocks before the first heart or bed.)
 - Locked quest collectibles are now deleted (instead of being replaced with Breakfast).
 - Fixed the bug where Hush's objective would not trigger properly.
 - Fixed the bug where Dogma's timer did not work properly.

@@ -18,8 +18,7 @@ OTHER POTENTIAL UNLOCKS:
 
 OTHER POTENTIAL OBJECTIVES:
 
-- survive for 2 minutes - 4 ultra horsemen
-- survive for 2 minutes - 16 mini-bosses
+- survive for 2 minutes - 15 mini-bosses (we already use krampus)
 - [would need 288 objectives to reduce no damage objectives by half]
 
 - forgotten unlock sequence

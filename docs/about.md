@@ -110,11 +110,22 @@ Additionally, each character will unlock something upon clearing the following f
 
 > Tip: A Crown of Light icon will appear next to the coin count UI when the "no hit" objective has not yet been accomplished for the particular character and floor combination.
 
-### Boss-Based Objectives (101)
+### Boss-Based Objectives (104)
 
-There is one unlock for surviving for 2 minutes without taking a hit for each boss. (Uriel and Gabriel are also included.)
+There is one unlock for surviving for 2 minutes without taking a hit for each boss.
 
-However, the following bosses have custom timer lengths:
+The following "special" bosses / mini-bosses are also included:
+
+- Ultra Pride (#46.2)
+- Krampus (#81.1)
+- Uriel (#271.0)
+- Gabriel (#272.0)
+- Ultra Famine (#951.10)
+- Ultra Pestilence (#951.20)
+- Ultra War (#951.30)
+- Ultra Death (#951.40)
+
+The following bosses have custom timer lengths:
 
 - Brownie (#58) - 1 minute (because he damages himself)
 - Visage (#78) - 1 minute
@@ -130,12 +141,16 @@ The following bosses have custom conditions:
 - Teratoma (#33) - Four or more pieces must be alive.
 - Lokii (#31) - Both must be alive.
 - Sisters Vis (#68) - Both must be alive.
+- Ultra Pride - Both must be alive.
 
 Additionally, the following bosses are excluded entirely:
 
 - Mom's Heart (#8) (inaccessible on a fully unlocked save file)
+- Gish (#19) (would be unfair since the boss is extremely rare)
+- C.H.A.D. (#21) (would be unfair since the boss is extremely rare)
+- Triachnid (#42) (would be unfair since the boss is extremely rare)
 - Delirium (#70) (would be unfair since the boss is poorly designed)
-- Raglich (#98) (unfinished boss)
+- Raglich (#98) (unfinished boss, there are no actual boss rooms)
 
 > Tip: A timer will appear on the screen if a boss is in the room and the corresponding objective has not yet been accomplished.
 
@@ -147,7 +162,7 @@ There is one unlock for completing each challenge, with the following exceptions
 
 ### Total Objectives
 
-There are 1054 + 101 + 44 = 1199 objectives in total.
+There are 1054 + 104 + 44 = 1202 objectives in total.
 
 <br>
 
@@ -205,11 +220,12 @@ The following room types start out locked:
 - Curse Room (#10) (unlocks before first Curse Room collectible)
 - Library (#12) (unlocks before first book collectible)
 - Sacrifice Room (#13) (unlocks before first Angel Room collectible)
-- Clean Bedroom (#18) (unlocks before first heart or bed)
-- Dirty Bedroom (#19) (unlocks before first heart or bed)
 - Vault (#20) (unlocks before first golden chest collectible)
 - Dice Room (#21) (unlocks before first dice collectible/trinket/card)
 - Planetarium (#24) (unlocks before first Planetarium collectible)
+
+<!-- - Clean Bedroom (#18) (unlocks before first heart or bed) -->
+<!-- - Dirty Bedroom (#19) (unlocks before first heart or bed) -->
 
 ### Challenges (44)
 

@@ -4,7 +4,7 @@ import type {
   PlayerType,
 } from "isaac-typescript-definitions";
 import { MAIN_CHARACTERS, iRange } from "isaacscript-common";
-import { NO_HIT_BOSSES } from "../../../arrays/objectives";
+import { NO_HIT_BOSSES } from "../../../arrays/noHitBosses";
 import { UNLOCKABLE_CHALLENGES } from "../../../arrays/unlockableChallenges";
 import { CHARACTER_OBJECTIVE_KINDS } from "../../../cachedEnums";
 import type { CharacterObjectiveKind } from "../../../enums/CharacterObjectiveKind";
