@@ -110,9 +110,9 @@ Additionally, each character will unlock something upon clearing the following f
 
 > Tip: A Crown of Light icon will appear next to the coin count UI when the "no hit" objective has not yet been accomplished for the particular character and floor combination.
 
-### Boss-Based Objectives (100)
+### Boss-Based Objectives (101)
 
-There is one unlock for surviving for 2 minutes without taking a hit for each boss.
+There is one unlock for surviving for 2 minutes without taking a hit for each boss. (Uriel and Gabriel are also included.)
 
 However, the following bosses have custom timer lengths:
 
@@ -129,6 +129,7 @@ The following bosses have custom conditions:
 - Fistula (#18) - Four or more pieces must be alive.
 - Teratoma (#33) - Four or more pieces must be alive.
 - Lokii (#31) - Both must be alive.
+- Sisters Vis (#68) - Both must be alive.
 
 Additionally, the following bosses are excluded entirely:
 
@@ -146,7 +147,7 @@ There is one unlock for completing each challenge, with the following exceptions
 
 ### Total Objectives
 
-There are 1054 + 100 + 44 = 1198 objectives in total.
+There are 1054 + 101 + 44 = 1199 objectives in total.
 
 <br>
 
@@ -316,20 +317,21 @@ The following grid entities start out locked:
 - Super Tinted Rocks (#22.0)
 - Fool's Gold Rocks (#27.0)
 
-### Miscellaneous (6)
+### Miscellaneous (7)
 
 The following other things start out locked:
 
 - Beds (#5.380)
 - Shopkeepers (#17)
 - Blue Fireplaces (#33.2)
+- Purple Fireplaces (#33.3)
 - Golden Trinkets
 - Gold Pills
 - Horse Pills
 
 ### Total Unlocks
 
-There are 33 + 10 + 11 + 7 + 44 + 694 + 185 + 95 + 50 + 35 + 15 + 13 + 6 = 1198 unlocks in total.
+There are 33 + 10 + 11 + 7 + 44 + 694 + 185 + 95 + 50 + 35 + 15 + 13 + 7 = 1199 unlocks in total.
 
 <br>
 
