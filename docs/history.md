@@ -5,9 +5,17 @@
 
 ### _v0.2.0_ - October 14th, 2023 (Unreleased)
 
-- Each of the 4 ultra horseman are now an objective.
-- Krampus is now an objective.
-- C.H.A.D., Triachnid, and Gish are no longer an objective (since they are extremely rare).
+- Added the following objectives:
+  - Ultra Pride
+  - Krampus
+  - Ultra Famine
+  - Ultra Pestilence
+  - Ultra War
+  - Ultra Death
+- Removed the following objectives (since the bosses are extremely rare):
+  - C.H.A.D.
+  - Triachnid
+  - Gish
 - Chest unlocks are revamped such that no chests start out unlocked and all chests are unlockable (including spiked/mimics).
 - Locked chests are now converted to pennies.
 - Locked quest collectibles are now deleted (instead of being replaced with Breakfast).
@@ -17,9 +25,12 @@
 
 ### _v0.1.0_ - October 13th, 2023
 
-- Purple fires are now a separate unlock.
-- Krampus is no longer an objective.
-- Uriel and Gabriel are now an objective.
+- Purple fires are now a separate unlock from blue fires.
+- Added the following objectives:
+  - Uriel
+  - Gabriel
+- Removed the following objectives:
+  - Krampus
 
 ### _v0.0.7_ - October 13th, 2023
 

@@ -12,6 +12,7 @@ export const v = {
     lockedCharacter: false,
     lockedChallenge: false,
     lockedMode: false,
+    versionMismatch: false,
   },
 };
 

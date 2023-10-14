@@ -22,9 +22,14 @@ import {
   log,
   onAnyChallenge,
   onVictoryLap,
+  parseSemanticVersion,
   removeAllDoors,
 } from "isaacscript-common";
-import { MOD_NAME } from "../../constants";
+import { version } from "../../../package.json";
+import {
+  LAST_VERSION_WITH_ACHIEVEMENT_CHANGES,
+  MOD_NAME,
+} from "../../constants";
 import { UnlockablePath } from "../../enums/UnlockablePath";
 import { mod } from "../../mod";
 import {
@@ -32,7 +37,11 @@ import {
   isCharacterUnlocked,
   isPathUnlocked,
 } from "./achievementTracker/completedUnlocks";
-import { isRandomizerEnabled } from "./achievementTracker/v";
+import {
+  getAchievementsVersion,
+  isAcceptedVersionMismatch,
+  isRandomizerEnabled,
+} from "./achievementTracker/v";
 import { hasErrors, v } from "./checkErrors/v";
 
 const INCOMPLETE_SAVE_COLLECTIBLE_TO_CHECK = CollectibleType.DEATH_CERTIFICATE;
@@ -94,6 +103,13 @@ export class CheckErrors extends ModFeature {
       this.drawErrorText("You have not unlocked this challenge yet.");
     } else if (v.run.lockedMode) {
       this.drawErrorText("You have not unlocked Greed Mode yet.");
+    } else if (v.run.versionMismatch) {
+      const achievementsVersion = getAchievementsVersion();
+      const achievementsVersionString =
+        achievementsVersion === "" ? "[unknown]" : achievementsVersion;
+      this.drawErrorText(
+        `The achievements that were created at the beginning of your current playthrough are now out of date with the latest version of the Achievement Randomizer mod. (The current version is ${version}, the last version with achievement changes was ${LAST_VERSION_WITH_ACHIEVEMENT_CHANGES}, and the version that you started the playthrough on was ${achievementsVersionString}.\n\nIt is recommended that you start over with a fresh playthrough. Otherwise, you can proceed and potentially finish the playthrough by typing the console command of "forceWrongVersion". (However, if you do this, there may be bugs.)`,
+      );
     }
   }
 
@@ -145,6 +161,7 @@ export class CheckErrors extends ModFeature {
       checkCharacterUnlocked();
       checkChallengeUnlocked();
       checkModeUnlocked();
+      checkVersionMismatch();
     }
 
     if (hasErrors()) {
@@ -264,4 +281,60 @@ function checkModeUnlocked() {
     log("Error: Locked Greed Mode detected.");
     v.run.lockedMode = true;
   }
+}
+
+function checkVersionMismatch() {
+  if (isAcceptedVersionMismatch()) {
+    return;
+  }
+
+  const versionsMatch = doVersionsMatch();
+  if (!versionsMatch) {
+    log("Error: Version mismatch detected.");
+    log(
+      `Last version with achievement changes: ${LAST_VERSION_WITH_ACHIEVEMENT_CHANGES}`,
+    );
+    log(`Current achievements version: ${getAchievementsVersion()}`);
+    v.run.versionMismatch = true;
+  }
+}
+
+function doVersionsMatch(): boolean {
+  const achievementsVersion = getAchievementsVersion();
+
+  // The achievements version will be a blank string if the achievements were created before the
+  // achievement version tracking feature existed.
+  if (achievementsVersion === "") {
+    return false;
+  }
+
+  const correctSemanticVersion = parseSemanticVersion(
+    LAST_VERSION_WITH_ACHIEVEMENT_CHANGES,
+  );
+  if (correctSemanticVersion === undefined) {
+    error(
+      `Failed to parse the last version with achievement changes: ${LAST_VERSION_WITH_ACHIEVEMENT_CHANGES}`,
+    );
+  }
+
+  const correctMajorVersion = correctSemanticVersion.majorVersion;
+  const correctMinorVersion = correctSemanticVersion.minorVersion;
+
+  const achievementsSemanticVersion = parseSemanticVersion(achievementsVersion);
+  if (achievementsSemanticVersion === undefined) {
+    error(`Failed to parse the achievements version: ${achievementsVersion}`);
+  }
+
+  const achievementsMajorVersion = achievementsSemanticVersion.majorVersion;
+  const achievementsMinorVersion = achievementsSemanticVersion.minorVersion;
+
+  if (correctMajorVersion > achievementsMajorVersion) {
+    return false;
+  }
+
+  if (correctMinorVersion > achievementsMinorVersion) {
+    return false;
+  }
+
+  return true;
 }

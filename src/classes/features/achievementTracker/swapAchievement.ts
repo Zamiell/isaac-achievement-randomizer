@@ -1513,6 +1513,7 @@ function getSwappedUnlockPillEffect(unlock: Unlock): Unlock | undefined {
 function getSwappedUnlockHeart(unlock: Unlock): Unlock | undefined {
   const heartUnlock = unlock as HeartUnlock;
 
+  /*
   // 18
   if (!isRoomTypeUnlocked(RoomType.CLEAN_BEDROOM, false)) {
     return getUnlock(UnlockType.ROOM, RoomType.CLEAN_BEDROOM);
@@ -1522,6 +1523,7 @@ function getSwappedUnlockHeart(unlock: Unlock): Unlock | undefined {
   if (!isRoomTypeUnlocked(RoomType.DIRTY_BEDROOM, false)) {
     return getUnlock(UnlockType.ROOM, RoomType.CLEAN_BEDROOM);
   }
+  */
 
   if (isHardcoreMode()) {
     const worseHeartSubType = getWorseLockedHeartSubType(
@@ -1631,9 +1633,10 @@ const SWAPPED_UNLOCK_OTHER_FUNCTIONS = new ReadonlyMap<
   OtherUnlockKind,
   () => Unlock | undefined
 >([
+  /*
   [
     OtherUnlockKind.BEDS,
-    () => {
+    () =>
       // 18
       if (!isRoomTypeUnlocked(RoomType.CLEAN_BEDROOM, false)) {
         return getUnlock(UnlockType.ROOM, RoomType.CLEAN_BEDROOM);
@@ -1644,9 +1647,9 @@ const SWAPPED_UNLOCK_OTHER_FUNCTIONS = new ReadonlyMap<
         return getUnlock(UnlockType.ROOM, RoomType.CLEAN_BEDROOM);
       }
 
-      return undefined;
-    },
+      undefined,
   ],
+  */
 
   [
     OtherUnlockKind.BLUE_FIREPLACES,

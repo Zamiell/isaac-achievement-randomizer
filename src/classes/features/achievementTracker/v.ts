@@ -1,4 +1,3 @@
-import { version } from "../../../../package.json";
 import { RandomizerMode } from "../../../enums/RandomizerMode";
 import type { Objective } from "../../../types/Objective";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
@@ -11,7 +10,8 @@ export const v = {
     /** If `null`, the randomizer is not enabled. */
     seed: null as Seed | null,
     randomizerMode: RandomizerMode.CASUAL,
-    achievementsCreatedOnVersion: version,
+    achievementsVersion: "",
+    acceptedVersionMismatch: false,
 
     objectiveToUnlockMap: new Map<ObjectiveID, Unlock>(),
 
@@ -47,4 +47,16 @@ export function getCompletedUnlocks(): Unlock[] {
 
 export function getNumCompletedUnlocks(): int {
   return v.persistent.completedUnlocks.length;
+}
+
+export function getAchievementsVersion(): string {
+  return v.persistent.achievementsVersion;
+}
+
+export function isAcceptedVersionMismatch(): boolean {
+  return v.persistent.acceptedVersionMismatch;
+}
+
+export function setAcceptedVersionMismatch(): void {
+  v.persistent.acceptedVersionMismatch = true;
 }

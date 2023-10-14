@@ -22,7 +22,10 @@ import {
   setCollectibleUnlocked,
   setPathUnlocked,
 } from "./classes/features/AchievementTracker";
-import { isRandomizerEnabled } from "./classes/features/achievementTracker/v";
+import {
+  isRandomizerEnabled,
+  setAcceptedVersionMismatch,
+} from "./classes/features/achievementTracker/v";
 import { RandomizerMode } from "./enums/RandomizerMode";
 import { UnlockablePath, getPathName } from "./enums/UnlockablePath";
 import { mod } from "./mod";
@@ -32,6 +35,7 @@ export const MAX_SEED = 4_294_967_295;
 
 export function initConsoleCommands(): void {
   mod.addConsoleCommand("achievementRandomizer", achievementRandomizer);
+  mod.addConsoleCommand("forceWrongVersion", forceWrongVersion);
   mod.addConsoleCommand("spoilerLog", spoilerLog);
   mod.addConsoleCommand("unlockCharacter", unlockCharacter);
   mod.addConsoleCommand("unlockCollectible", unlockCollectible);
@@ -89,6 +93,11 @@ function achievementRandomizer(params: string) {
       startRandomizer(randomizerMode, seed);
     });
   });
+}
+
+function forceWrongVersion(_params: string) {
+  setAcceptedVersionMismatch();
+  restart();
 }
 
 function spoilerLog(_params: string) {

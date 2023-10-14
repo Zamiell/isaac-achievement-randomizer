@@ -18,9 +18,8 @@ OTHER POTENTIAL UNLOCKS:
 
 OTHER POTENTIAL OBJECTIVES:
 
-- survive for 2 minutes - 15 mini-bosses (we already use krampus)
-- [would need 288 objectives to reduce no damage objectives by half]
-
+- [would need ~288 objectives to reduce no damage objectives by half]
+- survive for 2 minutes - 7 sins mini-bosses + 7 super sins mini-bosses
 - forgotten unlock sequence
 - hold 99 coins
 - find both secret rooms with first two bombs used on a floor
@@ -36,38 +35,38 @@ OTHER POTENTIAL OBJECTIVES:
 - beat the game while holding Broken Shovel
 - kill a boss with just bombs (no Dr. Fetus)
 - kill a boss with just an orbital (no Gnawed Leaf)
-
-- ✅ - Isaac - Beat the game after picking up only rerolled collectibles
-- X - Magdalene - Take x instances of intentional damage (curse room doors, devil beggars, blood donation machines etc.)
-- X - Cain - You can only take consumables from chests
-- X - Judas - Beat the game after taking only one deal with the devil and not getting more than 3 hearts total
-- X - Blue Baby - Beat the game after taking all the devil deals that you see
-- ✅ - Eve - Activate Whore of Babylon in the first room and beat the game without it deactivating
-- ✅ - Samson - Beat the game with Bloody Lust being fully charged on every floor
-- X - Azazel - Beat the game while grabbing a maximum of 5 items through the entire game
-- ✅ - Lazarus - Beat the game with having transformed to Lazarus 2 on every floor
-- X - Eden - Beat the game without altering your base stats
-- ✅ - The Lost - Beat the game without using Eternal D6
-- X - Lilith - Get a familiar from Cambion Conception Twice
-- X - Keeper - Beat the game while never falling to 1 coin heart
-- X - Apollyon - Void x items
-- ✅ - Forgotten - Beat the game without using The Soul
-- X - Bethany - Beat the game while never getting your devil chance dropped via damage
-- ✅ - Jacob and Esau - Beat the game while having an equal amount of collectibles on both brothers
-- X - T.Isaac - Beat the game while holding items only from one item pool at all times
-- ✅ - T.Magdalene - Beat the game without taking damage to permanent health
-- ✅ - T.Cain - Craft the same collectible 20 times
-- X - T.Judas - Mark x objects on a single use of Dark Arts
-- X - T.Blue Baby - Kill Mom using only random poops
-- ✅ - T.Eve - Kill any final boss using Sumptorium Knife
-- X - T.Samson - Preserve berserk for x seconds
-- ✅ - T.Azazel - Kill a boss with only sneezing
-- ✅ - T.Lazarus - Beat the game without using Flip
-- ✅ - T.Eden - Beat the game after getting hit on every floor
-- ✅ - T.Lost - Beat the game without using a Holy Card
-- X - T.Lilith - Beat the game without getting any speed upgrades
-- ✅ - T.Keeper - Beat the game without buying anything from the shop
-- X - T.Apollyon - Abyss x items
-- ✅ - T.Forgotten - Beat the game without picking up the body in an active room
-- X - T.Bethany - Reach the cap of 26 Lemegeton familiars
-- ✅ - T.Jacob - Beat the game without ever using Anima Sola
+- other character objectives:
+  - ✅ - Isaac - Beat the game after picking up only rerolled collectibles
+  - X - Magdalene - Take x instances of intentional damage (curse room doors, devil beggars, blood donation machines etc.)
+  - X - Cain - You can only take consumables from chests
+  - X - Judas - Beat the game after taking only one deal with the devil and not getting more than 3 hearts total
+  - X - Blue Baby - Beat the game after taking all the devil deals that you see
+  - ✅ - Eve - Activate Whore of Babylon in the first room and beat the game without it deactivating
+  - ✅ - Samson - Beat the game with Bloody Lust being fully charged on every floor
+  - X - Azazel - Beat the game while grabbing a maximum of 5 items through the entire game
+  - ✅ - Lazarus - Beat the game with having transformed to Lazarus 2 on every floor
+  - X - Eden - Beat the game without altering your base stats
+  - ✅ - The Lost - Beat the game without using Eternal D6
+  - X - Lilith - Get a familiar from Cambion Conception Twice
+  - X - Keeper - Beat the game while never falling to 1 coin heart
+  - X - Apollyon - Void x items
+  - ✅ - Forgotten - Beat the game without using The Soul
+  - X - Bethany - Beat the game while never getting your devil chance dropped via damage
+  - ✅ - Jacob and Esau - Beat the game while having an equal amount of collectibles on both brothers
+  - X - T.Isaac - Beat the game while holding items only from one item pool at all times
+  - ✅ - T.Magdalene - Beat the game without taking damage to permanent health
+  - ✅ - T.Cain - Craft the same collectible 20 times
+  - X - T.Judas - Mark x objects on a single use of Dark Arts
+  - X - T.Blue Baby - Kill Mom using only random poops
+  - ✅ - T.Eve - Kill any final boss using Sumptorium Knife
+  - X - T.Samson - Preserve berserk for x seconds
+  - ✅ - T.Azazel - Kill a boss with only sneezing
+  - ✅ - T.Lazarus - Beat the game without using Flip
+  - ✅ - T.Eden - Beat the game after getting hit on every floor
+  - ✅ - T.Lost - Beat the game without using a Holy Card
+  - X - T.Lilith - Beat the game without getting any speed upgrades
+  - ✅ - T.Keeper - Beat the game without buying anything from the shop
+  - X - T.Apollyon - Abyss x items
+  - ✅ - T.Forgotten - Beat the game without picking up the body in an active room
+  - X - T.Bethany - Reach the cap of 26 Lemegeton familiars
+  - ✅ - T.Jacob - Beat the game without ever using Anima Sola

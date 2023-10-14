@@ -235,9 +235,9 @@ export function startRandomizer(
   v.persistent.randomizerMode = randomizerMode;
   log(`Set new randomizer mode: ${v.persistent.randomizerMode}`);
 
-  v.persistent.achievementsCreatedOnVersion = version;
+  v.persistent.achievementsVersion = version;
   log(
-    `Set new randomizer achievements version: ${v.persistent.achievementsCreatedOnVersion}`,
+    `Set new randomizer achievements version: ${v.persistent.achievementsVersion}`,
   );
 
   const renderFrameCount = Isaac.GetFrameCount();
