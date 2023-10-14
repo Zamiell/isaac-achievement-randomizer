@@ -8,6 +8,7 @@ import {
   getCharacterName,
   splitNumber,
 } from "isaacscript-common";
+import { version } from "../package.json";
 import { UNLOCKABLE_CHALLENGES } from "./arrays/unlockableChallenges";
 import { ALL_UNLOCKS } from "./arrays/unlocks";
 import { BOSS_IDS } from "./cachedEnums";
@@ -776,6 +777,16 @@ export function initDeadSeaScrolls(): void {
       noCursor: true,
       fSize: 2,
       buttons: [
+        {
+          str: "version:",
+        },
+        {
+          str: version,
+          clr: 3,
+        },
+        {
+          str: "",
+        },
         {
           str: "created by:",
         },
