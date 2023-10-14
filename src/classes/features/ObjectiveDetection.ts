@@ -3,6 +3,7 @@ import {
   BossID,
   CollectibleType,
   EntityType,
+  FallenVariant,
   LevelStage,
   LokiVariant,
   MinibossID,
@@ -18,6 +19,7 @@ import {
   ModCallbackCustom,
   ReadonlyMap,
   ReadonlySet,
+  doesEntityExist,
   game,
   getBossID,
   getEntityTypeVariantFromBossID,
@@ -26,7 +28,6 @@ import {
   getRoomSubType,
   inBeastRoom,
   inBigRoom,
-  inRoomType,
   isFirstPlayer,
   isSelfDamage,
   onAnyChallenge,
@@ -174,6 +175,20 @@ export class ObjectiveDetection extends RandomizerModFeature {
   postUseItemPause(): boolean | undefined {
     v.room.usedPause = true;
     return undefined;
+  }
+
+  // 27, 271
+  @Callback(ModCallback.POST_NPC_INIT, EntityType.URIEL)
+  postNPCInitUriel(): void {
+    const room = game.GetRoom();
+    v.room.tookDamageRoomFrame = room.GetFrameCount();
+  }
+
+  // 27, 272
+  @Callback(ModCallback.POST_NPC_INIT, EntityType.GABRIEL)
+  postNPCInitGabriel(): void {
+    const room = game.GetRoom();
+    v.room.tookDamageRoomFrame = room.GetFrameCount();
   }
 
   // 34, 370
@@ -420,6 +435,44 @@ export function getSecondsSinceLastDamage(): int | undefined {
       break;
     }
 
+    case BossIDCustom.KRAMPUS: {
+      const krampuses = getNPCs(
+        EntityType.FALLEN,
+        FallenVariant.KRAMPUS,
+        -1,
+        true,
+      );
+      const aliveBosses = krampuses.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length === 0) {
+        return;
+      }
+
+      break;
+    }
+
+    case BossIDCustom.URIEL: {
+      const uriels = getNPCs(EntityType.URIEL, -1, -1, true);
+      const aliveBosses = uriels.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length === 0) {
+        return;
+      }
+
+      break;
+    }
+
+    case BossIDCustom.GABRIEL: {
+      const gabriels = getNPCs(EntityType.GABRIEL, -1, -1, true);
+      const aliveBosses = gabriels.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length === 0) {
+        return;
+      }
+
+      break;
+    }
+
     default: {
       const [entityType, variant] = getEntityTypeVariantFromBossID(bossID);
       const bosses = getNPCs(entityType, variant, -1, true);
@@ -467,18 +520,40 @@ export function getCharacterObjectiveKindNoHit():
 }
 
 export function getModifiedBossID(): BossID | undefined {
-  // First, check for mini-bosses.
-  if (inRoomType(RoomType.MINI_BOSS)) {
-    const roomSubType = getRoomSubType();
+  const room = game.GetRoom();
+  const roomType = room.GetType();
 
-    switch (roomSubType) {
-      case MinibossID.KRAMPUS: {
-        return BossIDCustom.KRAMPUS;
+  switch (roomType) {
+    // 6
+    case RoomType.MINI_BOSS: {
+      const roomSubType = getRoomSubType();
+
+      switch (roomSubType) {
+        case MinibossID.KRAMPUS: {
+          return BossIDCustom.KRAMPUS;
+        }
+
+        default: {
+          return undefined;
+        }
+      }
+    }
+
+    // 15
+    case RoomType.ANGEL: {
+      if (doesEntityExist(EntityType.URIEL)) {
+        return BossIDCustom.URIEL;
       }
 
-      default: {
-        return undefined;
+      if (doesEntityExist(EntityType.GABRIEL)) {
+        return BossIDCustom.GABRIEL;
       }
+
+      break;
+    }
+
+    default: {
+      break;
     }
   }
 

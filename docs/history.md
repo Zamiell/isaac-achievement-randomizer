@@ -3,6 +3,12 @@
 <!-- cspell:ignore Erbear,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.1.0_ - October 13th, 2023
+
+- Purple fires are now a separate unlock.
+- Krampus is no longer an objective.
+- Uriel and Gabriel are now an objective.
+
 ### _v0.0.7_ - October 13th, 2023
 
 - Purple fires are now locked behind the blue fire unlock.

@@ -1,5 +1,6 @@
 TODO:
 
+- purple fire behind separate unlock, uriel + gab
 - checkboxes for banned items
 
 ------------------------------

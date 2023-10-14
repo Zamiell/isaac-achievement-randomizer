@@ -1622,7 +1622,23 @@ const SWAPPED_UNLOCK_OTHER_FUNCTIONS = new ReadonlyMap<
   () => Unlock | undefined
 >([
   [
-    OtherUnlockKind.BLUE_PURPLE_FIREPLACES,
+    OtherUnlockKind.BLUE_FIREPLACES,
+    () => {
+      if (
+        isHardcoreMode() &&
+        !isOtherUnlockKindUnlocked(OtherUnlockKind.PURPLE_FIREPLACES, false)
+      ) {
+        return getUnlock(UnlockType.OTHER, OtherUnlockKind.PURPLE_FIREPLACES);
+      }
+
+      return isHeartSubTypeUnlocked(HeartSubType.SOUL, false)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.SOUL);
+    },
+  ],
+
+  [
+    OtherUnlockKind.PURPLE_FIREPLACES,
     () =>
       isHeartSubTypeUnlocked(HeartSubType.SOUL, false)
         ? undefined

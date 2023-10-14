@@ -347,7 +347,11 @@ export function canGetToBoss(
   reachableBossesSet: Set<BossID>,
   forRun: boolean,
 ): boolean {
-  if (bossID === BossIDCustom.KRAMPUS) {
+  if (
+    bossID === BossIDCustom.KRAMPUS ||
+    bossID === BossIDCustom.URIEL ||
+    bossID === BossIDCustom.GABRIEL
+  ) {
     return true;
   }
 

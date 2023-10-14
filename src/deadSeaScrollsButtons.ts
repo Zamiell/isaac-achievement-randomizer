@@ -8,7 +8,6 @@ import {
   MAIN_CHARACTERS,
   getBatteryName,
   getBombName,
-  getBossName,
   getCardName,
   getChallengeName,
   getCharacterName,
@@ -91,6 +90,7 @@ import {
   getCompletedUnlocks,
 } from "./classes/features/achievementTracker/v";
 import { getAltFloorName } from "./enums/AltFloor";
+import { getBossNameCustom } from "./enums/BossIDCustom";
 import {
   CharacterObjectiveKind,
   getCharacterObjectiveKindName,
@@ -257,7 +257,7 @@ export function getSpecificBossObjectiveButtons(
       continue;
     }
 
-    let bossName = getBossName(bossID).toLowerCase();
+    let bossName = getBossNameCustom(bossID).toLowerCase();
     if (bossID === BossID.MAUSOLEUM_MOMS_HEART) {
       bossName = "mom's heart (maus.)"; // cspell:ignore maus
     }

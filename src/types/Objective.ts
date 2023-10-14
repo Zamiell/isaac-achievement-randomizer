@@ -3,12 +3,12 @@ import { BossID } from "isaac-typescript-definitions";
 import type { CompositionTypeSatisfiesEnum } from "isaacscript-common";
 import {
   assertDefined,
-  getBossName,
   getChallengeName,
   getCharacterName,
   isEnumValue,
 } from "isaacscript-common";
 import { IS_DEV } from "../constants";
+import { getBossNameCustom } from "../enums/BossIDCustom";
 import {
   CharacterObjectiveKind,
   getCharacterObjectiveKindName,
@@ -168,7 +168,7 @@ export function getObjectiveText(objective: Objective): string[] {
     }
 
     case ObjectiveType.BOSS: {
-      const bossName = getBossName(objective.bossID);
+      const bossName = getBossNameCustom(objective.bossID);
       return [
         "No hit",
         bossName,
