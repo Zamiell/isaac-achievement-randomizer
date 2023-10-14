@@ -3,7 +3,7 @@
 <!-- cspell:ignore Erbear,slvn -->
 <!-- markdownlint-disable MD001 -->
 
-### _v0.2.0_ - October 14th, 2023 (Unreleased)
+### _v0.2.0_ - October 14th, 2023
 
 - Added the following objectives:
   - Ultra Pride
