@@ -2,6 +2,11 @@
 
 <!-- markdownlint-disable MD001 -->
 
-### _v1.0.0_ - October ?th, 2023
+### _v0.0.3_ - October 13th, 2023
+
+- The pause prevention and save & quit prevention features are removed.
+- A feature is added to prevent multiplayer.
+
+### _v0.0.1_ - October 13th, 2023
 
 - The initial version of the mod is released on the Steam Workshop.
