@@ -44,7 +44,35 @@ export class NPCRemoval extends RandomizerModFeature {
   ):
     | [entityType: EntityType, variant: int, subType: int, initSeed: Seed]
     | undefined {
-    return isOtherUnlockKindUnlocked(OtherUnlockKind.BLUE_FIREPLACES, true)
+    return isOtherUnlockKindUnlocked(
+      OtherUnlockKind.BLUE_PURPLE_FIREPLACES,
+      true,
+    )
+      ? undefined
+      : [EntityType.FIREPLACE, FireplaceVariant.NORMAL, 0, initSeed];
+  }
+
+  // 33.3
+  @CallbackCustom(
+    ModCallbackCustom.PRE_ENTITY_SPAWN_FILTER,
+    EntityType.FIREPLACE,
+    FireplaceVariant.PURPLE,
+  )
+  preEntitySpawnPurpleFire(
+    _entityType: EntityType,
+    _variant: int,
+    _subType: int,
+    _position: Vector,
+    _velocity: Vector,
+    _spawner: Entity | undefined,
+    initSeed: Seed,
+  ):
+    | [entityType: EntityType, variant: int, subType: int, initSeed: Seed]
+    | undefined {
+    return isOtherUnlockKindUnlocked(
+      OtherUnlockKind.BLUE_PURPLE_FIREPLACES,
+      true,
+    )
       ? undefined
       : [EntityType.FIREPLACE, FireplaceVariant.NORMAL, 0, initSeed];
   }

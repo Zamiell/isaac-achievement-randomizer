@@ -1,8 +1,5 @@
 TODO:
 
-- sisters vis both must be alive for objective
-- purple fire unlock
-
 - checkboxes for banned items
 
 ------------------------------

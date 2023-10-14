@@ -1622,7 +1622,7 @@ const SWAPPED_UNLOCK_OTHER_FUNCTIONS = new ReadonlyMap<
   () => Unlock | undefined
 >([
   [
-    OtherUnlockKind.BLUE_FIREPLACES,
+    OtherUnlockKind.BLUE_PURPLE_FIREPLACES,
     () =>
       isHeartSubTypeUnlocked(HeartSubType.SOUL, false)
         ? undefined
