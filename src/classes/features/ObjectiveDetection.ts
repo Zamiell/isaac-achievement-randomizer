@@ -184,10 +184,17 @@ export class ObjectiveDetection extends RandomizerModFeature {
     addObjective(objective);
   }
 
+  // 68, 71
+  @Callback(ModCallback.POST_ENTITY_KILL, EntityType.FISTULA_BIG)
+  postEntityKillFistulaBig(): void {
+    const room = game.GetRoom();
+    v.room.tookDamageRoomFrame = room.GetFrameCount();
+  }
+
   // 70
   @Callback(ModCallback.PRE_SPAWN_CLEAR_AWARD)
   preSpawnClearAward(): boolean | undefined {
-    objectiveDetectionPostRoomCleared();
+    objectiveDetectionPreSpawnClearAward();
     return undefined;
   }
 
@@ -226,7 +233,7 @@ export class ObjectiveDetection extends RandomizerModFeature {
   }
 }
 
-export function objectiveDetectionPostRoomCleared(): void {
+export function objectiveDetectionPreSpawnClearAward(): void {
   const room = game.GetRoom();
   const roomType = room.GetType();
   const player = Isaac.GetPlayer();
