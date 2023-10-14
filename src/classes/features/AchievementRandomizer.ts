@@ -355,6 +355,7 @@ export function canGetToBoss(
 ): boolean {
   // First, handle custom bosses.
   if (
+    bossID === BossIDCustom.ULTRA_PRIDE ||
     bossID === BossIDCustom.KRAMPUS ||
     bossID === BossIDCustom.URIEL ||
     bossID === BossIDCustom.GABRIEL

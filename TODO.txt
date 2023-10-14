@@ -1,7 +1,5 @@
 TODO:
 
-- version warning
-
 - go through no hit exceptions
 - option for suppress 2 min achievement until room is cleared
 - flipped rooms
