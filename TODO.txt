@@ -5,6 +5,11 @@ TODO:
 - flipped rooms
 - checkboxes for banned items
 
+- nightmare mode:  hardcore but also:
+  - full heart damage from all sources
+  - all enemies are champions without any drops
+  - breakfast item do not spawn
+
 ------------------------------
 
 OTHER POTENTIAL UNLOCKS:

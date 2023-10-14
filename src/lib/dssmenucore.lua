@@ -2283,7 +2283,7 @@ function dssmenucore.init(DSSModName, v)
 
             local keybind = DeadSeaScrollsMenu.GetMenuKeybindSetting()
             local keybindText = string.upper(inputButtonNames[keybind])
-            local text = "Press [" .. keybindText .. "] to open Dead Sea Scrolls Menu"
+            local text = "Press [" .. keybindText .. "] to open Achievement Randomizer Menu"
             hintFont:DrawStringScaled(
                 text,
                 (Isaac.GetScreenWidth() / 2) - (hintFont:GetStringWidth(text) / 2),
