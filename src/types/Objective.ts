@@ -186,7 +186,7 @@ export function getObjectiveText(objective: Objective): string[] {
 
 function getNumMinutesForBossObjective(bossID: BossID): int {
   if (IS_DEV) {
-    return 0.02;
+    return 0.05;
   }
 
   switch (bossID) {

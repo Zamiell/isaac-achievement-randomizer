@@ -3,10 +3,17 @@
 <!-- cspell:ignore Erbear,slvn -->
 <!-- markdownlint-disable MD001 -->
 
-### _v0.1.1_ - October 13th, 2023 (Unreleased)
+### _v0.2.0_ - October 14th, 2023 (Unreleased)
 
+- Each of the 4 ultra horseman are now an objective.
+- Krampus is now an objective.
+- Chest unlocks are revamped such that no chests start out unlocked and all chests are unlockable (including spiked/mimics).
+- Locked chests are now converted to pennies.
+- Clean bedrooms and dirty bedrooms are now unlocks. (They unlocks before the first heart or bed.)
 - Locked quest collectibles are now deleted (instead of being replaced with Breakfast).
 - Fixed the bug where Hush's objective would not trigger properly.
+- Fixed the bug where Dogma's timer did not work properly.
+- Fixed the bug where The Beast's timer did not work properly.
 
 ### _v0.1.0_ - October 13th, 2023
 

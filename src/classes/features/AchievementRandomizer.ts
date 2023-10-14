@@ -34,6 +34,7 @@ import {
   setRunSeed,
   setUnseeded,
 } from "isaacscript-common";
+import { version } from "../../../package.json";
 import { getAchievementsForRNG } from "../../achievementAssignment";
 import { ALL_OBJECTIVES } from "../../arrays/objectives";
 import { ALL_UNLOCKS } from "../../arrays/unlocks";
@@ -224,15 +225,20 @@ export function startRandomizer(
   randomizerMode: RandomizerMode,
   seed: Seed | undefined,
 ): void {
-  v.persistent.randomizerMode = randomizerMode;
-  log(`Set new randomizer mode: ${v.persistent.randomizerMode}`);
-
   if (seed === undefined) {
     seed = getRandomSeed();
   }
 
   v.persistent.seed = seed;
   log(`Set new randomizer seed: ${v.persistent.seed}`);
+
+  v.persistent.randomizerMode = randomizerMode;
+  log(`Set new randomizer mode: ${v.persistent.randomizerMode}`);
+
+  v.persistent.achievementsCreatedOnVersion = version;
+  log(
+    `Set new randomizer achievements version: ${v.persistent.achievementsCreatedOnVersion}`,
+  );
 
   const renderFrameCount = Isaac.GetFrameCount();
 
@@ -347,12 +353,22 @@ export function canGetToBoss(
   reachableBossesSet: Set<BossID>,
   forRun: boolean,
 ): boolean {
+  // First, handle custom bosses.
   if (
     bossID === BossIDCustom.KRAMPUS ||
     bossID === BossIDCustom.URIEL ||
     bossID === BossIDCustom.GABRIEL
   ) {
     return true;
+  }
+
+  if (
+    bossID === BossIDCustom.ULTRA_FAMINE ||
+    bossID === BossIDCustom.ULTRA_PESTILENCE ||
+    bossID === BossIDCustom.ULTRA_WAR ||
+    bossID === BossIDCustom.ULTRA_DEATH
+  ) {
+    return isPathUnlocked(UnlockablePath.ASCENT, forRun);
   }
 
   if (!isStoryBossID(bossID)) {

@@ -5,6 +5,8 @@ export const UNLOCKABLE_ROOM_TYPES = [
   RoomType.CURSE, // 10
   RoomType.LIBRARY, // 12
   RoomType.SACRIFICE, // 13
+  RoomType.CLEAN_BEDROOM, // 18
+  RoomType.DIRTY_BEDROOM, // 19
   RoomType.VAULT, // 20
   RoomType.DICE, // 21 (uncomment if one more unlock is needed)
   RoomType.PLANETARIUM, // 24
@@ -19,5 +21,3 @@ export const UNLOCKABLE_ROOM_TYPES = [
 // - Secret Rooms
 // - Super Secret Rooms
 // - Ultra Secret Rooms
-// - Clean Bedrooms
-// - Dirty Bedrooms

@@ -203,10 +203,12 @@ The following room types start out locked:
 
 - Arcade (#9) (unlocks before first slot machine)
 - Curse Room (#10) (unlocks before first Curse Room collectible)
-- Library Room (#12) (unlocks before first book collectible)
+- Library (#12) (unlocks before first book collectible)
 - Sacrifice Room (#13) (unlocks before first Angel Room collectible)
+- Clean Bedroom (#18) (unlocks before first heart or bed)
+- Dirty Bedroom (#19) (unlocks before first heart or bed)
 - Vault (#20) (unlocks before first golden chest collectible)
-- Dice Room (#21) (unlocks before first dice collectible/trinket)
+- Dice Room (#21) (unlocks before first dice collectible/trinket/card)
 - Planetarium (#24) (unlocks before first Planetarium collectible)
 
 ### Challenges (44)
@@ -225,9 +227,7 @@ Every collectible in the game is locked, with the following exceptions:
   - Mom's Underwear (#29) (range)
   - Wire Coat Hanger (#32) (tears)
   - Cat-O-Nine-Tails (#165) (damage)
-- Quest collectibles (except for The Polaroid and the Negative):
-  - Key Piece 1 (#238)
-  - Key Piece 2 (#239)
+- Quest collectibles (except for the ones relating to the unlockable paths above):
   - Broken Shovel (#550)
   - Broken Shovel (#551)
   - Mom's Shovel (#552)
@@ -284,20 +284,20 @@ If no cards/runes are unlocked, they will be converted to pennies.
 
 Every pill effect in the game is locked. If no pill effects are unlocked, pills will be converted to pennies.
 
-### Other Pickups (35)
+### Other Pickups (38)
 
-- Only half red heart pickups start out unlocked. Every other heart pickup in the game is locked. (11)
-- Only pennies start out unlocked. Every other coin in the game is locked. (6)
-- Only normal bomb pickups start out unlocked. Every other bomb pickup in the game is locked. (2)
-- Only normal key pickups start out unlocked. Every other key pickup in the game is locked. (3)
-- Every battery type in the game is locked. Non-unlocked batteries are converted to pennies. (4)
-- Every sack type in the game is locked. Non-unlocked sacks are converted to pennies. (2)
-- Only normal chests start out unlocked. Every other chest type in the game is locked, except for Spiked Chests and Mimic Chests. (7)
+- Only half red heart pickups start out unlocked. Every other heart pickup in the game is locked. Locked hearts are converted to half red hearts. (11)
+- Only pennies start out unlocked. Every other coin in the game is locked. Locked coins are converted to pennies. (6)
+- Only normal bomb pickups start out unlocked. Every other bomb pickup in the game is locked. Locked bombs are converted to normal bombs. (2)
+- Only normal key pickups start out unlocked. Every other key pickup in the game is locked. Locked keys are converted to normal keys. (3)
+- Every battery type in the game is locked. Locked batteries are converted to pennies. (4)
+- Every sack type in the game is locked. Locked sacks are converted to pennies. (2)
+- Every chest type in the game is locked. Locked chests are converted to pennies. (10)
   - Old Chests and Mom's Chest are not unlockable since those chests do not randomly spawn.
 
 ### Slots (15)
 
-Every slot entity (e.g. machines and beggars) is locked behind a random objective. Non-unlocked slot entities are removed.
+Every slot entity (e.g. machines and beggars) is locked behind a random objective. Locked slot entities are removed.
 
 ### Grid Entities (13)
 
@@ -331,7 +331,7 @@ The following other things start out locked:
 
 ### Total Unlocks
 
-There are 33 + 10 + 11 + 7 + 44 + 694 + 185 + 95 + 50 + 35 + 15 + 13 + 7 = 1199 unlocks in total.
+There are 33 + 10 + 11 + 7 + 44 + 694 + 185 + 95 + 50 + 38 + 15 + 13 + 7 = 1202 unlocks in total.
 
 <br>
 
@@ -386,6 +386,10 @@ In hardcore mode, we want to prevent the situation where you unlock powerful ite
   - Grab Bag
   - Black Sack
 - Chests will unlock in the following order:
+  - Spiked Chest
+  - Mimic Chest
+  - Haunted Chest
+  - Chest
   - Locked Chest
   - Bomb Chest
   - Red Chest

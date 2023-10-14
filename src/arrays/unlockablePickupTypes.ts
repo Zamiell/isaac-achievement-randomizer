@@ -63,16 +63,16 @@ export const UNLOCKABLE_SACK_SUB_TYPES = [
 ] as const;
 
 export const UNLOCKABLE_CHEST_PICKUP_VARIANTS = [
+  PickupVariant.SPIKED_CHEST, // 52
+  PickupVariant.MIMIC_CHEST, // 54
   PickupVariant.HAUNTED_CHEST, // 58
+  PickupVariant.CHEST, // 50
   PickupVariant.LOCKED_CHEST, // 60
   PickupVariant.BOMB_CHEST, // 51
   PickupVariant.RED_CHEST, // 360
   PickupVariant.ETERNAL_CHEST, // 53
   PickupVariant.WOODEN_CHEST, // 56
   PickupVariant.MEGA_CHEST, // 57
-  // - `PickupVariant.CHEST` (50) is always unlocked.
-  // - `PickupVariant.SPIKED_CHEST` (52) is always unlocked.
-  // - `PickupVariant.MIMIC_CHEST` (54) is always unlocked.
   // - `PickupVariant.OLD_CHEST` (55) is always unlocked (since it does not randomly spawn).
   // - `PickupVariant.MOMS_CHEST` (390) is always unlocked (since it does not randomly spawn).
 ] as const;

@@ -1,3 +1,4 @@
+import { version } from "../../../../package.json";
 import { RandomizerMode } from "../../../enums/RandomizerMode";
 import type { Objective } from "../../../types/Objective";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
@@ -10,6 +11,7 @@ export const v = {
     /** If `null`, the randomizer is not enabled. */
     seed: null as Seed | null,
     randomizerMode: RandomizerMode.CASUAL,
+    achievementsCreatedOnVersion: version,
 
     objectiveToUnlockMap: new Map<ObjectiveID, Unlock>(),
 

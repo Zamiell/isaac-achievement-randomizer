@@ -1,9 +1,9 @@
 TODO:
 
-- go through no hit exceptions
-- chests replaced with coins
-- suppress 2 min achievement until room is cleared
+- version warning
 
+- go through no hit exceptions
+- option for suppress 2 min achievement until room is cleared
 - flipped rooms
 - checkboxes for banned items
 
@@ -19,7 +19,7 @@ OTHER POTENTIAL UNLOCKS:
 OTHER POTENTIAL OBJECTIVES:
 
 - survive for 2 minutes - 4 ultra horsemen
-- survive for 2 minutes - 15 mini-bosses + 2 angels (we already use krampus)
+- survive for 2 minutes - 16 mini-bosses
 - [would need 288 objectives to reduce no damage objectives by half]
 
 - forgotten unlock sequence

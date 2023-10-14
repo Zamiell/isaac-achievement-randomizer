@@ -26,5 +26,6 @@ export const DICE_TRINKETS = new ReadonlySet<TrinketType>([
 ]);
 
 export const DICE_CARDS = new ReadonlySet<CardType>([
+  CardType.DICE_SHARD, // 49
   CardType.REVERSE_WHEEL_OF_FORTUNE, // 66
 ]);

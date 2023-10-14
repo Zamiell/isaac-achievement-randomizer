@@ -7,7 +7,6 @@ import type {
 import {
   BombSubType,
   CardType,
-  ChestSubType,
   CoinSubType,
   CollectibleType,
   HeartSubType,
@@ -209,8 +208,6 @@ export class PickupRemoval extends RandomizerModFeature {
   // 34, 100
   @Callback(ModCallback.POST_PICKUP_INIT, PickupVariant.COLLECTIBLE)
   postPickupInitCollectible(pickup: EntityPickup): void {
-    Isaac.DebugString(`GETTING HERE - POST_PICKUP_INIT - ${pickup.SubType}`);
-
     const collectible = pickup as EntityPickupCollectible;
     if (
       !isCollectibleTypeUnlocked(collectible.SubType, true) ||
@@ -275,7 +272,7 @@ export class PickupRemoval extends RandomizerModFeature {
 
     return isChestPickupVariantUnlocked(pickupVariant, true)
       ? undefined
-      : [PickupVariant.CHEST, ChestSubType.CLOSED];
+      : [PickupVariant.COIN, CoinSubType.PENNY];
   }
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)

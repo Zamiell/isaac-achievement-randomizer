@@ -1,5 +1,6 @@
 import type { DamageFlag } from "isaac-typescript-definitions";
 import {
+  BeastVariant,
   BossID,
   CollectibleType,
   EntityType,
@@ -117,6 +118,7 @@ const v = {
     usedPause: false,
     onFirstPhaseOfIsaac: true,
     onFirstPhaseOfHush: true,
+    beastAppeared: false,
   },
 };
 
@@ -141,6 +143,22 @@ export class ObjectiveDetection extends RandomizerModFeature {
   postNPCUpdateHush(): void {
     if (v.room.onFirstPhaseOfHush) {
       v.room.onFirstPhaseOfHush = false;
+
+      const room = game.GetRoom();
+      v.room.tookDamageRoomFrame = room.GetFrameCount();
+    }
+  }
+
+  // 0, 102
+  @CallbackCustom(
+    ModCallbackCustom.POST_NPC_UPDATE_FILTER,
+    EntityType.BEAST,
+    BeastVariant.BEAST,
+  )
+  postNPCUpdateBeast(npc: EntityNPC): void {
+    // The Beast is in state `NPCState.SPECIAL` (16) when off-screen.
+    if (!v.room.beastAppeared && npc.State === NPCState.SPECIAL) {
+      v.room.beastAppeared = true;
 
       const room = game.GetRoom();
       v.room.tookDamageRoomFrame = room.GetFrameCount();
@@ -188,6 +206,57 @@ export class ObjectiveDetection extends RandomizerModFeature {
   // 27, 272
   @Callback(ModCallback.POST_NPC_INIT, EntityType.GABRIEL)
   postNPCInitGabriel(): void {
+    const room = game.GetRoom();
+    v.room.tookDamageRoomFrame = room.GetFrameCount();
+  }
+
+  // 27, 950
+  @Callback(ModCallback.POST_NPC_INIT, EntityType.DOGMA)
+  postNPCInitDogma(): void {
+    const room = game.GetRoom();
+    v.room.tookDamageRoomFrame = room.GetFrameCount();
+  }
+
+  // 27, 951, 10
+  @CallbackCustom(
+    ModCallbackCustom.POST_NPC_INIT_FILTER,
+    EntityType.BEAST,
+    BeastVariant.ULTRA_FAMINE,
+  )
+  postNPCInitUltraFamine(): void {
+    const room = game.GetRoom();
+    v.room.tookDamageRoomFrame = room.GetFrameCount();
+  }
+
+  // 27, 951, 20
+  @CallbackCustom(
+    ModCallbackCustom.POST_NPC_INIT_FILTER,
+    EntityType.BEAST,
+    BeastVariant.ULTRA_PESTILENCE,
+  )
+  postNPCInitUltraPestilence(): void {
+    const room = game.GetRoom();
+    v.room.tookDamageRoomFrame = room.GetFrameCount();
+  }
+
+  // 27, 951, 30
+  @CallbackCustom(
+    ModCallbackCustom.POST_NPC_INIT_FILTER,
+    EntityType.BEAST,
+    BeastVariant.ULTRA_WAR,
+  )
+  postNPCInitUltraWar(): void {
+    const room = game.GetRoom();
+    v.room.tookDamageRoomFrame = room.GetFrameCount();
+  }
+
+  // 27, 951, 40
+  @CallbackCustom(
+    ModCallbackCustom.POST_NPC_INIT_FILTER,
+    EntityType.BEAST,
+    BeastVariant.ULTRA_DEATH,
+  )
+  postNPCInitUltraDeath(): void {
     const room = game.GetRoom();
     v.room.tookDamageRoomFrame = room.GetFrameCount();
   }
@@ -436,6 +505,17 @@ export function getSecondsSinceLastDamage(): int | undefined {
       break;
     }
 
+    // 100
+    case BossID.BEAST: {
+      // The Beast is in state `NPCState.SPECIAL` (16) when off-screen.
+      const beasts = getNPCs(EntityType.BEAST, BeastVariant.BEAST, -1, true);
+      if (beasts.some((beast) => beast.State === NPCState.SPECIAL)) {
+        return;
+      }
+
+      break;
+    }
+
     case BossIDCustom.KRAMPUS: {
       const krampuses = getNPCs(
         EntityType.FALLEN,
@@ -466,6 +546,70 @@ export function getSecondsSinceLastDamage(): int | undefined {
     case BossIDCustom.GABRIEL: {
       const gabriels = getNPCs(EntityType.GABRIEL, -1, -1, true);
       const aliveBosses = gabriels.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length === 0) {
+        return;
+      }
+
+      break;
+    }
+
+    case BossIDCustom.ULTRA_FAMINE: {
+      const ultraHorsemen = getNPCs(
+        EntityType.BEAST,
+        BeastVariant.ULTRA_FAMINE,
+        -1,
+        true,
+      );
+      const aliveBosses = ultraHorsemen.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length === 0) {
+        return;
+      }
+
+      break;
+    }
+
+    case BossIDCustom.ULTRA_PESTILENCE: {
+      const ultraHorsemen = getNPCs(
+        EntityType.BEAST,
+        BeastVariant.ULTRA_PESTILENCE,
+        -1,
+        true,
+      );
+      const aliveBosses = ultraHorsemen.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length === 0) {
+        return;
+      }
+
+      break;
+    }
+
+    case BossIDCustom.ULTRA_WAR: {
+      const ultraHorsemen = getNPCs(
+        EntityType.BEAST,
+        BeastVariant.ULTRA_WAR,
+        -1,
+        true,
+      );
+      const aliveBosses = ultraHorsemen.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length === 0) {
+        return;
+      }
+
+      break;
+    }
+
+    case BossIDCustom.ULTRA_DEATH: {
+      const ultraHorsemen = getNPCs(
+        EntityType.BEAST,
+        BeastVariant.ULTRA_DEATH,
+        -1,
+        true,
+      );
+      const aliveBosses = ultraHorsemen.filter((boss) => !boss.IsDead());
 
       if (aliveBosses.length === 0) {
         return;
@@ -548,6 +692,27 @@ export function getModifiedBossID(): BossID | undefined {
 
       if (doesEntityExist(EntityType.GABRIEL)) {
         return BossIDCustom.GABRIEL;
+      }
+
+      break;
+    }
+
+    // 16
+    case RoomType.DUNGEON: {
+      if (doesEntityExist(EntityType.BEAST, BeastVariant.ULTRA_FAMINE)) {
+        return BossIDCustom.ULTRA_FAMINE;
+      }
+
+      if (doesEntityExist(EntityType.BEAST, BeastVariant.ULTRA_PESTILENCE)) {
+        return BossIDCustom.ULTRA_PESTILENCE;
+      }
+
+      if (doesEntityExist(EntityType.BEAST, BeastVariant.ULTRA_WAR)) {
+        return BossIDCustom.ULTRA_WAR;
+      }
+
+      if (doesEntityExist(EntityType.BEAST, BeastVariant.ULTRA_DEATH)) {
+        return BossIDCustom.ULTRA_DEATH;
       }
 
       break;
