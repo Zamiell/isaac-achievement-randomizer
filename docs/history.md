@@ -5,8 +5,9 @@
 
 ### _v0.0.7_ - October 13th, 2023
 
+- Purple fires are now locked behind the blue fire unlock.
 - Glitched collectibles are now removed. (Thanks slvn)
-- !Sisters Vis must now both be alive in order to accomplish the objective.
+- Sisters Vis must now both be alive in order to accomplish the objective.
 - Fixed the bug where the Fistula and Teratoma boss timers were not working properly.
 
 ### _v0.0.6_ - October 13th, 2023
