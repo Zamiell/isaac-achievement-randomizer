@@ -12,6 +12,7 @@ import {
   ModCallbackCustom,
   ModFeature,
   PriorityCallbackCustom,
+  VectorZero,
   anyEasterEggEnabled,
   emptyRoomGridEntities,
   game,
@@ -20,6 +21,7 @@ import {
   getCollectibleName,
   isRepentance,
   log,
+  newSprite,
   onAnyChallenge,
   onVictoryLap,
   parseSemanticVersion,
@@ -44,6 +46,8 @@ import {
 } from "./achievementTracker/v";
 import { hasErrors, v } from "./checkErrors/v";
 
+const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
+
 const INCOMPLETE_SAVE_COLLECTIBLE_TO_CHECK = CollectibleType.DEATH_CERTIFICATE;
 const INCOMPLETE_SAVE_ITEM_POOL_TO_CHECK = ItemPoolType.SECRET;
 
@@ -58,14 +62,17 @@ export class CheckErrors extends ModFeature {
   // 2
   @Callback(ModCallback.POST_RENDER)
   postRender(): void {
-    if (ModConfigMenu !== undefined && ModConfigMenu.IsVisible) {
-      return;
-    }
+    this.checkDrawBlackSprite();
+    this.checkDrawErrorText();
+  }
 
-    if (DeadSeaScrollsMenu !== undefined && DeadSeaScrollsMenu.IsOpen()) {
-      return;
+  checkDrawBlackSprite(): void {
+    if (hasErrors()) {
+      BLACK_SPRITE.Render(VectorZero);
     }
+  }
 
+  checkDrawErrorText(): void {
     if (v.run.afterbirthPlus) {
       this.drawErrorText(
         `You must have the Repentance DLC installed in order to use ${MOD_NAME}.`,
@@ -167,6 +174,12 @@ export class CheckErrors extends ModFeature {
     if (hasErrors()) {
       removeAllDoors();
       emptyRoomGridEntities(); // For Greed Mode.
+
+      const hud = game.GetHUD();
+      hud.SetVisible(false);
+
+      const player = Isaac.GetPlayer();
+      player.AddControlsCooldown(1_000_000_000);
     }
   }
 }
