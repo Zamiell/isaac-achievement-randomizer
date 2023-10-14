@@ -411,15 +411,21 @@ The mod includes an on-screen timer, similar to the [Racing+](https://isaacracin
 
 Unlike the timer in Racing+, the timer in this mod tracks in-game time. Thus, the timer will be paused when the game is paused or when you are in the main menu.
 
-### Donation Machine Removal
+### Gameplay Removals
+
+#### Donation Machine Removal
 
 - The mod removes all Donation Machines from the game in order to increase the difficulty and prevent individual runs from influencing each other. (Eden's Blessing is removed from the game for the same reason.)
 - Greed Donation Machines are also removed because they serve no purpose in this mod.
 - The Karma trinket is removed from the game because it would serve no purpose.
 
-### Void Portal Deletion
+#### Void Portal Deletion
 
 The mod deletes all Void Portals outside of the Blue Womb. This is both a balance change (since it slightly increases the difficulty of Delirium) and a quality of life fix (since players can no longer accidentally enter a Void Portal and lose their streak).
+
+#### Glitched Item Removal
+
+Glitched items are removed for the same reason that TMTRAINER is.
 
 ### Chill Room
 
@@ -432,13 +438,6 @@ The mod provides several custom [console commands](https://bindingofisaacrebirth
 - `achievementRandomizer [mode] [seed]` - Starts a new playthrough using the specified seed. For example: `achievementRandomizer hardcore 12345`
 - `spoilerLog` - Writes out a spoiler log to the "log.txt" file. Note that the unlocks may not be accurate, since the mod swaps an unlock if it detects that you should not get it yet.
 
-### Other Miscellaneous Quality of Life Improvements
-
-- <!-- "ui_hearts.png" --> The heart UI sprites have been slightly modified so that it is easier to see an empty heart container on a black background.
-- <!-- SilenceMomDad --> The audio clips of mom and dad on the Ascent are silenced.
-- <!-- ForceFadedConsoleDisplay --> The "faded console display" feature is automatically enabled in the "options.ini" file, which allows you to visually see when an error in the game happens. Please report bugs to the developers in [the Discord server](https://discord.gg/GwhUeQjHTF).
-- <!-- PreventVictoryLapPopup --> Victory Laps and the "Rerun" feature on the main menu are banned for the same reason that R Key is. As a quality of life fix, the Victory Lap popup will no longer appear after defeating The Lamb.
-
 ### Crash & Softlock Prevention
 
 This mod attempts to fix as many vanilla crashes & softlocks as possible. The following situations are fixed:
@@ -450,6 +449,13 @@ Portals from Lil' Portal that leads to invalid rooms will automatically be remov
 #### Mega Mush + Lucky Pennies
 
 Lucky Pennies are automatically converted to normal pennies while the Mega Mush effect is active.
+
+### Other Miscellaneous Quality of Life Improvements
+
+- <!-- "ui_hearts.png" --> The heart UI sprites have been slightly modified so that it is easier to see an empty heart container on a black background.
+- <!-- SilenceMomDad --> The audio clips of mom and dad on the Ascent are silenced.
+- <!-- ForceFadedConsoleDisplay --> The "faded console display" feature is automatically enabled in the "options.ini" file, which allows you to visually see when an error in the game happens. Please report bugs to the developers in [the Discord server](https://discord.gg/GwhUeQjHTF).
+- <!-- PreventVictoryLapPopup --> Victory Laps and the "Rerun" feature on the main menu are banned for the same reason that R Key is. As a quality of life fix, the Victory Lap popup will no longer appear after defeating The Lamb.
 
 <br>
 
@@ -467,7 +473,7 @@ In this directory, there will be either a "save1.dat", "save2.dat", or "save3.da
 
 It is important that you backup this file after every run.
 
-### Why does the mod take so long to randomize the achievements at the beginning of a playthrough? What do "attempts" mean on the black screen?
+### Why does the mod take so long to randomize the achievements at the beginning of a playthrough?
 
 When you start a new randomizer playthrough, the mod assigns each objective to a random unlock. However, not all assignments are valid. For example, the mod might have randomly assigned the objective of "beat challenge #3" to the unlock of "unlock challenge #3". In this case, the playthrough seed would be unbeatable!
 

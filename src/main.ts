@@ -25,6 +25,7 @@ import { PickupRemoval } from "./classes/features/PickupRemoval";
 import { PillRemoval } from "./classes/features/PillRemoval";
 import { PreventVictoryLapPopup } from "./classes/features/PreventVictoryLapPopup";
 import { RemoveDonationMachines } from "./classes/features/RemoveDonationMachines";
+import { RemoveGlitchedItems } from "./classes/features/RemoveGlitchedItems";
 import { RoomRemoval } from "./classes/features/RoomRemoval";
 import { SilenceMomDad } from "./classes/features/SilenceMomDad";
 import { SlotRemoval } from "./classes/features/SlotRemoval";
@@ -62,6 +63,7 @@ const MOD_FEATURES = [
   PillRemoval,
   PreventVictoryLapPopup,
   RemoveDonationMachines,
+  RemoveGlitchedItems,
   RoomRemoval,
   SilenceMomDad,
   SlotRemoval,

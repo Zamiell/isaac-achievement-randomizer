@@ -1,5 +1,10 @@
 TODO:
 
+- purple fire unlock
+- teratoma timer is bugged when splitting into 4
+- sisters vis both must be alive for objective
+- poly splitting boss must be split into 2
+
 - checkboxes for banned items
 
 ------------------------------
