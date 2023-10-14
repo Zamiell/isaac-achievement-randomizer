@@ -395,17 +395,17 @@ In hardcore mode, we want to prevent the situation where you unlock powerful ite
 
 ## Other Features
 
-### Dead Sea Scrolls Integration
+### Dead Sea Scrolls Integration <!-- deadSeaScrolls.ts -->
 
 The mod comes with an in-game menu called _Dead Sea Scrolls_. (This is the same menu that is used in other mods, like [_Fiend Folio_](https://steamcommunity.com/sharedfiles/filedetails/?id=2851063440).) You can open the menu by pressing `c` after starting a run.
 
 The menu will show you how many objectives you have left in your playthrough and other information.
 
-### Death Tracker
+### Death Tracker <!-- Stats Tracker -->
 
 The mod includes a death tracker. If you are a streaker, try to complete the randomizer with as few deaths as possible! (Starting a new run without finishing the previous run counts as a death.)
 
-### Timer
+### Timer <!-- Timer -->
 
 The mod includes an on-screen timer, similar to the [Racing+](https://isaacracing.net/) mod. The timer starts off hidden by default, but you can enable it in the Dead Sea Scrolls menu. If you are a speedrunner, try to complete the randomizer as fast as possible!
 
@@ -413,36 +413,36 @@ Unlike the timer in Racing+, the timer in this mod tracks in-game time. Thus, th
 
 ### Gameplay Removals
 
-#### Donation Machine Removal
+#### Donation Machine Removal <!-- RemoveDonationMachines -->
 
 - The mod removes all Donation Machines from the game in order to increase the difficulty and prevent individual runs from influencing each other. (Eden's Blessing is removed from the game for the same reason.)
 - Greed Donation Machines are also removed because they serve no purpose in this mod.
 - The Karma trinket is removed from the game because it would serve no purpose.
 
-#### Void Portal Deletion
+#### Void Portal Deletion <!-- RemoveVoidPortals -->
 
 The mod deletes all Void Portals outside of the Blue Womb. This is both a balance change (since it slightly increases the difficulty of Delirium) and a quality of life fix (since players can no longer accidentally enter a Void Portal and lose their streak).
 
-#### Glitched Item Removal
+#### Glitched Item Removal <!-- RemoveGlitchedCollectibles -->
 
 Glitched items are removed for the same reason that TMTRAINER is.
 
-### Chill Room
+### Chill Room <!-- ChillRoom -->
 
 The mod provides a custom challenge that simply locks you in the starting room of the run. You can use this challenge to review your achievements and plan for your next run. Runs started inside of the challenge will not count towards your randomizer stats or deaths.
 
-### Custom Console Commands
+### Custom Console Commands <!-- consoleCommands.ts -->
 
 The mod provides several custom [console commands](https://bindingofisaacrebirth.fandom.com/wiki/Debug_Console):
 
 - `achievementRandomizer [mode] [seed]` - Starts a new playthrough using the specified seed. For example: `achievementRandomizer hardcore 12345`
 - `spoilerLog` - Writes out a spoiler log to the "log.txt" file. Note that the unlocks may not be accurate, since the mod swaps an unlock if it detects that you should not get it yet.
 
-### Crash & Softlock Prevention
+### Crash & Softlock Prevention <!-- FixVanillaBugs -->
 
 This mod attempts to fix as many vanilla crashes & softlocks as possible. The following situations are fixed:
 
-#### Void Portal Crashes
+#### Lil' Portal Crashes
 
 Portals from Lil' Portal that leads to invalid rooms will automatically be removed.
 

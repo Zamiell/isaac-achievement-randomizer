@@ -8,7 +8,7 @@ import {
 } from "isaacscript-common";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 
-export class VoidPortalRemoval extends RandomizerModFeature {
+export class RemoveVoidPortals extends RandomizerModFeature {
   @CallbackCustom(
     ModCallbackCustom.POST_GRID_ENTITY_UPDATE,
     GridEntityType.TRAPDOOR,

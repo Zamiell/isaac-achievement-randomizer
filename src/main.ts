@@ -25,7 +25,8 @@ import { PickupRemoval } from "./classes/features/PickupRemoval";
 import { PillRemoval } from "./classes/features/PillRemoval";
 import { PreventVictoryLapPopup } from "./classes/features/PreventVictoryLapPopup";
 import { RemoveDonationMachines } from "./classes/features/RemoveDonationMachines";
-import { RemoveGlitchedItems } from "./classes/features/RemoveGlitchedItems";
+import { RemoveGlitchedCollectibles } from "./classes/features/RemoveGlitchedCollectibles";
+import { RemoveVoidPortals } from "./classes/features/RemoveVoidPortals";
 import { RoomRemoval } from "./classes/features/RoomRemoval";
 import { SilenceMomDad } from "./classes/features/SilenceMomDad";
 import { SlotRemoval } from "./classes/features/SlotRemoval";
@@ -35,7 +36,6 @@ import { StartingRoomInfo } from "./classes/features/StartingRoomInfo";
 import { StatsTracker } from "./classes/features/StatsTracker";
 import { Timer } from "./classes/features/Timer";
 import { UIIcon } from "./classes/features/UIIcon";
-import { VoidPortalRemoval } from "./classes/features/VoidPortalRemoval";
 import { initConsoleCommands } from "./consoleCommands";
 import { IS_DEV, MOD_NAME } from "./constants";
 import { initDeadSeaScrolls } from "./deadSeaScrolls";
@@ -63,7 +63,8 @@ const MOD_FEATURES = [
   PillRemoval,
   PreventVictoryLapPopup,
   RemoveDonationMachines,
-  RemoveGlitchedItems,
+  RemoveGlitchedCollectibles,
+  RemoveVoidPortals,
   RoomRemoval,
   SilenceMomDad,
   SlotRemoval,
@@ -73,7 +74,6 @@ const MOD_FEATURES = [
   StatsTracker,
   Timer,
   UIIcon,
-  VoidPortalRemoval,
 ] as const;
 
 export function main(): void {

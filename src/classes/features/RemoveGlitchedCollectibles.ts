@@ -28,7 +28,7 @@ const v = {
   },
 };
 
-export class RemoveGlitchedItems extends RandomizerModFeature {
+export class RemoveGlitchedCollectibles extends RandomizerModFeature {
   v = v;
 
   // 35, 100
