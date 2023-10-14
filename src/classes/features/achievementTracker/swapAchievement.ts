@@ -16,6 +16,7 @@ import {
   KeySubType,
   PickupVariant,
   PillEffect,
+  PlayerType,
   RoomType,
   SackSubType,
   SlotVariant,
@@ -834,6 +835,15 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
       anyCardTypesUnlocked(false) || anyPillEffectsUnlocked(false)
         ? undefined
         : getRandomPillEffectUnlock(),
+  ],
+
+  // 715
+  [
+    CollectibleType.HOLD,
+    () =>
+      isCharacterUnlocked(PlayerType.BLUE_BABY_B, false)
+        ? undefined
+        : getUnlock(UnlockType.CHARACTER, PlayerType.BLUE_BABY_B),
   ],
 ]);
 

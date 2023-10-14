@@ -1,6 +1,11 @@
 # Achievement Randomizer Version History
 
+<!-- cspell:ignore Erbear -->
 <!-- markdownlint-disable MD001 -->
+
+### _v0.0.5_ - October 13th, 2023
+
+- Fixed the bug where Hold did not have proper unlock logic. (Thanks Erbear)
 
 ### _v0.0.4_ - October 13th, 2023
 
