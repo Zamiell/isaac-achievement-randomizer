@@ -11,7 +11,6 @@ import { AchievementRandomizer } from "./classes/features/AchievementRandomizer"
 import { AchievementTracker } from "./classes/features/AchievementTracker";
 import { CheckErrors } from "./classes/features/CheckErrors";
 import { ChillRoom } from "./classes/features/ChillRoom";
-import { DisableMultiplayer } from "./classes/features/DisableMultiplayer";
 import { DrawControls } from "./classes/features/DrawControls";
 import { FixVanillaBugs } from "./classes/features/FixVanillaBugs";
 import { ForceFadedConsoleDisplay } from "./classes/features/ForceFadedConsoleDisplay";
@@ -30,6 +29,7 @@ import { RoomRemoval } from "./classes/features/RoomRemoval";
 import { SilenceMomDad } from "./classes/features/SilenceMomDad";
 import { SlotRemoval } from "./classes/features/SlotRemoval";
 import { StageTypeRemoval } from "./classes/features/StageTypeRemoval";
+import { StartingItemRemoval } from "./classes/features/StartingItemRemoval";
 import { StartingRoomInfo } from "./classes/features/StartingRoomInfo";
 import { StatsTracker } from "./classes/features/StatsTracker";
 import { Timer } from "./classes/features/Timer";
@@ -48,7 +48,6 @@ const MOD_FEATURES = [
   AchievementTracker,
   CheckErrors,
   ChillRoom,
-  DisableMultiplayer,
   DrawControls,
   FixVanillaBugs,
   ForceFadedConsoleDisplay,
@@ -67,6 +66,7 @@ const MOD_FEATURES = [
   SilenceMomDad,
   SlotRemoval,
   StageTypeRemoval,
+  StartingItemRemoval,
   StartingRoomInfo,
   StatsTracker,
   Timer,
