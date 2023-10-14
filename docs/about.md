@@ -417,34 +417,6 @@ Unlike the timer in Racing+, the timer in this mod tracks in-game time. Thus, th
 - Greed Donation Machines are also removed because they serve no purpose in this mod.
 - The Karma trinket is removed from the game because it would serve no purpose.
 
-### Pause Prevention
-
-The mod prevents you from pausing the game in uncleared rooms in order to prevent pause abuse. (This is a rule taken from the Isaac streaking community.)
-
-If you are allowed to pause in a room with enemies, then you can think about the best movement patterns to defeat the enemies, and mentally prepare exactly what to do. This kind of thing goes against the spirit of the competition; players are intended to have to react instantly to new situations.
-
-### Save & Quit Prevention
-
-The mod prevents you from using the save & quit feature of the game in order to prevent save & quit abuse. If you try to resume a game, the mod will restart you back at the beginning. (This is a rule taken from the Isaac streaking community.)
-
-If you are allowed to save & quit, then you can do things like prevent incoming damage, exploit Restock Machines, and reset enemy patterns. All of these things go against the spirit of the competition; players are intended to have to complete a room in one attempt and they should not get "do-overs" when they make movement mistakes.
-
-### Softlock Prevention
-
-Since saving & quitting is prevented, the mod will attempt to fix as many vanilla crashes & softlocks as possible. The following situations are fixed:
-
-#### Void Portal Crashes
-
-Portals from Lil' Portal that leads to invalid rooms will automatically be removed.
-
-#### Mega Mush + Lucky Pennies
-
-Lucky Pennies are automatically converted to normal pennies while the Mega Mush effect is active.
-
-### Victory Lap Prevention
-
-Victory Laps and the "Rerun" feature on the main menu are banned for the same reason that R Key is. As a quality of life fix, the Victory Lap popup will no longer appear after defeating The Lamb.
-
 ### Void Portal Deletion
 
 The mod deletes all Void Portals outside of the Blue Womb. This is both a balance change (since it slightly increases the difficulty of Delirium) and a quality of life fix (since players can no longer accidentally enter a Void Portal and lose their streak).
@@ -453,18 +425,31 @@ The mod deletes all Void Portals outside of the Blue Womb. This is both a balanc
 
 The mod provides a custom challenge that simply locks you in the starting room of the run. You can use this challenge to review your achievements and plan for your next run. Runs started inside of the challenge will not count towards your randomizer stats or deaths.
 
-### Other Miscellaneous Quality of Life Improvements
-
-- <!-- "ui_hearts.png" --> The heart UI sprites have been slightly modified so that it is easier to see an empty heart container on a black background.
-- <!-- SilenceMomDad --> The audio clips of mom and dad on the Ascent are silenced.
-- <!-- ForceFadedConsoleDisplay --> The "faded console display" feature is automatically enabled in the "options.ini" file, which allows you to visually see when an error in the game happens. Please report bugs to the developers in [the Discord server](https://discord.gg/GwhUeQjHTF).
-
 ### Custom Console Commands
 
 The mod provides several custom [console commands](https://bindingofisaacrebirth.fandom.com/wiki/Debug_Console):
 
 - `achievementRandomizer [mode] [seed]` - Starts a new playthrough using the specified seed. For example: `achievementRandomizer hardcore 12345`
 - `spoilerLog` - Writes out a spoiler log to the "log.txt" file. Note that the unlocks may not be accurate, since the mod swaps an unlock if it detects that you should not get it yet.
+
+### Other Miscellaneous Quality of Life Improvements
+
+- <!-- "ui_hearts.png" --> The heart UI sprites have been slightly modified so that it is easier to see an empty heart container on a black background.
+- <!-- SilenceMomDad --> The audio clips of mom and dad on the Ascent are silenced.
+- <!-- ForceFadedConsoleDisplay --> The "faded console display" feature is automatically enabled in the "options.ini" file, which allows you to visually see when an error in the game happens. Please report bugs to the developers in [the Discord server](https://discord.gg/GwhUeQjHTF).
+- <!-- PreventVictoryLapPopup --> Victory Laps and the "Rerun" feature on the main menu are banned for the same reason that R Key is. As a quality of life fix, the Victory Lap popup will no longer appear after defeating The Lamb.
+
+### Crash & Softlock Prevention
+
+This mod attempts to fix as many vanilla crashes & softlocks as possible. The following situations are fixed:
+
+#### Void Portal Crashes
+
+Portals from Lil' Portal that leads to invalid rooms will automatically be removed.
+
+#### Mega Mush + Lucky Pennies
+
+Lucky Pennies are automatically converted to normal pennies while the Mega Mush effect is active.
 
 <br>
 

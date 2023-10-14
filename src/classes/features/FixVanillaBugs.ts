@@ -8,23 +8,17 @@ import {
 } from "isaac-typescript-definitions";
 import {
   Callback,
-  CallbackCustom,
-  ModCallbackCustom,
   anyPlayerHasCollectibleEffect,
   getCoins,
   getRoomData,
-  logError,
-  restart,
 } from "isaacscript-common";
-import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { preForcedRestart } from "./StatsTracker";
 
 /**
  * In addition to preventing saving and quitting, this feature also fixes crashes & softlocks in the
  * vanilla game.
  */
-export class PreventSaveAndQuit extends RandomizerModFeature {
+export class FixVanillaBugs extends RandomizerModFeature {
   // 1
   @Callback(ModCallback.POST_UPDATE)
   postUpdate(): void {
@@ -65,18 +59,5 @@ export class PreventSaveAndQuit extends RandomizerModFeature {
       // The destination room does not have data, so delete the portal.
       effect.Remove();
     }
-  }
-
-  @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, true)
-  postGameStartedReorderedTrue(): void {
-    mod.runNextRenderFrame(() => {
-      logError("Illegal save and quit detected. Restarting the run.");
-
-      // The number of runs was incremented after the transition to the menu happened, so we must
-      // prevent a second increment.
-      preForcedRestart();
-
-      restart();
-    });
   }
 }

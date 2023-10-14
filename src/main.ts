@@ -11,7 +11,9 @@ import { AchievementRandomizer } from "./classes/features/AchievementRandomizer"
 import { AchievementTracker } from "./classes/features/AchievementTracker";
 import { CheckErrors } from "./classes/features/CheckErrors";
 import { ChillRoom } from "./classes/features/ChillRoom";
+import { DisableMultiplayer } from "./classes/features/DisableMultiplayer";
 import { DrawControls } from "./classes/features/DrawControls";
+import { FixVanillaBugs } from "./classes/features/FixVanillaBugs";
 import { ForceFadedConsoleDisplay } from "./classes/features/ForceFadedConsoleDisplay";
 import { ForceSeeds } from "./classes/features/ForceSeeds";
 import { GridEntityRemoval } from "./classes/features/GridEntityRemoval";
@@ -22,8 +24,6 @@ import { ObjectiveDetection } from "./classes/features/ObjectiveDetection";
 import { PathRemoval } from "./classes/features/PathRemoval";
 import { PickupRemoval } from "./classes/features/PickupRemoval";
 import { PillRemoval } from "./classes/features/PillRemoval";
-import { PreventPause } from "./classes/features/PreventPause";
-import { PreventSaveAndQuit } from "./classes/features/PreventSaveAndQuit";
 import { PreventVictoryLapPopup } from "./classes/features/PreventVictoryLapPopup";
 import { RemoveDonationMachines } from "./classes/features/RemoveDonationMachines";
 import { RoomRemoval } from "./classes/features/RoomRemoval";
@@ -48,7 +48,9 @@ const MOD_FEATURES = [
   AchievementTracker,
   CheckErrors,
   ChillRoom,
+  DisableMultiplayer,
   DrawControls,
+  FixVanillaBugs,
   ForceFadedConsoleDisplay,
   ForceSeeds,
   GridEntityRemoval,
@@ -59,8 +61,6 @@ const MOD_FEATURES = [
   PathRemoval,
   PickupRemoval,
   PillRemoval,
-  PreventPause,
-  PreventSaveAndQuit,
   PreventVictoryLapPopup,
   RemoveDonationMachines,
   RoomRemoval,
