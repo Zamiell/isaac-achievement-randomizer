@@ -408,6 +408,18 @@ export function getSecondsSinceLastDamage(): int | undefined {
       break;
     }
 
+    // 68
+    case BossID.SISTERS_VIS: {
+      const sistersVis = getNPCs(EntityType.SISTERS_VIS, -1, -1, true);
+      const aliveBosses = sistersVis.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length < 2) {
+        return;
+      }
+
+      break;
+    }
+
     default: {
       const [entityType, variant] = getEntityTypeVariantFromBossID(bossID);
       const bosses = getNPCs(entityType, variant, -1, true);

@@ -1,8 +1,7 @@
 TODO:
 
-- purple fire unlock
 - sisters vis both must be alive for objective
-- poly splitting boss must be split into 2
+- purple fire unlock
 
 - checkboxes for banned items
 

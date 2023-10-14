@@ -1,11 +1,17 @@
 # Achievement Randomizer Version History
 
-<!-- cspell:ignore Erbear -->
+<!-- cspell:ignore Erbear,slvn -->
 <!-- markdownlint-disable MD001 -->
+
+### _v0.0.7_ - October 13th, 2023
+
+- Glitched collectibles are now removed. (Thanks slvn)
+- !Sisters Vis must now both be alive in order to accomplish the objective.
+- Fixed the bug where the Fistula and Teratoma boss timers were not working properly.
 
 ### _v0.0.6_ - October 13th, 2023
 
-- The version is now in the "Randomizer Info" menu.
+- The version is now shown in the "Randomizer Info" menu.
 
 ### _v0.0.5_ - October 13th, 2023
 
