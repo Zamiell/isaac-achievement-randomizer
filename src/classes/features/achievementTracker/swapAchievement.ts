@@ -455,13 +455,8 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   // 102
   [
     CollectibleType.MOMS_BOTTLE_OF_PILLS,
-    () => {
-      if (!anyPillEffectsUnlocked(false)) {
-        return getRandomPillEffectUnlock();
-      }
-
-      return undefined;
-    },
+    () =>
+      anyPillEffectsUnlocked(false) ? undefined : getRandomPillEffectUnlock(),
   ],
 
   // 116
@@ -1622,6 +1617,24 @@ const SWAPPED_UNLOCK_OTHER_FUNCTIONS = new ReadonlyMap<
       isHeartSubTypeUnlocked(HeartSubType.SOUL, false)
         ? undefined
         : getUnlock(UnlockType.HEART, HeartSubType.SOUL),
+  ],
+
+  [
+    OtherUnlockKind.GOLD_TRINKETS,
+    () =>
+      anyTrinketTypesUnlocked(false) ? undefined : getRandomTrinketUnlock(),
+  ],
+
+  [
+    OtherUnlockKind.GOLD_PILLS,
+    () =>
+      anyPillEffectsUnlocked(false) ? undefined : getRandomPillEffectUnlock(),
+  ],
+
+  [
+    OtherUnlockKind.HORSE_PILLS,
+    () =>
+      anyPillEffectsUnlocked(false) ? undefined : getRandomPillEffectUnlock(),
   ],
 ]);
 

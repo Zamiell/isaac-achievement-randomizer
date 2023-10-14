@@ -9,8 +9,9 @@ OTHER POTENTIAL UNLOCKS:
 - champions that drop items - https://bindingofisaacrebirth.fandom.com/wiki/Monsters#Champions
 
 OTHER POTENTIAL OBJECTIVES:
+- survive for 2 minutes - 4 ultra horsemen
+- survive for 2 minutes - 15 mini-bosses + 2 angels (we already use krampus)
 - [would need 288 objectives to reduce no damage objectives by half]
-- survive for 2 minutes - 16 mini-bosses + 2 angels
 
 - forgotten unlock sequence
 - hold 99 coins
