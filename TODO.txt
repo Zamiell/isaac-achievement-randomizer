@@ -1,8 +1,9 @@
 TODO:
 
-- pestilence phase 1
-
 - go through no hit exceptions
+
+- faster timers if standing still
+
 - option for suppress 2 min achievement until room is cleared
 - flipped rooms
 - checkboxes for banned items

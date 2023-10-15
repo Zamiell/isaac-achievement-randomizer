@@ -513,6 +513,14 @@ When you start a new randomizer playthrough, the mod assigns each objective to a
 
 After all of the achievements are randomized, the mod does a validation step: it pretends that it is a player and attempts to "beat" the seed by accomplishing all of the objectives that are reachable. (This part is pretty time intensive.) If the seed is not beatable, then the mod will start from scratch and randomize all of the objectives + achievements again. It will attempt to generate valid seeds until it finds one that is beatable. This is what the "attempts" count on the black screen refers to.
 
+### Is this mod compatible with other mods that add items and achievements?
+
+No. Since this mod uses a completely customized objective & unlock system based on vanilla items, it is not compatible with any other mods.
+
+### Will this mod affect my existing achievements on Steam?
+
+No. This mod requires a fully unlocked save file to play. Thus, it does not interact with any vanilla Steam achievements.
+
 ### What algorithm does the randomizer use to randomize the achievements?
 
 It uses the random fill algorithm, as described [by TestRunner in the AGDQ 2019 randomizer panel](https://www.youtube.com/watch?v=vGIDzGvsrV8).
