@@ -477,6 +477,12 @@ Portals from Lil' Portal that leads to invalid rooms will automatically be remov
 
 Lucky Pennies are automatically converted to normal pennies while the Mega Mush effect is active.
 
+### Illegal Pause Detection & Illegal Save & Quit Detection
+
+In the Isaac streaking community, you are only allowed to pause the game when the room is clear of enemies. If you are allowed to pause in a room with enemies, then you can think about the best movement patterns to defeat the enemies, and mentally prepare exactly what to do. This kind of thing goes against the spirit of the competition; players are intended to have to react instantly to new situations. Thus, the mod will keep track of any illegal pauses that you do, both displaying an error on the screen and then showing a that you have illegally paused on the stats menu for your playthrough.
+
+In the Isaac streaking community, you are not allowed to use the save & quit feature of the game. If you are allowed to save & quit, then you can do things like prevent incoming damage, exploit Restock Machines, and reset enemy patterns. All of these things go against the spirit of the competition; players are intended to have to complete a room in one attempt and they should not get "do-overs" when they make movement mistakes. Thus, the mod will keep track of any illegal save & quits that you do, both displaying an error on the screen and then showing a that you have illegally saved and quit on the stats menu for your playthrough.
+
 ### Other Miscellaneous Quality of Life Improvements
 
 - <!-- "ui_hearts.png" --> The heart UI sprites have been slightly modified so that it is easier to see an empty heart container on a black background.
