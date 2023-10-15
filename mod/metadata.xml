@@ -15,7 +15,7 @@ This does [b]not[/b] use the vanilla achievements; it provides a completely cust
 [*] To report bugs, please post in the &quot;#randomizer-bugs&quot; channel.
 [*] To help with development, please post in the &quot;#randomizer-development&quot; channel.
 </description>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
   <visibility>Public</visibility>
   <tag id="Lua" />
   <tag id="Tweaks" />
