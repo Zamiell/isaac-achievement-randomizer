@@ -128,12 +128,9 @@ The following "special" bosses / mini-bosses are also included:
 The following bosses have custom timer lengths:
 
 - Brownie (#58) - 1 minute (because he damages himself)
-- Visage (#78) - 1 minute
-- Siren (#79) - 1 minute
-- Hornfel (#82) - 1 minute
-- Baby Plum (#84) - 1 minute (because she flies away)
-- Scourge (#85) - 1 minute
-- Rotgut (#87) - 1 minute
+- Hornfel (#82) - 1 minute (because he is extremely difficult)
+- Scourge (#85) - 1 minute (because he is extremely difficult)
+- Rotgut (#87) - 1 minute (because he is extremely difficult)
 
 The following bosses have custom conditions:
 

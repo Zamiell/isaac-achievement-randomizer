@@ -3,6 +3,12 @@
 <!-- cspell:ignore antizoubilamaka,Erbear,Neonomi,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.2.3_ - October 15th, 2023
+
+- The Visage objective timer has been changed from 1 minute to 2 minutes.
+- The Siren objective timer has been changed from 1 minute to 2 minutes.
+- The Baby Plum objective timer has been changed from 1 minute to 2 minutes.
+
 ### _v0.2.2_ - October 15th, 2023
 
 - Fallen now needs to be split in order to accomplish its objective.

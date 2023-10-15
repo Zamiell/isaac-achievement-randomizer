@@ -1,14 +1,12 @@
 TODO:
 
-- go through no hit exceptions
+- track s&q, pausing
+- optional s&q
 
 - faster timers if standing still
 
 - option for suppress 2 min achievement until room is cleared
 - flipped rooms
-
-- track s&q, pausing
-- optional s&q
 
 - nightmare mode:  hardcore but also:
   - full heart damage from all sources

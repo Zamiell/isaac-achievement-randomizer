@@ -21,49 +21,25 @@ export const NO_HIT_BOSSES: readonly BossID[] = BOSS_IDS.filter(
   // eslint-disable-next-line unicorn/prefer-spread
 ).concat(...Object.values(BossIDCustom));
 
+const HARD_BOSS_IDS = new ReadonlySet<BossID>([
+  // When play testing, even without dealing any damage to Brownie, he kills himself at around the 1
+  // minute and 10 seconds mark.
+  BossID.BROWNIE, // 58
+
+  // The boss is extremely difficult to do without taking any damage.
+  BossID.HORNFEL, // 82
+
+  // The boss is extremely difficult to do without taking any damage.
+  BossID.SCOURGE, // 85
+
+  // 2 minutes is probably doable but it is pretty difficult.
+  BossID.ROTGUT, // 87
+]);
+
 export function getNumMinutesForBossObjective(bossID: BossID): int {
   if (IS_DEV) {
     return 0.05;
   }
 
-  switch (bossID) {
-    // 58
-    case BossID.BROWNIE: {
-      return 1;
-    }
-
-    // 78
-    case BossID.VISAGE: {
-      return 1;
-    }
-
-    // 79
-    case BossID.SIREN: {
-      return 1;
-    }
-
-    // 82
-    case BossID.HORNFEL: {
-      return 1;
-    }
-
-    // 84
-    case BossID.BABY_PLUM: {
-      return 1;
-    }
-
-    // 85
-    case BossID.SCOURGE: {
-      return 1;
-    }
-
-    // 87
-    case BossID.ROTGUT: {
-      return 1;
-    }
-
-    default: {
-      return DEFAULT_NUM_MINUTES_FOR_BOSS_OBJECTIVE;
-    }
-  }
+  return HARD_BOSS_IDS.has(bossID) ? 1 : DEFAULT_NUM_MINUTES_FOR_BOSS_OBJECTIVE;
 }
