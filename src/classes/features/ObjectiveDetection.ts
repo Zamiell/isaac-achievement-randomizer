@@ -12,6 +12,7 @@ import {
   MinibossID,
   ModCallback,
   NPCState,
+  PeepVariant,
   PickupVariant,
   PrideVariant,
   RoomType,
@@ -197,6 +198,17 @@ export class ObjectiveDetection extends RandomizerModFeature {
   postUseItemPause(): boolean | undefined {
     v.room.usedPause = true;
     return undefined;
+  }
+
+  // 27, 68, 10
+  @CallbackCustom(
+    ModCallbackCustom.POST_NPC_INIT_FILTER,
+    EntityType.PEEP,
+    PeepVariant.PEEP_EYE,
+  )
+  postNPCInitPeepEye(): void {
+    const room = game.GetRoom();
+    v.room.tookDamageRoomFrame = room.GetFrameCount();
   }
 
   // 27, 81, 0
@@ -485,8 +497,8 @@ export function getSecondsSinceLastDamage(): int | undefined {
       const bigPieces = getNPCs(EntityType.FISTULA_BIG, -1, -1, true);
       const mediumPieces = getNPCs(EntityType.FISTULA_MEDIUM, -1, -1, true);
       const smallPieces = getNPCs(EntityType.FISTULA_SMALL, -1, -1, true);
-      const pieces = [...bigPieces, ...mediumPieces, ...smallPieces];
-      const aliveBosses = pieces.filter((boss) => !boss.IsDead());
+      const bosses = [...bigPieces, ...mediumPieces, ...smallPieces];
+      const aliveBosses = bosses.filter((boss) => !boss.IsDead());
 
       if (aliveBosses.length < 4) {
         return;
@@ -535,6 +547,20 @@ export function getSecondsSinceLastDamage(): int | undefined {
       const aliveBosses = gurglings.filter((boss) => !boss.IsDead());
 
       if (aliveBosses.length < 2) {
+        return;
+      }
+
+      break;
+    }
+
+    // 65
+    case BossID.PEEP: {
+      const peeps = getNPCs(EntityType.PEEP, PeepVariant.PEEP, -1, true);
+      const peepEyes = getNPCs(EntityType.PEEP, PeepVariant.PEEP_EYE, -1, true);
+      const bosses = [...peeps, ...peepEyes];
+      const aliveBosses = bosses.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length < 3) {
         return;
       }
 
@@ -594,8 +620,8 @@ export function getSecondsSinceLastDamage(): int | undefined {
         -1,
         true,
       );
-      const totalNPCs = [...ultraPrides, ...ultraPrideBabies];
-      const aliveBosses = totalNPCs.filter((boss) => !boss.IsDead());
+      const bosses = [...ultraPrides, ...ultraPrideBabies];
+      const aliveBosses = bosses.filter((boss) => !boss.IsDead());
 
       if (aliveBosses.length === 0) {
         return;

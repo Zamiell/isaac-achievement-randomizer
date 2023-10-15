@@ -1,6 +1,5 @@
 TODO:
 
-- need 2 gurglings
 - pestilence phase 1
 - peep need 2 eyes
 - error with gish timer

@@ -8,6 +8,7 @@
 - Fallen now needs to be split in order to accomplish its objective.
 - Gurgling now requires 2 of them to be alive in order to accomplish its objective.
 - Turdling now requires 2 of them to be alive in order to accomplish its objective.
+- Peep now requires 2 of his eyes to be spawned in order to accomplish its objective.
 
 ### _v0.2.0_ - October 14th, 2023
 
