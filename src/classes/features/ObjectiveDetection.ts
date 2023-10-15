@@ -132,6 +132,11 @@ export class ObjectiveDetection extends RandomizerModFeature {
   // 0, 102
   @Callback(ModCallback.POST_NPC_UPDATE, EntityType.ISAAC)
   postNPCUpdateIsaac(npc: EntityNPC): void {
+    const bossID = getModifiedBossID();
+    if (bossID !== BossID.ISAAC && bossID !== BossID.BLUE_BABY) {
+      return;
+    }
+
     // Isaac goes to `NPCState.SPECIAL` when transitioning from phase 1 to phase 2 and when
     // transitioning from phase 2 to phase 3.
     if (v.room.onFirstPhaseOfIsaac && npc.State === NPCState.SPECIAL) {
@@ -145,6 +150,11 @@ export class ObjectiveDetection extends RandomizerModFeature {
   // 0, 407
   @Callback(ModCallback.POST_NPC_UPDATE, EntityType.HUSH)
   postNPCUpdateHush(): void {
+    const bossID = getModifiedBossID();
+    if (bossID !== BossID.HUSH) {
+      return;
+    }
+
     if (v.room.onFirstPhaseOfHush) {
       v.room.onFirstPhaseOfHush = false;
 
@@ -207,6 +217,11 @@ export class ObjectiveDetection extends RandomizerModFeature {
     PeepVariant.PEEP_EYE,
   )
   postNPCInitPeepEye(): void {
+    const bossID = getModifiedBossID();
+    if (bossID !== BossID.PEEP) {
+      return;
+    }
+
     const room = game.GetRoom();
     v.room.tookDamageRoomFrame = room.GetFrameCount();
   }
@@ -218,6 +233,11 @@ export class ObjectiveDetection extends RandomizerModFeature {
     FallenVariant.FALLEN,
   )
   postNPCInitFallen(): void {
+    const bossID = getModifiedBossID();
+    if (bossID !== BossID.FALLEN) {
+      return;
+    }
+
     const room = game.GetRoom();
     v.room.tookDamageRoomFrame = room.GetFrameCount();
   }
@@ -298,6 +318,11 @@ export class ObjectiveDetection extends RandomizerModFeature {
   // 68, 71
   @Callback(ModCallback.POST_ENTITY_KILL, EntityType.FISTULA_BIG)
   postEntityKillFistulaBig(): void {
+    const bossID = getModifiedBossID();
+    if (bossID !== BossID.FISTULA && bossID !== BossID.TERATOMA) {
+      return;
+    }
+
     const room = game.GetRoom();
     v.room.tookDamageRoomFrame = room.GetFrameCount();
   }

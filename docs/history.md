@@ -12,6 +12,7 @@
 - Fixed the bug where timers would show for bosses that did not have corresponding objectives. (Thanks antizoubilamaka)
 - Fixed the bug where Polydactyly did not have proper unlock logic. (Thanks Neonomi)
 - Fixed the bug where Poker Chip did not have the proper unlock logic. (Thanks Finn)
+- Fixed the bug where bosses spawning would incorrectly reset the no hit timer under certain circumstances. (Thanks Finn)
 
 ### _v0.2.0_ - October 14th, 2023
 
