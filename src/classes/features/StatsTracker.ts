@@ -173,3 +173,11 @@ export function getRandomizerRunSeedString(): string | undefined {
   const startSeed = rng.GetSeed();
   return Seeds.Seed2String(startSeed);
 }
+
+export function hasIllegalPause(): boolean {
+  return v.persistent.stats.usedIllegalPause;
+}
+
+export function hasSavedAndQuit(): boolean {
+  return v.persistent.stats.usedSaveAndQuit;
+}

@@ -21,6 +21,8 @@ import {
   getPlaythroughNumCompletedRuns,
   getPlaythroughNumDeaths,
   getPlaythroughTimeElapsed,
+  hasIllegalPause,
+  hasSavedAndQuit,
 } from "./classes/features/StatsTracker";
 import {
   isAllBossObjectivesCompleted,
@@ -763,6 +765,31 @@ export function initDeadSeaScrolls(): void {
         },
         {
           str: getPlaythroughTimeElapsed,
+          colorSelect: true,
+          noSel: true,
+        },
+        {
+          str: "",
+        },
+        {
+          str: "ever illegally paused?",
+        },
+        {
+          str: () => (hasIllegalPause() ? "yes" : "no"),
+          colorSelect: true,
+          noSel: true,
+        },
+        {
+          str: "",
+        },
+        {
+          str: "ever illegally saved and",
+        },
+        {
+          str: "quit and continued a run?",
+        },
+        {
+          str: () => (hasSavedAndQuit() ? "yes" : "no"),
           colorSelect: true,
           noSel: true,
         },

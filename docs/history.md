@@ -7,6 +7,8 @@
 
 - A red icon will now show if you are playing on hardcore mode.
 - The format of stats in the save file has changed. If you want to update an old save file to the new format, put the contents of "StatsTracker.persistent" into "StatsTracker.persistent.stats".
+- The mod will now display a message if you illegally pause the game or save & quit.
+- The stats page will now show if you have illegally paused or saved & quit.
 
 ### _v0.2.3_ - October 15th, 2023
 
