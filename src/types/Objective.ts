@@ -1,5 +1,8 @@
-import type { Challenge, PlayerType } from "isaac-typescript-definitions";
-import { BossID } from "isaac-typescript-definitions";
+import type {
+  BossID,
+  Challenge,
+  PlayerType,
+} from "isaac-typescript-definitions";
 import type { CompositionTypeSatisfiesEnum } from "isaacscript-common";
 import {
   assertDefined,
@@ -7,7 +10,7 @@ import {
   getCharacterName,
   isEnumValue,
 } from "isaacscript-common";
-import { IS_DEV } from "../constants";
+import { getNumMinutesForBossObjective } from "../arrays/noHitBosses";
 import { getBossNameCustom } from "../enums/BossIDCustom";
 import {
   CharacterObjectiveKind,
@@ -35,8 +38,6 @@ export interface ChallengeObjective {
 export type Objective = CharacterObjective | BossObjective | ChallengeObjective;
 
 type _Test = CompositionTypeSatisfiesEnum<Objective, ObjectiveType>;
-
-const DEFAULT_NUM_MINUTES_FOR_BOSS_OBJECTIVE = 2;
 
 export function getObjective(
   type: ObjectiveType.CHARACTER,
@@ -180,53 +181,6 @@ export function getObjectiveText(objective: Objective): string[] {
     case ObjectiveType.CHALLENGE: {
       const challengeName = getChallengeName(objective.challenge);
       return ["Completed challenge:", challengeName];
-    }
-  }
-}
-
-function getNumMinutesForBossObjective(bossID: BossID): int {
-  if (IS_DEV) {
-    return 0.05;
-  }
-
-  switch (bossID) {
-    // 58
-    case BossID.BROWNIE: {
-      return 1;
-    }
-
-    // 78
-    case BossID.VISAGE: {
-      return 1;
-    }
-
-    // 79
-    case BossID.SIREN: {
-      return 1;
-    }
-
-    // 82
-    case BossID.HORNFEL: {
-      return 1;
-    }
-
-    // 84
-    case BossID.BABY_PLUM: {
-      return 1;
-    }
-
-    // 85
-    case BossID.SCOURGE: {
-      return 1;
-    }
-
-    // 87
-    case BossID.ROTGUT: {
-      return 1;
-    }
-
-    default: {
-      return DEFAULT_NUM_MINUTES_FOR_BOSS_OBJECTIVE;
     }
   }
 }
