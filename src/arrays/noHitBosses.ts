@@ -4,8 +4,6 @@ import { BOSS_IDS } from "../cachedEnums";
 import { IS_DEV } from "../constants";
 import { BossIDCustom } from "../enums/BossIDCustom";
 
-const DEFAULT_NUM_MINUTES_FOR_BOSS_OBJECTIVE = 2;
-
 /** @see about.md */
 const NO_HIT_EXCEPTION_BOSSES = new ReadonlySet([
   BossID.MOMS_HEART, // 8
@@ -41,5 +39,5 @@ export function getNumMinutesForBossObjective(bossID: BossID): int {
     return 0.05;
   }
 
-  return HARD_BOSS_IDS.has(bossID) ? 1 : DEFAULT_NUM_MINUTES_FOR_BOSS_OBJECTIVE;
+  return HARD_BOSS_IDS.has(bossID) ? 1 : 2;
 }

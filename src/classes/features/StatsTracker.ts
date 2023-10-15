@@ -1,10 +1,21 @@
-import { CallbackPriority, ModCallback } from "isaac-typescript-definitions";
+/* eslint-disable max-classes-per-file */
+
+import {
+  ButtonAction,
+  CallbackPriority,
+  ModCallback,
+} from "isaac-typescript-definitions";
 import {
   Callback,
+  CallbackCustom,
   GAME_FRAMES_PER_SECOND,
+  ModCallbackCustom,
   ModFeature,
   PriorityCallback,
   game,
+  isActionPressedOnAnyInput,
+  isRoomDangerous,
+  logError,
   newRNG,
   onChallenge,
   repeat,
@@ -18,11 +29,17 @@ import { hasErrors } from "./checkErrors/v";
 const HIGHER_PRIORITY_THAN_ISAACSCRIPT_COMMON = (CallbackPriority.IMPORTANT -
   1) as CallbackPriority;
 
+class RandomizerStats {
+  numCompletedRuns = 0;
+  numDeaths = 0;
+  gameFramesElapsed = 0;
+  usedIllegalPause = false;
+  usedSaveAndQuit = false;
+}
+
 const v = {
   persistent: {
-    numCompletedRuns: 0,
-    numDeaths: 0,
-    gameFramesElapsed: 0,
+    stats: new RandomizerStats(),
   },
 
   run: {
@@ -39,6 +56,15 @@ export class StatsTracker extends ModFeature {
     isRandomizerEnabled() &&
     !onChallenge(ChallengeCustom.RANDOMIZER_CHILL_ROOM) &&
     !hasErrors();
+
+  // 2
+  @Callback(ModCallback.POST_RENDER)
+  postRender(): void {
+    if (isRoomDangerous() && isActionPressedOnAnyInput(ButtonAction.PAUSE)) {
+      logError("Illegal pause detected.");
+      v.persistent.stats.usedIllegalPause = true;
+    }
+  }
 
   // 16
   @Callback(ModCallback.POST_GAME_END)
@@ -69,7 +95,7 @@ export class StatsTracker extends ModFeature {
       return;
     }
 
-    v.persistent.gameFramesElapsed += game.GetFrameCount();
+    v.persistent.stats.gameFramesElapsed += game.GetFrameCount();
   }
 
   incrementCompletedRunsCounter(): void {
@@ -78,7 +104,7 @@ export class StatsTracker extends ModFeature {
       return;
     }
 
-    v.persistent.numCompletedRuns++;
+    v.persistent.stats.numCompletedRuns++;
   }
 
   incrementDeathCounter(): void {
@@ -87,14 +113,18 @@ export class StatsTracker extends ModFeature {
       return;
     }
 
-    v.persistent.numDeaths++;
+    v.persistent.stats.numDeaths++;
+  }
+
+  @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, true)
+  postGameStartedReorderedTrue(): void {
+    logError("Illegal save and quit detected.");
+    v.persistent.stats.usedSaveAndQuit = true;
   }
 }
 
 export function resetStats(): void {
-  v.persistent.numCompletedRuns = 0;
-  v.persistent.numDeaths = 0;
-  v.persistent.gameFramesElapsed = 0;
+  v.persistent.stats = new RandomizerStats();
 }
 
 export function preForcedRestart(): void {
@@ -104,16 +134,16 @@ export function preForcedRestart(): void {
 }
 
 export function getPlaythroughNumCompletedRuns(): int {
-  return v.persistent.numCompletedRuns;
+  return v.persistent.stats.numCompletedRuns;
 }
 
 export function getPlaythroughNumDeaths(): int {
-  return v.persistent.numDeaths;
+  return v.persistent.stats.numDeaths;
 }
 
 export function getPlaythroughSecondsElapsed(): int {
   const gameFrameCount = game.GetFrameCount();
-  const totalFrames = v.persistent.gameFramesElapsed + gameFrameCount;
+  const totalFrames = v.persistent.stats.gameFramesElapsed + gameFrameCount;
 
   return totalFrames / GAME_FRAMES_PER_SECOND;
 }
@@ -136,7 +166,7 @@ export function getRandomizerRunSeedString(): string | undefined {
   }
 
   const rng = newRNG(seed);
-  repeat(v.persistent.numCompletedRuns, () => {
+  repeat(v.persistent.stats.numCompletedRuns, () => {
     rng.Next();
   });
 

@@ -3,6 +3,10 @@
 <!-- cspell:ignore antizoubilamaka,Erbear,Neonomi,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.2.4_ - October 15th, 2023 (Unreleased)
+
+- The format of stats in the save file has changed. If you want to update an old save file to the new format, put the contents of "StatsTracker.persistent" into "StatsTracker.persistent.stats".
+
 ### _v0.2.3_ - October 15th, 2023
 
 - The Visage objective timer has been changed from 1 minute to 2 minutes.
