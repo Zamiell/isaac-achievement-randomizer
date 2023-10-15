@@ -23,6 +23,7 @@ import { ObjectiveDetection } from "./classes/features/ObjectiveDetection";
 import { PathRemoval } from "./classes/features/PathRemoval";
 import { PickupRemoval } from "./classes/features/PickupRemoval";
 import { PillRemoval } from "./classes/features/PillRemoval";
+import { PreventPause } from "./classes/features/PreventPause";
 import { PreventVictoryLapPopup } from "./classes/features/PreventVictoryLapPopup";
 import { RemoveDonationMachines } from "./classes/features/RemoveDonationMachines";
 import { RemoveGlitchedCollectibles } from "./classes/features/RemoveGlitchedCollectibles";
@@ -61,6 +62,7 @@ const MOD_FEATURES = [
   PathRemoval,
   PickupRemoval,
   PillRemoval,
+  PreventPause,
   PreventVictoryLapPopup,
   RemoveDonationMachines,
   RemoveGlitchedCollectibles,

@@ -60,7 +60,13 @@ export class StatsTracker extends ModFeature {
   // 2
   @Callback(ModCallback.POST_RENDER)
   postRender(): void {
-    if (isRoomDangerous() && isActionPressedOnAnyInput(ButtonAction.PAUSE)) {
+    if (
+      isRoomDangerous() &&
+      isActionPressedOnAnyInput(
+        ButtonAction.PAUSE, // 12
+        ButtonAction.CONSOLE, // 28
+      )
+    ) {
       logError("Illegal pause detected.");
       v.persistent.stats.usedIllegalPause = true;
     }

@@ -81,11 +81,16 @@ const DSS_CHOICES = ["disabled", "enabled"] as const;
 const v = {
   persistent: {
     timer: 1, // Equal to the first DSS choice.
+    preventPause: 1, // Equal to the first DSS choice.
   },
 };
 
 export function isTimerEnabled(): boolean {
   return v.persistent.timer === 2;
+}
+
+export function isPreventPauseEnabled(): boolean {
+  return v.persistent.preventPause === 2;
 }
 
 export function initDeadSeaScrolls(): void {
@@ -867,6 +872,35 @@ export function initDeadSeaScrolls(): void {
 
           tooltip: {
             strSet: ["whether to", "show the", "timer beneath", "the stat ui."],
+          },
+        },
+        {
+          str: "",
+          noSel: true,
+        },
+
+        {
+          str: "prevent illegal pausing",
+          fSize: 2, // The text for this option is too big, so we have to decrease the text size.
+          choices: DSS_CHOICES,
+          setting: 1,
+          variable: "preventPause",
+
+          load: () => v.persistent.preventPause,
+
+          /** @noSelf */
+          store: (choiceIndex: int) => {
+            v.persistent.preventPause = choiceIndex;
+          },
+
+          tooltip: {
+            strSet: [
+              "whether to",
+              "prevent",
+              "pausing in",
+              "rooms with",
+              "enemies.",
+            ],
           },
         },
       ],
