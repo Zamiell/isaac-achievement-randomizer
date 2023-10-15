@@ -1020,6 +1020,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
         : getUnlock(UnlockType.CHEST, PickupVariant.RED_CHEST),
   ],
 
+  // 76
+  [
+    TrinketType.POKER_CHIP,
+    () =>
+      isChestPickupVariantUnlocked(PickupVariant.CHEST, false)
+        ? undefined
+        : getUnlock(UnlockType.CHEST, PickupVariant.CHEST),
+  ],
+
   // 79
   [
     TrinketType.ENDLESS_NAMELESS,

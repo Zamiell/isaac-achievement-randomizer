@@ -10,7 +10,8 @@
 - Turdling now requires 2 of them to be alive in order to accomplish its objective.
 - Peep now requires 2 of his eyes to be spawned in order to accomplish its objective.
 - Fixed the bug where timers would show for bosses that did not have corresponding objectives. (Thanks antizoubilamaka)
-- !Fixed the bug where Polydactyly did not have proper unlock logic. (Thanks Neonomi)
+- Fixed the bug where Polydactyly did not have proper unlock logic. (Thanks Neonomi)
+- Fixed the bug where Poker Chip did not have the proper unlock logic. (Thanks Finn)
 
 ### _v0.2.0_ - October 14th, 2023
 
