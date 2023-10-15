@@ -1,10 +1,5 @@
 TODO:
 
-- optional s&q
-- optional pause
-
-- faster timers if standing still
-
 - option for suppress 2 min achievement until room is cleared
 - flipped rooms
 

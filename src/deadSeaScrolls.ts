@@ -78,19 +78,30 @@ import { mod } from "./mod";
 
 const DSS_CHOICES = ["disabled", "enabled"] as const;
 
+/** This is 1 instead of 0 because Lua has 1-indexed arrays. */
+const DSS_CHOICE_DISABLED = 1;
+
+/** This is 2 instead of 1 because Lua has 1-indexed arrays. */
+const DSS_CHOICE_ENABLED = 2;
+
 const v = {
   persistent: {
-    timer: 1, // Equal to the first DSS choice.
-    preventPause: 1, // Equal to the first DSS choice.
+    timer: DSS_CHOICE_DISABLED,
+    preventPause: DSS_CHOICE_DISABLED,
+    delayAchievementText: DSS_CHOICE_DISABLED,
   },
 };
 
 export function isTimerEnabled(): boolean {
-  return v.persistent.timer === 2;
+  return v.persistent.timer === DSS_CHOICE_ENABLED;
 }
 
 export function isPreventPauseEnabled(): boolean {
-  return v.persistent.preventPause === 2;
+  return v.persistent.preventPause === DSS_CHOICE_ENABLED;
+}
+
+export function isDelayAchievementTextEnabled(): boolean {
+  return v.persistent.delayAchievementText === DSS_CHOICE_ENABLED;
 }
 
 export function initDeadSeaScrolls(): void {
@@ -856,6 +867,7 @@ export function initDeadSeaScrolls(): void {
 
     randomizerSettings: {
       title: "randomizer settings",
+      fSize: 2,
       buttons: [
         {
           str: "show timer",
@@ -878,10 +890,8 @@ export function initDeadSeaScrolls(): void {
           str: "",
           noSel: true,
         },
-
         {
           str: "prevent illegal pausing",
-          fSize: 2, // The text for this option is too big, so we have to decrease the text size.
           choices: DSS_CHOICES,
           setting: 1,
           variable: "preventPause",
@@ -900,6 +910,35 @@ export function initDeadSeaScrolls(): void {
               "pausing in",
               "rooms with",
               "enemies.",
+            ],
+          },
+        },
+        {
+          str: "",
+          noSel: true,
+        },
+        {
+          str: "delay achievement text",
+          choices: DSS_CHOICES,
+          setting: 1,
+          variable: "delayAchievementText",
+
+          load: () => v.persistent.delayAchievementText,
+
+          /** @noSelf */
+          store: (choiceIndex: int) => {
+            v.persistent.delayAchievementText = choiceIndex;
+          },
+
+          tooltip: {
+            strSet: [
+              "whether to",
+              "delay",
+              "achievement",
+              "text that",
+              "displays in",
+              "the middle",
+              "of a battle.",
             ],
           },
         },
