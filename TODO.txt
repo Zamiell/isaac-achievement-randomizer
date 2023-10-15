@@ -6,7 +6,6 @@ TODO:
 
 - option for suppress 2 min achievement until room is cleared
 - flipped rooms
-- checkboxes for banned items
 
 - track s&q, pausing
 - optional s&q
@@ -15,6 +14,12 @@ TODO:
   - full heart damage from all sources
   - all enemies are champions without any drops
   - breakfast item do not spawn
+
+------------------------------
+
+LONG TERM TODO:
+
+- checkboxes for banned items
 
 ------------------------------
 

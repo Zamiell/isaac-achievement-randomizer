@@ -4,17 +4,20 @@
   <name>Achievement Randomizer</name>
   <directory>isaac-achievement-randomizer</directory>
   <id>3050399093</id>
-  <description>[h1][b]Achievement Randomizer[/b][/h1]
+  <description>
+    [h1][b]Achievement Randomizer[/b][/h1]
 
 Achievement Randomizer is a mod that gives you the experience of playing through the game from scratch, unlocking each item one by one in a randomized way.
 
-This does [b]not[/b] use the vanilla achievements; it provides a completely customized experience. For a full explanation, check out [url=https://github.com/Zamiell/isaac-achievement-randomizer/blob/main/docs/about.md]the manual on GitHub[/url].
+This mod does not simply randomize all of the vanilla achievements. Rather, it has custom objectives and custom unlocks. Unlike vanilla, almost everything you can imagine is locked from the start of the game. That means you will have to beat your the first run as Isaac with only Breakfast in the item pools!
 
-[*] For technical support or general questions, please [b]DO NOT POST A COMMENT HERE[/b]. Instead, post in the &quot;#randomizer-general&quot; channel on the [url=https://discord.gg/GwhUeQjHTF]Isaac streaking Discord server[/url].
+For more specific details about why we designed it this way and what exact things are locked, [url=https://github.com/Zamiell/isaac-achievement-randomizer/blob/main/docs/about.md]the manual on GitHub[/url].
+
+[*] For technical support or general questions, please [b]DO NOT POST A COMMENT HERE[/b]. Instead, post in the "#randomizer-general" channel on the [url=https://discord.gg/GwhUeQjHTF]Isaac streaking Discord server[/url].
 [*] Before asking any questions, [url=https://github.com/Zamiell/isaac-achievement-randomizer/blob/main/docs/about.md]READ THE MANUAL[/url] and [url=https://github.com/Zamiell/isaac-achievement-randomizer/blob/main/docs/about.md#faq-frequently-asked-questions]READ THE F.A.Q.[/url]
-[*] To report bugs, please post in the &quot;#randomizer-bugs&quot; channel.
-[*] To help with development, please post in the &quot;#randomizer-development&quot; channel.
-</description>
+[*] To report bugs, please post in the "#randomizer-bugs" channel.
+[*] The mod is open source and developed on GitHub. If you want to help with development, please post in the "#randomizer-development" channel.
+  </description>
   <version>0.2.2</version>
   <visibility>Public</visibility>
   <tag id="Lua" />

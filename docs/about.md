@@ -22,13 +22,13 @@ This page explains how it works.
 
 ## Summary (TL;DR)
 
-- This mod **does not** simply randomize all of the vanilla achievements. Rather, it has custom objectives and custom unlocks.
+- This mod does not simply randomize all of the vanilla achievements. Rather, it has custom objectives and custom unlocks.
 - The custom objectives are designed to be challenging and non-arbitrary. There are only 4 types of objectives:
   - Kill each story boss (per character).
   - Finish each floor without taking a hit (per character).
   - Survive each boss for 2 minutes without taking a hit.
   - Complete each challenge.
-- Unlike vanilla, almost everything you can imagine is locked from the start of the game. That means you will have to beat your the first run as Isaac with only Breakfast in the item pools.
+- Unlike vanilla, almost everything you can imagine is locked from the start of the game. That means you will have to beat your the first run as Isaac with only Breakfast in the item pools!
 - For more specific details about why we designed it this way and what exact things are locked, read on.
 
 <br>
