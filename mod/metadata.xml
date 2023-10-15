@@ -11,7 +11,7 @@ Achievement Randomizer is a mod that gives you the experience of playing through
 This does [b]not[/b] use the vanilla achievements; it provides a completely customized experience. For a full explanation, check out [url=https://github.com/Zamiell/isaac-achievement-randomizer/blob/main/docs/about.md]the manual on GitHub[/url].
 
 For technical support or general questions, please [b]do not post a comment here[/b]. Instead, post in the &quot;#randomizer-general&quot; channel on the [url=https://discord.gg/GwhUeQjHTF]Isaac streaking Discord server[/url]. To report bugs, please post in the &quot;#randomizer-bugs&quot; channel.</description>
-  <version>0.2.0</version>
+  <version>0.2.1</version>
   <visibility>Public</visibility>
   <tag id="Lua" />
   <tag id="Tweaks" />
