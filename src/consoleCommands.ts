@@ -13,6 +13,7 @@ import {
 } from "isaacscript-common";
 import { RANDOMIZER_MODES } from "./cachedEnums";
 import {
+  endRandomizer,
   isValidSituationForStartingRandomizer,
   startRandomizer,
 } from "./classes/features/AchievementRandomizer";
@@ -34,15 +35,36 @@ export const MIN_SEED = 1;
 export const MAX_SEED = 4_294_967_295;
 
 export function initConsoleCommands(): void {
-  mod.addConsoleCommand("achievementRandomizer", achievementRandomizer);
+  mod.addConsoleCommand("endRandomizer", endRandomizerCommand);
   mod.addConsoleCommand("forceWrongVersion", forceWrongVersion);
+  mod.addConsoleCommand("startRandomizer", startRandomizerCommand);
   mod.addConsoleCommand("spoilerLog", spoilerLog);
   mod.addConsoleCommand("unlockCharacter", unlockCharacter);
   mod.addConsoleCommand("unlockCollectible", unlockCollectible);
   mod.addConsoleCommand("unlockPath", unlockPath);
 }
 
-function achievementRandomizer(params: string) {
+function endRandomizerCommand(_params: string) {
+  endRandomizer();
+}
+
+function forceWrongVersion(_params: string) {
+  setAcceptedVersionMismatch();
+  restart();
+}
+
+function spoilerLog(_params: string) {
+  if (!isRandomizerEnabled()) {
+    print(
+      "Error: You are not currently in a randomizer playthrough, so you can not print out the spoiler log.",
+    );
+    return;
+  }
+
+  logSpoilerLog();
+}
+
+function startRandomizerCommand(params: string) {
   if (isRandomizerEnabled()) {
     print(
       "Error: You are currently in a randomizer playthrough. If you want to start a new one, you must first exit the current playthrough.",
@@ -93,22 +115,6 @@ function achievementRandomizer(params: string) {
       startRandomizer(randomizerMode, seed);
     });
   });
-}
-
-function forceWrongVersion(_params: string) {
-  setAcceptedVersionMismatch();
-  restart();
-}
-
-function spoilerLog(_params: string) {
-  if (!isRandomizerEnabled()) {
-    print(
-      "Error: You are not currently in a randomizer playthrough, so you can not print out the spoiler log.",
-    );
-    return;
-  }
-
-  logSpoilerLog();
 }
 
 function unlockCharacter(params: string) {

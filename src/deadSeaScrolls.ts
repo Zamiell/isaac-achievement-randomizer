@@ -243,7 +243,7 @@ export function initDeadSeaScrolls(): void {
           str: "",
         },
         {
-          str: "achievementrandomizer casual 12345", // This must be lowercase.
+          str: "startrandomizer casual 12345", // This must be lowercase.
           clr: 3,
         },
         {

@@ -464,7 +464,8 @@ The mod provides a custom challenge that simply locks you in the starting room o
 
 The mod provides several custom [console commands](https://bindingofisaacrebirth.fandom.com/wiki/Debug_Console):
 
-- `achievementRandomizer [mode] [seed]` - Starts a new playthrough using the specified seed. For example: `achievementRandomizer hardcore 12345`
+- `endRandomizer` - Ends the current randomizer playthrough.
+- `startRandomizer [mode] [seed]` - Starts a new randomizer playthrough using the specified seed. For example: `startRandomizer hardcore 12345`
 - `spoilerLog` - Writes out a spoiler log to the "log.txt" file. Note that the unlocks may not be accurate, since the mod swaps an unlock if it detects that you should not get it yet.
 
 ### Crash & Softlock Prevention <!-- FixVanillaBugs -->

@@ -62,14 +62,19 @@ export class CheckErrors extends ModFeature {
   // 2
   @Callback(ModCallback.POST_RENDER)
   postRender(): void {
-    this.checkDrawBlackSprite();
-    this.checkDrawErrorText();
-  }
+    if (ModConfigMenu !== undefined && ModConfigMenu.IsVisible) {
+      return;
+    }
 
-  checkDrawBlackSprite(): void {
+    if (DeadSeaScrollsMenu !== undefined && DeadSeaScrollsMenu.IsOpen()) {
+      return;
+    }
+
     if (hasErrors()) {
       BLACK_SPRITE.Render(VectorZero);
     }
+
+    this.checkDrawErrorText();
   }
 
   checkDrawErrorText(): void {
@@ -115,7 +120,7 @@ export class CheckErrors extends ModFeature {
       const achievementsVersionString =
         achievementsVersion === "" ? "[unknown]" : achievementsVersion;
       this.drawErrorText(
-        `The achievements that were created at the beginning of your current playthrough are now out of date with the latest version of the Achievement Randomizer mod. (The current version is ${version}, the last version with achievement changes was ${LAST_VERSION_WITH_ACHIEVEMENT_CHANGES}, and the version that you started the playthrough on was ${achievementsVersionString}.\n\nIt is recommended that you start over with a fresh playthrough. Otherwise, you can proceed and potentially finish the playthrough by typing the console command of "forceWrongVersion". (However, if you do this, there may be bugs.)`,
+        `The achievements that were created at the beginning of your current playthrough are now out of date with the latest version of the Achievement Randomizer mod. (The current version is ${version}, the last version with achievement changes was ${LAST_VERSION_WITH_ACHIEVEMENT_CHANGES}, and the version that you started the playthrough on was ${achievementsVersionString}.\n\nIt is recommended that you start over with a fresh playthrough by typing the console command of "endRandomizer". Otherwise, you can proceed and potentially finish the playthrough by typing the console command of "forceWrongVersion". (However, if you do this, there may be bugs.)`,
       );
     }
   }

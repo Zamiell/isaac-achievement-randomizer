@@ -24,7 +24,6 @@
     "yarn.lock"
   ],
   "words": [
-    "achievementrandomizer",
     "AGDQ",
     "BOMBDROP",
     "camelcased",
@@ -45,6 +44,7 @@
     "Quipet",
     "randomizer",
     "STAGETYPE",
+    "startrandomizer",
     "strset",
     "textsize",
     "uncompletable",

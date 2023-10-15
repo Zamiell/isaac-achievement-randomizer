@@ -1,5 +1,12 @@
 TODO:
 
+- white fire causes no hit damage achievement
+- fallen need 2 split
+- need 2 gurglings
+- pestilence phase 1
+- peep need 2 eyes
+- error with gish timer
+
 - go through no hit exceptions
 - option for suppress 2 min achievement until room is cleared
 - flipped rooms
