@@ -6,6 +6,7 @@ import {
   CollectibleType,
   EntityType,
   FallenVariant,
+  GurglingVariant,
   LevelStage,
   LokiVariant,
   MinibossID,
@@ -515,6 +516,40 @@ export function getSecondsSinceLastDamage(): int | undefined {
     case BossID.LOKII: {
       const lokiis = getNPCs(EntityType.LOKI, LokiVariant.LOKII, -1, true);
       const aliveBosses = lokiis.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length < 2) {
+        return;
+      }
+
+      break;
+    }
+
+    // 56
+    case BossID.GURGLING: {
+      const gurglings = getNPCs(
+        EntityType.GURGLING,
+        GurglingVariant.GURGLING_BOSS,
+        -1,
+        true,
+      );
+      const aliveBosses = gurglings.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length < 2) {
+        return;
+      }
+
+      break;
+    }
+
+    // 65
+    case BossID.TURDLING: {
+      const turdlings = getNPCs(
+        EntityType.GURGLING,
+        GurglingVariant.TURDLING,
+        -1,
+        true,
+      );
+      const aliveBosses = turdlings.filter((boss) => !boss.IsDead());
 
       if (aliveBosses.length < 2) {
         return;
