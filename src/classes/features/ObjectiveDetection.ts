@@ -198,6 +198,17 @@ export class ObjectiveDetection extends RandomizerModFeature {
     return undefined;
   }
 
+  // 27, 81, 0
+  @CallbackCustom(
+    ModCallbackCustom.POST_NPC_INIT_FILTER,
+    EntityType.FALLEN,
+    FallenVariant.FALLEN,
+  )
+  postNPCInitFallen(): void {
+    const room = game.GetRoom();
+    v.room.tookDamageRoomFrame = room.GetFrameCount();
+  }
+
   // 27, 271
   @Callback(ModCallback.POST_NPC_INIT, EntityType.URIEL)
   postNPCInitUriel(): void {
@@ -477,6 +488,23 @@ export function getSecondsSinceLastDamage(): int | undefined {
       const aliveBosses = pieces.filter((boss) => !boss.IsDead());
 
       if (aliveBosses.length < 4) {
+        return;
+      }
+
+      break;
+    }
+
+    // 23
+    case BossID.FALLEN: {
+      const fallens = getNPCs(
+        EntityType.FALLEN,
+        FallenVariant.FALLEN,
+        -1,
+        true,
+      );
+      const aliveBosses = fallens.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length < 2) {
         return;
       }
 

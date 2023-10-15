@@ -3,6 +3,10 @@
 <!-- cspell:ignore Erbear,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.2.2_ - October 14th, 2023
+
+- Fallen now needs to be split in order to accomplish its objective.
+
 ### _v0.2.0_ - October 14th, 2023
 
 - Added the following objectives:
