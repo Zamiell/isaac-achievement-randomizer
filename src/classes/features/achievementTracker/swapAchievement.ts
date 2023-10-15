@@ -654,6 +654,15 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
     () => (anyCardsUnlocked(false) ? undefined : getRandomCardUnlock()),
   ],
 
+  // 454
+  [
+    CollectibleType.POLYDACTYLY,
+    () =>
+      anyCardsUnlocked(false) || anyPillEffectsUnlocked(false)
+        ? undefined
+        : getRandomPillEffectUnlock(),
+  ],
+
   // 458
   [
     CollectibleType.BELLY_BUTTON,
