@@ -1,14 +1,15 @@
 # Achievement Randomizer Version History
 
-<!-- cspell:ignore Erbear,slvn -->
+<!-- cspell:ignore antizoubilamaka,Erbear,slvn -->
 <!-- markdownlint-disable MD001 -->
 
-### _v0.2.2_ - October 14th, 2023
+### _v0.2.2_ - October 15th, 2023
 
 - Fallen now needs to be split in order to accomplish its objective.
 - Gurgling now requires 2 of them to be alive in order to accomplish its objective.
 - Turdling now requires 2 of them to be alive in order to accomplish its objective.
 - Peep now requires 2 of his eyes to be spawned in order to accomplish its objective.
+- Fixed the bug where timers would show for bosses that did not have corresponding objectives. (Thanks antizoubilamaka)
 
 ### _v0.2.0_ - October 14th, 2023
 

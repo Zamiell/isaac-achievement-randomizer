@@ -1,8 +1,6 @@
 TODO:
 
 - pestilence phase 1
-- peep need 2 eyes
-- error with gish timer
 
 - go through no hit exceptions
 - option for suppress 2 min achievement until room is cleared

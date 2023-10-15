@@ -99,6 +99,10 @@ export function isBossRangeObjectivesCompleted(min: int, max: int): boolean {
 }
 
 export function isBossObjectiveCompleted(bossID: BossID): boolean {
+  if (!NO_HIT_BOSSES.includes(bossID)) {
+    return true;
+  }
+
   return v.persistent.completedObjectives.some(
     (objective) =>
       objective.type === ObjectiveType.BOSS && objective.bossID === bossID,
@@ -128,6 +132,10 @@ export function isChallengeRangeObjectivesCompleted(
 }
 
 export function isChallengeObjectiveCompleted(challenge: Challenge): boolean {
+  if (!UNLOCKABLE_CHALLENGES.includes(challenge)) {
+    return true;
+  }
+
   return v.persistent.completedObjectives.some(
     (objective) =>
       objective.type === ObjectiveType.CHALLENGE &&
