@@ -2,6 +2,7 @@ TODO:
 
 - track s&q, pausing
 - optional s&q
+- optional pause
 
 - faster timers if standing still
 
