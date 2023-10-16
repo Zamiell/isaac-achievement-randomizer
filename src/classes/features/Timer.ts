@@ -1,6 +1,6 @@
 import { ModCallback } from "isaac-typescript-definitions";
 import { Callback } from "isaacscript-common";
-import { isTimerEnabled } from "../../deadSeaScrolls";
+import { isTimerEnabled } from "../../config";
 import { TimerType } from "../../enums/TimerType";
 import { timerDraw } from "../../timer";
 import { getNumSecondsForBossObjective } from "../../types/Objective";

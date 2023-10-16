@@ -494,6 +494,10 @@ In the Isaac streaking community, you are not allowed to use the save & quit fea
 
 ## F.A.Q. (Frequently Asked Questions)
 
+### What is the latest version?
+
+The latest version can always be found [on the Steam Workshop change notes page](https://steamcommunity.com/sharedfiles/filedetails/changelog/3050399093).
+
 ### How do I backup/restore/edit my randomizer save file?
 
 The achievement randomizer save data is located in the following directory:
@@ -506,9 +510,17 @@ In this directory, there will be either a "save1.dat", "save2.dat", or "save3.da
 
 It is important that you backup this file after every run.
 
-### What is the latest version?
+### How do I change the data inside of my safe file?
 
-The latest version can always be found [on the Steam Workshop change notes page](https://steamcommunity.com/sharedfiles/filedetails/changelog/3050399093).
+See the previous section for the location of the save file.
+
+Obviously, modifying your save file is normally considered to be cheating, but you might need to do it if the format of the save file needs to be updated or if you encounter a game-breaking bug that corrupts your save file in some way.
+
+The save file is simply [a JSON file](https://www.w3schools.com/js/js_json_intro.asp), so you can open it any text editor such as Notepad or [Notepad++](https://notepad-plus-plus.org/). Make sure that the game is completely closed before opening the save file, or editing it won't work.
+
+The format of the JSON file is minified (i.e. all whitespace is removed), which makes it hard to read. First, you should prettify it by pasting the contents into [a JSON beautifier such as this one](https://codebeautify.org/jsonviewer). (After pasting it in on the left side, click on the "Beautify" button.)
+
+Once it is beautified, you can see that the top level keys correspond to various mod features, with the most important ones being "AchievementTracker" and "StatsTracker".
 
 ### Why does the mod take so long to randomize the achievements at the beginning of a playthrough?
 

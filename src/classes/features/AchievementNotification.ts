@@ -1,24 +1,25 @@
 import { ModCallback, SeedEffect } from "isaac-typescript-definitions";
 import {
   Callback,
-  RENDER_FRAMES_PER_SECOND,
+  GAME_FRAMES_PER_SECOND,
   fonts,
   game,
   getScreenBottomRightPos,
   sfxManager,
 } from "isaacscript-common";
+import { isDelayAchievementTextEnabled } from "../../config";
 import { SoundEffectCustom } from "../../enums/SoundEffectCustom";
 import type { Unlock } from "../../types/Unlock";
 import { getUnlockText } from "../../types/Unlock";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 
 const FONT = fonts.droid;
-const RENDER_FRAMES_BEFORE_FADE = RENDER_FRAMES_PER_SECOND * 2;
+const GAME_FRAMES_BEFORE_FADE = GAME_FRAMES_PER_SECOND * 2;
 
 const v = {
   run: {
     text: null as string | null,
-    renderFrameSet: null as int | null,
+    gameFrameSet: null as int | null,
     queuedTexts: [] as string[],
   },
 };
@@ -26,9 +27,9 @@ const v = {
 export class AchievementNotification extends RandomizerModFeature {
   v = v;
 
-  // 2
-  @Callback(ModCallback.POST_RENDER)
-  postRender(): void {
+  // 1
+  @Callback(ModCallback.POST_UPDATE)
+  postUpdate(): void {
     this.checkDequeueText();
     this.checkDraw();
   }
@@ -38,13 +39,19 @@ export class AchievementNotification extends RandomizerModFeature {
       return;
     }
 
+    const room = game.GetRoom();
+    const isClear = room.IsClear();
+    if (!isClear && isDelayAchievementTextEnabled()) {
+      return;
+    }
+
     const text = v.run.queuedTexts.shift();
     if (text === undefined) {
       return;
     }
 
     v.run.text = text;
-    v.run.renderFrameSet = Isaac.GetFrameCount();
+    v.run.gameFrameSet = game.GetFrameCount();
   }
 
   checkDraw(): void {
@@ -67,17 +74,17 @@ export class AchievementNotification extends RandomizerModFeature {
       return;
     }
 
-    if (v.run.text === null || v.run.renderFrameSet === null) {
+    if (v.run.text === null || v.run.gameFrameSet === null) {
       return;
     }
 
     // The streak text will slowly fade out.
-    const fade = this.getFade(v.run.renderFrameSet);
+    const fade = this.getFade(v.run.gameFrameSet);
     if (fade > 0) {
       this.draw(v.run.text, fade);
     } else {
       v.run.text = null;
-      v.run.renderFrameSet = null;
+      v.run.gameFrameSet = null;
     }
   }
 
@@ -85,11 +92,11 @@ export class AchievementNotification extends RandomizerModFeature {
     const renderFrameCount = Isaac.GetFrameCount();
     const elapsedFrames = renderFrameCount - renderFrame;
 
-    if (elapsedFrames <= RENDER_FRAMES_BEFORE_FADE) {
+    if (elapsedFrames <= GAME_FRAMES_BEFORE_FADE) {
       return 1;
     }
 
-    const fadeFrames = elapsedFrames - RENDER_FRAMES_BEFORE_FADE;
+    const fadeFrames = elapsedFrames - GAME_FRAMES_BEFORE_FADE;
     return 1 - 0.02 * fadeFrames;
   }
 

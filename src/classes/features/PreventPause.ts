@@ -4,7 +4,7 @@ import {
   ModCallbackCustom,
   isRoomDangerous,
 } from "isaacscript-common";
-import { isPreventPauseEnabled } from "../../deadSeaScrolls";
+import { isPreventPauseEnabled } from "../../config";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { isRandomizerEnabled } from "./achievementTracker/v";
 
