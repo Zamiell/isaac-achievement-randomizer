@@ -1,5 +1,11 @@
 TODO:
 
+- change timers
+  - I like the idea of 1 minute for basement/caves, 1m30 for depth/womb, 2m for higher
+- add faq about modding main menu
+
+- achievement text should be based on game frames
+
 - option for suppress 2 min achievement until room is cleared
 - flipped rooms
 
@@ -7,6 +13,8 @@ TODO:
   - full heart damage from all sources
   - all enemies are champions without any drops
   - breakfast item do not spawn
+
+- fortune teller + rules cards predictions
 
 ------------------------------
 

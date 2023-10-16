@@ -527,3 +527,12 @@ No. This mod requires a fully unlocked save file to play. Thus, it does not inte
 ### What algorithm does the randomizer use to randomize the achievements?
 
 It uses the random fill algorithm, as described [by TestRunner in the AGDQ 2019 randomizer panel](https://www.youtube.com/watch?v=vGIDzGvsrV8).
+
+### Doesn't the Pause collectible trivialize the no-hit boss objectives?
+
+No. If you use Pause, the timers will be disabled until you re-enter the room.
+
+### Why is it possible for me to get a soul heart in my health before unlocking the soul heart pickup? Why is it possible for me to get a black heart in my health before unlocking the black heart pickup?
+
+There is a difference between a _heart health type_ (which is what appears in the health UI at the top left corner of the screen) and a _heart pickup_ (which is the entity that appears on the ground that you have to touch with your body).
+**Only the pickups are unlockable, not the health type.** In other words, it is possible to unlock the Ceremonial Robes collectible before unlocking the black heart pickup. (Ceremonial Robes adds 3 black hearts directly to the player's health upon pickup.)

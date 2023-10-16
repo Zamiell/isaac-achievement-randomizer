@@ -9,6 +9,9 @@
 - The format of stats in the save file has changed. If you want to update an old save file to the new format, put the contents of "StatsTracker.persistent" into "StatsTracker.persistent.stats".
 - The mod will now display a message if you illegally pause the game or save & quit.
 - The stats page will now show if you have illegally paused or saved & quit.
+- !There is now an option to delay achievement text that appears in the middle of a battle.
+- !Belly Button now has unlock logic. (Thanks Gamonymous)
+- !Mom's Purse now has unlock logic. (Thanks Gamonymous)
 
 ### _v0.2.3_ - October 15th, 2023
 
