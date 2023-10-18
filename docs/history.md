@@ -5,6 +5,7 @@
 
 ### _v0.2.4_ - October 18th, 2023 (Unreleased)
 
+- The timer for Dingle has been changed to 1.5 minutes.
 - In hardcore mode, pill effects will now unlock on a cycle of one negative, one neutral, and one positive.
 - Rooms now have a chance to be flipped on the X axis, Y axis, or both axes.
 - A red icon will now show if you are playing on hardcore mode.

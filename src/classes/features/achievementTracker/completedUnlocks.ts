@@ -544,7 +544,7 @@ export function getUnlockedPillEffects(forRun: boolean): PillEffect[] {
   );
 }
 
-export function getLockedPillEffects(forRun: boolean): PillEffect[] {
+function getLockedPillEffects(forRun: boolean): PillEffect[] {
   const unlockedPillEffects = getUnlockedPillEffects(forRun);
   const unlockedPillEffectsSet = new Set(unlockedPillEffects);
 
