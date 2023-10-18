@@ -2,6 +2,7 @@ import type { DamageFlag } from "isaac-typescript-definitions";
 import {
   LevelStage,
   ModCallback,
+  NullItemID,
   RoomType,
 } from "isaac-typescript-definitions";
 import {
@@ -9,6 +10,7 @@ import {
   CallbackCustom,
   ModCallbackCustom,
   ReadonlyMap,
+  anyPlayerHasNullEffect,
   game,
   inRoomType,
   isFirstPlayer,
@@ -60,6 +62,14 @@ const v = {
 
 export class FloorObjectiveDetection extends RandomizerModFeature {
   v = v;
+
+  // 1
+  @Callback(ModCallback.POST_UPDATE)
+  postUpdate(): void {
+    if (anyPlayerHasNullEffect(NullItemID.LOST_CURSE)) {
+      v.level.tookHit = true;
+    }
+  }
 
   // 70
   @Callback(ModCallback.PRE_SPAWN_CLEAR_AWARD)
