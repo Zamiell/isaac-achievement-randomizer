@@ -127,10 +127,25 @@ The following "special" bosses / mini-bosses are also included:
 
 The following bosses have custom timer lengths:
 
-- Brownie (#58) - 1 minute (because he damages himself)
-- Hornfel (#82) - 1 minute (because he is extremely difficult)
-- Scourge (#85) - 1 minute (because he is extremely difficult)
-- Rotgut (#87) - 1 minute (because he is extremely difficult)
+- Monstro (#1) - 1 minute (too easy)
+- Larry Jr. (#2) - 1 minute (too easy)
+- Famine (#9) - 1.5 minutes (mostly easy)
+- Duke of Flies (#13) - 1 minute (too easy)
+- Gemini (#17) - 1 minute (too easy)
+- Fistula (#18) - 1.5 minutes (mostly easy)
+- Steven (#20) - 1 minute (too easy)
+- Teratoma (#33) - 1.5 minutes (mostly easy)
+- Pin (#37) - 1.5 minutes (mostly easy)
+- Dingle (#44) - 1.5 minutes (mostly easy)
+- Gurglings (#56) - 1.5 minutes (mostly easy)
+- Brownie (#58) - 1 minute (since he damages himself)
+- Little Horn (#60) - 1.5 minutes (mostly easy)
+- Rag Man (#61) - 1.5 minutes (mostly easy)
+- Dangle (#64) - 1.5 minutes (mostly easy)
+- Turdlings (#65) - 1.5 minutes (mostly easy)
+- Hornfel (#82) - 1 minute (extremely difficult)
+- Scourge (#85) - 1 minute (extremely difficult)
+- Rotgut (#87) - 1 minute (extremely difficult)
 
 The following bosses have custom conditions:
 

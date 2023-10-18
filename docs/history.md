@@ -5,7 +5,21 @@
 
 ### _v0.2.4_ - October 18th, 2023 (Unreleased)
 
-- The timer for Dingle has been changed to 1.5 minutes.
+- The following boss timers have been changed:
+  - Monstro (#1) - 1 minute
+  - Larry Jr. (#2) - 1 minute
+  - Duke of Flies (#13) - 1 minute
+  - Gemini (#17) - 1 minute
+  - Pin (#37) - 1.5 minutes
+  - Fistula (#18) - 1.5 minutes
+  - Teratoma (#33) - 1.5 minutes
+  - Dingle (#44) - 1.5 minutes
+  - Gurglings (#56) - 1.5 minutes
+  - Little Horn (#60) - 1.5 minutes
+  - Rag Man (#61) - 1.5 minutes
+  - Dangle (#64) - 1.5 minutes
+  - Turdlings (#65) - 1.5 minutes
+  - Steven (#20) - 1 minute
 - In hardcore mode, pill effects will now unlock on a cycle of one negative, one neutral, and one positive.
 - Rooms now have a chance to be flipped on the X axis, Y axis, or both axes.
 - A red icon will now show if you are playing on hardcore mode.

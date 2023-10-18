@@ -1,8 +1,5 @@
 TODO:
 
-- change timers
-  - I like the idea of 1 minute for basement/caves, 1m30 for depth/womb, 2m for higher
-
 ------------------------------
 
 LONG TERM TODO:
