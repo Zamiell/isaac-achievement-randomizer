@@ -87,7 +87,7 @@ Each character will unlock something upon defeating/completing the following:
 12. Mother
 13. The Beast
 
-Additionally, each character will unlock something upon clearing the following floors without getting hit:
+Additionally, each character will unlock something upon full-clearing the following floors without getting hit:
 
 1. Basement 1 / Cellar 1 / Burning Basement 1
 2. Basement 2 / Cellar 2 / Burning Basement 2

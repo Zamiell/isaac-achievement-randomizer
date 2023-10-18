@@ -13,6 +13,7 @@ import {
   anyPlayerHasNullEffect,
   game,
   inRoomType,
+  isAllRoomsClear,
   isFirstPlayer,
   isSelfDamage,
   onAnyChallenge,
@@ -23,6 +24,8 @@ import { ObjectiveType } from "../../enums/ObjectiveType";
 import { getObjective } from "../../types/Objective";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { addObjective } from "./achievementTracker/addObjective";
+
+const ROOM_TYPES = [RoomType.DEFAULT, RoomType.MINI_BOSS] as const;
 
 const STAGE_TO_CHARACTER_OBJECTIVE_KIND = new ReadonlyMap<
   LevelStage,
@@ -57,6 +60,7 @@ const STAGE_TO_CHARACTER_OBJECTIVE_KIND_REPENTANCE = new ReadonlyMap<
 const v = {
   level: {
     tookHit: false,
+    isFloorFullCleared: false,
   },
 };
 
@@ -66,6 +70,17 @@ export class FloorObjectiveDetection extends RandomizerModFeature {
   // 1
   @Callback(ModCallback.POST_UPDATE)
   postUpdate(): void {
+    this.checkFullClear();
+    this.checkLostCurse();
+  }
+
+  checkFullClear(): void {
+    if (!v.level.isFloorFullCleared && isAllRoomsClear(ROOM_TYPES)) {
+      v.level.isFloorFullCleared = true;
+    }
+  }
+
+  checkLostCurse(): void {
     if (anyPlayerHasNullEffect(NullItemID.LOST_CURSE)) {
       v.level.tookHit = true;
     }
@@ -110,7 +125,11 @@ export function floorObjectiveDetectionPreSpawnClearAward(): void {
   const player = Isaac.GetPlayer();
   const character = player.GetPlayerType();
 
-  if (inRoomType(RoomType.BOSS) && !v.level.tookHit) {
+  if (
+    inRoomType(RoomType.BOSS) &&
+    !v.level.tookHit &&
+    v.level.isFloorFullCleared
+  ) {
     const kindNoHit = getCharacterObjectiveKindNoHit();
     if (kindNoHit !== undefined) {
       const objective = getObjective(

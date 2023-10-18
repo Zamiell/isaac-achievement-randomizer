@@ -5,6 +5,7 @@
 
 ### _v0.2.4_ - October 18th, 2023 (Unreleased)
 
+- Full clearing is now required for the level objectives.
 - Rooms now have a chance to be flipped on the X axis, Y axis, or both axes.
 - A red icon will now show if you are playing on hardcore mode.
 - The following boss timers have been changed:
