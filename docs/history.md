@@ -5,6 +5,8 @@
 
 ### _v0.2.4_ - October 18th, 2023 (Unreleased)
 
+- Rooms now have a chance to be flipped on the X axis, Y axis, or both axes.
+- A red icon will now show if you are playing on hardcore mode.
 - The following boss timers have been changed:
   - Monstro (#1) - 1 minute
   - Larry Jr. (#2) - 1 minute
@@ -21,12 +23,12 @@
   - Turdlings (#65) - 1.5 minutes
   - Steven (#20) - 1 minute
 - In hardcore mode, pill effects will now unlock on a cycle of one negative, one neutral, and one positive.
-- Rooms now have a chance to be flipped on the X axis, Y axis, or both axes.
-- A red icon will now show if you are playing on hardcore mode.
 - The mod will now display a message if you illegally pause the game or save & quit.
 - The stats page will now show if you have illegally paused or saved & quit.
 - There is now an option to delay achievement text that appears in the middle of a battle.
 - Womb 1 and Womb 2 are no longer considered to be "easy" objectives for the purposes of unlocking The Polaroid and The Negative.
+- Challenges will now unlock after all of their extra starting collectibles, if any. (Thanks Finn)
+- Challenges will now unlock after their extra starting trinket, if any.
 - Charged Keys will now unlock before active collectibles. (Thanks Moucheron Quipet)
 - Touching a White Fire will now immediately invalidate the floor objective. (Thanks Po4ti)
 

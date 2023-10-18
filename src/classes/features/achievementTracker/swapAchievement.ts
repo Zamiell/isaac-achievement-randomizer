@@ -7,7 +7,6 @@ import {
   BatterySubType,
   BombSubType,
   CardType,
-  Challenge,
   CoinSubType,
   CollectibleType,
   GridEntityType,
@@ -30,6 +29,8 @@ import {
   collectibleHasTag,
   getChallengeBoss,
   getChallengeCharacter,
+  getChallengeCollectibleTypes,
+  getChallengeTrinketType,
   getRandomArrayElement,
   log,
   shuffleArray,
@@ -123,6 +124,7 @@ import {
   isRoomTypeUnlocked,
   isSackSubTypeUnlocked,
   isSlotVariantUnlocked,
+  isTrinketTypeUnlocked,
 } from "./completedUnlocks";
 import { getPillEffectsOfQuality } from "./pillEffectQuality";
 import { getTrinketTypesOfQuality } from "./trinketQuality";
@@ -244,105 +246,6 @@ function getSwappedUnlockAltFloor(unlock: Unlock): Unlock | undefined {
   return func === undefined ? undefined : func();
 }
 
-const CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP = new ReadonlyMap<
-  Challenge,
-  CollectibleType[]
->([
-  // 3
-  [
-    Challenge.HEAD_TRAUMA,
-    [
-      CollectibleType.TINY_PLANET, // 233
-      CollectibleType.SOY_MILK, // 330
-    ],
-  ],
-
-  // 6
-  [Challenge.SOLAR_SYSTEM, [CollectibleType.DISTANT_ADMIRATION]],
-
-  // 8
-  [Challenge.CAT_GOT_YOUR_TONGUE, [CollectibleType.GUPPYS_HAIRBALL]],
-
-  // 13
-  [
-    Challenge.BEANS,
-    [
-      CollectibleType.BEAN, // 111
-      CollectibleType.NINE_VOLT, // 116
-    ],
-  ],
-
-  // 17
-  [Challenge.WAKA_WAKA, [CollectibleType.STRANGE_ATTRACTOR]],
-
-  // 19
-  [Challenge.FAMILY_MAN, [CollectibleType.BROTHER_BOBBY]],
-
-  // 23
-  [
-    Challenge.BLUE_BOMBER,
-    [
-      CollectibleType.KAMIKAZE, // 40
-      CollectibleType.PYROMANIAC, // 223
-    ],
-  ],
-
-  // 24
-  [
-    Challenge.PAY_TO_PLAY,
-    [CollectibleType.SACK_OF_PENNIES, CollectibleType.MONEY_EQUALS_POWER],
-  ],
-
-  // 25
-  [Challenge.HAVE_A_HEART, [CollectibleType.CHARM_OF_THE_VAMPIRE]],
-
-  // 27
-  [Challenge.BRAINS, [CollectibleType.BOBS_BRAIN]],
-
-  // 29
-  [Challenge.ONANS_STREAK, [CollectibleType.CHOCOLATE_MILK]],
-
-  // 30
-  [
-    Challenge.GUARDIAN,
-    [
-      CollectibleType.ISAACS_HEART, // 276
-      CollectibleType.PUNCHING_BAG, // 281
-      CollectibleType.SPEAR_OF_DESTINY, // 400
-    ],
-  ],
-
-  // 36
-  [
-    Challenge.SCAT_MAN,
-    [
-      CollectibleType.POOP, // 36
-      CollectibleType.NINE_VOLT, // 116
-      CollectibleType.THUNDER_THIGHS, // 314
-      CollectibleType.DIRTY_MIND, // 576
-    ],
-  ],
-
-  // 37
-  [Challenge.BLOODY_MARY, [CollectibleType.BLOOD_OATH]],
-
-  // 38
-  [
-    Challenge.BAPTISM_BY_FIRE,
-    [
-      CollectibleType.GUPPYS_PAW, // 133
-      CollectibleType.SCHOOLBAG, // 534
-      CollectibleType.URN_OF_SOULS, // 640
-    ],
-  ],
-
-  // 41
-  [Challenge.PICA_RUN, [CollectibleType.MOMS_BOX]],
-
-  // 44
-  [Challenge.RED_REDEMPTION, [CollectibleType.RED_KEY]],
-]);
-
 function getSwappedUnlockChallenge(unlock: Unlock): Unlock | undefined {
   const challengeUnlock = unlock as ChallengeUnlock;
 
@@ -358,23 +261,28 @@ function getSwappedUnlockChallenge(unlock: Unlock): Unlock | undefined {
     return getUnlock(UnlockType.PATH, unlockablePath);
   }
 
-  const requiredCollectibleTypes = CHALLENGE_REQUIRED_COLLECTIBLE_TYPES_MAP.get(
+  assertNotNull(
+    v.persistent.seed,
+    "Failed to swap achievements due to the seed being null.",
+  );
+
+  const collectibleTypes = getChallengeCollectibleTypes(
     challengeUnlock.challenge,
   );
-  if (requiredCollectibleTypes !== undefined) {
-    assertNotNull(
-      v.persistent.seed,
-      "Failed to swap achievements due to the seed being null.",
-    );
-    const shuffledCollectibleTypes = shuffleArray(
-      requiredCollectibleTypes,
-      v.persistent.seed,
-    );
-    for (const collectibleType of shuffledCollectibleTypes) {
-      if (!isCollectibleTypeUnlocked(collectibleType, false)) {
-        return getUnlock(UnlockType.COLLECTIBLE, collectibleType);
-      }
+  const shuffledCollectibleTypes = shuffleArray(
+    collectibleTypes,
+    v.persistent.seed,
+  );
+
+  for (const collectibleType of shuffledCollectibleTypes) {
+    if (!isCollectibleTypeUnlocked(collectibleType, false)) {
+      return getUnlock(UnlockType.COLLECTIBLE, collectibleType);
     }
+  }
+
+  const trinketType = getChallengeTrinketType(challengeUnlock.challenge);
+  if (trinketType !== undefined && !isTrinketTypeUnlocked(trinketType, false)) {
+    return getUnlock(UnlockType.TRINKET, trinketType);
   }
 
   return undefined;
