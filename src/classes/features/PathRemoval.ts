@@ -3,6 +3,7 @@ import {
   EffectVariant,
   EntityType,
   GridEntityType,
+  LevelCurse,
   LevelStage,
   ModCallback,
   PickupVariant,
@@ -21,6 +22,7 @@ import {
   getMegaSatanDoor,
   getRepentanceDoor,
   getVoidDoor,
+  hasCurse,
   inCrawlSpaceWithBlackMarketEntrance,
   inRoomType,
   onRepentanceStage,
@@ -152,10 +154,13 @@ export class PathRemoval extends RandomizerModFeature {
 
     // The only Repentance door on Depths 2 / Necropolis 2 / Dank Depths 2 is the Strange Door
     // leading to the Ascent.
-    const unlockablePath =
-      onStage(LevelStage.DEPTHS_2) && !onRepentanceStage()
-        ? UnlockablePath.ASCENT
-        : UnlockablePath.REPENTANCE_FLOORS;
+    const onFloorWithStrangeDoor =
+      (onStage(LevelStage.DEPTHS_2) ||
+        (onStage(LevelStage.DEPTHS_1) && hasCurse(LevelCurse.LABYRINTH))) &&
+      !onRepentanceStage();
+    const unlockablePath = onFloorWithStrangeDoor
+      ? UnlockablePath.ASCENT
+      : UnlockablePath.REPENTANCE_FLOORS;
 
     if (!isPathUnlocked(unlockablePath, true)) {
       this.removeDoorAndSmoke(repentanceDoor);

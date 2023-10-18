@@ -23,6 +23,7 @@
   - Dangle (#64) - 1.5 minutes
   - Turdlings (#65) - 1.5 minutes
   - Steven (#20) - 1 minute
+- The Rag Man objective now requires at least two Raglings to be alive.
 - In hardcore mode, pill effects will now unlock on a cycle of one negative, one neutral, and one positive.
 - The mod will now display a message if you illegally pause the game or save & quit.
 - The stats page will now show if you have illegally paused or saved & quit.
@@ -31,6 +32,8 @@
 - Challenges will now unlock after all of their extra starting collectibles, if any. (Thanks Finn)
 - Challenges will now unlock after their extra starting trinket, if any.
 - Charged Keys will now unlock before active collectibles. (Thanks Moucheron Quipet)
+- Tinted rocks will now unlock after soul hearts. (Thanks Neonomi)
+- Super tinted rocks will now unlock after soul hearts.
 - Touching a White Fire will now immediately invalidate the floor objective. (Thanks Po4ti)
 
 ### _v0.2.3_ - October 15th, 2023

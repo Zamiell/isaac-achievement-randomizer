@@ -8,7 +8,7 @@ export const UNLOCKABLE_ROOM_TYPES = [
   /// RoomType.CLEAN_BEDROOM, // 18 (uncomment if another unlock is needed)
   /// RoomType.DIRTY_BEDROOM, // 19 (uncomment if another unlock is needed)
   RoomType.VAULT, // 20
-  RoomType.DICE, // 21 (uncomment if one more unlock is needed)
+  RoomType.DICE, // 21
   RoomType.PLANETARIUM, // 24
 ] as const;
 
