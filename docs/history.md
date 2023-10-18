@@ -27,6 +27,7 @@
 - The stats page will now show if you have illegally paused or saved & quit.
 - There is now an option to delay achievement text that appears in the middle of a battle.
 - Womb 1 and Womb 2 are no longer considered to be "easy" objectives for the purposes of unlocking The Polaroid and The Negative.
+- Charged Keys will now unlock before active collectibles. (Thanks Moucheron Quipet)
 
 ### _v0.2.3_ - October 15th, 2023
 

@@ -1581,6 +1581,20 @@ function getSwappedUnlockBomb(unlock: Unlock): Unlock | undefined {
   return undefined;
 }
 
+const SWAPPED_KEY_FUNCTIONS = new ReadonlyMap<
+  KeySubType,
+  () => Unlock | undefined
+>([
+  // 4
+  [
+    KeySubType.CHARGED,
+    () =>
+      anyActiveCollectibleUnlocked(false)
+        ? undefined
+        : getRandomActiveCollectibleUnlock(),
+  ],
+]);
+
 function getSwappedUnlockKey(unlock: Unlock): Unlock | undefined {
   const keyUnlock = unlock as KeyUnlock;
 
@@ -1591,7 +1605,8 @@ function getSwappedUnlockKey(unlock: Unlock): Unlock | undefined {
     }
   }
 
-  return undefined;
+  const func = SWAPPED_KEY_FUNCTIONS.get(keyUnlock.keySubType);
+  return func === undefined ? undefined : func();
 }
 
 function getSwappedUnlockBattery(unlock: Unlock): Unlock | undefined {
