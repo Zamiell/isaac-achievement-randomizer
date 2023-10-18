@@ -420,6 +420,20 @@ export function getSecondsSinceLastDamage(): int | undefined {
       break;
     }
 
+    // 61
+    case BossID.RAG_MAN: {
+      const ragMans = getNPCs(EntityType.RAG_MAN);
+      const raglings = getNPCs(EntityType.RAGLING);
+      const bosses = [...ragMans, ...raglings];
+      const aliveBosses = bosses.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length < 3) {
+        return;
+      }
+
+      break;
+    }
+
     // 65
     case BossID.PEEP: {
       const peeps = getNPCs(EntityType.PEEP, PeepVariant.PEEP, -1, true);
