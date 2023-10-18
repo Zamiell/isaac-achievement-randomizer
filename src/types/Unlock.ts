@@ -129,7 +129,7 @@ interface SlotUnlock {
   slotVariant: SlotVariant;
 }
 
-interface GridEntityUnlock {
+export interface GridEntityUnlock {
   type: UnlockType.GRID_ENTITY;
   gridEntityType: (typeof UNLOCKABLE_GRID_ENTITY_TYPES)[number];
 }

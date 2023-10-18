@@ -74,6 +74,7 @@ import type {
   ChestUnlock,
   CoinUnlock,
   CollectibleUnlock,
+  GridEntityUnlock,
   HeartUnlock,
   KeyUnlock,
   OtherUnlock,
@@ -183,7 +184,7 @@ const SWAPPED_UNLOCK_FUNCTIONS = {
   [UnlockType.SACK]: getSwappedUnlockSack,
   [UnlockType.CHEST]: getSwappedUnlockChest,
   [UnlockType.SLOT]: getSwappedUnlockSlot,
-  [UnlockType.GRID_ENTITY]: undefined,
+  [UnlockType.GRID_ENTITY]: getSwappedUnlockGridEntity,
   [UnlockType.OTHER]: getSwappedUnlockOther,
 } as const satisfies Record<UnlockType, ((unlock: Unlock) => void) | undefined>;
 
@@ -1568,6 +1569,38 @@ function getSwappedUnlockSlot(): Unlock | undefined {
   return isRoomTypeUnlocked(RoomType.ARCADE, false)
     ? undefined
     : getUnlock(UnlockType.ROOM, RoomType.ARCADE);
+}
+
+const SWAPPED_UNLOCK_GRID_ENTITY_FUNCTIONS = new ReadonlyMap<
+  GridEntityType,
+  () => Unlock | undefined
+>([
+  // 4
+  [
+    GridEntityType.ROCK_TINTED,
+    () =>
+      isHeartSubTypeUnlocked(HeartSubType.SOUL, false)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.SOUL),
+  ],
+
+  // 22
+  [
+    GridEntityType.ROCK_SUPER_SPECIAL,
+    () =>
+      isHeartSubTypeUnlocked(HeartSubType.SOUL, false)
+        ? undefined
+        : getUnlock(UnlockType.HEART, HeartSubType.SOUL),
+  ],
+]);
+
+function getSwappedUnlockGridEntity(unlock: Unlock): Unlock | undefined {
+  const gridEntityUnlock = unlock as GridEntityUnlock;
+
+  const func = SWAPPED_UNLOCK_GRID_ENTITY_FUNCTIONS.get(
+    gridEntityUnlock.gridEntityType,
+  );
+  return func === undefined ? undefined : func();
 }
 
 const SWAPPED_UNLOCK_OTHER_FUNCTIONS = new ReadonlyMap<
