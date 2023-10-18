@@ -37,7 +37,6 @@ import {
   isPassiveOrFamiliarCollectible,
   isRune,
 } from "isaacscript-common";
-import { PILL_EFFECT_QUALITIES } from "../../../arrays/pillEffectQualities";
 import { UNLOCKABLE_CARD_TYPES } from "../../../arrays/unlockableCardTypes";
 import { UNLOCKABLE_CHALLENGES } from "../../../arrays/unlockableChallenges";
 import { UNLOCKABLE_CHARACTERS } from "../../../arrays/unlockableCharacters";
@@ -52,6 +51,7 @@ import {
   UNLOCKABLE_KEY_SUB_TYPES,
   UNLOCKABLE_SACK_SUB_TYPES,
 } from "../../../arrays/unlockablePickupTypes";
+import { UNLOCKABLE_PILL_EFFECTS } from "../../../arrays/unlockablePillEffects";
 import { UNLOCKABLE_SLOT_VARIANTS } from "../../../arrays/unlockableSlotVariants";
 import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../../arrays/unlockableTrinketTypes";
 import type { AltFloor } from "../../../enums/AltFloor";
@@ -66,7 +66,6 @@ import {
   getAdjustedCollectibleQuality,
   getAdjustedCollectibleTypesOfQuality,
 } from "./collectibleQuality";
-import { getPillEffectsOfQuality } from "./pillEffectQuality";
 import { getTrinketTypesOfQuality } from "./trinketQuality";
 import { v } from "./v";
 
@@ -332,8 +331,12 @@ export function isTrinketTypeUnlocked(
   );
 }
 
-export function getUnlockedTrinketTypes(): TrinketType[] {
-  return filterMap(v.persistent.completedUnlocksForRun, (unlock) =>
+export function getUnlockedTrinketTypes(forRun: boolean): TrinketType[] {
+  const array = forRun
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
+
+  return filterMap(array, (unlock) =>
     unlock.type === UnlockType.TRINKET ? unlock.trinketType : undefined,
   );
 }
@@ -531,12 +534,28 @@ export function isPillEffectUnlocked(
   );
 }
 
-export function getUnlockedPillEffects(): PillEffect[] {
-  return filterMap(v.persistent.completedUnlocksForRun, (unlock) =>
+export function getUnlockedPillEffects(forRun: boolean): PillEffect[] {
+  const array = forRun
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
+
+  return filterMap(array, (unlock) =>
     unlock.type === UnlockType.PILL_EFFECT ? unlock.pillEffect : undefined,
   );
 }
 
+export function getLockedPillEffects(forRun: boolean): PillEffect[] {
+  const unlockedPillEffects = getUnlockedPillEffects(forRun);
+  const unlockedPillEffectsSet = new Set(unlockedPillEffects);
+
+  return UNLOCKABLE_PILL_EFFECTS.filter(
+    (pillEffect) => !unlockedPillEffectsSet.has(pillEffect),
+  );
+}
+
+/**
+ * In hardcore mode, pill effects unlock on a cycle of one negative, one neutral, and one positive.
+ */
 export function getWorseLockedPillEffect(
   pillEffect: PillEffect,
 ): PillEffect | undefined {
@@ -545,33 +564,60 @@ export function getWorseLockedPillEffect(
     "Failed to get a worse pill effect since the seed was null.",
   );
 
-  const quality = PILL_EFFECT_QUALITIES[pillEffect];
+  const thisPillEffectType = getPillEffectType(pillEffect);
+  const nextPillEffectType = getNextPillEffectUnlockTypeForHardcore();
 
-  for (const lowerQualityInt of eRange(quality)) {
-    const lowerQuality = lowerQualityInt as Quality;
-    const lowerQualityPillEffects = getPillEffectsOfQuality(lowerQuality);
-    const unlockedLowerQualityPillEffects = lowerQualityPillEffects.filter(
-      (lowerQualityPillEffect) =>
-        isPillEffectUnlocked(lowerQualityPillEffect, false),
-    );
-
-    if (
-      unlockedLowerQualityPillEffects.length <
-      lowerQualityPillEffects.length * QUALITY_THRESHOLD_PERCENT
-    ) {
-      const lockedLowerQualityTrinketTypes = lowerQualityPillEffects.filter(
-        (lowerQualityPillEffect) =>
-          !isPillEffectUnlocked(lowerQualityPillEffect, false),
-      );
-
-      return getRandomArrayElement(
-        lockedLowerQualityTrinketTypes,
-        v.persistent.seed,
-      );
-    }
+  if (thisPillEffectType === nextPillEffectType) {
+    return undefined;
   }
 
-  return undefined;
+  const lockedPillEffects = getLockedPillEffects(false);
+  const lockedPillEffectsOfType = lockedPillEffects.filter((thisPillEffect) =>
+    getPillEffectType(thisPillEffect),
+  );
+
+  return getRandomArrayElement(lockedPillEffectsOfType, v.persistent.seed);
+}
+
+/** Negative --> Neutral --> Positive --> Negative --> etc. */
+function getNextPillEffectUnlockTypeForHardcore(): ItemConfigPillEffectType {
+  const unlockedPillEffects = getUnlockedPillEffects(false);
+
+  const unlockedNegativePillEffects = unlockedPillEffects.filter(
+    (pillEffect) =>
+      getPillEffectType(pillEffect) === ItemConfigPillEffectType.NEGATIVE,
+  );
+  const unlockedNeutralPillEffects = unlockedPillEffects.filter(
+    (pillEffect) =>
+      getPillEffectType(pillEffect) === ItemConfigPillEffectType.NEUTRAL,
+  );
+  const unlockedPositivePillEffects = unlockedPillEffects.filter(
+    (pillEffect) =>
+      getPillEffectType(pillEffect) === ItemConfigPillEffectType.POSITIVE,
+  );
+
+  if (
+    unlockedNegativePillEffects.length < unlockedNeutralPillEffects.length ||
+    unlockedNegativePillEffects.length < unlockedPositivePillEffects.length
+  ) {
+    return ItemConfigPillEffectType.NEGATIVE;
+  }
+
+  if (
+    unlockedNeutralPillEffects.length < unlockedNegativePillEffects.length ||
+    unlockedNeutralPillEffects.length < unlockedPositivePillEffects.length
+  ) {
+    return ItemConfigPillEffectType.NEUTRAL;
+  }
+
+  if (
+    unlockedPositivePillEffects.length < unlockedNegativePillEffects.length ||
+    unlockedPositivePillEffects.length < unlockedNeutralPillEffects.length
+  ) {
+    return ItemConfigPillEffectType.POSITIVE;
+  }
+
+  return ItemConfigPillEffectType.NEGATIVE;
 }
 
 // -------------------------------

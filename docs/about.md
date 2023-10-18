@@ -377,9 +377,9 @@ This mode can make a randomizer playthrough extremely easy, because if your firs
 
 In hardcore mode, we want to prevent the situation where you unlock powerful items early on in your playthrough.
 
-- Collectibles, trinkets, cards, and pill effects will progressively unlock based on their quality classification. (50% of 0 quality items must unlock first before 1 quality items, and so on.)
+- Collectibles, trinkets, and cards will progressively unlock based on their quality classification. (50% of 0 quality items must unlock first before 1 quality items, and so on.)
   - Since trinkets and cards do not have vanilla quality classifications, custom qualities were created by [Gamonymous](https://github.com/Rchardon) & [Moucheron Quipet](https://www.twitch.tv/moucheronquipet).
-  - A pill effect's quality is simply the pill effect class (e.g. positive/negative/neutral).
+- Pill effects will unlock on a cycle of one negative, one neutral, and one positive.
 - Hearts will unlock in the following order:
   - Gold Heart
   - Rotten Heart
@@ -451,6 +451,12 @@ The mod includes a death tracker. If you are a streaker, try to complete the ran
 The mod includes an on-screen timer, similar to the [Racing+](https://isaacracing.net/) mod. The timer starts off hidden by default, but you can enable it in the Dead Sea Scrolls menu. If you are a speedrunner, try to complete the randomizer as fast as possible!
 
 Unlike the timer in Racing+, the timer in this mod tracks in-game time. Thus, the timer will be paused when the game is paused or when you are in the main menu.
+
+### Room Flipping
+
+There are thousands of rooms in the game, but many players have already seen them all. To increase run variety, all rooms have a chance to be flipped on the X axis, Y axis, or both axes.
+
+Gehenna is exempt from this behavior due to unavoidable damage with Ball and Chains.
 
 ### Gameplay Removals
 

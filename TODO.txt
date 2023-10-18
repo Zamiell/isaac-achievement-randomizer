@@ -1,15 +1,12 @@
 TODO:
 
-- pill selection should be biased to emulate real game
-- revamp pill selection - 1 bad, 1 neutral, 1 good
-
 - change timers
   - I like the idea of 1 minute for basement/caves, 1m30 for depth/womb, 2m for higher
-- add faq about modding main menu
 
-- achievement text should be based on game frames
+------------------------------
 
-- option for suppress 2 min achievement until room is cleared
+LONG TERM TODO:
+
 - flipped rooms
 
 - nightmare mode:  hardcore but also:
@@ -18,10 +15,6 @@ TODO:
   - breakfast item do not spawn
 
 - fortune teller + rules cards predictions
-
-------------------------------
-
-LONG TERM TODO:
 
 - checkboxes for banned items
 

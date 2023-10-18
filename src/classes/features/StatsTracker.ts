@@ -12,6 +12,7 @@ import {
   ModCallbackCustom,
   ModFeature,
   PriorityCallback,
+  PriorityCallbackCustom,
   game,
   isActionPressedOnAnyInput,
   isRoomDangerous,
@@ -130,7 +131,11 @@ export class StatsTracker extends ModFeature {
   }
 
   /** TODO: Delete this when the beta ends. */
-  @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
+  @PriorityCallbackCustom(
+    ModCallbackCustom.POST_GAME_STARTED_REORDERED,
+    HIGHER_PRIORITY_THAN_ISAACSCRIPT_COMMON,
+    false,
+  )
   postGameStartedReorderedFalse(): void {
     for (const key of Object.keys(v.persistent.stats)) {
       // @ts-expect-error Backwards compatibility.

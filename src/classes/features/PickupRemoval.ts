@@ -519,7 +519,7 @@ export class PickupRemoval extends RandomizerModFeature {
   ): [PickupVariant, int] | undefined {
     const trinketType = subType as TrinketType;
 
-    const unlockedTrinketTypes = getUnlockedTrinketTypes();
+    const unlockedTrinketTypes = getUnlockedTrinketTypes(true);
     if (unlockedTrinketTypes.length === 0) {
       return [PickupVariant.COIN, CoinSubType.PENNY];
     }

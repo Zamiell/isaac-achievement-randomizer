@@ -50,7 +50,7 @@ export class PillRemoval extends RandomizerModFeature {
   }
 
   initPillPool(): void {
-    const unlockedPillEffects = getUnlockedPillEffects();
+    const unlockedPillEffects = getUnlockedPillEffects(true);
     const seeds = game.GetSeeds();
     const startSeed = seeds.GetStartSeed();
     const pillEffectsForRun = shuffleArray(unlockedPillEffects, startSeed);
