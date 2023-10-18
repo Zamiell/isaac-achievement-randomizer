@@ -12,7 +12,6 @@ import {
   ReadonlyMap,
   anyPlayerHasNullEffect,
   game,
-  inRoomType,
   isAllRoomsClear,
   isFirstPlayer,
   isSelfDamage,
@@ -25,7 +24,11 @@ import { getObjective } from "../../types/Objective";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { addObjective } from "./achievementTracker/addObjective";
 
-const ROOM_TYPES = [RoomType.DEFAULT, RoomType.MINI_BOSS] as const;
+const ROOM_TYPES = [
+  RoomType.DEFAULT, // 1
+  RoomType.BOSS, // 5
+  RoomType.MINI_BOSS, // 6
+] as const;
 
 const STAGE_TO_CHARACTER_OBJECTIVE_KIND = new ReadonlyMap<
   LevelStage,
@@ -60,7 +63,6 @@ const STAGE_TO_CHARACTER_OBJECTIVE_KIND_REPENTANCE = new ReadonlyMap<
 const v = {
   level: {
     tookHit: false,
-    isFloorFullCleared: false,
   },
 };
 
@@ -70,14 +72,7 @@ export class FloorObjectiveDetection extends RandomizerModFeature {
   // 1
   @Callback(ModCallback.POST_UPDATE)
   postUpdate(): void {
-    this.checkFullClear();
     this.checkLostCurse();
-  }
-
-  checkFullClear(): void {
-    if (!v.level.isFloorFullCleared && isAllRoomsClear(ROOM_TYPES)) {
-      v.level.isFloorFullCleared = true;
-    }
   }
 
   checkLostCurse(): void {
@@ -111,6 +106,16 @@ export class FloorObjectiveDetection extends RandomizerModFeature {
     return undefined;
   }
 
+  /**
+   * If the final room explored on a floor is empty, then it will not get set to being cleared until
+   * the player enters it, and then the `PRE_SPAWN_CLEAR_AWARD` callback will never be fired. Thus,
+   * we have to also check on every room enter.
+   */
+  @CallbackCustom(ModCallbackCustom.POST_NEW_ROOM_REORDERED)
+  postNewRoomReordered(): void {
+    checkCompletedFloorObjective();
+  }
+
   @CallbackCustom(ModCallbackCustom.POST_HOLY_MANTLE_REMOVED)
   postHolyMantleRemoved(player: EntityPlayer): void {
     if (!isFirstPlayer(player)) {
@@ -122,14 +127,14 @@ export class FloorObjectiveDetection extends RandomizerModFeature {
 }
 
 export function floorObjectiveDetectionPreSpawnClearAward(): void {
+  checkCompletedFloorObjective();
+}
+
+function checkCompletedFloorObjective() {
   const player = Isaac.GetPlayer();
   const character = player.GetPlayerType();
 
-  if (
-    inRoomType(RoomType.BOSS) &&
-    !v.level.tookHit &&
-    v.level.isFloorFullCleared
-  ) {
+  if (!v.level.tookHit && isAllRoomsClear(ROOM_TYPES)) {
     const kindNoHit = getCharacterObjectiveKindNoHit();
     if (kindNoHit !== undefined) {
       const objective = getObjective(

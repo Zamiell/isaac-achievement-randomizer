@@ -31,7 +31,6 @@ export class AchievementNotification extends RandomizerModFeature {
   @Callback(ModCallback.POST_UPDATE)
   postUpdate(): void {
     this.checkDequeueText();
-    this.checkDraw();
   }
 
   checkDequeueText(): void {
@@ -52,6 +51,12 @@ export class AchievementNotification extends RandomizerModFeature {
 
     v.run.text = text;
     v.run.gameFrameSet = game.GetFrameCount();
+  }
+
+  // 2
+  @Callback(ModCallback.POST_RENDER)
+  postRender(): void {
+    this.checkDraw();
   }
 
   checkDraw(): void {
@@ -88,9 +93,9 @@ export class AchievementNotification extends RandomizerModFeature {
     }
   }
 
-  getFade(renderFrame: int): float {
-    const renderFrameCount = Isaac.GetFrameCount();
-    const elapsedFrames = renderFrameCount - renderFrame;
+  getFade(gameFrame: int): float {
+    const gameFrameCount = game.GetFrameCount();
+    const elapsedFrames = gameFrameCount - gameFrame;
 
     if (elapsedFrames <= GAME_FRAMES_BEFORE_FADE) {
       return 1;
