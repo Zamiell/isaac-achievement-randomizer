@@ -161,6 +161,21 @@ There is one unlock for completing each challenge, with the following exceptions
 
 There are 1054 + 104 + 44 = 1202 objectives in total.
 
+### Easy Objectives
+
+The following objectives are considered to be "easy" for the purposes of unlocking The Polaroid and The Negative:
+
+- Mom
+- It Lives
+- Isaac
+- Satan
+- No Hit Basement 1
+- No Hit Basement 2
+- No Hit Caves 1
+- No Hit Caves 2
+- No Hit Depths 1
+- No Hit Depths 2
+
 <br>
 
 ## Unlock List
@@ -191,7 +206,7 @@ The following things start off locked and are inaccessible:
 - Greed Mode
 - Black Markets
 
-Isaac is guaranteed to unlock both The Chest & Dark Room from one of his easier objectives. The rest can be randomly unlocked from any objective.
+Isaac is guaranteed to unlock both The Chest & Dark Room from one of his [easier objectives](#easy-objectives). The rest can be randomly unlocked from any objective.
 
 ### Alternate Floors (11)
 
@@ -487,7 +502,7 @@ In the Isaac streaking community, you are not allowed to use the save & quit fea
 
 - <!-- "ui_hearts.png" --> The heart UI sprites have been slightly modified so that it is easier to see an empty heart container on a black background.
 - <!-- SilenceMomDad --> The audio clips of mom and dad on the Ascent are silenced.
-- <!-- ForceFadedConsoleDisplay --> The "faded console display" feature is automatically enabled in the "options.ini" file, which allows you to visually see when an error in the game happens. Please report bugs to the developers in [the Discord server](https://discord.gg/GwhUeQjHTF).
+- <!-- ForceFadedConsoleDisplay --> The "faded console display" feature is automatically enabled in the "options.ini" file, which allows you to visually see when an error in the game happens. Please report bugs to the developers in [the Isaac Streaking Discord server](https://discord.gg/GwhUeQjHTF).
 - <!-- PreventVictoryLapPopup --> Victory Laps and the "Rerun" feature on the main menu are banned for the same reason that R Key is. As a quality of life fix, the Victory Lap popup will no longer appear after defeating The Lamb.
 
 <br>
@@ -497,6 +512,10 @@ In the Isaac streaking community, you are not allowed to use the save & quit fea
 ### What is the latest version?
 
 The latest version can always be found [on the Steam Workshop change notes page](https://steamcommunity.com/sharedfiles/filedetails/changelog/3050399093).
+
+### How do I contact the developers, report a bug, or chat with other people about the mod?
+
+The main hub of communication for the mod is the "#randomizer" channels in the [Isaac Streaking Discord server](https://discord.gg/GwhUeQjHTF). (Discord is a voice and text chat application that allows anyone to create a hosted server. We use one such server as the primary hub of communication for Isaac streaking.)
 
 ### How do I backup/restore/edit my randomizer save file?
 
@@ -548,3 +567,24 @@ No. If you use Pause, the timers will be disabled until you re-enter the room.
 
 There is a difference between a _heart health type_ (which is what appears in the health UI at the top left corner of the screen) and a _heart pickup_ (which is the entity that appears on the ground that you have to touch with your body).
 **Only the pickups are unlockable, not the health type.** In other words, it is possible to unlock the Ceremonial Robes collectible before unlocking the black heart pickup. (Ceremonial Robes adds 3 black hearts directly to the player's health upon pickup.)
+
+### How can I do the Baby Plum objective if she flies away?
+
+The no-hit achievement requires that you do not get hit on Baby Plum for 2 minutes, but Baby Plum will fly away if you do not damage her over the course of a minute. Thus, all you have to do is shoot a single tear at her every minute in order to reset the timer.
+
+### Why do the characters appear as unlocked while on the main menu?
+
+Due to technical limitations, it is not possible to dynamically mod the main menu. Thus, the best we can do is to display a "this character is locked" message once you get into the game.
+
+Note that:
+
+- You can see which characters you currently have unlocked by going into the menu and selecting "Achievement List", then "Unlock List", and then "Characters".
+- You can use the "Randomizer Chill Room" custom challenge to get into the game and view the menu without having to finish an entire run. (Being in the challenge will not increment the number of runs or the number of deaths.)
+
+### Who made this mod?
+
+The mod was designed by Zamiel and [Gamonymous](https://github.com/Rchardon), with some help from [Moucheron Quipet](https://www.twitch.tv/moucheronquipet).
+
+### What programming language is the mod written in?
+
+It is written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacScript](https://isaacscript.github.io/) framework.

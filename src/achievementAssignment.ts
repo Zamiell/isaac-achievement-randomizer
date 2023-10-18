@@ -35,8 +35,6 @@ const EASY_OBJECTIVE_KINDS = [
   CharacterObjectiveKind.NO_HIT_CAVES_2,
   CharacterObjectiveKind.NO_HIT_DEPTHS_1,
   CharacterObjectiveKind.NO_HIT_DEPTHS_2,
-  CharacterObjectiveKind.NO_HIT_WOMB_1,
-  CharacterObjectiveKind.NO_HIT_WOMB_2,
 ] as const;
 
 /** These are the unlockable paths that are gated behind `EASY_OBJECTIVE_KINDS`. */

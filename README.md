@@ -21,7 +21,7 @@ It is written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacS
 
 ## Discord
 
-For questions about playing the mod, or reporting bugs, or if you want to help develop the mod, contact us in the [Isaac Streaking Discord server](https://discord.gg/GwhUeQjHTF). (Discord is a voice and text chat application that allows anyone to create a hosted server. We use one such server as the primary hub of communication for Isaac streaking.)
+For questions about playing the mod, or reporting bugs, contact us in the [Isaac Streaking Discord server](https://discord.gg/GwhUeQjHTF). (Discord is a voice and text chat application that allows anyone to create a hosted server. We use one such server as the primary hub of communication for Isaac streaking.)
 
 <br>
 

@@ -6,10 +6,10 @@
 ### _v0.2.4_ - October 15th, 2023 (Unreleased)
 
 - A red icon will now show if you are playing on hardcore mode.
-- The format of stats in the save file has changed. If you want to update an old save file to the new format, put the contents of "StatsTracker.persistent" into "StatsTracker.persistent.stats". (See the F.A.Q. for more information on how to modify a save file.)
 - The mod will now display a message if you illegally pause the game or save & quit.
 - The stats page will now show if you have illegally paused or saved & quit.
 - There is now an option to delay achievement text that appears in the middle of a battle.
+- Womb 1 and Womb 2 are no longer considered to be "easy" objectives for the purposes of unlocking The Polaroid and The Negative.
 
 ### _v0.2.3_ - October 15th, 2023
 

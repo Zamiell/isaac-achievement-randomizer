@@ -1,5 +1,8 @@
 TODO:
 
+- pill selection should be biased to emulate real game
+- revamp pill selection - 1 bad, 1 neutral, 1 good
+
 - change timers
   - I like the idea of 1 minute for basement/caves, 1m30 for depth/womb, 2m for higher
 - add faq about modding main menu
@@ -28,6 +31,44 @@ OTHER POTENTIAL UNLOCKS:
 
 - see unlockableRoomTypes.ts
 - champions that drop items - https://bindingofisaacrebirth.fandom.com/wiki/Monsters#Champions
+- randomized starting items
+  - characters without any starting items:
+    - 7 - Azazel
+    - 9 - Eden (is already randomized)
+    - 16 - The Forgotten
+    - 19 - Jacob & Esau
+    - 21 - Tainted Isaac
+    - 27 - Tainted Samson
+    - 28 - Tainted Azazel
+    - 30 - Tainted Eden (is already randomized)
+    - 31 - Tainted Lost
+    - 32 - Tainted Lilith
+    - 33 - Tainted Keeper
+    - 35 - Tainted Forgotten
+  - characters that can't be randomized:
+    - 13 - Lilith (unfair/un-fun without Box of Friends)
+    - 14 - Keeper (unfair without Wooden Penny)
+    - 18 - Bethany (without Book of Virtues there is no way to use the soul heart mechanic)
+    - 22 - Tainted Magdalene (unfair without Yum Heart)
+    - 23 - Tainted Cain (dysfunctional without Bag of Crafting)
+    - 26 - Tainted Eve (dysfunctional without Sumptorium)
+    - 29 - Tainted Lazarus (dysfunctional without Flip)
+    - 37 - Tainted Jacob (dysfunctional without Anima Sola)
+  - characters with starting items that could be randomized:
+    - 0 - Isaac (D6)
+    - 1 - Magdalene (Yum Heart)
+    - 2 - Cain (Lucky Foot + Paper Clip)
+    - 3 - Judas (Book of Belial)
+    - 4 - Blue Baby (The Poop)
+    - 5 - Eve (Dead Bird + Whore of Babylon + Razor Blade)
+    - 6 - Samson (Bloody Lust + Child's Heart)
+    - 8 - Lazarus (Anemic)
+    - 10 - The Lost (Eternal D6)
+    - 15 - Apollyon (Void)
+    - 24 - Tainted Judas (Dark Arts)
+    - 25 - Tainted Blue Baby (Hold)
+    - 34 - Tainted Apollyon (Abyss)
+    - 36 - Tainted Bethany (Lemegeton)
 
 ------------------------------
 
