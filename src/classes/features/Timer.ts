@@ -8,7 +8,7 @@ import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   getModifiedBossID,
   getSecondsSinceLastDamage,
-} from "./ObjectiveDetection";
+} from "./BossNoHitObjectiveDetection";
 import { getPlaythroughSecondsElapsed } from "./StatsTracker";
 
 export class Timer extends RandomizerModFeature {

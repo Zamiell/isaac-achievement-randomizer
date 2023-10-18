@@ -9,17 +9,20 @@ import { version } from "../package.json";
 import { AchievementNotification } from "./classes/features/AchievementNotification";
 import { AchievementRandomizer } from "./classes/features/AchievementRandomizer";
 import { AchievementTracker } from "./classes/features/AchievementTracker";
+import { BossKillObjectiveDetection } from "./classes/features/BossKillObjectiveDetection";
+import { BossNoHitObjectiveDetection } from "./classes/features/BossNoHitObjectiveDetection";
+import { ChallengeObjectiveDetection } from "./classes/features/ChallengeObjectiveDetection";
 import { CheckErrors } from "./classes/features/CheckErrors";
 import { ChillRoom } from "./classes/features/ChillRoom";
 import { DrawControls } from "./classes/features/DrawControls";
 import { FixVanillaBugs } from "./classes/features/FixVanillaBugs";
+import { FloorHitIcon } from "./classes/features/FloorHitIcon";
+import { FloorObjectiveDetection } from "./classes/features/FloorObjectiveDetection";
 import { ForceFadedConsoleDisplay } from "./classes/features/ForceFadedConsoleDisplay";
 import { ForceSeeds } from "./classes/features/ForceSeeds";
 import { GridEntityRemoval } from "./classes/features/GridEntityRemoval";
-import { HitIcon } from "./classes/features/HitIcon";
 import { InvisibleEntities } from "./classes/features/InvisibleEntities";
 import { NPCRemoval } from "./classes/features/NPCRemoval";
-import { ObjectiveDetection } from "./classes/features/ObjectiveDetection";
 import { PathRemoval } from "./classes/features/PathRemoval";
 import { PickupRemoval } from "./classes/features/PickupRemoval";
 import { PillRemoval } from "./classes/features/PillRemoval";
@@ -48,17 +51,20 @@ const MOD_FEATURES = [
   AchievementNotification,
   AchievementRandomizer,
   AchievementTracker,
+  BossKillObjectiveDetection,
+  BossNoHitObjectiveDetection,
+  ChallengeObjectiveDetection,
   CheckErrors,
   ChillRoom,
   DrawControls,
   FixVanillaBugs,
+  FloorObjectiveDetection,
+  FloorHitIcon,
   ForceFadedConsoleDisplay,
   ForceSeeds,
   GridEntityRemoval,
-  HitIcon,
   InvisibleEntities,
   NPCRemoval,
-  ObjectiveDetection,
   PathRemoval,
   PickupRemoval,
   PillRemoval,

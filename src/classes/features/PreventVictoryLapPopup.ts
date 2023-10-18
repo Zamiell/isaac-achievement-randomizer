@@ -25,7 +25,8 @@ import {
 import { EffectVariantCustom } from "../../enums/EffectVariantCustom";
 import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { objectiveDetectionPreSpawnClearAward } from "./ObjectiveDetection";
+import { bossObjectiveDetectionPreSpawnClearAward } from "./BossKillObjectiveDetection";
+import { floorObjectiveDetectionPreSpawnClearAward } from "./FloorObjectiveDetection";
 
 const v = {
   room: {
@@ -111,6 +112,8 @@ export class PreventVictoryLapPopup extends RandomizerModFeature {
 
     const position = room.GetCenterPos();
     spawnPickup(PickupVariant.BIG_CHEST, 0, position);
-    objectiveDetectionPreSpawnClearAward();
+
+    bossObjectiveDetectionPreSpawnClearAward();
+    floorObjectiveDetectionPreSpawnClearAward();
   }
 }
