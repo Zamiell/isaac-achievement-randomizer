@@ -447,9 +447,10 @@ In hardcore mode, we want to prevent the situation where you unlock powerful ite
 Nightmare mode is the same as hardcore mode, but also has the following effects:
 
 - All enemies are champions without any drops.
-- Full heart damage from all sources.
-- Breakfast, Wooden Spoon, Mom's Underwear, Wire Coat Hanger, and Cat-O-Nine-Tails are always removed from pools.
+- You take full heart damage from all sources.
 - Breakfast does not spawn.
+- Wooden Spoon (#27), Mom's Underwear (#29), Wire Coat Hanger (#32), and Cat-O-Nine-Tails (#165) do not start out unlocked.
+- Shops (#2), Treasure Rooms (#4), Secret Rooms (#7), Super Secret Rooms (#8), Challenge Rooms (#11), Clean Bedrooms (#18), Dirty Bedrooms (#19), and Ultra Secret Rooms (#29) do not start out unlocked.
 
 <br>
 

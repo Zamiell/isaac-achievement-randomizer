@@ -813,6 +813,50 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
 function getSwappedUnlockCollectible(unlock: Unlock): Unlock | undefined {
   const collectibleUnlock = unlock as CollectibleUnlock;
 
+  // 2
+  if (
+    isCollectibleTypeInDefaultItemPool(
+      collectibleUnlock.collectibleType,
+      ItemPoolType.SHOP,
+    ) &&
+    !isRoomTypeUnlocked(RoomType.SHOP, false)
+  ) {
+    return getUnlock(UnlockType.ROOM, RoomType.SHOP);
+  }
+
+  // 4
+  if (
+    isCollectibleTypeInDefaultItemPool(
+      collectibleUnlock.collectibleType,
+      ItemPoolType.TREASURE,
+    ) &&
+    !isRoomTypeUnlocked(RoomType.TREASURE, false)
+  ) {
+    return getUnlock(UnlockType.ROOM, RoomType.TREASURE);
+  }
+
+  // 7
+  if (
+    isCollectibleTypeInDefaultItemPool(
+      collectibleUnlock.collectibleType,
+      ItemPoolType.SECRET,
+    ) &&
+    !isRoomTypeUnlocked(RoomType.SECRET, false)
+  ) {
+    return getUnlock(UnlockType.ROOM, RoomType.SECRET);
+  }
+
+  // 8
+  if (
+    isCollectibleTypeInDefaultItemPool(
+      collectibleUnlock.collectibleType,
+      ItemPoolType.SECRET,
+    ) &&
+    !isRoomTypeUnlocked(RoomType.SUPER_SECRET, false)
+  ) {
+    return getUnlock(UnlockType.ROOM, RoomType.SUPER_SECRET);
+  }
+
   // 10
   if (
     isCollectibleTypeInDefaultItemPool(
@@ -822,6 +866,17 @@ function getSwappedUnlockCollectible(unlock: Unlock): Unlock | undefined {
     !isRoomTypeUnlocked(RoomType.CURSE, false)
   ) {
     return getUnlock(UnlockType.ROOM, RoomType.CURSE);
+  }
+
+  // 11
+  if (
+    isCollectibleTypeInDefaultItemPool(
+      collectibleUnlock.collectibleType,
+      ItemPoolType.BOSS,
+    ) &&
+    !isRoomTypeUnlocked(RoomType.CHALLENGE, false)
+  ) {
+    return getUnlock(UnlockType.ROOM, RoomType.CHALLENGE);
   }
 
   // 12
@@ -871,6 +926,17 @@ function getSwappedUnlockCollectible(unlock: Unlock): Unlock | undefined {
     !isRoomTypeUnlocked(RoomType.PLANETARIUM, false)
   ) {
     return getUnlock(UnlockType.ROOM, RoomType.PLANETARIUM);
+  }
+
+  // 29
+  if (
+    isCollectibleTypeInDefaultItemPool(
+      collectibleUnlock.collectibleType,
+      ItemPoolType.ULTRA_SECRET,
+    ) &&
+    !isRoomTypeUnlocked(RoomType.ULTRA_SECRET, false)
+  ) {
+    return getUnlock(UnlockType.ROOM, RoomType.ULTRA_SECRET);
   }
 
   if (isHardcoreMode()) {

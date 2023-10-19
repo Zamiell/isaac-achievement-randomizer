@@ -40,7 +40,7 @@ import {
 import { UNLOCKABLE_CARD_TYPES } from "../../../arrays/unlockableCardTypes";
 import { UNLOCKABLE_CHALLENGES } from "../../../arrays/unlockableChallenges";
 import { UNLOCKABLE_CHARACTERS } from "../../../arrays/unlockableCharacters";
-import { ALWAYS_UNLOCKED_COLLECTIBLE_TYPES } from "../../../arrays/unlockableCollectibleTypes";
+import { getUnlockableCollectibleTypes } from "../../../arrays/unlockableCollectibleTypes";
 import { UNLOCKABLE_GRID_ENTITY_TYPES } from "../../../arrays/unlockableGridEntityTypes";
 import {
   UNLOCKABLE_BATTERY_SUB_TYPES,
@@ -52,6 +52,7 @@ import {
   UNLOCKABLE_SACK_SUB_TYPES,
 } from "../../../arrays/unlockablePickupTypes";
 import { UNLOCKABLE_PILL_EFFECTS } from "../../../arrays/unlockablePillEffects";
+import { getUnlockableRoomTypes } from "../../../arrays/unlockableRoomTypes";
 import { UNLOCKABLE_SLOT_VARIANTS } from "../../../arrays/unlockableSlotVariants";
 import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../../arrays/unlockableTrinketTypes";
 import type { AltFloor } from "../../../enums/AltFloor";
@@ -67,7 +68,7 @@ import {
   getAdjustedCollectibleTypesOfQuality,
 } from "./collectibleQuality";
 import { getTrinketTypesOfQuality } from "./trinketQuality";
-import { v } from "./v";
+import { isNightmareMode, v } from "./v";
 
 const QUALITY_THRESHOLD_PERCENT = 0.5;
 
@@ -158,6 +159,12 @@ export function isRoomTypeUnlocked(
   roomType: RoomType,
   forRun: boolean,
 ): boolean {
+  const nightmareMode = isNightmareMode();
+  const unlockableRoomTypes = getUnlockableRoomTypes(nightmareMode);
+  if (!unlockableRoomTypes.includes(roomType)) {
+    return true;
+  }
+
   const array = forRun
     ? v.persistent.completedUnlocksForRun
     : v.persistent.completedUnlocks;
@@ -197,7 +204,10 @@ export function isCollectibleTypeUnlocked(
   collectibleType: CollectibleType,
   forRun: boolean,
 ): boolean {
-  if (ALWAYS_UNLOCKED_COLLECTIBLE_TYPES.has(collectibleType)) {
+  const nightmareMode = isNightmareMode();
+  const unlockableCollectibleTypes =
+    getUnlockableCollectibleTypes(nightmareMode);
+  if (!unlockableCollectibleTypes.includes(collectibleType)) {
     return true;
   }
 
