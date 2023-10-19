@@ -42,8 +42,8 @@ export class ChillRoom extends ModFeature {
     FONT.DrawString(text, 0, 33, KColorDefault, screenBottomRightPos.X, true);
   }
 
-  @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
-  postGameStartedReorderedFalse(): void {
+  @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, undefined)
+  postGameStartedReordered(): void {
     const hud = game.GetHUD();
     hud.SetVisible(false);
 
