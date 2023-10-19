@@ -15,12 +15,14 @@ import {
   onAnyChallenge,
   onSetSeed,
 } from "isaacscript-common";
-import { isHardcoreMode, isRandomizerEnabled } from "./achievementTracker/v";
+import { RandomizerMode } from "../../enums/RandomizerMode";
+import { getRandomizerMode, isRandomizerEnabled } from "./achievementTracker/v";
 
 enum IconSpriteLayer {
   NO_ACHIEVEMENTS_ICON = 0,
   RANDOMIZER_ICON_WHITE = 1,
   RANDOMIZER_ICON_RED = 2,
+  RANDOMIZER_ICON_PINK = 3,
 }
 
 /** This is on top of where the "No Achievements" icon would be. */
@@ -72,9 +74,20 @@ export class UIIcon extends ModFeature {
 
 function getIconSpriteLayer(): IconSpriteLayer | undefined {
   if (isRandomizerEnabled()) {
-    return isHardcoreMode()
-      ? IconSpriteLayer.RANDOMIZER_ICON_RED
-      : IconSpriteLayer.RANDOMIZER_ICON_WHITE;
+    const randomizerMode = getRandomizerMode();
+    switch (randomizerMode) {
+      case RandomizerMode.CASUAL: {
+        return IconSpriteLayer.RANDOMIZER_ICON_WHITE;
+      }
+
+      case RandomizerMode.HARDCORE: {
+        return IconSpriteLayer.RANDOMIZER_ICON_RED;
+      }
+
+      case RandomizerMode.NIGHTMARE: {
+        return IconSpriteLayer.RANDOMIZER_ICON_PINK;
+      }
+    }
   }
 
   if (onSetSeed() || onAnyChallenge()) {
