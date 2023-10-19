@@ -39,9 +39,9 @@
 - Vaults will now unlock after any chest unlock. (Thanks Neonomi)
 - Curse Rooms will now unlock after red chests. (Thanks Neonomi)
 - Touching a White Fire will now immediately invalidate the floor objective. (Thanks Po4ti)
-- Killing Mega Satan will no longer ever trigger a cutscene.
+- Defeating Mega Satan no longer has a chance to immediately end the run.
 - Fixed the bug where the Strange Door would appear on Depths XL even if you had not unlocked The Ascent yet. (Thanks Po4ti)
-- !Fixed the bug where killing Mega Satan would not trigger the objective. (Thanks sanstheazmo)
+- Fixed the bug where killing Mega Satan would not trigger the objective. (Thanks sanstheazmo)
 
 ### _v0.2.3_ - October 15th, 2023
 

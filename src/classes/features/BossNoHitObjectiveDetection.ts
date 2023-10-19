@@ -220,7 +220,8 @@ export class BossNoHitObjectiveDetection extends RandomizerModFeature {
     const room = game.GetRoom();
     const roomFrameCount = room.GetFrameCount();
     v.room.tookDamageRoomFrame = roomFrameCount + GAME_FRAMES_PER_SECOND * 10;
-    // (We need to account for the long appear animation.)
+    // (We need to account for the long appear animation. We do not use the `POST_NPC_INIT` callback
+    // since it does not fire for Mega Satan 2.)
   }
 
   // 27, 950

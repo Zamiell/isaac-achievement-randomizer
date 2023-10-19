@@ -526,6 +526,7 @@ In the Isaac streaking community, you are not allowed to use the save & quit fea
 - <!-- SilenceMomDad --> The audio clips of mom and dad on the Ascent are silenced.
 - <!-- ForceFadedConsoleDisplay --> The "faded console display" feature is automatically enabled in the "options.ini" file, which allows you to visually see when an error in the game happens. Please report bugs to the developers in [the Isaac Streaking Discord server](https://discord.gg/GwhUeQjHTF).
 - <!-- PreventVictoryLapPopup --> Victory Laps and the "Rerun" feature on the main menu are banned for the same reason that R Key is. As a quality of life fix, the Victory Lap popup will no longer appear after defeating The Lamb.
+- <!-- PreventEndMegaSatan --> Defeating Mega Satan no longer has a chance to immediately end the run.
 
 <br>
 
