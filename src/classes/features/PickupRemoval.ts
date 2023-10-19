@@ -210,6 +210,7 @@ export class PickupRemoval extends RandomizerModFeature {
   @Callback(ModCallback.POST_PICKUP_INIT, PickupVariant.COLLECTIBLE)
   postPickupInitCollectible(pickup: EntityPickup): void {
     const collectible = pickup as EntityPickupCollectible;
+
     if (
       !isCollectibleTypeUnlocked(collectible.SubType, true) ||
       // Prevent e.g. Spindown Dice from producing banned collectibles.

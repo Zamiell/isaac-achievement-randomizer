@@ -23,6 +23,7 @@ import { ForceSeeds } from "./classes/features/ForceSeeds";
 import { GridEntityRemoval } from "./classes/features/GridEntityRemoval";
 import { InvisibleEntities } from "./classes/features/InvisibleEntities";
 import { NPCRemoval } from "./classes/features/NPCRemoval";
+import { NightmareMode } from "./classes/features/NightmareMode";
 import { PathRemoval } from "./classes/features/PathRemoval";
 import { PickupRemoval } from "./classes/features/PickupRemoval";
 import { PillRemoval } from "./classes/features/PillRemoval";
@@ -65,6 +66,7 @@ const MOD_FEATURES = [
   ForceSeeds,
   GridEntityRemoval,
   InvisibleEntities,
+  NightmareMode,
   NPCRemoval,
   PathRemoval,
   PickupRemoval,

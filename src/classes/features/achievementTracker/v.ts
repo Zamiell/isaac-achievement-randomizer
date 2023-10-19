@@ -34,7 +34,10 @@ export function getRandomizerMode(): RandomizerMode {
 }
 
 export function isHardcoreMode(): boolean {
-  return v.persistent.randomizerMode === RandomizerMode.HARDCORE;
+  return (
+    v.persistent.randomizerMode === RandomizerMode.HARDCORE ||
+    v.persistent.randomizerMode === RandomizerMode.NIGHTMARE
+  );
 }
 
 export function getCompletedObjectives(): Objective[] {

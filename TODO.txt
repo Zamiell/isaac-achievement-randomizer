@@ -4,13 +4,7 @@ TODO:
 
 LONG TERM TODO:
 
-- nightmare mode:  hardcore but also:
-  - full heart damage from all sources
-  - all enemies are champions without any drops
-  - breakfast item do not spawn
-
 - fortune teller + rules cards predictions
-
 - checkboxes for banned items
 
 ------------------------------

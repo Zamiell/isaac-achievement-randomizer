@@ -5,6 +5,7 @@ import {
   ItemPoolType,
   ModCallback,
   PlayerType,
+  SeedEffect,
 } from "isaac-typescript-definitions";
 import {
   Callback,
@@ -256,7 +257,7 @@ function checkNormalGreedMode() {
 }
 
 function checkEasterEggs() {
-  if (anyEasterEggEnabled()) {
+  if (anyEasterEggEnabled([SeedEffect.ALL_CHAMPIONS])) {
     log("Error: Easter Egg detected.");
     v.run.hasEasterEggs = true;
   }

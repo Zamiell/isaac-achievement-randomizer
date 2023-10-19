@@ -297,6 +297,21 @@ export function initDeadSeaScrolls(): void {
           noSel: true,
         },
         {
+          str: "nightmare",
+          func: () => {
+            startRandomizerFromDSS(RandomizerMode.NIGHTMARE, DSSMod);
+          },
+        },
+        {
+          str: "(pain)",
+          noSel: true,
+          fSize: 2,
+        },
+        {
+          str: "",
+          noSel: true,
+        },
+        {
           str: "[read the manual for more info.]",
           noSel: true,
           fSize: 1,

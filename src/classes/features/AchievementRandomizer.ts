@@ -116,7 +116,7 @@ export class AchievementRandomizer extends RandomizerModFeature {
     const text2Y = screenCenterPos.Y - 10;
     FONT.DrawString(text2, 0, text2Y, KColorDefault, rightX, true);
 
-    const text3 = `Confirmed objective completable: ${v.persistent.completedUnlocks.length} / ${ALL_UNLOCKS.length}`;
+    const text3 = `Confirmed objectives completable: ${v.persistent.completedUnlocks.length} / ${ALL_UNLOCKS.length}`;
     const text3Y = screenCenterPos.Y + 10;
     FONT.DrawString(text3, 0, text3Y, KColorDefault, rightX, true);
 

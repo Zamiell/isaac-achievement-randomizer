@@ -75,6 +75,10 @@ export class FloorObjectiveDetection extends RandomizerModFeature {
     this.checkLostCurse();
   }
 
+  /**
+   * We invalidate the floor objective as soon as a player touches a white fire. This is to increase
+   * the difficulty, since using The Lost for every room is cheap.
+   */
   checkLostCurse(): void {
     if (anyPlayerHasNullEffect(NullItemID.LOST_CURSE)) {
       v.level.tookHit = true;

@@ -381,7 +381,7 @@ There are 33 + 10 + 11 + 7 + 44 + 694 + 185 + 95 + 50 + 38 + 15 + 13 + 7 = 1202 
 
 ## Modes
 
-When starting a new seed, you can select between two modes:
+When starting a new seed, you can select between several modes:
 
 ### 1) Casual Mode (Full Random)
 
@@ -440,6 +440,14 @@ In hardcore mode, we want to prevent the situation where you unlock powerful ite
   - Eternal Chest
   - Wooden Chest
   - Mega Chest
+
+### 3) Nightmare Mode
+
+Nightmare mode is the same as hardcore mode, but also has the following effects:
+
+- All enemies are champions without any drops.
+- Full heart damage from all sources.
+- Breakfast does not spawn.
 
 <br>
 
@@ -564,12 +572,6 @@ The format of the JSON file is minified (i.e. all whitespace is removed), which 
 
 Once it is beautified, you can see that the top level keys correspond to various mod features, with the most important ones being "AchievementTracker" and "StatsTracker".
 
-### Why does the mod take so long to randomize the achievements at the beginning of a playthrough?
-
-When you start a new randomizer playthrough, the mod assigns each objective to a random unlock. However, not all assignments are valid. For example, the mod might have randomly assigned the objective of "beat challenge #3" to the unlock of "unlock challenge #3". In this case, the playthrough seed would be unbeatable!
-
-After all of the achievements are randomized, the mod does a validation step: it pretends that it is a player and attempts to "beat" the seed by accomplishing all of the objectives that are reachable. (This part is pretty time intensive.) If the seed is not beatable, then the mod will start from scratch and randomize all of the objectives + achievements again. It will attempt to generate valid seeds until it finds one that is beatable. This is what the "attempts" count on the black screen refers to.
-
 ### Is this mod compatible with other mods that add items and achievements?
 
 No. Since this mod uses a completely customized objective & unlock system based on vanilla items, it is not compatible with any other mods.
@@ -577,6 +579,16 @@ No. Since this mod uses a completely customized objective & unlock system based 
 ### Will this mod affect my existing achievements on Steam?
 
 No. This mod requires a fully unlocked save file to play. Thus, it does not interact with any vanilla Steam achievements.
+
+### What DLCs is this mod compatible with? (Afterbirth / Afterbirth+ / Repentance)
+
+This mod is only compatible with Repentance. In other words, you must own all three of the DLCs (Afterbirth & Afterbirth+ & Repentance).
+
+### Why does the mod take so long to randomize the achievements at the beginning of a playthrough?
+
+When you start a new randomizer playthrough, the mod assigns each objective to a random unlock. However, not all assignments are valid. For example, the mod might have randomly assigned the objective of "beat challenge #3" to the unlock of "unlock challenge #3". In this case, the playthrough seed would be unbeatable!
+
+After all of the achievements are randomized, the mod does a validation step: it pretends that it is a player and attempts to "beat" the seed by accomplishing all of the objectives that are reachable. (This part is pretty time intensive.) If the seed is not beatable, then the mod will start from scratch and randomize all of the objectives + achievements again. It will attempt to generate valid seeds until it finds one that is beatable. This is what the "attempts" count on the black screen refers to.
 
 ### What algorithm does the randomizer use to randomize the achievements?
 
