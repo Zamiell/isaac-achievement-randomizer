@@ -572,8 +572,9 @@ export function getWorseLockedPillEffect(
   }
 
   const lockedPillEffects = getLockedPillEffects(false);
-  const lockedPillEffectsOfType = lockedPillEffects.filter((thisPillEffect) =>
-    getPillEffectType(thisPillEffect),
+  const lockedPillEffectsOfType = lockedPillEffects.filter(
+    (thisPillEffect) =>
+      getPillEffectType(thisPillEffect) === nextPillEffectType,
   );
 
   return getRandomArrayElement(lockedPillEffectsOfType, v.persistent.seed);
@@ -582,42 +583,73 @@ export function getWorseLockedPillEffect(
 /** Negative --> Neutral --> Positive --> Negative --> etc. */
 function getNextPillEffectUnlockTypeForHardcore(): ItemConfigPillEffectType {
   const unlockedPillEffects = getUnlockedPillEffects(false);
+  const lockedPillEffects = getLockedPillEffects(false);
 
   const unlockedNegativePillEffects = unlockedPillEffects.filter(
     (pillEffect) =>
       getPillEffectType(pillEffect) === ItemConfigPillEffectType.NEGATIVE,
   );
+  const lockedNegativePillEffects = lockedPillEffects.filter(
+    (pillEffect) =>
+      getPillEffectType(pillEffect) === ItemConfigPillEffectType.NEGATIVE,
+  );
+
   const unlockedNeutralPillEffects = unlockedPillEffects.filter(
     (pillEffect) =>
       getPillEffectType(pillEffect) === ItemConfigPillEffectType.NEUTRAL,
   );
+  const lockedNeutralPillEffects = lockedPillEffects.filter(
+    (pillEffect) =>
+      getPillEffectType(pillEffect) === ItemConfigPillEffectType.NEUTRAL,
+  );
+
   const unlockedPositivePillEffects = unlockedPillEffects.filter(
+    (pillEffect) =>
+      getPillEffectType(pillEffect) === ItemConfigPillEffectType.POSITIVE,
+  );
+  const lockedPositivePillEffects = lockedPillEffects.filter(
     (pillEffect) =>
       getPillEffectType(pillEffect) === ItemConfigPillEffectType.POSITIVE,
   );
 
   if (
-    unlockedNegativePillEffects.length < unlockedNeutralPillEffects.length ||
-    unlockedNegativePillEffects.length < unlockedPositivePillEffects.length
+    (unlockedNegativePillEffects.length < unlockedNeutralPillEffects.length ||
+      unlockedNegativePillEffects.length <
+        unlockedPositivePillEffects.length) &&
+    lockedNegativePillEffects.length > 0
   ) {
     return ItemConfigPillEffectType.NEGATIVE;
   }
 
   if (
-    unlockedNeutralPillEffects.length < unlockedNegativePillEffects.length ||
-    unlockedNeutralPillEffects.length < unlockedPositivePillEffects.length
+    (unlockedNeutralPillEffects.length < unlockedNegativePillEffects.length ||
+      unlockedNeutralPillEffects.length < unlockedPositivePillEffects.length) &&
+    lockedNeutralPillEffects.length > 0
   ) {
     return ItemConfigPillEffectType.NEUTRAL;
   }
 
   if (
-    unlockedPositivePillEffects.length < unlockedNegativePillEffects.length ||
-    unlockedPositivePillEffects.length < unlockedNeutralPillEffects.length
+    (unlockedPositivePillEffects.length < unlockedNegativePillEffects.length ||
+      unlockedPositivePillEffects.length < unlockedNeutralPillEffects.length) &&
+    lockedPositivePillEffects.length > 0
   ) {
     return ItemConfigPillEffectType.POSITIVE;
   }
 
-  return ItemConfigPillEffectType.NEGATIVE;
+  if (lockedNegativePillEffects.length > 0) {
+    return ItemConfigPillEffectType.NEGATIVE;
+  }
+
+  if (lockedNeutralPillEffects.length > 0) {
+    return ItemConfigPillEffectType.NEUTRAL;
+  }
+
+  if (lockedPositivePillEffects.length > 0) {
+    return ItemConfigPillEffectType.POSITIVE;
+  }
+
+  error("Failed to find a the next pill effect unlock type for hardcore.");
 }
 
 // -------------------------------
