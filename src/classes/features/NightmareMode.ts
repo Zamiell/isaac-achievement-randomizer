@@ -29,7 +29,7 @@ export class NightmareMode extends RandomizerModFeature {
     }
 
     const npc = pickup.SpawnerEntity.ToNPC();
-    if (npc === undefined) {
+    if (npc === undefined || !npc.IsChampion()) {
       return;
     }
 
