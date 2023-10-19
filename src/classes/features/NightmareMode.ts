@@ -79,5 +79,8 @@ export class NightmareMode extends RandomizerModFeature {
   postGameStartedReorderedFalse(): void {
     const seeds = game.GetSeeds();
     seeds.AddSeedEffect(SeedEffect.ALL_CHAMPIONS);
+
+    const itemPool = game.GetItemPool();
+    itemPool.RemoveCollectible(CollectibleType.BREAKFAST);
   }
 }
