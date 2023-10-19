@@ -9,8 +9,8 @@ import {
   splitNumber,
 } from "isaacscript-common";
 import { version } from "../package.json";
+import { ALL_OBJECTIVES } from "./arrays/objectives";
 import { UNLOCKABLE_CHALLENGES } from "./arrays/unlockableChallenges";
-import { ALL_UNLOCKS } from "./arrays/unlocks";
 import { BOSS_IDS } from "./cachedEnums";
 import {
   endRandomizer,
@@ -30,7 +30,7 @@ import {
   isAllCharactersObjectivesCompleted,
 } from "./classes/features/achievementTracker/completedObjectives";
 import {
-  getNumCompletedUnlocks,
+  getNumCompletedObjectives,
   getRandomizerMode,
   getRandomizerSeed,
   isRandomizerEnabled,
@@ -734,10 +734,11 @@ export function initDeadSeaScrolls(): void {
           str: "",
         },
         {
-          str: "unlocks:",
+          str: "objectives:",
         },
         {
-          str: () => `${getNumCompletedUnlocks()} / ${ALL_UNLOCKS.length}`,
+          str: () =>
+            `${getNumCompletedObjectives()} / ${ALL_OBJECTIVES.length}`,
           colorSelect: true,
           noSel: true,
         },

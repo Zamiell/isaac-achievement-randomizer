@@ -50,7 +50,7 @@ import {
   BANNED_COLLECTIBLE_TYPES_SET,
   NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS_SET,
   QUEST_COLLECTIBLE_TYPES_SET,
-  UNLOCKABLE_COLLECTIBLE_TYPES,
+  getUnlockableCollectibleTypes,
 } from "../../arrays/unlockableCollectibleTypes";
 import {
   BANNED_TRINKET_TYPES,
@@ -76,7 +76,7 @@ import {
   isSackSubTypeUnlocked,
   isTrinketTypeUnlocked,
 } from "./achievementTracker/completedUnlocks";
-import { getRandomizerSeed } from "./achievementTracker/v";
+import { getRandomizerSeed, isNightmareMode } from "./achievementTracker/v";
 
 /** This feature handles removing all of the pickups from the game that are not unlocked yet. */
 export class PickupRemoval extends RandomizerModFeature {
@@ -289,8 +289,11 @@ export class PickupRemoval extends RandomizerModFeature {
 
   removeItemsFromPools(): void {
     const itemPool = game.GetItemPool();
+    const nightmareMode = isNightmareMode();
+    const unlockableCollectibleTypes =
+      getUnlockableCollectibleTypes(nightmareMode);
 
-    for (const collectibleType of UNLOCKABLE_COLLECTIBLE_TYPES) {
+    for (const collectibleType of unlockableCollectibleTypes) {
       if (!isCollectibleTypeUnlocked(collectibleType, true)) {
         itemPool.RemoveCollectible(collectibleType);
       }

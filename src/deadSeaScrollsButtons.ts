@@ -28,7 +28,7 @@ import { NO_HIT_BOSSES } from "./arrays/noHitBosses";
 import { UNLOCKABLE_CARD_TYPES } from "./arrays/unlockableCardTypes";
 import { UNLOCKABLE_CHALLENGES } from "./arrays/unlockableChallenges";
 import { UNLOCKABLE_CHARACTERS } from "./arrays/unlockableCharacters";
-import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./arrays/unlockableCollectibleTypes";
+import { getUnlockableCollectibleTypes } from "./arrays/unlockableCollectibleTypes";
 import {
   UNLOCKABLE_GRID_ENTITY_TYPES,
   getGridEntityName,
@@ -88,6 +88,7 @@ import {
 import {
   getCompletedObjectives,
   getCompletedUnlocks,
+  isNightmareMode,
 } from "./classes/features/achievementTracker/v";
 import { getAltFloorName } from "./enums/AltFloor";
 import { getBossNameCustom } from "./enums/BossIDCustom";
@@ -496,7 +497,11 @@ export function getSpecificCollectibleUnlockButtons(
 ): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const collectibleType of UNLOCKABLE_COLLECTIBLE_TYPES) {
+  const nightmareMode = isNightmareMode();
+  const unlockableCollectibleTypes =
+    getUnlockableCollectibleTypes(nightmareMode);
+
+  for (const collectibleType of unlockableCollectibleTypes) {
     if (collectibleType < min || collectibleType > max) {
       continue;
     }

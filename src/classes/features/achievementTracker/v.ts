@@ -52,8 +52,8 @@ export function getCompletedUnlocks(): Unlock[] {
   return v.persistent.completedUnlocks;
 }
 
-export function getNumCompletedUnlocks(): int {
-  return v.persistent.completedUnlocks.length;
+export function getNumCompletedObjectives(): int {
+  return v.persistent.completedObjectives.length;
 }
 
 export function getAchievementsVersion(): string {

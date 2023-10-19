@@ -11,14 +11,14 @@ import {
   onFirstFloor,
 } from "isaacscript-common";
 import { version } from "../../../package.json";
-import { ALL_UNLOCKS } from "../../arrays/unlocks";
+import { ALL_OBJECTIVES } from "../../arrays/objectives";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   getPlaythroughNumDeaths,
   getPlaythroughTimeElapsed,
 } from "./StatsTracker";
 import {
-  getNumCompletedUnlocks,
+  getNumCompletedObjectives,
   getRandomizerMode,
   getRandomizerSeed,
 } from "./achievementTracker/v";
@@ -92,9 +92,9 @@ export class StartingRoomInfo extends RandomizerModFeature {
       K_COLORS.Green,
     );
 
-    this.drawCenteredText("Unlocks:", topRightPosition);
+    this.drawCenteredText("Objectives:", topRightPosition);
     this.drawCenteredText(
-      `${getNumCompletedUnlocks()} / ${ALL_UNLOCKS.length}`,
+      `${getNumCompletedObjectives()} / ${ALL_OBJECTIVES.length}`,
       topRightPosition.add(Vector(0, 30)),
       K_COLORS.Green,
     );

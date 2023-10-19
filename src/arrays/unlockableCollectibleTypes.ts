@@ -2,6 +2,7 @@ import { CollectibleType } from "isaac-typescript-definitions";
 import {
   ReadonlySet,
   VANILLA_COLLECTIBLE_TYPES,
+  arrayRemove,
   isActiveCollectible,
   isFamiliarCollectible,
 } from "isaacscript-common";
@@ -65,11 +66,25 @@ export const ALWAYS_UNLOCKED_COLLECTIBLE_TYPES =
     ...BANNED_COLLECTIBLE_TYPES,
   ]);
 
-export const UNLOCKABLE_COLLECTIBLE_TYPES: readonly CollectibleType[] =
+const UNLOCKABLE_COLLECTIBLE_TYPES: readonly CollectibleType[] =
   VANILLA_COLLECTIBLE_TYPES.filter(
     (collectibleType) =>
       !ALWAYS_UNLOCKED_COLLECTIBLE_TYPES.has(collectibleType),
   );
+
+const UNLOCKABLE_COLLECTIBLE_TYPES_NIGHTMARE: readonly CollectibleType[] =
+  arrayRemove(
+    [...UNLOCKABLE_COLLECTIBLE_TYPES, ...BOSS_ROOM_COLLECTIBLE_TYPE_EXCEPTIONS],
+    CollectibleType.BREAKFAST,
+  );
+
+export function getUnlockableCollectibleTypes(
+  nightmareMode: boolean,
+): readonly CollectibleType[] {
+  return nightmareMode
+    ? UNLOCKABLE_COLLECTIBLE_TYPES_NIGHTMARE
+    : UNLOCKABLE_COLLECTIBLE_TYPES;
+}
 
 export const UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES: readonly CollectibleType[] =
   UNLOCKABLE_COLLECTIBLE_TYPES.filter((collectibleType) =>

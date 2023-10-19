@@ -37,7 +37,7 @@ import {
 import { version } from "../../../package.json";
 import { getAchievementsForRNG } from "../../achievementAssignment";
 import { ALL_OBJECTIVES } from "../../arrays/objectives";
-import { ALL_UNLOCKS } from "../../arrays/unlocks";
+import { getAllUnlocks } from "../../arrays/unlocks";
 import { STAGE_TYPES } from "../../cachedEnums";
 import { STARTING_CHARACTER } from "../../constants";
 import { BossIDCustom } from "../../enums/BossIDCustom";
@@ -55,6 +55,7 @@ import type {
   CharacterObjective,
   Objective,
 } from "../../types/Objective";
+import { validateObjectivesUnlocksMatch } from "../../validate";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { preForcedRestart, resetStats } from "./StatsTracker";
 import { addObjective } from "./achievementTracker/addObjective";
@@ -67,7 +68,7 @@ import {
   isPathUnlocked,
   isStageTypeUnlocked,
 } from "./achievementTracker/completedUnlocks";
-import { v } from "./achievementTracker/v";
+import { isNightmareMode, v } from "./achievementTracker/v";
 
 const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
 const FONT = fonts.droid;
@@ -116,7 +117,9 @@ export class AchievementRandomizer extends RandomizerModFeature {
     const text2Y = screenCenterPos.Y - 10;
     FONT.DrawString(text2, 0, text2Y, KColorDefault, rightX, true);
 
-    const text3 = `Confirmed objectives completable: ${v.persistent.completedUnlocks.length} / ${ALL_UNLOCKS.length}`;
+    const nightmareMode = isNightmareMode();
+    const allUnlocks = getAllUnlocks(nightmareMode);
+    const text3 = `Confirmed objectives completable: ${v.persistent.completedUnlocks.length} / ${allUnlocks.length}`;
     const text3Y = screenCenterPos.Y + 10;
     FONT.DrawString(text3, 0, text3Y, KColorDefault, rightX, true);
 
@@ -180,9 +183,12 @@ export class AchievementRandomizer extends RandomizerModFeature {
     const elapsedTime = finishTime - startTime;
     generationTime += elapsedTime;
 
+    const nightmareMode = isNightmareMode();
+    const allUnlocks = getAllUnlocks(nightmareMode);
+
     if (!unlockedSomething) {
       log(
-        `Failed to emulate beating seed ${v.persistent.seed}: ${v.persistent.completedUnlocks.length} / ${ALL_UNLOCKS.length}. Milliseconds taken: ${generationTime}`,
+        `Failed to emulate beating seed ${v.persistent.seed}: ${v.persistent.completedUnlocks.length} / ${allUnlocks.length}. Milliseconds taken: ${generationTime}`,
       );
       // logMissingObjectives();
 
@@ -192,7 +198,7 @@ export class AchievementRandomizer extends RandomizerModFeature {
       return;
     }
 
-    if (v.persistent.completedUnlocks.length < ALL_UNLOCKS.length) {
+    if (v.persistent.completedUnlocks.length < allUnlocks.length) {
       renderFrameToTestSeed = renderFrameCount + 1;
       return;
     }
@@ -228,6 +234,9 @@ export function startRandomizer(
   if (seed === undefined) {
     seed = getRandomSeed();
   }
+
+  // First, verify that the amount of objectives and the amount of unlocks match.
+  validateObjectivesUnlocksMatch(randomizerMode);
 
   v.persistent.seed = seed;
   log(`Set new randomizer seed: ${v.persistent.seed}`);

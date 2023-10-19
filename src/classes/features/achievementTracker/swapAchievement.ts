@@ -45,7 +45,7 @@ import {
 } from "../../../arrays/unlockableCollectibleTypes";
 import { UNLOCKABLE_CHEST_PICKUP_VARIANTS } from "../../../arrays/unlockablePickupTypes";
 import { UNLOCKABLE_PILL_EFFECTS } from "../../../arrays/unlockablePillEffects";
-import { UNLOCKABLE_ROOM_TYPES } from "../../../arrays/unlockableRoomTypes";
+import { getUnlockableRoomTypes } from "../../../arrays/unlockableRoomTypes";
 import { UNLOCKABLE_TRINKET_TYPES } from "../../../arrays/unlockableTrinketTypes";
 import { ALT_FLOORS } from "../../../cachedEnums";
 import { AltFloor } from "../../../enums/AltFloor";
@@ -133,7 +133,7 @@ import {
 } from "./completedUnlocks";
 import { getPillEffectsOfQuality } from "./pillEffectQuality";
 import { getTrinketTypesOfQuality } from "./trinketQuality";
-import { isHardcoreMode, v } from "./v";
+import { isHardcoreMode, isNightmareMode, v } from "./v";
 
 export function checkSwapProblematicAchievement(
   unlock: Unlock,
@@ -1487,7 +1487,6 @@ function getSwappedUnlockPillEffect(unlock: Unlock): Unlock | undefined {
 function getSwappedUnlockHeart(unlock: Unlock): Unlock | undefined {
   const heartUnlock = unlock as HeartUnlock;
 
-  /*
   // 18
   if (!isRoomTypeUnlocked(RoomType.CLEAN_BEDROOM, false)) {
     return getUnlock(UnlockType.ROOM, RoomType.CLEAN_BEDROOM);
@@ -1497,7 +1496,6 @@ function getSwappedUnlockHeart(unlock: Unlock): Unlock | undefined {
   if (!isRoomTypeUnlocked(RoomType.DIRTY_BEDROOM, false)) {
     return getUnlock(UnlockType.ROOM, RoomType.CLEAN_BEDROOM);
   }
-  */
 
   if (isHardcoreMode()) {
     const worseHeartSubType = getWorseLockedHeartSubType(
@@ -1660,10 +1658,9 @@ const SWAPPED_UNLOCK_OTHER_FUNCTIONS = new ReadonlyMap<
   OtherUnlockKind,
   () => Unlock | undefined
 >([
-  /*
   [
     OtherUnlockKind.BEDS,
-    () =>
+    () => {
       // 18
       if (!isRoomTypeUnlocked(RoomType.CLEAN_BEDROOM, false)) {
         return getUnlock(UnlockType.ROOM, RoomType.CLEAN_BEDROOM);
@@ -1674,9 +1671,9 @@ const SWAPPED_UNLOCK_OTHER_FUNCTIONS = new ReadonlyMap<
         return getUnlock(UnlockType.ROOM, RoomType.CLEAN_BEDROOM);
       }
 
-      undefined,
+      return undefined;
+    },
   ],
-  */
 
   [
     OtherUnlockKind.BLUE_FIREPLACES,
@@ -1728,13 +1725,20 @@ function getSwappedUnlockOther(unlock: Unlock): Unlock | undefined {
   return func === undefined ? undefined : func();
 }
 
+/**
+ * Some collectibles/cards allow traveling into red rooms. Before this occurs, we must ensure that
+ * all room types are unlocked (because off-grid rooms can be any room type).
+ */
 function swapAnyRoomUnlock() {
   assertNotNull(
     v.persistent.seed,
     "Failed to swap achievements due to the seed being null.",
   );
+
+  const nightmareMode = isNightmareMode();
+  const unlockableRoomTypes = getUnlockableRoomTypes(nightmareMode);
   const shuffledRoomTypes = shuffleArray(
-    UNLOCKABLE_ROOM_TYPES,
+    unlockableRoomTypes,
     v.persistent.seed,
   );
   for (const roomType of shuffledRoomTypes) {

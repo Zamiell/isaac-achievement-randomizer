@@ -10,7 +10,8 @@ import {
 } from "isaacscript-common";
 import { ALL_OBJECTIVES } from "./arrays/objectives";
 import { UNLOCKABLE_CHARACTERS } from "./arrays/unlockableCharacters";
-import { ALL_UNLOCKS } from "./arrays/unlocks";
+import { getAllUnlocks } from "./arrays/unlocks";
+import { isNightmareMode } from "./classes/features/achievementTracker/v";
 import { STARTING_CHARACTER } from "./constants";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
@@ -68,7 +69,9 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
   // When an objective/unlock is assigned, it is added to the following map.
   const objectiveToUnlockMap = new Map<ObjectiveID, Unlock>();
 
-  const unlocks = copyArray(ALL_UNLOCKS);
+  const nightmareMode = isNightmareMode();
+  const allUnlocks = getAllUnlocks(nightmareMode);
+  const unlocks = copyArray(allUnlocks);
   const objectives = copyArray(ALL_OBJECTIVES);
 
   // The Polaroid and The Negative are guaranteed to be unlocked via an easy objective for the
