@@ -3,7 +3,7 @@
 <!-- cspell:ignore antizoubilamaka,Erbear,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
-### _v0.4.0_ - October 19th, 2023 (Unreleased)
+### _v0.4.0_ - October 19th, 2023
 
 - Added Nightmare mode. (See the manual for more information.)
 
