@@ -477,6 +477,13 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
       anyPillEffectsUnlocked(false) ? undefined : getRandomPillEffectUnlock(),
   ],
 
+  // 199
+  [
+    CollectibleType.MOMS_KEY,
+    () =>
+      anyChestPickupVariantUnlocked(false) ? undefined : getRandomChestUnlock(),
+  ],
+
   // 203
   [
     CollectibleType.HUMBLING_BUNDLE,
