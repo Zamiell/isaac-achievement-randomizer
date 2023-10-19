@@ -3,10 +3,6 @@ TODO:
 - mega satan prevent end
 - test mega satan unlock
 
-- flipped rooms
-  - empty rooms
-  - script to shift room variants + resort IDs
-
 ------------------------------
 
 LONG TERM TODO:

@@ -264,6 +264,15 @@ const SWAPPED_UNLOCK_ROOM_FUNCTIONS = new ReadonlyMap<
         : getUnlock(UnlockType.SLOT, SlotVariant.BLOOD_DONATION_MACHINE),
   ],
 
+  // 10
+  [
+    RoomType.CURSE,
+    () =>
+      isChestPickupVariantUnlocked(PickupVariant.RED_CHEST, false)
+        ? undefined
+        : getUnlock(UnlockType.CHEST, PickupVariant.RED_CHEST),
+  ],
+
   // 20
   [
     RoomType.VAULT,

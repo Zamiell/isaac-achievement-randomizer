@@ -6,7 +6,7 @@ variant prefix. Thus, we change them to use a higher prefix:
 - Secret Entrance (Mines/Ashpit) (10000 to 50000)
 - Mineshaft Room (Mines/Ashpit) (10000 to 60000)
 
-Also see "changes-room.md".
+This script is taken from Racing+.
 """
 
 import os

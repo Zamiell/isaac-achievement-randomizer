@@ -4,7 +4,7 @@ variant prefix. Thus, we change them to use a higher prefix:
 
 - Fool Card Room (Depths/Necropolis/Dank) (10000 to 40000)
 
-Also see "changes-room.md".
+This script is taken from Racing+.
 """
 
 import os

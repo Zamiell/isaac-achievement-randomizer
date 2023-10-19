@@ -36,6 +36,7 @@
 - Super tinted rocks will now unlock after soul hearts.
 - Arcades will now unlock after Blood Donation Machines. (Thanks Neonomi)
 - Vaults will now unlock after any chest unlock. (Thanks Neonomi)
+- Curse Rooms will now unlock after red chests. (Thanks Neonomi)
 - Touching a White Fire will now immediately invalidate the floor objective. (Thanks Po4ti)
 - Fixed the bug where the Strange Door would appear on Depths XL even if you had not unlocked The Ascent yet. (Thanks Po4ti)
 
