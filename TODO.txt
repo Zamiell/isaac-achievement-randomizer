@@ -2,32 +2,13 @@ TODO:
 
 ------------------------------
 
-LONG TERM TODO:
-
-- fortune teller + rules cards predictions
-- checkboxes for banned items
-
-------------------------------
-
 OTHER POTENTIAL UNLOCKS:
 
 - see unlockableRoomTypes.ts
 - champions that drop items - https://bindingofisaacrebirth.fandom.com/wiki/Monsters#Champions
 - randomized starting items
-  - characters without any starting items:
-    - 7 - Azazel
+  - characters that can't be randomized (10 in total):
     - 9 - Eden (is already randomized)
-    - 16 - The Forgotten
-    - 19 - Jacob & Esau
-    - 21 - Tainted Isaac
-    - 27 - Tainted Samson
-    - 28 - Tainted Azazel
-    - 30 - Tainted Eden (is already randomized)
-    - 31 - Tainted Lost
-    - 32 - Tainted Lilith
-    - 33 - Tainted Keeper
-    - 35 - Tainted Forgotten
-  - characters that can't be randomized:
     - 13 - Lilith (unfair/un-fun without Box of Friends)
     - 14 - Keeper (unfair without Wooden Penny)
     - 18 - Bethany (without Book of Virtues there is no way to use the soul heart mechanic)
@@ -35,8 +16,9 @@ OTHER POTENTIAL UNLOCKS:
     - 23 - Tainted Cain (dysfunctional without Bag of Crafting)
     - 26 - Tainted Eve (dysfunctional without Sumptorium)
     - 29 - Tainted Lazarus (dysfunctional without Flip)
+    - 30 - Tainted Eden (is already randomized)
     - 37 - Tainted Jacob (dysfunctional without Anima Sola)
-  - characters with starting items that could be randomized:
+  - characters with starting items that could be randomized (14 in total):
     - 0 - Isaac (D6)
     - 1 - Magdalene (Yum Heart)
     - 2 - Cain (Lucky Foot + Paper Clip)
@@ -51,6 +33,18 @@ OTHER POTENTIAL UNLOCKS:
     - 25 - Tainted Blue Baby (Hold)
     - 34 - Tainted Apollyon (Abyss)
     - 36 - Tainted Bethany (Lemegeton)
+  - characters without any starting items that could get an extra randomized starting item (10 in total):
+    - 7 - Azazel
+    - 16 - The Forgotten
+    - 19 - Jacob & Esau
+    - 21 - Tainted Isaac
+    - 27 - Tainted Samson
+    - 28 - Tainted Azazel
+    - 31 - Tainted Lost
+    - 32 - Tainted Lilith
+    - 33 - Tainted Keeper
+    - 35 - Tainted Forgotten
+  - total: 14 + 10 = 24
 
 ------------------------------
 
