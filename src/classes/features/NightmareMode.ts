@@ -12,11 +12,15 @@ import {
   game,
 } from "isaacscript-common";
 import { RandomizerModFeature } from "../RandomizerModFeature";
+import { isNightmareMode, isRandomizerEnabled } from "./achievementTracker/v";
 
 const HALF_HEART_AMOUNT = 1;
 const FULL_HEART_AMOUNT = 2;
 
 export class NightmareMode extends RandomizerModFeature {
+  override shouldCallbackMethodsFire = (): boolean =>
+    isRandomizerEnabled() && isNightmareMode();
+
   // 34
   @Callback(ModCallback.POST_PICKUP_INIT)
   postPickupInit(pickup: EntityPickup): void {

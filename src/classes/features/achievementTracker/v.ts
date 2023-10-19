@@ -40,6 +40,10 @@ export function isHardcoreMode(): boolean {
   );
 }
 
+export function isNightmareMode(): boolean {
+  return v.persistent.randomizerMode === RandomizerMode.NIGHTMARE;
+}
+
 export function getCompletedObjectives(): Objective[] {
   return v.persistent.completedObjectives;
 }
