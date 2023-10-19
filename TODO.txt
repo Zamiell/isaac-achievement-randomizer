@@ -1,9 +1,10 @@
 TODO:
 
+- mega satan prevent end
+- test mega satan unlock
+
 - flipped rooms
-  - r+ todo
   - empty rooms
-  - bomb grimace
   - script to shift room variants + resort IDs
 
 ------------------------------
