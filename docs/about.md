@@ -15,6 +15,7 @@ This page explains how it works.
 1. [Objective List](#objective-list)
 1. [Unlock List](#unlock-list)
 1. [Modes](#modes)
+1. [Other Randomization Info](#other-randomization-info)
 1. [Other Features](#other-features)
 1. [F.A.Q.](#faq-frequently-asked-questions)
 
@@ -451,7 +452,7 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
 
 <br>
 
-## Randomization Behavior
+## Other Randomization Info
 
 - Unlocking new things will never apply to the current run and will only apply to subsequent runs.
   - For example, if you unlock The Polaroid on Basement 1 and go on to kill Mom, she will still not drop The Polaroid because it will only be unlocked on the next run.
@@ -460,29 +461,29 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
 
 ## Other Features
 
-### Dead Sea Scrolls Integration <!-- deadSeaScrolls.ts -->
+### 1) Dead Sea Scrolls Integration <!-- deadSeaScrolls.ts -->
 
 The mod comes with an in-game menu called _Dead Sea Scrolls_. (This is the same menu that is used in other mods, like [_Fiend Folio_](https://steamcommunity.com/sharedfiles/filedetails/?id=2851063440).) You can open the menu by pressing `c` after starting a run.
 
 The menu will show you how many objectives you have left in your playthrough and other information.
 
-### Death Tracker <!-- Stats Tracker -->
+### 2) Death Tracker <!-- Stats Tracker -->
 
 The mod includes a death tracker. If you are a streaker, try to complete the randomizer with as few deaths as possible! (Starting a new run without finishing the previous run counts as a death.)
 
-### Timer <!-- Timer -->
+### 3) Timer <!-- Timer -->
 
 The mod includes an on-screen timer, similar to the [Racing+](https://isaacracing.net/) mod. The timer starts off hidden by default, but you can enable it in the Dead Sea Scrolls menu. If you are a speedrunner, try to complete the randomizer as fast as possible!
 
 Unlike the timer in Racing+, the timer in this mod tracks in-game time. Thus, the timer will be paused when the game is paused or when you are in the main menu.
 
-### Room Flipping
+### 4) Room Flipping
 
 There are thousands of rooms in the game, but many players have already seen them all. To increase run variety, all rooms have a chance to be flipped on the X axis, Y axis, or both axes.
 
 Gehenna is exempt from this behavior due to unavoidable damage with Ball and Chains.
 
-### Gameplay Removals
+### 5) Gameplay Removals
 
 #### Donation Machine Removal <!-- RemoveDonationMachines -->
 
@@ -498,11 +499,11 @@ The mod deletes all Void Portals outside of the Blue Womb. This is both a balanc
 
 Glitched items are removed for the same reason that TMTRAINER is.
 
-### Chill Room <!-- ChillRoom -->
+### 6) Chill Room <!-- ChillRoom -->
 
 The mod provides a custom challenge that simply locks you in the starting room of the run. You can use this challenge to review your achievements and plan for your next run. Runs started inside of the challenge will not count towards your randomizer stats or deaths.
 
-### Custom Console Commands <!-- consoleCommands.ts -->
+### 7) Custom Console Commands <!-- consoleCommands.ts -->
 
 The mod provides several custom [console commands](https://bindingofisaacrebirth.fandom.com/wiki/Debug_Console):
 
@@ -510,7 +511,7 @@ The mod provides several custom [console commands](https://bindingofisaacrebirth
 - `startRandomizer [mode] [seed]` - Starts a new randomizer playthrough using the specified seed. For example: `startRandomizer hardcore 12345`
 - `spoilerLog` - Writes out a spoiler log to the "log.txt" file. Note that the unlocks may not be accurate, since the mod swaps an unlock if it detects that you should not get it yet.
 
-### Crash & Softlock Prevention <!-- FixVanillaBugs -->
+### 8) Crash & Softlock Prevention <!-- FixVanillaBugs -->
 
 This mod attempts to fix as many vanilla crashes & softlocks as possible. The following situations are fixed:
 
@@ -522,17 +523,17 @@ Portals from Lil' Portal that leads to invalid rooms will automatically be remov
 
 Lucky Pennies are automatically converted to normal pennies while the Mega Mush effect is active.
 
-### Illegal Pause Detection & Illegal Save & Quit Detection
+### 9) Illegal Pause Detection & Illegal Save & Quit Detection
 
 In the Isaac streaking community, you are only allowed to pause the game when the room is clear of enemies. If you are allowed to pause in a room with enemies, then you can think about the best movement patterns to defeat the enemies, and mentally prepare exactly what to do. This kind of thing goes against the spirit of the competition; players are intended to have to react instantly to new situations. Thus, the mod will keep track of any illegal pauses that you do, both displaying an error on the screen and then showing a that you have illegally paused on the stats menu for your playthrough. If you want the mod to prevent you from illegally pausing, turn on the option in the "Randomizer Settings" page of the menu.
 
 In the Isaac streaking community, you are not allowed to use the save & quit feature of the game. If you are allowed to save & quit, then you can do things like prevent incoming damage, exploit Restock Machines, and reset enemy patterns. All of these things go against the spirit of the competition; players are intended to have to complete a room in one attempt and they should not get "do-overs" when they make movement mistakes. Thus, the mod will keep track of any illegal save & quits that you do, both displaying an error on the screen and then showing a that you have illegally saved and quit on the stats menu for your playthrough.
 
-### Other Miscellaneous Quality of Life Improvements
+### 10) Other Miscellaneous Quality of Life Improvements
 
 - <!-- "ui_hearts.png" --> The heart UI sprites have been slightly modified so that it is easier to see an empty heart container on a black background.
 - <!-- SilenceMomDad --> The audio clips of mom and dad on the Ascent are silenced.
-- <!-- ForceFadedConsoleDisplay --> The "faded console display" feature is automatically enabled in the "options.ini" file, which allows you to visually see when an error in the game happens. Please report bugs to the developers in [the Isaac Streaking Discord server](https://discord.gg/GwhUeQjHTF).
+- <!-- ForceFadedConsoleDisplay --> The "faded console display" feature is automatically enabled in the "options.ini" file, which allows you to visually see when an error in the game happens.
 - <!-- PreventVictoryLapPopup --> Victory Laps and the "Rerun" feature on the main menu are banned for the same reason that R Key is. As a quality of life fix, the Victory Lap popup will no longer appear after defeating The Lamb.
 - <!-- PreventEndMegaSatan --> Defeating Mega Satan no longer has a chance to immediately end the run.
 
