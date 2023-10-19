@@ -1,5 +1,6 @@
 import type { DamageFlag } from "isaac-typescript-definitions";
 import {
+  Dimension,
   LevelStage,
   ModCallback,
   NullItemID,
@@ -12,6 +13,8 @@ import {
   ReadonlyMap,
   anyPlayerHasNullEffect,
   game,
+  inDimension,
+  inGrid,
   isAllRoomsClear,
   isFirstPlayer,
   isSelfDamage,
@@ -135,6 +138,10 @@ export function floorObjectiveDetectionPreSpawnClearAward(): void {
 }
 
 function checkCompletedFloorObjective() {
+  if (!inGrid() || !inDimension(Dimension.MAIN)) {
+    return;
+  }
+
   const player = Isaac.GetPlayer();
   const character = player.GetPlayerType();
 

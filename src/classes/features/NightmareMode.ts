@@ -3,15 +3,12 @@ import {
   CollectibleType,
   ModCallback,
   PickupVariant,
-  SeedEffect,
 } from "isaac-typescript-definitions";
 import {
   Callback,
   CallbackCustom,
   ModCallbackCustom,
-  game,
 } from "isaacscript-common";
-import { BOSS_ROOM_COLLECTIBLE_TYPE_EXCEPTIONS } from "../../arrays/unlockableCollectibleTypes";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { isNightmareMode, isRandomizerEnabled } from "./achievementTracker/v";
 
@@ -74,16 +71,5 @@ export class NightmareMode extends RandomizerModFeature {
     }
 
     return undefined;
-  }
-
-  @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
-  postGameStartedReorderedFalse(): void {
-    const seeds = game.GetSeeds();
-    seeds.AddSeedEffect(SeedEffect.ALL_CHAMPIONS);
-
-    const itemPool = game.GetItemPool();
-    for (const collectibleType of BOSS_ROOM_COLLECTIBLE_TYPE_EXCEPTIONS) {
-      itemPool.RemoveCollectible(collectibleType);
-    }
   }
 }
