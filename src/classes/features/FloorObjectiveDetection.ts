@@ -24,6 +24,7 @@ import {
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import { getObjective } from "../../types/Objective";
+import { getAdjustedCharacterForObjective } from "../../utils";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { addObjective } from "./achievementTracker/addObjective";
 
@@ -143,7 +144,7 @@ function checkCompletedFloorObjective() {
   }
 
   const player = Isaac.GetPlayer();
-  const character = player.GetPlayerType();
+  const character = getAdjustedCharacterForObjective(player);
 
   if (!v.level.tookHit && isAllRoomsClear(ROOM_TYPES)) {
     const kindNoHit = getCharacterObjectiveKindNoHit();

@@ -1,6 +1,6 @@
 import { PlayerType } from "isaac-typescript-definitions";
 
-export function getAdjustedCharacterForUnlock(
+export function getAdjustedCharacterForObjective(
   player: EntityPlayer,
 ): PlayerType {
   const character = player.GetPlayerType();

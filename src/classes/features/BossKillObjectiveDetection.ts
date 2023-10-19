@@ -10,6 +10,7 @@ import {
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import { getObjective } from "../../types/Objective";
+import { getAdjustedCharacterForObjective } from "../../utils";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { getModifiedBossID } from "./BossNoHitObjectiveDetection";
 import { addObjective } from "./achievementTracker/addObjective";
@@ -47,7 +48,7 @@ export function bossObjectiveDetectionPreSpawnClearAward(): void {
   const room = game.GetRoom();
   const roomType = room.GetType();
   const player = Isaac.GetPlayer();
-  const character = player.GetPlayerType();
+  const character = getAdjustedCharacterForObjective(player);
 
   // Mega Satan has to be handled outside of the switch statement since its boss room is outside of
   // the grid.

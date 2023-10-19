@@ -3,6 +3,26 @@
 <!-- cspell:ignore antizoubilamaka,Erbear,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.6.0_ - October 19th, 2023
+
+- Nightmare mode now includes extra collectible unlocks:
+  - Wooden Spoon (#27)
+  - Mom's Underwear (#29)
+  - Wire Coat Hanger (#32)
+  - Cat-O-Nine-Tails (#165)
+- Nightmare mode now includes extra room unlocks:
+  - !Shop (#2)
+  - !Treasure (#4)
+  - !Secret (#7)
+  - !Super Secret (#8)
+  - !Challenge (#11)
+  - Clean Bedroom (#18)
+  - Dirty Bedroom (#19)
+  - !Ultra Secret (#29)
+- Fixed the bug where objectives could be accomplish in alternate dimensions. (Thanks Po4ti)
+- Fixed the bug where accomplishing objectives as Lazarus 2 or Dark Judas would not work properly. (Thanks Po4ti)
+- !Fixed the bug with Heretic? (Thanks Po4ti)
+
 ### _v0.5.0_ - October 19th, 2023
 
 - Nightmare mode now removes the 5 starting stat collectibles.

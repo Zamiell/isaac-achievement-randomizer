@@ -11,6 +11,7 @@ import {
   getHUDOffsetVector,
   newSprite,
 } from "isaacscript-common";
+import { getAdjustedCharacterForObjective } from "../../utils";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   getCharacterObjectiveKindNoHit,
@@ -33,7 +34,7 @@ export class FloorHitIcon extends RandomizerModFeature {
     }
 
     const player = Isaac.GetPlayer();
-    const character = player.GetPlayerType();
+    const character = getAdjustedCharacterForObjective(player);
 
     if (isCharacterObjectiveCompleted(character, kindNoHit)) {
       return;
