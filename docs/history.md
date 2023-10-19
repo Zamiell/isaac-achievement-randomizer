@@ -3,6 +3,10 @@
 <!-- cspell:ignore antizoubilamaka,Erbear,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.5.0_ - October 19th, 2023
+
+- Nightmare mode now removes the 5 starting stat collectibles.
+
 ### _v0.4.2_ - October 19th, 2023
 
 - Added logic for Mom's Key.
