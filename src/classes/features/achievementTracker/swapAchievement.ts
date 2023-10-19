@@ -80,7 +80,9 @@ import type {
   OtherUnlock,
   PathUnlock,
   PillEffectUnlock,
+  RoomUnlock,
   SackUnlock,
+  SlotUnlock,
   TrinketUnlock,
   Unlock,
 } from "../../../types/Unlock";
@@ -170,7 +172,7 @@ const SWAPPED_UNLOCK_FUNCTIONS = {
   [UnlockType.CHARACTER]: undefined,
   [UnlockType.PATH]: getSwappedUnlockPath,
   [UnlockType.ALT_FLOOR]: getSwappedUnlockAltFloor,
-  [UnlockType.ROOM]: undefined,
+  [UnlockType.ROOM]: getSwappedUnlockRoom,
   [UnlockType.CHALLENGE]: getSwappedUnlockChallenge,
   [UnlockType.COLLECTIBLE]: getSwappedUnlockCollectible,
   [UnlockType.TRINKET]: getSwappedUnlockTrinket,
@@ -244,6 +246,26 @@ const SWAPPED_UNLOCK_ALT_FLOOR_FUNCTIONS = new ReadonlyMap<
 function getSwappedUnlockAltFloor(unlock: Unlock): Unlock | undefined {
   const pathUnlock = unlock as AltFloorUnlock;
   const func = SWAPPED_UNLOCK_ALT_FLOOR_FUNCTIONS.get(pathUnlock.altFloor);
+  return func === undefined ? undefined : func();
+}
+
+const SWAPPED_UNLOCK_ROOM_FUNCTIONS = new ReadonlyMap<
+  RoomType,
+  () => Unlock | undefined
+>([
+  // 9
+  [
+    RoomType.ARCADE,
+    () =>
+      isSlotVariantUnlocked(SlotVariant.BLOOD_DONATION_MACHINE, false)
+        ? undefined
+        : getUnlock(UnlockType.SLOT, SlotVariant.BLOOD_DONATION_MACHINE),
+  ],
+]);
+
+function getSwappedUnlockRoom(unlock: Unlock): Unlock | undefined {
+  const roomUnlock = unlock as RoomUnlock;
+  const func = SWAPPED_UNLOCK_ROOM_FUNCTIONS.get(roomUnlock.roomType);
   return func === undefined ? undefined : func();
 }
 
@@ -1565,7 +1587,13 @@ function getSwappedUnlockChest(unlock: Unlock): Unlock | undefined {
   return undefined;
 }
 
-function getSwappedUnlockSlot(): Unlock | undefined {
+function getSwappedUnlockSlot(unlock: Unlock): Unlock | undefined {
+  const slotUnlock = unlock as SlotUnlock;
+
+  if (slotUnlock.slotVariant === SlotVariant.BLOOD_DONATION_MACHINE) {
+    return undefined;
+  }
+
   return isRoomTypeUnlocked(RoomType.ARCADE, false)
     ? undefined
     : getUnlock(UnlockType.ROOM, RoomType.ARCADE);

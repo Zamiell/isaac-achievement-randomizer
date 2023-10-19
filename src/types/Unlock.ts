@@ -59,7 +59,7 @@ export interface AltFloorUnlock {
   altFloor: AltFloor;
 }
 
-interface RoomUnlock {
+export interface RoomUnlock {
   type: UnlockType.ROOM;
   roomType: RoomType;
 }
@@ -124,7 +124,7 @@ export interface ChestUnlock {
   pickupVariant: PickupVariant;
 }
 
-interface SlotUnlock {
+export interface SlotUnlock {
   type: UnlockType.SLOT;
   slotVariant: SlotVariant;
 }

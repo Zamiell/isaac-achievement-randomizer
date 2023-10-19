@@ -34,6 +34,7 @@
 - Charged Keys will now unlock before active collectibles. (Thanks Moucheron Quipet)
 - Tinted rocks will now unlock after soul hearts. (Thanks Neonomi)
 - Super tinted rocks will now unlock after soul hearts.
+- !Arcades will now unlock after Blood Donation Machines. (Thanks Neonomi)
 - Touching a White Fire will now immediately invalidate the floor objective. (Thanks Po4ti)
 - Fixed the bug where the Strange Door would appear on Depths XL even if you had not unlocked The Ascent yet. (Thanks Po4ti)
 
