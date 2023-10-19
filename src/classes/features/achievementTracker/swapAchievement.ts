@@ -12,6 +12,7 @@ import {
   GridEntityType,
   HeartSubType,
   ItemConfigTag,
+  ItemPoolType,
   KeySubType,
   PickupVariant,
   PillEffect,
@@ -32,6 +33,7 @@ import {
   getChallengeCollectibleTypes,
   getChallengeTrinketType,
   getRandomArrayElement,
+  isCollectibleTypeInDefaultItemPool,
   log,
   shuffleArray,
 } from "isaacscript-common";
@@ -55,15 +57,11 @@ import {
   UnlockablePath,
   getUnlockablePathFromStoryBoss,
 } from "../../../enums/UnlockablePath";
-import { ANGEL_ROOM_COLLECTIBLES } from "../../../sets/angelRoomCollectibles";
-import { CURSE_ROOM_COLLECTIBLES } from "../../../sets/curseRoomCollectibles";
 import {
   DICE_CARDS,
   DICE_COLLECTIBLES,
   DICE_TRINKETS,
 } from "../../../sets/diceObjects";
-import { PLANETARIUM_COLLECTIBLES } from "../../../sets/planetariumCollectibles";
-import { TREASURE_CHEST_COLLECTIBLES } from "../../../sets/treasureChestCollectibles";
 import { getObjectiveFromID, getObjectiveText } from "../../../types/Objective";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
 import type {
@@ -817,7 +815,10 @@ function getSwappedUnlockCollectible(unlock: Unlock): Unlock | undefined {
 
   // 10
   if (
-    CURSE_ROOM_COLLECTIBLES.has(collectibleUnlock.collectibleType) &&
+    isCollectibleTypeInDefaultItemPool(
+      collectibleUnlock.collectibleType,
+      ItemPoolType.CURSE,
+    ) &&
     !isRoomTypeUnlocked(RoomType.CURSE, false)
   ) {
     return getUnlock(UnlockType.ROOM, RoomType.CURSE);
@@ -833,7 +834,10 @@ function getSwappedUnlockCollectible(unlock: Unlock): Unlock | undefined {
 
   // 13
   if (
-    ANGEL_ROOM_COLLECTIBLES.has(collectibleUnlock.collectibleType) &&
+    isCollectibleTypeInDefaultItemPool(
+      collectibleUnlock.collectibleType,
+      ItemPoolType.ANGEL,
+    ) &&
     !isRoomTypeUnlocked(RoomType.SACRIFICE, false)
   ) {
     return getUnlock(UnlockType.ROOM, RoomType.SACRIFICE);
@@ -841,7 +845,10 @@ function getSwappedUnlockCollectible(unlock: Unlock): Unlock | undefined {
 
   // 20
   if (
-    TREASURE_CHEST_COLLECTIBLES.has(collectibleUnlock.collectibleType) &&
+    isCollectibleTypeInDefaultItemPool(
+      collectibleUnlock.collectibleType,
+      ItemPoolType.GOLDEN_CHEST,
+    ) &&
     !isRoomTypeUnlocked(RoomType.VAULT, false)
   ) {
     return getUnlock(UnlockType.ROOM, RoomType.VAULT);
@@ -857,7 +864,10 @@ function getSwappedUnlockCollectible(unlock: Unlock): Unlock | undefined {
 
   // 24
   if (
-    PLANETARIUM_COLLECTIBLES.has(collectibleUnlock.collectibleType) &&
+    isCollectibleTypeInDefaultItemPool(
+      collectibleUnlock.collectibleType,
+      ItemPoolType.PLANETARIUM,
+    ) &&
     !isRoomTypeUnlocked(RoomType.PLANETARIUM, false)
   ) {
     return getUnlock(UnlockType.ROOM, RoomType.PLANETARIUM);
