@@ -28,13 +28,14 @@
 - The mod will now display a message if you illegally pause the game or save & quit.
 - The stats page will now show if you have illegally paused or saved & quit.
 - There is now an option to delay achievement text that appears in the middle of a battle.
-- Womb 1 and Womb 2 are no longer considered to be "easy" objectives for the purposes of unlocking The Polaroid and The Negative.
+- Womb 1 and Womb 2 are no longer considered to be "easy" objectives for the purposes of unlocking The Polaroid and The Negative. (Thanks Po4ti)
 - Challenges will now unlock after all of their extra starting collectibles, if any. (Thanks Finn)
 - Challenges will now unlock after their extra starting trinket, if any.
 - Charged Keys will now unlock before active collectibles. (Thanks Moucheron Quipet)
 - Tinted rocks will now unlock after soul hearts. (Thanks Neonomi)
 - Super tinted rocks will now unlock after soul hearts.
-- !Arcades will now unlock after Blood Donation Machines. (Thanks Neonomi)
+- Arcades will now unlock after Blood Donation Machines. (Thanks Neonomi)
+- Vaults will now unlock after any chest unlock. (Thanks Neonomi)
 - Touching a White Fire will now immediately invalidate the floor objective. (Thanks Po4ti)
 - Fixed the bug where the Strange Door would appear on Depths XL even if you had not unlocked The Ascent yet. (Thanks Po4ti)
 

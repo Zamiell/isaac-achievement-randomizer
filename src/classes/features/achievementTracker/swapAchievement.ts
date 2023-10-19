@@ -43,6 +43,7 @@ import {
   UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES,
   UNLOCKABLE_FAMILIAR_COLLECTIBLE_TYPES,
 } from "../../../arrays/unlockableCollectibleTypes";
+import { UNLOCKABLE_CHEST_PICKUP_VARIANTS } from "../../../arrays/unlockablePickupTypes";
 import { UNLOCKABLE_PILL_EFFECTS } from "../../../arrays/unlockablePillEffects";
 import { UNLOCKABLE_ROOM_TYPES } from "../../../arrays/unlockableRoomTypes";
 import { UNLOCKABLE_TRINKET_TYPES } from "../../../arrays/unlockableTrinketTypes";
@@ -93,6 +94,7 @@ import {
   anyBadPillEffectsUnlocked,
   anyCardTypesUnlocked,
   anyCardsUnlocked,
+  anyChestPickupVariantUnlocked,
   anyFamiliarCollectibleUnlocked,
   anyGoodPillEffectsUnlocked,
   anyPillEffectsUnlocked,
@@ -260,6 +262,13 @@ const SWAPPED_UNLOCK_ROOM_FUNCTIONS = new ReadonlyMap<
       isSlotVariantUnlocked(SlotVariant.BLOOD_DONATION_MACHINE, false)
         ? undefined
         : getUnlock(UnlockType.SLOT, SlotVariant.BLOOD_DONATION_MACHINE),
+  ],
+
+  // 20
+  [
+    RoomType.VAULT,
+    () =>
+      anyChestPickupVariantUnlocked(false) ? undefined : getRandomChestUnlock(),
   ],
 ]);
 
@@ -1724,7 +1733,7 @@ function swapAnyRoomUnlock() {
 function getRandomActiveCollectibleUnlock(): CollectibleUnlock {
   assertNotNull(
     v.persistent.seed,
-    "Failed to get a random active collectible since the seed was null.",
+    "Failed to get a random active collectible unlock since the seed was null.",
   );
   const collectibleType = getRandomArrayElement(
     UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES,
@@ -1736,8 +1745,9 @@ function getRandomActiveCollectibleUnlock(): CollectibleUnlock {
 function getRandomFamiliarCollectibleUnlock(): CollectibleUnlock {
   assertNotNull(
     v.persistent.seed,
-    "Failed to get a random familiar collectible since the seed was null.",
+    "Failed to get a random familiar collectible unlock since the seed was null.",
   );
+
   const collectibleType = getRandomArrayElement(
     UNLOCKABLE_FAMILIAR_COLLECTIBLE_TYPES,
     v.persistent.seed,
@@ -1746,13 +1756,18 @@ function getRandomFamiliarCollectibleUnlock(): CollectibleUnlock {
 }
 
 function getRandomTrinketUnlock(): TrinketUnlock {
+  assertNotNull(
+    v.persistent.seed,
+    "Failed to get a random trinket unlock since the seed was null.",
+  );
+
   const trinketTypes = isHardcoreMode()
     ? getTrinketTypesOfQuality(0).filter((trinketType) =>
         UNLOCKABLE_TRINKET_TYPES.includes(trinketType),
       )
     : UNLOCKABLE_TRINKET_TYPES;
 
-  const trinketType = getRandomArrayElement(trinketTypes);
+  const trinketType = getRandomArrayElement(trinketTypes, v.persistent.seed);
 
   return {
     type: UnlockType.TRINKET,
@@ -1761,13 +1776,18 @@ function getRandomTrinketUnlock(): TrinketUnlock {
 }
 
 function getRandomCardUnlock(): CardUnlock {
+  assertNotNull(
+    v.persistent.seed,
+    "Failed to get a random card unlock since the seed was null.",
+  );
+
   const cardTypes = isHardcoreMode()
     ? getCardTypesOfQuality(0).filter((cardType) =>
         UNLOCKABLE_CARD_TYPES.includes(cardType),
       )
     : UNLOCKABLE_CARD_TYPES;
 
-  const cardType = getRandomArrayElement(cardTypes);
+  const cardType = getRandomArrayElement(cardTypes, v.persistent.seed);
 
   return {
     type: UnlockType.CARD,
@@ -1776,13 +1796,18 @@ function getRandomCardUnlock(): CardUnlock {
 }
 
 function getRandomRuneUnlock(): CardUnlock {
+  assertNotNull(
+    v.persistent.seed,
+    "Failed to get a random rune unlock since the seed was null.",
+  );
+
   const cardTypes = isHardcoreMode()
     ? getRunesOfQuality(0).filter((cardType) =>
         UNLOCKABLE_CARD_TYPES.includes(cardType),
       )
     : UNLOCKABLE_RUNE_CARD_TYPES;
 
-  const cardType = getRandomArrayElement(cardTypes);
+  const cardType = getRandomArrayElement(cardTypes, v.persistent.seed);
 
   return {
     type: UnlockType.CARD,
@@ -1791,6 +1816,11 @@ function getRandomRuneUnlock(): CardUnlock {
 }
 
 function getRandomPillEffectUnlock(): PillEffectUnlock {
+  assertNotNull(
+    v.persistent.seed,
+    "Failed to get a random pill effect unlock since the seed was null.",
+  );
+
   const pillEffects = isHardcoreMode()
     ? getPillEffectsOfQuality(0).filter((pillEffect) =>
         UNLOCKABLE_PILL_EFFECTS.includes(pillEffect),
@@ -1800,11 +1830,31 @@ function getRandomPillEffectUnlock(): PillEffectUnlock {
   // We never want to randomly unlock Vurp, since that could lead to infinite loops.
   const modifiedPillEffects = arrayRemove(pillEffects, PillEffect.VURP);
 
-  const pillEffect = getRandomArrayElement(modifiedPillEffects);
+  const pillEffect = getRandomArrayElement(
+    modifiedPillEffects,
+    v.persistent.seed,
+  );
 
   return {
     type: UnlockType.PILL_EFFECT,
     pillEffect,
+  };
+}
+
+function getRandomChestUnlock(): ChestUnlock {
+  assertNotNull(
+    v.persistent.seed,
+    "Failed to get a random chest unlock since the seed was null.",
+  );
+
+  const pickupVariant = getRandomArrayElement(
+    UNLOCKABLE_CHEST_PICKUP_VARIANTS,
+    v.persistent.seed,
+  );
+
+  return {
+    type: UnlockType.CHEST,
+    pickupVariant,
   };
 }
 

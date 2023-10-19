@@ -76,13 +76,14 @@ import {
   isSackSubTypeUnlocked,
   isTrinketTypeUnlocked,
 } from "./achievementTracker/completedUnlocks";
+import { getRandomizerSeed } from "./achievementTracker/v";
 
 /** This feature handles removing all of the pickups from the game that are not unlocked yet. */
 export class PickupRemoval extends RandomizerModFeature {
   // 20
   @Callback(ModCallback.GET_CARD)
   getCard(
-    _rng: RNG,
+    rng: RNG,
     cardType: CardType,
     includePlayingCards: boolean,
     includeRunes: boolean,
@@ -107,7 +108,7 @@ export class PickupRemoval extends RandomizerModFeature {
     if (onlyRunes) {
       return runeCardTypes.length === 0
         ? CardType.RUNE_SHARD
-        : getRandomArrayElement(runeCardTypes);
+        : getRandomArrayElement(runeCardTypes, rng);
     }
 
     const playingCardTypes = unlockedCardTypes.filter((unlockedCardType) =>
@@ -135,7 +136,7 @@ export class PickupRemoval extends RandomizerModFeature {
       return CardType.RUNE_SHARD;
     }
 
-    return getRandomSetElement(cardTypesToUse);
+    return getRandomSetElement(cardTypesToUse, rng);
   }
 
   /**
@@ -553,7 +554,10 @@ export class PickupRemoval extends RandomizerModFeature {
         : [PickupVariant.TRINKET, normalizedTrinketType];
     }
 
-    const newTrinketType = getRandomArrayElement(unlockedTrinketTypes);
+    const newTrinketType = getRandomArrayElement(
+      unlockedTrinketTypes,
+      getRandomizerSeed(),
+    );
     const trinketTypeToUse = goldTrinketsUnlocked
       ? getGoldenTrinketType(newTrinketType)
       : newTrinketType;
@@ -573,7 +577,10 @@ export class PickupRemoval extends RandomizerModFeature {
       return undefined;
     }
 
-    const newTrinketType = getRandomArrayElement(unlockedTrinketTypes);
+    const newTrinketType = getRandomArrayElement(
+      unlockedTrinketTypes,
+      getRandomizerSeed(),
+    );
     return [PickupVariant.TRINKET, newTrinketType];
   }
 

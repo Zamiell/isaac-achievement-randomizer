@@ -182,6 +182,18 @@ export class BossNoHitObjectiveDetection extends RandomizerModFeature {
     v.room.tookDamageRoomFrame = room.GetFrameCount();
   }
 
+  // 27, 246
+  @Callback(ModCallback.POST_NPC_INIT, EntityType.RAGLING)
+  postNPCInitRagling(): void {
+    const bossID = getModifiedBossID();
+    if (bossID !== BossID.RAG_MAN) {
+      return;
+    }
+
+    const room = game.GetRoom();
+    v.room.tookDamageRoomFrame = room.GetFrameCount();
+  }
+
   // 27, 271
   @Callback(ModCallback.POST_NPC_INIT, EntityType.URIEL)
   postNPCInitUriel(): void {

@@ -878,6 +878,14 @@ export function getWorseLockedSackSubType(
   return undefined;
 }
 
+export function anyChestPickupVariantUnlocked(forRun: boolean): boolean {
+  const array = forRun
+    ? v.persistent.completedUnlocksForRun
+    : v.persistent.completedUnlocks;
+
+  return array.some((unlock) => unlock.type === UnlockType.CHEST);
+}
+
 export function isChestPickupVariantUnlocked(
   pickupVariant: PickupVariant,
   forRun: boolean,
