@@ -6,7 +6,7 @@ import {
   isFamiliarCollectible,
 } from "isaacscript-common";
 
-const BOSS_ROOM_COLLECTIBLE_TYPE_EXCEPTIONS = [
+export const BOSS_ROOM_COLLECTIBLE_TYPE_EXCEPTIONS = [
   CollectibleType.BREAKFAST, // 25
   CollectibleType.WOODEN_SPOON, // 27
   CollectibleType.MOMS_UNDERWEAR, // 29

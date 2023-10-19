@@ -11,6 +11,7 @@ import {
   ModCallbackCustom,
   game,
 } from "isaacscript-common";
+import { BOSS_ROOM_COLLECTIBLE_TYPE_EXCEPTIONS } from "../../arrays/unlockableCollectibleTypes";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { isNightmareMode, isRandomizerEnabled } from "./achievementTracker/v";
 
@@ -81,6 +82,8 @@ export class NightmareMode extends RandomizerModFeature {
     seeds.AddSeedEffect(SeedEffect.ALL_CHAMPIONS);
 
     const itemPool = game.GetItemPool();
-    itemPool.RemoveCollectible(CollectibleType.BREAKFAST);
+    for (const collectibleType of BOSS_ROOM_COLLECTIBLE_TYPE_EXCEPTIONS) {
+      itemPool.RemoveCollectible(collectibleType);
+    }
   }
 }

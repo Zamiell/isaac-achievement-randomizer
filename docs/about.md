@@ -448,6 +448,7 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
 
 - All enemies are champions without any drops.
 - Full heart damage from all sources.
+- Breakfast, Wooden Spoon, Mom's Underwear, Wire Coat Hanger, and Cat-O-Nine-Tails are always removed from pools.
 - Breakfast does not spawn.
 
 <br>
