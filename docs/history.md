@@ -3,7 +3,7 @@
 <!-- cspell:ignore antizoubilamaka,Erbear,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
-### _v0.2.4_ - October 18th, 2023 (Unreleased)
+### _v0.3.0_ - October 18th, 2023
 
 - Rooms now have a chance to be flipped on the X axis, Y axis, or both axes.
 - Full clearing is now required for the level objectives.
