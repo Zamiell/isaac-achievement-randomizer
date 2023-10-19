@@ -1,12 +1,12 @@
 # Achievement Randomizer Version History
 
-<!-- cspell:ignore antizoubilamaka,Erbear,Neonomi,slvn -->
+<!-- cspell:ignore antizoubilamaka,Erbear,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
 ### _v0.2.4_ - October 18th, 2023 (Unreleased)
 
-- Full clearing is now required for the level objectives.
 - Rooms now have a chance to be flipped on the X axis, Y axis, or both axes.
+- Full clearing is now required for the level objectives.
 - A red icon will now show if you are playing on hardcore mode.
 - The following boss timers have been changed:
   - Monstro (#1) - 1 minute
@@ -24,6 +24,7 @@
   - Turdlings (#65) - 1.5 minutes
   - Steven (#20) - 1 minute
 - The Rag Man objective now requires at least two Raglings to be alive.
+- The Mega Satan objective now requires you to be in phase 2.
 - In hardcore mode, pill effects will now unlock on a cycle of one negative, one neutral, and one positive.
 - The mod will now display a message if you illegally pause the game or save & quit.
 - The stats page will now show if you have illegally paused or saved & quit.
@@ -38,7 +39,9 @@
 - Vaults will now unlock after any chest unlock. (Thanks Neonomi)
 - Curse Rooms will now unlock after red chests. (Thanks Neonomi)
 - Touching a White Fire will now immediately invalidate the floor objective. (Thanks Po4ti)
+- Killing Mega Satan will no longer ever trigger a cutscene.
 - Fixed the bug where the Strange Door would appear on Depths XL even if you had not unlocked The Ascent yet. (Thanks Po4ti)
+- !Fixed the bug where killing Mega Satan would not trigger the objective. (Thanks sanstheazmo)
 
 ### _v0.2.3_ - October 15th, 2023
 

@@ -16,6 +16,7 @@ import {
   getNPCs,
   inRoomType,
   isRoomInsideGrid,
+  log,
   onDarkRoom,
   openAllDoors,
   sfxManager,
@@ -109,9 +110,10 @@ export class PreventVictoryLapPopup extends RandomizerModFeature {
     addRoomClearCharges();
     openAllDoors();
     sfxManager.Play(SoundEffect.DOOR_HEAVY_OPEN);
+    log("Manually set the room to be clear after The Lamb died.");
 
-    const position = room.GetCenterPos();
-    spawnPickup(PickupVariant.BIG_CHEST, 0, position);
+    const centerPos = room.GetCenterPos();
+    spawnPickup(PickupVariant.BIG_CHEST, 0, centerPos);
 
     bossObjectiveDetectionPreSpawnClearAward();
     floorObjectiveDetectionPreSpawnClearAward();

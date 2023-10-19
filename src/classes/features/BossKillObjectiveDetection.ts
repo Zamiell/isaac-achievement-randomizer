@@ -4,13 +4,14 @@ import {
   ReadonlyMap,
   game,
   getRoomListIndex,
-  getRoomSubType,
   inBeastRoom,
+  inMegaSatanRoom,
 } from "isaacscript-common";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import { getObjective } from "../../types/Objective";
 import { RandomizerModFeature } from "../RandomizerModFeature";
+import { getModifiedBossID } from "./BossNoHitObjectiveDetection";
 import { addObjective } from "./achievementTracker/addObjective";
 
 const BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND = new ReadonlyMap<
@@ -48,6 +49,19 @@ export function bossObjectiveDetectionPreSpawnClearAward(): void {
   const player = Isaac.GetPlayer();
   const character = player.GetPlayerType();
 
+  // Mega Satan has to be handled outside of the switch statement since its boss room is outside of
+  // the grid.
+  if (inMegaSatanRoom()) {
+    const objective = getObjective(
+      ObjectiveType.CHARACTER,
+      character,
+      CharacterObjectiveKind.MEGA_SATAN,
+    );
+    addObjective(objective);
+
+    return;
+  }
+
   switch (roomType) {
     // 5
     case RoomType.BOSS: {
@@ -59,16 +73,22 @@ export function bossObjectiveDetectionPreSpawnClearAward(): void {
         return;
       }
 
-      const bossID = getRoomSubType() as BossID;
-      const kindBoss = BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND.get(bossID);
-      if (kindBoss !== undefined) {
-        const objective = getObjective(
-          ObjectiveType.CHARACTER,
-          character,
-          kindBoss,
-        );
-        addObjective(objective);
+      const bossID = getModifiedBossID();
+      if (bossID === undefined) {
+        return;
       }
+
+      const kindBoss = BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND.get(bossID);
+      if (kindBoss === undefined) {
+        return;
+      }
+
+      const objective = getObjective(
+        ObjectiveType.CHARACTER,
+        character,
+        kindBoss,
+      );
+      addObjective(objective);
 
       break;
     }

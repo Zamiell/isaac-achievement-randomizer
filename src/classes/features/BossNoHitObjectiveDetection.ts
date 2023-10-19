@@ -8,6 +8,7 @@ import {
   FallenVariant,
   GurglingVariant,
   LokiVariant,
+  MegaSatanVariant,
   MinibossID,
   ModCallback,
   NPCState,
@@ -206,6 +207,20 @@ export class BossNoHitObjectiveDetection extends RandomizerModFeature {
   postNPCInitGabriel(): void {
     const room = game.GetRoom();
     v.room.tookDamageRoomFrame = room.GetFrameCount();
+  }
+
+  // 68, 274
+  @Callback(ModCallback.POST_ENTITY_KILL, EntityType.MEGA_SATAN)
+  postEntityKillMegaSatan(): void {
+    const bossID = getModifiedBossID();
+    if (bossID !== BossID.MEGA_SATAN) {
+      return;
+    }
+
+    const room = game.GetRoom();
+    const roomFrameCount = room.GetFrameCount();
+    v.room.tookDamageRoomFrame = roomFrameCount + GAME_FRAMES_PER_SECOND * 10;
+    // (We need to account for the long appear animation.)
   }
 
   // 27, 950
@@ -409,6 +424,23 @@ export function getSecondsSinceLastDamage(): int | undefined {
       const aliveBosses = lokiis.filter((boss) => !boss.IsDead());
 
       if (aliveBosses.length < 2) {
+        return;
+      }
+
+      break;
+    }
+
+    // 55
+    case BossID.MEGA_SATAN: {
+      const megaSatan2s = getNPCs(
+        EntityType.MEGA_SATAN_2,
+        MegaSatanVariant.MEGA_SATAN,
+        -1,
+        true,
+      );
+      const aliveBosses = megaSatan2s.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length === 0) {
         return;
       }
 
@@ -653,6 +685,10 @@ function onFirstPhaseOfSatan(): boolean {
   return satans.every((satan) => satan.State === NPCState.IDLE);
 }
 
+/**
+ * Similar to the `getBossID` helper function from `isaacscript-common`, but works with custom boss
+ * IDs for the randomizer.
+ */
 export function getModifiedBossID(): BossID | undefined {
   const room = game.GetRoom();
   const roomType = room.GetType();

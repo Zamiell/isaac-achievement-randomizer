@@ -152,6 +152,7 @@ The following bosses have custom conditions:
 - Fistula (#18) - Four or more pieces must be alive.
 - Teratoma (#33) - Four or more pieces must be alive.
 - Lokii (#31) - Both must be alive.
+- Rag Man (#61) - At least two Raglings must be alive.
 - Sisters Vis (#68) - Both must be alive.
 - Ultra Pride - Both must be alive.
 

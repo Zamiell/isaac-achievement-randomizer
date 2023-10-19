@@ -1,8 +1,5 @@
 TODO:
 
-- mega satan prevent end
-- test mega satan unlock
-
 ------------------------------
 
 LONG TERM TODO:

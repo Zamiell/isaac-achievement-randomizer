@@ -57,23 +57,23 @@ export class FloorHitIcon extends RandomizerModFeature {
       return;
     }
 
-    const position = getTopLeftUIPosition();
+    const position = this.getTopLeftUIPosition();
     iconSprite.Render(position);
   }
-}
 
-function getTopLeftUIPosition(): Vector {
-  const hudOffsetVector = getHUDOffsetVector();
+  getTopLeftUIPosition(): Vector {
+    const hudOffsetVector = getHUDOffsetVector();
 
-  const hasTaintedCharacterUI = anyPlayerIs(
-    PlayerType.ISAAC_B, // 21
-    PlayerType.BLUE_BABY_B, // 25
-  );
-  const taintedCharacterUIOffset = hasTaintedCharacterUI
-    ? TAINTED_CHARACTER_UI_OFFSET
-    : VectorZero;
+    const hasTaintedCharacterUI = anyPlayerIs(
+      PlayerType.ISAAC_B, // 21
+      PlayerType.BLUE_BABY_B, // 25
+    );
+    const taintedCharacterUIOffset = hasTaintedCharacterUI
+      ? TAINTED_CHARACTER_UI_OFFSET
+      : VectorZero;
 
-  return TOP_LEFT_UI_POSITION.add(hudOffsetVector).add(
-    taintedCharacterUIOffset,
-  );
+    return TOP_LEFT_UI_POSITION.add(hudOffsetVector).add(
+      taintedCharacterUIOffset,
+    );
+  }
 }
