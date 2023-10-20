@@ -1,8 +1,13 @@
-import { EntityType, FireplaceVariant } from "isaac-typescript-definitions";
+import {
+  BossID,
+  EntityType,
+  FireplaceVariant,
+} from "isaac-typescript-definitions";
 import { CallbackCustom, ModCallbackCustom } from "isaacscript-common";
 import { EffectVariantCustom } from "../../enums/EffectVariantCustom";
 import { OtherUnlockKind } from "../../enums/OtherUnlockKind";
 import { RandomizerModFeature } from "../RandomizerModFeature";
+import { getModifiedBossID } from "./BossNoHitObjectiveDetection";
 import { isOtherUnlockKindUnlocked } from "./achievementTracker/completedUnlocks";
 
 export class NPCRemoval extends RandomizerModFeature {
@@ -66,6 +71,11 @@ export class NPCRemoval extends RandomizerModFeature {
   ):
     | [entityType: EntityType, variant: int, subType: int, initSeed: Seed]
     | undefined {
+    const bossID = getModifiedBossID();
+    if (bossID === BossID.HERETIC) {
+      return undefined;
+    }
+
     return isOtherUnlockKindUnlocked(OtherUnlockKind.PURPLE_FIREPLACES, true)
       ? undefined
       : [EntityType.FIREPLACE, FireplaceVariant.NORMAL, 0, initSeed];

@@ -7,6 +7,7 @@ import {
   onAnyChallenge,
   setRunSeed,
 } from "isaacscript-common";
+import { DEBUG } from "../../constants";
 import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
@@ -40,7 +41,8 @@ export class ForceSeeds extends RandomizerModFeature {
 
     if (
       newStartSeedString !== undefined &&
-      oldStartSeedString !== newStartSeedString
+      oldStartSeedString !== newStartSeedString &&
+      !DEBUG
     ) {
       const numRuns = getPlaythroughNumCompletedRuns();
       log(`Incorrect seed for run #${numRuns}: ${oldStartSeedString}`);
