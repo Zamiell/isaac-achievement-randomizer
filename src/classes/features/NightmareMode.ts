@@ -3,11 +3,13 @@ import {
   CollectibleType,
   ModCallback,
   PickupVariant,
+  SeedEffect,
 } from "isaac-typescript-definitions";
 import {
   Callback,
   CallbackCustom,
   ModCallbackCustom,
+  game,
 } from "isaacscript-common";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { isNightmareMode, isRandomizerEnabled } from "./achievementTracker/v";
@@ -71,5 +73,11 @@ export class NightmareMode extends RandomizerModFeature {
     }
 
     return undefined;
+  }
+
+  @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
+  postGameStartedReorderedFalse(): void {
+    const seeds = game.GetSeeds();
+    seeds.AddSeedEffect(SeedEffect.ALL_CHAMPIONS);
   }
 }
