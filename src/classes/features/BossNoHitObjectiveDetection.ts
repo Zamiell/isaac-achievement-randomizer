@@ -714,6 +714,15 @@ export function getModifiedBossID(): BossID | undefined {
       }
     }
 
+    // 14
+    case RoomType.DEVIL: {
+      if (doesEntityExist(EntityType.FALLEN, FallenVariant.KRAMPUS)) {
+        return BossIDCustom.KRAMPUS;
+      }
+
+      return undefined;
+    }
+
     // 15
     case RoomType.ANGEL: {
       if (doesEntityExist(EntityType.URIEL)) {
