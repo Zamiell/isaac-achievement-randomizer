@@ -1,5 +1,4 @@
 import {
-  isRoomDangerous,
   log,
   logAndPrint,
   setLogFunctionsGlobal,
@@ -10,8 +9,6 @@ import { mod } from "./mod";
 /** Currently, F3 is set to execute this function. */
 function debugCode(_params?: string) {
   // Add code here.
-  /// startRandomizer(RandomizerMode.HARDCORE, undefined);
-  print(isRoomDangerous());
 }
 
 /** Hotkey 1 is bound to F3. */
