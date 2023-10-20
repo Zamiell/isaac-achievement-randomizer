@@ -166,6 +166,8 @@ Additionally, the following bosses are excluded entirely:
 - Delirium (#70) (would be unfair since the boss is poorly designed)
 - Raglich (#98) (unfinished boss, there are no actual boss rooms)
 
+Note that you are not able to accomplish a boss objective while in a Double Trouble room (since that would give you more room to dodge).
+
 > Tip: A timer will appear on the screen if a boss is in the room and the corresponding objective has not yet been accomplished.
 
 ### Challenge-Based Objectives (44)
@@ -593,6 +595,10 @@ When you start a new randomizer playthrough, the mod assigns each objective to a
 
 After all of the achievements are randomized, the mod does a validation step: it pretends that it is a player and attempts to "beat" the seed by accomplishing all of the objectives that are reachable. (This part is pretty time intensive.) If the seed is not beatable, then the mod will start from scratch and randomize all of the objectives + achievements again. It will attempt to generate valid seeds until it finds one that is beatable. This is what the "attempts" count on the black screen refers to.
 
+### How many attempts does it take to generate a Nightmare seed?
+
+It can take up to 100. Be patient.
+
 ### What algorithm does the randomizer use to randomize the achievements?
 
 It uses the random fill algorithm, as described [by TestRunner in the AGDQ 2019 randomizer panel](https://www.youtube.com/watch?v=vGIDzGvsrV8).
@@ -601,7 +607,7 @@ It uses the random fill algorithm, as described [by TestRunner in the AGDQ 2019 
 
 No. If you use Pause, the timers will be disabled until you re-enter the room.
 
-### Why is it possible for me to get a soul heart in my health before unlocking the soul heart pickup? Why is it possible for me to get a black heart in my health before unlocking the black heart pickup?
+### Why is it possible to get a soul heart in the health before unlocking the soul heart pickup? Why is it possible to get a black heart in the health before unlocking the black heart pickup?
 
 There is a difference between a _heart health type_ (which is what appears in the health UI at the top left corner of the screen) and a _heart pickup_ (which is the entity that appears on the ground that you have to touch with your body).
 **Only the pickups are unlockable, not the health type.** In other words, it is possible to unlock the Ceremonial Robes collectible before unlocking the black heart pickup. (Ceremonial Robes adds 3 black hearts directly to the player's health upon pickup.)
