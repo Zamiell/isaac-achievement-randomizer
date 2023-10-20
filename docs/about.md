@@ -454,6 +454,8 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
 - Wooden Spoon (#27), Mom's Underwear (#29), Wire Coat Hanger (#32), and Cat-O-Nine-Tails (#165) do not start out unlocked.
 - Shops (#2), Treasure Rooms (#4), Secret Rooms (#7), Super Secret Rooms (#8), Challenge Rooms (#11), Clean Bedrooms (#18), Dirty Bedrooms (#19), and Ultra Secret Rooms (#29) do not start out unlocked.
 
+Since Nightmare Mode has 12 more unlocks than objectives, a completed playthrough will not have 12 random trinkets unlocked. (Trinkets are randomized last since they are the least consequential unlock.)
+
 <br>
 
 ## Other Randomization Info
