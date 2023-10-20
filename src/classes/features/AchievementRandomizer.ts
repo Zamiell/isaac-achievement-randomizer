@@ -36,14 +36,14 @@ import {
 } from "isaacscript-common";
 import { version } from "../../../package.json";
 import { getAchievementsForRNG } from "../../achievementAssignment";
-import { ALL_OBJECTIVES } from "../../arrays/objectives";
-import { getAllUnlocks } from "../../arrays/unlocks";
+import { ALL_OBJECTIVES } from "../../arrays/allObjectives";
 import { STAGE_TYPES } from "../../cachedEnums";
 import { STARTING_CHARACTER } from "../../constants";
 import { BossIDCustom } from "../../enums/BossIDCustom";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { RandomizerMode } from "../../enums/RandomizerMode";
+import { UnlockType } from "../../enums/UnlockType";
 import {
   UnlockablePath,
   getUnlockablePathFromCharacterObjectiveKind,
@@ -55,6 +55,8 @@ import type {
   CharacterObjective,
   Objective,
 } from "../../types/Objective";
+import { getObjectiveFromID, getObjectiveText } from "../../types/Objective";
+import { getUnlock } from "../../types/Unlock";
 import { validateObjectivesUnlocksMatch } from "../../validate";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { preForcedRestart, resetStats } from "./StatsTracker";
@@ -68,7 +70,8 @@ import {
   isPathUnlocked,
   isStageTypeUnlocked,
 } from "./achievementTracker/completedUnlocks";
-import { isNightmareMode, v } from "./achievementTracker/v";
+import { findObjectiveIDForUnlock } from "./achievementTracker/swapAchievement";
+import { v } from "./achievementTracker/v";
 
 const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
 const FONT = fonts.droid;
@@ -117,9 +120,7 @@ export class AchievementRandomizer extends RandomizerModFeature {
     const text2Y = screenCenterPos.Y - 10;
     FONT.DrawString(text2, 0, text2Y, KColorDefault, rightX, true);
 
-    const nightmareMode = isNightmareMode();
-    const allUnlocks = getAllUnlocks(nightmareMode);
-    const text3 = `Confirmed objectives completable: ${v.persistent.completedUnlocks.length} / ${allUnlocks.length}`;
+    const text3 = `Confirmed objectives completable: ${v.persistent.completedObjectives.length} / ${ALL_OBJECTIVES.length}`;
     const text3Y = screenCenterPos.Y + 10;
     FONT.DrawString(text3, 0, text3Y, KColorDefault, rightX, true);
 
@@ -147,7 +148,7 @@ export class AchievementRandomizer extends RandomizerModFeature {
 
     v.persistent.objectiveToUnlockMap = getAchievementsForRNG(generatingRNG);
     log(
-      `Generated achievements for seed: ${v.persistent.seed} (attempt #${numGenerationAttempts})`,
+      `Generated achievements for randomizer seed: ${v.persistent.seed} (attempt #${numGenerationAttempts})`,
     );
 
     v.persistent.completedObjectives = [];
@@ -187,7 +188,42 @@ export class AchievementRandomizer extends RandomizerModFeature {
       log(
         `Failed to emulate beating seed ${v.persistent.seed}: ${v.persistent.completedObjectives.length} / ${ALL_OBJECTIVES.length}. Milliseconds taken: ${generationTime}`,
       );
-      // logMissingObjectives();
+
+      for (const [i, objective] of ALL_OBJECTIVES.entries()) {
+        if (isObjectiveCompleted(objective)) {
+          continue;
+        }
+
+        const objectiveText = getObjectiveText(objective).join(" ");
+        log(`Missing objective #${i} - ${objectiveText}`);
+
+        if (objective.type === ObjectiveType.CHALLENGE) {
+          const unlock = getUnlock(UnlockType.CHALLENGE, objective.challenge);
+          const newObjectiveID = findObjectiveIDForUnlock(unlock);
+          if (newObjectiveID === undefined) {
+            log("There was no matching objective for the challenge.");
+          } else {
+            const newObjective = getObjectiveFromID(newObjectiveID);
+            const newObjectiveText = getObjectiveText(newObjective).join(" ");
+            log(`Matching objective for challenge: ${newObjectiveText}`);
+
+            if (newObjective.type === ObjectiveType.CHARACTER) {
+              const unlocked = isCharacterUnlocked(
+                newObjective.character,
+                false,
+              );
+              log(`Character unlocked: ${unlocked}`);
+              log(
+                `Can get to objective: ${canGetToCharacterObjective(
+                  newObjective.character,
+                  newObjective.kind,
+                  false,
+                )}`,
+              );
+            }
+          }
+        }
+      }
 
       numGenerationAttempts++;
       renderFrameToTryGenerate = renderFrameCount + 1;
@@ -414,8 +450,8 @@ function tryCompleteUncompletedObjectives(): boolean {
       continue;
     }
 
-    const func = OBJECTIVE_ACCESS_FUNCTIONS[objective.type];
-    if (func(objective, reachableNonStoryBossesSet)) {
+    const canAccessObjectiveFunc = OBJECTIVE_ACCESS_FUNCTIONS[objective.type];
+    if (canAccessObjectiveFunc(objective, reachableNonStoryBossesSet)) {
       addObjective(objective, true);
       accomplishedObjective = true;
     }

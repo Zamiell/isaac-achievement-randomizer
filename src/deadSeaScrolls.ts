@@ -9,7 +9,7 @@ import {
   splitNumber,
 } from "isaacscript-common";
 import { version } from "../package.json";
-import { ALL_OBJECTIVES } from "./arrays/objectives";
+import { ALL_OBJECTIVES } from "./arrays/allObjectives";
 import { UNLOCKABLE_CHALLENGES } from "./arrays/unlockableChallenges";
 import { BOSS_IDS } from "./cachedEnums";
 import {

@@ -1,8 +1,7 @@
 import { BossID } from "isaac-typescript-definitions";
 import { ReadonlyMap, ReadonlySet } from "isaacscript-common";
-import { BOSS_IDS } from "../cachedEnums";
+import { BOSS_IDS, BOSS_IDS_CUSTOM } from "../cachedEnums";
 import { IS_DEV } from "../constants";
-import { BossIDCustom } from "../enums/BossIDCustom";
 
 const DEFAULT_NO_HIT_BOSS_MINUTES = 2;
 
@@ -19,7 +18,7 @@ const NO_HIT_EXCEPTION_BOSSES = new ReadonlySet([
 export const NO_HIT_BOSSES: readonly BossID[] = BOSS_IDS.filter(
   (bossID) => !NO_HIT_EXCEPTION_BOSSES.has(bossID),
   // eslint-disable-next-line unicorn/prefer-spread
-).concat(...Object.values(BossIDCustom));
+).concat(...BOSS_IDS_CUSTOM);
 
 const BOSSES_WITH_CUSTOM_MINUTES = new ReadonlyMap<BossID, float>([
   // Too easy.

@@ -2011,7 +2011,7 @@ function getRandomChestUnlock(): ChestUnlock {
   };
 }
 
-function findObjectiveIDForUnlock(
+export function findObjectiveIDForUnlock(
   unlockToMatch: Unlock,
 ): ObjectiveID | undefined {
   for (const entries of v.persistent.objectiveToUnlockMap) {

@@ -9,7 +9,7 @@ import {
   log,
   logError,
 } from "isaacscript-common";
-import { ALL_OBJECTIVES } from "../../arrays/objectives";
+import { ALL_OBJECTIVES } from "../../arrays/allObjectives";
 import { UnlockType } from "../../enums/UnlockType";
 import type { UnlockablePath } from "../../enums/UnlockablePath";
 import { getPathName } from "../../enums/UnlockablePath";

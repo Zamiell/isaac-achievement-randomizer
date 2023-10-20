@@ -1,6 +1,6 @@
 import { log } from "isaacscript-common";
-import { ALL_OBJECTIVES } from "./arrays/objectives";
-import { getAllUnlocks } from "./arrays/unlocks";
+import { ALL_OBJECTIVES } from "./arrays/allObjectives";
+import { getAllUnlocks } from "./arrays/allUnlocks";
 import { OBJECTIVE_TYPES, UNLOCK_TYPES } from "./cachedEnums";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { RandomizerMode } from "./enums/RandomizerMode";

@@ -8,9 +8,9 @@ import {
   getRandomArrayElementAndRemove,
   shuffleArray,
 } from "isaacscript-common";
-import { ALL_OBJECTIVES } from "./arrays/objectives";
+import { ALL_OBJECTIVES } from "./arrays/allObjectives";
+import { getAllUnlocks } from "./arrays/allUnlocks";
 import { UNLOCKABLE_CHARACTERS } from "./arrays/unlockableCharacters";
-import { getAllUnlocks } from "./arrays/unlocks";
 import { isNightmareMode } from "./classes/features/achievementTracker/v";
 import { STARTING_CHARACTER } from "./constants";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
@@ -96,9 +96,8 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
     objectiveToUnlockMap.set(objectiveID, unlock);
   }
 
-  const unlockableCharacters = getUnlockableCharacters(rng);
-
   // Each character is guaranteed to unlock another character from a basic objective.
+  const unlockableCharacters = getShuffledUnlockableCharacters(rng);
   let lastUnlockedCharacter = STARTING_CHARACTER;
   for (const character of unlockableCharacters) {
     const unlock = getUnlock(UnlockType.CHARACTER, character);
@@ -119,11 +118,27 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
     lastUnlockedCharacter = character;
   }
 
-  // Now, do the rest of the unlocks with no restrictions.
+  // Next, do all of the unlocks except for trinkets.
   for (const unlock of unlocks) {
+    if (unlock.type === UnlockType.TRINKET) {
+      continue;
+    }
+
+    const objective = getRandomArrayElementAndRemove(objectives, rng);
+    const objectiveID = getObjectiveID(objective);
+    objectiveToUnlockMap.set(objectiveID, unlock);
+  }
+
+  // Finally, do the trinkets last, since they are the least important unlock, and there might not
+  // be enough objectives to unlock everything.
+  for (const unlock of unlocks) {
+    if (unlock.type !== UnlockType.TRINKET) {
+      continue;
+    }
+
     // In some cases, the amount of unlocks may exceed the amount of objectives.
     if (objectives.length === 0) {
-      continue;
+      break;
     }
 
     const objective = getRandomArrayElementAndRemove(objectives, rng);
@@ -135,7 +150,7 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
 }
 
 /** Returns a shuffled array with certain character restrictions. */
-function getUnlockableCharacters(rng: RNG): PlayerType[] {
+function getShuffledUnlockableCharacters(rng: RNG): PlayerType[] {
   let unlockableCharacters = copyArray(UNLOCKABLE_CHARACTERS);
 
   do {
@@ -235,12 +250,22 @@ function getObjectiveIndex(
       break;
     }
 
-    default: {
-      return error(
-        `Unhandled matching logic for objective type: ${
-          ObjectiveType[objectiveToMatch.type]
-        }`,
+    case ObjectiveType.BOSS: {
+      index = objectives.findIndex(
+        (objective) =>
+          objective.type === objectiveToMatch.type &&
+          objective.bossID === objectiveToMatch.bossID,
       );
+      break;
+    }
+
+    case ObjectiveType.CHALLENGE: {
+      index = objectives.findIndex(
+        (objective) =>
+          objective.type === objectiveToMatch.type &&
+          objective.challenge === objectiveToMatch.challenge,
+      );
+      break;
     }
   }
 

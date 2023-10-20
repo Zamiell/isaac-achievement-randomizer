@@ -7,6 +7,7 @@ import {
 } from "isaac-typescript-definitions";
 import { getEnumValues } from "isaacscript-common";
 import { AltFloor } from "./enums/AltFloor";
+import { BossIDCustom } from "./enums/BossIDCustom";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { OtherUnlockKind } from "./enums/OtherUnlockKind";
@@ -17,6 +18,8 @@ import { UnlockablePath } from "./enums/UnlockablePath";
 export const ALT_FLOORS: readonly AltFloor[] = getEnumValues(AltFloor);
 
 export const BOSS_IDS: readonly BossID[] = getEnumValues(BossID);
+
+export const BOSS_IDS_CUSTOM: readonly BossID[] = getEnumValues(BossIDCustom);
 
 export const CHALLENGES: readonly Challenge[] = getEnumValues(Challenge);
 

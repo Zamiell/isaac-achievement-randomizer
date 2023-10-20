@@ -11,7 +11,7 @@ import {
   onFirstFloor,
 } from "isaacscript-common";
 import { version } from "../../../package.json";
-import { ALL_OBJECTIVES } from "../../arrays/objectives";
+import { ALL_OBJECTIVES } from "../../arrays/allObjectives";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   getPlaythroughNumDeaths,
