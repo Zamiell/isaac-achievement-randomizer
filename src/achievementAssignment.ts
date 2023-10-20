@@ -121,6 +121,11 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
 
   // Now, do the rest of the unlocks with no restrictions.
   for (const unlock of unlocks) {
+    // In some cases, the amount of unlocks may exceed the amount of objectives.
+    if (objectives.length === 0) {
+      continue;
+    }
+
     const objective = getRandomArrayElementAndRemove(objectives, rng);
     const objectiveID = getObjectiveID(objective);
     objectiveToUnlockMap.set(objectiveID, unlock);

@@ -3,8 +3,6 @@ import {
   ReadonlySet,
   VANILLA_COLLECTIBLE_TYPES,
   arrayRemove,
-  isActiveCollectible,
-  isFamiliarCollectible,
 } from "isaacscript-common";
 
 export const BOSS_ROOM_COLLECTIBLE_TYPE_EXCEPTIONS = [
@@ -58,13 +56,12 @@ export const BANNED_COLLECTIBLE_TYPES_SET = new ReadonlySet<CollectibleType>(
   BANNED_COLLECTIBLE_TYPES,
 );
 
-export const ALWAYS_UNLOCKED_COLLECTIBLE_TYPES =
-  new ReadonlySet<CollectibleType>([
-    ...BOSS_ROOM_COLLECTIBLE_TYPE_EXCEPTIONS,
-    ...QUEST_COLLECTIBLE_TYPES,
-    ...NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS,
-    ...BANNED_COLLECTIBLE_TYPES,
-  ]);
+const ALWAYS_UNLOCKED_COLLECTIBLE_TYPES = new ReadonlySet<CollectibleType>([
+  ...BOSS_ROOM_COLLECTIBLE_TYPE_EXCEPTIONS,
+  ...QUEST_COLLECTIBLE_TYPES,
+  ...NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS,
+  ...BANNED_COLLECTIBLE_TYPES,
+]);
 
 const UNLOCKABLE_COLLECTIBLE_TYPES: readonly CollectibleType[] =
   VANILLA_COLLECTIBLE_TYPES.filter(
@@ -85,13 +82,3 @@ export function getUnlockableCollectibleTypes(
     ? UNLOCKABLE_COLLECTIBLE_TYPES_NIGHTMARE
     : UNLOCKABLE_COLLECTIBLE_TYPES;
 }
-
-export const UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES: readonly CollectibleType[] =
-  UNLOCKABLE_COLLECTIBLE_TYPES.filter((collectibleType) =>
-    isActiveCollectible(collectibleType),
-  );
-
-export const UNLOCKABLE_FAMILIAR_COLLECTIBLE_TYPES: readonly CollectibleType[] =
-  UNLOCKABLE_COLLECTIBLE_TYPES.filter((collectibleType) =>
-    isFamiliarCollectible(collectibleType),
-  );

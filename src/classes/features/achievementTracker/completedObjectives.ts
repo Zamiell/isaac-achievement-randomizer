@@ -9,40 +9,55 @@ import { UNLOCKABLE_CHALLENGES } from "../../../arrays/unlockableChallenges";
 import { CHARACTER_OBJECTIVE_KINDS } from "../../../cachedEnums";
 import type { CharacterObjectiveKind } from "../../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../../enums/ObjectiveType";
-import type { Objective } from "../../../types/Objective";
+import type {
+  BossObjective,
+  ChallengeObjective,
+  CharacterObjective,
+  Objective,
+} from "../../../types/Objective";
 import { v } from "./v";
 
 // -------
 // Generic
 // -------
 
+const OBJECTIVE_COMPLETED_FUNCTIONS = {
+  [ObjectiveType.CHARACTER]: (objectiveToMatch: Objective) => {
+    const characterObjective = objectiveToMatch as CharacterObjective;
+
+    return v.persistent.completedObjectives.some(
+      (objective) =>
+        objective.type === characterObjective.type &&
+        objective.character === characterObjective.character &&
+        objective.kind === characterObjective.kind,
+    );
+  },
+  [ObjectiveType.BOSS]: (objectiveToMatch: Objective) => {
+    const bossObjective = objectiveToMatch as BossObjective;
+
+    return v.persistent.completedObjectives.some(
+      (objective) =>
+        objective.type === bossObjective.type &&
+        objective.bossID === bossObjective.bossID,
+    );
+  },
+  [ObjectiveType.CHALLENGE]: (objectiveToMatch: Objective) => {
+    const challengeObjective = objectiveToMatch as ChallengeObjective;
+
+    return v.persistent.completedObjectives.some(
+      (objective) =>
+        objective.type === challengeObjective.type &&
+        objective.challenge === challengeObjective.challenge,
+    );
+  },
+} as const satisfies Record<
+  ObjectiveType,
+  (objectiveToMatch: Objective) => boolean
+>;
+
 export function isObjectiveCompleted(objectiveToMatch: Objective): boolean {
-  switch (objectiveToMatch.type) {
-    case ObjectiveType.CHARACTER: {
-      return v.persistent.completedObjectives.some(
-        (objective) =>
-          objective.type === objectiveToMatch.type &&
-          objective.character === objectiveToMatch.character &&
-          objective.kind === objectiveToMatch.kind,
-      );
-    }
-
-    case ObjectiveType.BOSS: {
-      return v.persistent.completedObjectives.some(
-        (objective) =>
-          objective.type === objectiveToMatch.type &&
-          objective.bossID === objectiveToMatch.bossID,
-      );
-    }
-
-    case ObjectiveType.CHALLENGE: {
-      return v.persistent.completedObjectives.some(
-        (objective) =>
-          objective.type === objectiveToMatch.type &&
-          objective.challenge === objectiveToMatch.challenge,
-      );
-    }
-  }
+  const func = OBJECTIVE_COMPLETED_FUNCTIONS[objectiveToMatch.type];
+  return func(objectiveToMatch);
 }
 
 // -------------------------------

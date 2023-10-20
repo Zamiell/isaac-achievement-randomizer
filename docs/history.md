@@ -19,6 +19,7 @@
   - Clean Bedroom (#18)
   - Dirty Bedroom (#19)
   - Ultra Secret (#29)
+- Spiked Chests will now unlock before Mimic Chests (because Mimic Chests turn into Spiked Chests). (Thanks sanstheazmo)
 - Fixed the bug where objectives could be accomplish in alternate dimensions. (Thanks Po4ti)
 - Fixed the bug where accomplishing objectives as Lazarus 2 or Dark Judas would not work properly. (Thanks Po4ti)
 - !Fixed the bug with Heretic? (Thanks Po4ti)

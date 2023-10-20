@@ -25,7 +25,6 @@ import {
 import {
   ReadonlyMap,
   arrayRemove,
-  assertDefined,
   assertNotNull,
   collectibleHasTag,
   getChallengeBoss,
@@ -33,7 +32,9 @@ import {
   getChallengeCollectibleTypes,
   getChallengeTrinketType,
   getRandomArrayElement,
+  isActiveCollectible,
   isCollectibleTypeInDefaultItemPool,
+  isFamiliarCollectible,
   log,
   shuffleArray,
 } from "isaacscript-common";
@@ -41,10 +42,7 @@ import {
   UNLOCKABLE_CARD_TYPES,
   UNLOCKABLE_RUNE_CARD_TYPES,
 } from "../../../arrays/unlockableCardTypes";
-import {
-  UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES,
-  UNLOCKABLE_FAMILIAR_COLLECTIBLE_TYPES,
-} from "../../../arrays/unlockableCollectibleTypes";
+import { getUnlockableCollectibleTypes } from "../../../arrays/unlockableCollectibleTypes";
 import { UNLOCKABLE_CHEST_PICKUP_VARIANTS } from "../../../arrays/unlockablePickupTypes";
 import { UNLOCKABLE_PILL_EFFECTS } from "../../../arrays/unlockablePillEffects";
 import { getUnlockableRoomTypes } from "../../../arrays/unlockableRoomTypes";
@@ -85,8 +83,9 @@ import type {
   TrinketUnlock,
   Unlock,
 } from "../../../types/Unlock";
-import { getUnlock, getUnlockText } from "../../../types/Unlock";
+import { getUnlock } from "../../../types/Unlock";
 import { getCardTypesOfQuality, getRunesOfQuality } from "./cardQuality";
+import { getAdjustedCollectibleQuality } from "./collectibleQuality";
 import {
   anyActiveCollectibleUnlocked,
   anyBadPillEffectsUnlocked,
@@ -144,15 +143,11 @@ export function checkSwapProblematicAchievement(
   }
 
   const swappedObjectiveID = findObjectiveIDForUnlock(swappedUnlock);
-  assertDefined(
-    swappedObjectiveID,
-    `Failed to find the objective ID for swapped unlock: ${getUnlockText(
-      swappedUnlock,
-    ).join(" - ")}`,
-  );
 
   v.persistent.objectiveToUnlockMap.set(objectiveID, swappedUnlock);
-  v.persistent.objectiveToUnlockMap.set(swappedObjectiveID, unlock);
+  if (swappedObjectiveID !== undefined) {
+    v.persistent.objectiveToUnlockMap.set(swappedObjectiveID, unlock);
+  }
 
   if (!emulating) {
     log("Swapped objectives:");
@@ -160,9 +155,13 @@ export function checkSwapProblematicAchievement(
     const objective1Text = getObjectiveText(objective1).join(" ");
     log(`1) ${objective1Text}`);
 
-    const objective2 = getObjectiveFromID(swappedObjectiveID);
-    const objective2Text = getObjectiveText(objective2).join(" ");
-    log(`2) ${objective2Text}`);
+    if (swappedObjectiveID === undefined) {
+      log("2) [nothing]");
+    } else {
+      const objective2 = getObjectiveFromID(swappedObjectiveID);
+      const objective2Text = getObjectiveText(objective2).join(" ");
+      log(`2) ${objective2Text}`);
+    }
   }
 
   return swappedUnlock;
@@ -1671,6 +1670,20 @@ function getSwappedUnlockSack(unlock: Unlock): Unlock | undefined {
   return undefined;
 }
 
+const SWAPPED_CHEST_FUNCTIONS = new ReadonlyMap<
+  PickupVariant,
+  () => Unlock | undefined
+>([
+  // 54
+  [
+    PickupVariant.MIMIC_CHEST,
+    () =>
+      isChestPickupVariantUnlocked(PickupVariant.SPIKED_CHEST, false)
+        ? undefined
+        : getUnlock(UnlockType.CHEST, PickupVariant.SPIKED_CHEST),
+  ],
+]);
+
 function getSwappedUnlockChest(unlock: Unlock): Unlock | undefined {
   const chestUnlock = unlock as ChestUnlock;
 
@@ -1683,7 +1696,8 @@ function getSwappedUnlockChest(unlock: Unlock): Unlock | undefined {
     }
   }
 
-  return undefined;
+  const func = SWAPPED_CHEST_FUNCTIONS.get(chestUnlock.pickupVariant);
+  return func === undefined ? undefined : func();
 }
 
 function getSwappedUnlockSlot(unlock: Unlock): Unlock | undefined {
@@ -1826,28 +1840,71 @@ function swapAnyRoomUnlock() {
   return undefined;
 }
 
+/**
+ * It is possible to get into an infinite swapping loop with this function.
+ *
+ * e.g. Lil' Battery --> The Candle --> Battery Pack --> Lil' Battery
+ *
+ * Thus, we want to hardcode this to only consistent of active items with no other conditions.
+ */
 function getRandomActiveCollectibleUnlock(): CollectibleUnlock {
   assertNotNull(
     v.persistent.seed,
     "Failed to get a random active collectible unlock since the seed was null.",
   );
+
+  const nightmareMode = isNightmareMode();
+  const unlockableCollectibleTypes =
+    getUnlockableCollectibleTypes(nightmareMode);
+  const activeCollectibleTypes = unlockableCollectibleTypes.filter(
+    (collectibleType) => isActiveCollectible(collectibleType),
+  );
+  const quality0CollectibleTypes = activeCollectibleTypes.filter(
+    (collectibleType) => getAdjustedCollectibleQuality(collectibleType) === 0,
+  );
+  const collectibleTypes = isHardcoreMode()
+    ? quality0CollectibleTypes
+    : activeCollectibleTypes;
+  const collectibleTypesWithNoLogic = collectibleTypes.filter(
+    (collectibleType) =>
+      SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS.get(collectibleType) === undefined,
+  );
   const collectibleType = getRandomArrayElement(
-    UNLOCKABLE_ACTIVE_COLLECTIBLE_TYPES,
+    collectibleTypesWithNoLogic,
     v.persistent.seed,
   );
+
   return getUnlock(UnlockType.COLLECTIBLE, collectibleType);
 }
 
+/** This function copies the logic from the `getRandomActiveCollectibleUnlock` function. */
 function getRandomFamiliarCollectibleUnlock(): CollectibleUnlock {
   assertNotNull(
     v.persistent.seed,
     "Failed to get a random familiar collectible unlock since the seed was null.",
   );
 
+  const nightmareMode = isNightmareMode();
+  const unlockableCollectibleTypes =
+    getUnlockableCollectibleTypes(nightmareMode);
+  const familiarCollectibleTypes = unlockableCollectibleTypes.filter(
+    (collectibleType) => isFamiliarCollectible(collectibleType),
+  );
+  const quality0CollectibleTypes = familiarCollectibleTypes.filter(
+    (collectibleType) => getAdjustedCollectibleQuality(collectibleType) === 0,
+  );
+  const collectibleTypes = isHardcoreMode()
+    ? quality0CollectibleTypes
+    : familiarCollectibleTypes;
+  const collectibleTypesWithNoLogic = collectibleTypes.filter(
+    (collectibleType) =>
+      SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS.get(collectibleType) === undefined,
+  );
   const collectibleType = getRandomArrayElement(
-    UNLOCKABLE_FAMILIAR_COLLECTIBLE_TYPES,
+    collectibleTypesWithNoLogic,
     v.persistent.seed,
   );
+
   return getUnlock(UnlockType.COLLECTIBLE, collectibleType);
 }
 

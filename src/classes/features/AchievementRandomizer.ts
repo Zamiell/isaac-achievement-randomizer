@@ -177,18 +177,15 @@ export class AchievementRandomizer extends RandomizerModFeature {
     const renderFrameCount = Isaac.GetFrameCount();
 
     const startTime = getTime(false);
-    const unlockedSomething = tryCompleteUncompletedObjectives();
+    const accomplishedObjective = tryCompleteUncompletedObjectives();
     const finishTime = getTime(false);
 
     const elapsedTime = finishTime - startTime;
     generationTime += elapsedTime;
 
-    const nightmareMode = isNightmareMode();
-    const allUnlocks = getAllUnlocks(nightmareMode);
-
-    if (!unlockedSomething) {
+    if (!accomplishedObjective) {
       log(
-        `Failed to emulate beating seed ${v.persistent.seed}: ${v.persistent.completedUnlocks.length} / ${allUnlocks.length}. Milliseconds taken: ${generationTime}`,
+        `Failed to emulate beating seed ${v.persistent.seed}: ${v.persistent.completedObjectives.length} / ${ALL_OBJECTIVES.length}. Milliseconds taken: ${generationTime}`,
       );
       // logMissingObjectives();
 
@@ -198,7 +195,7 @@ export class AchievementRandomizer extends RandomizerModFeature {
       return;
     }
 
-    if (v.persistent.completedUnlocks.length < allUnlocks.length) {
+    if (v.persistent.completedObjectives.length < ALL_OBJECTIVES.length) {
       renderFrameToTestSeed = renderFrameCount + 1;
       return;
     }
@@ -395,11 +392,10 @@ export function canGetToBoss(
   }
 
   const unlockablePath = getUnlockablePathFromStoryBoss(bossID);
-  if (unlockablePath === undefined) {
-    return true;
-  }
 
-  return isPathUnlocked(unlockablePath, forRun);
+  return unlockablePath === undefined
+    ? true
+    : isPathUnlocked(unlockablePath, forRun);
 }
 
 function challengeObjectiveFunc(objective: Objective): boolean {
@@ -407,9 +403,9 @@ function challengeObjectiveFunc(objective: Objective): boolean {
   return isChallengeUnlocked(challengeObjective.challenge, false);
 }
 
-/** @returns Whether unlocking one or more things was successful. */
+/** @returns Whether completing one or more objectives was successful. */
 function tryCompleteUncompletedObjectives(): boolean {
-  let unlockedSomething = false;
+  let accomplishedObjective = false;
 
   const reachableNonStoryBossesSet = getReachableNonStoryBossesSet();
 
@@ -421,11 +417,11 @@ function tryCompleteUncompletedObjectives(): boolean {
     const func = OBJECTIVE_ACCESS_FUNCTIONS[objective.type];
     if (func(objective, reachableNonStoryBossesSet)) {
       addObjective(objective, true);
-      unlockedSomething = true;
+      accomplishedObjective = true;
     }
   }
 
-  return unlockedSomething;
+  return accomplishedObjective;
 }
 
 export function getReachableNonStoryBossesSet(): Set<BossID> {
