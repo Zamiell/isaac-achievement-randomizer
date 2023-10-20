@@ -22,6 +22,7 @@ import {
   onChallenge,
   repeat,
 } from "isaacscript-common";
+import { isPreventPauseEnabled } from "../../config";
 import { ChallengeCustom } from "../../enums/ChallengeCustom";
 import { convertSecondsToTimerValues } from "../../timer";
 import { getRandomizerSeed, isRandomizerEnabled } from "./achievementTracker/v";
@@ -63,6 +64,7 @@ export class StatsTracker extends ModFeature {
   @Callback(ModCallback.POST_RENDER)
   postRender(): void {
     if (
+      !isPreventPauseEnabled() &&
       isRoomDangerous() &&
       isActionPressedOnAnyInput(
         ButtonAction.PAUSE, // 12

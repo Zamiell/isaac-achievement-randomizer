@@ -1,8 +1,5 @@
 TODO:
 
-- startRandomizer nightmare 1269748575
-  - locks up?
-
 ------------------------------
 
 OTHER POTENTIAL UNLOCKS:
