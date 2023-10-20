@@ -3,7 +3,7 @@
 <!-- cspell:ignore antizoubilamaka,Erbear,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
-### _v0.6.0_ - October 19th, 2023
+### _v0.7.0_ - October 20th, 2023
 
 - Nightmare mode now includes extra collectible unlocks:
   - Wooden Spoon (#27)
@@ -27,7 +27,7 @@
 - Fixed the bug where accomplishing objectives as Lazarus 2 or Dark Judas would not work properly. (Thanks Po4ti)
 - Fixed the bug where the prevent illegal pause option was not working properly. (Thanks Neonomi)
 - Fixed the bug where sleeping Grimaces counted as being dangerous for the purposes of pausing. (Thanks Neonomi)
-- !Fixed the bug where Krampus did not have a timer. (Thanks Neonomi)
+- Fixed the bug where Krampus did not have a timer. (Thanks Neonomi)
 
 ### _v0.5.0_ - October 19th, 2023
 
