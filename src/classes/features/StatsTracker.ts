@@ -17,7 +17,6 @@ import {
   isActionPressedOnAnyInput,
   isRoomDangerous,
   log,
-  logError,
   newRNG,
   onChallenge,
   repeat,
@@ -71,7 +70,7 @@ export class StatsTracker extends ModFeature {
         ButtonAction.CONSOLE, // 28
       )
     ) {
-      logError("Illegal pause detected.");
+      print("Illegal pause detected.");
       v.persistent.stats.usedIllegalPause = true;
     }
   }
@@ -128,7 +127,7 @@ export class StatsTracker extends ModFeature {
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, true)
   postGameStartedReorderedTrue(): void {
-    logError("Illegal save and quit detected.");
+    print("Illegal save and quit detected.");
     v.persistent.stats.usedSaveAndQuit = true;
   }
 
