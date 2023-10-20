@@ -2,6 +2,7 @@ import { RandomizerMode } from "../../../enums/RandomizerMode";
 import type { Objective } from "../../../types/Objective";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
 import type { Unlock } from "../../../types/Unlock";
+import { getUnlockID } from "../../../types/UnlockID";
 
 // This is registered in "AchievementTracker.ts".
 // eslint-disable-next-line isaacscript/require-v-registration
@@ -44,18 +45,6 @@ export function isNightmareMode(): boolean {
   return v.persistent.randomizerMode === RandomizerMode.NIGHTMARE;
 }
 
-export function getCompletedObjectives(): Objective[] {
-  return v.persistent.completedObjectives;
-}
-
-export function getCompletedUnlocks(): Unlock[] {
-  return v.persistent.completedUnlocks;
-}
-
-export function getNumCompletedObjectives(): int {
-  return v.persistent.completedObjectives.length;
-}
-
 export function getAchievementsVersion(): string {
   return v.persistent.achievementsVersion;
 }
@@ -66,4 +55,32 @@ export function isAcceptedVersionMismatch(): boolean {
 
 export function setAcceptedVersionMismatch(): void {
   v.persistent.acceptedVersionMismatch = true;
+}
+
+export function findObjectiveIDForUnlock(
+  unlockToMatch: Unlock,
+): ObjectiveID | undefined {
+  const unlockIDToMatch = getUnlockID(unlockToMatch);
+
+  for (const entries of v.persistent.objectiveToUnlockMap) {
+    const [objectiveID, unlock] = entries;
+    const unlockID = getUnlockID(unlock);
+    if (unlockID === unlockIDToMatch) {
+      return objectiveID;
+    }
+  }
+
+  return undefined;
+}
+
+export function getCompletedObjectives(): Objective[] {
+  return v.persistent.completedObjectives;
+}
+
+export function getNumCompletedObjectives(): int {
+  return v.persistent.completedObjectives.length;
+}
+
+export function getCompletedUnlocks(): Unlock[] {
+  return v.persistent.completedUnlocks;
 }

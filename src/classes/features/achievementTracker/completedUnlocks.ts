@@ -62,13 +62,14 @@ import { UnlockType } from "../../../enums/UnlockType";
 import type { UnlockablePath } from "../../../enums/UnlockablePath";
 import { CARD_QUALITIES } from "../../../objects/cardQualities";
 import { TRINKET_QUALITIES } from "../../../objects/trinketQualities";
+import { getUnlock } from "../../../types/Unlock";
 import { getCardTypesOfQuality } from "./cardQuality";
 import {
   getAdjustedCollectibleQuality,
   getAdjustedCollectibleTypesOfQuality,
 } from "./collectibleQuality";
 import { getTrinketTypesOfQuality } from "./trinketQuality";
-import { isNightmareMode, v } from "./v";
+import { findObjectiveIDForUnlock, isNightmareMode, v } from "./v";
 
 const QUALITY_THRESHOLD_PERCENT = 0.5;
 
@@ -377,9 +378,16 @@ export function getWorseLockedTrinketType(
         (lowerQualityTrinketType) =>
           !isTrinketTypeUnlocked(lowerQualityTrinketType, false),
       );
+      const lockedLowerQualityTrinketTypesInPlaythrough =
+        lockedLowerQualityTrinketTypes.filter(
+          (lowerQualityTrinketType) =>
+            findObjectiveIDForUnlock(
+              getUnlock(UnlockType.TRINKET, lowerQualityTrinketType),
+            ) !== undefined,
+        );
 
       return getRandomArrayElement(
-        lockedLowerQualityTrinketTypes,
+        lockedLowerQualityTrinketTypesInPlaythrough,
         v.persistent.seed,
       );
     }

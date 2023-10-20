@@ -24,6 +24,7 @@
 - Fixed the bug where objectives could be accomplish in alternate dimensions. (Thanks Po4ti)
 - Fixed the bug where accomplishing objectives as Lazarus 2 or Dark Judas would not work properly. (Thanks Po4ti)
 - Fixed the bug where the prevent illegal pause option was not working properly. (Thanks Neonomi)
+- Fixed a bug where objective verification did not work properly. If you started a playthrough on a patch prior to v0.6.0, you may not be able to complete all of the objectives on the playthrough.
 - !Fixed the bug with Heretic? (Thanks Po4ti)
 
 ### _v0.5.0_ - October 19th, 2023

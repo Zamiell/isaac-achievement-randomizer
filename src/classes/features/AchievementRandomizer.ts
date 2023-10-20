@@ -18,6 +18,8 @@ import {
   fonts,
   game,
   getBossSet,
+  getChallengeName,
+  getCharacterName,
   getRandomSeed,
   getScreenBottomRightPos,
   getScreenCenterPos,
@@ -38,7 +40,7 @@ import { version } from "../../../package.json";
 import { getAchievementsForRNG } from "../../achievementAssignment";
 import { ALL_OBJECTIVES } from "../../arrays/allObjectives";
 import { STAGE_TYPES } from "../../cachedEnums";
-import { STARTING_CHARACTER } from "../../constants";
+import { DEBUG, STARTING_CHARACTER } from "../../constants";
 import { BossIDCustom } from "../../enums/BossIDCustom";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
@@ -70,8 +72,7 @@ import {
   isPathUnlocked,
   isStageTypeUnlocked,
 } from "./achievementTracker/completedUnlocks";
-import { findObjectiveIDForUnlock } from "./achievementTracker/swapAchievement";
-import { v } from "./achievementTracker/v";
+import { findObjectiveIDForUnlock, v } from "./achievementTracker/v";
 
 const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
 const FONT = fonts.droid;
@@ -189,41 +190,7 @@ export class AchievementRandomizer extends RandomizerModFeature {
         `Failed to emulate beating seed ${v.persistent.seed}: ${v.persistent.completedObjectives.length} / ${ALL_OBJECTIVES.length}. Milliseconds taken: ${generationTime}`,
       );
 
-      for (const [i, objective] of ALL_OBJECTIVES.entries()) {
-        if (isObjectiveCompleted(objective)) {
-          continue;
-        }
-
-        const objectiveText = getObjectiveText(objective).join(" ");
-        log(`Missing objective #${i} - ${objectiveText}`);
-
-        if (objective.type === ObjectiveType.CHALLENGE) {
-          const unlock = getUnlock(UnlockType.CHALLENGE, objective.challenge);
-          const newObjectiveID = findObjectiveIDForUnlock(unlock);
-          if (newObjectiveID === undefined) {
-            log("There was no matching objective for the challenge.");
-          } else {
-            const newObjective = getObjectiveFromID(newObjectiveID);
-            const newObjectiveText = getObjectiveText(newObjective).join(" ");
-            log(`Matching objective for challenge: ${newObjectiveText}`);
-
-            if (newObjective.type === ObjectiveType.CHARACTER) {
-              const unlocked = isCharacterUnlocked(
-                newObjective.character,
-                false,
-              );
-              log(`Character unlocked: ${unlocked}`);
-              log(
-                `Can get to objective: ${canGetToCharacterObjective(
-                  newObjective.character,
-                  newObjective.kind,
-                  false,
-                )}`,
-              );
-            }
-          }
-        }
-      }
+      logMissingObjectives();
 
       numGenerationAttempts++;
       renderFrameToTryGenerate = renderFrameCount + 1;
@@ -490,4 +457,73 @@ export function getReachableNonStoryBossesSet(): Set<BossID> {
   }
 
   return reachableNonStoryBossesSet;
+}
+
+function logMissingObjectives() {
+  if (!DEBUG) {
+    return;
+  }
+
+  for (const [i, objective] of ALL_OBJECTIVES.entries()) {
+    if (isObjectiveCompleted(objective)) {
+      continue;
+    }
+
+    const objectiveText = getObjectiveText(objective).join(" ");
+    log(`Missing objective #${i} - ${objectiveText}`);
+
+    switch (objective.type) {
+      case ObjectiveType.CHALLENGE: {
+        logMissingObjectiveChallenge(objective);
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
+  }
+}
+
+function logMissingObjectiveChallenge(objective: ChallengeObjective) {
+  const unlock = getUnlock(UnlockType.CHALLENGE, objective.challenge);
+
+  log(
+    `Challenge "${getChallengeName(
+      objective.challenge,
+    )}" unlocked: ${isChallengeUnlocked(objective.challenge, false)}`,
+  );
+
+  const newObjectiveID = findObjectiveIDForUnlock(unlock);
+  if (newObjectiveID === undefined) {
+    log("There was no matching objective for the challenge.");
+    return;
+  }
+
+  const newObjective = getObjectiveFromID(newObjectiveID);
+  const newObjectiveText = getObjectiveText(newObjective).join(" ");
+  log(`Matching objective for challenge: ${newObjectiveText}`);
+
+  switch (newObjective.type) {
+    case ObjectiveType.CHARACTER: {
+      log(
+        `Character "${getCharacterName(
+          newObjective.character,
+        )}" unlocked: ${isCharacterUnlocked(newObjective.character, false)}`,
+      );
+      log(
+        `Can get to objective: ${canGetToCharacterObjective(
+          newObjective.character,
+          newObjective.kind,
+          false,
+        )}`,
+      );
+
+      break;
+    }
+
+    default: {
+      break;
+    }
+  }
 }

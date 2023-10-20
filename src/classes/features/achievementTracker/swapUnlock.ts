@@ -35,7 +35,6 @@ import {
   isActiveCollectible,
   isCollectibleTypeInDefaultItemPool,
   isFamiliarCollectible,
-  log,
   shuffleArray,
 } from "isaacscript-common";
 import {
@@ -60,8 +59,6 @@ import {
   DICE_COLLECTIBLES,
   DICE_TRINKETS,
 } from "../../../sets/diceObjects";
-import { getObjectiveFromID, getObjectiveText } from "../../../types/Objective";
-import type { ObjectiveID } from "../../../types/ObjectiveID";
 import type {
   AltFloorUnlock,
   BatteryUnlock,
@@ -132,41 +129,6 @@ import { getPillEffectsOfQuality } from "./pillEffectQuality";
 import { getTrinketTypesOfQuality } from "./trinketQuality";
 import { isHardcoreMode, isNightmareMode, v } from "./v";
 
-export function checkSwapProblematicAchievement(
-  unlock: Unlock,
-  objectiveID: ObjectiveID,
-  emulating: boolean,
-): Unlock {
-  const swappedUnlock = getSwappedUnlock(unlock);
-  if (swappedUnlock === undefined) {
-    return unlock;
-  }
-
-  const swappedObjectiveID = findObjectiveIDForUnlock(swappedUnlock);
-
-  v.persistent.objectiveToUnlockMap.set(objectiveID, swappedUnlock);
-  if (swappedObjectiveID !== undefined) {
-    v.persistent.objectiveToUnlockMap.set(swappedObjectiveID, unlock);
-  }
-
-  if (!emulating) {
-    log("Swapped objectives:");
-    const objective1 = getObjectiveFromID(objectiveID);
-    const objective1Text = getObjectiveText(objective1).join(" ");
-    log(`1) ${objective1Text}`);
-
-    if (swappedObjectiveID === undefined) {
-      log("2) [nothing]");
-    } else {
-      const objective2 = getObjectiveFromID(swappedObjectiveID);
-      const objective2Text = getObjectiveText(objective2).join(" ");
-      log(`2) ${objective2Text}`);
-    }
-  }
-
-  return swappedUnlock;
-}
-
 const SWAPPED_UNLOCK_FUNCTIONS = {
   [UnlockType.CHARACTER]: undefined,
   [UnlockType.PATH]: getSwappedUnlockPath,
@@ -189,7 +151,7 @@ const SWAPPED_UNLOCK_FUNCTIONS = {
   [UnlockType.OTHER]: getSwappedUnlockOther,
 } as const satisfies Record<UnlockType, ((unlock: Unlock) => void) | undefined>;
 
-function getSwappedUnlock(unlock: Unlock): Unlock | undefined {
+export function getSwappedUnlock(unlock: Unlock): Unlock | undefined {
   const func = SWAPPED_UNLOCK_FUNCTIONS[unlock.type];
   return func === undefined ? undefined : func(unlock);
 }
@@ -1406,6 +1368,15 @@ const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<
         : getUnlock(UnlockType.SLOT, SlotVariant.BEGGAR),
   ],
 
+  // 43
+  [
+    CardType.CREDIT,
+    () =>
+      isRoomTypeUnlocked(RoomType.SHOP, false)
+        ? undefined
+        : getUnlock(UnlockType.ROOM, RoomType.SHOP),
+  ],
+
   // 48
   [
     CardType.QUESTION_MARK,
@@ -1569,7 +1540,7 @@ function getSwappedUnlockHeart(unlock: Unlock): Unlock | undefined {
 
   // 19
   if (!isRoomTypeUnlocked(RoomType.DIRTY_BEDROOM, false)) {
-    return getUnlock(UnlockType.ROOM, RoomType.CLEAN_BEDROOM);
+    return getUnlock(UnlockType.ROOM, RoomType.DIRTY_BEDROOM);
   }
 
   if (isHardcoreMode()) {
@@ -2009,225 +1980,4 @@ function getRandomChestUnlock(): ChestUnlock {
     type: UnlockType.CHEST,
     pickupVariant,
   };
-}
-
-export function findObjectiveIDForUnlock(
-  unlockToMatch: Unlock,
-): ObjectiveID | undefined {
-  for (const entries of v.persistent.objectiveToUnlockMap) {
-    const [objectiveID, unlock] = entries;
-
-    switch (unlock.type) {
-      case UnlockType.CHARACTER: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.character === unlockToMatch.character
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.PATH: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.unlockablePath === unlockToMatch.unlockablePath
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.ALT_FLOOR: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.altFloor === unlockToMatch.altFloor
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.ROOM: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.roomType === unlockToMatch.roomType
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.CHALLENGE: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.challenge === unlockToMatch.challenge
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.COLLECTIBLE: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.collectibleType === unlockToMatch.collectibleType
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.TRINKET: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.trinketType === unlockToMatch.trinketType
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.CARD: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.cardType === unlockToMatch.cardType
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.PILL_EFFECT: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.pillEffect === unlockToMatch.pillEffect
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.HEART: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.heartSubType === unlockToMatch.heartSubType
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.COIN: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.coinSubType === unlockToMatch.coinSubType
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.BOMB: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.bombSubType === unlockToMatch.bombSubType
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.KEY: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.keySubType === unlockToMatch.keySubType
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.BATTERY: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.batterySubType === unlockToMatch.batterySubType
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.SACK: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.sackSubType === unlockToMatch.sackSubType
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.CHEST: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.pickupVariant === unlockToMatch.pickupVariant
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.SLOT: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.slotVariant === unlockToMatch.slotVariant
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.GRID_ENTITY: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.gridEntityType === unlockToMatch.gridEntityType
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-
-      case UnlockType.OTHER: {
-        if (
-          unlock.type === unlockToMatch.type &&
-          unlock.kind === unlockToMatch.kind
-        ) {
-          return objectiveID;
-        }
-
-        break;
-      }
-    }
-  }
-
-  return undefined;
 }
