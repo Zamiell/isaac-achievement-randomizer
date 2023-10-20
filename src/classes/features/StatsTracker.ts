@@ -13,8 +13,10 @@ import {
   ModFeature,
   PriorityCallback,
   PriorityCallbackCustom,
+  RENDER_FRAMES_PER_SECOND,
   game,
   isActionPressedOnAnyInput,
+  isAfterRenderFrame,
   isRoomDangerous,
   log,
   newRNG,
@@ -48,6 +50,8 @@ const v = {
     shouldIncrementTime: true,
     shouldIncrementCompletedRunsCounter: true,
     shouldIncrementDeathCounter: true,
+
+    renderFramePaused: null as int | null,
   },
 };
 
@@ -70,8 +74,17 @@ export class StatsTracker extends ModFeature {
         ButtonAction.CONSOLE, // 28
       )
     ) {
-      print("Illegal pause detected.");
       v.persistent.stats.usedIllegalPause = true;
+
+      if (
+        v.run.renderFramePaused === null ||
+        isAfterRenderFrame(v.run.renderFramePaused + RENDER_FRAMES_PER_SECOND)
+      ) {
+        print("Illegal pause detected.");
+      }
+
+      const renderFrameCount = Isaac.GetFrameCount();
+      v.run.renderFramePaused = renderFrameCount;
     }
   }
 
