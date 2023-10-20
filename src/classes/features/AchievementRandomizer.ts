@@ -12,11 +12,14 @@ import {
   Callback,
   GAME_FRAMES_PER_SECOND,
   KColorDefault,
+  MAIN_CHARACTERS,
   VectorZero,
   addSetsToSet,
+  assertDefined,
   clearChallenge,
   fonts,
   game,
+  getBossName,
   getBossSet,
   getChallengeName,
   getCharacterName,
@@ -42,7 +45,10 @@ import { ALL_OBJECTIVES } from "../../arrays/allObjectives";
 import { STAGE_TYPES } from "../../cachedEnums";
 import { DEBUG, STARTING_CHARACTER } from "../../constants";
 import { BossIDCustom } from "../../enums/BossIDCustom";
-import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
+import {
+  CharacterObjectiveKind,
+  getCharacterObjectiveKindName,
+} from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { RandomizerMode } from "../../enums/RandomizerMode";
 import { UnlockType } from "../../enums/UnlockType";
@@ -464,25 +470,94 @@ function logMissingObjectives() {
     return;
   }
 
-  for (const [i, objective] of ALL_OBJECTIVES.entries()) {
-    if (isObjectiveCompleted(objective)) {
+  log("Character report:");
+
+  let allCharactersUnlocked = true;
+
+  for (const character of MAIN_CHARACTERS) {
+    if (isCharacterUnlocked(character, false)) {
       continue;
     }
 
+    allCharactersUnlocked = false;
+
+    const characterName = getCharacterName(character);
+    const unlock = getUnlock(UnlockType.CHARACTER, character);
+    const objectiveID = findObjectiveIDForUnlock(unlock);
+    assertDefined(
+      objectiveID,
+      `Failed to find the objective for character: ${character}`,
+    );
+    const objective = getObjectiveFromID(objectiveID);
     const objectiveText = getObjectiveText(objective).join(" ");
-    log(`Missing objective #${i} - ${objectiveText}`);
 
-    switch (objective.type) {
-      case ObjectiveType.CHALLENGE: {
-        logMissingObjectiveChallenge(objective);
-        break;
-      }
+    log(`- Character "${characterName}" locked behind objective:`);
+    log(`  - ${objectiveText}`);
+    logMissingObjective(0, objective);
+  }
 
-      default: {
-        break;
-      }
+  if (allCharactersUnlocked) {
+    log("- All characters unlocked!");
+  }
+
+  log("Missing objectives:");
+
+  for (const [i, objective] of ALL_OBJECTIVES.entries()) {
+    if (!isObjectiveCompleted(objective)) {
+      logMissingObjective(i, objective);
     }
   }
+}
+
+function logMissingObjective(i: number, objective: Objective) {
+  const objectiveText = getObjectiveText(objective).join(" ");
+  log(`- Missing objective #${i} - ${objectiveText}`);
+
+  switch (objective.type) {
+    case ObjectiveType.CHARACTER: {
+      logMissingObjectiveCharacter(objective);
+      break;
+    }
+
+    case ObjectiveType.BOSS: {
+      logMissingObjectiveBoss(objective);
+      break;
+    }
+
+    case ObjectiveType.CHALLENGE: {
+      logMissingObjectiveChallenge(objective);
+      break;
+    }
+  }
+}
+
+function logMissingObjectiveCharacter(objective: CharacterObjective) {
+  log(
+    `Character "${getCharacterName(
+      objective.character,
+    )}" unlocked: ${isCharacterUnlocked(objective.character, false)}`,
+  );
+
+  log(
+    `Can get to ${getCharacterObjectiveKindName(
+      objective.kind,
+    )}: ${canGetToCharacterObjective(
+      objective.character,
+      objective.kind,
+      false,
+    )}`,
+  );
+}
+
+function logMissingObjectiveBoss(objective: BossObjective) {
+  const reachableBossesSet = getReachableNonStoryBossesSet();
+  log(
+    `Can get to boss "${getBossName(objective.bossID)}": ${canGetToBoss(
+      objective.bossID,
+      reachableBossesSet,
+      false,
+    )}`,
+  );
 }
 
 function logMissingObjectiveChallenge(objective: ChallengeObjective) {
