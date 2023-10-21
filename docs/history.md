@@ -3,6 +3,13 @@
 <!-- cspell:ignore antizoubilamaka,Erbear,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.7.2_ - October 21th, 2023
+
+- Fixed the bug with the following rooms where Guts would automatically kill themselves (Thanks Neonomi):
+  - Depths - #21039, #31039
+  - Necropolis - #21111, #31111
+  - Dank Depths - #21356, #31356
+
 ### _v0.7.1_ - October 20th, 2023
 
 - Fixed the bug where Breakfast would cause an error message. (Thanks Neonomi)
