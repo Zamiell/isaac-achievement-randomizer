@@ -1,5 +1,6 @@
 TODO:
 
+- show bosses where you can get them on DSS menu
 - end first run at mom
 - rules card - show future unlocks
 - website - see all current unlocks after uploading save file
