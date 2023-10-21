@@ -40,7 +40,6 @@ import { MAX_SEED, MIN_SEED } from "./consoleCommands";
 import { MOD_NAME } from "./constants";
 import {
   MENU_PAGE_SIZE,
-  getAltFloorUnlockButtons,
   getBatteryUnlockButtons,
   getBombUnlockButtons,
   getBossObjectiveButtons,
@@ -531,18 +530,6 @@ export function initDeadSeaScrolls(): void {
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
         menu.buttons = getPathUnlockButtons();
-      },
-    },
-
-    altFloorUnlocks: {
-      title: "alt floor unlocks",
-      noCursor: true,
-      scroller: true,
-      fSize: 2,
-
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
-        menu.buttons = getAltFloorUnlockButtons();
       },
     },
 

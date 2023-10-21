@@ -35,7 +35,10 @@ import {
 import { PickupVariantCustom } from "../../enums/PickupVariantCustom";
 import { UnlockablePath } from "../../enums/UnlockablePath";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { isPathUnlocked } from "./achievementTracker/completedUnlocks";
+import {
+  isPathUnlocked,
+  isRoomTypeUnlocked,
+} from "./achievementTracker/completedUnlocks";
 
 const GRID_INDEX_BLOCKING_LADDER_TO_BLACK_MARKET = 86;
 
@@ -234,7 +237,7 @@ export class PathRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (!isPathUnlocked(UnlockablePath.BLACK_MARKETS, true)) {
+    if (!isRoomTypeUnlocked(RoomType.BLACK_MARKET, true)) {
       spawnGridEntity(
         GridEntityType.STATUE,
         GRID_INDEX_BLOCKING_LADDER_TO_BLACK_MARKET,

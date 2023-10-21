@@ -1,6 +1,5 @@
 TODO:
 
-- get rid of alt floor unlocks
 - prevent illegal save & quit by killing and reviving
 - website
 - all champions
@@ -10,7 +9,6 @@ TODO:
 
 OTHER POTENTIAL UNLOCKS:
 
-- see unlockableRoomTypes.ts
 - champions that drop items - https://bindingofisaacrebirth.fandom.com/wiki/Monsters#Champions
 - randomized starting items
   - characters that can't be randomized (10 in total):

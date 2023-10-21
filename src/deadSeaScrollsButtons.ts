@@ -28,7 +28,7 @@ import { NO_HIT_BOSSES } from "./arrays/noHitBosses";
 import { UNLOCKABLE_CARD_TYPES } from "./arrays/unlockableCardTypes";
 import { UNLOCKABLE_CHALLENGES } from "./arrays/unlockableChallenges";
 import { UNLOCKABLE_CHARACTERS } from "./arrays/unlockableCharacters";
-import { getUnlockableCollectibleTypes } from "./arrays/unlockableCollectibleTypes";
+import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./arrays/unlockableCollectibleTypes";
 import {
   UNLOCKABLE_GRID_ENTITY_TYPES,
   getGridEntityName,
@@ -46,7 +46,6 @@ import { UNLOCKABLE_PILL_EFFECTS } from "./arrays/unlockablePillEffects";
 import { UNLOCKABLE_SLOT_VARIANTS } from "./arrays/unlockableSlotVariants";
 import { UNLOCKABLE_TRINKET_TYPES } from "./arrays/unlockableTrinketTypes";
 import {
-  ALT_FLOORS,
   BOSS_IDS,
   CHARACTER_OBJECTIVE_KINDS,
   OTHER_UNLOCK_KINDS,
@@ -66,7 +65,6 @@ import {
   isCharacterObjectiveCompleted,
 } from "./classes/features/achievementTracker/completedObjectives";
 import {
-  isAltFloorUnlocked,
   isBatterySubTypeUnlocked,
   isBombSubTypeUnlocked,
   isCardTypeUnlocked,
@@ -88,9 +86,7 @@ import {
 import {
   getCompletedObjectives,
   getCompletedUnlocks,
-  isNightmareMode,
 } from "./classes/features/achievementTracker/v";
-import { getAltFloorName } from "./enums/AltFloor";
 import { getBossNameCustom } from "./enums/BossIDCustom";
 import {
   CharacterObjectiveKind,
@@ -401,31 +397,6 @@ export function getPathUnlockButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
-export function getAltFloorUnlockButtons(): DeadSeaScrollsButton[] {
-  const buttons: DeadSeaScrollsButton[] = [];
-
-  for (const altFloor of ALT_FLOORS) {
-    const altFloorName = getAltFloorName(altFloor).toLowerCase();
-    const completed = isAltFloorUnlocked(altFloor, false);
-    const completedText = getCompletedText(completed);
-
-    buttons.push(
-      {
-        str: altFloorName,
-      },
-      {
-        str: completedText,
-        clr: completed ? 0 : 3,
-      },
-      {
-        str: "",
-      },
-    );
-  }
-
-  return buttons;
-}
-
 export function getChallengeUnlockButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
@@ -497,11 +468,7 @@ export function getSpecificCollectibleUnlockButtons(
 ): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  const nightmareMode = isNightmareMode();
-  const unlockableCollectibleTypes =
-    getUnlockableCollectibleTypes(nightmareMode);
-
-  for (const collectibleType of unlockableCollectibleTypes) {
+  for (const collectibleType of UNLOCKABLE_COLLECTIBLE_TYPES) {
     if (collectibleType < min || collectibleType > max) {
       continue;
     }

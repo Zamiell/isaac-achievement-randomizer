@@ -76,7 +76,6 @@ import {
   isCharacterUnlocked,
   isCollectibleTypeUnlocked,
   isPathUnlocked,
-  isStageTypeUnlocked,
 } from "./achievementTracker/completedUnlocks";
 import { findObjectiveIDForUnlock, v } from "./achievementTracker/v";
 
@@ -242,7 +241,7 @@ export function startRandomizer(
   }
 
   // First, verify that the amount of objectives and the amount of unlocks match.
-  validateObjectivesUnlocksMatch(randomizerMode);
+  validateObjectivesUnlocksMatch();
 
   v.persistent.seed = seed;
   log(`Set new randomizer seed: ${v.persistent.seed}`);
@@ -439,10 +438,6 @@ export function getReachableNonStoryBossesSet(): Set<BossID> {
   for (const stage of BOSS_STAGES) {
     for (const stageType of STAGE_TYPES) {
       if (stageType === StageType.GREED_MODE) {
-        continue;
-      }
-
-      if (!isStageTypeUnlocked(stage, stageType, false)) {
         continue;
       }
 

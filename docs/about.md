@@ -223,7 +223,6 @@ The following things start off locked and are inaccessible:
 - Repentance floors
 - The Ascent
 - Greed Mode
-- Black Markets
 
 Isaac is guaranteed to unlock both The Chest & Dark Room from one of his [easier objectives](#easy-objectives). The rest can be randomly unlocked from any objective.
 
@@ -247,16 +246,22 @@ The following alternate floors start out locked:
 
 The following room types start out locked:
 
-- Arcade (#9) (unlocks before first slot machine)
-- Curse Room (#10) (unlocks before first Curse Room collectible)
-- Library (#12) (unlocks before first book collectible)
-- Sacrifice Room (#13) (unlocks before first Angel Room collectible)
-- Vault (#20) (unlocks before first golden chest collectible)
-- Dice Room (#21) (unlocks before first dice collectible/trinket/card)
-- Planetarium (#24) (unlocks before first Planetarium collectible)
-
-<!-- - Clean Bedroom (#18) (unlocks before first heart or bed) -->
-<!-- - Dirty Bedroom (#19) (unlocks before first heart or bed) -->
+- Shops (#2) (unlocks before the first Shop pool collectible)
+- Treasure Rooms (#4) (unlocks before the first Treasure Room pool collectible)
+- Secret Rooms (#7) (unlocks before the first Secret Room pool collectible)
+- Super Secret Rooms (#8) (unlocks before the first Secret Room pool collectible)
+- Arcade (#9) (unlocks before the first slot machine)
+- Curse Room (#10) (unlocks before the first Curse Room pool collectible)
+- Challenge Rooms (#11) (unlocks before the first Boss Room pool collectible)
+- Library (#12) (unlocks before the first book collectible)
+- Sacrifice Room (#13) (unlocks before the first Angel Room pool collectible)
+- Vault (#20) (unlocks before the first Golden Chest pool collectible)
+- Dice Room (#21) (unlocks before the first dice collectible/trinket/card)
+- Planetarium (#24) (unlocks before the first Planetarium pool collectible)
+- Clean Bedrooms (#18) (unlocks before the first heart or bed)
+- Dirty Bedrooms (#19) (unlocks before the first heart or bed)
+- Black Markets (#22) (unlocks before the first Devil Room pool collectible)
+- Ultra Secret Rooms (#29) (unlocks before the first Ultra Secret Room pool collectible)
 
 ### Challenges (44)
 
@@ -268,12 +273,6 @@ All challenges start off locked, with the following exceptions:
 
 Every collectible in the game is locked, with the following exceptions:
 
-- 5 collectibles from the Boss Room pool for each stat (#2):
-  - Breakfast (#25) (HP)
-  - Wooden Spoon (#27) (speed)
-  - Mom's Underwear (#29) (range)
-  - Wire Coat Hanger (#32) (tears)
-  - Cat-O-Nine-Tails (#165) (damage)
 - Quest collectibles (except for the ones relating to the unlockable paths above):
   - Broken Shovel (#550)
   - Broken Shovel (#551)
@@ -452,7 +451,6 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
 - You take full heart damage from all sources.
 - Breakfast does not spawn.
 - Wooden Spoon (#27), Mom's Underwear (#29), Wire Coat Hanger (#32), and Cat-O-Nine-Tails (#165) do not start out unlocked.
-- Shops (#2), Treasure Rooms (#4), Secret Rooms (#7), Super Secret Rooms (#8), Challenge Rooms (#11), Clean Bedrooms (#18), Dirty Bedrooms (#19), and Ultra Secret Rooms (#29) do not start out unlocked.
 
 Since Nightmare Mode has 12 more unlocks than objectives, a completed playthrough will not have 12 random trinkets unlocked. (Trinkets are randomized last since they are the least consequential unlock.)
 

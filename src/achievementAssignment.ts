@@ -9,9 +9,8 @@ import {
   shuffleArray,
 } from "isaacscript-common";
 import { ALL_OBJECTIVES } from "./arrays/allObjectives";
-import { getAllUnlocks } from "./arrays/allUnlocks";
+import { ALL_UNLOCKS } from "./arrays/allUnlocks";
 import { UNLOCKABLE_CHARACTERS } from "./arrays/unlockableCharacters";
-import { isNightmareMode } from "./classes/features/achievementTracker/v";
 import { STARTING_CHARACTER } from "./constants";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
@@ -69,9 +68,7 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
   // When an objective/unlock is assigned, it is added to the following map.
   const objectiveToUnlockMap = new Map<ObjectiveID, Unlock>();
 
-  const nightmareMode = isNightmareMode();
-  const allUnlocks = getAllUnlocks(nightmareMode);
-  const unlocks = copyArray(allUnlocks);
+  const unlocks = copyArray(ALL_UNLOCKS);
   const objectives = copyArray(ALL_OBJECTIVES);
 
   // The Polaroid and The Negative are guaranteed to be unlocked via an easy objective for the
@@ -187,15 +184,6 @@ function getUnlockIndex(unlocks: Unlock[], unlockToMatch: Unlock): int {
   let index: int;
 
   switch (unlockToMatch.type) {
-    case UnlockType.PATH: {
-      index = unlocks.findIndex(
-        (unlock) =>
-          unlock.type === unlockToMatch.type &&
-          unlock.unlockablePath === unlockToMatch.unlockablePath,
-      );
-      break;
-    }
-
     case UnlockType.CHARACTER: {
       index = unlocks.findIndex(
         (unlock) =>

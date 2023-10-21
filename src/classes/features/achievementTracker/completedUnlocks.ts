@@ -7,14 +7,12 @@ import type {
   CollectibleType,
   GridEntityType,
   KeySubType,
-  LevelStage,
   PickupVariant,
   PillEffect,
   PlayerType,
   RoomType,
   SackSubType,
   SlotVariant,
-  StageType,
   TrinketType,
 } from "isaac-typescript-definitions";
 import {
@@ -40,7 +38,7 @@ import {
 import { UNLOCKABLE_CARD_TYPES } from "../../../arrays/unlockableCardTypes";
 import { UNLOCKABLE_CHALLENGES } from "../../../arrays/unlockableChallenges";
 import { UNLOCKABLE_CHARACTERS } from "../../../arrays/unlockableCharacters";
-import { getUnlockableCollectibleTypes } from "../../../arrays/unlockableCollectibleTypes";
+import { UNLOCKABLE_COLLECTIBLE_TYPES } from "../../../arrays/unlockableCollectibleTypes";
 import { UNLOCKABLE_GRID_ENTITY_TYPES } from "../../../arrays/unlockableGridEntityTypes";
 import {
   UNLOCKABLE_BATTERY_SUB_TYPES,
@@ -52,11 +50,9 @@ import {
   UNLOCKABLE_SACK_SUB_TYPES,
 } from "../../../arrays/unlockablePickupTypes";
 import { UNLOCKABLE_PILL_EFFECTS } from "../../../arrays/unlockablePillEffects";
-import { getUnlockableRoomTypes } from "../../../arrays/unlockableRoomTypes";
+import { UNLOCKABLE_ROOM_TYPES } from "../../../arrays/unlockableRoomTypes";
 import { UNLOCKABLE_SLOT_VARIANTS } from "../../../arrays/unlockableSlotVariants";
-import { ALWAYS_UNLOCKED_TRINKET_TYPES } from "../../../arrays/unlockableTrinketTypes";
-import type { AltFloor } from "../../../enums/AltFloor";
-import { getAltFloor } from "../../../enums/AltFloor";
+import { UNLOCKABLE_TRINKET_TYPES } from "../../../arrays/unlockableTrinketTypes";
 import type { OtherUnlockKind } from "../../../enums/OtherUnlockKind";
 import { UnlockType } from "../../../enums/UnlockType";
 import type { UnlockablePath } from "../../../enums/UnlockablePath";
@@ -69,7 +65,7 @@ import {
   getAdjustedCollectibleTypesOfQuality,
 } from "./collectibleQuality";
 import { getTrinketTypesOfQuality } from "./trinketQuality";
-import { findObjectiveIDForUnlock, isNightmareMode, v } from "./v";
+import { findObjectiveIDForUnlock, v } from "./v";
 
 const QUALITY_THRESHOLD_PERCENT = 0.5;
 
@@ -121,37 +117,6 @@ export function isPathUnlocked(
   );
 }
 
-// ----------------------------
-// Unlock - Alt floor functions
-// ----------------------------
-
-export function isAltFloorUnlocked(
-  altFloor: AltFloor,
-  forRun: boolean,
-): boolean {
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
-
-  return array.some(
-    (unlock) =>
-      unlock.type === UnlockType.ALT_FLOOR && unlock.altFloor === altFloor,
-  );
-}
-
-export function isStageTypeUnlocked(
-  stage: LevelStage,
-  stageType: StageType,
-  forRun: boolean,
-): boolean {
-  const altFloor = getAltFloor(stage, stageType);
-  if (altFloor === undefined) {
-    return true;
-  }
-
-  return isAltFloorUnlocked(altFloor, forRun);
-}
-
 // -----------------------
 // Unlock - Room functions
 // -----------------------
@@ -160,9 +125,7 @@ export function isRoomTypeUnlocked(
   roomType: RoomType,
   forRun: boolean,
 ): boolean {
-  const nightmareMode = isNightmareMode();
-  const unlockableRoomTypes = getUnlockableRoomTypes(nightmareMode);
-  if (!unlockableRoomTypes.includes(roomType)) {
+  if (!includes(UNLOCKABLE_ROOM_TYPES, roomType)) {
     return true;
   }
 
@@ -205,10 +168,7 @@ export function isCollectibleTypeUnlocked(
   collectibleType: CollectibleType,
   forRun: boolean,
 ): boolean {
-  const nightmareMode = isNightmareMode();
-  const unlockableCollectibleTypes =
-    getUnlockableCollectibleTypes(nightmareMode);
-  if (!unlockableCollectibleTypes.includes(collectibleType)) {
+  if (!UNLOCKABLE_COLLECTIBLE_TYPES.includes(collectibleType)) {
     return true;
   }
 
@@ -328,7 +288,7 @@ export function isTrinketTypeUnlocked(
   trinketType: TrinketType,
   forRun: boolean,
 ): boolean {
-  if (ALWAYS_UNLOCKED_TRINKET_TYPES.has(trinketType)) {
+  if (!UNLOCKABLE_TRINKET_TYPES.includes(trinketType)) {
     return true;
   }
 

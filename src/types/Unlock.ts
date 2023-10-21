@@ -37,8 +37,6 @@ import {
 } from "isaacscript-common";
 import type { UNLOCKABLE_GRID_ENTITY_TYPES } from "../arrays/unlockableGridEntityTypes";
 import { getGridEntityName } from "../arrays/unlockableGridEntityTypes";
-import type { AltFloor } from "../enums/AltFloor";
-import { getAltFloorName } from "../enums/AltFloor";
 import type { OtherUnlockKind } from "../enums/OtherUnlockKind";
 import { getOtherUnlockName } from "../enums/OtherUnlockKind";
 import { UnlockType } from "../enums/UnlockType";
@@ -53,11 +51,6 @@ interface CharacterUnlock {
 export interface PathUnlock {
   type: UnlockType.PATH;
   unlockablePath: UnlockablePath;
-}
-
-export interface AltFloorUnlock {
-  type: UnlockType.ALT_FLOOR;
-  altFloor: AltFloor;
 }
 
 export interface RoomUnlock {
@@ -143,7 +136,6 @@ export interface OtherUnlock {
 export type Unlock =
   | CharacterUnlock
   | PathUnlock
-  | AltFloorUnlock
   | RoomUnlock
   | ChallengeUnlock
   | CollectibleUnlock
@@ -171,10 +163,6 @@ export function getUnlock(
   type: UnlockType.PATH,
   unlockablePath: UnlockablePath,
 ): PathUnlock;
-export function getUnlock(
-  type: UnlockType.ALT_FLOOR,
-  altFloor: AltFloor,
-): AltFloorUnlock;
 export function getUnlock(
   type: UnlockType.ROOM,
   roomType: RoomType,
@@ -252,13 +240,6 @@ export function getUnlock(type: UnlockType, arg: int): Unlock {
       return {
         type,
         unlockablePath: arg,
-      };
-    }
-
-    case UnlockType.ALT_FLOOR: {
-      return {
-        type,
-        altFloor: arg,
       };
     }
 
@@ -384,10 +365,6 @@ export function getUnlockText(unlock: Unlock): [string, string] {
 
     case UnlockType.PATH: {
       return ["area", getPathName(unlock.unlockablePath)];
-    }
-
-    case UnlockType.ALT_FLOOR: {
-      return ["floor", getAltFloorName(unlock.altFloor)];
     }
 
     case UnlockType.ROOM: {

@@ -13,6 +13,7 @@ import {
   VANILLA_COLLECTIBLE_TYPES,
   game,
   getRandomArrayElement,
+  includes,
   isEden,
   isGoldenTrinketType,
   newRNG,
@@ -24,7 +25,7 @@ import {
   setPlayerHealth,
   sfxManager,
 } from "isaacscript-common";
-import { BANNED_COLLECTIBLE_TYPES_SET } from "../../arrays/unlockableCollectibleTypes";
+import { BANNED_COLLECTIBLE_TYPES } from "../../arrays/unlockableCollectibleTypes";
 import { BANNED_TRINKET_TYPES_SET } from "../../arrays/unlockableTrinketTypes";
 import { POCKET_ITEM_SLOTS, TRINKET_SLOTS } from "../../cachedEnums";
 import { OtherUnlockKind } from "../../enums/OtherUnlockKind";
@@ -57,7 +58,7 @@ export class StartingItemRemoval extends RandomizerModFeature {
       if (
         player.HasCollectible(collectibleType) &&
         (!isCollectibleTypeUnlocked(collectibleType, true) ||
-          BANNED_COLLECTIBLE_TYPES_SET.has(collectibleType) ||
+          includes(BANNED_COLLECTIBLE_TYPES, collectibleType) ||
           isEden(player))
       ) {
         player.RemoveCollectible(collectibleType);

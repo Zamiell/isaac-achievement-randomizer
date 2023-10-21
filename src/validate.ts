@@ -1,35 +1,28 @@
 import { log } from "isaacscript-common";
 import { ALL_OBJECTIVES } from "./arrays/allObjectives";
-import { getAllUnlocks } from "./arrays/allUnlocks";
+import { ALL_UNLOCKS } from "./arrays/allUnlocks";
 import { OBJECTIVE_TYPES, UNLOCK_TYPES } from "./cachedEnums";
 import { ObjectiveType } from "./enums/ObjectiveType";
-import { RandomizerMode } from "./enums/RandomizerMode";
 import { UnlockType } from "./enums/UnlockType";
 import type { Objective } from "./types/Objective";
 import type { Unlock } from "./types/Unlock";
 
-export function validateObjectivesUnlocksMatch(
-  randomizerMode: RandomizerMode,
-): void {
-  const nightmareMode = randomizerMode === RandomizerMode.NIGHTMARE;
-  const allUnlocks = getAllUnlocks(nightmareMode);
-
-  // In Nightmare Mode, we have more unlocks than objectives.
-  if (ALL_OBJECTIVES.length === allUnlocks.length || nightmareMode) {
+export function validateObjectivesUnlocksMatch(): void {
+  if (ALL_OBJECTIVES.length === ALL_UNLOCKS.length) {
     return;
   }
 
   logObjectives(ALL_OBJECTIVES);
-  logUnlocks(allUnlocks);
+  logUnlocks(ALL_UNLOCKS);
 
-  let errorText = `There were ${ALL_OBJECTIVES.length} total objectives and ${allUnlocks.length} total unlocks. You need `;
+  let errorText = `There were ${ALL_OBJECTIVES.length} total objectives and ${ALL_UNLOCKS.length} total unlocks. You need `;
   errorText +=
-    ALL_OBJECTIVES.length > allUnlocks.length
-      ? `${ALL_OBJECTIVES.length - allUnlocks.length} more unlock(s) or ${
-          ALL_OBJECTIVES.length - allUnlocks.length
+    ALL_OBJECTIVES.length > ALL_UNLOCKS.length
+      ? `${ALL_OBJECTIVES.length - ALL_UNLOCKS.length} more unlock(s) or ${
+          ALL_OBJECTIVES.length - ALL_UNLOCKS.length
         } less objective(s).`
-      : `${allUnlocks.length - ALL_OBJECTIVES.length} more objective(s) or ${
-          allUnlocks.length - ALL_OBJECTIVES.length
+      : `${ALL_UNLOCKS.length - ALL_OBJECTIVES.length} more objective(s) or ${
+          ALL_UNLOCKS.length - ALL_OBJECTIVES.length
         } less unlock(s).`;
 
   error(errorText);

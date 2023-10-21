@@ -5,8 +5,11 @@
 
 ### _v0.7.0_ - October 20th, 2023
 
+- Removed the 11 alt floor unlocks. (All alt floors now start off unlocked.)
+- Added the 8 extra room unlocks from Nightmare Mode to the other modes.
 - All enemies now have a chance to become a champion.
 - Added the "randomizerVersion" command.
+- Black Markets will now unlock before the first Devil Room pool collectible.
 
 ### _v0.6.0_ - October 20th, 2023
 

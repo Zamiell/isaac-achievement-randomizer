@@ -11,7 +11,6 @@ export enum UnlockablePath {
   REPENTANCE_FLOORS,
   ASCENT,
   GREED_MODE,
-  BLACK_MARKETS,
 }
 
 export function getUnlockablePathFromStoryBoss(
@@ -195,10 +194,6 @@ export function getPathName(unlockablePath: UnlockablePath): string {
 
     case UnlockablePath.GREED_MODE: {
       return "Greed Mode";
-    }
-
-    case UnlockablePath.BLACK_MARKETS: {
-      return "Black Markets";
     }
   }
 }

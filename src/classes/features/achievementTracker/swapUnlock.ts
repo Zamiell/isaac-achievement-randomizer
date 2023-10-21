@@ -41,13 +41,11 @@ import {
   UNLOCKABLE_CARD_TYPES,
   UNLOCKABLE_RUNE_CARD_TYPES,
 } from "../../../arrays/unlockableCardTypes";
-import { getUnlockableCollectibleTypes } from "../../../arrays/unlockableCollectibleTypes";
+import { UNLOCKABLE_COLLECTIBLE_TYPES } from "../../../arrays/unlockableCollectibleTypes";
 import { UNLOCKABLE_CHEST_PICKUP_VARIANTS } from "../../../arrays/unlockablePickupTypes";
 import { UNLOCKABLE_PILL_EFFECTS } from "../../../arrays/unlockablePillEffects";
-import { getUnlockableRoomTypes } from "../../../arrays/unlockableRoomTypes";
+import { UNLOCKABLE_ROOM_TYPES } from "../../../arrays/unlockableRoomTypes";
 import { UNLOCKABLE_TRINKET_TYPES } from "../../../arrays/unlockableTrinketTypes";
-import { ALT_FLOORS } from "../../../cachedEnums";
-import { AltFloor } from "../../../enums/AltFloor";
 import { OtherUnlockKind } from "../../../enums/OtherUnlockKind";
 import { UnlockType } from "../../../enums/UnlockType";
 import {
@@ -60,7 +58,6 @@ import {
   DICE_TRINKETS,
 } from "../../../sets/diceObjects";
 import type {
-  AltFloorUnlock,
   BatteryUnlock,
   BombUnlock,
   CardUnlock,
@@ -107,7 +104,6 @@ import {
   getWorseLockedPillEffect,
   getWorseLockedSackSubType,
   getWorseLockedTrinketType,
-  isAltFloorUnlocked,
   isBatterySubTypeUnlocked,
   isBombSubTypeUnlocked,
   isCardTypeUnlocked,
@@ -127,12 +123,11 @@ import {
 } from "./completedUnlocks";
 import { getPillEffectsOfQuality } from "./pillEffectQuality";
 import { getTrinketTypesOfQuality } from "./trinketQuality";
-import { isHardcoreMode, isNightmareMode, v } from "./v";
+import { isHardcoreMode, v } from "./v";
 
 const SWAPPED_UNLOCK_FUNCTIONS = {
   [UnlockType.CHARACTER]: undefined,
   [UnlockType.PATH]: getSwappedUnlockPath,
-  [UnlockType.ALT_FLOOR]: getSwappedUnlockAltFloor,
   [UnlockType.ROOM]: getSwappedUnlockRoom,
   [UnlockType.CHALLENGE]: getSwappedUnlockChallenge,
   [UnlockType.COLLECTIBLE]: getSwappedUnlockCollectible,
@@ -174,39 +169,11 @@ const SWAPPED_UNLOCK_PATH_FUNCTIONS = new ReadonlyMap<
         ? undefined
         : getUnlock(UnlockType.CARD, CardType.FOOL),
   ],
-  [
-    UnlockablePath.BLACK_MARKETS,
-    () =>
-      isGridEntityTypeUnlocked(GridEntityType.CRAWL_SPACE, false)
-        ? undefined
-        : getUnlock(UnlockType.GRID_ENTITY, GridEntityType.CRAWL_SPACE),
-  ],
 ]);
 
 function getSwappedUnlockPath(unlock: Unlock): Unlock | undefined {
   const pathUnlock = unlock as PathUnlock;
   const func = SWAPPED_UNLOCK_PATH_FUNCTIONS.get(pathUnlock.unlockablePath);
-  return func === undefined ? undefined : func();
-}
-
-function getSwappedPathUnlockAltFloorRepentance(): Unlock | undefined {
-  return isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS, false)
-    ? undefined
-    : getUnlock(UnlockType.PATH, UnlockablePath.REPENTANCE_FLOORS);
-}
-
-const SWAPPED_UNLOCK_ALT_FLOOR_FUNCTIONS = new ReadonlyMap<
-  AltFloor,
-  () => Unlock | undefined
->([
-  [AltFloor.DROSS, getSwappedPathUnlockAltFloorRepentance],
-  [AltFloor.ASHPIT, getSwappedPathUnlockAltFloorRepentance],
-  [AltFloor.GEHENNA, getSwappedPathUnlockAltFloorRepentance],
-]);
-
-function getSwappedUnlockAltFloor(unlock: Unlock): Unlock | undefined {
-  const pathUnlock = unlock as AltFloorUnlock;
-  const func = SWAPPED_UNLOCK_ALT_FLOOR_FUNCTIONS.get(pathUnlock.altFloor);
   return func === undefined ? undefined : func();
 }
 
@@ -237,6 +204,15 @@ const SWAPPED_UNLOCK_ROOM_FUNCTIONS = new ReadonlyMap<
     RoomType.VAULT,
     () =>
       anyChestPickupVariantUnlocked(false) ? undefined : getRandomChestUnlock(),
+  ],
+
+  // 22
+  [
+    RoomType.BLACK_MARKET,
+    () =>
+      isGridEntityTypeUnlocked(GridEntityType.CRAWL_SPACE, false)
+        ? undefined
+        : getUnlock(UnlockType.GRID_ENTITY, GridEntityType.CRAWL_SPACE),
   ],
 ]);
 
@@ -669,25 +645,6 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
         : getUnlock(UnlockType.HEART, HeartSubType.SOUL),
   ],
 
-  // 566
-  [
-    CollectibleType.DREAM_CATCHER,
-    () => {
-      assertNotNull(
-        v.persistent.seed,
-        "Failed to swap achievements due to the seed being null.",
-      );
-      const shuffledAltFloors = shuffleArray(ALT_FLOORS, v.persistent.seed);
-      for (const altFloor of shuffledAltFloors) {
-        if (!isAltFloorUnlocked(altFloor, false)) {
-          return getUnlock(UnlockType.ALT_FLOOR, altFloor);
-        }
-      }
-
-      return undefined;
-    },
-  ],
-
   // 580
   [CollectibleType.RED_KEY, swapAnyRoomUnlock],
 
@@ -887,6 +844,17 @@ function getSwappedUnlockCollectible(unlock: Unlock): Unlock | undefined {
     !isRoomTypeUnlocked(RoomType.PLANETARIUM, false)
   ) {
     return getUnlock(UnlockType.ROOM, RoomType.PLANETARIUM);
+  }
+
+  // 22
+  if (
+    isCollectibleTypeInDefaultItemPool(
+      collectibleUnlock.collectibleType,
+      ItemPoolType.DEVIL,
+    ) &&
+    !isRoomTypeUnlocked(RoomType.BLACK_MARKET, false)
+  ) {
+    return getUnlock(UnlockType.ROOM, RoomType.BLACK_MARKET);
   }
 
   // 29
@@ -1486,7 +1454,7 @@ function getSwappedUnlockCard(unlock: Unlock): Unlock | undefined {
   return func === undefined ? undefined : func();
 }
 
-const SWAPPED_PILL_EFFECT_FUNCTIONS = new ReadonlyMap<
+const SWAPPED_UNLOCK_PILL_EFFECT_FUNCTIONS = new ReadonlyMap<
   PillEffect,
   () => Unlock | undefined
 >([
@@ -1526,7 +1494,9 @@ function getSwappedUnlockPillEffect(unlock: Unlock): Unlock | undefined {
     }
   }
 
-  const func = SWAPPED_PILL_EFFECT_FUNCTIONS.get(pillEffectUnlock.pillEffect);
+  const func = SWAPPED_UNLOCK_PILL_EFFECT_FUNCTIONS.get(
+    pillEffectUnlock.pillEffect,
+  );
   return func === undefined ? undefined : func();
 }
 
@@ -1581,7 +1551,7 @@ function getSwappedUnlockBomb(unlock: Unlock): Unlock | undefined {
   return undefined;
 }
 
-const SWAPPED_KEY_FUNCTIONS = new ReadonlyMap<
+const SWAPPED_UNLOCK_KEY_FUNCTIONS = new ReadonlyMap<
   KeySubType,
   () => Unlock | undefined
 >([
@@ -1605,7 +1575,7 @@ function getSwappedUnlockKey(unlock: Unlock): Unlock | undefined {
     }
   }
 
-  const func = SWAPPED_KEY_FUNCTIONS.get(keyUnlock.keySubType);
+  const func = SWAPPED_UNLOCK_KEY_FUNCTIONS.get(keyUnlock.keySubType);
   return func === undefined ? undefined : func();
 }
 
@@ -1641,7 +1611,7 @@ function getSwappedUnlockSack(unlock: Unlock): Unlock | undefined {
   return undefined;
 }
 
-const SWAPPED_CHEST_FUNCTIONS = new ReadonlyMap<
+const SWAPPED_UNLOCK_CHEST_FUNCTIONS = new ReadonlyMap<
   PickupVariant,
   () => Unlock | undefined
 >([
@@ -1667,7 +1637,7 @@ function getSwappedUnlockChest(unlock: Unlock): Unlock | undefined {
     }
   }
 
-  const func = SWAPPED_CHEST_FUNCTIONS.get(chestUnlock.pickupVariant);
+  const func = SWAPPED_UNLOCK_CHEST_FUNCTIONS.get(chestUnlock.pickupVariant);
   return func === undefined ? undefined : func();
 }
 
@@ -1729,7 +1699,7 @@ const SWAPPED_UNLOCK_OTHER_FUNCTIONS = new ReadonlyMap<
 
       // 19
       if (!isRoomTypeUnlocked(RoomType.DIRTY_BEDROOM, false)) {
-        return getUnlock(UnlockType.ROOM, RoomType.CLEAN_BEDROOM);
+        return getUnlock(UnlockType.ROOM, RoomType.DIRTY_BEDROOM);
       }
 
       return undefined;
@@ -1796,10 +1766,8 @@ function swapAnyRoomUnlock() {
     "Failed to swap achievements due to the seed being null.",
   );
 
-  const nightmareMode = isNightmareMode();
-  const unlockableRoomTypes = getUnlockableRoomTypes(nightmareMode);
   const shuffledRoomTypes = shuffleArray(
-    unlockableRoomTypes,
+    UNLOCKABLE_ROOM_TYPES,
     v.persistent.seed,
   );
   for (const roomType of shuffledRoomTypes) {
@@ -1824,10 +1792,7 @@ function getRandomActiveCollectibleUnlock(): CollectibleUnlock {
     "Failed to get a random active collectible unlock since the seed was null.",
   );
 
-  const nightmareMode = isNightmareMode();
-  const unlockableCollectibleTypes =
-    getUnlockableCollectibleTypes(nightmareMode);
-  const activeCollectibleTypes = unlockableCollectibleTypes.filter(
+  const activeCollectibleTypes = UNLOCKABLE_COLLECTIBLE_TYPES.filter(
     (collectibleType) => isActiveCollectible(collectibleType),
   );
   const quality0CollectibleTypes = activeCollectibleTypes.filter(
@@ -1855,10 +1820,7 @@ function getRandomFamiliarCollectibleUnlock(): CollectibleUnlock {
     "Failed to get a random familiar collectible unlock since the seed was null.",
   );
 
-  const nightmareMode = isNightmareMode();
-  const unlockableCollectibleTypes =
-    getUnlockableCollectibleTypes(nightmareMode);
-  const familiarCollectibleTypes = unlockableCollectibleTypes.filter(
+  const familiarCollectibleTypes = UNLOCKABLE_COLLECTIBLE_TYPES.filter(
     (collectibleType) => isFamiliarCollectible(collectibleType),
   );
   const quality0CollectibleTypes = familiarCollectibleTypes.filter(

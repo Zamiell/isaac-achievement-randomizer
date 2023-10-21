@@ -36,7 +36,6 @@ import { RemoveVoidPortals } from "./classes/features/RemoveVoidPortals";
 import { RoomRemoval } from "./classes/features/RoomRemoval";
 import { SilenceMomDad } from "./classes/features/SilenceMomDad";
 import { SlotRemoval } from "./classes/features/SlotRemoval";
-import { StageTypeRemoval } from "./classes/features/StageTypeRemoval";
 import { StartingItemRemoval } from "./classes/features/StartingItemRemoval";
 import { StartingRoomInfo } from "./classes/features/StartingRoomInfo";
 import { StatsTracker } from "./classes/features/StatsTracker";
@@ -79,7 +78,6 @@ const MOD_FEATURES = [
   RoomRemoval,
   SilenceMomDad,
   SlotRemoval,
-  StageTypeRemoval,
   StartingItemRemoval,
   StartingRoomInfo,
   StatsTracker,

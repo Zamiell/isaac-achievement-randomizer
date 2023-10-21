@@ -12,18 +12,14 @@ import {
   isRedKeyRoom,
   removeDoors,
 } from "isaacscript-common";
-import { getUnlockableRoomTypes } from "../../arrays/unlockableRoomTypes";
+import { UNLOCKABLE_ROOM_TYPES } from "../../arrays/unlockableRoomTypes";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { isRoomTypeUnlocked } from "./achievementTracker/completedUnlocks";
-import { isNightmareMode } from "./achievementTracker/v";
 
 export class RoomRemoval extends RandomizerModFeature {
   @CallbackCustom(ModCallbackCustom.POST_NEW_ROOM_REORDERED)
   postNewRoomReordered(): void {
-    const nightmareMode = isNightmareMode();
-    const unlockableRoomTypes = getUnlockableRoomTypes(nightmareMode);
-
-    for (const roomType of unlockableRoomTypes) {
+    for (const roomType of UNLOCKABLE_ROOM_TYPES) {
       if (!isRoomTypeUnlocked(roomType, true)) {
         this.checkForRoomType(roomType);
       }

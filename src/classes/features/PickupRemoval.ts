@@ -28,6 +28,7 @@ import {
   getRandomArrayElement,
   getRandomSetElement,
   inStartingRoom,
+  includes,
   isChestVariant,
   isGoldenTrinketType,
   isQuestCollectible,
@@ -47,10 +48,9 @@ import {
 import { BANNED_CARD_TYPES } from "../../arrays/unlockableCardTypes";
 import {
   BANNED_COLLECTIBLE_TYPES,
-  BANNED_COLLECTIBLE_TYPES_SET,
-  NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS_SET,
-  QUEST_COLLECTIBLE_TYPES_SET,
-  getUnlockableCollectibleTypes,
+  NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS,
+  QUEST_COLLECTIBLE_TYPES,
+  UNLOCKABLE_COLLECTIBLE_TYPES,
 } from "../../arrays/unlockableCollectibleTypes";
 import {
   BANNED_TRINKET_TYPES,
@@ -76,7 +76,7 @@ import {
   isSackSubTypeUnlocked,
   isTrinketTypeUnlocked,
 } from "./achievementTracker/completedUnlocks";
-import { getRandomizerSeed, isNightmareMode } from "./achievementTracker/v";
+import { getRandomizerSeed } from "./achievementTracker/v";
 
 /** This feature handles removing all of the pickups from the game that are not unlocked yet. */
 export class PickupRemoval extends RandomizerModFeature {
@@ -175,11 +175,12 @@ export class PickupRemoval extends RandomizerModFeature {
 
         if (
           !isCollectibleTypeUnlocked(newCollectibleType, true) ||
-          QUEST_COLLECTIBLE_TYPES_SET.has(newCollectibleType) ||
-          NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS_SET.has(
+          includes(QUEST_COLLECTIBLE_TYPES, newCollectibleType) ||
+          includes(
+            NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS,
             newCollectibleType,
           ) ||
-          BANNED_COLLECTIBLE_TYPES_SET.has(newCollectibleType)
+          includes(BANNED_COLLECTIBLE_TYPES, newCollectibleType)
         ) {
           continue;
         }
@@ -214,7 +215,7 @@ export class PickupRemoval extends RandomizerModFeature {
     if (
       !isCollectibleTypeUnlocked(collectible.SubType, true) ||
       // Prevent e.g. Spindown Dice from producing banned collectibles.
-      BANNED_COLLECTIBLE_TYPES_SET.has(collectible.SubType)
+      includes(BANNED_COLLECTIBLE_TYPES, collectible.SubType)
     ) {
       if (isQuestCollectible(collectible.SubType)) {
         collectible.Remove();
@@ -289,11 +290,8 @@ export class PickupRemoval extends RandomizerModFeature {
 
   removeItemsFromPools(): void {
     const itemPool = game.GetItemPool();
-    const nightmareMode = isNightmareMode();
-    const unlockableCollectibleTypes =
-      getUnlockableCollectibleTypes(nightmareMode);
 
-    for (const collectibleType of unlockableCollectibleTypes) {
+    for (const collectibleType of UNLOCKABLE_COLLECTIBLE_TYPES) {
       if (!isCollectibleTypeUnlocked(collectibleType, true)) {
         itemPool.RemoveCollectible(collectibleType);
       }
