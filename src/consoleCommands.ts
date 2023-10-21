@@ -11,6 +11,7 @@ import {
   isEnumValue,
   restart,
 } from "isaacscript-common";
+import { version } from "../package.json";
 import { RANDOMIZER_MODES } from "./cachedEnums";
 import {
   endRandomizer,
@@ -38,6 +39,7 @@ export function initConsoleCommands(): void {
   mod.addConsoleCommand("endRandomizer", endRandomizerCommand);
   mod.addConsoleCommand("forceWrongVersion", forceWrongVersion);
   mod.addConsoleCommand("startRandomizer", startRandomizerCommand);
+  mod.addConsoleCommand("randomizerVersion", randomizerVersion);
   mod.addConsoleCommand("spoilerLog", spoilerLog);
   mod.addConsoleCommand("unlockCharacter", unlockCharacter);
   mod.addConsoleCommand("unlockCollectible", unlockCollectible);
@@ -115,6 +117,10 @@ function startRandomizerCommand(params: string) {
       startRandomizer(randomizerMode, seed);
     });
   });
+}
+
+function randomizerVersion(_params: string) {
+  print(`Achievement Randomizer version: ${version}`);
 }
 
 function unlockCharacter(params: string) {

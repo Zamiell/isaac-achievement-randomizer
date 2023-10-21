@@ -551,6 +551,14 @@ In the Isaac streaking community, you are not allowed to use the save & quit fea
 
 The latest version can always be found [on the Steam Workshop change notes page](https://steamcommunity.com/sharedfiles/filedetails/changelog/3050399093).
 
+### How do I tell what version I have?
+
+The version of the mod is shown on the title screen and on the starting room of the run. You can also get the version by typing "randomizerVersion" into the in-game console.
+
+### My game is stuck on an older version. How do I get it to update to the latest version?
+
+If [the version that you have](#how-do-i-tell-what-version-i-have) is not the same as [the latest version on the Steam Workshop](#what-is-the-latest-version), then try restarting Steam. If that does not work, then try closing the game, unsubscribing from the mod, starting the game, closing the game, resubscribing to the mod, and then opening the game.
+
 ### How do I contact the developers, report a bug, or chat with other people about the mod?
 
 The main hub of communication for the mod is the "#randomizer" channels in the [Isaac Streaking Discord server](https://discord.gg/GwhUeQjHTF). (Discord is a voice and text chat application that allows anyone to create a hosted server. We use one such server as the primary hub of communication for Isaac streaking.)

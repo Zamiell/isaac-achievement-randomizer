@@ -3,6 +3,10 @@
 <!-- cspell:ignore antizoubilamaka,Erbear,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.7.0_ - October 20th, 2023
+
+- Added the "randomizerVersion" command.
+
 ### _v0.6.0_ - October 20th, 2023
 
 - Nightmare mode now includes extra collectible unlocks:
