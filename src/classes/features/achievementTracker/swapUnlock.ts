@@ -31,6 +31,7 @@ import {
   getChallengeCharacter,
   getChallengeCollectibleTypes,
   getChallengeTrinketType,
+  getCollectibleQuality,
   getRandomArrayElement,
   isActiveCollectible,
   isCollectibleTypeInDefaultItemPool,
@@ -79,7 +80,6 @@ import type {
 } from "../../../types/Unlock";
 import { getUnlock } from "../../../types/Unlock";
 import { getCardTypesOfQuality, getRunesOfQuality } from "./cardQuality";
-import { getAdjustedCollectibleQuality } from "./collectibleQuality";
 import {
   anyActiveCollectibleUnlocked,
   anyBadPillEffectsUnlocked,
@@ -316,7 +316,7 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   // 85
   [
     CollectibleType.DECK_OF_CARDS,
-    () => (anyCardsUnlocked(false) ? undefined : getRandomCardUnlock()),
+    () => (anyCardsUnlocked(false) ? undefined : getRandomCardTypeUnlock()),
   ],
 
   // 90
@@ -396,6 +396,15 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
         : getUnlock(UnlockType.SLOT, SlotVariant.FORTUNE_TELLING_MACHINE),
   ],
 
+  // 161
+  [
+    CollectibleType.ANKH,
+    () =>
+      isCharacterUnlocked(PlayerType.BLUE_BABY, false)
+        ? undefined
+        : getUnlock(UnlockType.CHARACTER, PlayerType.BLUE_BABY),
+  ],
+
   // 173
   [
     CollectibleType.MITRE,
@@ -449,7 +458,7 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   // 251
   [
     CollectibleType.STARTER_DECK,
-    () => (anyCardTypesUnlocked(false) ? undefined : getRandomCardUnlock()),
+    () => (anyCardTypesUnlocked(false) ? undefined : getRandomCardTypeUnlock()),
   ],
 
   // 252
@@ -480,7 +489,7 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   // 286
   [
     CollectibleType.BLANK_CARD,
-    () => (anyCardsUnlocked(false) ? undefined : getRandomCardUnlock()),
+    () => (anyCardsUnlocked(false) ? undefined : getRandomCardTypeUnlock()),
   ],
 
   // 296
@@ -490,6 +499,24 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
       anySoulHeartUnlocked(false)
         ? undefined
         : getUnlock(UnlockType.HEART, HeartSubType.HALF_SOUL),
+  ],
+
+  // 311
+  [
+    CollectibleType.JUDAS_SHADOW,
+    () =>
+      isCharacterUnlocked(PlayerType.JUDAS, false)
+        ? undefined
+        : getUnlock(UnlockType.CHARACTER, PlayerType.JUDAS),
+  ],
+
+  // 332
+  [
+    CollectibleType.LAZARUS_RAGS,
+    () =>
+      isCharacterUnlocked(PlayerType.LAZARUS, false)
+        ? undefined
+        : getUnlock(UnlockType.CHARACTER, PlayerType.LAZARUS),
   ],
 
   // 348
@@ -542,7 +569,7 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   // 451
   [
     CollectibleType.TAROT_CLOTH,
-    () => (anyCardsUnlocked(false) ? undefined : getRandomCardUnlock()),
+    () => (anyCardsUnlocked(false) ? undefined : getRandomCardTypeUnlock()),
   ],
 
   // 454
@@ -669,7 +696,7 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   // 624
   [
     CollectibleType.BOOSTER_PACK,
-    () => (anyCardsUnlocked(false) ? undefined : getRandomCardUnlock()),
+    () => (anyCardsUnlocked(false) ? undefined : getRandomCardTypeUnlock()),
   ],
 
   // 647
@@ -941,6 +968,15 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
         : getUnlock(UnlockType.HEART, HeartSubType.BLACK),
   ],
 
+  // 21
+  [
+    TrinketType.MYSTERIOUS_PAPER,
+    () =>
+      isCharacterUnlocked(PlayerType.LOST, false)
+        ? undefined
+        : getUnlock(UnlockType.CHARACTER, PlayerType.LOST),
+  ],
+
   // 22
   [
     TrinketType.DAEMONS_TAIL,
@@ -948,6 +984,24 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
       isHeartSubTypeUnlocked(HeartSubType.BLACK, false)
         ? undefined
         : getUnlock(UnlockType.HEART, HeartSubType.BLACK),
+  ],
+
+  // 23
+  [
+    TrinketType.MISSING_POSTER,
+    () =>
+      isCharacterUnlocked(PlayerType.LOST, false)
+        ? undefined
+        : getUnlock(UnlockType.CHARACTER, PlayerType.LOST),
+  ],
+
+  // 28
+  [
+    TrinketType.BROKEN_ANKH,
+    () =>
+      isCharacterUnlocked(PlayerType.BLUE_BABY, false)
+        ? undefined
+        : getUnlock(UnlockType.CHARACTER, PlayerType.BLUE_BABY),
   ],
 
   // 38
@@ -969,7 +1023,7 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   // 45
   [
     TrinketType.ACE_OF_SPADES,
-    () => (anyCardsUnlocked(false) ? undefined : getRandomCardUnlock()),
+    () => (anyCardsUnlocked(false) ? undefined : getRandomCardTypeUnlock()),
   ],
 
   // 61
@@ -1358,7 +1412,7 @@ const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<
   [
     CardType.ANCIENT_RECALL,
     () =>
-      getNumCardsUnlocked(false) >= 10 ? undefined : getRandomCardUnlock(),
+      getNumCardsUnlocked(false) >= 10 ? undefined : getRandomCardTypeUnlock(),
   ],
 
   // 61
@@ -1721,6 +1775,11 @@ const SWAPPED_UNLOCK_OTHER_FUNCTIONS = new ReadonlyMap<
     () =>
       anyPillEffectsUnlocked(false) ? undefined : getRandomPillEffectUnlock(),
   ],
+
+  [
+    OtherUnlockKind.SKULLS,
+    () => (anyCardTypesUnlocked(false) ? undefined : getRandomCardTypeUnlock()),
+  ],
 ]);
 
 function getSwappedUnlockOther(unlock: Unlock): Unlock | undefined {
@@ -1770,7 +1829,7 @@ function getRandomActiveCollectibleUnlock(): CollectibleUnlock {
     (collectibleType) => isActiveCollectible(collectibleType),
   );
   const quality0CollectibleTypes = activeCollectibleTypes.filter(
-    (collectibleType) => getAdjustedCollectibleQuality(collectibleType) === 0,
+    (collectibleType) => getCollectibleQuality(collectibleType) === 0,
   );
   const collectibleTypes = isHardcoreMode()
     ? quality0CollectibleTypes
@@ -1798,7 +1857,7 @@ function getRandomFamiliarCollectibleUnlock(): CollectibleUnlock {
     (collectibleType) => isFamiliarCollectible(collectibleType),
   );
   const quality0CollectibleTypes = familiarCollectibleTypes.filter(
-    (collectibleType) => getAdjustedCollectibleQuality(collectibleType) === 0,
+    (collectibleType) => getCollectibleQuality(collectibleType) === 0,
   );
   const collectibleTypes = isHardcoreMode()
     ? quality0CollectibleTypes
@@ -1835,7 +1894,7 @@ function getRandomTrinketUnlock(): TrinketUnlock {
   };
 }
 
-function getRandomCardUnlock(): CardUnlock {
+function getRandomCardTypeUnlock(): CardUnlock {
   assertNotNull(
     v.persistent.seed,
     "Failed to get a random card unlock since the seed was null.",

@@ -36,8 +36,9 @@ export class RoomRemoval extends RandomizerModFeature {
 
   inBannedRoom(): void {
     // Since the doors were removed, the only way to get in a banned room is via a random teleport
-    // of some kind or a red key room. If the player is inside of a banned roomed, place them
-    // instead in the adjacent room (on the normal floor, not in a red key room).
+    // of some kind (e.g. Curse of the Maze, Teleport) or a red key room. If the player is inside of
+    // a banned roomed, place them instead in the adjacent room (on the normal floor, not in a red
+    // key room).
     const roomGridIndexes = getAdjacentExistingRoomGridIndexes();
     const attachedRoomGridIndex = roomGridIndexes.find(
       (roomGridIndex) => !isRedKeyRoom(roomGridIndex),
@@ -47,7 +48,10 @@ export class RoomRemoval extends RandomizerModFeature {
     changeRoom(roomGridIndex);
 
     const player = Isaac.GetPlayer();
-    player.AnimateTeleport(false);
+    const sprite = player.GetSprite();
+    if (sprite.IsPlaying("TeleportDown")) {
+      player.AnimateTeleport(false);
+    }
   }
 
   outsideBannedRoom(bannedRoomType: RoomType): void {

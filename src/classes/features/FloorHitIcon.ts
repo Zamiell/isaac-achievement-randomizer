@@ -36,7 +36,7 @@ export class FloorHitIcon extends RandomizerModFeature {
     const player = Isaac.GetPlayer();
     const character = getAdjustedCharacterForObjective(player);
 
-    if (isCharacterObjectiveCompleted(character, kindNoHit)) {
+    if (isCharacterObjectiveCompleted(character, kindNoHit, false)) {
       return;
     }
 

@@ -20,9 +20,9 @@ import { getRandomizerMode, isRandomizerEnabled } from "./achievementTracker/v";
 
 enum IconSpriteLayer {
   NO_ACHIEVEMENTS_ICON = 0,
-  RANDOMIZER_ICON_WHITE = 1,
-  RANDOMIZER_ICON_RED = 2,
-  RANDOMIZER_ICON_PINK = 3,
+  RANDOMIZER_ICON_CASUAL = 1,
+  RANDOMIZER_ICON_HARDCORE = 2,
+  RANDOMIZER_ICON_NIGHTMARE = 3,
 }
 
 /** This is on top of where the "No Achievements" icon would be. */
@@ -77,15 +77,15 @@ function getIconSpriteLayer(): IconSpriteLayer | undefined {
     const randomizerMode = getRandomizerMode();
     switch (randomizerMode) {
       case RandomizerMode.CASUAL: {
-        return IconSpriteLayer.RANDOMIZER_ICON_WHITE;
+        return IconSpriteLayer.RANDOMIZER_ICON_CASUAL;
       }
 
       case RandomizerMode.HARDCORE: {
-        return IconSpriteLayer.RANDOMIZER_ICON_RED;
+        return IconSpriteLayer.RANDOMIZER_ICON_HARDCORE;
       }
 
       case RandomizerMode.NIGHTMARE: {
-        return IconSpriteLayer.RANDOMIZER_ICON_PINK;
+        return IconSpriteLayer.RANDOMIZER_ICON_NIGHTMARE;
       }
     }
   }

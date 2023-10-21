@@ -1,4 +1,5 @@
 import {
+  BossID,
   CollectibleType,
   EffectVariant,
   EntityType,
@@ -16,6 +17,7 @@ import {
   DISTANCE_OF_GRID_TILE,
   ModCallbackCustom,
   ReadonlyMap,
+  game,
   getBlueWombDoor,
   getBossRushDoor,
   getEffects,
@@ -25,16 +27,23 @@ import {
   hasCurse,
   inCrawlSpaceWithBlackMarketEntrance,
   inRoomType,
+  isRoomInsideGrid,
   onRepentanceStage,
   onStage,
   removeAllMatchingGridEntities,
   removeDoor,
   removeGridEntity,
   spawnGridEntity,
+  spawnPickup,
 } from "isaacscript-common";
+import { STARTING_CHARACTER } from "../../constants";
+import { getModifiedBossID } from "../../enums/BossIDCustom";
+import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { PickupVariantCustom } from "../../enums/PickupVariantCustom";
 import { UnlockablePath } from "../../enums/UnlockablePath";
+import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
+import { isCharacterObjectiveCompleted } from "./achievementTracker/completedObjectives";
 import {
   isPathUnlocked,
   isRoomTypeUnlocked,
@@ -119,8 +128,41 @@ export class PathRemoval extends RandomizerModFeature {
 
   @Callback(ModCallback.PRE_SPAWN_CLEAR_AWARD)
   preSpawnClearAward(): boolean | undefined {
+    this.checkMomTrapdoor();
     this.checkPathDoors();
+
     return undefined;
+  }
+
+  checkMomTrapdoor(): void {
+    if (
+      isCharacterObjectiveCompleted(
+        STARTING_CHARACTER,
+        CharacterObjectiveKind.MOM,
+        true,
+      )
+    ) {
+      return;
+    }
+
+    const bossID = getModifiedBossID();
+    if (bossID !== BossID.MOM) {
+      return;
+    }
+
+    // Account for reverse Emperor cards.
+    const roomInsideGrid = isRoomInsideGrid();
+    if (!roomInsideGrid) {
+      return;
+    }
+
+    const room = game.GetRoom();
+    const centerPos = room.GetCenterPos();
+    spawnPickup(PickupVariant.BIG_CHEST, 0, centerPos);
+
+    mod.runNextGameFrame(() => {
+      removeAllMatchingGridEntities(GridEntityType.TRAPDOOR);
+    });
   }
 
   @CallbackCustom(

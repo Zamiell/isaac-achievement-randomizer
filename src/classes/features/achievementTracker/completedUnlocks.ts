@@ -25,8 +25,10 @@ import {
   collectibleHasTag,
   eRange,
   filterMap,
+  getCollectibleQuality,
   getPillEffectType,
   getRandomArrayElement,
+  getVanillaCollectibleTypesOfQuality,
   includes,
   isActiveCollectible,
   isCard,
@@ -60,10 +62,6 @@ import { CARD_QUALITIES } from "../../../objects/cardQualities";
 import { TRINKET_QUALITIES } from "../../../objects/trinketQualities";
 import { getUnlock } from "../../../types/Unlock";
 import { getCardTypesOfQuality } from "./cardQuality";
-import {
-  getAdjustedCollectibleQuality,
-  getAdjustedCollectibleTypesOfQuality,
-} from "./collectibleQuality";
 import { getTrinketTypesOfQuality } from "./trinketQuality";
 import { findObjectiveIDForUnlock, v } from "./v";
 
@@ -246,12 +244,13 @@ export function getWorseLockedCollectibleType(
     "Failed to get a worse collectible type since the seed was null.",
   );
 
-  const quality = getAdjustedCollectibleQuality(collectibleType);
+  const quality = getCollectibleQuality(collectibleType);
 
   for (const lowerQualityInt of eRange(quality)) {
     const lowerQuality = lowerQualityInt as Quality;
-    const lowerQualityCollectibleTypes =
-      getAdjustedCollectibleTypesOfQuality(lowerQuality);
+    const lowerQualityCollectibleTypes = [
+      ...getVanillaCollectibleTypesOfQuality(lowerQuality),
+    ];
     const unlockedLowerQualityCollectibleTypes =
       lowerQualityCollectibleTypes.filter((lowerQualityCollectibleType) =>
         isCollectibleTypeUnlocked(lowerQualityCollectibleType, false),

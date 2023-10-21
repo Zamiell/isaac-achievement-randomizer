@@ -199,7 +199,7 @@ export function getSpecificCharacterObjectiveButtons(
       objectiveName = `no dmg. on floor ${objectiveName}`;
     }
 
-    const completed = isCharacterObjectiveCompleted(character, kind);
+    const completed = isCharacterObjectiveCompleted(character, kind, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(

@@ -27,6 +27,9 @@ export class AchievementTracker extends RandomizerModFeature {
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
   postGameStartedReorderedFalse(): void {
+    v.persistent.completedObjectivesForRun = copyArray(
+      v.persistent.completedObjectives,
+    );
     v.persistent.completedUnlocksForRun = copyArray(
       v.persistent.completedUnlocks,
     );

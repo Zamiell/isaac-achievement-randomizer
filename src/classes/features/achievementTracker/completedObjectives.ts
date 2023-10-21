@@ -87,8 +87,13 @@ export function isAllCharactersObjectivesCompleted(): boolean {
 export function isCharacterObjectiveCompleted(
   character: PlayerType,
   kind: CharacterObjectiveKind,
+  forRun: boolean,
 ): boolean {
-  return v.persistent.completedObjectives.some(
+  const array = forRun
+    ? v.persistent.completedObjectivesForRun
+    : v.persistent.completedObjectives;
+
+  return array.some(
     (objective) =>
       objective.type === ObjectiveType.CHARACTER &&
       objective.character === character &&

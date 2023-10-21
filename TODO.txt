@@ -1,6 +1,17 @@
 TODO:
 
+- bosses from challenge room should count
+- segmented enemies should all be champions
+
+- all horsemen must be phase 1
+- deal 1 damage to isaac + blue baby upon room entry and then delete the phase 2 requirements for the boss objective
+
+- unlock text for clean bedrooms should say clean + dirty bedrooms
+
+- ensure excepted boss items are only in boss pool (use ISC functions)
+
 - show bosses where you can get them on DSS menu
+  - sort by this instead of boss number
 - end first run at mom
 - rules card - show future unlocks
 - website - see all current unlocks after uploading save file

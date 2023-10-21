@@ -402,6 +402,7 @@ In hardcore mode, we want to prevent the situation where you unlock powerful ite
 
 - Collectibles, trinkets, and cards will progressively unlock based on their quality classification. (50% of 0 quality items must unlock first before 1 quality items, and so on.)
   - Since trinkets and cards do not have vanilla quality classifications, custom qualities were created by [Gamonymous](https://github.com/Rchardon) & [Moucheron Quipet](https://www.twitch.tv/moucheronquipet).
+  - Some collectibles have a custom quality (like Cursed Eye).
 - Pill effects will unlock on a cycle of one negative, one neutral, and one positive.
 - Hearts will unlock in the following order:
   - Gold Heart

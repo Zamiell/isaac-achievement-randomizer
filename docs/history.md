@@ -3,6 +3,11 @@
 <!-- cspell:ignore antizoubilamaka,Erbear,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.8.0_ - October 21th, 2023
+
+- Beating Mom for the first time will result in a Big Chest.
+- Characters will now unlock before their respective revival items.
+
 ### _v0.7.2_ - October 21th, 2023
 
 - Fixed the bug with the following rooms where Guts would automatically kill themselves (Thanks Neonomi):

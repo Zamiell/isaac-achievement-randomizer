@@ -3,15 +3,15 @@
 	<Content>
 		<Spritesheets>
 			<Spritesheet Path="no-achievements-icon.png" Id="0"/>
-			<Spritesheet Path="achievement-randomizer-icon-white.png" Id="1"/>
-			<Spritesheet Path="achievement-randomizer-icon-red.png" Id="2"/>
-			<Spritesheet Path="achievement-randomizer-icon-pink.png" Id="3"/>
+			<Spritesheet Path="achievement-randomizer-icon-casual.png" Id="1"/>
+			<Spritesheet Path="achievement-randomizer-icon-hardcore.png" Id="2"/>
+			<Spritesheet Path="achievement-randomizer-icon-nightmare.png" Id="3"/>
 		</Spritesheets>
 		<Layers>
 			<Layer Name="normal" Id="0" SpritesheetId="0"/>
-			<Layer Name="white" Id="1" SpritesheetId="1"/>
-			<Layer Name="red" Id="2" SpritesheetId="2"/>
-			<Layer Name="purple" Id="3" SpritesheetId="3"/>
+			<Layer Name="casual" Id="1" SpritesheetId="1"/>
+			<Layer Name="hardcore" Id="2" SpritesheetId="2"/>
+			<Layer Name="nightmare" Id="3" SpritesheetId="3"/>
 		</Layers>
 		<Nulls/>
 		<Events/>
