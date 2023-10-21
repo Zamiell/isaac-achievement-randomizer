@@ -63,6 +63,7 @@ WINDOWS_FILES=$(
   --exclude='*.ttf' \
   --exclude='*.wav' \
   --exclude='yarn.lock' \
+  --exclude-dir='rooms' \
   '\r$' .
 ) || true
 if [[ $WINDOWS_FILES ]]; then
