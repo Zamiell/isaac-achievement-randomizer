@@ -7,6 +7,7 @@
 
 - Beating Mom for the first time will result in a Big Chest.
 - Characters will now unlock before their respective revival items.
+- Quarter and Dollar will now unlock after shops.
 
 ### _v0.7.2_ - October 21th, 2023
 

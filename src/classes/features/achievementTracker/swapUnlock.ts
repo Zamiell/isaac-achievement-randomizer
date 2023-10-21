@@ -280,10 +280,17 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   // 18
   [
     CollectibleType.DOLLAR,
-    () =>
-      isSlotVariantUnlocked(SlotVariant.SLOT_MACHINE, false)
-        ? undefined
-        : getUnlock(UnlockType.SLOT, SlotVariant.SLOT_MACHINE),
+    () => {
+      if (!isRoomTypeUnlocked(RoomType.SHOP, false)) {
+        return getUnlock(UnlockType.ROOM, RoomType.SHOP);
+      }
+
+      if (!isSlotVariantUnlocked(SlotVariant.SLOT_MACHINE, false)) {
+        return getUnlock(UnlockType.SLOT, SlotVariant.SLOT_MACHINE);
+      }
+
+      return undefined;
+    },
   ],
 
   // 63
@@ -293,6 +300,15 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
       anyActiveCollectibleUnlocked(false)
         ? undefined
         : getRandomActiveCollectibleUnlock(),
+  ],
+
+  // 74
+  [
+    CollectibleType.QUARTER,
+    () =>
+      isRoomTypeUnlocked(RoomType.SHOP, false)
+        ? undefined
+        : getUnlock(UnlockType.ROOM, RoomType.SHOP),
   ],
 
   // 75
