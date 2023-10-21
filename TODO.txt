@@ -2,6 +2,7 @@ TODO:
 
 - website
 - rules card
+- option for banned items
 
 ------------------------------
 

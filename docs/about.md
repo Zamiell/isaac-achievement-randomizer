@@ -521,6 +521,7 @@ The mod provides a custom challenge that simply locks you in the starting room o
 The mod provides several custom [console commands](https://bindingofisaacrebirth.fandom.com/wiki/Debug_Console):
 
 - `endRandomizer` - Ends the current randomizer playthrough.
+- `randomizerVersion` - Displays the current version of the mod.
 - `startRandomizer [mode] [seed]` - Starts a new randomizer playthrough using the specified seed. For example: `startRandomizer hardcore 12345`
 - `spoilerLog` - Writes out a spoiler log to the "log.txt" file. Note that the unlocks may not be accurate, since the mod swaps an unlock if it detects that you should not get it yet.
 
@@ -540,7 +541,7 @@ Lucky Pennies are automatically converted to normal pennies while the Mega Mush 
 
 In the Isaac streaking community, you are only allowed to pause the game when the room is clear of enemies. If you are allowed to pause in a room with enemies, then you can think about the best movement patterns to defeat the enemies, and mentally prepare exactly what to do. This kind of thing goes against the spirit of the competition; players are intended to have to react instantly to new situations. Thus, the mod will keep track of any illegal pauses that you do, both displaying an error on the screen and then showing a that you have illegally paused on the stats menu for your playthrough. If you want the mod to prevent you from illegally pausing, turn on the option in the "Randomizer Settings" page of the menu.
 
-In the Isaac streaking community, you are not allowed to use the save & quit feature of the game. If you are allowed to save & quit, then you can do things like prevent incoming damage, exploit Restock Machines, and reset enemy patterns. All of these things go against the spirit of the competition; players are intended to have to complete a room in one attempt and they should not get "do-overs" when they make movement mistakes. Thus, the mod will keep track of any illegal save & quits that you do, both displaying an error on the screen and then showing a that you have illegally saved and quit on the stats menu for your playthrough.
+In the Isaac streaking community, you are not allowed to use the save & quit feature of the game. If you are allowed to save & quit, then you can do things like prevent incoming damage, exploit Restock Machines, and reset enemy patterns. All of these things go against the spirit of the competition; players are intended to have to complete a room in one attempt and they should not get "do-overs" when they make movement mistakes. Thus, the mod will keep track of any illegal save & quits that you do, both displaying an error on the screen and then showing a that you have illegally saved and quit on the stats menu for your playthrough. If you want the mod to prevent you from illegally saving and quitting, turn on the option in the "Randomizer Settings" page of the menu.
 
 ### 10) Other Miscellaneous Quality of Life Improvements
 
