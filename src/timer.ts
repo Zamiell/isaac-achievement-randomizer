@@ -19,6 +19,7 @@ class TimerSprites {
   digits = {
     hour1: newSprite("gfx/timer/timer.anm2"),
     hour2: newSprite("gfx/timer/timer.anm2"),
+    hour3: newSprite("gfx/timer/timer.anm2"),
     minute1: newSprite("gfx/timer/timer.anm2"),
     minute2: newSprite("gfx/timer/timer.anm2"),
     second1: newSprite("gfx/timer/timer.anm2"),
@@ -27,6 +28,7 @@ class TimerSprites {
 }
 
 const DIGIT_LENGTH = 7.25;
+const COLON_LENGTH = 4;
 
 const STARTING_COORDINATES = {
   [TimerType.MAIN]: [19, 198], // Directly below the stat HUD.
@@ -59,65 +61,73 @@ export function timerDraw(timerType: TimerType, seconds: int): void {
   let x = startingX + HUDOffsetVector.X;
   const y = startingY + HUDOffsetVector.Y;
 
-  const hourAdjustment = 2;
-  let hourAdjustment2 = 0;
-
   const timerValues = convertSecondsToTimerValues(seconds);
   if (timerValues === undefined) {
     return;
   }
 
-  const { hour1, hour2, minute1, minute2, second1, second2 } = timerValues;
+  const { hour1, hour2, hour3, minute1, minute2, second1, second2 } =
+    timerValues;
 
   const sprites = spriteCollectionMap.getAndSetDefault(timerType);
 
   const positionClock = Vector(x + 34, y + 45);
   sprites.clock.Render(positionClock);
 
-  if (hour2 > 0) {
-    // The format of the time will be "#:##:##" (instead of "##:##", which is the default).
-    hourAdjustment2 = 2;
-    x += DIGIT_LENGTH * 2 + hourAdjustment;
+  if (hour1 > 0) {
+    sprites.digits.hour1.SetFrame(hour1);
+    sprites.digits.hour1.Render(Vector(x, y));
 
-    const positionHour1 = Vector(x - DIGIT_LENGTH * 2 - hourAdjustment, y);
-    sprites.digits.hour1.SetFrame("Default", hour1);
-    sprites.digits.hour1.Render(positionHour1);
-
-    const positionHour2 = Vector(x - DIGIT_LENGTH - hourAdjustment, y);
-    sprites.digits.hour2.SetFrame("Default", hour2);
-    sprites.digits.hour2.Render(positionHour2);
-
-    const positionColon = Vector(x - DIGIT_LENGTH + 7, y + 19);
-    sprites.colons.afterHours.Render(positionColon);
+    x += DIGIT_LENGTH;
   }
 
-  const positionMinute1 = Vector(x, y);
-  sprites.digits.minute1.SetFrame("Default", minute1);
-  sprites.digits.minute1.Render(positionMinute1);
+  if (hour1 > 0 || hour2 > 0) {
+    sprites.digits.hour2.SetFrame(hour2);
+    sprites.digits.hour2.Render(Vector(x, y));
 
-  const positionMinute2 = Vector(x + DIGIT_LENGTH, y);
-  sprites.digits.minute2.SetFrame("Default", minute2);
-  sprites.digits.minute2.Render(positionMinute2);
+    x += DIGIT_LENGTH;
+  }
 
-  const positionColon1 = Vector(x + DIGIT_LENGTH + 10, y + 19);
-  sprites.colons.afterMinutes.Render(positionColon1);
+  if (hour1 > 0 || hour2 > 0 || hour3 > 0) {
+    sprites.digits.hour3.SetFrame(hour3);
+    sprites.digits.hour3.Render(Vector(x, y));
 
-  const positionSecond1 = Vector(x + DIGIT_LENGTH + 11, y);
-  sprites.digits.second1.SetFrame("Default", second1);
-  sprites.digits.second1.Render(positionSecond1);
+    x += DIGIT_LENGTH;
 
-  const positionSecond2 = Vector(
-    x + DIGIT_LENGTH + 11 + DIGIT_LENGTH + 1 - hourAdjustment2,
-    y,
-  );
-  sprites.digits.second2.SetFrame("Default", second2);
-  sprites.digits.second2.Render(positionSecond2);
+    const positionColonAfterHours = Vector(x - 2, y);
+    sprites.colons.afterHours.Render(positionColonAfterHours);
+
+    x += COLON_LENGTH;
+  }
+
+  sprites.digits.minute1.SetFrame(minute1);
+  sprites.digits.minute1.Render(Vector(x, y));
+
+  x += DIGIT_LENGTH;
+
+  sprites.digits.minute2.SetFrame(minute2);
+  sprites.digits.minute2.Render(Vector(x, y));
+
+  x += DIGIT_LENGTH;
+
+  sprites.colons.afterMinutes.Render(Vector(x - 2, y));
+
+  x += COLON_LENGTH;
+
+  sprites.digits.second1.SetFrame(second1);
+  sprites.digits.second1.Render(Vector(x, y));
+
+  x += DIGIT_LENGTH;
+
+  sprites.digits.second2.SetFrame(second2);
+  sprites.digits.second2.Render(Vector(x, y));
 }
 
 export function convertSecondsToTimerValues(totalSeconds: int):
   | {
       hour1: int;
       hour2: int;
+      hour3: int;
       minute1: int;
       minute2: int;
       second1: int;
@@ -132,7 +142,7 @@ export function convertSecondsToTimerValues(totalSeconds: int):
   // Calculate the hours digits.
   const hours = Math.floor(totalSeconds / 3600);
   const hoursStringUnpadded = hours.toString();
-  const hoursString = hoursStringUnpadded.padStart(2, "0");
+  const hoursString = hoursStringUnpadded.padStart(3, "0");
 
   // The first character.
   const hour1String = hoursString[0] ?? "0";
@@ -143,6 +153,11 @@ export function convertSecondsToTimerValues(totalSeconds: int):
   const hour2String = hoursString[1] ?? "0";
   const hour2 = tonumber(hour2String);
   assertDefined(hour2, "Failed to parse the second hour of the timer.");
+
+  // The third character.
+  const hour3String = hoursString[2] ?? "0";
+  const hour3 = tonumber(hour3String);
+  assertDefined(hour3, "Failed to parse the third hour of the timer.");
 
   // Calculate the minutes digits.
   let minutes = Math.floor(totalSeconds / 60);
@@ -182,5 +197,5 @@ export function convertSecondsToTimerValues(totalSeconds: int):
   const decimals = rawSeconds - Math.floor(rawSeconds);
   const tenths = Math.floor(decimals * 10);
 
-  return { hour1, hour2, minute1, minute2, second1, second2, tenths };
+  return { hour1, hour2, hour3, minute1, minute2, second1, second2, tenths };
 }

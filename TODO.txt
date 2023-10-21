@@ -2,7 +2,6 @@ TODO:
 
 - prevent illegal save & quit by killing and reviving
 - website
-- all champions
 - rules card
 
 ------------------------------

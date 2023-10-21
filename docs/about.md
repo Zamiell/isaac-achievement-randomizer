@@ -265,7 +265,7 @@ The following room types start out locked:
 - Dice Rooms (#21) (unlocks before the first dice collectible/trinket/card)
 - Planetariums (#24) (unlocks before the first Planetarium pool collectible)
 - Bedrooms (#18, #19) (unlocks before the first heart or bed)
-- Black Markets (#22) (unlocks before the first Devil Room pool collectible)
+- Black Markets (#22) (unlocks before the first Shop pool collectible)
 - Ultra Secret Rooms (#29) (unlocks before the first Ultra Secret Room pool collectible)
 
 ### Challenges (44)

@@ -850,7 +850,7 @@ function getSwappedUnlockCollectible(unlock: Unlock): Unlock | undefined {
   if (
     isCollectibleTypeInDefaultItemPool(
       collectibleUnlock.collectibleType,
-      ItemPoolType.DEVIL,
+      ItemPoolType.SHOP,
     ) &&
     !isRoomTypeUnlocked(RoomType.BLACK_MARKET, false)
   ) {
