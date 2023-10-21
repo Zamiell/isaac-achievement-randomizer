@@ -1424,6 +1424,15 @@ const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<
         : getUnlock(UnlockType.ROOM, RoomType.TREASURE),
   ],
 
+  // 19
+  [
+    CardType.MOON,
+    () =>
+      isRoomTypeUnlocked(RoomType.SECRET, false)
+        ? undefined
+        : getUnlock(UnlockType.ROOM, RoomType.SECRET),
+  ],
+
   // 21
   [
     CardType.JUDGEMENT,
@@ -1534,6 +1543,15 @@ const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<
 
   // 83
   [CardType.SOUL_OF_CAIN, swapAnyRoomUnlock],
+
+  // 93
+  [
+    CardType.SOUL_OF_KEEPER,
+    () =>
+      isRoomTypeUnlocked(RoomType.SHOP, false)
+        ? undefined
+        : getUnlock(UnlockType.ROOM, RoomType.SHOP),
+  ],
 ]);
 
 function getSwappedUnlockCard(unlock: Unlock): Unlock | undefined {
