@@ -24,13 +24,19 @@ import {
   setCollectibleUnlocked,
   setPathUnlocked,
 } from "./classes/features/AchievementTracker";
+import { getCharacterObjectiveKindNoHit } from "./classes/features/FloorObjectiveDetection";
+import { addObjective } from "./classes/features/achievementTracker/addObjective";
 import {
   isRandomizerEnabled,
   setAcceptedVersionMismatch,
 } from "./classes/features/achievementTracker/v";
+import { getModifiedBossID } from "./enums/BossIDCustom";
+import { ObjectiveType } from "./enums/ObjectiveType";
 import { RandomizerMode } from "./enums/RandomizerMode";
 import { UnlockablePath, getPathName } from "./enums/UnlockablePath";
 import { mod } from "./mod";
+import { getObjective } from "./types/Objective";
+import { getAdjustedCharacterForObjective } from "./utils";
 
 export const MIN_SEED = 1;
 export const MAX_SEED = 4_294_967_295;
@@ -38,6 +44,8 @@ export const MAX_SEED = 4_294_967_295;
 export function initConsoleCommands(): void {
   mod.addConsoleCommand("endRandomizer", endRandomizerCommand);
   mod.addConsoleCommand("forceWrongVersion", forceWrongVersion);
+  mod.addConsoleCommand("objectiveBoss", objectiveBoss);
+  mod.addConsoleCommand("objectiveFloor", objectiveFloor);
   mod.addConsoleCommand("startRandomizer", startRandomizerCommand);
   mod.addConsoleCommand("randomizerVersion", randomizerVersion);
   mod.addConsoleCommand("spoilerLog", spoilerLog);
@@ -53,6 +61,31 @@ function endRandomizerCommand(_params: string) {
 function forceWrongVersion(_params: string) {
   setAcceptedVersionMismatch();
   restart();
+}
+
+function objectiveBoss(_params: string) {
+  const bossID = getModifiedBossID();
+  if (bossID === undefined) {
+    print("Error: Not in a Boss Room.");
+    return;
+  }
+
+  const objective = getObjective(ObjectiveType.BOSS, bossID);
+  addObjective(objective);
+}
+
+function objectiveFloor(_params: string) {
+  const kind = getCharacterObjectiveKindNoHit();
+  if (kind === undefined) {
+    print("Error: Not on a no hit floor.");
+    return;
+  }
+
+  const player = Isaac.GetPlayer();
+  const character = getAdjustedCharacterForObjective(player);
+
+  const objective = getObjective(ObjectiveType.CHARACTER, character, kind);
+  addObjective(objective);
 }
 
 function spoilerLog(_params: string) {
