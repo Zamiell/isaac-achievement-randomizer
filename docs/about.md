@@ -502,7 +502,7 @@ In the vanilla game, only certain specific enemies have the chance to spawn as a
 
 - The mod removes all Donation Machines from the game in order to increase the difficulty and prevent individual runs from influencing each other. (Eden's Blessing is removed from the game for the same reason.)
 - Greed Donation Machines are also removed because they serve no purpose in this mod.
-- The Karma trinket is removed from the game because it would serve no purpose.
+- The Karma trinket is removed because it would serve no purpose.
 
 #### Void Portal Deletion <!-- RemoveVoidPortals -->
 
@@ -511,6 +511,10 @@ The mod deletes all Void Portals outside of the Blue Womb. This is both a balanc
 #### Glitched Item Removal <!-- RemoveGlitchedCollectibles -->
 
 Glitched items are removed for the same reason that TMTRAINER is.
+
+#### Victory Lap & Rerun Removal
+
+Victory Laps and the "Rerun" feature on the main menu are banned for the same reason that R Key is.
 
 ### 7) Chill Room <!-- ChillRoom -->
 
@@ -548,7 +552,7 @@ In the Isaac streaking community, you are not allowed to use the save & quit fea
 - <!-- "ui_hearts.png" --> The heart UI sprites have been slightly modified so that it is easier to see an empty heart container on a black background.
 - <!-- SilenceMomDad --> The audio clips of mom and dad on the Ascent are silenced.
 - <!-- ForceFadedConsoleDisplay --> The "faded console display" feature is automatically enabled in the "options.ini" file, which allows you to visually see when an error in the game happens.
-- <!-- PreventVictoryLapPopup --> Victory Laps and the "Rerun" feature on the main menu are banned for the same reason that R Key is. As a quality of life fix, the Victory Lap popup will no longer appear after defeating The Lamb.
+- <!-- PreventVictoryLapPopup --> The Victory Lap popup will no longer appear after defeating The Lamb.
 - <!-- PreventEndMegaSatan --> Defeating Mega Satan no longer has a chance to immediately end the run.
 
 <br>

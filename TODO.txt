@@ -1,7 +1,7 @@
 TODO:
 
-- website
-- rules card
+- rules card - show future unlocks
+- website - see all current unlocks after uploading save file
 - option for banned items
 
 ------------------------------
