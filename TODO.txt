@@ -1,6 +1,5 @@
 TODO:
 
-- prevent illegal save & quit by killing and reviving
 - website
 - rules card
 

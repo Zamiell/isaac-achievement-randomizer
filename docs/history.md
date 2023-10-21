@@ -11,6 +11,7 @@
 - Clean Bedrooms and Dirty Bedrooms now share the same unlock.
 - Blue Fires and Purple Fires now share the same unlock.
 - All enemies now have a chance to become a champion.
+- There is now an option to prevent illegal saving & quitting.
 - Added the "randomizerVersion" command.
 - Black Markets will now unlock before the first Devil Room pool collectible.
 - Fixed the bug where the timer would not work properly after 10 hours. (Thanks Neonomi)

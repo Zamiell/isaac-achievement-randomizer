@@ -896,6 +896,34 @@ export function initDeadSeaScrolls(): void {
           noSel: true,
         },
         {
+          str: "prevent illegal s+q",
+          choices: DSS_CHOICES,
+          setting: 1,
+          variable: "preventSaveAndQuit",
+
+          load: () => v.persistent.preventSaveAndQuit,
+
+          /** @noSelf */
+          store: (choiceIndex: int) => {
+            v.persistent.preventSaveAndQuit = choiceIndex;
+          },
+
+          tooltip: {
+            strSet: [
+              "whether to",
+              "prevent",
+              "saving and",
+              "quitting and",
+              "continuing a",
+              "run.",
+            ],
+          },
+        },
+        {
+          str: "",
+          noSel: true,
+        },
+        {
           str: "delay achievement text",
           choices: DSS_CHOICES,
           setting: 1,

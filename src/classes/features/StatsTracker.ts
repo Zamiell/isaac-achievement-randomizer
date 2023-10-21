@@ -228,7 +228,3 @@ export function hasIllegalPause(): boolean {
 export function hasSavedAndQuit(): boolean {
   return v.persistent.stats.usedSaveAndQuit;
 }
-
-export function foo(): void {
-  v.persistent.stats.gameFramesElapsed += 100_000;
-}

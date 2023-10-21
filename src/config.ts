@@ -10,6 +10,7 @@ export const v = {
   persistent: {
     timer: DSS_CHOICE_DISABLED,
     preventPause: DSS_CHOICE_DISABLED,
+    preventSaveAndQuit: DSS_CHOICE_DISABLED,
     delayAchievementText: DSS_CHOICE_DISABLED,
   },
 };
@@ -20,6 +21,10 @@ export function isTimerEnabled(): boolean {
 
 export function isPreventPauseEnabled(): boolean {
   return v.persistent.preventPause === DSS_CHOICE_ENABLED;
+}
+
+export function isPreventSaveAndQuitEnabled(): boolean {
+  return v.persistent.preventSaveAndQuit === DSS_CHOICE_ENABLED;
 }
 
 export function isDelayAchievementTextEnabled(): boolean {

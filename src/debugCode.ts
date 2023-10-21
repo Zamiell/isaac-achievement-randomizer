@@ -4,22 +4,11 @@ import {
   setLogFunctionsGlobal,
   setTracebackFunctionsGlobal,
 } from "isaacscript-common";
-import { foo } from "./classes/features/StatsTracker";
 import { mod } from "./mod";
 
 /** Currently, F3 is set to execute this function. */
 function debugCode(_params?: string) {
   // Add code here.
-  foo();
-
-  /*
-  const player = Isaac.GetPlayer();
-  player.Kill()
-  mod.runNextGameFrame(() => {
-    const futurePlayer = Isaac.GetPlayer();
-    futurePlayer.Revive();
-  })
-  */
 }
 
 /** Hotkey 1 is bound to F3. */
