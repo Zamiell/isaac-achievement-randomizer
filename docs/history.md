@@ -13,7 +13,7 @@
 - All enemies now have a chance to become a champion.
 - There is now an option to prevent illegal saving & quitting.
 - Added the "randomizerVersion" command.
-- Black Markets will now unlock before the first Shop pool collectible.
+- Black Markets will now unlock before the first Shop pool collectible and crawl spaces.
 - Fixed the bug where the timer would not work properly after 10 hours. (Thanks Neonomi)
 
 ### _v0.6.0_ - October 20th, 2023

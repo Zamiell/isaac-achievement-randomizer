@@ -58,6 +58,7 @@ import {
 } from "../../arrays/unlockableTrinketTypes";
 import { MOD_NAME } from "../../constants";
 import { OtherUnlockKind } from "../../enums/OtherUnlockKind";
+import { isItemPoolsDepleted } from "../../utils";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { isAllCharacterObjectivesCompleted } from "./achievementTracker/completedObjectives";
 import {
@@ -211,6 +212,13 @@ export class PickupRemoval extends RandomizerModFeature {
   @Callback(ModCallback.POST_PICKUP_INIT, PickupVariant.COLLECTIBLE)
   postPickupInitCollectible(pickup: EntityPickup): void {
     const collectible = pickup as EntityPickupCollectible;
+
+    if (
+      collectible.SubType === CollectibleType.BREAKFAST &&
+      isItemPoolsDepleted()
+    ) {
+      return;
+    }
 
     if (
       !isCollectibleTypeUnlocked(collectible.SubType, true) ||

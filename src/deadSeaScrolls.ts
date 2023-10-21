@@ -443,10 +443,6 @@ export function initDeadSeaScrolls(): void {
           dest: "pathUnlocks",
         },
         {
-          str: "alt floors",
-          dest: "altFloorUnlocks",
-        },
-        {
           str: "challenges",
           dest: "challengeUnlocks",
         },
