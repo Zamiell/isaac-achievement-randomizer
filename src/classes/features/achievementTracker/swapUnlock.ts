@@ -557,6 +557,15 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
     () => (anyRunesUnlocked(false) ? undefined : getRandomRuneUnlock()),
   ],
 
+  // 416
+  [
+    CollectibleType.DEEP_POCKETS,
+    () =>
+      isRoomTypeUnlocked(RoomType.SHOP, false)
+        ? undefined
+        : getUnlock(UnlockType.ROOM, RoomType.SHOP),
+  ],
+
   // 424
   [
     CollectibleType.SACK_HEAD,
