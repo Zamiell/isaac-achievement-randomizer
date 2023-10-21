@@ -22,6 +22,7 @@ import type { ObjectiveID } from "./types/ObjectiveID";
 import { getObjectiveID } from "./types/ObjectiveID";
 import type { Unlock } from "./types/Unlock";
 import { getUnlock, getUnlockText } from "./types/Unlock";
+import { getUnlockID } from "./types/UnlockID";
 
 /** These are the objectives that The Polaroid and The Negative are gated behind. */
 const EASY_OBJECTIVE_KINDS = [
@@ -174,40 +175,27 @@ function inSecondHalfOfArray<T>(element: T, array: T[]): boolean {
 
 function removeUnlock(unlocks: Unlock[], unlock: Unlock) {
   const index = getUnlockIndex(unlocks, unlock);
+  if (index === undefined) {
+    const text = getUnlockText(unlock);
+    error(`Failed to find the unlock in the array: ${text}`);
+  }
+
   const matchingUnlock = unlocks[index];
   assertDefined(matchingUnlock, `Failed to find the unlock at index: ${index}`);
 
   arrayRemoveIndexInPlace(unlocks, index);
 }
 
-function getUnlockIndex(unlocks: Unlock[], unlockToMatch: Unlock): int {
-  let index: int;
+function getUnlockIndex(
+  unlocks: Unlock[],
+  unlockToMatch: Unlock,
+): int | undefined {
+  const unlockToMatchID = getUnlockID(unlockToMatch);
 
-  switch (unlockToMatch.type) {
-    case UnlockType.CHARACTER: {
-      index = unlocks.findIndex(
-        (unlock) =>
-          unlock.type === unlockToMatch.type &&
-          unlock.character === unlockToMatch.character,
-      );
-      break;
-    }
-
-    default: {
-      return error(
-        `Unhandled matching logic for unlock type: ${
-          UnlockType[unlockToMatch.type]
-        }`,
-      );
-    }
-  }
-
-  if (index === -1) {
-    const text = getUnlockText(unlockToMatch);
-    error(`Failed to find the unlock in the array: ${text}`);
-  }
-
-  return index;
+  return unlocks.findIndex((unlock) => {
+    const unlockID = getUnlockID(unlock);
+    return unlockID === unlockToMatchID;
+  });
 }
 
 function removeObjective(objectives: Objective[], objective: Objective) {

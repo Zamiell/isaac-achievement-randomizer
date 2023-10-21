@@ -8,6 +8,8 @@
 - Removed the 11 alt floor unlocks. (All alt floors now start off unlocked.)
 - Added the 8 extra room unlocks from Nightmare Mode to the other modes.
 - Added the 5 old starting stat items as unlocks. (No collectibles start off unlocked now.)
+- Clean Bedrooms and Dirty Bedrooms now share the same unlock.
+- Blue Fires and Purple Fires now share the same unlock.
 - All enemies now have a chance to become a champion.
 - Added the "randomizerVersion" command.
 - Black Markets will now unlock before the first Devil Room pool collectible.

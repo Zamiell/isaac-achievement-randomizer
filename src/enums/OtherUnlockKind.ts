@@ -2,8 +2,7 @@ export enum OtherUnlockKind {
   BEDS,
   SHOPKEEPERS,
 
-  BLUE_FIREPLACES,
-  PURPLE_FIREPLACES,
+  BLUE_AND_PURPLE_FIREPLACES,
 
   GOLD_TRINKETS,
   GOLD_PILLS,
@@ -34,12 +33,8 @@ export function getOtherUnlockName(
       return ["entity", "Shopkeepers"];
     }
 
-    case OtherUnlockKind.BLUE_FIREPLACES: {
-      return ["entity", "Blue Fireplaces"];
-    }
-
-    case OtherUnlockKind.PURPLE_FIREPLACES: {
-      return ["entity", "Purple Fireplaces"];
+    case OtherUnlockKind.BLUE_AND_PURPLE_FIREPLACES: {
+      return ["entity", "Blue & Purple Fireplaces"];
     }
 
     case OtherUnlockKind.GOLD_TRINKETS: {

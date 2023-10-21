@@ -10,7 +10,6 @@ import type {
   PickupVariant,
   PillEffect,
   PlayerType,
-  RoomType,
   SackSubType,
   SlotVariant,
   TrinketType,
@@ -19,6 +18,7 @@ import {
   HeartSubType,
   ItemConfigPillEffectType,
   ItemConfigTag,
+  RoomType,
 } from "isaac-typescript-definitions";
 import {
   assertNotNull,
@@ -125,6 +125,11 @@ export function isRoomTypeUnlocked(
   roomType: RoomType,
   forRun: boolean,
 ): boolean {
+  // Clean Bedrooms and Dirty Bedrooms share the same unlock.
+  if (roomType === RoomType.DIRTY_BEDROOM) {
+    roomType = RoomType.CLEAN_BEDROOM;
+  }
+
   if (!includes(UNLOCKABLE_ROOM_TYPES, roomType)) {
     return true;
   }

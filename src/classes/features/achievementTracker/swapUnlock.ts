@@ -1508,11 +1508,6 @@ function getSwappedUnlockHeart(unlock: Unlock): Unlock | undefined {
     return getUnlock(UnlockType.ROOM, RoomType.CLEAN_BEDROOM);
   }
 
-  // 19
-  if (!isRoomTypeUnlocked(RoomType.DIRTY_BEDROOM, false)) {
-    return getUnlock(UnlockType.ROOM, RoomType.DIRTY_BEDROOM);
-  }
-
   if (isHardcoreMode()) {
     const worseHeartSubType = getWorseLockedHeartSubType(
       heartUnlock.heartSubType,
@@ -1697,33 +1692,12 @@ const SWAPPED_UNLOCK_OTHER_FUNCTIONS = new ReadonlyMap<
         return getUnlock(UnlockType.ROOM, RoomType.CLEAN_BEDROOM);
       }
 
-      // 19
-      if (!isRoomTypeUnlocked(RoomType.DIRTY_BEDROOM, false)) {
-        return getUnlock(UnlockType.ROOM, RoomType.DIRTY_BEDROOM);
-      }
-
       return undefined;
     },
   ],
 
   [
-    OtherUnlockKind.BLUE_FIREPLACES,
-    () => {
-      if (
-        isHardcoreMode() &&
-        !isOtherUnlockKindUnlocked(OtherUnlockKind.PURPLE_FIREPLACES, false)
-      ) {
-        return getUnlock(UnlockType.OTHER, OtherUnlockKind.PURPLE_FIREPLACES);
-      }
-
-      return isHeartSubTypeUnlocked(HeartSubType.SOUL, false)
-        ? undefined
-        : getUnlock(UnlockType.HEART, HeartSubType.SOUL);
-    },
-  ],
-
-  [
-    OtherUnlockKind.PURPLE_FIREPLACES,
+    OtherUnlockKind.BLUE_AND_PURPLE_FIREPLACES,
     () =>
       isHeartSubTypeUnlocked(HeartSubType.SOUL, false)
         ? undefined

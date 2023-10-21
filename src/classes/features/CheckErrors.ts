@@ -30,6 +30,7 @@ import {
 } from "isaacscript-common";
 import { version } from "../../../package.json";
 import {
+  IS_DEV,
   LAST_VERSION_WITH_ACHIEVEMENT_CHANGES,
   MOD_NAME,
 } from "../../constants";
@@ -303,7 +304,7 @@ function checkModeUnlocked() {
 }
 
 function checkVersionMismatch() {
-  if (isAcceptedVersionMismatch()) {
+  if (IS_DEV || isAcceptedVersionMismatch()) {
     return;
   }
 
