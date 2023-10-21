@@ -1388,6 +1388,15 @@ const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<
         : getUnlock(UnlockType.HEART, HeartSubType.SOUL),
   ],
 
+  // 10
+  [
+    CardType.HERMIT,
+    () =>
+      isRoomTypeUnlocked(RoomType.SHOP, false)
+        ? undefined
+        : getUnlock(UnlockType.ROOM, RoomType.SHOP),
+  ],
+
   // 11
   [
     CardType.WHEEL_OF_FORTUNE,
@@ -1404,6 +1413,15 @@ const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<
       isSlotVariantUnlocked(SlotVariant.BLOOD_DONATION_MACHINE, false)
         ? undefined
         : getUnlock(UnlockType.SLOT, SlotVariant.BLOOD_DONATION_MACHINE),
+  ],
+
+  // 18
+  [
+    CardType.STARS,
+    () =>
+      isRoomTypeUnlocked(RoomType.TREASURE, false)
+        ? undefined
+        : getUnlock(UnlockType.ROOM, RoomType.TREASURE),
   ],
 
   // 21
@@ -1461,10 +1479,17 @@ const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<
   // 65
   [
     CardType.REVERSE_HERMIT,
-    () =>
-      isCoinSubTypeUnlocked(CoinSubType.NICKEL, false)
-        ? undefined
-        : getUnlock(UnlockType.COIN, CoinSubType.NICKEL),
+    () => {
+      if (!isRoomTypeUnlocked(RoomType.SHOP, false)) {
+        return getUnlock(UnlockType.ROOM, RoomType.SHOP);
+      }
+
+      if (!isCoinSubTypeUnlocked(CoinSubType.NICKEL, false)) {
+        return getUnlock(UnlockType.COIN, CoinSubType.NICKEL);
+      }
+
+      return undefined;
+    },
   ],
 
   // 70
