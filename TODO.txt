@@ -1,9 +1,10 @@
 TODO:
 
-- rules card
 - get rid of alt floor unlocks
 - prevent illegal save & quit by killing and reviving
 - website
+- all champions
+- rules card
 
 ------------------------------
 

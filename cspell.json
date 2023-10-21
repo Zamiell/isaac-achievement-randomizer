@@ -7,6 +7,9 @@
   "enableGlobDot": true,
   "useGitignore": true,
   "ignorePaths": [
+    // @template-customization-start
+    "entities2.xml",
+    // @template-customization-end
     "*.anm2",
     "*.ogg",
     "*.pyc",

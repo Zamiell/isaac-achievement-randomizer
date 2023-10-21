@@ -5,6 +5,7 @@
 
 ### _v0.7.0_ - October 20th, 2023
 
+- All enemies now have a chance to become a champion.
 - Added the "randomizerVersion" command.
 
 ### _v0.6.0_ - October 20th, 2023

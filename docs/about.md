@@ -489,7 +489,11 @@ There are thousands of rooms in the game, but many players have already seen the
 
 Gehenna is exempt from this behavior due to unavoidable damage with Ball and Chains.
 
-### 5) Gameplay Removals
+### 5) More Champions
+
+In the vanilla game, only certain specific enemies have the chance to spawn as a champion variant. In this mod, every enemy in the game has a chance to spawn as a champion variant.
+
+### 6) Gameplay Removals
 
 #### Donation Machine Removal <!-- RemoveDonationMachines -->
 
@@ -505,11 +509,11 @@ The mod deletes all Void Portals outside of the Blue Womb. This is both a balanc
 
 Glitched items are removed for the same reason that TMTRAINER is.
 
-### 6) Chill Room <!-- ChillRoom -->
+### 7) Chill Room <!-- ChillRoom -->
 
 The mod provides a custom challenge that simply locks you in the starting room of the run. You can use this challenge to review your achievements and plan for your next run. Runs started inside of the challenge will not count towards your randomizer stats or deaths.
 
-### 7) Custom Console Commands <!-- consoleCommands.ts -->
+### 8) Custom Console Commands <!-- consoleCommands.ts -->
 
 The mod provides several custom [console commands](https://bindingofisaacrebirth.fandom.com/wiki/Debug_Console):
 
@@ -517,7 +521,7 @@ The mod provides several custom [console commands](https://bindingofisaacrebirth
 - `startRandomizer [mode] [seed]` - Starts a new randomizer playthrough using the specified seed. For example: `startRandomizer hardcore 12345`
 - `spoilerLog` - Writes out a spoiler log to the "log.txt" file. Note that the unlocks may not be accurate, since the mod swaps an unlock if it detects that you should not get it yet.
 
-### 8) Crash & Softlock Prevention <!-- FixVanillaBugs -->
+### 9) Crash & Softlock Prevention <!-- FixVanillaBugs -->
 
 This mod attempts to fix as many vanilla crashes & softlocks as possible. The following situations are fixed:
 
