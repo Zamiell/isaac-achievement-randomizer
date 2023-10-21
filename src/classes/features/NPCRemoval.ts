@@ -4,10 +4,10 @@ import {
   FireplaceVariant,
 } from "isaac-typescript-definitions";
 import { CallbackCustom, ModCallbackCustom } from "isaacscript-common";
+import { getModifiedBossID } from "../../enums/BossIDCustom";
 import { EffectVariantCustom } from "../../enums/EffectVariantCustom";
 import { OtherUnlockKind } from "../../enums/OtherUnlockKind";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { getModifiedBossID } from "./BossNoHitObjectiveDetection";
 import { isOtherUnlockKindUnlocked } from "./achievementTracker/completedUnlocks";
 
 export class NPCRemoval extends RandomizerModFeature {

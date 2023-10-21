@@ -9,12 +9,10 @@ import {
   GurglingVariant,
   LokiVariant,
   MegaSatanVariant,
-  MinibossID,
   ModCallback,
   NPCState,
   PeepVariant,
   PrideVariant,
-  RoomType,
 } from "isaac-typescript-definitions";
 import {
   Callback,
@@ -22,18 +20,15 @@ import {
   GAME_FRAMES_PER_SECOND,
   ModCallbackCustom,
   ReadonlySet,
-  doesEntityExist,
   game,
-  getBossID,
   getEntityTypeVariantFromBossID,
   getNPCs,
-  getRoomSubType,
   inBigRoom,
   isFirstPlayer,
   isSelfDamage,
   onAnyChallenge,
 } from "isaacscript-common";
-import { BossIDCustom } from "../../enums/BossIDCustom";
+import { BossIDCustom, getModifiedBossID } from "../../enums/BossIDCustom";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import {
   getNumSecondsForBossObjective,
@@ -386,6 +381,20 @@ export function getSecondsSinceLastDamage(): int | undefined {
 
   // Verify the boss is alive.
   switch (bossID) {
+    // 14
+    case BossID.PEEP: {
+      const peeps = getNPCs(EntityType.PEEP, PeepVariant.PEEP, -1, true);
+      const peepEyes = getNPCs(EntityType.PEEP, PeepVariant.PEEP_EYE, -1, true);
+      const bosses = [...peeps, ...peepEyes];
+      const aliveBosses = bosses.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length < 3) {
+        return;
+      }
+
+      break;
+    }
+
     // 18, 33
     case BossID.FISTULA:
     case BossID.TERATOMA: {
@@ -470,20 +479,6 @@ export function getSecondsSinceLastDamage(): int | undefined {
       const ragMans = getNPCs(EntityType.RAG_MAN);
       const raglings = getNPCs(EntityType.RAGLING);
       const bosses = [...ragMans, ...raglings];
-      const aliveBosses = bosses.filter((boss) => !boss.IsDead());
-
-      if (aliveBosses.length < 3) {
-        return;
-      }
-
-      break;
-    }
-
-    // 65
-    case BossID.PEEP: {
-      const peeps = getNPCs(EntityType.PEEP, PeepVariant.PEEP, -1, true);
-      const peepEyes = getNPCs(EntityType.PEEP, PeepVariant.PEEP_EYE, -1, true);
-      const bosses = [...peeps, ...peepEyes];
       const aliveBosses = bosses.filter((boss) => !boss.IsDead());
 
       if (aliveBosses.length < 3) {
@@ -684,83 +679,4 @@ function onFirstPhaseOfSatan(): boolean {
   }
 
   return satans.every((satan) => satan.State === NPCState.IDLE);
-}
-
-/**
- * Similar to the `getBossID` helper function from `isaacscript-common`, but works with custom boss
- * IDs for the randomizer.
- */
-export function getModifiedBossID(): BossID | undefined {
-  const room = game.GetRoom();
-  const roomType = room.GetType();
-
-  switch (roomType) {
-    // 6
-    case RoomType.MINI_BOSS: {
-      const roomSubType = getRoomSubType();
-
-      switch (roomSubType) {
-        case MinibossID.ULTRA_PRIDE: {
-          return BossIDCustom.ULTRA_PRIDE;
-        }
-
-        case MinibossID.KRAMPUS: {
-          return BossIDCustom.KRAMPUS;
-        }
-
-        default: {
-          return undefined;
-        }
-      }
-    }
-
-    // 14
-    case RoomType.DEVIL: {
-      if (doesEntityExist(EntityType.FALLEN, FallenVariant.KRAMPUS)) {
-        return BossIDCustom.KRAMPUS;
-      }
-
-      return undefined;
-    }
-
-    // 15
-    case RoomType.ANGEL: {
-      if (doesEntityExist(EntityType.URIEL)) {
-        return BossIDCustom.URIEL;
-      }
-
-      if (doesEntityExist(EntityType.GABRIEL)) {
-        return BossIDCustom.GABRIEL;
-      }
-
-      break;
-    }
-
-    // 16
-    case RoomType.DUNGEON: {
-      if (doesEntityExist(EntityType.BEAST, BeastVariant.ULTRA_FAMINE)) {
-        return BossIDCustom.ULTRA_FAMINE;
-      }
-
-      if (doesEntityExist(EntityType.BEAST, BeastVariant.ULTRA_PESTILENCE)) {
-        return BossIDCustom.ULTRA_PESTILENCE;
-      }
-
-      if (doesEntityExist(EntityType.BEAST, BeastVariant.ULTRA_WAR)) {
-        return BossIDCustom.ULTRA_WAR;
-      }
-
-      if (doesEntityExist(EntityType.BEAST, BeastVariant.ULTRA_DEATH)) {
-        return BossIDCustom.ULTRA_DEATH;
-      }
-
-      break;
-    }
-
-    default: {
-      break;
-    }
-  }
-
-  return getBossID();
 }

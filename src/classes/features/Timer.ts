@@ -1,14 +1,12 @@
 import { ModCallback } from "isaac-typescript-definitions";
 import { Callback } from "isaacscript-common";
 import { isTimerEnabled } from "../../config";
+import { getModifiedBossID } from "../../enums/BossIDCustom";
 import { TimerType } from "../../enums/TimerType";
 import { timerDraw } from "../../timer";
 import { getNumSecondsForBossObjective } from "../../types/Objective";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import {
-  getModifiedBossID,
-  getSecondsSinceLastDamage,
-} from "./BossNoHitObjectiveDetection";
+import { getSecondsSinceLastDamage } from "./BossNoHitObjectiveDetection";
 import { getPlaythroughSecondsElapsed } from "./StatsTracker";
 
 export class Timer extends RandomizerModFeature {

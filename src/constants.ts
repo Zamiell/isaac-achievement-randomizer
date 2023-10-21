@@ -7,4 +7,4 @@ export const DEBUG = false as boolean;
 
 export const STARTING_CHARACTER = PlayerType.ISAAC;
 
-export const LAST_VERSION_WITH_ACHIEVEMENT_CHANGES = "0.2.0";
+export const LAST_VERSION_WITH_ACHIEVEMENT_CHANGES = "0.7.0";

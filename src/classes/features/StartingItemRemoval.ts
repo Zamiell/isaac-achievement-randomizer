@@ -26,7 +26,7 @@ import {
   sfxManager,
 } from "isaacscript-common";
 import { BANNED_COLLECTIBLE_TYPES } from "../../arrays/unlockableCollectibleTypes";
-import { BANNED_TRINKET_TYPES_SET } from "../../arrays/unlockableTrinketTypes";
+import { BANNED_TRINKET_TYPES } from "../../arrays/unlockableTrinketTypes";
 import { POCKET_ITEM_SLOTS, TRINKET_SLOTS } from "../../cachedEnums";
 import { OtherUnlockKind } from "../../enums/OtherUnlockKind";
 import { mod } from "../../mod";
@@ -73,7 +73,7 @@ export class StartingItemRemoval extends RandomizerModFeature {
         (!isTrinketTypeUnlocked(trinketType, true) ||
           (isGoldenTrinketType(trinketType) &&
             !isOtherUnlockKindUnlocked(OtherUnlockKind.GOLD_TRINKETS, true)) ||
-          BANNED_TRINKET_TYPES_SET.has(trinketType) ||
+          includes(BANNED_TRINKET_TYPES, trinketType) ||
           isEden(player))
       ) {
         player.TryRemoveTrinket(trinketType);

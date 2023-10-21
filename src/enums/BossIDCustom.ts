@@ -1,7 +1,18 @@
-import { BossID } from "isaac-typescript-definitions";
 import {
+  BeastVariant,
+  BossID,
+  EntityType,
+  FallenVariant,
+  MinibossID,
+  RoomType,
+} from "isaac-typescript-definitions";
+import {
+  doesEntityExist,
+  game,
+  getBossID,
   getBossName,
   getHighestEnumValue,
+  getRoomSubType,
   validateCustomEnum,
 } from "isaacscript-common";
 
@@ -58,4 +69,83 @@ export function getBossNameCustom(bossID: BossID): string {
       return getBossName(bossID);
     }
   }
+}
+
+/**
+ * Similar to the `getBossID` helper function from `isaacscript-common`, but works with custom boss
+ * IDs for the randomizer.
+ */
+export function getModifiedBossID(): BossID | undefined {
+  const room = game.GetRoom();
+  const roomType = room.GetType();
+
+  switch (roomType) {
+    // 6
+    case RoomType.MINI_BOSS: {
+      const roomSubType = getRoomSubType();
+
+      switch (roomSubType) {
+        case MinibossID.ULTRA_PRIDE: {
+          return BossIDCustom.ULTRA_PRIDE;
+        }
+
+        case MinibossID.KRAMPUS: {
+          return BossIDCustom.KRAMPUS;
+        }
+
+        default: {
+          return undefined;
+        }
+      }
+    }
+
+    // 14
+    case RoomType.DEVIL: {
+      if (doesEntityExist(EntityType.FALLEN, FallenVariant.KRAMPUS)) {
+        return BossIDCustom.KRAMPUS;
+      }
+
+      return undefined;
+    }
+
+    // 15
+    case RoomType.ANGEL: {
+      if (doesEntityExist(EntityType.URIEL)) {
+        return BossIDCustom.URIEL;
+      }
+
+      if (doesEntityExist(EntityType.GABRIEL)) {
+        return BossIDCustom.GABRIEL;
+      }
+
+      break;
+    }
+
+    // 16
+    case RoomType.DUNGEON: {
+      if (doesEntityExist(EntityType.BEAST, BeastVariant.ULTRA_FAMINE)) {
+        return BossIDCustom.ULTRA_FAMINE;
+      }
+
+      if (doesEntityExist(EntityType.BEAST, BeastVariant.ULTRA_PESTILENCE)) {
+        return BossIDCustom.ULTRA_PESTILENCE;
+      }
+
+      if (doesEntityExist(EntityType.BEAST, BeastVariant.ULTRA_WAR)) {
+        return BossIDCustom.ULTRA_WAR;
+      }
+
+      if (doesEntityExist(EntityType.BEAST, BeastVariant.ULTRA_DEATH)) {
+        return BossIDCustom.ULTRA_DEATH;
+      }
+
+      break;
+    }
+
+    default: {
+      break;
+    }
+  }
+
+  return getBossID();
 }

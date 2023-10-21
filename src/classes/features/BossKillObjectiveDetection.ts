@@ -7,12 +7,12 @@ import {
   inBeastRoom,
   inMegaSatanRoom,
 } from "isaacscript-common";
+import { getModifiedBossID } from "../../enums/BossIDCustom";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import { getObjective } from "../../types/Objective";
 import { getAdjustedCharacterForObjective } from "../../utils";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { getModifiedBossID } from "./BossNoHitObjectiveDetection";
 import { addObjective } from "./achievementTracker/addObjective";
 
 const BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND = new ReadonlyMap<

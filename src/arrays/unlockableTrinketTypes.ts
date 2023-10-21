@@ -7,11 +7,7 @@ export const BANNED_TRINKET_TYPES = [
   TrinketType.M, // 138
 ] as const;
 
-export const BANNED_TRINKET_TYPES_SET = new ReadonlySet<TrinketType>(
-  BANNED_TRINKET_TYPES,
-);
-
-export const ALWAYS_UNLOCKED_TRINKET_TYPES = new ReadonlySet<TrinketType>([
+const ALWAYS_UNLOCKED_TRINKET_TYPES = new ReadonlySet<TrinketType>([
   ...BANNED_TRINKET_TYPES,
 ]);
 

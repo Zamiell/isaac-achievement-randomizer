@@ -150,10 +150,16 @@ The following bosses have custom timer lengths:
 
 The following bosses have custom conditions:
 
+- Peep (#14) - Both eyes must be spawned.
 - Fistula (#18) - Four or more pieces must be alive.
-- Teratoma (#33) - Four or more pieces must be alive.
+- Fallen (#23) - Both split entities must be alive.
 - Lokii (#31) - Both must be alive.
+- Teratoma (#33) - Four or more pieces must be alive.
+- Isaac (#39) - Must be on phase 2 or phase 3.
+- Blue Baby (#40) - Must be on phase 2 or phase 3.
+- Gurglings (#56) - Both must be alive.
 - Rag Man (#61) - At least two Raglings must be alive.
+- Turdlings (#65) - Both must be alive.
 - Sisters Vis (#68) - Both must be alive.
 - Ultra Pride - Both must be alive.
 
