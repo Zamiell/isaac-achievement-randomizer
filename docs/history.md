@@ -3,6 +3,10 @@
 <!-- cspell:ignore antizoubilamaka,Erbear,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.7.1_ - October 20th, 2023
+
+- Fixed the bug where Breakfast would cause an error message. (Thanks Neonomi)
+
 ### _v0.7.0_ - October 20th, 2023
 
 - Removed the 11 alt floor unlocks. (All alt floors now start off unlocked.)
