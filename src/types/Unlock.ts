@@ -18,6 +18,7 @@ import type {
 } from "isaac-typescript-definitions";
 import type { CompositionTypeSatisfiesEnum } from "isaacscript-common";
 import {
+  capitalizeFirstLetter,
   getBatteryName,
   getBombName,
   getCardName,
@@ -390,7 +391,10 @@ export function getUnlockText(unlock: Unlock): [string, string] {
     }
 
     case UnlockType.ROOM: {
-      return ["room type", getRoomTypeName(unlock.roomType)];
+      return [
+        "room type",
+        capitalizeFirstLetter(getRoomTypeName(unlock.roomType)),
+      ];
     }
 
     case UnlockType.CHALLENGE: {
