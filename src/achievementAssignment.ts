@@ -24,8 +24,7 @@ import type { Unlock } from "./types/Unlock";
 import { getUnlock, getUnlockText } from "./types/Unlock";
 import { getUnlockID } from "./types/UnlockID";
 
-/** These are the objectives that The Polaroid and The Negative are gated behind. */
-const EASY_OBJECTIVE_KINDS = [
+const POLAROID_NEGATIVE_UNLOCK_OBJECTIVE_KINDS = [
   CharacterObjectiveKind.MOM,
   CharacterObjectiveKind.IT_LIVES,
   CharacterObjectiveKind.ISAAC,
@@ -50,14 +49,15 @@ const EASY_UNLOCKABLE_PATHS = [
  * 2) not gated behind an unlockable path (with the exception of The Chest / Dark Room, since those
  *    are behind easy Isaac objectives)
  */
-const BASIC_CHARACTER_OBJECTIVES = new ReadonlySet<CharacterObjectiveKind>([
-  CharacterObjectiveKind.MOM,
-  CharacterObjectiveKind.IT_LIVES,
-  CharacterObjectiveKind.ISAAC,
-  CharacterObjectiveKind.BLUE_BABY,
-  CharacterObjectiveKind.SATAN,
-  CharacterObjectiveKind.LAMB,
-]);
+const CHARACTER_UNLOCK_OBJECTIVE_KINDS =
+  new ReadonlySet<CharacterObjectiveKind>([
+    CharacterObjectiveKind.MOM,
+    CharacterObjectiveKind.IT_LIVES,
+    CharacterObjectiveKind.ISAAC,
+    CharacterObjectiveKind.BLUE_BABY,
+    CharacterObjectiveKind.SATAN,
+    CharacterObjectiveKind.LAMB,
+  ]);
 
 /** These are characters that are guaranteed to not be unlocked early on. */
 const HARD_CHARACTERS = [
@@ -74,7 +74,9 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
 
   // The Polaroid and The Negative are guaranteed to be unlocked via an easy objective for the
   // starting character.
-  const easyObjectiveKinds = copyArray(EASY_OBJECTIVE_KINDS);
+  const easyObjectiveKinds = copyArray(
+    POLAROID_NEGATIVE_UNLOCK_OBJECTIVE_KINDS,
+  );
   for (const unlockablePath of EASY_UNLOCKABLE_PATHS) {
     const unlock = getUnlock(UnlockType.PATH, unlockablePath);
     removeUnlock(unlocks, unlock);
@@ -105,7 +107,7 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
       (objective) =>
         objective.type === ObjectiveType.CHARACTER &&
         objective.character === lastUnlockedCharacter &&
-        BASIC_CHARACTER_OBJECTIVES.has(objective.kind),
+        CHARACTER_UNLOCK_OBJECTIVE_KINDS.has(objective.kind),
     ) as CharacterObjective[];
     const objective = getRandomArrayElement(lastCharacterObjectives, rng);
     removeObjective(objectives, objective);

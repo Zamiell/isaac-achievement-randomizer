@@ -47,7 +47,7 @@ We do not want to randomize the vanilla achievements. This is for several reason
 1. Most vanilla achievements are arbitrary conditions and are not very fun to play, like `They will charge you up... for a small fee - Donate to Battery Bums until they pay out with an item 5 times`. (If you are not lucky enough to get this achievement during your playthrough, the most consistent strategy is to reset as Tainted Keeper in Greed Mode until you see a Battery Bum in the shop. This is "busywork" and is not skill-based in any way.)
 1. Many things are not gated behind vanilla achievements and it would be fun if they were (e.g. soul hearts, locked chests).
 
-Thus, this mod takes a completely different approach. We want each objective to be non-arbitrary, difficult, and represent a meaningful accomplishment inside of the game. And we want to unlockable as many things as possible.
+Thus, this mod takes a completely different approach. We want each objective to be non-arbitrary, difficult, and represent a meaningful accomplishment inside of the game. And we want to unlock as many things as possible.
 
 <br>
 
@@ -140,12 +140,10 @@ In hardcore mode, we want to prevent the situation where you unlock powerful ite
 
 Nightmare mode is the same as hardcore mode, but also has the following effects:
 
-- All enemies are champions without any drops.
+- If possible, enemies will spawn as champions.
+- Champion enemies will not drop any pickups.
 - You take full heart damage from all sources.
 - Breakfast does not spawn.
-- Wooden Spoon (#27), Mom's Underwear (#29), Wire Coat Hanger (#32), and Cat-O-Nine-Tails (#165) do not start out unlocked.
-
-Since Nightmare Mode has 12 more unlocks than objectives, a completed playthrough will not have 12 random trinkets unlocked. (Trinkets are randomized last since they are the least consequential unlock.)
 
 <br>
 
@@ -153,6 +151,13 @@ Since Nightmare Mode has 12 more unlocks than objectives, a completed playthroug
 
 - Unlocking new things will never apply to the current run and will only apply to subsequent runs.
   - For example, if you unlock The Polaroid on Basement 1 and go on to kill Mom, she will still not drop The Polaroid because it will only be unlocked on the next run.
+- The following stat collectibles will always be unlocked before any other unlocks:
+  - Wooden Spoon (#27)
+  - Wire Coat Hanger (#32)
+  - Cat o Nine Tails (#165)
+- Isaac is guaranteed to unlock both The Chest & Dark Room from one of his [easier objectives](objectives.md#polaroid--negative-objectives). The rest can be randomly unlocked from any objective.
+- Each character is guaranteed to unlock another random character from one of their [easier objectives](objectives.md#character-unlock-objectives).
+- Besides that, there is no logic that makes things unlock in a particular order. However, certain specific unlocks will be swapped to ensure that unlocked things are not "useless" [as described in the casual mode section](#1-casual-mode-full-random).
 
 <br>
 

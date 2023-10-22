@@ -1,5 +1,9 @@
 TODO:
 
+- make second run end on mom's heart, guarantee to unlock item room, shop, secret rooms.
+- make third run end on mom's heart again, guarantee to unlock all q0 items so every next run wouldn't be the same.
+- make the chest unlocked by beating isaac with isaac, dark room by beating satan with isaac, making each run end with it.
+
 - more hard characters
   PlayerType.BLUE_BABY, // 4
   PlayerType.JUDAS_B, // 24
@@ -11,15 +15,6 @@ TODO:
   TJacob,
 
 - make sure special logic is documented, e.g. boss items, characters, polaroid/chest
-  - Each character is guaranteed to unlock another random character from the following objectives:
-    - Mom
-    - It Lives
-    - Isaac
-    - Blue Baby
-    - Satan
-    - The Lamb
-  Isaac is guaranteed to unlock both The Chest & Dark Room from one of his [easier objectives](#easy-objectives). The rest can be randomly unlocked from any objective.
-
 
 
 - unlock first:
@@ -36,13 +31,11 @@ const BOSS_ROOM_COLLECTIBLE_TYPE_EXCEPTIONS = [
 - all horsemen must be phase 1
 - deal 1 damage to isaac + blue baby upon room entry and then delete the phase 2 requirements for the boss objective
 
-- unlock text for clean bedrooms should say clean + dirty bedrooms
-
 - ensure excepted boss items are only in boss pool (use ISC functions)
 
 - show bosses where you can get them on DSS menu
   - sort by this instead of boss number
-- end first run at mom
+
 - rules card - show future unlocks
 - website - see all current unlocks after uploading save file
 - option to include banned items

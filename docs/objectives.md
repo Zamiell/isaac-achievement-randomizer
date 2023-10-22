@@ -118,9 +118,9 @@ There is one unlock for completing each challenge, with the following exceptions
 
 There are 1054 + 104 + 44 = 1202 objectives in total.
 
-## Easy Objectives
+## Polaroid & Negative Objectives
 
-The following objectives are considered to be "easy" for the purposes of unlocking The Polaroid and The Negative:
+We want The Chest & Dark Room to unlock very quickly in a randomizer playthrough, so those unlocks are guaranteed to unlock behind the following "easy" objectives on Isaac:
 
 - Mom
 - It Lives
@@ -132,3 +132,14 @@ The following objectives are considered to be "easy" for the purposes of unlocki
 - No Hit Caves 2
 - No Hit Depths 1
 - No Hit Depths 2
+
+## Character Unlock Objectives
+
+Each character is guaranteed to unlock another random character from the following "easy" objectives:
+
+- Mom
+- It Lives
+- Isaac
+- Blue Baby
+- Satan
+- The Lamb
