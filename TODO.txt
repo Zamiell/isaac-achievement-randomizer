@@ -1,6 +1,5 @@
 TODO:
 
-- custom message for challenge #45
 - more hard characters
   PlayerType.BLUE_BABY, // 4
   PlayerType.JUDAS_B, // 24

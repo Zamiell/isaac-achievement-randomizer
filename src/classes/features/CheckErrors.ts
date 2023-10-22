@@ -20,6 +20,7 @@ import {
   getChallengeName,
   getCharacterName,
   getCollectibleName,
+  includes,
   isRepentance,
   log,
   newSprite,
@@ -29,6 +30,7 @@ import {
   removeAllDoors,
 } from "isaacscript-common";
 import { version } from "../../../package.json";
+import { BANNED_CHALLENGES } from "../../arrays/unlockableChallenges";
 import {
   IS_DEV,
   LAST_VERSION_WITH_ACHIEVEMENT_CHANGES,
@@ -115,6 +117,10 @@ export class CheckErrors extends ModFeature {
       this.drawErrorText(`You have not unlocked ${characterName} yet.`);
     } else if (v.run.lockedChallenge) {
       this.drawErrorText("You have not unlocked this challenge yet.");
+    } else if (v.run.bannedChallenge) {
+      this.drawErrorText(
+        "This challenge is not part of Achievement Randomizer, so you cannot play it while in a randomizer playthrough.",
+      );
     } else if (v.run.lockedMode) {
       this.drawErrorText("You have not unlocked Greed Mode yet.");
     } else if (v.run.versionMismatch) {
@@ -174,6 +180,7 @@ export class CheckErrors extends ModFeature {
       checkVictoryLap();
       checkCharacterUnlocked();
       checkChallengeUnlocked();
+      checkChallengeBanned();
       checkModeUnlocked();
       checkVersionMismatch();
     }
@@ -290,6 +297,16 @@ function checkChallengeUnlocked() {
     const challengeName = getChallengeName(challenge);
     log(`Error: Locked challenge detected: ${challengeName} (${challenge})`);
     v.run.lockedChallenge = true;
+  }
+}
+
+function checkChallengeBanned() {
+  const challenge = Isaac.GetChallenge();
+
+  if (includes(BANNED_CHALLENGES, challenge)) {
+    const challengeName = getChallengeName(challenge);
+    log(`Error: Banned challenge detected: ${challengeName} (${challenge})`);
+    v.run.bannedChallenge = true;
   }
 }
 

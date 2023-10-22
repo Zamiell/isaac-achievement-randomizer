@@ -11,6 +11,7 @@ export const v = {
     onVictoryLap: false,
     lockedCharacter: false,
     lockedChallenge: false,
+    bannedChallenge: false,
     lockedMode: false,
     versionMismatch: false,
   },

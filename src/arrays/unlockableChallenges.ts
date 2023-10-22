@@ -1,12 +1,12 @@
 import { Challenge } from "isaac-typescript-definitions";
-import { ReadonlySet } from "isaacscript-common";
+import { includes } from "isaacscript-common";
 import { CHALLENGES } from "../cachedEnums";
 
-const BANNED_CHALLENGES = new ReadonlySet<Challenge>([
+export const BANNED_CHALLENGES = [
   Challenge.DELETE_THIS, // 45
-]);
+] as const;
 
 export const UNLOCKABLE_CHALLENGES: readonly Challenge[] = CHALLENGES.filter(
   (challenge) =>
-    challenge !== Challenge.NULL && !BANNED_CHALLENGES.has(challenge),
+    challenge !== Challenge.NULL && !includes(BANNED_CHALLENGES, challenge),
 );
