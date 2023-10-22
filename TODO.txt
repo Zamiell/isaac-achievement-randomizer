@@ -1,5 +1,38 @@
 TODO:
 
+- custom message for challenge #45
+- more hard characters
+  PlayerType.BLUE_BABY, // 4
+  PlayerType.JUDAS_B, // 24
+  PlayerType.BLUE_BABY_B, // 25
+  PlayerType.LOST_B, // 31
+  PlayerType.FORGOTTEN_B, // 35
+  PlayerType.BETHANY_B, // 36
+  TLaz,
+  TJacob,
+
+- make sure special logic is documented, e.g. boss items, characters, polaroid/chest
+  - Each character is guaranteed to unlock another random character from the following objectives:
+    - Mom
+    - It Lives
+    - Isaac
+    - Blue Baby
+    - Satan
+    - The Lamb
+  Isaac is guaranteed to unlock both The Chest & Dark Room from one of his [easier objectives](#easy-objectives). The rest can be randomly unlocked from any objective.
+
+
+
+- unlock first:
+
+const BOSS_ROOM_COLLECTIBLE_TYPE_EXCEPTIONS = [
+  CollectibleType.BREAKFAST, // 25
+  CollectibleType.WOODEN_SPOON, // 27
+  CollectibleType.MOMS_UNDERWEAR, // 29
+  CollectibleType.WIRE_COAT_HANGER, // 32
+  CollectibleType.CAT_O_NINE_TAILS, // 165
+] as const;
+
 - bosses from challenge room should count
 - segmented enemies should all be champions
 

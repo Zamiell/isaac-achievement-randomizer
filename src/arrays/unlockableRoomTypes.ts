@@ -31,3 +31,9 @@ export const UNLOCKABLE_ROOM_TYPES = [
   // - RoomType.BLUE (28)
   RoomType.ULTRA_SECRET, // 29
 ] as const;
+
+// Possible additions:
+// - RoomType.ERROR (3)
+// - RoomType.DEVIL (14)
+// - RoomType.ANGEL (15)
+// - RoomType.DIRTY_BEDROOM, // 19 (part of Clean Bedrooms)

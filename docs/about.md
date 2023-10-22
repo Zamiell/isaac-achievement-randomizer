@@ -2,34 +2,16 @@
 
 <!-- markdownlint-disable MD033 -->
 
-Achievement Randomizer is a mod for [_The Binding of Isaac: Repentance_](https://store.steampowered.com/app/1426300/The_Binding_of_Isaac_Repentance/) that gives you the experience of playing through the game from scratch, unlocking each item one by one in a randomized way.
-
-This page explains how it works.
-
-<br>
-
-## Table of Contents
-
-1. [Summary](#summary-tldr)
-1. [Design Principles](#design-principles)
-1. [Objective List](#objective-list)
-1. [Unlock List](#unlock-list)
-1. [Modes](#modes)
-1. [Other Randomization Info](#other-randomization-info)
-1. [Other Features](#other-features)
-1. [F.A.Q.](#faq-frequently-asked-questions)
-
-<br>
-
 ## Summary (TL;DR)
 
-- This mod does not simply randomize all of the vanilla achievements. Rather, it has custom objectives and custom unlocks.
+- Achievement Randomizer is a mod for [_The Binding of Isaac: Repentance_](https://store.steampowered.com/app/1426300/The_Binding_of_Isaac_Repentance/) that gives you the experience of playing through the game from scratch, unlocking each item one by one in a randomized way.
+- It does not simply randomize all of the vanilla achievements. Rather, it has [custom objectives](objectives.md) and [custom unlocks](unlocks.md).
+- Unlike vanilla, almost everything that you can imagine is locked from the start of the game. That means you will have to beat your the first run as Isaac with only Breakfast in the item pools!
 - The custom objectives are designed to be challenging and non-arbitrary. There are only 4 types of objectives:
   - Kill each story boss (per character).
   - Finish each floor without taking a hit (per character).
   - Survive each boss for 2 minutes without taking a hit.
   - Complete each challenge.
-- Unlike vanilla, almost everything you can imagine is locked from the start of the game. That means you will have to beat your the first run as Isaac with only Breakfast in the item pools!
 - For more specific details about why we designed it this way and what exact things are locked, read on.
 
 <br>
@@ -39,6 +21,19 @@ This page explains how it works.
 - The mod is currently in beta, so it is not recommended that you play it. If you want to test the beta version, then expect bugs, oversights, broken save files, uncompletable seeds, and so on.
 - [Backup your save file](#how-do-i-backuprestoreedit-my-randomizer-save-file) after every run.
 - Report any bugs that you encounter in [the Isaac Streaking Discord server](https://discord.gg/GwhUeQjHTF).
+
+<br>
+
+## Table of Contents
+
+1. [Design Principles](#design-principles)
+1. [Terminology](#terminology)
+1. [Objective List](#objective-list)
+1. [Unlock List](#unlock-list)
+1. [Modes](#modes)
+1. [Other Randomization Info](#other-randomization-info)
+1. [Other Features](#other-features)
+1. [F.A.Q.](#faq-frequently-asked-questions)
 
 <br>
 
@@ -68,321 +63,13 @@ Before we get into the details of the mod, we should clarify the terminology use
 
 ## Objective List
 
-Note that all objectives must be completed on hard mode.
-
-### Character-Based Objectives (1054)
-
-Each character will unlock something upon defeating/completing the following:
-
-1. Mom
-2. It Lives
-3. Isaac
-4. Blue Baby
-5. Satan
-6. The Lamb
-7. Mega Satan
-8. Boss Rush
-9. Hush
-10. Ultra Greed
-11. Delirium
-12. Mother
-13. The Beast
-
-Additionally, each character will unlock something upon full-clearing the following floors without getting hit:
-
-1. Basement 1 / Cellar 1 / Burning Basement 1
-2. Basement 2 / Cellar 2 / Burning Basement 2
-3. Caves 1 / Catacombs 1 / Flooded Caves 1
-4. Caves 2 / Catacombs 2 / Flooded Caves 2
-5. Depths 1 / Necropolis 1 / Dank Depths 1
-6. Depths 2 / Necropolis 2 / Dank Depths 2
-7. Womb 1 / Utero 1 / Scarred Womb 1
-8. Womb 2 / Utero 2 / Scarred Womb 2
-9. Cathedral / Sheol
-10. The Chest / Dark Room
-11. Downpour 1 / Dross 1
-12. Downpour 2 / Dross 2
-13. Mines 1 / Ashpit 1
-14. Mines 2 / Ashpit 2
-15. Mausoleum 1 / Gehenna 1
-16. Mausoleum 2 / Gehenna 2
-17. Corpse 1
-18. Corpse 2
-
-> Tip: A Crown of Light icon will appear next to the coin count UI when the "no hit" objective has not yet been accomplished for the particular character and floor combination.
-
-### Boss-Based Objectives (104)
-
-There is one unlock for surviving for 2 minutes without taking a hit for each boss.
-
-The following "special" bosses / mini-bosses are also included:
-
-- Ultra Pride (#46.2)
-- Krampus (#81.1)
-- Uriel (#271.0)
-- Gabriel (#272.0)
-- Ultra Famine (#951.10)
-- Ultra Pestilence (#951.20)
-- Ultra War (#951.30)
-- Ultra Death (#951.40)
-
-The following bosses have custom timer lengths:
-
-- Monstro (#1) - 1 minute (too easy)
-- Larry Jr. (#2) - 1 minute (too easy)
-- Famine (#9) - 1.5 minutes (mostly easy)
-- Duke of Flies (#13) - 1 minute (too easy)
-- Gemini (#17) - 1 minute (too easy)
-- Fistula (#18) - 1.5 minutes (mostly easy)
-- Steven (#20) - 1 minute (too easy)
-- Teratoma (#33) - 1.5 minutes (mostly easy)
-- Pin (#37) - 1.5 minutes (mostly easy)
-- Dingle (#44) - 1.5 minutes (mostly easy)
-- Gurglings (#56) - 1.5 minutes (mostly easy)
-- Brownie (#58) - 1 minute (since he damages himself)
-- Little Horn (#60) - 1.5 minutes (mostly easy)
-- Rag Man (#61) - 1.5 minutes (mostly easy)
-- Dangle (#64) - 1.5 minutes (mostly easy)
-- Turdlings (#65) - 1.5 minutes (mostly easy)
-- Hornfel (#82) - 1 minute (extremely difficult)
-- Scourge (#85) - 1 minute (extremely difficult)
-- Rotgut (#87) - 1 minute (extremely difficult)
-
-The following bosses have custom conditions:
-
-- Peep (#14) - Both eyes must be spawned.
-- Fistula (#18) - Four or more pieces must be alive.
-- Fallen (#23) - Both split entities must be alive.
-- Lokii (#31) - Both must be alive.
-- Teratoma (#33) - Four or more pieces must be alive.
-- Isaac (#39) - Must be on phase 2 or phase 3.
-- Blue Baby (#40) - Must be on phase 2 or phase 3.
-- Gurglings (#56) - Both must be alive.
-- Rag Man (#61) - At least two Raglings must be alive.
-- Turdlings (#65) - Both must be alive.
-- Sisters Vis (#68) - Both must be alive.
-- Ultra Pride - Both must be alive.
-
-Additionally, the following bosses are excluded entirely:
-
-- Mom's Heart (#8) (inaccessible on a fully unlocked save file)
-- Gish (#19) (would be unfair since the boss is extremely rare)
-- C.H.A.D. (#21) (would be unfair since the boss is extremely rare)
-- Triachnid (#42) (would be unfair since the boss is extremely rare)
-- Delirium (#70) (would be unfair since the boss is poorly designed)
-- Raglich (#98) (unfinished boss, there are no actual boss rooms)
-
-Note that you are not able to accomplish a boss objective while in a Double Trouble room (since that would give you more room to dodge).
-
-> Tip: A timer will appear on the screen if a boss is in the room and the corresponding objective has not yet been accomplished.
-
-### Challenge-Based Objectives (44)
-
-There is one unlock for completing each challenge, with the following exceptions:
-
-- DELETE THIS (#45) (since TMTRAINER is banned)
-
-### Total Objectives
-
-There are 1054 + 104 + 44 = 1202 objectives in total.
-
-### Easy Objectives
-
-The following objectives are considered to be "easy" for the purposes of unlocking The Polaroid and The Negative:
-
-- Mom
-- It Lives
-- Isaac
-- Satan
-- No Hit Basement 1
-- No Hit Basement 2
-- No Hit Caves 1
-- No Hit Caves 2
-- No Hit Depths 1
-- No Hit Depths 2
+Objectives are listed [on a separate page](objectives.md).
 
 <br>
 
 ## Unlock List
 
-### Characters (33)
-
-- The first character unlocked will always be Isaac. All other characters start off locked.
-- Each character is guaranteed to unlock another random character from the following objectives:
-  - Mom
-  - It Lives
-  - Isaac
-  - Blue Baby
-  - Satan
-  - The Lamb
-
-### Paths (10)
-
-The following things start off locked and are inaccessible:
-
-- The Polaroid + The Chest
-- The Negative + The Dark Room
-- Key Piece 1 + Key Piece 2 + Mega Satan
-- Boss Rush
-- Blue Womb
-- The Void
-- Repentance floors
-- The Ascent
-- Greed Mode
-
-Isaac is guaranteed to unlock both The Chest & Dark Room from one of his [easier objectives](#easy-objectives). The rest can be randomly unlocked from any objective.
-
-### Alternate Floors (11)
-
-The following alternate floors start out locked:
-
-- Cellar
-- Burning Basement
-- Catacombs
-- Flooded Caves
-- Necropolis
-- Dank Depths
-- Utero
-- Scarred Womb
-- Dross
-- Ashpit
-- Gehenna
-
-### Room Types (7)
-
-The following room types start out locked:
-
-- Shops (#2) (unlocks before the first Shop pool collectible)
-- Treasure Rooms (#4) (unlocks before the first Treasure Room pool collectible)
-- Secret Rooms (#7) (unlocks before the first Secret Room pool collectible)
-- Super Secret Rooms (#8) (unlocks before the first Secret Room pool collectible)
-- Arcades (#9) (unlocks before the first slot machine)
-- Curse Rooms (#10) (unlocks before the first Curse Room pool collectible)
-- Challenge Rooms (#11) (unlocks before the first Boss Room pool collectible)
-- Libraries (#12) (unlocks before the first book collectible)
-- Sacrifice Rooms (#13) (unlocks before the first Angel Room pool collectible)
-- Vaults (#20) (unlocks before the first Golden Chest pool collectible)
-- Dice Rooms (#21) (unlocks before the first dice collectible/trinket/card)
-- Planetariums (#24) (unlocks before the first Planetarium pool collectible)
-- Bedrooms (#18, #19) (unlocks before the first heart or bed)
-- Black Markets (#22) (unlocks before the first Shop pool collectible)
-- Ultra Secret Rooms (#29) (unlocks before the first Ultra Secret Room pool collectible)
-
-### Challenges (44)
-
-All challenges start off locked, with the following exceptions:
-
-- DELETE THIS (#45) (since TMTRAINER is banned)
-
-### Collectibles (694)
-
-Every collectible in the game is locked, with the following exceptions:
-
-- Quest collectibles (except for the ones relating to the unlockable paths above):
-  - Broken Shovel (#550)
-  - Broken Shovel (#551)
-  - Mom's Shovel (#552)
-  - Knife Piece 1 (#626)
-  - Knife Piece 2 (#627)
-  - Dogma (#633)
-  - Dad's Note (#668)
-- Special non-obtainable collectibles:
-  - Book of Belial Birthright (#59)
-  - Broken Glass Cannon (#474)
-  - Damocles Passive (#656)
-  - Recall (#714)
-- Banned collectibles (since they would potentially trivialize difficult objectives):
-  - Gnawed Leaf (#210)
-  - Eden's Blessing (#381)
-  - Plan C (#475)
-  - Clicker (#482)
-  - Metronome (#488)
-  - R Key (#636)
-  - TMTRAINER (#721)
-
-Also note that:
-
-- Even if Ankh (#161) is unlocked, it is removed from pools until all of the Blue Baby objectives are completed.
-- Even if Judas' Shadow (#311) is unlocked, it is removed from pools until all of the Judas objectives are completed.
-- Even if Lazarus Rags (#332) is unlocked, it is removed from pools until all of the Lazarus objectives are completed.
-
-### Trinkets (185)
-
-Every trinket in the game is locked, with the following exceptions:
-
-- Banned trinkets in this mod:
-  - Error (#75)
-  - Karma (#85) (would be useless; see below)
-  - 'M (#138) (would break collectible unlocks)
-
-If no trinkets are unlocked, they will be converted to pennies.
-
-Also note that:
-
-- Even if Mysterious Paper (#21) or Missing Poster (#23) are unlocked, they are removed from pools until all of The Lost objectives are completed.
-- Even if Broken Ankh (#28) is unlocked, it is removed from pools until all of the Blue Baby objectives are completed.
-
-### Cards & Runes (95)
-
-Every card/rune in the game is locked, with the following exceptions:
-
-- Chaos Card (#42) (would trivialize difficult objectives)
-- Rune Shard (#55)
-
-If no cards/runes are unlocked, they will be converted to pennies.
-
-### Pill Effects (50)
-
-Every pill effect in the game is locked. If no pill effects are unlocked, pills will be converted to pennies.
-
-### Other Pickups (38)
-
-- Only half red heart pickups start out unlocked. Every other heart pickup in the game is locked. Locked hearts are converted to half red hearts. (11)
-- Only pennies start out unlocked. Every other coin in the game is locked. Locked coins are converted to pennies. (6)
-- Only normal bomb pickups start out unlocked. Every other bomb pickup in the game is locked. Locked bombs are converted to normal bombs. (2)
-- Only normal key pickups start out unlocked. Every other key pickup in the game is locked. Locked keys are converted to normal keys. (3)
-- Every battery type in the game is locked. Locked batteries are converted to pennies. (4)
-- Every sack type in the game is locked. Locked sacks are converted to pennies. (2)
-- Every chest type in the game is locked. Locked chests are converted to pennies. (10)
-  - Old Chests and Mom's Chest are not unlockable since those chests do not randomly spawn.
-
-### Slots (15)
-
-Every slot entity (e.g. machines and beggars) is locked behind a random objective. Locked slot entities are removed.
-
-### Grid Entities (13)
-
-The following grid entities start out locked:
-
-- Tinted Rocks (#4.0)
-- Urns (#6.0)
-- Mushrooms (#6.0)
-- Skulls (#6.0)
-- Polyps (#6.0)
-- Golden Poop (#14.3)
-- Rainbow Poop (#14.4)
-- Black Poop (#14.5)
-- Charming Poop (#14.11)
-- Crawlspaces (#18.0)
-- Reward Plates (#20.1)
-- Super Tinted Rocks (#22.0)
-- Fool's Gold Rocks (#27.0)
-
-### Miscellaneous (7)
-
-The following other things start out locked:
-
-- Beds (#5.380)
-- Shopkeepers (#17)
-- Blue Fireplaces (#33.2)
-- Purple Fireplaces (#33.3)
-- Golden Trinkets
-- Gold Pills
-- Horse Pills
-
-### Total Unlocks
-
-There are 33 + 10 + 11 + 7 + 44 + 694 + 185 + 95 + 50 + 38 + 15 + 13 + 7 = 1202 unlocks in total.
+Unlocks are listed [on a separate page](unlocks.md).
 
 <br>
 
@@ -402,7 +89,7 @@ In hardcore mode, we want to prevent the situation where you unlock powerful ite
 
 - Collectibles, trinkets, and cards will progressively unlock based on their quality classification. (50% of 0 quality items must unlock first before 1 quality items, and so on.)
   - Since trinkets and cards do not have vanilla quality classifications, custom qualities were created by [Gamonymous](https://github.com/Rchardon) & [Moucheron Quipet](https://www.twitch.tv/moucheronquipet).
-  - Some collectibles have a custom quality (like Cursed Eye).
+  - Some collectibles have a [custom quality](https://github.com/Zamiell/isaac-achievement-randomizer/blob/main/mod/resources/items_metadata.xml) (like Cursed Eye).
 - Pill effects will unlock on a cycle of one negative, one neutral, and one positive.
 - Hearts will unlock in the following order:
   - Gold Heart

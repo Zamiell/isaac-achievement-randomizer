@@ -28,7 +28,7 @@ export function validateObjectivesUnlocksMatch(): void {
   error(errorText);
 }
 
-function logObjectives(objectives: readonly Objective[]) {
+export function logObjectives(objectives: readonly Objective[]): void {
   log(`Logging all objectives (${objectives.length}):`);
 
   for (const objectiveType of OBJECTIVE_TYPES) {
@@ -39,7 +39,7 @@ function logObjectives(objectives: readonly Objective[]) {
   }
 }
 
-function logUnlocks(unlocks: readonly Unlock[]) {
+export function logUnlocks(unlocks: readonly Unlock[]): void {
   log(`Logging all unlocks (${unlocks.length}):`);
 
   for (const unlockType of UNLOCK_TYPES) {

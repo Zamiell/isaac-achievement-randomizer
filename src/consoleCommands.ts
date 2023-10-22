@@ -12,6 +12,8 @@ import {
   restart,
 } from "isaacscript-common";
 import { version } from "../package.json";
+import { ALL_OBJECTIVES } from "./arrays/allObjectives";
+import { ALL_UNLOCKS } from "./arrays/allUnlocks";
 import { RANDOMIZER_MODES } from "./cachedEnums";
 import {
   endRandomizer,
@@ -37,6 +39,7 @@ import { UnlockablePath, getPathName } from "./enums/UnlockablePath";
 import { mod } from "./mod";
 import { getObjective } from "./types/Objective";
 import { getAdjustedCharacterForObjective } from "./utils";
+import { logObjectives, logUnlocks } from "./validate";
 
 export const MIN_SEED = 1;
 export const MAX_SEED = 4_294_967_295;
@@ -44,6 +47,7 @@ export const MAX_SEED = 4_294_967_295;
 export function initConsoleCommands(): void {
   mod.addConsoleCommand("endRandomizer", endRandomizerCommand);
   mod.addConsoleCommand("forceWrongVersion", forceWrongVersion);
+  mod.addConsoleCommand("logAll", logAll);
   mod.addConsoleCommand("objectiveBoss", objectiveBoss);
   mod.addConsoleCommand("objectiveFloor", objectiveFloor);
   mod.addConsoleCommand("startRandomizer", startRandomizerCommand);
@@ -61,6 +65,11 @@ function endRandomizerCommand(_params: string) {
 function forceWrongVersion(_params: string) {
   setAcceptedVersionMismatch();
   restart();
+}
+
+function logAll(_params: string) {
+  logObjectives(ALL_OBJECTIVES);
+  logUnlocks(ALL_UNLOCKS);
 }
 
 function objectiveBoss(_params: string) {
