@@ -12,9 +12,14 @@ import { showNewUnlock } from "../AchievementNotification";
 import { hasErrors } from "../checkErrors/v";
 import { isObjectiveCompleted } from "./completedObjectives";
 import { getSwappedUnlock } from "./swapUnlock";
-import { findObjectiveIDForUnlock, v } from "./v";
+import { findObjectiveIDForUnlock, getRandomizerSeed, v } from "./v";
 
 export function addObjective(objective: Objective, emulating = false): void {
+  const seed = getRandomizerSeed();
+  if (seed === undefined) {
+    return;
+  }
+
   if (hasErrors()) {
     return;
   }
@@ -43,6 +48,7 @@ export function addObjective(objective: Objective, emulating = false): void {
   const swappedUnlock = checkSwapProblematicAchievement(
     unlock,
     objectiveID,
+    seed,
     emulating,
   );
 
@@ -66,6 +72,7 @@ export function addObjective(objective: Objective, emulating = false): void {
 function checkSwapProblematicAchievement(
   unlock: Unlock,
   objectiveID: ObjectiveID,
+  seed: Seed,
   emulating: boolean,
 ): Unlock {
   // We might need to do more than one swap, so continue to use the `getSwappedUnlock` function
@@ -80,7 +87,7 @@ function checkSwapProblematicAchievement(
       log(`  Checking unlock swap for: ${unlockText}`);
     }
 
-    swappedUnlock = getSwappedUnlock(finalUnlock);
+    swappedUnlock = getSwappedUnlock(finalUnlock, seed);
 
     if (DEBUG || !emulating) {
       if (swappedUnlock === undefined) {

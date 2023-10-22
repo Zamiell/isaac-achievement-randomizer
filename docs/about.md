@@ -154,7 +154,7 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
 - The following stat collectibles will always be unlocked before any other unlocks:
   - Wooden Spoon (#27)
   - Wire Coat Hanger (#32)
-  - Cat o Nine Tails (#165)
+  - Cat-O-Nine-Tails (#165)
 - Isaac is guaranteed to unlock both The Chest & Dark Room from one of his [easier objectives](objectives.md#polaroid--negative-objectives). The rest can be randomly unlocked from any objective.
 - Each character is guaranteed to unlock another random character from one of their [easier objectives](objectives.md#character-unlock-objectives).
 - Besides that, there is no logic that makes things unlock in a particular order. However, certain specific unlocks will be swapped to ensure that unlocked things are not "useless" [as described in the casual mode section](#1-casual-mode-full-random).

@@ -14,9 +14,6 @@ TODO:
   TLaz,
   TJacob,
 
-- make sure special logic is documented, e.g. boss items, characters, polaroid/chest
-
-
 - unlock first:
 
 const BOSS_ROOM_COLLECTIBLE_TYPE_EXCEPTIONS = [
