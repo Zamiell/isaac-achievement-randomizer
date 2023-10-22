@@ -7,6 +7,8 @@
 
 - Beating Mom for the first time will result in a Big Chest.
 - !The first four unlocks will now always be X.
+- Added the Dirty Bedroom unlock.
+- Removed the Ultra Secret Room unlock.
 - Characters will now unlock before their respective revival items.
 - Quarter, Dollar, and Deep Pockets will now unlock after shops.
 - Added unlock logic for various cards.

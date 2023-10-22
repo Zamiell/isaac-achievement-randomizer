@@ -26,9 +26,7 @@ TODO:
 - unlock first:
 
 const BOSS_ROOM_COLLECTIBLE_TYPE_EXCEPTIONS = [
-  CollectibleType.BREAKFAST, // 25
   CollectibleType.WOODEN_SPOON, // 27
-  CollectibleType.MOMS_UNDERWEAR, // 29
   CollectibleType.WIRE_COAT_HANGER, // 32
   CollectibleType.CAT_O_NINE_TAILS, // 165
 ] as const;
