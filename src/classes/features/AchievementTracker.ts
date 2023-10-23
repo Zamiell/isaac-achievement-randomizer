@@ -1,4 +1,8 @@
-import type { CollectibleType, PlayerType } from "isaac-typescript-definitions";
+import type {
+  CollectibleType,
+  PillEffect,
+  PlayerType,
+} from "isaac-typescript-definitions";
 import {
   CallbackCustom,
   ModCallbackCustom,
@@ -6,6 +10,7 @@ import {
   copyArray,
   getCharacterName,
   getCollectibleName,
+  getPillEffectName,
   log,
   logError,
 } from "isaacscript-common";
@@ -119,6 +124,35 @@ function findObjectiveForCollectibleUnlock(
     if (
       unlock.type === UnlockType.COLLECTIBLE &&
       unlock.collectibleType === collectibleType
+    ) {
+      return getObjectiveFromID(objectiveID);
+    }
+  }
+
+  return undefined;
+}
+
+/** Only used for debugging. */
+export function setPillEffectUnlocked(pillEffect: PillEffect): void {
+  const objective = findObjectiveForPillEffectUnlock(pillEffect);
+  if (objective === undefined) {
+    const pillEffectName = getPillEffectName(pillEffect);
+    error(
+      `Failed to find the objective to unlock pill effect: ${pillEffectName} (${pillEffect})`,
+    );
+  }
+
+  addObjective(objective);
+}
+
+function findObjectiveForPillEffectUnlock(
+  pillEffect: PillEffect,
+): Objective | undefined {
+  for (const entries of v.persistent.objectiveToUnlockMap) {
+    const [objectiveID, unlock] = entries;
+    if (
+      unlock.type === UnlockType.PILL_EFFECT &&
+      unlock.pillEffect === pillEffect
     ) {
       return getObjectiveFromID(objectiveID);
     }

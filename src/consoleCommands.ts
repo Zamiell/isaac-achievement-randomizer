@@ -1,13 +1,20 @@
-import type { CollectibleType, PlayerType } from "isaac-typescript-definitions";
+import type {
+  CollectibleType,
+  PillEffect,
+  PlayerType,
+} from "isaac-typescript-definitions";
 import {
   CHARACTER_NAME_TO_TYPE_MAP,
   COLLECTIBLE_NAME_TO_TYPE_MAP,
   FIRST_CHARACTER,
   LAST_VANILLA_CHARACTER,
+  PILL_NAME_TO_EFFECT_MAP,
   asCollectibleType,
+  asPillEffect,
   getCharacterName,
   getCollectibleName,
   getMapPartialMatch,
+  getPillEffectName,
   isEnumValue,
   restart,
 } from "isaacscript-common";
@@ -25,6 +32,7 @@ import {
   setAreaUnlocked,
   setCharacterUnlocked,
   setCollectibleUnlocked,
+  setPillEffectUnlocked,
 } from "./classes/features/AchievementTracker";
 import { getCharacterObjectiveKindNoHit } from "./classes/features/FloorObjectiveDetection";
 import { addObjective } from "./classes/features/achievementTracker/addObjective";
@@ -56,6 +64,7 @@ export function initConsoleCommands(): void {
   mod.addConsoleCommand("unlockArea", unlockArea);
   mod.addConsoleCommand("unlockCharacter", unlockCharacter);
   mod.addConsoleCommand("unlockCollectible", unlockCollectible);
+  mod.addConsoleCommand("unlockPillEffect", unlockPillEffect);
 }
 
 function endRandomizerCommand(_params: string) {
@@ -267,4 +276,39 @@ function unlockCollectible(params: string) {
 
   const collectibleName = getCollectibleName(collectibleType);
   print(`Unlocked collectible: ${collectibleName} (${collectibleType})`);
+}
+
+function unlockPillEffect(params: string) {
+  if (!isRandomizerEnabled()) {
+    print(
+      "Error: You are not currently in a randomizer playthrough, so you can not unlock anything.",
+    );
+    return;
+  }
+
+  if (params === "") {
+    print(
+      "You must specify the pill effect name or the number corresponding to the pill effect type.",
+    );
+    return;
+  }
+
+  const pillEffectNumber = tonumber(params);
+  let pillEffect: PillEffect;
+  if (pillEffectNumber === undefined) {
+    const match = getMapPartialMatch(params, PILL_NAME_TO_EFFECT_MAP);
+    if (match === undefined) {
+      print(`Unknown pill effect: ${params}`);
+      return;
+    }
+
+    pillEffect = match[1];
+  } else {
+    pillEffect = asPillEffect(pillEffectNumber);
+  }
+
+  setPillEffectUnlocked(pillEffect);
+
+  const pillEffectName = getPillEffectName(pillEffect);
+  print(`Unlocked pill effect: ${pillEffectName} (${pillEffect})`);
 }

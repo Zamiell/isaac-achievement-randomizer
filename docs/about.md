@@ -234,8 +234,15 @@ The mod provides several custom [console commands](https://bindingofisaacrebirth
 
 - `endRandomizer` - Ends the current randomizer playthrough.
 - `randomizerVersion` - Displays the current version of the mod.
+- `objectiveBoss` - For debugging. Immediately accomplishes the no-hit boss objective for the current room.
+- `objectiveFloor` - For debugging. Immediately accomplishes the no-hit floor objective for the current floor.
 - `startRandomizer [mode] [seed]` - Starts a new randomizer playthrough using the specified seed. For example: `startRandomizer hardcore 12345`
+- `randomizerVersion` - Prints the version of the Achievement Randomizer mod.
 - `spoilerLog` - Writes out a spoiler log to the "log.txt" file. Note that the unlocks may not be accurate, since the mod swaps an unlock if it detects that you should not get it yet.
+- `unlockArea [area]` - For debugging. Immediately unlocks the specified area.
+- `unlockCharacter [character]` - For debugging. Immediately unlocks the specified character.
+- `unlockCollectible [collectible]` - For debugging. Immediately unlocks the specified collectible.
+- `unlockPillEffect [pill effect]` - For debugging. Immediately unlocks the specified pill effect.
 
 ### 9) Crash & Softlock Prevention <!-- FixVanillaBugs -->
 
