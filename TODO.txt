@@ -1,5 +1,7 @@
 TODO:
 
+- emulate vanilla pill pool
+
 - confirm all CharacterObjectiveKind completable
 
 - all horsemen must be phase 1

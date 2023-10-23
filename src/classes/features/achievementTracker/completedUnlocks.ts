@@ -511,6 +511,11 @@ export function isPillEffectUnlocked(
   );
 }
 
+export function isAllPillEffectsUnlocked(forRun: boolean): boolean {
+  const pillEffects = getUnlockedPillEffects(forRun);
+  return pillEffects.length === UNLOCKABLE_PILL_EFFECTS.length;
+}
+
 export function getUnlockedPillEffects(forRun: boolean): PillEffect[] {
   const array = forRun
     ? v.persistent.completedUnlocksForRun
@@ -518,15 +523,6 @@ export function getUnlockedPillEffects(forRun: boolean): PillEffect[] {
 
   return filterMap(array, (unlock) =>
     unlock.type === UnlockType.PILL_EFFECT ? unlock.pillEffect : undefined,
-  );
-}
-
-function getLockedPillEffects(forRun: boolean): PillEffect[] {
-  const unlockedPillEffects = getUnlockedPillEffects(forRun);
-  const unlockedPillEffectsSet = new Set(unlockedPillEffects);
-
-  return UNLOCKABLE_PILL_EFFECTS.filter(
-    (pillEffect) => !unlockedPillEffectsSet.has(pillEffect),
   );
 }
 
@@ -627,6 +623,15 @@ function getNextPillEffectUnlockTypeForHardcore(): ItemConfigPillEffectType {
   }
 
   error("Failed to find a the next pill effect unlock type for hardcore.");
+}
+
+function getLockedPillEffects(forRun: boolean): PillEffect[] {
+  const unlockedPillEffects = getUnlockedPillEffects(forRun);
+  const unlockedPillEffectsSet = new Set(unlockedPillEffects);
+
+  return UNLOCKABLE_PILL_EFFECTS.filter(
+    (pillEffect) => !unlockedPillEffectsSet.has(pillEffect),
+  );
 }
 
 // -------------------------------

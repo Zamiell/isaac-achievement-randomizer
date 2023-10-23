@@ -28,7 +28,6 @@
 - Fixed the bug where opening the menu in a cleared Mother, Ultra Greed, or Ultra Greedier room would not work.
 - Fixed the bug where rooms were missing in the unlock menu.
 - Fixed the bug where "One makes you larger" and "One makes you small" pill effects could drop from champions before you unlocked them. (Thanks setJy)
-- !Fixed the bug where pills pool.
 - Fixed the bug where Tainted Cain did not start with Bag of Crafting. (Thanks grihapro)
 
 ### _v0.7.2_ - October 21th, 2023

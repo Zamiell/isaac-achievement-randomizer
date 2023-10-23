@@ -22,6 +22,7 @@ import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   anyPillEffectsUnlocked,
   getUnlockedPillEffects,
+  isAllPillEffectsUnlocked,
   isOtherUnlockKindUnlocked,
 } from "./achievementTracker/completedUnlocks";
 
@@ -38,7 +39,7 @@ export class PillRemoval extends RandomizerModFeature {
   // 64
   @Callback(ModCallback.GET_PILL_COLOR)
   getPillColor(seed: Seed): PillColor | undefined {
-    if (!anyPillEffectsUnlocked(true)) {
+    if (!anyPillEffectsUnlocked(true) || isAllPillEffectsUnlocked(true)) {
       return undefined;
     }
 
@@ -55,6 +56,10 @@ export class PillRemoval extends RandomizerModFeature {
     _pillEffect: PillEffect,
     pillColor: PillColor,
   ): PillEffect | undefined {
+    if (!anyPillEffectsUnlocked(true) || isAllPillEffectsUnlocked(true)) {
+      return undefined;
+    }
+
     // The pill color to pill effect map should already be initialized at this point, but we check
     // and initialize it just in case.
     initPillPool();
@@ -73,6 +78,10 @@ export class PillRemoval extends RandomizerModFeature {
   ): [PickupVariant, int] | undefined {
     if (!anyPillEffectsUnlocked(true)) {
       return [PickupVariant.COIN, CoinSubType.PENNY];
+    }
+
+    if (isAllPillEffectsUnlocked(true)) {
+      return undefined;
     }
 
     const pillColor = subType as PillColor;
