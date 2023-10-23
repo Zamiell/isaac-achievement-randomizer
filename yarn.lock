@@ -4203,9 +4203,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "isaac-achievement-randomizer@workspace:."
   dependencies:
-    isaac-typescript-definitions: "npm:^36.1.0"
+    isaac-typescript-definitions: "npm:^36.2.0"
     isaacscript: "npm:^3.15.2"
-    isaacscript-common: "npm:^72.6.0"
+    isaacscript-common: "npm:^72.8.0"
     isaacscript-lint: "npm:^6.2.0"
     isaacscript-spell: "npm:^1.6.0"
     isaacscript-tsconfig: "npm:^4.1.1"
@@ -4214,21 +4214,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"isaac-typescript-definitions@npm:^36.0.0":
-  version: 36.0.0
-  resolution: "isaac-typescript-definitions@npm:36.0.0"
+"isaac-typescript-definitions@npm:^36.2.0":
+  version: 36.2.0
+  resolution: "isaac-typescript-definitions@npm:36.2.0"
   dependencies:
     lua-types: "npm:^2.13.1"
-  checksum: 30f0f60a74df942c965c613f79d28fcc02b4dc93ef4a1da3673022bf6a5d223b4407fe8c3df1e8a0ac66bd999d85f83a340db504056dd285acf10a3615d5a37f
-  languageName: node
-  linkType: hard
-
-"isaac-typescript-definitions@npm:^36.1.0":
-  version: 36.1.0
-  resolution: "isaac-typescript-definitions@npm:36.1.0"
-  dependencies:
-    lua-types: "npm:^2.13.1"
-  checksum: a47ef5c5000be2d21fddeca0ba51abb76e6608335697123a6bd1d619f729918e6306349d1b904c932b99ed84de427adec69526e3d5c2e381b8279994eaddbc1f
+  checksum: fdc9a3546dd2731a4cda5967e3eeb2bc88e14577208ac19d306774516b277980145cf513e2642438e44ff7e52daf9ddc103d17150d78ab89b2c7b7781df64e05
   languageName: node
   linkType: hard
 
@@ -4239,12 +4230,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common@npm:^72.6.0":
-  version: 72.6.0
-  resolution: "isaacscript-common@npm:72.6.0"
+"isaacscript-common@npm:^72.8.0":
+  version: 72.8.0
+  resolution: "isaacscript-common@npm:72.8.0"
   dependencies:
-    isaac-typescript-definitions: "npm:^36.0.0"
-  checksum: 8bad7c27d25a040d1c12055ede0ac7c1eb7347684214a28262cf465eb5a75b0ee444398b405fea04c2b8eb5926823a428982cfac4d15274e18b697179f3e0771
+    isaac-typescript-definitions: "npm:^36.2.0"
+  checksum: 24d5f37ba55c4cafb00bc04fbb585fd092f9b511d58acff2f9da8e91377a8df19220af2d927addf157f55d814bd16d2e835170b827c034afa3f96befb33a39ba
   languageName: node
   linkType: hard
 

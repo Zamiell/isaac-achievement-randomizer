@@ -23,6 +23,8 @@
 - Quarter, Dollar, and Deep Pockets will now unlock after shops.
 - Added unlock logic for various cards.
 - Fixed the bug where killing Mother would not accomplish the objective.
+- Fixed the bug where the no-hit objective for Ultra Greedier did not work properly.
+- Fixed the bug where opening the menu in a cleared Mother, Ultra Greed, or Ultra Greedier room would not work.
 
 ### _v0.7.2_ - October 21th, 2023
 

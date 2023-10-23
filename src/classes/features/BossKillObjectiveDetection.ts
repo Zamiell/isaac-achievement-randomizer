@@ -31,7 +31,7 @@ const BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND = new ReadonlyMap<
   [BossID.DELIRIUM, CharacterObjectiveKind.DELIRIUM],
   [BossID.MOTHER, CharacterObjectiveKind.MOTHER],
   // There is no boss ID for The Beast (it does not have its own boss room).
-  [BossID.ULTRA_GREED, CharacterObjectiveKind.ULTRA_GREED],
+  [BossID.ULTRA_GREEDIER, CharacterObjectiveKind.ULTRA_GREED],
 ]);
 
 /** This feature handles both the "killing boss" objectives and the "no hit floor" objectives. */
@@ -66,10 +66,14 @@ export function bossObjectiveDetectionPreSpawnClearAward(): void {
   switch (roomType) {
     // 5
     case RoomType.BOSS: {
+      Isaac.DebugString("GETTING HERE 1");
+
       const bossID = getModifiedBossID();
       if (bossID === undefined) {
         return;
       }
+
+      Isaac.DebugString("GETTING HERE 2");
 
       // Handle XL floors.
       if (bossID !== BossID.MOTHER) {
@@ -80,6 +84,8 @@ export function bossObjectiveDetectionPreSpawnClearAward(): void {
           return;
         }
       }
+
+      Isaac.DebugString("GETTING HERE 3");
 
       const kindBoss = BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND.get(bossID);
       if (kindBoss === undefined) {

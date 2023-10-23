@@ -1,7 +1,6 @@
 TODO:
 
 - confirm all CharacterObjectiveKind completable
-- ultra greed unlock is not working
 
 - all horsemen must be phase 1
 - deal 1 damage to isaac + blue baby upon room entry and then delete the phase 2 requirements for the boss objective
