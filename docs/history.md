@@ -1,6 +1,6 @@
 # Achievement Randomizer Version History
 
-<!-- cspell:ignore antizoubilamaka,Erbear,grihapro,Neonomi,sanstheazmo,slvn -->
+<!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
 ### _v0.8.0_ - October 21th, 2023
@@ -26,7 +26,8 @@
 - Famine, Pestilence, and War must now be on phase 1 in order to accomplish their no hit objectives.
 - Death must now be on phase 2 in order to accomplish his no hit objective.
 - Isaac and Blue Baby will now be dealt 1 damage upon spawning.
-- Fixed the bug where killing Mother would not accomplish the objective.
+- Fixed the bug where killing Mother would not accomplish the objective. (Thanks TehCranZ)
+- Fixed the bug where killing Delirium would not accomplish the objective.
 - Fixed the bug where the no-hit objective for Ultra Greedier did not work properly.
 - Fixed the bug where opening the menu in a cleared Mother, Ultra Greed, or Ultra Greedier room would not work.
 - Fixed the bug where rooms were missing in the unlock menu.
