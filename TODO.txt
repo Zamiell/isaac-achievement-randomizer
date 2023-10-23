@@ -1,21 +1,15 @@
 TODO:
 
 - confirm all CharacterObjectiveKind completable
-- update isRoomDangerous for post Mother and post Ultra Greed
 - ultra greed unlock is not working
-
-- devil room and angel room doors
-
-- check esau jr doesn't work for unlocking?
-
-- bosses from challenge room should count
-- segmented enemies should all be champions
 
 - all horsemen must be phase 1
 - deal 1 damage to isaac + blue baby upon room entry and then delete the phase 2 requirements for the boss objective
 
 - show bosses where you can get them on DSS menu
   - sort by this instead of boss number
+
+- bosses from challenge room should count
 
 - rules card - show future unlocks
 - website - see all current unlocks after uploading save file

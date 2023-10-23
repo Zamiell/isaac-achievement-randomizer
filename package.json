@@ -12,7 +12,7 @@
   "license": "GPL-3.0",
   "type": "commonjs",
   "dependencies": {
-    "isaac-typescript-definitions": "^36.0.0",
+    "isaac-typescript-definitions": "^36.1.0",
     "isaacscript-common": "^72.6.0"
   },
   "devDependencies": {
@@ -23,5 +23,5 @@
     "typescript": "^5.2.2",
     "typescript-to-lua": "^1.20.1"
   },
-  "packageManager": "yarn@3.6.4"
+  "packageManager": "yarn@4.0.0"
 }
