@@ -1,7 +1,6 @@
 import { BossID } from "isaac-typescript-definitions";
 import { ReadonlyMap, ReadonlySet } from "isaacscript-common";
 import { BOSS_IDS, BOSS_IDS_CUSTOM } from "../cachedEnums";
-import { IS_DEV } from "../constants";
 
 const DEFAULT_NO_HIT_BOSS_MINUTES = 2;
 
@@ -81,10 +80,6 @@ const BOSSES_WITH_CUSTOM_MINUTES = new ReadonlyMap<BossID, float>([
 ]);
 
 export function getNumMinutesForBossObjective(bossID: BossID): int {
-  if (IS_DEV) {
-    return 0.05;
-  }
-
   const customMinutes = BOSSES_WITH_CUSTOM_MINUTES.get(bossID);
   return customMinutes ?? DEFAULT_NO_HIT_BOSS_MINUTES;
 }

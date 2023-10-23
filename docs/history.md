@@ -23,6 +23,8 @@
 - Characters will now unlock before their respective revival items.
 - Quarter, Dollar, and Deep Pockets will now unlock after shops.
 - Added unlock logic for various cards.
+- !Famine, Pestilence, and War must now be on phase 1 in order to accomplish their no hit objectives.
+- Death must now be on phase 2 in order to accomplish his no hit objective.
 - Isaac and Blue Baby will now be dealt 1 damage upon spawning.
 - Fixed the bug where killing Mother would not accomplish the objective.
 - Fixed the bug where the no-hit objective for Ultra Greedier did not work properly.

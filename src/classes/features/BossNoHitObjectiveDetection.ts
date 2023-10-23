@@ -4,8 +4,10 @@ import {
   BeastVariant,
   BossID,
   CollectibleType,
+  DeathVariant,
   EntityType,
   FallenVariant,
+  FamineState,
   GurglingVariant,
   LokiVariant,
   MegaSatanVariant,
@@ -21,6 +23,7 @@ import {
   GAME_FRAMES_PER_SECOND,
   ModCallbackCustom,
   ReadonlySet,
+  asNPCState,
   game,
   getEntityTypeVariantFromBossID,
   getNPCs,
@@ -58,6 +61,7 @@ const v = {
   room: {
     tookDamageRoomFrame: 0,
     usedPause: false,
+    onFirstPhaseOfFamine: true, // 63
     onFirstPhaseOfIsaac: true, // 102
     onFirstPhaseOfHush: true, // 407
     beastAppeared: false,
@@ -66,6 +70,25 @@ const v = {
 
 export class BossNoHitObjectiveDetection extends RandomizerModFeature {
   v = v;
+
+  // 0, 63
+  @Callback(ModCallback.POST_NPC_UPDATE, EntityType.FAMINE)
+  postNPCUpdateFamine(npc: EntityNPC): void {
+    const bossID = getModifiedBossID();
+    if (bossID !== BossID.FAMINE) {
+      return;
+    }
+
+    if (
+      v.room.onFirstPhaseOfFamine &&
+      npc.State === asNPCState(FamineState.PHASE_2)
+    ) {
+      v.room.onFirstPhaseOfFamine = false;
+
+      const room = game.GetRoom();
+      v.room.tookDamageRoomFrame = room.GetFrameCount();
+    }
+  }
 
   // 0, 102
   @Callback(ModCallback.POST_NPC_UPDATE, EntityType.ISAAC)
@@ -146,6 +169,22 @@ export class BossNoHitObjectiveDetection extends RandomizerModFeature {
   postUseItemPause(): boolean | undefined {
     v.room.usedPause = true;
     return undefined;
+  }
+
+  // 27, 66, 20
+  @CallbackCustom(
+    ModCallbackCustom.POST_NPC_INIT_FILTER,
+    EntityType.DEATH,
+    DeathVariant.DEATH_HORSE,
+  )
+  postNPCInitDeathHorse(): void {
+    const bossID = getModifiedBossID();
+    if (bossID !== BossID.DEATH) {
+      return;
+    }
+
+    const room = game.GetRoom();
+    v.room.tookDamageRoomFrame = room.GetFrameCount();
   }
 
   // 27, 68, 10
@@ -367,6 +406,15 @@ export function getSecondsSinceLastDamage(): int | undefined {
 
   // Boss-specific checks.
   switch (bossID) {
+    // 9
+    case BossID.FAMINE: {
+      if (!v.room.onFirstPhaseOfFamine) {
+        return undefined;
+      }
+
+      break;
+    }
+
     // 24
     case BossID.SATAN: {
       if (onFirstPhaseOfSatan()) {
@@ -402,6 +450,30 @@ export function getSecondsSinceLastDamage(): int | undefined {
 
   // Verify the boss is alive.
   switch (bossID) {
+    // 12
+    case BossID.DEATH: {
+      const deathWithoutHorses = getNPCs(
+        EntityType.DEATH,
+        DeathVariant.DEATH_WITHOUT_HORSE,
+        -1,
+        true,
+      );
+      const deathHorses = getNPCs(
+        EntityType.DEATH,
+        DeathVariant.DEATH_HORSE,
+        -1,
+        true,
+      );
+      const bosses = [...deathWithoutHorses, ...deathHorses];
+      const aliveBosses = bosses.filter((boss) => !boss.IsDead());
+
+      if (aliveBosses.length < 2) {
+        return;
+      }
+
+      break;
+    }
+
     // 14
     case BossID.PEEP: {
       const peeps = getNPCs(EntityType.PEEP, PeepVariant.PEEP, -1, true);

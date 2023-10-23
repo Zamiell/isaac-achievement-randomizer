@@ -82,6 +82,10 @@ The following bosses have custom timer lengths:
 
 The following bosses have custom conditions:
 
+- Famine (#9) - Must be on phase 1.
+- Pestilence (#10) - ?
+- War (#11) - Must be on phase 1.
+- Death (#12) - Must be on phase 2.
 - Peep (#14) - Both eyes must be spawned.
 - Fistula (#18) - Four or more pieces must be alive.
 - Fallen (#23) - Both split entities must be alive.
