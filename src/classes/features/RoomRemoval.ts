@@ -17,6 +17,7 @@ import {
   getRoomGridIndexesForType,
   hideRoomOnMinimap,
   inRoomType,
+  isAfterRoomFrame,
   isRedKeyRoom,
   removeAllEffects,
   removeDoor,
@@ -30,6 +31,22 @@ import { isRoomTypeUnlocked } from "./achievementTracker/completedUnlocks";
 export class RoomRemoval extends RandomizerModFeature {
   @Callback(ModCallback.PRE_SPAWN_CLEAR_AWARD)
   preSpawnClearAward(): boolean | undefined {
+    this.removeDevilAngelDoors();
+    return undefined;
+  }
+
+  @CallbackCustom(ModCallbackCustom.POST_NEW_ROOM_REORDERED)
+  postNewRoomReordered(): void {
+    this.removeDevilAngelDoors();
+
+    for (const roomType of UNLOCKABLE_ROOM_TYPES) {
+      if (!isRoomTypeUnlocked(roomType, true)) {
+        this.checkForRoomType(roomType);
+      }
+    }
+  }
+
+  removeDevilAngelDoors(): void {
     const devilRoomDoor = getDevilRoomDoor();
     if (
       devilRoomDoor !== undefined &&
@@ -37,7 +54,10 @@ export class RoomRemoval extends RandomizerModFeature {
     ) {
       removeDoor(devilRoomDoor);
       removeAllEffects(EffectVariant.DUST_CLOUD);
-      sfxManager.Stop(SoundEffect.SATAN_ROOM_APPEAR);
+
+      if (isAfterRoomFrame(0)) {
+        sfxManager.Stop(SoundEffect.SATAN_ROOM_APPEAR);
+      }
     }
 
     const angelRoomDoor = getAngelRoomDoor();
@@ -47,17 +67,9 @@ export class RoomRemoval extends RandomizerModFeature {
     ) {
       removeDoor(angelRoomDoor);
       removeAllEffects(EffectVariant.DUST_CLOUD);
-      sfxManager.Stop(SoundEffect.CHOIR_UNLOCK);
-    }
 
-    return undefined;
-  }
-
-  @CallbackCustom(ModCallbackCustom.POST_NEW_ROOM_REORDERED)
-  postNewRoomReordered(): void {
-    for (const roomType of UNLOCKABLE_ROOM_TYPES) {
-      if (!isRoomTypeUnlocked(roomType, true)) {
-        this.checkForRoomType(roomType);
+      if (isAfterRoomFrame(0)) {
+        sfxManager.Stop(SoundEffect.CHOIR_UNLOCK);
       }
     }
   }
