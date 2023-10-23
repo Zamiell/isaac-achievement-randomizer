@@ -1,24 +1,12 @@
 TODO:
 
-- esau jr doesn't unlock?
-
-- more hard characters
-  PlayerType.BLUE_BABY, // 4
-  PlayerType.JUDAS_B, // 24
-  PlayerType.BLUE_BABY_B, // 25
-  PlayerType.LOST_B, // 31
-  PlayerType.FORGOTTEN_B, // 35
-  PlayerType.BETHANY_B, // 36
-  TLaz,
-  TJacob,
+- check esau jr doesn't work for unlocking?
 
 - bosses from challenge room should count
 - segmented enemies should all be champions
 
 - all horsemen must be phase 1
 - deal 1 damage to isaac + blue baby upon room entry and then delete the phase 2 requirements for the boss objective
-
-- ensure excepted boss items are only in boss pool (use ISC functions)
 
 - show bosses where you can get them on DSS menu
   - sort by this instead of boss number

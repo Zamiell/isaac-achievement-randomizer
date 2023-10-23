@@ -150,7 +150,7 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
 ## Other Randomization Info
 
 - Unlocking new things will never apply to the current run and will only apply to subsequent runs.
-  - For example, if you unlock The Polaroid on Basement 1 and go on to kill Mom, she will still not drop The Polaroid because it will only be unlocked on the next run.
+  - For example, if you unlock Wooden Spoon on the first run by doing the no-hit objective on Basement 1, you will still get Breakfast as the boss collectible after defeating the Basement 2 boss.
 - The following stat collectibles will always be unlocked before any other unlocks:
   - Wooden Spoon (#27)
   - Wire Coat Hanger (#32)
@@ -163,6 +163,15 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
   - Dark Room (By defeating Blue Baby)
   - Repentance floors (by defeating The Lamb)
 - Each character is guaranteed to unlock another random character from one of their [basic objectives](objectives.md#character-unlock-objectives).
+- The following characters are considered to be "hard" and are guaranteed to be in the second half of characters unlocked:
+  - Blue Baby (#4)
+  - Tainted Judas (#24)
+  - Tainted Blue Baby (#25)
+  - Tainted Lazarus (#29)
+  - Tainted Lost (#31)
+  - Tainted Forgotten (#35)
+  - Tainted Bethany (#36)
+  - Tainted Jacob (#37)
 - Besides that, there is no logic that makes things unlock in a particular order. However, certain specific unlocks will be swapped to ensure that unlocked things are not "useless", [as described in the casual mode section](#1-casual-mode-full-random).
 
 <br>
