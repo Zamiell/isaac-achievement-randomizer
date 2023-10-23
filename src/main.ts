@@ -9,6 +9,7 @@ import { version } from "../package.json";
 import { AchievementNotification } from "./classes/features/AchievementNotification";
 import { AchievementRandomizer } from "./classes/features/AchievementRandomizer";
 import { AchievementTracker } from "./classes/features/AchievementTracker";
+import { AreaRemoval } from "./classes/features/AreaRemoval";
 import { BossKillObjectiveDetection } from "./classes/features/BossKillObjectiveDetection";
 import { BossNoHitObjectiveDetection } from "./classes/features/BossNoHitObjectiveDetection";
 import { ChallengeObjectiveDetection } from "./classes/features/ChallengeObjectiveDetection";
@@ -24,7 +25,6 @@ import { GridEntityRemoval } from "./classes/features/GridEntityRemoval";
 import { InvisibleEntities } from "./classes/features/InvisibleEntities";
 import { NPCRemoval } from "./classes/features/NPCRemoval";
 import { NightmareMode } from "./classes/features/NightmareMode";
-import { PathRemoval } from "./classes/features/PathRemoval";
 import { PickupRemoval } from "./classes/features/PickupRemoval";
 import { PillRemoval } from "./classes/features/PillRemoval";
 import { PreventEndMegaSatan } from "./classes/features/PreventEndMegaSatan";
@@ -52,6 +52,7 @@ const MOD_FEATURES = [
   AchievementNotification,
   AchievementRandomizer,
   AchievementTracker,
+  AreaRemoval,
   BossKillObjectiveDetection,
   BossNoHitObjectiveDetection,
   ChallengeObjectiveDetection,
@@ -67,7 +68,6 @@ const MOD_FEATURES = [
   InvisibleEntities,
   NightmareMode,
   NPCRemoval,
-  PathRemoval,
   PickupRemoval,
   PillRemoval,
   PreventEndMegaSatan,

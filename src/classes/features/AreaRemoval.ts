@@ -40,12 +40,12 @@ import { STARTING_CHARACTER } from "../../constants";
 import { getModifiedBossID } from "../../enums/BossIDCustom";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { PickupVariantCustom } from "../../enums/PickupVariantCustom";
-import { UnlockablePath } from "../../enums/UnlockablePath";
+import { UnlockableArea } from "../../enums/UnlockableArea";
 import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { isCharacterObjectiveCompleted } from "./achievementTracker/completedObjectives";
 import {
-  isPathUnlocked,
+  isAreaUnlocked,
   isRoomTypeUnlocked,
 } from "./achievementTracker/completedUnlocks";
 
@@ -63,7 +63,7 @@ const COLLECTIBLE_REPLACEMENT_FUNCTIONS = new ReadonlyMap<
   [
     CollectibleType.KEY_PIECE_1,
     (initSeed: Seed) =>
-      isPathUnlocked(UnlockablePath.MEGA_SATAN, true)
+      isAreaUnlocked(UnlockableArea.MEGA_SATAN, true)
         ? undefined
         : [
             EntityType.PICKUP,
@@ -77,7 +77,7 @@ const COLLECTIBLE_REPLACEMENT_FUNCTIONS = new ReadonlyMap<
   [
     CollectibleType.KEY_PIECE_2,
     (initSeed: Seed) =>
-      isPathUnlocked(UnlockablePath.MEGA_SATAN, true)
+      isAreaUnlocked(UnlockableArea.MEGA_SATAN, true)
         ? undefined
         : [
             EntityType.PICKUP,
@@ -91,7 +91,7 @@ const COLLECTIBLE_REPLACEMENT_FUNCTIONS = new ReadonlyMap<
   [
     CollectibleType.POLAROID,
     (initSeed: Seed) =>
-      isPathUnlocked(UnlockablePath.CHEST, true)
+      isAreaUnlocked(UnlockableArea.CHEST, true)
         ? undefined
         : [
             EntityType.PICKUP,
@@ -105,7 +105,7 @@ const COLLECTIBLE_REPLACEMENT_FUNCTIONS = new ReadonlyMap<
   [
     CollectibleType.NEGATIVE,
     (initSeed: Seed) =>
-      isPathUnlocked(UnlockablePath.DARK_ROOM, true)
+      isAreaUnlocked(UnlockableArea.DARK_ROOM, true)
         ? undefined
         : [
             EntityType.PICKUP,
@@ -122,8 +122,8 @@ const v = {
   },
 };
 
-/** This feature handles removing all of the paths from the game that are not unlocked yet. */
-export class PathRemoval extends RandomizerModFeature {
+/** This feature handles removing all of the areas from the game that are not unlocked yet. */
+export class AreaRemoval extends RandomizerModFeature {
   v = v;
 
   @Callback(ModCallback.PRE_SPAWN_CLEAR_AWARD)
@@ -171,7 +171,7 @@ export class PathRemoval extends RandomizerModFeature {
     TrapdoorVariant.VOID_PORTAL,
   )
   postGridEntityUpdateVoidPortal(gridEntity: GridEntity): void {
-    if (!isPathUnlocked(UnlockablePath.VOID, true)) {
+    if (!isAreaUnlocked(UnlockableArea.VOID, true)) {
       removeGridEntity(gridEntity, false);
     }
   }
@@ -204,10 +204,10 @@ export class PathRemoval extends RandomizerModFeature {
         (onStage(LevelStage.DEPTHS_1) && hasCurse(LevelCurse.LABYRINTH))) &&
       !onRepentanceStage();
     const unlockablePath = onFloorWithStrangeDoor
-      ? UnlockablePath.ASCENT
-      : UnlockablePath.REPENTANCE_FLOORS;
+      ? UnlockableArea.ASCENT
+      : UnlockableArea.REPENTANCE_FLOORS;
 
-    if (!isPathUnlocked(unlockablePath, true)) {
+    if (!isAreaUnlocked(unlockablePath, true)) {
       this.removeDoorAndSmoke(repentanceDoor);
     }
   }
@@ -218,7 +218,7 @@ export class PathRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (!isPathUnlocked(UnlockablePath.BLUE_WOMB, true)) {
+    if (!isAreaUnlocked(UnlockableArea.BLUE_WOMB, true)) {
       this.removeDoorAndSmoke(blueWombDoor);
     }
   }
@@ -229,7 +229,7 @@ export class PathRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (!isPathUnlocked(UnlockablePath.VOID, true)) {
+    if (!isAreaUnlocked(UnlockableArea.VOID, true)) {
       this.removeDoorAndSmoke(voidDoor);
     }
   }
@@ -240,7 +240,7 @@ export class PathRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (!isPathUnlocked(UnlockablePath.MEGA_SATAN, true)) {
+    if (!isAreaUnlocked(UnlockableArea.MEGA_SATAN, true)) {
       this.removeDoorAndSmoke(megaSatanDoor);
     }
   }
@@ -251,7 +251,7 @@ export class PathRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (!isPathUnlocked(UnlockablePath.BOSS_RUSH, true)) {
+    if (!isAreaUnlocked(UnlockableArea.BOSS_RUSH, true)) {
       this.removeDoorAndSmoke(bossRushDoor);
     }
   }
@@ -291,7 +291,7 @@ export class PathRemoval extends RandomizerModFeature {
   postSacrifice(_player: EntityPlayer, numSacrifices: int): void {
     if (
       numSacrifices >= 11 &&
-      !isPathUnlocked(UnlockablePath.DARK_ROOM, true)
+      !isAreaUnlocked(UnlockableArea.DARK_ROOM, true)
     ) {
       removeAllMatchingGridEntities(GridEntityType.SPIKES);
       v.level.removedSacrificeRoomSpikes = true;

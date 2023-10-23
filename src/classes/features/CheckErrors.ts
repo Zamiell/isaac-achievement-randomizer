@@ -36,12 +36,12 @@ import {
   LAST_VERSION_WITH_ACHIEVEMENT_CHANGES,
   MOD_NAME,
 } from "../../constants";
-import { UnlockablePath } from "../../enums/UnlockablePath";
+import { UnlockableArea } from "../../enums/UnlockableArea";
 import { mod } from "../../mod";
 import {
+  isAreaUnlocked,
   isChallengeUnlocked,
   isCharacterUnlocked,
-  isPathUnlocked,
 } from "./achievementTracker/completedUnlocks";
 import {
   getAchievementsVersion,
@@ -313,7 +313,7 @@ function checkChallengeBanned() {
 function checkModeUnlocked() {
   if (
     game.Difficulty === Difficulty.GREEDIER &&
-    !isPathUnlocked(UnlockablePath.GREED_MODE, false)
+    !isAreaUnlocked(UnlockableArea.GREED_MODE, false)
   ) {
     log("Error: Locked Greed Mode detected.");
     v.run.lockedMode = true;

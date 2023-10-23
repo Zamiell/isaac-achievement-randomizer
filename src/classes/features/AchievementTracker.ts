@@ -11,8 +11,8 @@ import {
 } from "isaacscript-common";
 import { ALL_OBJECTIVES } from "../../arrays/allObjectives";
 import { UnlockType } from "../../enums/UnlockType";
-import type { UnlockablePath } from "../../enums/UnlockablePath";
-import { getPathName } from "../../enums/UnlockablePath";
+import type { UnlockableArea } from "../../enums/UnlockableArea";
+import { getAreaName } from "../../enums/UnlockableArea";
 import type { Objective } from "../../types/Objective";
 import { getObjectiveFromID, getObjectiveText } from "../../types/Objective";
 import { getObjectiveID } from "../../types/ObjectiveID";
@@ -70,26 +70,26 @@ function findObjectiveForCharacterUnlock(
 }
 
 /** Only used for debugging. */
-export function setPathUnlocked(unlockablePath: UnlockablePath): void {
-  const objective = findObjectiveForPathUnlock(unlockablePath);
+export function setAreaUnlocked(unlockableArea: UnlockableArea): void {
+  const objective = findObjectiveForAreaUnlock(unlockableArea);
   if (objective === undefined) {
-    const pathName = getPathName(unlockablePath);
+    const areaName = getAreaName(unlockableArea);
     error(
-      `Failed to find the objective to unlock path: ${pathName} (${unlockablePath})`,
+      `Failed to find the objective to unlock area: ${areaName} (${unlockableArea})`,
     );
   }
 
   addObjective(objective);
 }
 
-function findObjectiveForPathUnlock(
-  unlockablePath: UnlockablePath,
+function findObjectiveForAreaUnlock(
+  unlockableArea: UnlockableArea,
 ): Objective | undefined {
   for (const entries of v.persistent.objectiveToUnlockMap) {
     const [objectiveID, unlock] = entries;
     if (
-      unlock.type === UnlockType.PATH &&
-      unlock.unlockablePath === unlockablePath
+      unlock.type === UnlockType.AREA &&
+      unlock.unlockableArea === unlockableArea
     ) {
       return getObjectiveFromID(objectiveID);
     }

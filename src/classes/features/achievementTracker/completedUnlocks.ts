@@ -57,7 +57,7 @@ import { UNLOCKABLE_SLOT_VARIANTS } from "../../../arrays/unlockableSlotVariants
 import { UNLOCKABLE_TRINKET_TYPES } from "../../../arrays/unlockableTrinketTypes";
 import type { OtherUnlockKind } from "../../../enums/OtherUnlockKind";
 import { UnlockType } from "../../../enums/UnlockType";
-import type { UnlockablePath } from "../../../enums/UnlockablePath";
+import type { UnlockableArea } from "../../../enums/UnlockableArea";
 import { CARD_QUALITIES } from "../../../objects/cardQualities";
 import { TRINKET_QUALITIES } from "../../../objects/trinketQualities";
 import { getUnlock } from "../../../types/Unlock";
@@ -97,11 +97,11 @@ export function isCharacterUnlocked(
 }
 
 // -----------------------
-// Unlock - Path functions
+// Unlock - Area functions
 // -----------------------
 
-export function isPathUnlocked(
-  unlockablePath: UnlockablePath,
+export function isAreaUnlocked(
+  unlockableArea: UnlockableArea,
   forRun: boolean,
 ): boolean {
   const array = forRun
@@ -110,8 +110,8 @@ export function isPathUnlocked(
 
   return array.some(
     (unlock) =>
-      unlock.type === UnlockType.PATH &&
-      unlock.unlockablePath === unlockablePath,
+      unlock.type === UnlockType.AREA &&
+      unlock.unlockableArea === unlockableArea,
   );
 }
 

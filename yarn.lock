@@ -4204,8 +4204,8 @@ __metadata:
   resolution: "isaac-achievement-randomizer@workspace:."
   dependencies:
     isaac-typescript-definitions: ^36.0.0
-    isaacscript: ^3.15.1
-    isaacscript-common: ^72.5.0
+    isaacscript: ^3.15.2
+    isaacscript-common: ^72.6.0
     isaacscript-lint: ^6.2.0
     isaacscript-spell: ^1.6.0
     isaacscript-tsconfig: ^4.1.1
@@ -4230,12 +4230,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common@npm:^72.5.0":
-  version: 72.5.0
-  resolution: "isaacscript-common@npm:72.5.0"
+"isaacscript-common@npm:^72.6.0":
+  version: 72.6.0
+  resolution: "isaacscript-common@npm:72.6.0"
   dependencies:
     isaac-typescript-definitions: ^36.0.0
-  checksum: 102bc5785db9331161d7800c3bab05d9c521f382c762d1e45d8645d1137dee18dcf6be7cae39a02b0c0d8c9a3e14543367715c8f1b6777c05ddac4688795f0e4
+  checksum: e9d0db828f0f34cfe004c92a5ca2c2c6664525872c296f229a4baa5964f9ce30e2c116fb04cf97d672c0da4b194234820e34e4e6d8b040d9bfc105dabb5f1eb4
   languageName: node
   linkType: hard
 
@@ -4288,9 +4288,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript@npm:^3.15.1":
-  version: 3.15.1
-  resolution: "isaacscript@npm:3.15.1"
+"isaacscript@npm:^3.15.2":
+  version: 3.15.2
+  resolution: "isaacscript@npm:3.15.2"
   dependencies:
     ajv: ^8.12.0
     chalk: 4.1.2
@@ -4306,13 +4306,13 @@ __metadata:
     tslib: ^2.6.2
     typescript-to-lua: ^1.20.1
     xml2js: ^0.6.2
-    yaml: ^2.3.2
+    yaml: ^2.3.3
     yargs: ^17.7.2
   peerDependencies:
     typescript: ">= 5.0.0"
   bin:
     isaacscript: src/main.js
-  checksum: f0804fc7a74d476cd5fa2e42f809f0cd03ae74c1e54f8a6a7aced9f2104ed0a7547b1f5e782bd89212724d8fa1fb85776c224f7941d65b66cf40477db7053618
+  checksum: 0e59f76050db9455f19ef648783f561a22195f3613327d5a204465aa5d41ea15b3d312daf4058f1cded815c16e861a6d70366172a07c8b19b3840fe1536a9ac2
   languageName: node
   linkType: hard
 
@@ -7189,10 +7189,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.3.2":
-  version: 2.3.2
-  resolution: "yaml@npm:2.3.2"
-  checksum: acd80cc24df12c808c6dec8a0176d404ef9e6f08ad8786f746ecc9d8974968c53c6e8a67fdfabcc5f99f3dc59b6bb0994b95646ff03d18e9b1dcd59eccc02146
+"yaml@npm:^2.3.3":
+  version: 2.3.3
+  resolution: "yaml@npm:2.3.3"
+  checksum: cdfd132e7e0259f948929efe8835923df05c013c273c02bb7a2de9b46ac3af53c2778a35b32c7c0f877cc355dc9340ed564018c0242bfbb1278c2a3e53a0e99e
   languageName: node
   linkType: hard
 

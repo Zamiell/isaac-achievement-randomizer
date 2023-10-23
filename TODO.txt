@@ -1,5 +1,7 @@
 TODO:
 
+- esau jr doesn't unlock?
+
 - make second run end on mom's heart, guarantee to unlock item room, shop, secret rooms.
 - make third run end on mom's heart again, guarantee to unlock all q0 items so every next run wouldn't be the same.
 - make the chest unlocked by beating isaac with isaac, dark room by beating satan with isaac, making each run end with it.
@@ -13,14 +15,6 @@ TODO:
   PlayerType.BETHANY_B, // 36
   TLaz,
   TJacob,
-
-- unlock first:
-
-const BOSS_ROOM_COLLECTIBLE_TYPE_EXCEPTIONS = [
-  CollectibleType.WOODEN_SPOON, // 27
-  CollectibleType.WIRE_COAT_HANGER, // 32
-  CollectibleType.CAT_O_NINE_TAILS, // 165
-] as const;
 
 - bosses from challenge room should count
 - segmented enemies should all be champions

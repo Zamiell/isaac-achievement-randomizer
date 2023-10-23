@@ -118,21 +118,6 @@ There is one unlock for completing each challenge, with the following exceptions
 
 There are 1054 + 104 + 44 = 1202 objectives in total.
 
-## Polaroid & Negative Objectives
-
-We want The Chest & Dark Room to unlock very quickly in a randomizer playthrough, so those unlocks are guaranteed to unlock behind the following "easy" objectives on Isaac:
-
-- Mom
-- It Lives
-- Isaac
-- Satan
-- No Hit Basement 1
-- No Hit Basement 2
-- No Hit Caves 1
-- No Hit Caves 2
-- No Hit Depths 1
-- No Hit Depths 2
-
 ## Character Unlock Objectives
 
 Each character is guaranteed to unlock another random character from the following "easy" objectives:
@@ -143,3 +128,4 @@ Each character is guaranteed to unlock another random character from the followi
 - Blue Baby
 - Satan
 - The Lamb
+- Mother

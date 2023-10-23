@@ -4,7 +4,7 @@
 
 - The first character unlocked will always be Isaac. All other characters start off locked.
 
-## Paths (9)
+## Areas (9)
 
 The following things start off locked and are inaccessible:
 
@@ -48,7 +48,7 @@ All challenges start off locked, with the following exceptions:
 
 Every collectible in the game is locked, with the following exceptions:
 
-- Quest collectibles (except for the ones relating to the unlockable paths above):
+- Quest collectibles (except for the ones relating to the unlockable areas above):
   - Broken Shovel (#550)
   - Broken Shovel (#551)
   - Mom's Shovel (#552)

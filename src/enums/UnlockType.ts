@@ -1,6 +1,6 @@
 export enum UnlockType {
   CHARACTER,
-  PATH,
+  AREA,
   ROOM,
   CHALLENGE,
   COLLECTIBLE,

@@ -12,7 +12,7 @@ import { ObjectiveType } from "./enums/ObjectiveType";
 import { OtherUnlockKind } from "./enums/OtherUnlockKind";
 import { RandomizerMode } from "./enums/RandomizerMode";
 import { UnlockType } from "./enums/UnlockType";
-import { UnlockablePath } from "./enums/UnlockablePath";
+import { UnlockableArea } from "./enums/UnlockableArea";
 
 export const BOSS_IDS: readonly BossID[] = getEnumValues(BossID);
 
@@ -39,7 +39,7 @@ export const STAGE_TYPES: readonly StageType[] = getEnumValues(StageType);
 
 export const TRINKET_SLOTS: readonly TrinketSlot[] = getEnumValues(TrinketSlot);
 
-export const UNLOCKABLE_PATHS: readonly UnlockablePath[] =
-  getEnumValues(UnlockablePath);
+export const UNLOCKABLE_AREAS: readonly UnlockableArea[] =
+  getEnumValues(UnlockableArea);
 
 export const UNLOCK_TYPES: readonly UnlockType[] = getEnumValues(UnlockType);

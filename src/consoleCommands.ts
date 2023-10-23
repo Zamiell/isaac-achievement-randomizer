@@ -22,9 +22,9 @@ import {
 } from "./classes/features/AchievementRandomizer";
 import {
   logSpoilerLog,
+  setAreaUnlocked,
   setCharacterUnlocked,
   setCollectibleUnlocked,
-  setPathUnlocked,
 } from "./classes/features/AchievementTracker";
 import { getCharacterObjectiveKindNoHit } from "./classes/features/FloorObjectiveDetection";
 import { addObjective } from "./classes/features/achievementTracker/addObjective";
@@ -35,7 +35,7 @@ import {
 import { getModifiedBossID } from "./enums/BossIDCustom";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { RandomizerMode } from "./enums/RandomizerMode";
-import { UnlockablePath, getPathName } from "./enums/UnlockablePath";
+import { UnlockableArea, getAreaName } from "./enums/UnlockableArea";
 import { mod } from "./mod";
 import { getObjective } from "./types/Objective";
 import { getAdjustedCharacterForObjective } from "./utils";
@@ -53,9 +53,9 @@ export function initConsoleCommands(): void {
   mod.addConsoleCommand("startRandomizer", startRandomizerCommand);
   mod.addConsoleCommand("randomizerVersion", randomizerVersion);
   mod.addConsoleCommand("spoilerLog", spoilerLog);
+  mod.addConsoleCommand("unlockArea", unlockArea);
   mod.addConsoleCommand("unlockCharacter", unlockCharacter);
   mod.addConsoleCommand("unlockCollectible", unlockCollectible);
-  mod.addConsoleCommand("unlockPath", unlockPath);
 }
 
 function endRandomizerCommand(_params: string) {
@@ -165,6 +165,37 @@ function randomizerVersion(_params: string) {
   print(`Achievement Randomizer version: ${version}`);
 }
 
+function unlockArea(params: string) {
+  if (!isRandomizerEnabled()) {
+    print(
+      "Error: You are not currently in a randomizer playthrough, so you can not unlock anything.",
+    );
+    return;
+  }
+
+  if (params === "") {
+    print("You must specify the number corresponding to the area.");
+    return;
+  }
+
+  const unlockableAreaNumber = tonumber(params);
+  if (unlockableAreaNumber === undefined) {
+    print(`That is not a valid number: ${params}`);
+    return;
+  }
+
+  if (!isEnumValue(unlockableAreaNumber, UnlockableArea)) {
+    print(`Invalid area number: ${params}`);
+    return;
+  }
+
+  const unlockableArea = unlockableAreaNumber as UnlockableArea;
+  setAreaUnlocked(unlockableArea);
+
+  const areaName = getAreaName(unlockableArea);
+  print(`Unlocked area: ${areaName} (${unlockableArea})`);
+}
+
 function unlockCharacter(params: string) {
   if (!isRandomizerEnabled()) {
     print(
@@ -236,35 +267,4 @@ function unlockCollectible(params: string) {
 
   const collectibleName = getCollectibleName(collectibleType);
   print(`Unlocked collectible: ${collectibleName} (${collectibleType})`);
-}
-
-function unlockPath(params: string) {
-  if (!isRandomizerEnabled()) {
-    print(
-      "Error: You are not currently in a randomizer playthrough, so you can not unlock anything.",
-    );
-    return;
-  }
-
-  if (params === "") {
-    print("You must specify the number corresponding to the path.");
-    return;
-  }
-
-  const unlockablePathNumber = tonumber(params);
-  if (unlockablePathNumber === undefined) {
-    print(`That is not a valid number: ${params}`);
-    return;
-  }
-
-  if (!isEnumValue(unlockablePathNumber, UnlockablePath)) {
-    print(`Invalid path number: ${params}`);
-    return;
-  }
-
-  const unlockablePath = unlockablePathNumber as UnlockablePath;
-  setPathUnlocked(unlockablePath);
-
-  const pathName = getPathName(unlockablePath);
-  print(`Unlocked path: ${pathName} (${unlockablePath})`);
 }

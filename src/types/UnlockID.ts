@@ -14,8 +14,8 @@ export function getUnlockID(unlock: Unlock): UnlockID {
       return `${unlock.type}.${unlock.character}` as UnlockID;
     }
 
-    case UnlockType.PATH: {
-      return `${unlock.type}.${unlock.unlockablePath}` as UnlockID;
+    case UnlockType.AREA: {
+      return `${unlock.type}.${unlock.unlockableArea}` as UnlockID;
     }
 
     case UnlockType.ROOM: {

@@ -40,17 +40,17 @@ import { getGridEntityName } from "../arrays/unlockableGridEntityTypes";
 import type { OtherUnlockKind } from "../enums/OtherUnlockKind";
 import { getOtherUnlockName } from "../enums/OtherUnlockKind";
 import { UnlockType } from "../enums/UnlockType";
-import type { UnlockablePath } from "../enums/UnlockablePath";
-import { getPathName } from "../enums/UnlockablePath";
+import type { UnlockableArea } from "../enums/UnlockableArea";
+import { getAreaName } from "../enums/UnlockableArea";
 
 interface CharacterUnlock {
   type: UnlockType.CHARACTER;
   character: PlayerType;
 }
 
-export interface PathUnlock {
-  type: UnlockType.PATH;
-  unlockablePath: UnlockablePath;
+export interface AreaUnlock {
+  type: UnlockType.AREA;
+  unlockableArea: UnlockableArea;
 }
 
 export interface RoomUnlock {
@@ -135,7 +135,7 @@ export interface OtherUnlock {
 
 export type Unlock =
   | CharacterUnlock
-  | PathUnlock
+  | AreaUnlock
   | RoomUnlock
   | ChallengeUnlock
   | CollectibleUnlock
@@ -160,9 +160,9 @@ export function getUnlock(
   character: PlayerType,
 ): CharacterUnlock;
 export function getUnlock(
-  type: UnlockType.PATH,
-  unlockablePath: UnlockablePath,
-): PathUnlock;
+  type: UnlockType.AREA,
+  unlockableArea: UnlockableArea,
+): AreaUnlock;
 export function getUnlock(
   type: UnlockType.ROOM,
   roomType: RoomType,
@@ -236,10 +236,10 @@ export function getUnlock(type: UnlockType, arg: int): Unlock {
       };
     }
 
-    case UnlockType.PATH: {
+    case UnlockType.AREA: {
       return {
         type,
-        unlockablePath: arg,
+        unlockableArea: arg,
       };
     }
 
@@ -363,8 +363,8 @@ export function getUnlockText(unlock: Unlock): [string, string] {
       return ["character", getCharacterName(unlock.character)];
     }
 
-    case UnlockType.PATH: {
-      return ["area", getPathName(unlock.unlockablePath)];
+    case UnlockType.AREA: {
+      return ["area", getAreaName(unlock.unlockableArea)];
     }
 
     case UnlockType.ROOM: {

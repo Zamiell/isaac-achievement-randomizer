@@ -40,6 +40,7 @@ import { MAX_SEED, MIN_SEED } from "./consoleCommands";
 import { MOD_NAME } from "./constants";
 import {
   MENU_PAGE_SIZE,
+  getAreaUnlockButtons,
   getBatteryUnlockButtons,
   getBombUnlockButtons,
   getBossObjectiveButtons,
@@ -56,7 +57,6 @@ import {
   getHeartUnlockButtons,
   getKeyUnlockButtons,
   getOtherUnlockButtons,
-  getPathUnlockButtons,
   getPillEffectUnlockButtons,
   getRecentAchievementsButtons,
   getSackUnlockButtons,
@@ -439,8 +439,8 @@ export function initDeadSeaScrolls(): void {
           dest: "characterUnlocks",
         },
         {
-          str: "paths",
-          dest: "pathUnlocks",
+          str: "areas",
+          dest: "areaUnlocks",
         },
         {
           str: "challenges",
@@ -517,15 +517,15 @@ export function initDeadSeaScrolls(): void {
       },
     },
 
-    pathUnlocks: {
-      title: "path unlocks",
+    areaUnlocks: {
+      title: "area unlocks",
       noCursor: true,
       scroller: true,
       fSize: 2,
 
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
-        menu.buttons = getPathUnlockButtons();
+        menu.buttons = getAreaUnlockButtons();
       },
     },
 

@@ -1,6 +1,6 @@
 import {
   OTHER_UNLOCK_KINDS,
-  UNLOCKABLE_PATHS,
+  UNLOCKABLE_AREAS,
   UNLOCK_TYPES,
 } from "../cachedEnums";
 import { UnlockType } from "../enums/UnlockType";
@@ -41,11 +41,11 @@ export const ALL_UNLOCKS: readonly Unlock[] = (() => {
         break;
       }
 
-      case UnlockType.PATH: {
-        for (const unlockablePath of UNLOCKABLE_PATHS) {
+      case UnlockType.AREA: {
+        for (const unlockableArea of UNLOCKABLE_AREAS) {
           const unlock: Unlock = {
-            type: UnlockType.PATH,
-            unlockablePath,
+            type: UnlockType.AREA,
+            unlockableArea,
           };
           unlocks.push(unlock);
         }

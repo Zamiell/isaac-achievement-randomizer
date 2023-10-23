@@ -15,7 +15,10 @@ import { STARTING_CHARACTER } from "./constants";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { UnlockType } from "./enums/UnlockType";
-import { UnlockablePath } from "./enums/UnlockablePath";
+import {
+  STATIC_UNLOCKABLE_AREAS,
+  UnlockableArea,
+} from "./enums/UnlockableArea";
 import type { CharacterObjective, Objective } from "./types/Objective";
 import { getObjective, getObjectiveText } from "./types/Objective";
 import type { ObjectiveID } from "./types/ObjectiveID";
@@ -24,30 +27,10 @@ import type { Unlock } from "./types/Unlock";
 import { getUnlock, getUnlockText } from "./types/Unlock";
 import { getUnlockID } from "./types/UnlockID";
 
-const POLAROID_NEGATIVE_UNLOCK_OBJECTIVE_KINDS = [
-  CharacterObjectiveKind.MOM,
-  CharacterObjectiveKind.IT_LIVES,
-  CharacterObjectiveKind.ISAAC,
-  CharacterObjectiveKind.SATAN,
-  CharacterObjectiveKind.NO_HIT_BASEMENT_1,
-  CharacterObjectiveKind.NO_HIT_BASEMENT_2,
-  CharacterObjectiveKind.NO_HIT_CAVES_1,
-  CharacterObjectiveKind.NO_HIT_CAVES_2,
-  CharacterObjectiveKind.NO_HIT_DEPTHS_1,
-  CharacterObjectiveKind.NO_HIT_DEPTHS_2,
-] as const;
-
-/** These are the unlockable paths that are gated behind `EASY_OBJECTIVE_KINDS`. */
-const EASY_UNLOCKABLE_PATHS = [
-  UnlockablePath.CHEST,
-  UnlockablePath.DARK_ROOM,
-] as const;
-
 /**
  * These consist of objectives that are from:
  * 1) beating bosses
- * 2) not gated behind an unlockable path (with the exception of The Chest / Dark Room, since those
- *    are behind easy Isaac objectives)
+ * 2) not gated behind a randomized unlockable area
  */
 const CHARACTER_UNLOCK_OBJECTIVE_KINDS =
   new ReadonlySet<CharacterObjectiveKind>([
@@ -57,6 +40,7 @@ const CHARACTER_UNLOCK_OBJECTIVE_KINDS =
     CharacterObjectiveKind.BLUE_BABY,
     CharacterObjectiveKind.SATAN,
     CharacterObjectiveKind.LAMB,
+    CharacterObjectiveKind.MOTHER,
   ]);
 
 /** These are characters that are guaranteed to not be unlocked early on. */
@@ -72,24 +56,12 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
   const unlocks = copyArray(ALL_UNLOCKS);
   const objectives = copyArray(ALL_OBJECTIVES);
 
-  // The Polaroid and The Negative are guaranteed to be unlocked via an easy objective for the
-  // starting character.
-  const easyObjectiveKinds = copyArray(
-    POLAROID_NEGATIVE_UNLOCK_OBJECTIVE_KINDS,
-  );
-  for (const unlockablePath of EASY_UNLOCKABLE_PATHS) {
-    const unlock = getUnlock(UnlockType.PATH, unlockablePath);
+  // Some achievements are non-randomized, meaning that unlocks are paired to specific objectives.
+  for (const unlockableArea of STATIC_UNLOCKABLE_AREAS) {
+    const unlock = getUnlock(UnlockType.AREA, unlockableArea);
     removeUnlock(unlocks, unlock);
 
-    const randomEasyObjectiveKind = getRandomArrayElementAndRemove(
-      easyObjectiveKinds,
-      rng,
-    );
-    const objective = getObjective(
-      ObjectiveType.CHARACTER,
-      STARTING_CHARACTER,
-      randomEasyObjectiveKind,
-    );
+    const objective = getStaticObjective(unlockableArea);
     removeObjective(objectives, objective);
 
     const objectiveID = getObjectiveID(objective);
@@ -147,6 +119,60 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
   }
 
   return objectiveToUnlockMap;
+}
+
+function getStaticObjective(
+  unlockableArea: (typeof STATIC_UNLOCKABLE_AREAS)[number],
+) {
+  switch (unlockableArea) {
+    case UnlockableArea.WOMB: {
+      return getObjective(
+        ObjectiveType.CHARACTER,
+        STARTING_CHARACTER,
+        CharacterObjectiveKind.MOM,
+      );
+    }
+
+    case UnlockableArea.CATHEDRAL: {
+      return getObjective(
+        ObjectiveType.CHARACTER,
+        STARTING_CHARACTER,
+        CharacterObjectiveKind.IT_LIVES,
+      );
+    }
+
+    case UnlockableArea.SHEOL: {
+      return getObjective(
+        ObjectiveType.CHARACTER,
+        STARTING_CHARACTER,
+        CharacterObjectiveKind.ISAAC,
+      );
+    }
+
+    case UnlockableArea.CHEST: {
+      return getObjective(
+        ObjectiveType.CHARACTER,
+        STARTING_CHARACTER,
+        CharacterObjectiveKind.SATAN,
+      );
+    }
+
+    case UnlockableArea.DARK_ROOM: {
+      return getObjective(
+        ObjectiveType.CHARACTER,
+        STARTING_CHARACTER,
+        CharacterObjectiveKind.BLUE_BABY,
+      );
+    }
+
+    case UnlockableArea.REPENTANCE_FLOORS: {
+      return getObjective(
+        ObjectiveType.CHARACTER,
+        STARTING_CHARACTER,
+        CharacterObjectiveKind.LAMB,
+      );
+    }
+  }
 }
 
 /** Returns a shuffled array with certain character restrictions. */

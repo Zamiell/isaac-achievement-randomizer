@@ -49,7 +49,7 @@ import {
   BOSS_IDS,
   CHARACTER_OBJECTIVE_KINDS,
   OTHER_UNLOCK_KINDS,
-  UNLOCKABLE_PATHS,
+  UNLOCKABLE_AREAS,
 } from "./cachedEnums";
 import {
   canGetToBoss,
@@ -65,6 +65,7 @@ import {
   isCharacterObjectiveCompleted,
 } from "./classes/features/achievementTracker/completedObjectives";
 import {
+  isAreaUnlocked,
   isBatterySubTypeUnlocked,
   isBombSubTypeUnlocked,
   isCardTypeUnlocked,
@@ -77,7 +78,6 @@ import {
   isHeartSubTypeUnlocked,
   isKeySubTypeUnlocked,
   isOtherUnlockKindUnlocked,
-  isPathUnlocked,
   isPillEffectUnlocked,
   isSackSubTypeUnlocked,
   isSlotVariantUnlocked,
@@ -93,7 +93,7 @@ import {
   getCharacterObjectiveKindName,
 } from "./enums/CharacterObjectiveKind";
 import { getOtherUnlockName } from "./enums/OtherUnlockKind";
-import { getPathName } from "./enums/UnlockablePath";
+import { getAreaName } from "./enums/UnlockableArea";
 import { getObjectiveText } from "./types/Objective";
 import { getUnlockText } from "./types/Unlock";
 
@@ -372,17 +372,17 @@ export function getCharacterUnlockButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
-export function getPathUnlockButtons(): DeadSeaScrollsButton[] {
+export function getAreaUnlockButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const unlockablePath of UNLOCKABLE_PATHS) {
-    const pathName = getPathName(unlockablePath).toLowerCase();
-    const completed = isPathUnlocked(unlockablePath, false);
+  for (const unlockableArea of UNLOCKABLE_AREAS) {
+    const areaName = getAreaName(unlockableArea).toLowerCase();
+    const completed = isAreaUnlocked(unlockableArea, false);
     const completedText = getCompletedText(completed);
 
     buttons.push(
       {
-        str: pathName,
+        str: areaName,
       },
       {
         str: completedText,

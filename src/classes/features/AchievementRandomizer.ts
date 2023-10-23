@@ -53,10 +53,10 @@ import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { RandomizerMode } from "../../enums/RandomizerMode";
 import { UnlockType } from "../../enums/UnlockType";
 import {
-  UnlockablePath,
-  getUnlockablePathFromCharacterObjectiveKind,
-  getUnlockablePathFromStoryBoss,
-} from "../../enums/UnlockablePath";
+  UnlockableArea,
+  getUnlockableAreaFromCharacterObjectiveKind,
+  getUnlockableAreaFromStoryBoss,
+} from "../../enums/UnlockableArea";
 import type {
   BossObjective,
   ChallengeObjective,
@@ -71,11 +71,11 @@ import { preForcedRestart, resetStats } from "./StatsTracker";
 import { addObjective } from "./achievementTracker/addObjective";
 import { isObjectiveCompleted } from "./achievementTracker/completedObjectives";
 import {
+  isAreaUnlocked,
   isCardTypeUnlocked,
   isChallengeUnlocked,
   isCharacterUnlocked,
   isCollectibleTypeUnlocked,
-  isPathUnlocked,
 } from "./achievementTracker/completedUnlocks";
 import { findObjectiveIDForUnlock, v } from "./achievementTracker/v";
 
@@ -331,27 +331,27 @@ export function canGetToCharacterObjective(
     return false;
   }
 
-  // Handle special cases that require two or more unlockable paths.
+  // Handle special cases that require two or more unlockable areas.
   if (kind === CharacterObjectiveKind.DELIRIUM) {
     return (
-      isPathUnlocked(UnlockablePath.BLUE_WOMB, forRun) &&
-      isPathUnlocked(UnlockablePath.VOID, forRun)
+      isAreaUnlocked(UnlockableArea.BLUE_WOMB, forRun) &&
+      isAreaUnlocked(UnlockableArea.VOID, forRun)
     );
   }
 
   if (kind === CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST) {
     return (
-      isPathUnlocked(UnlockablePath.CHEST, forRun) ||
-      isPathUnlocked(UnlockablePath.DARK_ROOM, forRun)
+      isAreaUnlocked(UnlockableArea.CHEST, forRun) ||
+      isAreaUnlocked(UnlockableArea.DARK_ROOM, forRun)
     );
   }
 
-  const unlockablePath = getUnlockablePathFromCharacterObjectiveKind(kind);
-  if (unlockablePath === undefined) {
+  const unlockableArea = getUnlockableAreaFromCharacterObjectiveKind(kind);
+  if (unlockableArea === undefined) {
     return true;
   }
 
-  return isPathUnlocked(unlockablePath, forRun);
+  return isAreaUnlocked(unlockableArea, forRun);
 }
 
 function bossObjectiveFunc(
@@ -383,27 +383,27 @@ export function canGetToBoss(
     bossID === BossIDCustom.ULTRA_WAR ||
     bossID === BossIDCustom.ULTRA_DEATH
   ) {
-    return isPathUnlocked(UnlockablePath.ASCENT, forRun);
+    return isAreaUnlocked(UnlockableArea.ASCENT, forRun);
   }
 
   if (!isStoryBossID(bossID)) {
     return reachableBossesSet.has(bossID);
   }
 
-  // Handle the special case of Delirium, which requires two separate paths to be unlocked. (Since
+  // Handle the special case of Delirium, which requires two separate areas to be unlocked. (Since
   // the mod manually removes void portals, getting to Delirium requires going through Blue Womb.)
   if (bossID === BossID.DELIRIUM) {
     return (
-      isPathUnlocked(UnlockablePath.BLUE_WOMB, forRun) &&
-      isPathUnlocked(UnlockablePath.VOID, forRun)
+      isAreaUnlocked(UnlockableArea.BLUE_WOMB, forRun) &&
+      isAreaUnlocked(UnlockableArea.VOID, forRun)
     );
   }
 
-  const unlockablePath = getUnlockablePathFromStoryBoss(bossID);
+  const unlockableArea = getUnlockableAreaFromStoryBoss(bossID);
 
-  return unlockablePath === undefined
+  return unlockableArea === undefined
     ? true
-    : isPathUnlocked(unlockablePath, forRun);
+    : isAreaUnlocked(unlockableArea, forRun);
 }
 
 function challengeObjectiveFunc(objective: Objective): boolean {
@@ -443,7 +443,7 @@ export function getReachableNonStoryBossesSet(): Set<BossID> {
 
       if (
         isRepentanceStage(stageType) &&
-        !isPathUnlocked(UnlockablePath.REPENTANCE_FLOORS, false)
+        !isAreaUnlocked(UnlockableArea.REPENTANCE_FLOORS, false)
       ) {
         continue;
       }

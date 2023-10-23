@@ -18,12 +18,12 @@ import {
   setGridEntityType,
 } from "isaacscript-common";
 import { OtherUnlockKind } from "../../enums/OtherUnlockKind";
-import { UnlockablePath } from "../../enums/UnlockablePath";
+import { UnlockableArea } from "../../enums/UnlockableArea";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
+  isAreaUnlocked,
   isGridEntityTypeUnlocked,
   isOtherUnlockKindUnlocked,
-  isPathUnlocked,
 } from "./achievementTracker/completedUnlocks";
 
 const POOP_ANM2_PATH = "gfx/grid/grid_poop.anm2";
@@ -94,7 +94,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
     GridEntityType.ROCK_ALT_2,
   )
   postGridEntityInitRockAlt2(gridEntity: GridEntity): void {
-    if (!isPathUnlocked(UnlockablePath.ASCENT, true)) {
+    if (!isAreaUnlocked(UnlockableArea.ASCENT, true)) {
       setGridEntityType(gridEntity, GridEntityType.ROCK);
     }
   }
@@ -179,7 +179,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
   preRoomEntitySpawnRockAlt2():
     | [type: EntityType | GridEntityXMLType, variant: int, subType: int]
     | undefined {
-    return isPathUnlocked(UnlockablePath.ASCENT, true)
+    return isAreaUnlocked(UnlockableArea.ASCENT, true)
       ? undefined
       : [GridEntityXMLType.ROCK, 0, 0];
   }

@@ -32,6 +32,7 @@ import {
   getChallengeTrinketType,
   getCollectibleQuality,
   getRandomArrayElement,
+  includes,
   isActiveCollectible,
   isCollectibleTypeInDefaultItemPool,
   isFamiliarCollectible,
@@ -49,15 +50,17 @@ import { UNLOCKABLE_TRINKET_TYPES } from "../../../arrays/unlockableTrinketTypes
 import { OtherUnlockKind } from "../../../enums/OtherUnlockKind";
 import { UnlockType } from "../../../enums/UnlockType";
 import {
-  UnlockablePath,
-  getUnlockablePathFromStoryBoss,
-} from "../../../enums/UnlockablePath";
+  STATIC_UNLOCKABLE_AREAS,
+  UnlockableArea,
+  getUnlockableAreaFromStoryBoss,
+} from "../../../enums/UnlockableArea";
 import {
   DICE_CARDS,
   DICE_COLLECTIBLES,
   DICE_TRINKETS,
 } from "../../../sets/diceObjects";
 import type {
+  AreaUnlock,
   BatteryUnlock,
   BombUnlock,
   CardUnlock,
@@ -69,7 +72,6 @@ import type {
   HeartUnlock,
   KeyUnlock,
   OtherUnlock,
-  PathUnlock,
   PillEffectUnlock,
   RoomUnlock,
   SackUnlock,
@@ -103,6 +105,7 @@ import {
   getWorseLockedPillEffect,
   getWorseLockedSackSubType,
   getWorseLockedTrinketType,
+  isAreaUnlocked,
   isBatterySubTypeUnlocked,
   isBombSubTypeUnlocked,
   isCardTypeUnlocked,
@@ -114,7 +117,6 @@ import {
   isHeartSubTypeUnlocked,
   isKeySubTypeUnlocked,
   isOtherUnlockKindUnlocked,
-  isPathUnlocked,
   isRoomTypeUnlocked,
   isSackSubTypeUnlocked,
   isSlotVariantUnlocked,
@@ -125,14 +127,19 @@ import { getTrinketTypesOfQuality } from "./trinketQuality";
 import { isHardcoreMode } from "./v";
 
 const FIRST_UNLOCK_COLLECTIBLES = [
+  // In the "boss" and "woodenChest" pools.
   CollectibleType.WOODEN_SPOON, // 27
+
+  // In the "boss" and "goldenChest" and "craneGame" pools.
   CollectibleType.WIRE_COAT_HANGER, // 32
+
+  // In the "boss" pool.
   CollectibleType.CAT_O_NINE_TAILS, // 165
 ] as const;
 
 const SWAPPED_UNLOCK_FUNCTIONS = {
   [UnlockType.CHARACTER]: undefined,
-  [UnlockType.PATH]: getSwappedUnlockPath,
+  [UnlockType.AREA]: getSwappedUnlockArea,
   [UnlockType.ROOM]: getSwappedUnlockRoom,
   [UnlockType.CHALLENGE]: getSwappedUnlockChallenge,
   [UnlockType.COLLECTIBLE]: getSwappedUnlockCollectible,
@@ -158,6 +165,10 @@ export function getSwappedUnlock(
   unlock: Unlock,
   seed: Seed,
 ): Unlock | undefined {
+  if (!isUnlockSwappable(unlock)) {
+    return undefined;
+  }
+
   // Guarantee some collectibles as the very first unlocks.
   const shuffledFirstUnlockCollectibles = shuffleArray(
     FIRST_UNLOCK_COLLECTIBLES,
@@ -173,19 +184,27 @@ export function getSwappedUnlock(
   return func === undefined ? undefined : func(unlock, seed);
 }
 
-const SWAPPED_UNLOCK_PATH_FUNCTIONS = new ReadonlyMap<
-  UnlockablePath,
+function isUnlockSwappable(unlock: Unlock): boolean {
+  if (unlock.type !== UnlockType.AREA) {
+    return true;
+  }
+
+  return !includes(STATIC_UNLOCKABLE_AREAS, unlock.unlockableArea);
+}
+
+const SWAPPED_UNLOCK_AREA_FUNCTIONS = new ReadonlyMap<
+  UnlockableArea,
   (seed: Seed) => Unlock | undefined
 >([
   [
-    UnlockablePath.VOID,
+    UnlockableArea.VOID,
     () =>
-      isPathUnlocked(UnlockablePath.BLUE_WOMB, false)
+      isAreaUnlocked(UnlockableArea.BLUE_WOMB, false)
         ? undefined
-        : getUnlock(UnlockType.PATH, UnlockablePath.BLUE_WOMB),
+        : getUnlock(UnlockType.AREA, UnlockableArea.BLUE_WOMB),
   ],
   [
-    UnlockablePath.ASCENT,
+    UnlockableArea.ASCENT,
     () =>
       isCardTypeUnlocked(CardType.FOOL, false)
         ? undefined
@@ -193,9 +212,9 @@ const SWAPPED_UNLOCK_PATH_FUNCTIONS = new ReadonlyMap<
   ],
 ]);
 
-function getSwappedUnlockPath(unlock: Unlock, seed: Seed): Unlock | undefined {
-  const pathUnlock = unlock as PathUnlock;
-  const func = SWAPPED_UNLOCK_PATH_FUNCTIONS.get(pathUnlock.unlockablePath);
+function getSwappedUnlockArea(unlock: Unlock, seed: Seed): Unlock | undefined {
+  const areaUnlock = unlock as AreaUnlock;
+  const func = SWAPPED_UNLOCK_AREA_FUNCTIONS.get(areaUnlock.unlockableArea);
   return func === undefined ? undefined : func(seed);
 }
 
@@ -259,9 +278,9 @@ function getSwappedUnlockChallenge(
 
   // All the challenge bosses are story bosses.
   const challengeBossID = getChallengeBoss(challengeUnlock.challenge);
-  const unlockablePath = getUnlockablePathFromStoryBoss(challengeBossID);
-  if (unlockablePath !== undefined && !isPathUnlocked(unlockablePath, false)) {
-    return getUnlock(UnlockType.PATH, unlockablePath);
+  const unlockableArea = getUnlockableAreaFromStoryBoss(challengeBossID);
+  if (unlockableArea !== undefined && !isAreaUnlocked(unlockableArea, false)) {
+    return getUnlock(UnlockType.AREA, unlockableArea);
   }
 
   const collectibleTypes = getChallengeCollectibleTypes(
@@ -1360,9 +1379,9 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
   [
     TrinketType.STRANGE_KEY,
     () =>
-      isPathUnlocked(UnlockablePath.BLUE_WOMB, false)
+      isAreaUnlocked(UnlockableArea.BLUE_WOMB, false)
         ? undefined
-        : getUnlock(UnlockType.PATH, UnlockablePath.BLUE_WOMB),
+        : getUnlock(UnlockType.AREA, UnlockableArea.BLUE_WOMB),
   ],
 
   // 179
