@@ -59,6 +59,7 @@ import {
   getOtherUnlockButtons,
   getPillEffectUnlockButtons,
   getRecentAchievementsButtons,
+  getRoomUnlockButtons,
   getSackUnlockButtons,
   getSlotUnlockButtons,
   getSpecificBossObjectiveButtons,
@@ -443,6 +444,10 @@ export function initDeadSeaScrolls(): void {
           dest: "areaUnlocks",
         },
         {
+          str: "rooms",
+          dest: "roomUnlocks",
+        },
+        {
           str: "challenges",
           dest: "challengeUnlocks",
         },
@@ -526,6 +531,18 @@ export function initDeadSeaScrolls(): void {
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
         menu.buttons = getAreaUnlockButtons();
+      },
+    },
+
+    roomUnlocks: {
+      title: "room unlocks",
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      /** @noSelf */
+      generate: (menu: DeadSeaScrollsMenu) => {
+        menu.buttons = getRoomUnlockButtons();
       },
     },
 

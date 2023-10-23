@@ -18,7 +18,7 @@ import {
   getCollectibleName,
   getMapPartialMatch,
   getPillEffectName,
-  getRoomName,
+  getRoomTypeName,
   isEnumValue,
   restart,
 } from "isaacscript-common";
@@ -350,6 +350,6 @@ function unlockRoom(params: string) {
 
   setRoomUnlocked(roomType);
 
-  const roomTypeName = getRoomName(roomType);
+  const roomTypeName = getRoomTypeName(roomType);
   print(`Unlocked room: ${roomTypeName} (${roomType})`);
 }

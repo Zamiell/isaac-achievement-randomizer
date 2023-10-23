@@ -12,7 +12,7 @@ import {
   getCharacterName,
   getCollectibleName,
   getPillEffectName,
-  getRoomName,
+  getRoomTypeName,
   log,
   logError,
 } from "isaacscript-common";
@@ -167,9 +167,9 @@ function findObjectiveForPillEffectUnlock(
 export function setRoomUnlocked(roomType: RoomType): void {
   const objective = findObjectiveForRoomUnlock(roomType);
   if (objective === undefined) {
-    const roomName = getRoomName(roomType);
+    const roomTypeName = getRoomTypeName(roomType);
     error(
-      `Failed to find the objective to unlock room: ${roomName} (${roomType})`,
+      `Failed to find the objective to unlock room: ${roomTypeName} (${roomType})`,
     );
   }
 

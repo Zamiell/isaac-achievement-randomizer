@@ -17,6 +17,7 @@ import {
   getHeartName,
   getKeyName,
   getPillEffectName,
+  getRoomTypeName,
   getSackName,
   getSlotName,
   getTrinketName,
@@ -43,6 +44,7 @@ import {
   UNLOCKABLE_SACK_SUB_TYPES,
 } from "./arrays/unlockablePickupTypes";
 import { UNLOCKABLE_PILL_EFFECTS } from "./arrays/unlockablePillEffects";
+import { UNLOCKABLE_ROOM_TYPES } from "./arrays/unlockableRoomTypes";
 import { UNLOCKABLE_SLOT_VARIANTS } from "./arrays/unlockableSlotVariants";
 import { UNLOCKABLE_TRINKET_TYPES } from "./arrays/unlockableTrinketTypes";
 import {
@@ -79,6 +81,7 @@ import {
   isKeySubTypeUnlocked,
   isOtherUnlockKindUnlocked,
   isPillEffectUnlocked,
+  isRoomTypeUnlocked,
   isSackSubTypeUnlocked,
   isSlotVariantUnlocked,
   isTrinketTypeUnlocked,
@@ -383,6 +386,31 @@ export function getAreaUnlockButtons(): DeadSeaScrollsButton[] {
     buttons.push(
       {
         str: areaName,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "",
+      },
+    );
+  }
+
+  return buttons;
+}
+
+export function getRoomUnlockButtons(): DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const roomType of UNLOCKABLE_ROOM_TYPES) {
+    const roomTypeName = getRoomTypeName(roomType).toLowerCase();
+    const completed = isRoomTypeUnlocked(roomType, false);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: roomTypeName,
       },
       {
         str: completedText,
