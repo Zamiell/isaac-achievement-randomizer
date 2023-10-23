@@ -170,13 +170,15 @@ export function getSwappedUnlock(
   }
 
   // Guarantee some collectibles as the very first unlocks.
-  const shuffledFirstUnlockCollectibles = shuffleArray(
-    FIRST_UNLOCK_COLLECTIBLES,
-    seed,
-  );
-  for (const collectibleType of shuffledFirstUnlockCollectibles) {
-    if (!isCollectibleTypeUnlocked(collectibleType, false)) {
-      return getUnlock(UnlockType.COLLECTIBLE, collectibleType);
+  if (!isFirstUnlockCollectibleUnlock(unlock)) {
+    const shuffledFirstUnlockCollectibles = shuffleArray(
+      FIRST_UNLOCK_COLLECTIBLES,
+      seed,
+    );
+    for (const collectibleType of shuffledFirstUnlockCollectibles) {
+      if (!isCollectibleTypeUnlocked(collectibleType, false)) {
+        return getUnlock(UnlockType.COLLECTIBLE, collectibleType);
+      }
     }
   }
 
@@ -190,6 +192,13 @@ function isUnlockSwappable(unlock: Unlock): boolean {
   }
 
   return !includes(STATIC_UNLOCKABLE_AREAS, unlock.unlockableArea);
+}
+
+function isFirstUnlockCollectibleUnlock(unlock: Unlock): boolean {
+  return (
+    unlock.type === UnlockType.COLLECTIBLE &&
+    includes(FIRST_UNLOCK_COLLECTIBLES, unlock.collectibleType)
+  );
 }
 
 const SWAPPED_UNLOCK_AREA_FUNCTIONS = new ReadonlyMap<

@@ -6,6 +6,7 @@ import {
   copyArray,
   getRandomArrayElement,
   getRandomArrayElementAndRemove,
+  log,
   shuffleArray,
 } from "isaacscript-common";
 import { ALL_OBJECTIVES } from "./arrays/allObjectives";
@@ -116,7 +117,9 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
 
     // In some cases, the amount of unlocks may exceed the amount of objectives.
     if (objectives.length === 0) {
-      break;
+      const unlockText = getUnlockText(unlock).join(" - ");
+      log(`Skipping unlock: ${unlockText}`);
+      continue;
     }
 
     const objective = getRandomArrayElementAndRemove(objectives, rng);

@@ -332,26 +332,28 @@ export function canGetToCharacterObjective(
   }
 
   // Handle special cases that require two or more unlockable areas.
-  if (kind === CharacterObjectiveKind.DELIRIUM) {
-    return (
-      isAreaUnlocked(UnlockableArea.BLUE_WOMB, forRun) &&
-      isAreaUnlocked(UnlockableArea.VOID, forRun)
-    );
-  }
+  switch (kind) {
+    case CharacterObjectiveKind.DELIRIUM: {
+      return (
+        isAreaUnlocked(UnlockableArea.BLUE_WOMB, forRun) &&
+        isAreaUnlocked(UnlockableArea.VOID, forRun)
+      );
+    }
 
-  if (kind === CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST) {
-    return (
-      isAreaUnlocked(UnlockableArea.CHEST, forRun) ||
-      isAreaUnlocked(UnlockableArea.DARK_ROOM, forRun)
-    );
-  }
+    case CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST: {
+      return (
+        isAreaUnlocked(UnlockableArea.CHEST, forRun) ||
+        isAreaUnlocked(UnlockableArea.DARK_ROOM, forRun)
+      );
+    }
 
-  const unlockableArea = getUnlockableAreaFromCharacterObjectiveKind(kind);
-  if (unlockableArea === undefined) {
-    return true;
+    default: {
+      const unlockableArea = getUnlockableAreaFromCharacterObjectiveKind(kind);
+      return unlockableArea === undefined
+        ? true
+        : isAreaUnlocked(unlockableArea, forRun);
+    }
   }
-
-  return isAreaUnlocked(unlockableArea, forRun);
 }
 
 function bossObjectiveFunc(
