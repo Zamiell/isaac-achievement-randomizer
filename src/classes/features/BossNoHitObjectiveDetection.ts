@@ -58,14 +58,30 @@ const v = {
   room: {
     tookDamageRoomFrame: 0,
     usedPause: false,
-    onFirstPhaseOfIsaac: true,
-    onFirstPhaseOfHush: true,
+    onFirstPhaseOfIsaac: true, // 102
+    onFirstPhaseOfHush: true, // 407
     beastAppeared: false,
   },
 };
 
 export class BossNoHitObjectiveDetection extends RandomizerModFeature {
   v = v;
+
+  // 0, 407
+  @Callback(ModCallback.POST_NPC_UPDATE, EntityType.HUSH)
+  postNPCUpdateHush(): void {
+    const bossID = getModifiedBossID();
+    if (bossID !== BossID.HUSH) {
+      return;
+    }
+
+    if (v.room.onFirstPhaseOfHush) {
+      v.room.onFirstPhaseOfHush = false;
+
+      const room = game.GetRoom();
+      v.room.tookDamageRoomFrame = room.GetFrameCount();
+    }
+  }
 
   // 0, 102
   @Callback(ModCallback.POST_NPC_UPDATE, EntityType.ISAAC)
@@ -85,23 +101,7 @@ export class BossNoHitObjectiveDetection extends RandomizerModFeature {
     }
   }
 
-  // 0, 407
-  @Callback(ModCallback.POST_NPC_UPDATE, EntityType.HUSH)
-  postNPCUpdateHush(): void {
-    const bossID = getModifiedBossID();
-    if (bossID !== BossID.HUSH) {
-      return;
-    }
-
-    if (v.room.onFirstPhaseOfHush) {
-      v.room.onFirstPhaseOfHush = false;
-
-      const room = game.GetRoom();
-      v.room.tookDamageRoomFrame = room.GetFrameCount();
-    }
-  }
-
-  // 0, 102
+  // 0, 951, 0
   @CallbackCustom(
     ModCallbackCustom.POST_NPC_UPDATE_FILTER,
     EntityType.BEAST,
@@ -178,6 +178,12 @@ export class BossNoHitObjectiveDetection extends RandomizerModFeature {
 
     const room = game.GetRoom();
     v.room.tookDamageRoomFrame = room.GetFrameCount();
+  }
+
+  // 27, 102, 0
+  @CallbackCustom(ModCallbackCustom.POST_NPC_INIT_FILTER, EntityType.ISAAC)
+  postNPCInitIsaac(npc: EntityNPC): void {
+    npc.HitPoints--;
   }
 
   // 27, 246

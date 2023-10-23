@@ -1,11 +1,8 @@
 TODO:
 
-- emulate vanilla pill pool
-
 - confirm all CharacterObjectiveKind completable
 
 - all horsemen must be phase 1
-- deal 1 damage to isaac + blue baby upon room entry and then delete the phase 2 requirements for the boss objective
 
 - show bosses where you can get them on DSS menu
   - sort by this instead of boss number
@@ -15,6 +12,7 @@ TODO:
 - rules card - show future unlocks
 - website - see all current unlocks after uploading save file
 - option to include banned items
+- emulate vanilla pill pool
 
 ------------------------------
 

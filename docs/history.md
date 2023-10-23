@@ -23,6 +23,7 @@
 - Characters will now unlock before their respective revival items.
 - Quarter, Dollar, and Deep Pockets will now unlock after shops.
 - Added unlock logic for various cards.
+- Isaac and Blue Baby will now be dealt 1 damage upon spawning.
 - Fixed the bug where killing Mother would not accomplish the objective.
 - Fixed the bug where the no-hit objective for Ultra Greedier did not work properly.
 - Fixed the bug where opening the menu in a cleared Mother, Ultra Greed, or Ultra Greedier room would not work.
