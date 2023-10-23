@@ -1,4 +1,4 @@
-import { PlayerType } from "isaac-typescript-definitions";
+import { CollectibleType, PlayerType } from "isaac-typescript-definitions";
 import {
   ReadonlySet,
   arrayRemoveIndexInPlace,
@@ -12,6 +12,7 @@ import {
 import { ALL_OBJECTIVES } from "./arrays/allObjectives";
 import { ALL_UNLOCKS } from "./arrays/allUnlocks";
 import { UNLOCKABLE_CHARACTERS } from "./arrays/unlockableCharacters";
+import { FIRST_UNLOCK_COLLECTIBLES } from "./classes/features/achievementTracker/swapUnlock";
 import { STARTING_CHARACTER } from "./constants";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
@@ -75,6 +76,19 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
     objectiveToUnlockMap.set(objectiveID, unlock);
   }
 
+  // We want the three basic stat up collectibles to not ever be swapped with an important unlock
+  // like a character unlock, so we statically assign them to specific objectives.
+  for (const collectibleType of FIRST_UNLOCK_COLLECTIBLES) {
+    const unlock = getUnlock(UnlockType.COLLECTIBLE, collectibleType);
+    removeUnlock(unlocks, unlock);
+
+    const objective = getStaticObjective(collectibleType);
+    removeObjective(objectives, objective);
+
+    const objectiveID = getObjectiveID(objective);
+    objectiveToUnlockMap.set(objectiveID, unlock);
+  }
+
   // Each character is guaranteed to unlock another character from a basic objective.
   const unlockableCharacters = getShuffledUnlockableCharacters(rng);
   let lastUnlockedCharacter = STARTING_CHARACTER;
@@ -131,7 +145,9 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
 }
 
 function getStaticObjective(
-  unlockableArea: (typeof STATIC_UNLOCKABLE_AREAS)[number],
+  unlockableArea:
+    | (typeof STATIC_UNLOCKABLE_AREAS)[number]
+    | (typeof FIRST_UNLOCK_COLLECTIBLES)[number],
 ) {
   switch (unlockableArea) {
     case UnlockableArea.WOMB: {
@@ -179,6 +195,33 @@ function getStaticObjective(
         ObjectiveType.CHARACTER,
         STARTING_CHARACTER,
         CharacterObjectiveKind.LAMB,
+      );
+    }
+
+    // 27
+    case CollectibleType.WOODEN_SPOON: {
+      return getObjective(
+        ObjectiveType.CHARACTER,
+        STARTING_CHARACTER,
+        CharacterObjectiveKind.NO_HIT_BASEMENT_1,
+      );
+    }
+
+    // 32
+    case CollectibleType.WIRE_COAT_HANGER: {
+      return getObjective(
+        ObjectiveType.CHARACTER,
+        STARTING_CHARACTER,
+        CharacterObjectiveKind.NO_HIT_BASEMENT_2,
+      );
+    }
+
+    // 165
+    case CollectibleType.CAT_O_NINE_TAILS: {
+      return getObjective(
+        ObjectiveType.CHARACTER,
+        STARTING_CHARACTER,
+        CharacterObjectiveKind.NO_HIT_CAVES_1,
       );
     }
   }

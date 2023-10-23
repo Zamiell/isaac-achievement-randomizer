@@ -25,7 +25,7 @@
 - Fixed the bug where killing Mother would not accomplish the objective.
 - Fixed the bug where the no-hit objective for Ultra Greedier did not work properly.
 - Fixed the bug where opening the menu in a cleared Mother, Ultra Greed, or Ultra Greedier room would not work.
-- !Fixed the bug where rooms were missing in the unlock menu.
+- Fixed the bug where rooms were missing in the unlock menu.
 - !Fixed the bug where pills pool.
 - !Fixed the bug where pills from champions.
 

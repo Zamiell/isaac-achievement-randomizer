@@ -126,7 +126,7 @@ import { getPillEffectsOfQuality } from "./pillEffectQuality";
 import { getTrinketTypesOfQuality } from "./trinketQuality";
 import { isHardcoreMode } from "./v";
 
-const FIRST_UNLOCK_COLLECTIBLES = [
+export const FIRST_UNLOCK_COLLECTIBLES = [
   // In the "boss" and "woodenChest" pools.
   CollectibleType.WOODEN_SPOON, // 27
 

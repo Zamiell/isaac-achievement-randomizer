@@ -4,11 +4,15 @@ import {
   setLogFunctionsGlobal,
   setTracebackFunctionsGlobal,
 } from "isaacscript-common";
+import { FIRST_UNLOCK_COLLECTIBLES } from "./classes/features/achievementTracker/swapUnlock";
 import { mod } from "./mod";
 
 /** Currently, F3 is set to execute this function. (`IS_DEV` must be set to true.) */
 function debugCode(_params?: string) {
   // Add code here.
+  for (const collectibleType of FIRST_UNLOCK_COLLECTIBLES) {
+    Isaac.ExecuteCommand(`unlockCollectible ${collectibleType}`);
+  }
 }
 
 /** Hotkey 1 is bound to F3. */
