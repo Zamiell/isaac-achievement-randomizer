@@ -62,6 +62,7 @@ const v = {
     tookDamageRoomFrame: 0,
     usedPause: false,
     onFirstPhaseOfFamine: true, // 63
+    onFirstPhaseOfPestilence: true, // 64
     onFirstPhaseOfIsaac: true, // 102
     onFirstPhaseOfHush: true, // 407
     beastAppeared: false,
@@ -84,6 +85,28 @@ export class BossNoHitObjectiveDetection extends RandomizerModFeature {
       npc.State === asNPCState(FamineState.PHASE_2)
     ) {
       v.room.onFirstPhaseOfFamine = false;
+
+      const room = game.GetRoom();
+      v.room.tookDamageRoomFrame = room.GetFrameCount();
+    }
+  }
+
+  // 0, 64
+  @Callback(ModCallback.POST_NPC_UPDATE, EntityType.PESTILENCE)
+  postNPCUpdatePestilence(npc: EntityNPC): void {
+    const bossID = getModifiedBossID();
+    if (bossID !== BossID.PESTILENCE) {
+      return;
+    }
+
+    const sprite = npc.GetSprite();
+    const animation = sprite.GetAnimation();
+
+    if (
+      v.room.onFirstPhaseOfPestilence &&
+      (animation === "HeadlessAttack1" || animation === "HeadlessAttack2")
+    ) {
+      v.room.onFirstPhaseOfPestilence = false;
 
       const room = game.GetRoom();
       v.room.tookDamageRoomFrame = room.GetFrameCount();
@@ -409,6 +432,15 @@ export function getSecondsSinceLastDamage(): int | undefined {
     // 9
     case BossID.FAMINE: {
       if (!v.room.onFirstPhaseOfFamine) {
+        return undefined;
+      }
+
+      break;
+    }
+
+    // 10
+    case BossID.PESTILENCE: {
+      if (!v.room.onFirstPhaseOfPestilence) {
         return undefined;
       }
 
