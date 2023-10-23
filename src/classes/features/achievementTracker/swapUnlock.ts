@@ -588,10 +588,17 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   // 311
   [
     CollectibleType.JUDAS_SHADOW,
-    () =>
-      isCharacterUnlocked(PlayerType.JUDAS, false)
-        ? undefined
-        : getUnlock(UnlockType.CHARACTER, PlayerType.JUDAS),
+    () => {
+      if (!isCharacterUnlocked(PlayerType.JUDAS, false)) {
+        return getUnlock(UnlockType.CHARACTER, PlayerType.JUDAS);
+      }
+
+      if (!anySoulHeartUnlocked(false)) {
+        return getUnlock(UnlockType.HEART, HeartSubType.HALF_SOUL);
+      }
+
+      return undefined;
+    },
   ],
 
   // 332

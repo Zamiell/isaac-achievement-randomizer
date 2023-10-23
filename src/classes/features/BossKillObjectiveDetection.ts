@@ -66,14 +66,10 @@ export function bossObjectiveDetectionPreSpawnClearAward(): void {
   switch (roomType) {
     // 5
     case RoomType.BOSS: {
-      Isaac.DebugString("GETTING HERE 1");
-
       const bossID = getModifiedBossID();
       if (bossID === undefined) {
         return;
       }
-
-      Isaac.DebugString("GETTING HERE 2");
 
       // Handle XL floors.
       if (bossID !== BossID.MOTHER) {
@@ -84,8 +80,6 @@ export function bossObjectiveDetectionPreSpawnClearAward(): void {
           return;
         }
       }
-
-      Isaac.DebugString("GETTING HERE 3");
 
       const kindBoss = BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND.get(bossID);
       if (kindBoss === undefined) {
