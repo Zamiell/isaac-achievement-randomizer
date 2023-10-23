@@ -340,6 +340,13 @@ export function canGetToCharacterObjective(
       );
     }
 
+    case CharacterObjectiveKind.NO_HIT_SHEOL_CATHEDRAL: {
+      return (
+        isAreaUnlocked(UnlockableArea.CATHEDRAL, forRun) ||
+        isAreaUnlocked(UnlockableArea.SHEOL, forRun)
+      );
+    }
+
     case CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST: {
       return (
         isAreaUnlocked(UnlockableArea.CHEST, forRun) ||

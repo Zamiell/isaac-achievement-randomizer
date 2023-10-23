@@ -166,11 +166,18 @@ export function getUnlockableAreaFromCharacterObjectiveKind(
     case CharacterObjectiveKind.NO_HIT_CAVES_1:
     case CharacterObjectiveKind.NO_HIT_CAVES_2:
     case CharacterObjectiveKind.NO_HIT_DEPTHS_1:
-    case CharacterObjectiveKind.NO_HIT_DEPTHS_2:
-    case CharacterObjectiveKind.NO_HIT_WOMB_1:
-    case CharacterObjectiveKind.NO_HIT_WOMB_2:
-    case CharacterObjectiveKind.NO_HIT_SHEOL_CATHEDRAL: {
+    case CharacterObjectiveKind.NO_HIT_DEPTHS_2: {
       return undefined;
+    }
+
+    case CharacterObjectiveKind.NO_HIT_WOMB_1:
+    case CharacterObjectiveKind.NO_HIT_WOMB_2: {
+      return UnlockableArea.WOMB;
+    }
+
+    case CharacterObjectiveKind.NO_HIT_SHEOL_CATHEDRAL: {
+      // Note that this can unlock from either Dark Room or The Chest, so this value is misleading.
+      return UnlockableArea.CATHEDRAL;
     }
 
     case CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST: {

@@ -32,7 +32,8 @@ import {
   onRepentanceStage,
   onStage,
   removeAllEffects,
-  removeAllMatchingGridEntities,
+  removeAllSpikes,
+  removeAllTrapdoors,
   removeDoor,
   removeGridEntity,
   spawnGridEntity,
@@ -150,13 +151,13 @@ export class AreaRemoval extends RandomizerModFeature {
       return;
     }
 
+    mod.runNextGameFrame(() => {
+      removeAllTrapdoors();
+    });
+
     const room = game.GetRoom();
     const centerPos = room.GetCenterPos();
     spawnPickup(PickupVariant.BIG_CHEST, 0, centerPos);
-
-    mod.runNextGameFrame(() => {
-      removeAllMatchingGridEntities(GridEntityType.TRAPDOOR);
-    });
   }
 
   checkItLivesTrapdoorHeavenDoor(): void {
@@ -172,14 +173,23 @@ export class AreaRemoval extends RandomizerModFeature {
     }
 
     if (!isAreaUnlocked(UnlockableArea.CATHEDRAL, true)) {
-      removeAllEffects(
-        EffectVariant.HEAVEN_LIGHT_DOOR,
-        HeavenLightDoorSubType.HEAVEN_DOOR,
-      );
+      // We have to use the next render frame instead of the next game frame or else the entity will
+      // appear for a frame (which looks buggy).
+      mod.runNextRenderFrame(() => {
+        removeAllEffects(
+          EffectVariant.HEAVEN_LIGHT_DOOR,
+          HeavenLightDoorSubType.HEAVEN_DOOR,
+        );
+      });
     }
 
     if (!isAreaUnlocked(UnlockableArea.SHEOL, true)) {
-      removeAllMatchingGridEntities(GridEntityType.TRAPDOOR);
+      // If we remove the trapdoor on the next render frame, it will bug out the render engine of
+      // the game. Thus, we revert to removing it on the next game frame, which will make it appear
+      // for a single render frame.
+      mod.runNextGameFrame(() => {
+        removeAllTrapdoors();
+      });
     }
 
     if (
@@ -296,7 +306,7 @@ export class AreaRemoval extends RandomizerModFeature {
 
   checkRemoveSacrificeRoomSpikes(): void {
     if (v.level.removedSacrificeRoomSpikes && inRoomType(RoomType.SACRIFICE)) {
-      removeAllMatchingGridEntities(GridEntityType.SPIKES);
+      removeAllSpikes();
     }
   }
 
@@ -320,7 +330,7 @@ export class AreaRemoval extends RandomizerModFeature {
       numSacrifices >= 11 &&
       !isAreaUnlocked(UnlockableArea.DARK_ROOM, true)
     ) {
-      removeAllMatchingGridEntities(GridEntityType.SPIKES);
+      removeAllSpikes();
       v.level.removedSacrificeRoomSpikes = true;
     }
   }

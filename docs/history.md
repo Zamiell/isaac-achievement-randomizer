@@ -22,6 +22,7 @@
 - Characters will now unlock before their respective revival items.
 - Quarter, Dollar, and Deep Pockets will now unlock after shops.
 - Added unlock logic for various cards.
+- Fixed the bug where killing Mother would not accomplish the objective.
 
 ### _v0.7.2_ - October 21th, 2023
 

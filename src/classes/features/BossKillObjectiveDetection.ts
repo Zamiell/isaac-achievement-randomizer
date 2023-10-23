@@ -66,17 +66,19 @@ export function bossObjectiveDetectionPreSpawnClearAward(): void {
   switch (roomType) {
     // 5
     case RoomType.BOSS: {
-      // Handle XL floors.
-      const level = game.GetLevel();
-      const lastBossRoomListIndex = level.GetLastBossRoomListIndex();
-      const roomListIndex = getRoomListIndex();
-      if (roomListIndex !== lastBossRoomListIndex) {
-        return;
-      }
-
       const bossID = getModifiedBossID();
       if (bossID === undefined) {
         return;
+      }
+
+      // Handle XL floors.
+      if (bossID !== BossID.MOTHER) {
+        const level = game.GetLevel();
+        const lastBossRoomListIndex = level.GetLastBossRoomListIndex();
+        const roomListIndex = getRoomListIndex();
+        if (roomListIndex !== lastBossRoomListIndex) {
+          return;
+        }
       }
 
       const kindBoss = BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND.get(bossID);

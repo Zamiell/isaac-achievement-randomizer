@@ -1,5 +1,11 @@
 TODO:
 
+- confirm all CharacterObjectiveKind completable
+- update isRoomDangerous for post Mother and post Ultra Greed
+- ultra greed unlock is not working
+
+- devil room and angel room doors
+
 - check esau jr doesn't work for unlocking?
 
 - bosses from challenge room should count
