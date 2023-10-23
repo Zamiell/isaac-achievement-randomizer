@@ -155,9 +155,15 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
   - Wooden Spoon (#27)
   - Wire Coat Hanger (#32)
   - Cat-O-Nine-Tails (#165)
-- Isaac is guaranteed to unlock both The Chest & Dark Room from one of his [easier objectives](objectives.md#polaroid--negative-objectives). The rest can be randomly unlocked from any objective.
-- Each character is guaranteed to unlock another random character from one of their [easier objectives](objectives.md#character-unlock-objectives).
-- Besides that, there is no logic that makes things unlock in a particular order. However, certain specific unlocks will be swapped to ensure that unlocked things are not "useless" [as described in the casual mode section](#1-casual-mode-full-random).
+- 6 area unlocks are not randomized and always are unlocked from specific objectives:
+  - Womb (by defeating Mom)
+  - Cathedral (by defeating It Lives)
+  - Sheol (by defeating Isaac)
+  - The Chest (by defeating Satan)
+  - Dark Room (By defeating Blue Baby)
+  - Repentance floors (by defeating The Lamb)
+- Each character is guaranteed to unlock another random character from one of their [basic objectives](objectives.md#character-unlock-objectives).
+- Besides that, there is no logic that makes things unlock in a particular order. However, certain specific unlocks will be swapped to ensure that unlocked things are not "useless", [as described in the casual mode section](#1-casual-mode-full-random).
 
 <br>
 

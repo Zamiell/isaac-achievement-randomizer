@@ -3,27 +3,27 @@ import { CharacterObjectiveKind } from "./CharacterObjectiveKind";
 
 /** We want core areas to be static, but hard areas to be randomized. */
 export enum UnlockableArea {
-  WOMB, // By defeating Mom.
-  CATHEDRAL, // By defeating It Lives.
-  SHEOL, // By defeating Isaac.
-  CHEST, // By defeating Satan.
-  DARK_ROOM, // By defeating Blue Baby.
+  WOMB,
+  CATHEDRAL,
+  SHEOL,
+  CHEST,
+  DARK_ROOM,
   MEGA_SATAN,
   BOSS_RUSH,
   BLUE_WOMB,
   VOID,
-  REPENTANCE_FLOORS, // By defeating The Lamb.
+  REPENTANCE_FLOORS,
   ASCENT,
   GREED_MODE,
 }
 
 export const STATIC_UNLOCKABLE_AREAS = [
-  UnlockableArea.WOMB,
-  UnlockableArea.CATHEDRAL,
-  UnlockableArea.SHEOL,
-  UnlockableArea.CHEST,
-  UnlockableArea.DARK_ROOM,
-  UnlockableArea.REPENTANCE_FLOORS,
+  UnlockableArea.WOMB, // By defeating Mom.
+  UnlockableArea.CATHEDRAL, // By defeating It Lives.
+  UnlockableArea.SHEOL, // By defeating Isaac.
+  UnlockableArea.CHEST, // By defeating Satan.
+  UnlockableArea.DARK_ROOM, // By defeating Blue Baby.
+  UnlockableArea.REPENTANCE_FLOORS, // By defeating The Lamb.
 ] as const;
 
 export function getUnlockableAreaFromStoryBoss(

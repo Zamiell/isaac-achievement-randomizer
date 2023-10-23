@@ -14,8 +14,8 @@ export const UNLOCKABLE_ROOM_TYPES = [
   RoomType.CHALLENGE, // 11
   RoomType.LIBRARY, // 12
   RoomType.SACRIFICE, // 13
-  // - RoomType.DEVIL (14)
-  // - RoomType.ANGEL (15)
+  RoomType.DEVIL, // 14
+  RoomType.ANGEL, // 15
   // - RoomType.DUNGEON (16)
   // - RoomType.BOSS_RUSH (17)
   RoomType.CLEAN_BEDROOM, // 18
@@ -33,7 +33,5 @@ export const UNLOCKABLE_ROOM_TYPES = [
 ] as const;
 
 // Possible additions:
-// - RoomType.ERROR, // 3
-// - RoomType.DEVIL, // 14
-// - RoomType.ANGEL, // 15
-// - RoomType.ULTRA_SECRET, // 29
+// - RoomType.ERROR (3)
+// - RoomType.ULTRA_SECRET (29)

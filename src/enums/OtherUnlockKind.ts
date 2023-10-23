@@ -2,16 +2,9 @@ export enum OtherUnlockKind {
   BEDS,
   SHOPKEEPERS,
 
-  BLUE_AND_PURPLE_FIREPLACES,
-
   GOLD_TRINKETS,
   GOLD_PILLS,
   HORSE_PILLS,
-
-  URNS, // 6.0
-  MUSHROOMS, // 6.0
-  SKULLS, // 6.0
-  POLYPS, // 6.0
 
   GOLDEN_POOP, // 14.3
   RAINBOW_POOP, // 14.4
@@ -33,10 +26,6 @@ export function getOtherUnlockName(
       return ["entity", "Shopkeepers"];
     }
 
-    case OtherUnlockKind.BLUE_AND_PURPLE_FIREPLACES: {
-      return ["entity", "Blue & Purple Fireplaces"];
-    }
-
     case OtherUnlockKind.GOLD_TRINKETS: {
       return ["trinket type", "Gold Trinkets"];
     }
@@ -47,22 +36,6 @@ export function getOtherUnlockName(
 
     case OtherUnlockKind.HORSE_PILLS: {
       return ["pill type", "Horse Pills"];
-    }
-
-    case OtherUnlockKind.URNS: {
-      return ["grid entity", "Urns"];
-    }
-
-    case OtherUnlockKind.MUSHROOMS: {
-      return ["grid entity", "Mushrooms"];
-    }
-
-    case OtherUnlockKind.SKULLS: {
-      return ["grid entity", "Skulls"];
-    }
-
-    case OtherUnlockKind.POLYPS: {
-      return ["grid entity", "Polyps"];
     }
 
     case OtherUnlockKind.GOLDEN_POOP: {

@@ -10,9 +10,7 @@ import {
   Callback,
   CallbackCustom,
   ModCallbackCustom,
-  RockAltType,
   convertXMLGridEntityType,
-  getRockAltType,
   isGridEntityXMLType,
   isPoopGridEntityXMLType,
   setGridEntityType,
@@ -43,25 +41,6 @@ export class GridEntityRemoval extends RandomizerModFeature {
         ? GridEntityType.DECORATION
         : GridEntityType.ROCK;
     setGridEntityType(gridEntity, newGridEntityType);
-  }
-
-  // 6
-  @CallbackCustom(
-    ModCallbackCustom.POST_GRID_ENTITY_INIT,
-    GridEntityType.ROCK_ALT,
-  )
-  postGridEntityInitRockAlt(gridEntity: GridEntity): void {
-    const rockAltType = getRockAltType();
-    const otherUnlockKind = rockAltTypeToOtherUnlockKind(rockAltType);
-    if (otherUnlockKind === undefined) {
-      return;
-    }
-
-    if (isOtherUnlockKindUnlocked(otherUnlockKind, true)) {
-      return;
-    }
-
-    setGridEntityType(gridEntity, GridEntityType.ROCK);
   }
 
   // 14
@@ -154,26 +133,6 @@ export class GridEntityRemoval extends RandomizerModFeature {
 
   @CallbackCustom(
     ModCallbackCustom.PRE_ROOM_ENTITY_SPAWN_FILTER,
-    GridEntityXMLType.ROCK_ALT, // 1002
-  )
-  preRoomEntitySpawnRockAlt():
-    | [type: EntityType | GridEntityXMLType, variant: int, subType: int]
-    | undefined {
-    const rockAltType = getRockAltType();
-    const otherUnlockKind = rockAltTypeToOtherUnlockKind(rockAltType);
-    if (otherUnlockKind === undefined) {
-      return undefined;
-    }
-
-    if (isOtherUnlockKindUnlocked(otherUnlockKind, true)) {
-      return undefined;
-    }
-
-    return [GridEntityXMLType.ROCK, 0, 0];
-  }
-
-  @CallbackCustom(
-    ModCallbackCustom.PRE_ROOM_ENTITY_SPAWN_FILTER,
     GridEntityXMLType.ROCK_ALT_2, // 1008
   )
   preRoomEntitySpawnRockAlt2():
@@ -195,33 +154,6 @@ export class GridEntityRemoval extends RandomizerModFeature {
     return isOtherUnlockKindUnlocked(OtherUnlockKind.REWARD_PLATES, true)
       ? undefined
       : [GridEntityXMLType.ROCK, 0, 0];
-  }
-}
-
-function rockAltTypeToOtherUnlockKind(
-  rockAltType: RockAltType,
-): OtherUnlockKind | undefined {
-  switch (rockAltType) {
-    case RockAltType.URN: {
-      return OtherUnlockKind.URNS;
-    }
-
-    case RockAltType.MUSHROOM: {
-      return OtherUnlockKind.MUSHROOMS;
-    }
-
-    case RockAltType.SKULL: {
-      return OtherUnlockKind.SKULLS;
-    }
-
-    case RockAltType.POLYP: {
-      return OtherUnlockKind.POLYPS;
-    }
-
-    case RockAltType.BUCKET_DOWNPOUR:
-    case RockAltType.BUCKET_DROSS: {
-      return undefined;
-    }
   }
 }
 

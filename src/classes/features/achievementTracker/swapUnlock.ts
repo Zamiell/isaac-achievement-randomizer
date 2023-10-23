@@ -926,6 +926,28 @@ function getSwappedUnlockCollectible(
     return getUnlock(UnlockType.ROOM, RoomType.SACRIFICE);
   }
 
+  // 14
+  if (
+    isCollectibleTypeInDefaultItemPool(
+      collectibleUnlock.collectibleType,
+      ItemPoolType.DEVIL,
+    ) &&
+    !isRoomTypeUnlocked(RoomType.DEVIL, false)
+  ) {
+    return getUnlock(UnlockType.ROOM, RoomType.DEVIL);
+  }
+
+  // 15
+  if (
+    isCollectibleTypeInDefaultItemPool(
+      collectibleUnlock.collectibleType,
+      ItemPoolType.ANGEL,
+    ) &&
+    !isRoomTypeUnlocked(RoomType.ANGEL, false)
+  ) {
+    return getUnlock(UnlockType.ROOM, RoomType.ANGEL);
+  }
+
   // 20
   if (
     isCollectibleTypeInDefaultItemPool(
@@ -1911,14 +1933,6 @@ const SWAPPED_UNLOCK_OTHER_FUNCTIONS = new ReadonlyMap<
   ],
 
   [
-    OtherUnlockKind.BLUE_AND_PURPLE_FIREPLACES,
-    () =>
-      isHeartSubTypeUnlocked(HeartSubType.SOUL, false)
-        ? undefined
-        : getUnlock(UnlockType.HEART, HeartSubType.SOUL),
-  ],
-
-  [
     OtherUnlockKind.GOLD_TRINKETS,
     (seed) =>
       anyTrinketTypesUnlocked(false) ? undefined : getRandomTrinketUnlock(seed),
@@ -1938,12 +1952,6 @@ const SWAPPED_UNLOCK_OTHER_FUNCTIONS = new ReadonlyMap<
       anyPillEffectsUnlocked(false)
         ? undefined
         : getRandomPillEffectUnlock(seed),
-  ],
-
-  [
-    OtherUnlockKind.SKULLS,
-    (seed) =>
-      anyCardTypesUnlocked(false) ? undefined : getRandomCardTypeUnlock(seed),
   ],
 ]);
 

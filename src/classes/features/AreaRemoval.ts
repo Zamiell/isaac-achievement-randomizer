@@ -4,6 +4,7 @@ import {
   EffectVariant,
   EntityType,
   GridEntityType,
+  HeavenLightDoorSubType,
   LevelCurse,
   LevelStage,
   ModCallback,
@@ -30,20 +31,18 @@ import {
   isRoomInsideGrid,
   onRepentanceStage,
   onStage,
+  removeAllEffects,
   removeAllMatchingGridEntities,
   removeDoor,
   removeGridEntity,
   spawnGridEntity,
   spawnPickup,
 } from "isaacscript-common";
-import { STARTING_CHARACTER } from "../../constants";
 import { getModifiedBossID } from "../../enums/BossIDCustom";
-import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { PickupVariantCustom } from "../../enums/PickupVariantCustom";
 import { UnlockableArea } from "../../enums/UnlockableArea";
 import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
-import { isCharacterObjectiveCompleted } from "./achievementTracker/completedObjectives";
 import {
   isAreaUnlocked,
   isRoomTypeUnlocked,
@@ -129,19 +128,14 @@ export class AreaRemoval extends RandomizerModFeature {
   @Callback(ModCallback.PRE_SPAWN_CLEAR_AWARD)
   preSpawnClearAward(): boolean | undefined {
     this.checkMomTrapdoor();
+    this.checkItLivesTrapdoorHeavenDoor();
     this.checkPathDoors();
 
     return undefined;
   }
 
   checkMomTrapdoor(): void {
-    if (
-      isCharacterObjectiveCompleted(
-        STARTING_CHARACTER,
-        CharacterObjectiveKind.MOM,
-        true,
-      )
-    ) {
+    if (isAreaUnlocked(UnlockableArea.WOMB, true)) {
       return;
     }
 
@@ -163,6 +157,39 @@ export class AreaRemoval extends RandomizerModFeature {
     mod.runNextGameFrame(() => {
       removeAllMatchingGridEntities(GridEntityType.TRAPDOOR);
     });
+  }
+
+  checkItLivesTrapdoorHeavenDoor(): void {
+    const bossID = getModifiedBossID();
+    if (bossID !== BossID.IT_LIVES) {
+      return;
+    }
+
+    // Account for reverse Emperor cards.
+    const roomInsideGrid = isRoomInsideGrid();
+    if (!roomInsideGrid) {
+      return;
+    }
+
+    if (!isAreaUnlocked(UnlockableArea.CATHEDRAL, true)) {
+      removeAllEffects(
+        EffectVariant.HEAVEN_LIGHT_DOOR,
+        HeavenLightDoorSubType.HEAVEN_DOOR,
+      );
+    }
+
+    if (!isAreaUnlocked(UnlockableArea.SHEOL, true)) {
+      removeAllMatchingGridEntities(GridEntityType.TRAPDOOR);
+    }
+
+    if (
+      !isAreaUnlocked(UnlockableArea.CATHEDRAL, true) &&
+      !isAreaUnlocked(UnlockableArea.SHEOL, true)
+    ) {
+      const room = game.GetRoom();
+      const centerPos = room.GetCenterPos();
+      spawnPickup(PickupVariant.BIG_CHEST, 0, centerPos);
+    }
   }
 
   @CallbackCustom(

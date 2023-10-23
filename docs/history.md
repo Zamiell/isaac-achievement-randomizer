@@ -5,10 +5,20 @@
 
 ### _v0.8.0_ - October 21th, 2023
 
-- Beating Mom for the first time will result in a Big Chest.
-- !The first four unlocks will now always be X.
-- Added the Dirty Bedroom unlock.
-- Removed the Ultra Secret Room unlock.
+- Renamed "paths" to "areas".
+- Revamped how areas work. Core areas are now non-randomized; see the manual for more details.
+- The first three unlocks will now always be Wooden Spoon, Wire Coat Hanger, and Cat-O-Nine-Tails (in any order).
+- Added the following unlocks:
+  - Dirty Bedroom
+  - Devil Room
+  - Angel Room
+- Removed the following unlocks:
+  - Ultra Secret Room
+  - Blue & Purple Fireplaces
+  - Urn
+  - Mushroom
+  - Skull
+  - Polyps
 - Characters will now unlock before their respective revival items.
 - Quarter, Dollar, and Deep Pockets will now unlock after shops.
 - Added unlock logic for various cards.

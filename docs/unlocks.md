@@ -4,13 +4,16 @@
 
 - The first character unlocked will always be Isaac. All other characters start off locked.
 
-## Areas (9)
+## Areas (12)
 
 The following things start off locked and are inaccessible:
 
-- The Polaroid + The Chest
-- The Negative + The Dark Room
-- Key Piece 1 + Key Piece 2 + Mega Satan
+- Womb
+- Sheol
+- Cathedral
+- The Chest (and The Polaroid)
+- The Dark Room (and The Negative)
+- Mega Satan (and Key Piece 1 + Key Piece 2)
 - Boss Rush
 - Blue Womb
 - The Void
@@ -18,7 +21,7 @@ The following things start off locked and are inaccessible:
 - The Ascent
 - Greed Mode
 
-## Room Types (15)
+## Room Types (17)
 
 The following room types start out locked:
 
@@ -31,12 +34,14 @@ The following room types start out locked:
 - Challenge Rooms (#11) (unlocks before the first Boss Room pool collectible)
 - Libraries (#12) (unlocks before the first book collectible)
 - Sacrifice Rooms (#13) (unlocks before the first Angel Room pool collectible)
+- Devil Rooms (#14) (unlocks before the first Devil Room collectible)
+- Angel Rooms (#15) (unlocks before the first Angel Room collectible)
 - Vaults (#20) (unlocks before the first Golden Chest pool collectible)
 - Dice Rooms (#21) (unlocks before the first dice collectible/trinket/card)
 - Planetariums (#24) (unlocks before the first Planetarium pool collectible)
-- Bedrooms (#18, #19) (unlocks before the first heart or bed)
+- Clean Bedrooms (#18) (unlocks before the first heart or bed)
+- Dirty Bedrooms (#19) (unlocks before the first heart or bed)
 - Black Markets (#22) (unlocks before the first Shop pool collectible)
-- Ultra Secret Rooms (#29) (unlocks before the first Ultra Secret Room pool collectible)
 
 ## Challenges (44)
 
@@ -120,15 +125,11 @@ Every pill effect in the game is locked. If no pill effects are unlocked, pills 
 
 Every slot entity (e.g. machines and beggars) is locked behind a random objective. Locked slot entities are removed.
 
-## Grid Entities (13)
+## Grid Entities (9)
 
 The following grid entities start out locked:
 
 - Tinted Rocks (#4.0)
-- Urns (#6.0)
-- Mushrooms (#6.0)
-- Skulls (#6.0)
-- Polyps (#6.0)
 - Golden Poop (#14.3)
 - Rainbow Poop (#14.4)
 - Black Poop (#14.5)
@@ -138,17 +139,16 @@ The following grid entities start out locked:
 - Super Tinted Rocks (#22.0)
 - Fool's Gold Rocks (#27.0)
 
-## Miscellaneous (6)
+## Miscellaneous (5)
 
 The following other things start out locked:
 
 - Beds (#5.380)
 - Shopkeepers (#17)
-- Blue & Purple Fireplaces (#33.2, #33.3)
 - Golden Trinkets
 - Gold Pills
 - Horse Pills
 
 ## Total Unlocks
 
-There are 33 + 9 + 15 + 44 + 699 + 185 + 95 + 50 + (11 + 6 + 2 + 3 + 4 + 2 + 10) + 15 + 13 + 6 = 1202 unlocks in total.
+There are 33 + 12 + 17 + 44 + 699 + 185 + 95 + 50 + (11 + 6 + 2 + 3 + 4 + 2 + 10) + 15 + 9 + 5 = 1202 unlocks in total.
