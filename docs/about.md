@@ -243,6 +243,7 @@ The mod provides several custom [console commands](https://bindingofisaacrebirth
 - `unlockCharacter [character]` - For debugging. Immediately unlocks the specified character.
 - `unlockCollectible [collectible]` - For debugging. Immediately unlocks the specified collectible.
 - `unlockPillEffect [pill effect]` - For debugging. Immediately unlocks the specified pill effect.
+- `unlockRoom [room]` - For debugging. Immediately unlocks the specified room.
 
 ### 9) Crash & Softlock Prevention <!-- FixVanillaBugs -->
 

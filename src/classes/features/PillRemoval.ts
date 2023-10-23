@@ -37,12 +37,17 @@ export class PillRemoval extends RandomizerModFeature {
   // 64
   @Callback(ModCallback.GET_PILL_COLOR)
   getPillColor(seed: Seed): PillColor | undefined {
+    Isaac.DebugString("GETTING HERE - GET_PILL_COLOR}");
+
     if (!anyPillEffectsUnlocked(true)) {
       return undefined;
     }
 
     if (v.run.pillPool.size === 0) {
       this.initPillPool();
+      Isaac.DebugString(
+        `GETTING HERE - PILL POOL INIT - size: ${v.run.pillPool.size}`,
+      );
     }
 
     const pillColors = [...v.run.pillPool.keys()];
@@ -68,6 +73,12 @@ export class PillRemoval extends RandomizerModFeature {
     _pillEffect: PillEffect,
     pillColor: PillColor,
   ): PillEffect | undefined {
+    Isaac.DebugString(
+      `GETTING HERE - GET_PILL_EFFECT - ${_pillEffect} - ${v.run.pillPool.get(
+        pillColor,
+      )}`,
+    );
+
     return v.run.pillPool.get(pillColor);
   }
 

@@ -2,6 +2,7 @@ import type {
   CollectibleType,
   PillEffect,
   PlayerType,
+  RoomType,
 } from "isaac-typescript-definitions";
 import {
   CallbackCustom,
@@ -11,6 +12,7 @@ import {
   getCharacterName,
   getCollectibleName,
   getPillEffectName,
+  getRoomName,
   log,
   logError,
 } from "isaacscript-common";
@@ -154,6 +156,30 @@ function findObjectiveForPillEffectUnlock(
       unlock.type === UnlockType.PILL_EFFECT &&
       unlock.pillEffect === pillEffect
     ) {
+      return getObjectiveFromID(objectiveID);
+    }
+  }
+
+  return undefined;
+}
+
+/** Only used for debugging. */
+export function setRoomUnlocked(roomType: RoomType): void {
+  const objective = findObjectiveForRoomUnlock(roomType);
+  if (objective === undefined) {
+    const roomName = getRoomName(roomType);
+    error(
+      `Failed to find the objective to unlock room: ${roomName} (${roomType})`,
+    );
+  }
+
+  addObjective(objective);
+}
+
+function findObjectiveForRoomUnlock(roomType: RoomType): Objective | undefined {
+  for (const entries of v.persistent.objectiveToUnlockMap) {
+    const [objectiveID, unlock] = entries;
+    if (unlock.type === UnlockType.ROOM && unlock.roomType === roomType) {
       return getObjectiveFromID(objectiveID);
     }
   }

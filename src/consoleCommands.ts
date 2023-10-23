@@ -2,6 +2,7 @@ import type {
   CollectibleType,
   PillEffect,
   PlayerType,
+  RoomType,
 } from "isaac-typescript-definitions";
 import {
   CHARACTER_NAME_TO_TYPE_MAP,
@@ -9,12 +10,15 @@ import {
   FIRST_CHARACTER,
   LAST_VANILLA_CHARACTER,
   PILL_NAME_TO_EFFECT_MAP,
+  ROOM_NAME_TO_TYPE_MAP,
   asCollectibleType,
   asPillEffect,
+  asRoomType,
   getCharacterName,
   getCollectibleName,
   getMapPartialMatch,
   getPillEffectName,
+  getRoomName,
   isEnumValue,
   restart,
 } from "isaacscript-common";
@@ -33,6 +37,7 @@ import {
   setCharacterUnlocked,
   setCollectibleUnlocked,
   setPillEffectUnlocked,
+  setRoomUnlocked,
 } from "./classes/features/AchievementTracker";
 import { getCharacterObjectiveKindNoHit } from "./classes/features/FloorObjectiveDetection";
 import { addObjective } from "./classes/features/achievementTracker/addObjective";
@@ -65,6 +70,7 @@ export function initConsoleCommands(): void {
   mod.addConsoleCommand("unlockCharacter", unlockCharacter);
   mod.addConsoleCommand("unlockCollectible", unlockCollectible);
   mod.addConsoleCommand("unlockPillEffect", unlockPillEffect);
+  mod.addConsoleCommand("unlockRoom", unlockRoom);
 }
 
 function endRandomizerCommand(_params: string) {
@@ -311,4 +317,39 @@ function unlockPillEffect(params: string) {
 
   const pillEffectName = getPillEffectName(pillEffect);
   print(`Unlocked pill effect: ${pillEffectName} (${pillEffect})`);
+}
+
+function unlockRoom(params: string) {
+  if (!isRandomizerEnabled()) {
+    print(
+      "Error: You are not currently in a randomizer playthrough, so you can not unlock anything.",
+    );
+    return;
+  }
+
+  if (params === "") {
+    print(
+      "You must specify the room name or the number corresponding to the room type.",
+    );
+    return;
+  }
+
+  const roomTypeNumber = tonumber(params);
+  let roomType: RoomType;
+  if (roomTypeNumber === undefined) {
+    const match = getMapPartialMatch(params, ROOM_NAME_TO_TYPE_MAP);
+    if (match === undefined) {
+      print(`Unknown room: ${params}`);
+      return;
+    }
+
+    roomType = match[1];
+  } else {
+    roomType = asRoomType(roomTypeNumber);
+  }
+
+  setRoomUnlocked(roomType);
+
+  const roomTypeName = getRoomName(roomType);
+  print(`Unlocked room: ${roomTypeName} (${roomType})`);
 }
