@@ -517,6 +517,15 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
         : getRandomActiveCollectibleUnlock(seed),
   ],
 
+  // 215
+  [
+    CollectibleType.GOAT_HEAD,
+    () =>
+      isRoomTypeUnlocked(RoomType.DEVIL, false)
+        ? undefined
+        : getUnlock(UnlockType.ROOM, RoomType.DEVIL),
+  ],
+
   // 250
   [
     CollectibleType.BOGO_BOMBS,
@@ -707,6 +716,15 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
       anyPillEffectsUnlocked(false)
         ? undefined
         : getRandomPillEffectUnlock(seed),
+  ],
+
+  // 499
+  [
+    CollectibleType.EUCHARIST,
+    () =>
+      isRoomTypeUnlocked(RoomType.ANGEL, false)
+        ? undefined
+        : getUnlock(UnlockType.ROOM, RoomType.ANGEL),
   ],
 
   // 500
@@ -1536,6 +1554,15 @@ const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<
       isSlotVariantUnlocked(SlotVariant.BEGGAR, false)
         ? undefined
         : getUnlock(UnlockType.SLOT, SlotVariant.BEGGAR),
+  ],
+
+  // 31
+  [
+    CardType.JOKER,
+    () =>
+      isRoomTypeUnlocked(RoomType.DEVIL, false)
+        ? undefined
+        : getUnlock(UnlockType.ROOM, RoomType.DEVIL),
   ],
 
   // 43

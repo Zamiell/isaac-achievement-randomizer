@@ -1,22 +1,58 @@
-import type { RoomType } from "isaac-typescript-definitions";
 import {
+  EffectVariant,
+  ModCallback,
+  RoomType,
+  SoundEffect,
+} from "isaac-typescript-definitions";
+import {
+  Callback,
   CallbackCustom,
   ModCallbackCustom,
   changeRoom,
   game,
   getAdjacentExistingRoomGridIndexes,
+  getAngelRoomDoor,
+  getDevilRoomDoor,
   getDoorsToRoomIndex,
   getRoomGridIndexesForType,
   hideRoomOnMinimap,
   inRoomType,
   isRedKeyRoom,
+  removeAllEffects,
+  removeDoor,
   removeDoors,
+  sfxManager,
 } from "isaacscript-common";
 import { UNLOCKABLE_ROOM_TYPES } from "../../arrays/unlockableRoomTypes";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { isRoomTypeUnlocked } from "./achievementTracker/completedUnlocks";
 
 export class RoomRemoval extends RandomizerModFeature {
+  @Callback(ModCallback.PRE_SPAWN_CLEAR_AWARD)
+  preSpawnClearAward(): boolean | undefined {
+    const devilRoomDoor = getDevilRoomDoor();
+    if (
+      devilRoomDoor !== undefined &&
+      !isRoomTypeUnlocked(RoomType.DEVIL, true)
+    ) {
+      removeDoor(devilRoomDoor);
+      removeAllEffects(EffectVariant.DUST_CLOUD);
+      sfxManager.Stop(SoundEffect.SATAN_ROOM_APPEAR);
+    }
+
+    const angelRoomDoor = getAngelRoomDoor();
+    if (
+      angelRoomDoor !== undefined &&
+      !isRoomTypeUnlocked(RoomType.ANGEL, true)
+    ) {
+      removeDoor(angelRoomDoor);
+      removeAllEffects(EffectVariant.DUST_CLOUD);
+      sfxManager.Stop(SoundEffect.CHOIR_UNLOCK);
+    }
+
+    return undefined;
+  }
+
   @CallbackCustom(ModCallbackCustom.POST_NEW_ROOM_REORDERED)
   postNewRoomReordered(): void {
     for (const roomType of UNLOCKABLE_ROOM_TYPES) {
