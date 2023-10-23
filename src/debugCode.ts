@@ -1,6 +1,8 @@
+import { PillEffect, RoomType } from "isaac-typescript-definitions";
 import {
   log,
   logAndPrint,
+  restart,
   setLogFunctionsGlobal,
   setTracebackFunctionsGlobal,
 } from "isaacscript-common";
@@ -13,6 +15,10 @@ function debugCode(_params?: string) {
   for (const collectibleType of FIRST_UNLOCK_COLLECTIBLES) {
     Isaac.ExecuteCommand(`unlockCollectible ${collectibleType}`);
   }
+
+  Isaac.ExecuteCommand(`unlockPillEffect ${PillEffect.BAD_GAS}`);
+  Isaac.ExecuteCommand(`unlockRoom ${RoomType.SHOP}`);
+  restart(); // We need to restart the run for the unlocks to take effect.
 }
 
 /** Hotkey 1 is bound to F3. */

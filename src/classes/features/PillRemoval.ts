@@ -8,6 +8,7 @@ import {
   Callback,
   CallbackCustom,
   FIRST_PILL_COLOR,
+  LAST_NORMAL_PILL_COLOR,
   ModCallbackCustom,
   game,
   getNormalPillColorFromHorse,
@@ -37,34 +38,15 @@ export class PillRemoval extends RandomizerModFeature {
   // 64
   @Callback(ModCallback.GET_PILL_COLOR)
   getPillColor(seed: Seed): PillColor | undefined {
-    Isaac.DebugString("GETTING HERE - GET_PILL_COLOR}");
-
     if (!anyPillEffectsUnlocked(true)) {
       return undefined;
     }
 
-    if (v.run.pillPool.size === 0) {
-      this.initPillPool();
-      Isaac.DebugString(
-        `GETTING HERE - PILL POOL INIT - size: ${v.run.pillPool.size}`,
-      );
-    }
+    // We lazy init the pill color to pill effect map.
+    initPillPool();
 
     const pillColors = [...v.run.pillPool.keys()];
     return getRandomArrayElement(pillColors, seed);
-  }
-
-  initPillPool(): void {
-    const unlockedPillEffects = getUnlockedPillEffects(true);
-    const seeds = game.GetSeeds();
-    const startSeed = seeds.GetStartSeed();
-    const pillEffectsForRun = shuffleArray(unlockedPillEffects, startSeed);
-
-    let pillColor = FIRST_PILL_COLOR;
-    for (const pillEffect of pillEffectsForRun) {
-      v.run.pillPool.set(pillColor, pillEffect);
-      pillColor++; // eslint-disable-line isaacscript/strict-enums
-    }
   }
 
   // 65
@@ -73,11 +55,9 @@ export class PillRemoval extends RandomizerModFeature {
     _pillEffect: PillEffect,
     pillColor: PillColor,
   ): PillEffect | undefined {
-    Isaac.DebugString(
-      `GETTING HERE - GET_PILL_EFFECT - ${_pillEffect} - ${v.run.pillPool.get(
-        pillColor,
-      )}`,
-    );
+    // The pill color to pill effect map should already be initialized at this point, but we check
+    // and initialize it just in case.
+    initPillPool();
 
     return v.run.pillPool.get(pillColor);
   }
@@ -87,7 +67,7 @@ export class PillRemoval extends RandomizerModFeature {
     PickupVariant.PILL, // 70
   )
   postPickupSelectionPill(
-    _pickup: EntityPickup,
+    pickup: EntityPickup,
     _pickupVariant: PickupVariant,
     subType: int,
   ): [PickupVariant, int] | undefined {
@@ -96,6 +76,21 @@ export class PillRemoval extends RandomizerModFeature {
     }
 
     const pillColor = subType as PillColor;
+
+    // In some situations (like when champions drop pills), the `GET_PILL_COLOR` callback will not
+    // be called.
+    initPillPool();
+
+    const normalizedPillColor = getNormalPillColorFromHorse(pillColor);
+    if (!v.run.pillPool.has(normalizedPillColor)) {
+      const pillColors = [...v.run.pillPool.keys()];
+      const randomPillColor = getRandomArrayElement(
+        pillColors,
+        pickup.InitSeed,
+      );
+
+      return [PickupVariant.PILL, randomPillColor];
+    }
 
     if (
       isGoldPill(pillColor) &&
@@ -113,5 +108,26 @@ export class PillRemoval extends RandomizerModFeature {
     }
 
     return undefined;
+  }
+}
+
+function initPillPool() {
+  if (v.run.pillPool.size > 0) {
+    return;
+  }
+
+  const unlockedPillEffects = getUnlockedPillEffects(true);
+  const seeds = game.GetSeeds();
+  const startSeed = seeds.GetStartSeed();
+  const pillEffectsForRun = shuffleArray(unlockedPillEffects, startSeed);
+
+  let pillColor = FIRST_PILL_COLOR;
+  for (const pillEffect of pillEffectsForRun) {
+    v.run.pillPool.set(pillColor, pillEffect);
+    pillColor++; // eslint-disable-line isaacscript/strict-enums
+
+    if (pillColor > LAST_NORMAL_PILL_COLOR) {
+      break;
+    }
   }
 }
