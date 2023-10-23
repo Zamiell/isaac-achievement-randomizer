@@ -172,6 +172,7 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
   - Tainted Forgotten (#35)
   - Tainted Bethany (#36)
   - Tainted Jacob (#37)
+- Due to technical limitations, Bag of Crafting is not affected by collectible unlocks. Thus, Tainted Cain is guaranteed to be the final character unlocked.
 - Besides that, there is no logic that makes things unlock in a particular order. However, certain specific unlocks will be swapped to ensure that unlocked things are not "useless", [as described in the casual mode section](#1-casual-mode-full-random).
 
 <br>

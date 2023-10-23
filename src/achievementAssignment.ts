@@ -1,6 +1,7 @@
 import { CollectibleType, PlayerType } from "isaac-typescript-definitions";
 import {
   ReadonlySet,
+  arrayRemove,
   arrayRemoveIndexInPlace,
   assertDefined,
   copyArray,
@@ -91,6 +92,7 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
 
   // Each character is guaranteed to unlock another character from a basic objective.
   const unlockableCharacters = getShuffledUnlockableCharacters(rng);
+
   let lastUnlockedCharacter = STARTING_CHARACTER;
   for (const character of unlockableCharacters) {
     const unlock = getUnlock(UnlockType.CHARACTER, character);
@@ -234,6 +236,11 @@ function getShuffledUnlockableCharacters(rng: RNG): PlayerType[] {
   do {
     unlockableCharacters = shuffleArray(unlockableCharacters, rng);
   } while (!isValidUnlockableCharacterOrder(unlockableCharacters));
+
+  // Tainted Cain is guaranteed to be the final character, since Bag of Crafting is not affected by
+  // collectible unlocks.
+  unlockableCharacters = arrayRemove(unlockableCharacters, PlayerType.CAIN_B);
+  unlockableCharacters.push(PlayerType.CAIN_B);
 
   return unlockableCharacters;
 }

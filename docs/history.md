@@ -1,6 +1,6 @@
 # Achievement Randomizer Version History
 
-<!-- cspell:ignore antizoubilamaka,Erbear,Neonomi,sanstheazmo,slvn -->
+<!-- cspell:ignore antizoubilamaka,Erbear,grihapro,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
 ### _v0.8.0_ - October 21th, 2023
@@ -19,6 +19,7 @@
   - Mushroom
   - Skull
   - Polyps
+- Tainted Cain will now always be the final character unlocked (since Bag of Crafting is not affected by collectible unlocks).
 - Characters will now unlock before their respective revival items.
 - Quarter, Dollar, and Deep Pockets will now unlock after shops.
 - Added unlock logic for various cards.
@@ -28,6 +29,7 @@
 - Fixed the bug where rooms were missing in the unlock menu.
 - Fixed the bug where "One makes you larger" and "One makes you small" pill effects could drop from champions before you unlocked them. (Thanks setJy)
 - !Fixed the bug where pills pool.
+- Fixed the bug where Tainted Cain did not start with Bag of Crafting. (Thanks grihapro)
 
 ### _v0.7.2_ - October 21th, 2023
 

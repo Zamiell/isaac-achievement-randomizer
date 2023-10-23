@@ -1,4 +1,4 @@
-import { PillEffect, RoomType } from "isaac-typescript-definitions";
+import { PlayerType } from "isaac-typescript-definitions";
 import {
   log,
   logAndPrint,
@@ -16,8 +16,7 @@ function debugCode(_params?: string) {
     Isaac.ExecuteCommand(`unlockCollectible ${collectibleType}`);
   }
 
-  Isaac.ExecuteCommand(`unlockPillEffect ${PillEffect.BAD_GAS}`);
-  Isaac.ExecuteCommand(`unlockRoom ${RoomType.SHOP}`);
+  Isaac.ExecuteCommand(`unlockCharacter ${PlayerType.CAIN_B}`);
   restart(); // We need to restart the run for the unlocks to take effect.
 }
 

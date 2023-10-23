@@ -1,5 +1,6 @@
 import {
   CardType,
+  CollectibleType,
   EffectVariant,
   PillColor,
   PillEffect,
@@ -14,6 +15,7 @@ import {
   game,
   getRandomArrayElement,
   includes,
+  isCharacter,
   isEden,
   isGoldenTrinketType,
   newRNG,
@@ -59,7 +61,11 @@ export class StartingItemRemoval extends RandomizerModFeature {
         player.HasCollectible(collectibleType) &&
         (!isCollectibleTypeUnlocked(collectibleType, true) ||
           includes(BANNED_COLLECTIBLE_TYPES, collectibleType) ||
-          isEden(player))
+          isEden(player)) &&
+        !(
+          isCharacter(player, PlayerType.CAIN_B) &&
+          collectibleType === CollectibleType.BAG_OF_CRAFTING
+        )
       ) {
         player.RemoveCollectible(collectibleType);
         rebirthItemTrackerRemoveCollectible(collectibleType);
