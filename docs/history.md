@@ -3,7 +3,11 @@
 <!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
-### _v0.8.0_ - October 21th, 2023
+### _v0.8.1_ - October 23rd, 2023
+
+- Fires will now be removed in the War Boss Room if you do not have the no-hit objective. (Thanks Gamonymous)
+
+### _v0.8.0_ - October 23rd, 2023
 
 - Renamed "paths" to "areas".
 - Revamped how areas work. Core areas are now non-randomized; see the manual for more details.
