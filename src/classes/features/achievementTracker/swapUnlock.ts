@@ -1013,28 +1013,6 @@ function getSwappedUnlockCollectible(
     return getUnlock(UnlockType.ROOM, RoomType.PLANETARIUM);
   }
 
-  // 22
-  if (
-    isCollectibleTypeInDefaultItemPool(
-      collectibleUnlock.collectibleType,
-      ItemPoolType.SHOP,
-    ) &&
-    !isRoomTypeUnlocked(RoomType.BLACK_MARKET, false)
-  ) {
-    return getUnlock(UnlockType.ROOM, RoomType.BLACK_MARKET);
-  }
-
-  // 29
-  if (
-    isCollectibleTypeInDefaultItemPool(
-      collectibleUnlock.collectibleType,
-      ItemPoolType.ULTRA_SECRET,
-    ) &&
-    !isRoomTypeUnlocked(RoomType.ULTRA_SECRET, false)
-  ) {
-    return getUnlock(UnlockType.ROOM, RoomType.ULTRA_SECRET);
-  }
-
   if (isHardcoreMode()) {
     const worseCollectibleType = getWorseLockedCollectibleType(
       collectibleUnlock.collectibleType,

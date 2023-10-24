@@ -29,7 +29,7 @@ The following room types start out locked:
 - Treasure Rooms (#4) (unlocks before the first Treasure Room pool collectible)
 - Secret Rooms (#7) (unlocks before the first Secret Room pool collectible)
 - Super Secret Rooms (#8) (unlocks before the first Secret Room pool collectible)
-- Arcades (#9) (unlocks before the first slot machine)
+- Arcades (#9) (unlocks before the first Blood Donation Machine)
 - Curse Rooms (#10) (unlocks before the first Curse Room pool collectible)
 - Challenge Rooms (#11) (unlocks before the first Boss Room pool collectible)
 - Libraries (#12) (unlocks before the first book collectible)
@@ -41,7 +41,7 @@ The following room types start out locked:
 - Planetariums (#24) (unlocks before the first Planetarium pool collectible)
 - Clean Bedrooms (#18) (unlocks before the first heart or bed)
 - Dirty Bedrooms (#19) (unlocks before the first heart or bed)
-- Black Markets (#22) (unlocks before the first Shop pool collectible)
+- Black Markets (#22)
 
 ## Challenges (44)
 

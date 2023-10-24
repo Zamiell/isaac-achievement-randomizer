@@ -200,6 +200,9 @@ export class AchievementRandomizer extends RandomizerModFeature {
       numGenerationAttempts++;
       renderFrameToTryGenerate = renderFrameCount + 1;
 
+      // Clear out the objectives now so that the progress screen goes back to 0.
+      v.persistent.completedObjectives = [];
+
       return;
     }
 

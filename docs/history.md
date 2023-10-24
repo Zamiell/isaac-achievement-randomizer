@@ -3,6 +3,10 @@
 <!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.8.2_ - October 23rd, 2023
+
+- Black Markets will no longer unlock before Devil Room collectibles.
+
 ### _v0.8.1_ - October 23rd, 2023
 
 - Fires will now be removed in the War Boss Room if you do not have the no-hit objective. (Thanks Gamonymous)

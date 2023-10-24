@@ -1,6 +1,8 @@
 TODO:
 
-- bosses from challenge room should count
+- black champion ragman respawn a normal ragman if we dont have the no hit objective
+
+- bosses from challenge room should count for no-hit timer
 - show bosses where you can get them on DSS menu
   - sort by this instead of boss number
 
