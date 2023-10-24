@@ -22,6 +22,7 @@
 - Tainted Cain will now always be the final character unlocked (since Bag of Crafting is not affected by collectible unlocks).
 - Characters will now unlock before their respective revival items.
 - Quarter, Dollar, and Deep Pockets will now unlock after shops.
+- Judas Shadow will now unlock before half soul hearts.
 - Added unlock logic for various cards.
 - Famine, Pestilence, and War must now be on phase 1 in order to accomplish their no hit objectives.
 - Death must now be on phase 2 in order to accomplish his no hit objective.
