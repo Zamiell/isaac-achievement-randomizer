@@ -32,6 +32,7 @@ import {
   isFirstPlayer,
   isSelfDamage,
   onAnyChallenge,
+  removeAllNPCs,
 } from "isaacscript-common";
 import { BossIDCustom, getModifiedBossID } from "../../enums/BossIDCustom";
 import { ObjectiveType } from "../../enums/ObjectiveType";
@@ -41,7 +42,10 @@ import {
 } from "../../types/Objective";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { addObjective } from "./achievementTracker/addObjective";
-import { isBossObjectiveCompleted } from "./achievementTracker/completedObjectives";
+import {
+  isBossObjectiveCompleted,
+  isObjectiveCompleted,
+} from "./achievementTracker/completedObjectives";
 
 const BOSSES_IN_BIG_ROOMS_SET = new ReadonlySet([
   BossID.MR_FRED, // 53
@@ -392,6 +396,19 @@ export class BossNoHitObjectiveDetection extends RandomizerModFeature {
 
     const room = game.GetRoom();
     v.room.tookDamageRoomFrame = room.GetFrameCount();
+  }
+
+  @CallbackCustom(ModCallbackCustom.POST_NEW_ROOM_REORDERED)
+  postNewRoomReordered(): void {
+    this.checkWarFires();
+  }
+
+  checkWarFires(): void {
+    const bossID = getModifiedBossID();
+    const objective = getObjective(ObjectiveType.BOSS, BossID.WAR);
+    if (bossID === BossID.WAR && !isObjectiveCompleted(objective)) {
+      removeAllNPCs(EntityType.FIREPLACE);
+    }
   }
 }
 
