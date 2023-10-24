@@ -65,6 +65,7 @@ import type {
   BombUnlock,
   CardUnlock,
   ChallengeUnlock,
+  CharacterUnlock,
   ChestUnlock,
   CoinUnlock,
   CollectibleUnlock,
@@ -124,7 +125,7 @@ import {
 } from "./completedUnlocks";
 import { getPillEffectsOfQuality } from "./pillEffectQuality";
 import { getTrinketTypesOfQuality } from "./trinketQuality";
-import { isHardcoreMode } from "./v";
+import { getCharacterUnlockOrder, isHardcoreMode } from "./v";
 
 export const FIRST_UNLOCK_COLLECTIBLES = [
   // In the "boss" and "woodenChest" pools.
@@ -138,7 +139,7 @@ export const FIRST_UNLOCK_COLLECTIBLES = [
 ] as const;
 
 const SWAPPED_UNLOCK_FUNCTIONS = {
-  [UnlockType.CHARACTER]: undefined,
+  [UnlockType.CHARACTER]: getSwappedUnlockCharacter,
   [UnlockType.AREA]: getSwappedUnlockArea,
   [UnlockType.ROOM]: getSwappedUnlockRoom,
   [UnlockType.CHALLENGE]: getSwappedUnlockChallenge,
@@ -181,7 +182,7 @@ export function getSwappedUnlock(
   }
 
   const func = SWAPPED_UNLOCK_FUNCTIONS[unlock.type];
-  return func === undefined ? undefined : func(unlock, seed);
+  return func(unlock, seed);
 }
 
 function isUnlockSwappable(unlock: Unlock): boolean {
@@ -200,6 +201,24 @@ function isUnlockSwappable(unlock: Unlock): boolean {
   }
 
   return true;
+}
+
+function getSwappedUnlockCharacter(
+  unlock: Unlock,
+  _seed: Seed,
+): Unlock | undefined {
+  const characterUnlock = unlock as CharacterUnlock;
+  const characterUnlockOrder = getCharacterUnlockOrder();
+
+  for (const character of characterUnlockOrder) {
+    if (!isCharacterUnlocked(character, false)) {
+      return character === characterUnlock.character
+        ? undefined
+        : getUnlock(UnlockType.CHARACTER, character);
+    }
+  }
+
+  return undefined;
 }
 
 const SWAPPED_UNLOCK_AREA_FUNCTIONS = new ReadonlyMap<

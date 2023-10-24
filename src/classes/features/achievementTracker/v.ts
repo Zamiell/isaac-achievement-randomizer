@@ -1,3 +1,4 @@
+import type { PlayerType } from "isaac-typescript-definitions";
 import { RandomizerMode } from "../../../enums/RandomizerMode";
 import type { Objective } from "../../../types/Objective";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
@@ -15,6 +16,7 @@ export const v = {
     acceptedVersionMismatch: false,
 
     objectiveToUnlockMap: new Map<ObjectiveID, Unlock>(),
+    characterUnlockOrder: [] as readonly PlayerType[],
 
     completedObjectives: [] as Objective[],
     completedObjectivesForRun: [] as Objective[],
@@ -72,6 +74,10 @@ export function findObjectiveIDForUnlock(
   }
 
   return undefined;
+}
+
+export function getCharacterUnlockOrder(): readonly PlayerType[] {
+  return v.persistent.characterUnlockOrder;
 }
 
 export function getCompletedObjectives(): Objective[] {

@@ -1,6 +1,6 @@
 TODO:
 
-- tainted cain unlocked early on my second save file
+- recent achievements menu: show run number in title
 
 - file.txt:
   - Run: 7

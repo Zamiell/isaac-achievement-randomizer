@@ -58,7 +58,10 @@ const HARD_CHARACTERS = [
   PlayerType.JACOB_B, // 37
 ] as const;
 
-export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
+export function getAchievementsForRNG(rng: RNG): {
+  objectiveToUnlockMap: Map<ObjectiveID, Unlock>;
+  characterUnlockOrder: readonly PlayerType[];
+} {
   // When an objective/unlock is assigned, it is added to the following map.
   const objectiveToUnlockMap = new Map<ObjectiveID, Unlock>();
 
@@ -91,10 +94,10 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
   }
 
   // Each character is guaranteed to unlock another character from a basic objective.
-  const unlockableCharacters = getShuffledUnlockableCharacters(rng);
+  const characterUnlockOrder = getRandomCharacterUnlockOrder(rng);
 
   let lastUnlockedCharacter = STARTING_CHARACTER;
-  for (const character of unlockableCharacters) {
+  for (const character of characterUnlockOrder) {
     const unlock = getUnlock(UnlockType.CHARACTER, character);
     removeUnlock(unlocks, unlock);
 
@@ -143,7 +146,10 @@ export function getAchievementsForRNG(rng: RNG): Map<ObjectiveID, Unlock> {
     objectiveToUnlockMap.set(objectiveID, unlock);
   }
 
-  return objectiveToUnlockMap;
+  return {
+    objectiveToUnlockMap,
+    characterUnlockOrder,
+  };
 }
 
 function getStaticObjective(
@@ -230,7 +236,7 @@ function getStaticObjective(
 }
 
 /** Returns a shuffled array with certain character restrictions. */
-function getShuffledUnlockableCharacters(rng: RNG): PlayerType[] {
+function getRandomCharacterUnlockOrder(rng: RNG): readonly PlayerType[] {
   let unlockableCharacters = copyArray(UNLOCKABLE_CHARACTERS);
 
   do {

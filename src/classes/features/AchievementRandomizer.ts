@@ -152,7 +152,10 @@ export class AchievementRandomizer extends RandomizerModFeature {
     }
     renderFrameToTryGenerate = undefined;
 
-    v.persistent.objectiveToUnlockMap = getAchievementsForRNG(generatingRNG);
+    const { objectiveToUnlockMap, characterUnlockOrder } =
+      getAchievementsForRNG(generatingRNG);
+    v.persistent.objectiveToUnlockMap = objectiveToUnlockMap;
+    v.persistent.characterUnlockOrder = characterUnlockOrder;
     log(
       `Generated achievements for randomizer seed: ${v.persistent.seed} (attempt #${numGenerationAttempts})`,
     );

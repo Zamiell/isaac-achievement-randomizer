@@ -42,7 +42,7 @@ import { UnlockType } from "../enums/UnlockType";
 import type { UnlockableArea } from "../enums/UnlockableArea";
 import { getAreaName } from "../enums/UnlockableArea";
 
-interface CharacterUnlock {
+export interface CharacterUnlock {
   type: UnlockType.CHARACTER;
   character: PlayerType;
 }
