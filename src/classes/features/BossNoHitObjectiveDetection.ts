@@ -634,9 +634,9 @@ export function getSecondsSinceLastDamage(): int | undefined {
 
     // 61
     case BossID.RAG_MAN: {
-      const ragMans = getNPCs(EntityType.RAG_MAN);
-      const raglings = getNPCs(EntityType.RAGLING);
-      const spiders = getNPCs(EntityType.SPIDER);
+      const ragMans = getNPCs(EntityType.RAG_MAN, -1, -1, true);
+      const raglings = getNPCs(EntityType.RAGLING, -1, -1, true);
+      const spiders = getNPCs(EntityType.SPIDER, -1, -1, true);
       const bosses = [...ragMans, ...raglings, ...spiders];
       const aliveBosses = bosses.filter((boss) => !boss.IsDead());
 
@@ -854,7 +854,7 @@ export function getSecondsSinceLastDamage(): int | undefined {
 }
 
 function onFirstPhaseOfSatan(): boolean {
-  const satans = getNPCs(EntityType.SATAN);
+  const satans = getNPCs(EntityType.SATAN, -1, -1, true);
   if (satans.length === 0) {
     return false;
   }
