@@ -202,8 +202,22 @@ export function getPlaythroughTimeElapsed(): string {
     return "unknown";
   }
 
-  const { hour1, hour2, minute1, minute2, second1, second2 } = timerValues;
-  return `${hour1}${hour2}:${minute1}${minute2}:${second1}${second2}`;
+  const { hour1, hour2, hour3, minute1, minute2, second1, second2 } =
+    timerValues;
+
+  if (hour1 > 0) {
+    return `${hour1}${hour2}${hour3}:${minute1}${minute2}:${second1}${second2}`;
+  }
+
+  if (hour2 > 0) {
+    return `${hour2}${hour3}:${minute1}${minute2}:${second1}${second2}`;
+  }
+
+  if (hour3 > 0) {
+    return `${hour3}:${minute1}${minute2}:${second1}${second2}`;
+  }
+
+  return `${minute1}${minute2}:${second1}${second2}`;
 }
 
 export function getRandomizerRunSeedString(): string | undefined {

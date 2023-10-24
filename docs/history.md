@@ -3,12 +3,16 @@
 <!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.9.1_ - October 23rd, 2023
+
+- Fixed the bug where the time shown in the starting room would not work properly when it was over an hour. (Thanks Neonomi)
+
 ### _v0.9.0_ - October 23rd, 2023
 
 - It is no longer possible to unlock characters early. (For example, it was previously possible to unlock Tainted Cain early by unlocking the Cantripped challenge.)
 - Hold is now set to quality 4. (This will prevent unlocking Tainted Blue Baby early in Hardcore/Nightmare.)
 - Black Markets will no longer unlock before Devil Room collectibles.
-- It is now possible to get the no-hit boss objective with the Black Champion Ragman.
+- It is now possible to get the no-hit boss objective from the Black Champion Ragman.
 - The no-hit timer for Baby Plum is changed from 2 to 1.5 minutes.
 
 ### _v0.8.1_ - October 23rd, 2023
