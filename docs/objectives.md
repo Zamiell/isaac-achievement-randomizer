@@ -39,7 +39,7 @@ Additionally, each character will unlock something upon full-clearing the follow
 15. Mausoleum 1 / Gehenna 1
 16. Mausoleum 2 / Gehenna 2
 17. Corpse 1
-18. Corpse 2
+18. Corpse 2 (not including Mother)
 
 > Tip: A Crown of Light icon will appear next to the coin count UI when the "no hit" objective has not yet been accomplished for the particular character and floor combination.
 

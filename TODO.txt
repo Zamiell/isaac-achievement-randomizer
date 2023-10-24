@@ -1,7 +1,5 @@
 TODO:
 
-- confirm all CharacterObjectiveKind completable
-
 - bosses from challenge room should count
 - show bosses where you can get them on DSS menu
   - sort by this instead of boss number
