@@ -14,7 +14,7 @@ import {
   ModCallback,
   NPCState,
   PeepVariant,
-  PrideVariant,
+  SlothVariant,
   UltraGreedVariant,
 } from "isaac-typescript-definitions";
 import {
@@ -711,8 +711,8 @@ export function getSecondsSinceLastDamage(): int | undefined {
 
     case BossIDCustom.ULTRA_PRIDE: {
       const ultraPrides = getNPCs(
-        EntityType.PRIDE,
-        PrideVariant.ULTRA_PRIDE,
+        EntityType.SLOTH,
+        SlothVariant.ULTRA_PRIDE,
         -1,
         true,
       );
@@ -725,7 +725,7 @@ export function getSecondsSinceLastDamage(): int | undefined {
       const bosses = [...ultraPrides, ...ultraPrideBabies];
       const aliveBosses = bosses.filter((boss) => !boss.IsDead());
 
-      if (aliveBosses.length === 0) {
+      if (aliveBosses.length < 2) {
         return;
       }
 

@@ -1,4 +1,5 @@
 import { BossID } from "isaac-typescript-definitions";
+import { getBossName } from "isaacscript-common";
 import { CharacterObjectiveKind } from "./CharacterObjectiveKind";
 
 /** We want core areas to be static, but hard areas to be randomized. */
@@ -98,7 +99,10 @@ export function getUnlockableAreaFromStoryBoss(
     }
 
     default: {
-      return undefined;
+      const bossName = getBossName(bossID);
+      return error(
+        `Failed to get the unlockable area for story boss: ${bossName} (${bossID})`,
+      );
     }
   }
 }

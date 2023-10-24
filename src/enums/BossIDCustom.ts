@@ -82,7 +82,7 @@ export function getModifiedBossID(): BossID | undefined {
   switch (roomType) {
     // 6
     case RoomType.MINI_BOSS: {
-      const roomSubType = getRoomSubType();
+      const roomSubType = getRoomSubType() as MinibossID;
 
       switch (roomSubType) {
         case MinibossID.ULTRA_PRIDE: {

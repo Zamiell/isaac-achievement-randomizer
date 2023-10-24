@@ -3,6 +3,10 @@
 <!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.9.2_ - October 23rd, 2023
+
+- Fixed the bug where the Ultra Pride no-hit timer did not work correctly. (Thanks Neonomi)
+
 ### _v0.9.1_ - October 23rd, 2023
 
 - Fixed the bug where the time shown in the starting room would not work properly when it was over an hour. (Thanks Neonomi)
