@@ -9,6 +9,7 @@
 - Hold is now set to quality 4. (This will prevent unlocking Tainted Blue Baby early on Hardcore/Nightmare.)
 - Black Markets will no longer unlock before Devil Room collectibles.
 - It is now possible to get the no-hit boss objective with the Black Champion Ragman.
+- The no-hit timer for Baby Plum is now 1.5 minutes.
 
 ### _v0.8.1_ - October 23rd, 2023
 
