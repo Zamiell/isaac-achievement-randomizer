@@ -160,7 +160,7 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
   - Cathedral (by defeating It Lives)
   - Sheol (by defeating Isaac)
   - The Chest (by defeating Satan)
-  - Dark Room (By defeating Blue Baby)
+  - Dark Room (by defeating Blue Baby)
   - Repentance floors (by defeating The Lamb)
 - Each character is guaranteed to unlock another random character from one of their [basic objectives](objectives.md#character-unlock-objectives).
 - The following characters are considered to be "hard" and are guaranteed to be in the second half of characters unlocked:

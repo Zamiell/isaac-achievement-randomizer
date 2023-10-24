@@ -26,7 +26,7 @@
 - Famine, Pestilence, and War must now be on phase 1 in order to accomplish their no hit objectives.
 - Death must now be on phase 2 in order to accomplish his no hit objective.
 - All enemies no longer have a chance to become a champion.
-- Isaac and Blue Baby will now be dealt 1 damage upon spawning.
+- The Isaac and Blue Baby bosses will now be dealt 1 damage upon spawning.
 - Fixed the bug where killing Mother would not accomplish the objective. (Thanks TehCranZ)
 - Fixed the bug where killing Delirium would not accomplish the objective.
 - Fixed the bug where the no-hit objective for Ultra Greedier did not work properly.
