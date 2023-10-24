@@ -1,6 +1,13 @@
 TODO:
 
-- black champion ragman respawn a normal ragman if we dont have the no hit objective
+- tainted cain unlocked early on my second save file
+
+- file.txt:
+  - Run: 7
+  - Unlocks: 33
+  - Current Streak: 1
+  - Best Streak: 2
+  - Total Deaths: 3
 
 - bosses from challenge room should count for no-hit timer
 - show bosses where you can get them on DSS menu

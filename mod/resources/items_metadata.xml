@@ -17,6 +17,7 @@ Quality changes from vanilla:
 - 562 - Rock Bottom - 3 to 4
 - 579 - Spirit Sword - 3 to 4
 - 700 - Echo Chamber - 3 to 4
+- 715 - Hold - 0 to 4
 
 -->
 <items>
@@ -740,7 +741,7 @@ Quality changes from vanilla:
   <item id="712" quality="3" tags="book offensive" />
   <item id="713" quality="3" tags="nolostbr" />
   <item id="714" quality="0" tags="noeden" />
-  <item id="715" quality="0" tags="noeden nocantrip" />
+  <item id="715" quality="4" tags="noeden nocantrip" />
   <item id="716" quality="3" tags="summonable offensive" />
   <item id="717" quality="2" tags="summonable spider offensive" />
   <item id="719" quality="2" tags="offensive" />

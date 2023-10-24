@@ -45,7 +45,7 @@ Additionally, each character will unlock something upon full-clearing the follow
 
 ## Boss-Based Objectives (104)
 
-There is one unlock for surviving for 2 minutes without taking a hit for each boss.
+There is one unlock for surviving for 2 minutes without taking a hit for each boss. (Chapter 1 bosses have 1.5 minutes instead of 2 minutes.)
 
 The following "special" bosses / mini-bosses are also included:
 
@@ -62,20 +62,10 @@ The following bosses have custom timer lengths:
 
 - Monstro (#1) - 1 minute (too easy)
 - Larry Jr. (#2) - 1 minute (too easy)
-- Famine (#9) - 1.5 minutes (mostly easy)
 - Duke of Flies (#13) - 1 minute (too easy)
 - Gemini (#17) - 1 minute (too easy)
-- Fistula (#18) - 1.5 minutes (mostly easy)
 - Steven (#20) - 1 minute (too easy)
-- Teratoma (#33) - 1.5 minutes (mostly easy)
-- Pin (#37) - 1.5 minutes (mostly easy)
-- Dingle (#44) - 1.5 minutes (mostly easy)
-- Gurglings (#56) - 1.5 minutes (mostly easy)
 - Brownie (#58) - 1 minute (since he damages himself)
-- Little Horn (#60) - 1.5 minutes (mostly easy)
-- Rag Man (#61) - 1.5 minutes (mostly easy)
-- Dangle (#64) - 1.5 minutes (mostly easy)
-- Turdlings (#65) - 1.5 minutes (mostly easy)
 - Hornfel (#82) - 1 minute (extremely difficult)
 - Scourge (#85) - 1 minute (extremely difficult)
 - Rotgut (#87) - 1 minute (extremely difficult)
@@ -94,7 +84,7 @@ The following bosses have custom conditions:
 - Isaac (#39) - Must be on phase 2 or phase 3.
 - Blue Baby (#40) - Must be on phase 2 or phase 3.
 - Gurglings (#56) - Both must be alive.
-- Rag Man (#61) - At least two Raglings must be alive.
+- Rag Man (#61) - At least two Raglings/Spiders must be alive.
 - Turdlings (#65) - Both must be alive.
 - Sisters Vis (#68) - Both must be alive.
 - Ultra Pride - Both must be alive.

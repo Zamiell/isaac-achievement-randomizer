@@ -2135,7 +2135,7 @@ function dssmenucore.init(DSSModName, v)
 
         local DSSMenu = DeadSeaScrollsMenu
         if input.toggle and not DSSMenu.IsOpen() then
-            if DSSMenu.IsMenuSafe() then
+            if true then -- TODO: Better room dangerous function?
                 if DSSMenu.CanOpenGlobalMenu() then
                     DSSMenu.OpenMenu("Menu")
                 else
@@ -2795,33 +2795,6 @@ function dssmenucore.init(DSSModName, v)
 
                 return DSSMenu.MenuSpritesTooltip
             end
-        end
-
-        function DSSMenu.IsMenuSafe()
-            local roomHasDanger = false
-            for _, entity in pairs(Isaac.GetRoomEntities()) do
-                if (
-                        entity:IsActiveEnemy()
-                        and not entity:HasEntityFlags(EntityFlag.FLAG_FRIENDLY)
-                        and not entity:GetData().DSSMenuSafe
-                    )
-                    or
-                    (
-                        entity.Type == EntityType.ENTITY_PROJECTILE
-                        and entity:ToProjectile().ProjectileFlags & ProjectileFlags.CANT_HIT_PLAYER == 0
-                    )
-                    or entity.Type == EntityType.ENTITY_BOMBDROP
-                then
-                    roomHasDanger = true
-                    break
-                end
-            end
-
-            if game:GetRoom():IsClear() and not roomHasDanger then
-                return true
-            end
-
-            return false
         end
 
         local DSSDirectory = {

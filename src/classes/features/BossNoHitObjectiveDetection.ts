@@ -24,6 +24,7 @@ import {
   ModCallbackCustom,
   ReadonlySet,
   asNPCState,
+  countEntities,
   game,
   getEntityTypeVariantFromBossID,
   getNPCs,
@@ -246,6 +247,21 @@ export class BossNoHitObjectiveDetection extends RandomizerModFeature {
     v.room.tookDamageRoomFrame = room.GetFrameCount();
   }
 
+  // 27, 85
+  @Callback(ModCallback.POST_NPC_INIT, EntityType.SPIDER)
+  postNPCInitSpider(): void {
+    const bossID = getModifiedBossID();
+    if (bossID !== BossID.RAG_MAN) {
+      return;
+    }
+
+    const numSpiders = countEntities(EntityType.SPIDER, -1, -1, true);
+    if (numSpiders < 2) {
+      const room = game.GetRoom();
+      v.room.tookDamageRoomFrame = room.GetFrameCount();
+    }
+  }
+
   // 27, 102, 0
   @CallbackCustom(ModCallbackCustom.POST_NPC_INIT_FILTER, EntityType.ISAAC)
   postNPCInitIsaac(npc: EntityNPC): void {
@@ -400,7 +416,7 @@ export class BossNoHitObjectiveDetection extends RandomizerModFeature {
 
   @CallbackCustom(ModCallbackCustom.POST_NEW_ROOM_REORDERED)
   postNewRoomReordered(): void {
-    this.checkWarFires();
+    this.checkWarFires(); // 11
   }
 
   checkWarFires(): void {
@@ -620,7 +636,8 @@ export function getSecondsSinceLastDamage(): int | undefined {
     case BossID.RAG_MAN: {
       const ragMans = getNPCs(EntityType.RAG_MAN);
       const raglings = getNPCs(EntityType.RAGLING);
-      const bosses = [...ragMans, ...raglings];
+      const spiders = getNPCs(EntityType.SPIDER);
+      const bosses = [...ragMans, ...raglings, ...spiders];
       const aliveBosses = bosses.filter((boss) => !boss.IsDead());
 
       if (aliveBosses.length < 3) {

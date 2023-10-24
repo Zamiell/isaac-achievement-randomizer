@@ -20,57 +20,34 @@ export const NO_HIT_BOSSES: readonly BossID[] = BOSS_IDS.filter(
 ).concat(...BOSS_IDS_CUSTOM);
 
 const BOSSES_WITH_CUSTOM_MINUTES = new ReadonlyMap<BossID, float>([
-  // Too easy.
+  // Basement easy modifier.
   [BossID.MONSTRO, 1], // 1
-
-  // Too easy.
   [BossID.LARRY_JR, 1], // 2
-
-  // Mostly easy.
   [BossID.FAMINE, 1.5], // 9
-
-  // Too easy.
   [BossID.DUKE_OF_FLIES, 1], // 13
-
-  // Too easy.
   [BossID.GEMINI, 1], // 17
-
-  // Mostly easy.
   [BossID.FISTULA, 1.5], // 18
-
-  // Too easy.
   [BossID.STEVEN, 1], // 20
-
-  // Mostly easy.
   [BossID.TERATOMA, 1.5], // 33
-
-  // Mostly easy.
   [BossID.PIN, 1.5], // 37
-
-  // Mostly easy.
   [BossID.DINGLE, 1.5], // 44
-
-  // Mostly easy.
   [BossID.GURGLING, 1.5], // 56
 
   // When play testing, even without dealing any damage to Brownie, he kills himself at around the 1
   // minute and 10 seconds mark.
   [BossID.BROWNIE, 1], // 58
 
-  // Mostly easy.
+  // Basement easy modifier.
   [BossID.LITTLE_HORN, 1.5], // 60
-
-  // Mostly easy.
   [BossID.RAG_MAN, 1.5], // 61
-
-  // Mostly easy.
   [BossID.DANGLE, 1.5], // 64
-
-  // Mostly easy.
   [BossID.TURDLING, 1.5], // 65
 
   // The boss is extremely difficult to do without taking any damage.
   [BossID.HORNFEL, 1], // 82
+
+  // Basement easy modifier.
+  [BossID.BABY_PLUM, 1.5], // 84
 
   // The boss is extremely difficult to do without taking any damage.
   [BossID.SCOURGE, 1], // 85
