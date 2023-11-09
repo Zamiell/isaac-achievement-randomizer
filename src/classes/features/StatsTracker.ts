@@ -12,13 +12,11 @@ import {
   ModCallbackCustom,
   ModFeature,
   PriorityCallback,
-  PriorityCallbackCustom,
   RENDER_FRAMES_PER_SECOND,
   game,
   isActionPressedOnAnyInput,
   isAfterRenderFrame,
   isRoomDangerous,
-  log,
   newRNG,
   onChallenge,
   repeat,
@@ -142,31 +140,6 @@ export class StatsTracker extends ModFeature {
   postGameStartedReorderedTrue(): void {
     print("Illegal save and quit detected.");
     v.persistent.stats.usedSaveAndQuit = true;
-  }
-
-  /** TODO: Delete this when the beta ends. */
-  @PriorityCallbackCustom(
-    ModCallbackCustom.POST_GAME_STARTED_REORDERED,
-    HIGHER_PRIORITY_THAN_ISAACSCRIPT_COMMON,
-    false,
-  )
-  postGameStartedReorderedFalse(): void {
-    for (const key of Object.keys(v.persistent.stats)) {
-      // @ts-expect-error Backwards compatibility.
-      if (v.persistent[key] !== undefined) {
-        // @ts-expect-error Backwards compatibility.
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const oldValue = v.persistent[key];
-
-        // @ts-expect-error Backwards compatibility.
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        v.persistent.stats[key] = v.persistent[key];
-        // @ts-expect-error Backwards compatibility.
-        v.persistent[key] = undefined;
-
-        log(`Reshuffled persistent stats key: ${key} --> ${oldValue}`);
-      }
-    }
   }
 }
 

@@ -34,132 +34,42 @@ export enum CharacterObjectiveKind {
   NO_HIT_CORPSE_2,
 }
 
+const CHARACTER_OBJECTIVE_KIND_NAMES = {
+  [CharacterObjectiveKind.MOM]: "Mom",
+  [CharacterObjectiveKind.IT_LIVES]: "It Lives",
+  [CharacterObjectiveKind.ISAAC]: "Isaac",
+  [CharacterObjectiveKind.BLUE_BABY]: "Blue Baby",
+  [CharacterObjectiveKind.SATAN]: "Satan",
+  [CharacterObjectiveKind.LAMB]: "The Lamb",
+  [CharacterObjectiveKind.MEGA_SATAN]: "Mega Satan",
+  [CharacterObjectiveKind.BOSS_RUSH]: "Boss Rush",
+  [CharacterObjectiveKind.HUSH]: "Hush",
+  [CharacterObjectiveKind.DELIRIUM]: "Delirium",
+  [CharacterObjectiveKind.MOTHER]: "Mother",
+  [CharacterObjectiveKind.BEAST]: "The Beast",
+  [CharacterObjectiveKind.ULTRA_GREED]: "Ultra Greed",
+  [CharacterObjectiveKind.NO_HIT_BASEMENT_1]: "1",
+  [CharacterObjectiveKind.NO_HIT_BASEMENT_2]: "2",
+  [CharacterObjectiveKind.NO_HIT_CAVES_1]: "3",
+  [CharacterObjectiveKind.NO_HIT_CAVES_2]: "4",
+  [CharacterObjectiveKind.NO_HIT_DEPTHS_1]: "5",
+  [CharacterObjectiveKind.NO_HIT_DEPTHS_2]: "6",
+  [CharacterObjectiveKind.NO_HIT_WOMB_1]: "7",
+  [CharacterObjectiveKind.NO_HIT_WOMB_2]: "8",
+  [CharacterObjectiveKind.NO_HIT_SHEOL_CATHEDRAL]: "10",
+  [CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST]: "11",
+  [CharacterObjectiveKind.NO_HIT_DOWNPOUR_1]: "1 (alt)",
+  [CharacterObjectiveKind.NO_HIT_DOWNPOUR_2]: "2 (alt)",
+  [CharacterObjectiveKind.NO_HIT_MINES_1]: "3 (alt)",
+  [CharacterObjectiveKind.NO_HIT_MINES_2]: "4 (alt)",
+  [CharacterObjectiveKind.NO_HIT_MAUSOLEUM_1]: "5 (alt)",
+  [CharacterObjectiveKind.NO_HIT_MAUSOLEUM_2]: "6 (alt)",
+  [CharacterObjectiveKind.NO_HIT_CORPSE_1]: "7 (alt)",
+  [CharacterObjectiveKind.NO_HIT_CORPSE_2]: "8 (alt)",
+} as const satisfies Record<CharacterObjectiveKind, string>;
+
 export function getCharacterObjectiveKindName(
   kind: CharacterObjectiveKind,
 ): string {
-  switch (kind) {
-    case CharacterObjectiveKind.MOM: {
-      return "Mom";
-    }
-
-    case CharacterObjectiveKind.IT_LIVES: {
-      return "It Lives";
-    }
-
-    case CharacterObjectiveKind.ISAAC: {
-      return "Isaac";
-    }
-
-    case CharacterObjectiveKind.BLUE_BABY: {
-      return "Blue Baby";
-    }
-
-    case CharacterObjectiveKind.SATAN: {
-      return "Satan";
-    }
-
-    case CharacterObjectiveKind.LAMB: {
-      return "The Lamb";
-    }
-
-    case CharacterObjectiveKind.MEGA_SATAN: {
-      return "Mega Satan";
-    }
-
-    case CharacterObjectiveKind.BOSS_RUSH: {
-      return "Boss Rush";
-    }
-
-    case CharacterObjectiveKind.HUSH: {
-      return "Hush";
-    }
-
-    case CharacterObjectiveKind.DELIRIUM: {
-      return "Delirium";
-    }
-
-    case CharacterObjectiveKind.MOTHER: {
-      return "Mother";
-    }
-
-    case CharacterObjectiveKind.BEAST: {
-      return "The Beast";
-    }
-
-    case CharacterObjectiveKind.ULTRA_GREED: {
-      return "Ultra Greed";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_BASEMENT_1: {
-      return "1";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_BASEMENT_2: {
-      return "2";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_CAVES_1: {
-      return "3";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_CAVES_2: {
-      return "4";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_DEPTHS_1: {
-      return "5";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_DEPTHS_2: {
-      return "6";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_WOMB_1: {
-      return "7";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_WOMB_2: {
-      return "8";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_SHEOL_CATHEDRAL: {
-      return "10";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST: {
-      return "11";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_DOWNPOUR_1: {
-      return "1 (alt)";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_DOWNPOUR_2: {
-      return "2 (alt)";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_MINES_1: {
-      return "3 (alt)";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_MINES_2: {
-      return "4 (alt)";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_MAUSOLEUM_1: {
-      return "5 (alt)";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_MAUSOLEUM_2: {
-      return "6 (alt)";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_CORPSE_1: {
-      return "7 (alt)";
-    }
-
-    case CharacterObjectiveKind.NO_HIT_CORPSE_2: {
-      return "8 (alt)";
-    }
-  }
+  return CHARACTER_OBJECTIVE_KIND_NAMES[kind];
 }

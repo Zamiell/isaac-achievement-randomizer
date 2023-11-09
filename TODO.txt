@@ -1,5 +1,7 @@
 TODO:
 
+- character automatic unlock at beginning of playthrough
+
 - about.md - info about swapping save file unlocks
 
 - draw black sprite behind DSS menu by changing callback priority

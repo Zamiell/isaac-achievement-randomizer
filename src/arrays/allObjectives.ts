@@ -2,6 +2,8 @@ import { MAIN_CHARACTERS } from "isaacscript-common";
 import { CHARACTER_OBJECTIVE_KINDS, OBJECTIVE_TYPES } from "../cachedEnums";
 import { ObjectiveType } from "../enums/ObjectiveType";
 import type { Objective } from "../types/Objective";
+import type { ObjectiveID } from "../types/ObjectiveID";
+import { getObjectiveID } from "../types/ObjectiveID";
 import { NO_HIT_BOSSES } from "./noHitBosses";
 import { UNLOCKABLE_CHALLENGES } from "./unlockableChallenges";
 
@@ -53,3 +55,7 @@ export const ALL_OBJECTIVES: readonly Objective[] = (() => {
 
   return objectives;
 })();
+
+export const ALL_OBJECTIVE_IDS: readonly ObjectiveID[] = ALL_OBJECTIVES.map(
+  (objective) => getObjectiveID(objective),
+);

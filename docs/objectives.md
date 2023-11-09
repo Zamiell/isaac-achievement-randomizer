@@ -111,17 +111,3 @@ There is one unlock for completing each challenge, with the following exceptions
 ## Total Objectives
 
 There are 1054 + 104 + 44 = 1202 objectives in total.
-
-## Character Unlock Objectives
-
-Each character is guaranteed to unlock another random character from the following "basic" objectives:
-
-- Mom
-- It Lives
-- Isaac
-- Blue Baby
-- Satan
-- The Lamb
-- Mother
-
-(These are the bosses that it is possible to kill in non-randomized areas.)

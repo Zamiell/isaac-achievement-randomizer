@@ -7,6 +7,7 @@ import {
   RoomType,
 } from "isaac-typescript-definitions";
 import {
+  ReadonlyMap,
   doesEntityExist,
   game,
   getBossID,
@@ -31,44 +32,23 @@ export const BossIDCustom = {
 
 validateCustomEnum("BossIDCustom", BossIDCustom);
 
+/**
+ * We cannot use a type-safe object because the type-assertion to `BossID` prevents the custom enum
+ * from being a union.
+ */
+export const BOSS_ID_CUSTOM_NAMES = new ReadonlyMap<BossID, string>([
+  [BossIDCustom.ULTRA_PRIDE, "Ultra Pride"],
+  [BossIDCustom.KRAMPUS, "Krampus"],
+  [BossIDCustom.URIEL, "Uriel"],
+  [BossIDCustom.GABRIEL, "Gabriel"],
+  [BossIDCustom.ULTRA_FAMINE, "Ultra Famine"],
+  [BossIDCustom.ULTRA_PESTILENCE, "Ultra Pestilence"],
+  [BossIDCustom.ULTRA_WAR, "Ultra War"],
+  [BossIDCustom.ULTRA_DEATH, "Ultra Death"],
+]);
+
 export function getBossNameCustom(bossID: BossID): string {
-  switch (bossID) {
-    case BossIDCustom.ULTRA_PRIDE: {
-      return "Ultra Pride";
-    }
-
-    case BossIDCustom.KRAMPUS: {
-      return "Krampus";
-    }
-
-    case BossIDCustom.URIEL: {
-      return "Uriel";
-    }
-
-    case BossIDCustom.GABRIEL: {
-      return "Gabriel";
-    }
-
-    case BossIDCustom.ULTRA_FAMINE: {
-      return "Ultra Famine";
-    }
-
-    case BossIDCustom.ULTRA_PESTILENCE: {
-      return "Ultra Pestilence";
-    }
-
-    case BossIDCustom.ULTRA_WAR: {
-      return "Ultra War";
-    }
-
-    case BossIDCustom.ULTRA_DEATH: {
-      return "Ultra Death";
-    }
-
-    default: {
-      return getBossName(bossID);
-    }
-  }
+  return BOSS_ID_CUSTOM_NAMES.get(bossID) ?? getBossName(bossID);
 }
 
 /**

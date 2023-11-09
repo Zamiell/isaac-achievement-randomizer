@@ -12,17 +12,12 @@ import {
   Callback,
   GAME_FRAMES_PER_SECOND,
   KColorDefault,
-  MAIN_CHARACTERS,
   VectorZero,
   addSetsToSet,
-  assertDefined,
   clearChallenge,
   fonts,
   game,
-  getBossName,
   getBossSet,
-  getChallengeName,
-  getCharacterName,
   getRandomSeed,
   getScreenBottomRightPos,
   getScreenCenterPos,
@@ -45,13 +40,9 @@ import { ALL_OBJECTIVES } from "../../arrays/allObjectives";
 import { STAGE_TYPES } from "../../cachedEnums";
 import { DEBUG, STARTING_CHARACTER } from "../../constants";
 import { BossIDCustom } from "../../enums/BossIDCustom";
-import {
-  CharacterObjectiveKind,
-  getCharacterObjectiveKindName,
-} from "../../enums/CharacterObjectiveKind";
+import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { RandomizerMode } from "../../enums/RandomizerMode";
-import { UnlockType } from "../../enums/UnlockType";
 import {
   UnlockableArea,
   getUnlockableAreaFromCharacterObjectiveKind,
@@ -63,8 +54,7 @@ import type {
   CharacterObjective,
   Objective,
 } from "../../types/Objective";
-import { getObjectiveFromID, getObjectiveText } from "../../types/Objective";
-import { getUnlock } from "../../types/Unlock";
+import { getObjectiveText } from "../../types/Objective";
 import { validateObjectivesUnlocksMatch } from "../../validate";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { preForcedRestart, resetStats } from "./StatsTracker";
@@ -77,7 +67,7 @@ import {
   isCharacterUnlocked,
   isCollectibleTypeUnlocked,
 } from "./achievementTracker/completedUnlocks";
-import { findObjectiveIDForUnlock, v } from "./achievementTracker/v";
+import { v } from "./achievementTracker/v";
 
 const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
 const FONT = fonts.droid;
@@ -126,7 +116,7 @@ export class AchievementRandomizer extends RandomizerModFeature {
     const text2Y = screenCenterPos.Y - 10;
     FONT.DrawString(text2, 0, text2Y, KColorDefault, rightX, true);
 
-    const text3 = `Confirmed objectives completable: ${v.persistent.completedObjectives.length} / ${ALL_OBJECTIVES.length}`;
+    const text3 = `Confirmed objectives completable: ${v.persistent.completedObjectiveIDs.length} / ${ALL_OBJECTIVES.length}`;
     const text3Y = screenCenterPos.Y + 10;
     FONT.DrawString(text3, 0, text3Y, KColorDefault, rightX, true);
 
@@ -152,16 +142,16 @@ export class AchievementRandomizer extends RandomizerModFeature {
     }
     renderFrameToTryGenerate = undefined;
 
-    const { objectiveToUnlockMap, characterUnlockOrder } =
+    const { objectiveIDToUnlockIDMap, unlockIDToObjectiveIDMap } =
       getAchievementsForRNG(generatingRNG);
-    v.persistent.objectiveToUnlockMap = objectiveToUnlockMap;
-    v.persistent.characterUnlockOrder = characterUnlockOrder;
+    v.persistent.objectiveIDToUnlockIDMap = objectiveIDToUnlockIDMap;
+    v.persistent.unlockIDToObjectiveIDMap = unlockIDToObjectiveIDMap;
     log(
       `Generated achievements for randomizer seed: ${v.persistent.seed} (attempt #${numGenerationAttempts})`,
     );
 
-    v.persistent.completedObjectives = [];
-    v.persistent.completedUnlocks = [];
+    v.persistent.completedObjectiveIDs = [];
+    v.persistent.completedUnlockIDs = [];
 
     generationTime = 0;
     renderFrameToTestSeed = Isaac.GetFrameCount();
@@ -195,7 +185,7 @@ export class AchievementRandomizer extends RandomizerModFeature {
 
     if (!accomplishedObjective) {
       log(
-        `Failed to emulate beating seed ${v.persistent.seed}: ${v.persistent.completedObjectives.length} / ${ALL_OBJECTIVES.length}. Milliseconds taken: ${generationTime}`,
+        `Failed to emulate beating seed ${v.persistent.seed}: ${v.persistent.completedObjectiveIDs.length} / ${ALL_OBJECTIVES.length}. Milliseconds taken: ${generationTime}`,
       );
 
       logMissingObjectives();
@@ -204,12 +194,12 @@ export class AchievementRandomizer extends RandomizerModFeature {
       renderFrameToTryGenerate = renderFrameCount + 1;
 
       // Clear out the objectives now so that the progress screen goes back to 0.
-      v.persistent.completedObjectives = [];
+      v.persistent.completedObjectiveIDs = [];
 
       return;
     }
 
-    if (v.persistent.completedObjectives.length < ALL_OBJECTIVES.length) {
+    if (v.persistent.completedObjectiveIDs.length < ALL_OBJECTIVES.length) {
       renderFrameToTestSeed = renderFrameCount + 1;
       return;
     }
@@ -220,8 +210,8 @@ export class AchievementRandomizer extends RandomizerModFeature {
     generationTime = 0;
 
     // Reset the persistent variable relating to our playthrough.
-    v.persistent.completedObjectives = [];
-    v.persistent.completedUnlocks = [];
+    v.persistent.completedObjectiveIDs = [];
+    v.persistent.completedUnlockIDs = [];
     resetStats();
     preForcedRestart();
 
@@ -480,36 +470,6 @@ function logMissingObjectives() {
     return;
   }
 
-  log("Character report:");
-
-  let allCharactersUnlocked = true;
-
-  for (const character of MAIN_CHARACTERS) {
-    if (isCharacterUnlocked(character, false)) {
-      continue;
-    }
-
-    allCharactersUnlocked = false;
-
-    const characterName = getCharacterName(character);
-    const unlock = getUnlock(UnlockType.CHARACTER, character);
-    const objectiveID = findObjectiveIDForUnlock(unlock);
-    assertDefined(
-      objectiveID,
-      `Failed to find the objective for character: ${character}`,
-    );
-    const objective = getObjectiveFromID(objectiveID);
-    const objectiveText = getObjectiveText(objective).join(" ");
-
-    log(`- Character "${characterName}" locked behind objective:`);
-    log(`  - ${objectiveText}`);
-    logMissingObjective(0, objective);
-  }
-
-  if (allCharactersUnlocked) {
-    log("- All characters unlocked!");
-  }
-
   log("Missing objectives:");
 
   for (const [i, objective] of ALL_OBJECTIVES.entries()) {
@@ -522,93 +482,4 @@ function logMissingObjectives() {
 function logMissingObjective(i: number, objective: Objective) {
   const objectiveText = getObjectiveText(objective).join(" ");
   log(`- Missing objective #${i} - ${objectiveText}`);
-
-  switch (objective.type) {
-    case ObjectiveType.CHARACTER: {
-      logMissingObjectiveCharacter(objective);
-      break;
-    }
-
-    case ObjectiveType.BOSS: {
-      logMissingObjectiveBoss(objective);
-      break;
-    }
-
-    case ObjectiveType.CHALLENGE: {
-      logMissingObjectiveChallenge(objective);
-      break;
-    }
-  }
-}
-
-function logMissingObjectiveCharacter(objective: CharacterObjective) {
-  log(
-    `Character "${getCharacterName(
-      objective.character,
-    )}" unlocked: ${isCharacterUnlocked(objective.character, false)}`,
-  );
-
-  log(
-    `Can get to ${getCharacterObjectiveKindName(
-      objective.kind,
-    )}: ${canGetToCharacterObjective(
-      objective.character,
-      objective.kind,
-      false,
-    )}`,
-  );
-}
-
-function logMissingObjectiveBoss(objective: BossObjective) {
-  const reachableBossesSet = getReachableNonStoryBossesSet();
-  log(
-    `Can get to boss "${getBossName(objective.bossID)}": ${canGetToBoss(
-      objective.bossID,
-      reachableBossesSet,
-      false,
-    )}`,
-  );
-}
-
-function logMissingObjectiveChallenge(objective: ChallengeObjective) {
-  const unlock = getUnlock(UnlockType.CHALLENGE, objective.challenge);
-
-  log(
-    `Challenge "${getChallengeName(
-      objective.challenge,
-    )}" unlocked: ${isChallengeUnlocked(objective.challenge, false)}`,
-  );
-
-  const newObjectiveID = findObjectiveIDForUnlock(unlock);
-  if (newObjectiveID === undefined) {
-    log("There was no matching objective for the challenge.");
-    return;
-  }
-
-  const newObjective = getObjectiveFromID(newObjectiveID);
-  const newObjectiveText = getObjectiveText(newObjective).join(" ");
-  log(`Matching objective for challenge: ${newObjectiveText}`);
-
-  switch (newObjective.type) {
-    case ObjectiveType.CHARACTER: {
-      log(
-        `Character "${getCharacterName(
-          newObjective.character,
-        )}" unlocked: ${isCharacterUnlocked(newObjective.character, false)}`,
-      );
-      log(
-        `Can get to objective: ${canGetToCharacterObjective(
-          newObjective.character,
-          newObjective.kind,
-          false,
-        )}`,
-      );
-
-      break;
-    }
-
-    default: {
-      break;
-    }
-  }
 }

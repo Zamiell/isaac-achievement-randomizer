@@ -7,28 +7,25 @@ export const UNLOCKABLE_GRID_ENTITY_TYPES = [
   GridEntityType.ROCK_GOLD, // 27
 ] as const;
 
+const GRID_ENTITY_NAMES = {
+  // 4
+  [GridEntityType.ROCK_TINTED]: "Tinted Rocks",
+
+  // 18
+  [GridEntityType.CRAWL_SPACE]: "Crawl Spaces",
+
+  // 22
+  [GridEntityType.ROCK_SUPER_SPECIAL]: "Super Tinted Rocks",
+
+  // 27
+  [GridEntityType.ROCK_GOLD]: "Fool's Gold Rocks",
+} as const satisfies Record<
+  (typeof UNLOCKABLE_GRID_ENTITY_TYPES)[number],
+  string
+>;
+
 export function getGridEntityName(
   gridEntityType: (typeof UNLOCKABLE_GRID_ENTITY_TYPES)[number],
 ): string {
-  switch (gridEntityType) {
-    // 4
-    case GridEntityType.ROCK_TINTED: {
-      return "Tinted Rocks";
-    }
-
-    // 18
-    case GridEntityType.CRAWL_SPACE: {
-      return "Crawl Spaces";
-    }
-
-    // 22
-    case GridEntityType.ROCK_SUPER_SPECIAL: {
-      return "Super Tinted Rocks";
-    }
-
-    // 27
-    case GridEntityType.ROCK_GOLD: {
-      return "Fool's Gold Rocks";
-    }
-  }
+  return GRID_ENTITY_NAMES[gridEntityType];
 }

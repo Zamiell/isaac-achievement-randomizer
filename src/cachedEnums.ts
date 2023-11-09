@@ -5,7 +5,7 @@ import {
   StageType,
   TrinketSlot,
 } from "isaac-typescript-definitions";
-import { getEnumValues } from "isaacscript-common";
+import { ReadonlySet, getEnumValues } from "isaacscript-common";
 import { BossIDCustom } from "./enums/BossIDCustom";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
@@ -26,6 +26,8 @@ export const CHARACTER_OBJECTIVE_KINDS: readonly CharacterObjectiveKind[] =
 export const OBJECTIVE_TYPES: readonly ObjectiveType[] =
   getEnumValues(ObjectiveType);
 
+export const OBJECTIVE_TYPES_SET = new ReadonlySet(OBJECTIVE_TYPES);
+
 export const OTHER_UNLOCK_KINDS: readonly OtherUnlockKind[] =
   getEnumValues(OtherUnlockKind);
 
@@ -43,3 +45,5 @@ export const UNLOCKABLE_AREAS: readonly UnlockableArea[] =
   getEnumValues(UnlockableArea);
 
 export const UNLOCK_TYPES: readonly UnlockType[] = getEnumValues(UnlockType);
+
+export const UNLOCK_TYPES_SET = new ReadonlySet(UNLOCK_TYPES);

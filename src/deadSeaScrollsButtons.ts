@@ -87,8 +87,8 @@ import {
   isTrinketTypeUnlocked,
 } from "./classes/features/achievementTracker/completedUnlocks";
 import {
-  getCompletedObjectives,
-  getCompletedUnlocks,
+  getCompletedObjectiveIDs,
+  getCompletedUnlockIDs,
 } from "./classes/features/achievementTracker/v";
 import { getBossNameCustom } from "./enums/BossIDCustom";
 import {
@@ -97,8 +97,8 @@ import {
 } from "./enums/CharacterObjectiveKind";
 import { getOtherUnlockName } from "./enums/OtherUnlockKind";
 import { getAreaName } from "./enums/UnlockableArea";
-import { getObjectiveText } from "./types/Objective";
-import { getUnlockText } from "./types/Unlock";
+import { getObjectiveFromID, getObjectiveText } from "./types/Objective";
+import { getUnlockFromID, getUnlockText } from "./types/Unlock";
 
 export const MENU_PAGE_SIZE = 25;
 
@@ -107,10 +107,16 @@ export const MENU_PAGE_SIZE = 25;
 // -------------
 
 export function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
-  const completedUnlocks = getCompletedUnlocks();
+  const completedUnlockIDs = getCompletedUnlockIDs();
+  const completedUnlocks = completedUnlockIDs.map((unlockID) =>
+    getUnlockFromID(unlockID),
+  );
   completedUnlocks.reverse();
 
-  const completedObjectives = getCompletedObjectives();
+  const completedObjectiveIDs = getCompletedObjectiveIDs();
+  const completedObjectives = completedObjectiveIDs.map((objectiveID) =>
+    getObjectiveFromID(objectiveID),
+  );
   completedObjectives.reverse();
 
   if (completedUnlocks.length === 0) {
@@ -202,7 +208,7 @@ export function getSpecificCharacterObjectiveButtons(
       objectiveName = `no dmg. on floor ${objectiveName}`;
     }
 
-    const completed = isCharacterObjectiveCompleted(character, kind, false);
+    const completed = isCharacterObjectiveCompleted(character, kind);
     const completedText = getCompletedText(completed);
 
     buttons.push(

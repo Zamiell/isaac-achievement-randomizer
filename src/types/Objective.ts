@@ -8,9 +8,9 @@ import {
   assertDefined,
   getChallengeName,
   getCharacterName,
-  isEnumValue,
 } from "isaacscript-common";
 import { getNumMinutesForBossObjective } from "../arrays/noHitBosses";
+import { OBJECTIVE_TYPES_SET } from "../cachedEnums";
 import { getBossNameCustom } from "../enums/BossIDCustom";
 import {
   CharacterObjectiveKind,
@@ -39,6 +39,25 @@ export type Objective = CharacterObjective | BossObjective | ChallengeObjective;
 
 type _Test = CompositionTypeSatisfiesEnum<Objective, ObjectiveType>;
 
+const OBJECTIVE_TYPE_TO_OBJECTIVE_CONSTRUCTOR = {
+  [ObjectiveType.CHARACTER]: (arg1, arg2) => ({
+    type: ObjectiveType.CHARACTER,
+    character: arg1,
+    kind: arg2!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+  }),
+  [ObjectiveType.BOSS]: (arg1) => ({
+    type: ObjectiveType.BOSS,
+    bossID: arg1,
+  }),
+  [ObjectiveType.CHALLENGE]: (arg1) => ({
+    type: ObjectiveType.CHALLENGE,
+    challenge: arg1,
+  }),
+} as const satisfies Record<
+  ObjectiveType,
+  (arg1: number, arg2: number | undefined) => Objective
+>;
+
 export function getObjective(
   type: ObjectiveType.CHARACTER,
   character: PlayerType,
@@ -57,34 +76,8 @@ export function getObjective(
   arg1: int,
   arg2?: int,
 ): Objective {
-  switch (type) {
-    case ObjectiveType.CHARACTER: {
-      assertDefined(
-        arg2,
-        "Failed to get an objective since the second argument was not provided.",
-      );
-
-      return {
-        type,
-        character: arg1,
-        kind: arg2,
-      };
-    }
-
-    case ObjectiveType.BOSS: {
-      return {
-        type,
-        bossID: arg1,
-      };
-    }
-
-    case ObjectiveType.CHALLENGE: {
-      return {
-        type,
-        challenge: arg1,
-      };
-    }
-  }
+  const constructor = OBJECTIVE_TYPE_TO_OBJECTIVE_CONSTRUCTOR[type];
+  return constructor(arg1, arg2);
 }
 
 export function getObjectiveFromID(objectiveID: ObjectiveID): Objective {
@@ -102,9 +95,13 @@ export function getObjectiveFromID(objectiveID: ObjectiveID): Objective {
     `Failed to convert the type from an objective ID to a number: ${objectiveID}`,
   );
 
-  if (!isEnumValue(typeNumber, ObjectiveType)) {
+  // eslint-disable-next-line isaacscript/strict-enums
+  if (!OBJECTIVE_TYPES_SET.has(typeNumber)) {
     error(`The type of ${typeNumber} in an objective ID is not valid.`);
   }
+
+  const type = typeNumber as ObjectiveType;
+  const constructor = OBJECTIVE_TYPE_TO_OBJECTIVE_CONSTRUCTOR[type];
 
   const arg1String = parts[1];
   assertDefined(
@@ -118,43 +115,23 @@ export function getObjectiveFromID(objectiveID: ObjectiveID): Objective {
     `Failed to convert the second number from an objective ID to a number: ${objectiveID}`,
   );
 
-  const type = typeNumber as ObjectiveType;
+  if (type === ObjectiveType.CHARACTER) {
+    const arg2String = parts[2];
+    assertDefined(
+      arg2String,
+      `Failed to parse the third number from an objective ID: ${objectiveID}`,
+    );
 
-  switch (type) {
-    case ObjectiveType.CHARACTER: {
-      const arg2String = parts[2];
-      assertDefined(
-        arg2String,
-        `Failed to parse the third number from an objective ID: ${objectiveID}`,
-      );
+    const arg2 = tonumber(arg2String);
+    assertDefined(
+      arg2,
+      `Failed to convert the third number from an objective ID to a number: ${objectiveID}`,
+    );
 
-      const arg2 = tonumber(arg2String);
-      assertDefined(
-        arg2,
-        `Failed to convert the third number from an objective ID to a number: ${objectiveID}`,
-      );
-
-      return {
-        type,
-        character: arg1,
-        kind: arg2,
-      };
-    }
-
-    case ObjectiveType.BOSS: {
-      return {
-        type,
-        bossID: arg1,
-      };
-    }
-
-    case ObjectiveType.CHALLENGE: {
-      return {
-        type,
-        challenge: arg1,
-      };
-    }
+    return constructor(arg1, arg2);
   }
+
+  return constructor(arg1, undefined);
 }
 
 export function getObjectiveText(objective: Objective): string[] {

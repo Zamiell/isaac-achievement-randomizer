@@ -5,14 +5,13 @@ import type { Objective } from "../../../types/Objective";
 import { getObjectiveFromID, getObjectiveText } from "../../../types/Objective";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
 import { getObjectiveID } from "../../../types/ObjectiveID";
-import type { Unlock } from "../../../types/Unlock";
-import { getUnlockText } from "../../../types/Unlock";
-import { getUnlockID } from "../../../types/UnlockID";
+import { getUnlockFromID, getUnlockText } from "../../../types/Unlock";
+import type { UnlockID } from "../../../types/UnlockID";
 import { showNewUnlock } from "../AchievementNotification";
 import { hasErrors } from "../checkErrors/v";
 import { isObjectiveCompleted } from "./completedObjectives";
-import { getSwappedUnlock } from "./swapUnlock";
-import { findObjectiveIDForUnlock, getRandomizerSeed, v } from "./v";
+import { getSwappedUnlockID } from "./swapUnlock";
+import { getRandomizerSeed, v } from "./v";
 
 export function addObjective(objective: Objective, emulating = false): void {
   const seed = getRandomizerSeed();
@@ -39,25 +38,26 @@ export function addObjective(objective: Objective, emulating = false): void {
 
   const objectiveID = getObjectiveID(objective);
 
-  const unlock = v.persistent.objectiveToUnlockMap.get(objectiveID);
+  const unlockID = v.persistent.objectiveIDToUnlockIDMap.get(objectiveID);
   assertDefined(
-    unlock,
-    `Failed to get the unlock corresponding to objective ID: ${objectiveID}`,
+    unlockID,
+    `Failed to get the unlock ID corresponding to objective ID: ${objectiveID}`,
   );
 
-  const swappedUnlock = checkSwapProblematicAchievement(
-    unlock,
+  const potentiallySwappedUnlockID = checkSwapProblematicAchievement(
+    unlockID,
     objectiveID,
     seed,
     emulating,
   );
 
-  v.persistent.completedObjectives.push(objective);
-  v.persistent.completedUnlocks.push(swappedUnlock);
+  v.persistent.completedObjectiveIDs.push(objectiveID);
+  v.persistent.completedUnlockIDs.push(potentiallySwappedUnlockID);
 
   if (DEBUG || !emulating) {
     const objectiveText = getObjectiveText(objective).join(" ");
-    const unlockText = getUnlockText(swappedUnlock).join(" - ");
+    const unlock = getUnlockFromID(potentiallySwappedUnlockID);
+    const unlockText = getUnlockText(unlock).join(" - ");
 
     log("Got achievement:");
     log(`- Objective: ${objectiveText}`);
@@ -65,73 +65,87 @@ export function addObjective(objective: Objective, emulating = false): void {
   }
 
   if (!emulating) {
-    showNewUnlock(swappedUnlock);
+    const unlock = getUnlockFromID(potentiallySwappedUnlockID);
+    showNewUnlock(unlock);
   }
 }
 
 function checkSwapProblematicAchievement(
-  unlock: Unlock,
+  unlockID: UnlockID,
   objectiveID: ObjectiveID,
   seed: Seed,
   emulating: boolean,
-): Unlock {
-  // We might need to do more than one swap, so continue to use the `getSwappedUnlock` function
+): UnlockID {
+  // We might need to do more than one swap, so we continue to use the `getSwappedUnlock` function
   // until there are no more swaps to do.
-  let finalUnlock = unlock;
-  let swappedUnlock: Unlock | undefined = unlock;
-  do {
-    finalUnlock = swappedUnlock;
+  let trySwapUnlockID = unlockID;
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, no-constant-condition
+  while (true) {
     if (DEBUG || !emulating) {
-      const unlockText = getUnlockText(finalUnlock).join(" - ");
-      log(`  Checking unlock swap for: ${unlockText}`);
+      const firstUnlock = getUnlockFromID(trySwapUnlockID);
+      const firstUnlockText = getUnlockText(firstUnlock).join(" - ");
+      log(`  Checking unlock swap for: ${firstUnlockText}`);
     }
 
-    swappedUnlock = getSwappedUnlock(finalUnlock, seed);
+    const swappedUnlockID = getSwappedUnlockID(trySwapUnlockID, seed);
 
     if (DEBUG || !emulating) {
-      if (swappedUnlock === undefined) {
+      if (swappedUnlockID === undefined) {
         log("  Swapped to: [n/a; no swap needed]");
       } else {
-        const unlockText = getUnlockText(swappedUnlock).join(" - ");
-        log(`  Swapped to: ${unlockText}`);
+        const swappedUnlock = getUnlockFromID(swappedUnlockID);
+        const swappedUnlockText = getUnlockText(swappedUnlock).join(" - ");
+        log(`  Swapped to: ${swappedUnlockText}`);
       }
     }
-  } while (swappedUnlock !== undefined);
 
-  if (getUnlockID(unlock) !== getUnlockID(finalUnlock)) {
-    swapAchievement(objectiveID, unlock, finalUnlock, emulating);
+    if (swappedUnlockID === undefined) {
+      break;
+    }
+
+    trySwapUnlockID = swappedUnlockID;
   }
 
-  return finalUnlock;
+  if (unlockID !== trySwapUnlockID) {
+    swapAchievement(objectiveID, unlockID, trySwapUnlockID, emulating);
+  }
+
+  return trySwapUnlockID;
 }
 
 function swapAchievement(
   objectiveID: ObjectiveID,
-  unlock: Unlock,
-  swappedUnlock: Unlock,
+  unlockID: UnlockID,
+  swappedUnlockID: UnlockID,
   emulating: boolean,
 ) {
-  const unlockText = getUnlockText(unlock).join(" - ");
-  const swappedUnlockText = getUnlockText(swappedUnlock).join(" - ");
-
-  const swappedObjectiveID = findObjectiveIDForUnlock(swappedUnlock);
+  const swappedObjectiveID =
+    v.persistent.unlockIDToObjectiveIDMap.get(swappedUnlockID);
   assertDefined(
     swappedObjectiveID,
-    `Failed to find the objective corresponding to unlock: ${swappedUnlockText}`,
+    `Failed to find the objective ID corresponding to unlock ID: ${swappedUnlockID}`,
   );
 
-  v.persistent.objectiveToUnlockMap.set(objectiveID, swappedUnlock);
-  v.persistent.objectiveToUnlockMap.set(swappedObjectiveID, unlock);
+  v.persistent.objectiveIDToUnlockIDMap.set(objectiveID, swappedUnlockID);
+  v.persistent.objectiveIDToUnlockIDMap.set(swappedObjectiveID, unlockID);
+
+  v.persistent.unlockIDToObjectiveIDMap.set(unlockID, swappedObjectiveID);
+  v.persistent.unlockIDToObjectiveIDMap.set(swappedUnlockID, objectiveID);
 
   if (DEBUG || !emulating) {
     log("Swapped achievement:");
+
     const objective = getObjectiveFromID(objectiveID);
     const objectiveText = getObjectiveText(objective).join(" ");
+    const swappedUnlock = getUnlockFromID(swappedUnlockID);
+    const swappedUnlockText = getUnlockText(swappedUnlock).join(" - ");
     log(`1) ${objectiveText} --> ${swappedUnlockText}`);
 
     const swappedObjective = getObjectiveFromID(swappedObjectiveID);
     const swappedObjectiveText = getObjectiveText(swappedObjective).join(" ");
+    const unlock = getUnlockFromID(unlockID);
+    const unlockText = getUnlockText(unlock).join(" - ");
     log(`2) ${swappedObjectiveText} --> ${unlockText}`);
   }
 }

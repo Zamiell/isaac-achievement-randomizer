@@ -65,7 +65,6 @@ import type {
   BombUnlock,
   CardUnlock,
   ChallengeUnlock,
-  CharacterUnlock,
   ChestUnlock,
   CoinUnlock,
   CollectibleUnlock,
@@ -80,7 +79,9 @@ import type {
   TrinketUnlock,
   Unlock,
 } from "../../../types/Unlock";
-import { getUnlock } from "../../../types/Unlock";
+import { getUnlock, getUnlockFromID } from "../../../types/Unlock";
+import type { UnlockID } from "../../../types/UnlockID";
+import { getUnlockID } from "../../../types/UnlockID";
 import { getCardTypesOfQuality, getRunesOfQuality } from "./cardQuality";
 import {
   anyActiveCollectibleUnlocked,
@@ -125,7 +126,7 @@ import {
 } from "./completedUnlocks";
 import { getPillEffectsOfQuality } from "./pillEffectQuality";
 import { getTrinketTypesOfQuality } from "./trinketQuality";
-import { getCharacterUnlockOrder, isHardcoreMode } from "./v";
+import { isHardcoreMode } from "./v";
 
 export const FIRST_UNLOCK_COLLECTIBLES = [
   // In the "boss" and "woodenChest" pools.
@@ -139,7 +140,7 @@ export const FIRST_UNLOCK_COLLECTIBLES = [
 ] as const;
 
 const SWAPPED_UNLOCK_FUNCTIONS = {
-  [UnlockType.CHARACTER]: getSwappedUnlockCharacter,
+  [UnlockType.CHARACTER]: undefined,
   [UnlockType.AREA]: getSwappedUnlockArea,
   [UnlockType.ROOM]: getSwappedUnlockRoom,
   [UnlockType.CHALLENGE]: getSwappedUnlockChallenge,
@@ -162,10 +163,11 @@ const SWAPPED_UNLOCK_FUNCTIONS = {
   ((unlock: Unlock, seed: Seed) => void) | undefined
 >;
 
-export function getSwappedUnlock(
-  unlock: Unlock,
+export function getSwappedUnlockID(
+  unlockID: UnlockID,
   seed: Seed,
-): Unlock | undefined {
+): UnlockID | undefined {
+  const unlock = getUnlockFromID(unlockID);
   if (!isUnlockSwappable(unlock)) {
     return undefined;
   }
@@ -177,12 +179,22 @@ export function getSwappedUnlock(
   );
   for (const collectibleType of shuffledFirstUnlockCollectibles) {
     if (!isCollectibleTypeUnlocked(collectibleType, false)) {
-      return getUnlock(UnlockType.COLLECTIBLE, collectibleType);
+      const swappedUnlock = getUnlock(UnlockType.COLLECTIBLE, collectibleType);
+      return getUnlockID(swappedUnlock);
     }
   }
 
   const func = SWAPPED_UNLOCK_FUNCTIONS[unlock.type];
-  return func(unlock, seed);
+  if (func === undefined) {
+    return undefined;
+  }
+
+  const swappedUnlock = func(unlock, seed);
+  if (swappedUnlock === undefined) {
+    return undefined;
+  }
+
+  return getUnlockID(swappedUnlock);
 }
 
 function isUnlockSwappable(unlock: Unlock): boolean {
@@ -201,24 +213,6 @@ function isUnlockSwappable(unlock: Unlock): boolean {
   }
 
   return true;
-}
-
-function getSwappedUnlockCharacter(
-  unlock: Unlock,
-  _seed: Seed,
-): Unlock | undefined {
-  const characterUnlock = unlock as CharacterUnlock;
-  const characterUnlockOrder = getCharacterUnlockOrder();
-
-  for (const character of characterUnlockOrder) {
-    if (!isCharacterUnlocked(character, false)) {
-      return character === characterUnlock.character
-        ? undefined
-        : getUnlock(UnlockType.CHARACTER, character);
-    }
-  }
-
-  return undefined;
 }
 
 const SWAPPED_UNLOCK_AREA_FUNCTIONS = new ReadonlyMap<

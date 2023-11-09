@@ -1,9 +1,6 @@
-import type { PlayerType } from "isaac-typescript-definitions";
 import { RandomizerMode } from "../../../enums/RandomizerMode";
-import type { Objective } from "../../../types/Objective";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
-import type { Unlock } from "../../../types/Unlock";
-import { getUnlockID } from "../../../types/UnlockID";
+import type { UnlockID } from "../../../types/UnlockID";
 
 // This is registered in "AchievementTracker.ts".
 // eslint-disable-next-line isaacscript/require-v-registration
@@ -15,13 +12,12 @@ export const v = {
     achievementsVersion: "",
     acceptedVersionMismatch: false,
 
-    objectiveToUnlockMap: new Map<ObjectiveID, Unlock>(),
-    characterUnlockOrder: [] as readonly PlayerType[],
+    objectiveIDToUnlockIDMap: new Map<ObjectiveID, UnlockID>(),
+    unlockIDToObjectiveIDMap: new Map<UnlockID, ObjectiveID>(),
 
-    completedObjectives: [] as Objective[],
-    completedObjectivesForRun: [] as Objective[],
-    completedUnlocks: [] as Unlock[],
-    completedUnlocksForRun: [] as Unlock[],
+    completedObjectiveIDs: [] as ObjectiveID[],
+    completedUnlockIDs: [] as UnlockID[],
+    completedUnlockIDsForRun: [] as UnlockID[],
   },
 };
 
@@ -60,34 +56,14 @@ export function setAcceptedVersionMismatch(): void {
   v.persistent.acceptedVersionMismatch = true;
 }
 
-export function findObjectiveIDForUnlock(
-  unlockToMatch: Unlock,
-): ObjectiveID | undefined {
-  const unlockIDToMatch = getUnlockID(unlockToMatch);
-
-  for (const entries of v.persistent.objectiveToUnlockMap) {
-    const [objectiveID, unlock] = entries;
-    const unlockID = getUnlockID(unlock);
-    if (unlockID === unlockIDToMatch) {
-      return objectiveID;
-    }
-  }
-
-  return undefined;
-}
-
-export function getCharacterUnlockOrder(): readonly PlayerType[] {
-  return v.persistent.characterUnlockOrder;
-}
-
-export function getCompletedObjectives(): Objective[] {
-  return v.persistent.completedObjectives;
+export function getCompletedObjectiveIDs(): ObjectiveID[] {
+  return v.persistent.completedObjectiveIDs;
 }
 
 export function getNumCompletedObjectives(): int {
-  return v.persistent.completedObjectives.length;
+  return v.persistent.completedObjectiveIDs.length;
 }
 
-export function getCompletedUnlocks(): Unlock[] {
-  return v.persistent.completedUnlocks;
+export function getCompletedUnlockIDs(): UnlockID[] {
+  return v.persistent.completedUnlockIDs;
 }

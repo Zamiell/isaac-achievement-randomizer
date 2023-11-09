@@ -10,6 +10,7 @@ import {
   Callback,
   CallbackCustom,
   ModCallbackCustom,
+  ReadonlyMap,
   convertXMLGridEntityType,
   isGridEntityXMLType,
   isPoopGridEntityXMLType,
@@ -25,6 +26,23 @@ import {
 } from "./achievementTracker/completedUnlocks";
 
 const POOP_ANM2_PATH = "gfx/grid/grid_poop.anm2";
+
+const POOP_GRID_ENTITY_VARIANT_TO_OTHER_UNLOCK_KIND = new ReadonlyMap<
+  PoopGridEntityVariant,
+  OtherUnlockKind
+>([
+  // 3
+  [PoopGridEntityVariant.GOLDEN, OtherUnlockKind.GOLDEN_POOP],
+
+  // 4
+  [PoopGridEntityVariant.RAINBOW, OtherUnlockKind.RAINBOW_POOP],
+
+  // 5
+  [PoopGridEntityVariant.BLACK, OtherUnlockKind.BLACK_POOP],
+
+  // 11
+  [PoopGridEntityVariant.CHARMING, OtherUnlockKind.CHARMING_POOP],
+]);
 
 export class GridEntityRemoval extends RandomizerModFeature {
   /** @see `UNLOCKABLE_GRID_ENTITY_TYPES` */
@@ -49,7 +67,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
     const poopGridEntityVariant =
       gridEntity.GetVariant() as PoopGridEntityVariant;
 
-    const otherUnlockKind = poopGridEntityVariantToOtherUnlockKind(
+    const otherUnlockKind = POOP_GRID_ENTITY_VARIANT_TO_OTHER_UNLOCK_KIND.get(
       poopGridEntityVariant,
     );
     if (otherUnlockKind === undefined) {
@@ -117,7 +135,7 @@ export class GridEntityRemoval extends RandomizerModFeature {
 
     const [_gridEntityType, gridEntityVariant] = tuple;
     const poopGridEntityVariant = gridEntityVariant as PoopGridEntityVariant;
-    const otherUnlockKind = poopGridEntityVariantToOtherUnlockKind(
+    const otherUnlockKind = POOP_GRID_ENTITY_VARIANT_TO_OTHER_UNLOCK_KIND.get(
       poopGridEntityVariant,
     );
     if (otherUnlockKind === undefined) {
@@ -154,35 +172,5 @@ export class GridEntityRemoval extends RandomizerModFeature {
     return isOtherUnlockKindUnlocked(OtherUnlockKind.REWARD_PLATES, true)
       ? undefined
       : [GridEntityXMLType.ROCK, 0, 0];
-  }
-}
-
-function poopGridEntityVariantToOtherUnlockKind(
-  poopGridEntityVariant: PoopGridEntityVariant,
-): OtherUnlockKind | undefined {
-  switch (poopGridEntityVariant) {
-    // 3
-    case PoopGridEntityVariant.GOLDEN: {
-      return OtherUnlockKind.GOLDEN_POOP;
-    }
-
-    // 4
-    case PoopGridEntityVariant.RAINBOW: {
-      return OtherUnlockKind.RAINBOW_POOP;
-    }
-
-    // 5
-    case PoopGridEntityVariant.BLACK: {
-      return OtherUnlockKind.BLACK_POOP;
-    }
-
-    // 11
-    case PoopGridEntityVariant.CHARMING: {
-      return OtherUnlockKind.CHARMING_POOP;
-    }
-
-    default: {
-      return undefined;
-    }
   }
 }

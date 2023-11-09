@@ -9,55 +9,18 @@ import { UNLOCKABLE_CHALLENGES } from "../../../arrays/unlockableChallenges";
 import { CHARACTER_OBJECTIVE_KINDS } from "../../../cachedEnums";
 import type { CharacterObjectiveKind } from "../../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../../enums/ObjectiveType";
-import type {
-  BossObjective,
-  ChallengeObjective,
-  CharacterObjective,
-  Objective,
-} from "../../../types/Objective";
+import type { Objective } from "../../../types/Objective";
+import { getObjective, getObjectiveFromID } from "../../../types/Objective";
+import { getObjectiveID } from "../../../types/ObjectiveID";
 import { v } from "./v";
 
 // -------
 // Generic
 // -------
 
-const OBJECTIVE_COMPLETED_FUNCTIONS = {
-  [ObjectiveType.CHARACTER]: (objectiveToMatch: Objective) => {
-    const characterObjective = objectiveToMatch as CharacterObjective;
-
-    return v.persistent.completedObjectives.some(
-      (objective) =>
-        objective.type === characterObjective.type &&
-        objective.character === characterObjective.character &&
-        objective.kind === characterObjective.kind,
-    );
-  },
-  [ObjectiveType.BOSS]: (objectiveToMatch: Objective) => {
-    const bossObjective = objectiveToMatch as BossObjective;
-
-    return v.persistent.completedObjectives.some(
-      (objective) =>
-        objective.type === bossObjective.type &&
-        objective.bossID === bossObjective.bossID,
-    );
-  },
-  [ObjectiveType.CHALLENGE]: (objectiveToMatch: Objective) => {
-    const challengeObjective = objectiveToMatch as ChallengeObjective;
-
-    return v.persistent.completedObjectives.some(
-      (objective) =>
-        objective.type === challengeObjective.type &&
-        objective.challenge === challengeObjective.challenge,
-    );
-  },
-} as const satisfies Record<
-  ObjectiveType,
-  (objectiveToMatch: Objective) => boolean
->;
-
-export function isObjectiveCompleted(objectiveToMatch: Objective): boolean {
-  const func = OBJECTIVE_COMPLETED_FUNCTIONS[objectiveToMatch.type];
-  return func(objectiveToMatch);
+export function isObjectiveCompleted(objective: Objective): boolean {
+  const objectiveID = getObjectiveID(objective);
+  return v.persistent.completedObjectiveIDs.includes(objectiveID);
 }
 
 // -------------------------------
@@ -67,7 +30,13 @@ export function isObjectiveCompleted(objectiveToMatch: Objective): boolean {
 export function isAllCharacterObjectivesCompleted(
   character: PlayerType,
 ): boolean {
-  const completedCharacterObjectives = v.persistent.completedObjectives.filter(
+  const { completedObjectiveIDs } = v.persistent;
+
+  const completedObjectives = completedObjectiveIDs.map((objectiveID) =>
+    getObjectiveFromID(objectiveID),
+  );
+
+  const completedCharacterObjectives = completedObjectives.filter(
     (objective) =>
       objective.type === ObjectiveType.CHARACTER &&
       objective.character === character,
@@ -87,18 +56,13 @@ export function isAllCharactersObjectivesCompleted(): boolean {
 export function isCharacterObjectiveCompleted(
   character: PlayerType,
   kind: CharacterObjectiveKind,
-  forRun: boolean,
 ): boolean {
-  const array = forRun
-    ? v.persistent.completedObjectivesForRun
-    : v.persistent.completedObjectives;
+  const objective = getObjective(ObjectiveType.CHARACTER, character, kind);
+  const objectiveID = getObjectiveID(objective);
 
-  return array.some(
-    (objective) =>
-      objective.type === ObjectiveType.CHARACTER &&
-      objective.character === character &&
-      objective.kind === kind,
-  );
+  const { completedObjectiveIDs } = v.persistent;
+
+  return completedObjectiveIDs.includes(objectiveID);
 }
 
 // --------------------------
@@ -106,7 +70,13 @@ export function isCharacterObjectiveCompleted(
 // --------------------------
 
 export function isAllBossObjectivesCompleted(): boolean {
-  const completedBossObjectives = v.persistent.completedObjectives.filter(
+  const { completedObjectiveIDs } = v.persistent;
+
+  const completedObjectives = completedObjectiveIDs.map((objectiveID) =>
+    getObjectiveFromID(objectiveID),
+  );
+
+  const completedBossObjectives = completedObjectives.filter(
     (objective) => objective.type === ObjectiveType.BOSS,
   );
 
@@ -123,10 +93,12 @@ export function isBossObjectiveCompleted(bossID: BossID): boolean {
     return true;
   }
 
-  return v.persistent.completedObjectives.some(
-    (objective) =>
-      objective.type === ObjectiveType.BOSS && objective.bossID === bossID,
-  );
+  const objective = getObjective(ObjectiveType.BOSS, bossID);
+  const objectiveID = getObjectiveID(objective);
+
+  const { completedObjectiveIDs } = v.persistent;
+
+  return completedObjectiveIDs.includes(objectiveID);
 }
 
 // -------------------------------
@@ -134,7 +106,13 @@ export function isBossObjectiveCompleted(bossID: BossID): boolean {
 // -------------------------------
 
 export function isAllChallengeObjectivesCompleted(): boolean {
-  const completedChallengeObjectives = v.persistent.completedObjectives.filter(
+  const { completedObjectiveIDs } = v.persistent;
+
+  const completedObjectives = completedObjectiveIDs.map((objectiveID) =>
+    getObjectiveFromID(objectiveID),
+  );
+
+  const completedChallengeObjectives = completedObjectives.filter(
     (objective) => objective.type === ObjectiveType.CHALLENGE,
   );
 
@@ -156,9 +134,10 @@ export function isChallengeObjectiveCompleted(challenge: Challenge): boolean {
     return true;
   }
 
-  return v.persistent.completedObjectives.some(
-    (objective) =>
-      objective.type === ObjectiveType.CHALLENGE &&
-      objective.challenge === challenge,
-  );
+  const objective = getObjective(ObjectiveType.CHALLENGE, challenge);
+  const objectiveID = getObjectiveID(objective);
+
+  const { completedObjectiveIDs } = v.persistent;
+
+  return completedObjectiveIDs.includes(objectiveID);
 }

@@ -24,7 +24,6 @@ import {
   assertNotNull,
   collectibleHasTag,
   eRange,
-  filterMap,
   getCollectibleQuality,
   getPillEffectType,
   getRandomArrayElement,
@@ -60,10 +59,11 @@ import { UnlockType } from "../../../enums/UnlockType";
 import type { UnlockableArea } from "../../../enums/UnlockableArea";
 import { CARD_QUALITIES } from "../../../objects/cardQualities";
 import { TRINKET_QUALITIES } from "../../../objects/trinketQualities";
-import { getUnlock } from "../../../types/Unlock";
+import { getUnlock, getUnlockFromID } from "../../../types/Unlock";
+import { getUnlockID } from "../../../types/UnlockID";
 import { getCardTypesOfQuality } from "./cardQuality";
 import { getTrinketTypesOfQuality } from "./trinketQuality";
-import { findObjectiveIDForUnlock, v } from "./v";
+import { v } from "./v";
 
 const QUALITY_THRESHOLD_PERCENT = 0.5;
 
@@ -86,14 +86,14 @@ export function isCharacterUnlocked(
     return true;
   }
 
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) =>
-      unlock.type === UnlockType.CHARACTER && unlock.character === character,
-  );
+  const unlock = getUnlock(UnlockType.CHARACTER, character);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }
 
 // -----------------------
@@ -104,15 +104,14 @@ export function isAreaUnlocked(
   unlockableArea: UnlockableArea,
   forRun: boolean,
 ): boolean {
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) =>
-      unlock.type === UnlockType.AREA &&
-      unlock.unlockableArea === unlockableArea,
-  );
+  const unlock = getUnlock(UnlockType.AREA, unlockableArea);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }
 
 // -----------------------
@@ -127,13 +126,14 @@ export function isRoomTypeUnlocked(
     return true;
   }
 
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) => unlock.type === UnlockType.ROOM && unlock.roomType === roomType,
-  );
+  const unlock = getUnlock(UnlockType.ROOM, roomType);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }
 
 // ----------------------------
@@ -148,14 +148,14 @@ export function isChallengeUnlocked(
     return true;
   }
 
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) =>
-      unlock.type === UnlockType.CHALLENGE && unlock.challenge === challenge,
-  );
+  const unlock = getUnlock(UnlockType.CHALLENGE, challenge);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }
 
 // ------------------------------
@@ -170,20 +170,19 @@ export function isCollectibleTypeUnlocked(
     return true;
   }
 
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) =>
-      unlock.type === UnlockType.COLLECTIBLE &&
-      unlock.collectibleType === collectibleType,
-  );
+  const unlock = getUnlock(UnlockType.COLLECTIBLE, collectibleType);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }
 
 export function getUnlockedEdenActiveCollectibleTypes(
   forRun: boolean,
-): CollectibleType[] {
+): readonly CollectibleType[] {
   const unlockedCollectibleTypes = getUnlockedCollectibleTypes(forRun);
 
   return unlockedCollectibleTypes.filter(
@@ -196,7 +195,7 @@ export function getUnlockedEdenActiveCollectibleTypes(
 
 export function getUnlockedEdenPassiveCollectibleTypes(
   forRun: boolean,
-): CollectibleType[] {
+): readonly CollectibleType[] {
   const unlockedCollectibleTypes = getUnlockedCollectibleTypes(forRun);
 
   return unlockedCollectibleTypes.filter(
@@ -221,14 +220,23 @@ export function anyFamiliarCollectibleUnlocked(forRun: boolean): boolean {
   );
 }
 
-function getUnlockedCollectibleTypes(forRun: boolean): CollectibleType[] {
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+function getUnlockedCollectibleTypes(
+  forRun: boolean,
+): readonly CollectibleType[] {
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return filterMap(array, (unlock) =>
-    unlock.type === UnlockType.COLLECTIBLE ? unlock.collectibleType : undefined,
-  );
+  const unlockedCollectibleTypes: CollectibleType[] = [];
+
+  for (const completedUnlockID of completedUnlockIDs) {
+    const completedUnlock = getUnlockFromID(completedUnlockID);
+    if (completedUnlock.type === UnlockType.COLLECTIBLE) {
+      unlockedCollectibleTypes.push(completedUnlock.collectibleType);
+    }
+  }
+
+  return unlockedCollectibleTypes;
 }
 
 export function getWorseLockedCollectibleType(
@@ -276,11 +284,15 @@ export function getWorseLockedCollectibleType(
 // --------------------------
 
 export function anyTrinketTypesUnlocked(forRun: boolean): boolean {
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some((unlock) => unlock.type === UnlockType.TRINKET);
+  const completedUnlocks = completedUnlockIDs.map((unlockID) =>
+    getUnlockFromID(unlockID),
+  );
+
+  return completedUnlocks.some((unlock) => unlock.type === UnlockType.TRINKET);
 }
 
 export function isTrinketTypeUnlocked(
@@ -291,24 +303,31 @@ export function isTrinketTypeUnlocked(
     return true;
   }
 
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) =>
-      unlock.type === UnlockType.TRINKET && unlock.trinketType === trinketType,
-  );
+  const unlock = getUnlock(UnlockType.TRINKET, trinketType);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }
 
 export function getUnlockedTrinketTypes(forRun: boolean): TrinketType[] {
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return filterMap(array, (unlock) =>
-    unlock.type === UnlockType.TRINKET ? unlock.trinketType : undefined,
-  );
+  const unlockedTrinketTypes: TrinketType[] = [];
+
+  for (const completedUnlockID of completedUnlockIDs) {
+    const completedUnlock = getUnlockFromID(completedUnlockID);
+    if (completedUnlock.type === UnlockType.TRINKET) {
+      unlockedTrinketTypes.push(completedUnlock.trinketType);
+    }
+  }
+
+  return unlockedTrinketTypes;
 }
 
 export function getWorseLockedTrinketType(
@@ -338,12 +357,14 @@ export function getWorseLockedTrinketType(
           !isTrinketTypeUnlocked(lowerQualityTrinketType, false),
       );
       const lockedLowerQualityTrinketTypesInPlaythrough =
-        lockedLowerQualityTrinketTypes.filter(
-          (lowerQualityTrinketType) =>
-            findObjectiveIDForUnlock(
-              getUnlock(UnlockType.TRINKET, lowerQualityTrinketType),
-            ) !== undefined,
-        );
+        lockedLowerQualityTrinketTypes.filter((lowerQualityTrinketType) => {
+          const unlock = getUnlock(UnlockType.TRINKET, lowerQualityTrinketType);
+          const unlockID = getUnlockID(unlock);
+          const objectiveID =
+            v.persistent.unlockIDToObjectiveIDMap.get(unlockID);
+
+          return objectiveID !== undefined;
+        });
 
       return getRandomArrayElement(
         lockedLowerQualityTrinketTypesInPlaythrough,
@@ -360,29 +381,41 @@ export function getWorseLockedTrinketType(
 // -----------------------
 
 export function anyCardTypesUnlocked(forRun: boolean): boolean {
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some((unlock) => unlock.type === UnlockType.CARD);
+  const completedUnlocks = completedUnlockIDs.map((unlockID) =>
+    getUnlockFromID(unlockID),
+  );
+
+  return completedUnlocks.some((unlock) => unlock.type === UnlockType.CARD);
 }
 
 export function anyCardsUnlocked(forRun: boolean): boolean {
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
+  const completedUnlocks = completedUnlockIDs.map((unlockID) =>
+    getUnlockFromID(unlockID),
+  );
+
+  return completedUnlocks.some(
     (unlock) => unlock.type === UnlockType.CARD && isCard(unlock.cardType),
   );
 }
 
 export function anyRunesUnlocked(forRun: boolean): boolean {
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
+  const completedUnlocks = completedUnlockIDs.map((unlockID) =>
+    getUnlockFromID(unlockID),
+  );
+
+  return completedUnlocks.some(
     (unlock) => unlock.type === UnlockType.CARD && isRune(unlock.cardType),
   );
 }
@@ -395,13 +428,14 @@ export function isCardTypeUnlocked(
     return true;
   }
 
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) => unlock.type === UnlockType.CARD && unlock.cardType === cardType,
-  );
+  const unlock = getUnlock(UnlockType.CARD, cardType);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }
 
 export function getNumCardsUnlocked(forRun: boolean): int {
@@ -409,17 +443,25 @@ export function getNumCardsUnlocked(forRun: boolean): int {
   const unlockedCards = unlockedCardTypes.filter((cardType) =>
     isCard(cardType),
   );
+
   return unlockedCards.length;
 }
 
 export function getUnlockedCardTypes(forRun: boolean): CardType[] {
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return filterMap(array, (unlock) =>
-    unlock.type === UnlockType.CARD ? unlock.cardType : undefined,
-  );
+  const unlockedCardTypes: CardType[] = [];
+
+  for (const completedUnlockID of completedUnlockIDs) {
+    const completedUnlock = getUnlockFromID(completedUnlockID);
+    if (completedUnlock.type === UnlockType.CARD) {
+      unlockedCardTypes.push(completedUnlock.cardType);
+    }
+  }
+
+  return unlockedCardTypes;
 }
 
 export function getWorseLockedCardType(
@@ -463,19 +505,29 @@ export function getWorseLockedCardType(
 // ------------------------------
 
 export function anyPillEffectsUnlocked(forRun: boolean): boolean {
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some((unlock) => unlock.type === UnlockType.PILL_EFFECT);
+  const completedUnlocks = completedUnlockIDs.map((unlockID) =>
+    getUnlockFromID(unlockID),
+  );
+
+  return completedUnlocks.some(
+    (unlock) => unlock.type === UnlockType.PILL_EFFECT,
+  );
 }
 
 export function anyGoodPillEffectsUnlocked(forRun: boolean): boolean {
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
+  const completedUnlocks = completedUnlockIDs.map((unlockID) =>
+    getUnlockFromID(unlockID),
+  );
+
+  return completedUnlocks.some(
     (unlock) =>
       unlock.type === UnlockType.PILL_EFFECT &&
       getPillEffectType(unlock.pillEffect) ===
@@ -484,11 +536,15 @@ export function anyGoodPillEffectsUnlocked(forRun: boolean): boolean {
 }
 
 export function anyBadPillEffectsUnlocked(forRun: boolean): boolean {
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
+  const completedUnlocks = completedUnlockIDs.map((unlockID) =>
+    getUnlockFromID(unlockID),
+  );
+
+  return completedUnlocks.some(
     (unlock) =>
       unlock.type === UnlockType.PILL_EFFECT &&
       getPillEffectType(unlock.pillEffect) ===
@@ -500,15 +556,14 @@ export function isPillEffectUnlocked(
   pillEffect: PillEffect,
   forRun: boolean,
 ): boolean {
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) =>
-      unlock.type === UnlockType.PILL_EFFECT &&
-      unlock.pillEffect === pillEffect,
-  );
+  const unlock = getUnlock(UnlockType.PILL_EFFECT, pillEffect);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }
 
 export function isAllPillEffectsUnlocked(forRun: boolean): boolean {
@@ -517,13 +572,20 @@ export function isAllPillEffectsUnlocked(forRun: boolean): boolean {
 }
 
 export function getUnlockedPillEffects(forRun: boolean): PillEffect[] {
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return filterMap(array, (unlock) =>
-    unlock.type === UnlockType.PILL_EFFECT ? unlock.pillEffect : undefined,
-  );
+  const unlockedPillEffects: PillEffect[] = [];
+
+  for (const completedUnlockID of completedUnlockIDs) {
+    const completedUnlock = getUnlockFromID(completedUnlockID);
+    if (completedUnlock.type === UnlockType.PILL_EFFECT) {
+      unlockedPillEffects.push(completedUnlock.pillEffect);
+    }
+  }
+
+  return unlockedPillEffects;
 }
 
 /**
@@ -646,14 +708,14 @@ export function isHeartSubTypeUnlocked(
     return true;
   }
 
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) =>
-      unlock.type === UnlockType.HEART && unlock.heartSubType === heartSubType,
-  );
+  const unlock = getUnlock(UnlockType.HEART, heartSubType);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }
 
 export function anySoulHeartUnlocked(forRun: boolean): boolean {
@@ -693,14 +755,14 @@ export function isCoinSubTypeUnlocked(
     return true;
   }
 
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) =>
-      unlock.type === UnlockType.COIN && unlock.coinSubType === coinSubType,
-  );
+  const unlock = getUnlock(UnlockType.COIN, coinSubType);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }
 
 export function getWorseLockedCoinSubType(
@@ -734,14 +796,14 @@ export function isBombSubTypeUnlocked(
     return true;
   }
 
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) =>
-      unlock.type === UnlockType.BOMB && unlock.bombSubType === bombSubType,
-  );
+  const unlock = getUnlock(UnlockType.BOMB, bombSubType);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }
 
 export function getWorseLockedBombSubType(
@@ -775,14 +837,14 @@ export function isKeySubTypeUnlocked(
     return true;
   }
 
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) =>
-      unlock.type === UnlockType.KEY && unlock.keySubType === keySubType,
-  );
+  const unlock = getUnlock(UnlockType.KEY, keySubType);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }
 
 export function getWorseLockedKeySubType(
@@ -816,15 +878,14 @@ export function isBatterySubTypeUnlocked(
     return true;
   }
 
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) =>
-      unlock.type === UnlockType.BATTERY &&
-      unlock.batterySubType === batterySubType,
-  );
+  const unlock = getUnlock(UnlockType.BATTERY, batterySubType);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }
 
 export function getWorseLockedBatterySubType(
@@ -859,14 +920,14 @@ export function isSackSubTypeUnlocked(
     return true;
   }
 
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) =>
-      unlock.type === UnlockType.SACK && unlock.sackSubType === sackSubType,
-  );
+  const unlock = getUnlock(UnlockType.SACK, sackSubType);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }
 
 export function getWorseLockedSackSubType(
@@ -893,11 +954,15 @@ export function getWorseLockedSackSubType(
 }
 
 export function anyChestPickupVariantUnlocked(forRun: boolean): boolean {
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some((unlock) => unlock.type === UnlockType.CHEST);
+  const completedUnlocks = completedUnlockIDs.map((unlockID) =>
+    getUnlockFromID(unlockID),
+  );
+
+  return completedUnlocks.some((unlock) => unlock.type === UnlockType.CHEST);
 }
 
 export function isChestPickupVariantUnlocked(
@@ -908,15 +973,14 @@ export function isChestPickupVariantUnlocked(
     return true;
   }
 
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) =>
-      unlock.type === UnlockType.CHEST &&
-      unlock.pickupVariant === pickupVariant,
-  );
+  const unlock = getUnlock(UnlockType.CHEST, pickupVariant);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }
 
 export function getWorseLockedChestPickupVariant(
@@ -957,14 +1021,14 @@ export function isSlotVariantUnlocked(
     return true;
   }
 
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) =>
-      unlock.type === UnlockType.SLOT && unlock.slotVariant === slotVariant,
-  );
+  const unlock = getUnlock(UnlockType.SLOT, slotVariant);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }
 
 // ------------------------------
@@ -979,15 +1043,14 @@ export function isGridEntityTypeUnlocked(
     return true;
   }
 
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) =>
-      unlock.type === UnlockType.GRID_ENTITY &&
-      unlock.gridEntityType === gridEntityType,
-  );
+  const unlock = getUnlock(UnlockType.GRID_ENTITY, gridEntityType);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }
 
 // ------------------------
@@ -998,12 +1061,12 @@ export function isOtherUnlockKindUnlocked(
   otherUnlockKind: OtherUnlockKind,
   forRun: boolean,
 ): boolean {
-  const array = forRun
-    ? v.persistent.completedUnlocksForRun
-    : v.persistent.completedUnlocks;
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
 
-  return array.some(
-    (unlock) =>
-      unlock.type === UnlockType.OTHER && unlock.kind === otherUnlockKind,
-  );
+  const unlock = getUnlock(UnlockType.OTHER, otherUnlockKind);
+  const unlockID = getUnlockID(unlock);
+
+  return completedUnlockIDs.includes(unlockID);
 }

@@ -5,6 +5,8 @@ import {
 } from "../cachedEnums";
 import { UnlockType } from "../enums/UnlockType";
 import type { Unlock } from "../types/Unlock";
+import type { UnlockID } from "../types/UnlockID";
+import { getUnlockID } from "../types/UnlockID";
 import { UNLOCKABLE_CARD_TYPES } from "./unlockableCardTypes";
 import { UNLOCKABLE_CHALLENGES } from "./unlockableChallenges";
 import { UNLOCKABLE_CHARACTERS } from "./unlockableCharacters";
@@ -249,3 +251,7 @@ export const ALL_UNLOCKS: readonly Unlock[] = (() => {
 
   return unlocks;
 })();
+
+export const ALL_UNLOCK_IDS: readonly UnlockID[] = ALL_UNLOCKS.map((unlock) =>
+  getUnlockID(unlock),
+);

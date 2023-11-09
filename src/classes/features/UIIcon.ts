@@ -37,6 +37,12 @@ const ICON_SPRITE = newSprite(
   "gfx/ui/no-achievements-icon/no-achievements-icon.anm2",
 );
 
+const RANDOMIZER_MODE_TO_ICON_SPRITE_LAYER = {
+  [RandomizerMode.CASUAL]: IconSpriteLayer.RANDOMIZER_ICON_CASUAL,
+  [RandomizerMode.HARDCORE]: IconSpriteLayer.RANDOMIZER_ICON_HARDCORE,
+  [RandomizerMode.NIGHTMARE]: IconSpriteLayer.RANDOMIZER_ICON_NIGHTMARE,
+} as const satisfies Record<RandomizerMode, IconSpriteLayer>;
+
 /**
  * In the "gfx/ui/hudpickups.png" file, we blank out the "No Achievements" icon. For every run, we
  * draw an icon on top of where the "No Achievements" icon would normally be.
@@ -75,19 +81,7 @@ export class UIIcon extends ModFeature {
 function getIconSpriteLayer(): IconSpriteLayer | undefined {
   if (isRandomizerEnabled()) {
     const randomizerMode = getRandomizerMode();
-    switch (randomizerMode) {
-      case RandomizerMode.CASUAL: {
-        return IconSpriteLayer.RANDOMIZER_ICON_CASUAL;
-      }
-
-      case RandomizerMode.HARDCORE: {
-        return IconSpriteLayer.RANDOMIZER_ICON_HARDCORE;
-      }
-
-      case RandomizerMode.NIGHTMARE: {
-        return IconSpriteLayer.RANDOMIZER_ICON_NIGHTMARE;
-      }
-    }
+    return RANDOMIZER_MODE_TO_ICON_SPRITE_LAYER[randomizerMode];
   }
 
   if (onSetSeed() || onAnyChallenge()) {

@@ -14,48 +14,21 @@ export enum OtherUnlockKind {
   REWARD_PLATES, // 20.1
 }
 
+const OTHER_UNLOCK_KIND_NAMES = {
+  [OtherUnlockKind.BEDS]: ["pickup", "Beds"],
+  [OtherUnlockKind.SHOPKEEPERS]: ["entity", "Shopkeepers"],
+  [OtherUnlockKind.GOLD_TRINKETS]: ["trinket type", "Gold Trinkets"],
+  [OtherUnlockKind.GOLD_PILLS]: ["pill type", "Gold Pills"],
+  [OtherUnlockKind.HORSE_PILLS]: ["pill type", "Horse Pills"],
+  [OtherUnlockKind.GOLDEN_POOP]: ["grid entity", "Golden Poop"],
+  [OtherUnlockKind.RAINBOW_POOP]: ["grid entity", "Rainbow Poop"],
+  [OtherUnlockKind.BLACK_POOP]: ["grid entity", "Black Poop"],
+  [OtherUnlockKind.CHARMING_POOP]: ["grid entity", "Charming Poop"],
+  [OtherUnlockKind.REWARD_PLATES]: ["grid entity", "Reward Plates"],
+} as const satisfies Record<OtherUnlockKind, readonly [string, string]>;
+
 export function getOtherUnlockName(
   otherUnlockKind: OtherUnlockKind,
-): [string, string] {
-  switch (otherUnlockKind) {
-    case OtherUnlockKind.BEDS: {
-      return ["pickup", "Beds"];
-    }
-
-    case OtherUnlockKind.SHOPKEEPERS: {
-      return ["entity", "Shopkeepers"];
-    }
-
-    case OtherUnlockKind.GOLD_TRINKETS: {
-      return ["trinket type", "Gold Trinkets"];
-    }
-
-    case OtherUnlockKind.GOLD_PILLS: {
-      return ["pill type", "Gold Pills"];
-    }
-
-    case OtherUnlockKind.HORSE_PILLS: {
-      return ["pill type", "Horse Pills"];
-    }
-
-    case OtherUnlockKind.GOLDEN_POOP: {
-      return ["grid entity", "Golden Poop"];
-    }
-
-    case OtherUnlockKind.RAINBOW_POOP: {
-      return ["grid entity", "Rainbow Poop"];
-    }
-
-    case OtherUnlockKind.BLACK_POOP: {
-      return ["grid entity", "Black Poop"];
-    }
-
-    case OtherUnlockKind.CHARMING_POOP: {
-      return ["grid entity", "Charming Poop"];
-    }
-
-    case OtherUnlockKind.REWARD_PLATES: {
-      return ["grid entity", "Reward Plates"];
-    }
-  }
+): readonly [string, string] {
+  return OTHER_UNLOCK_KIND_NAMES[otherUnlockKind];
 }

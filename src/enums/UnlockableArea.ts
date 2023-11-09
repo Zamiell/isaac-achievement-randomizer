@@ -1,5 +1,5 @@
 import { BossID } from "isaac-typescript-definitions";
-import { getBossName } from "isaacscript-common";
+import { ReadonlyMap } from "isaacscript-common";
 import { CharacterObjectiveKind } from "./CharacterObjectiveKind";
 
 /** We want core areas to be static, but hard areas to be randomized. */
@@ -27,229 +27,98 @@ export const STATIC_UNLOCKABLE_AREAS = [
   UnlockableArea.REPENTANCE_FLOORS, // By defeating The Lamb.
 ] as const;
 
+const STORY_BOSS_TO_UNLOCKABLE_AREA = new ReadonlyMap([
+  [BossID.MOM, undefined], // 6
+  [BossID.MOMS_HEART, UnlockableArea.WOMB], // 8
+  [BossID.SATAN, UnlockableArea.SHEOL], // 24
+  [BossID.IT_LIVES, UnlockableArea.WOMB], // 25
+  [BossID.ISAAC, UnlockableArea.CATHEDRAL], // 39
+  [BossID.BLUE_BABY, UnlockableArea.CHEST], // 40
+  [BossID.LAMB, UnlockableArea.DARK_ROOM], // 54
+  [BossID.MEGA_SATAN, UnlockableArea.MEGA_SATAN], // 55
+  [BossID.ULTRA_GREED, UnlockableArea.GREED_MODE], // 62
+  [BossID.HUSH, UnlockableArea.BLUE_WOMB], // 63
+
+  // Note that Delirium actually requires both Blue Womb and The Void, so this value is misleading.
+  [BossID.DELIRIUM, UnlockableArea.VOID], // 70
+
+  [BossID.ULTRA_GREEDIER, UnlockableArea.GREED_MODE], // 71
+  [BossID.MOTHER, UnlockableArea.REPENTANCE_FLOORS], // 88
+  [BossID.MAUSOLEUM_MOM, UnlockableArea.REPENTANCE_FLOORS], // 89
+  [BossID.MAUSOLEUM_MOMS_HEART, UnlockableArea.REPENTANCE_FLOORS], // 90
+  [BossID.DOGMA, UnlockableArea.ASCENT], // 99
+  [BossID.BEAST, UnlockableArea.ASCENT], // 100
+]);
+
 export function getUnlockableAreaFromStoryBoss(
   bossID: BossID,
 ): UnlockableArea | undefined {
-  switch (bossID) {
-    // 6, 8, 24, 25, 39
-    case BossID.MOM: {
-      return undefined;
-    }
-
-    // 8, 25
-    case BossID.MOMS_HEART:
-    case BossID.IT_LIVES: {
-      return UnlockableArea.WOMB;
-    }
-
-    // 24
-    case BossID.SATAN: {
-      return UnlockableArea.SHEOL;
-    }
-
-    // 39
-    case BossID.ISAAC: {
-      return UnlockableArea.CATHEDRAL;
-    }
-
-    // 40
-    case BossID.BLUE_BABY: {
-      return UnlockableArea.CHEST;
-    }
-
-    // 54
-    case BossID.LAMB: {
-      return UnlockableArea.DARK_ROOM;
-    }
-
-    // 55
-    case BossID.MEGA_SATAN: {
-      return UnlockableArea.MEGA_SATAN;
-    }
-
-    // 62, 71
-    case BossID.ULTRA_GREED:
-    case BossID.ULTRA_GREEDIER: {
-      return UnlockableArea.GREED_MODE;
-    }
-
-    // 63
-    case BossID.HUSH: {
-      return UnlockableArea.BLUE_WOMB;
-    }
-
-    // 70
-    case BossID.DELIRIUM: {
-      // Note that Delirium actually requires both Blue Womb and The Void, so this value is
-      // misleading.
-      return UnlockableArea.VOID;
-    }
-
-    // 88, 89, 90
-    case BossID.MOTHER:
-    case BossID.MAUSOLEUM_MOM:
-    case BossID.MAUSOLEUM_MOMS_HEART: {
-      return UnlockableArea.REPENTANCE_FLOORS;
-    }
-
-    // 99, 100
-    case BossID.DOGMA:
-    case BossID.BEAST: {
-      return UnlockableArea.ASCENT;
-    }
-
-    default: {
-      const bossName = getBossName(bossID);
-      return error(
-        `Failed to get the unlockable area for story boss: ${bossName} (${bossID})`,
-      );
-    }
-  }
+  return STORY_BOSS_TO_UNLOCKABLE_AREA.get(bossID);
 }
+
+const CHARACTER_OBJECTIVE_KIND_TO_UNLOCKABLE_AREA = {
+  [CharacterObjectiveKind.MOM]: undefined,
+  [CharacterObjectiveKind.IT_LIVES]: UnlockableArea.WOMB,
+  [CharacterObjectiveKind.ISAAC]: UnlockableArea.CATHEDRAL,
+  [CharacterObjectiveKind.SATAN]: UnlockableArea.SHEOL,
+  [CharacterObjectiveKind.BLUE_BABY]: UnlockableArea.CHEST,
+  [CharacterObjectiveKind.LAMB]: UnlockableArea.DARK_ROOM,
+  [CharacterObjectiveKind.MEGA_SATAN]: UnlockableArea.MEGA_SATAN,
+  [CharacterObjectiveKind.BOSS_RUSH]: UnlockableArea.BOSS_RUSH,
+  [CharacterObjectiveKind.HUSH]: UnlockableArea.BLUE_WOMB,
+
+  // Note that Delirium actually requires both Blue Womb and The Void, so this value is misleading.
+  [CharacterObjectiveKind.DELIRIUM]: UnlockableArea.VOID,
+
+  [CharacterObjectiveKind.MOTHER]: UnlockableArea.REPENTANCE_FLOORS,
+  [CharacterObjectiveKind.BEAST]: UnlockableArea.ASCENT,
+  [CharacterObjectiveKind.ULTRA_GREED]: UnlockableArea.GREED_MODE,
+  [CharacterObjectiveKind.NO_HIT_BASEMENT_1]: undefined,
+  [CharacterObjectiveKind.NO_HIT_BASEMENT_2]: undefined,
+  [CharacterObjectiveKind.NO_HIT_CAVES_1]: undefined,
+  [CharacterObjectiveKind.NO_HIT_CAVES_2]: undefined,
+  [CharacterObjectiveKind.NO_HIT_DEPTHS_1]: undefined,
+  [CharacterObjectiveKind.NO_HIT_DEPTHS_2]: undefined,
+  [CharacterObjectiveKind.NO_HIT_WOMB_1]: UnlockableArea.WOMB,
+  [CharacterObjectiveKind.NO_HIT_WOMB_2]: UnlockableArea.WOMB,
+
+  // Note that this can unlock from either Dark Room or The Chest, so this value is misleading.
+  [CharacterObjectiveKind.NO_HIT_SHEOL_CATHEDRAL]: UnlockableArea.CATHEDRAL,
+
+  // Note that this can unlock from either Dark Room or The Chest, so this value is misleading.
+  [CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST]: UnlockableArea.CHEST,
+
+  [CharacterObjectiveKind.NO_HIT_DOWNPOUR_1]: UnlockableArea.REPENTANCE_FLOORS,
+  [CharacterObjectiveKind.NO_HIT_DOWNPOUR_2]: UnlockableArea.REPENTANCE_FLOORS,
+  [CharacterObjectiveKind.NO_HIT_MINES_1]: UnlockableArea.REPENTANCE_FLOORS,
+  [CharacterObjectiveKind.NO_HIT_MINES_2]: UnlockableArea.REPENTANCE_FLOORS,
+  [CharacterObjectiveKind.NO_HIT_MAUSOLEUM_1]: UnlockableArea.REPENTANCE_FLOORS,
+  [CharacterObjectiveKind.NO_HIT_MAUSOLEUM_2]: UnlockableArea.REPENTANCE_FLOORS,
+  [CharacterObjectiveKind.NO_HIT_CORPSE_1]: UnlockableArea.REPENTANCE_FLOORS,
+  [CharacterObjectiveKind.NO_HIT_CORPSE_2]: UnlockableArea.REPENTANCE_FLOORS,
+} as const satisfies Record<CharacterObjectiveKind, UnlockableArea | undefined>;
 
 export function getUnlockableAreaFromCharacterObjectiveKind(
   kind: CharacterObjectiveKind,
 ): UnlockableArea | undefined {
-  switch (kind) {
-    case CharacterObjectiveKind.MOM: {
-      return undefined;
-    }
-
-    case CharacterObjectiveKind.IT_LIVES: {
-      return UnlockableArea.WOMB;
-    }
-
-    case CharacterObjectiveKind.ISAAC: {
-      return UnlockableArea.CATHEDRAL;
-    }
-
-    case CharacterObjectiveKind.SATAN: {
-      return UnlockableArea.SHEOL;
-    }
-
-    case CharacterObjectiveKind.BLUE_BABY: {
-      return UnlockableArea.CHEST;
-    }
-
-    case CharacterObjectiveKind.LAMB: {
-      return UnlockableArea.DARK_ROOM;
-    }
-
-    case CharacterObjectiveKind.MEGA_SATAN: {
-      return UnlockableArea.MEGA_SATAN;
-    }
-
-    case CharacterObjectiveKind.BOSS_RUSH: {
-      return UnlockableArea.BOSS_RUSH;
-    }
-
-    case CharacterObjectiveKind.HUSH: {
-      return UnlockableArea.BLUE_WOMB;
-    }
-
-    case CharacterObjectiveKind.DELIRIUM: {
-      // Note that Delirium actually requires both Blue Womb and The Void, so this value is
-      // misleading.
-      return UnlockableArea.VOID;
-    }
-
-    case CharacterObjectiveKind.MOTHER: {
-      return UnlockableArea.REPENTANCE_FLOORS;
-    }
-
-    case CharacterObjectiveKind.BEAST: {
-      return UnlockableArea.ASCENT;
-    }
-
-    case CharacterObjectiveKind.ULTRA_GREED: {
-      return UnlockableArea.GREED_MODE;
-    }
-
-    case CharacterObjectiveKind.NO_HIT_BASEMENT_1:
-    case CharacterObjectiveKind.NO_HIT_BASEMENT_2:
-    case CharacterObjectiveKind.NO_HIT_CAVES_1:
-    case CharacterObjectiveKind.NO_HIT_CAVES_2:
-    case CharacterObjectiveKind.NO_HIT_DEPTHS_1:
-    case CharacterObjectiveKind.NO_HIT_DEPTHS_2: {
-      return undefined;
-    }
-
-    case CharacterObjectiveKind.NO_HIT_WOMB_1:
-    case CharacterObjectiveKind.NO_HIT_WOMB_2: {
-      return UnlockableArea.WOMB;
-    }
-
-    case CharacterObjectiveKind.NO_HIT_SHEOL_CATHEDRAL: {
-      // Note that this can unlock from either Dark Room or The Chest, so this value is misleading.
-      return UnlockableArea.CATHEDRAL;
-    }
-
-    case CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST: {
-      // Note that this can unlock from either Dark Room or The Chest, so this value is misleading.
-      return UnlockableArea.CHEST;
-    }
-
-    case CharacterObjectiveKind.NO_HIT_DOWNPOUR_1:
-    case CharacterObjectiveKind.NO_HIT_DOWNPOUR_2:
-    case CharacterObjectiveKind.NO_HIT_MINES_1:
-    case CharacterObjectiveKind.NO_HIT_MINES_2:
-    case CharacterObjectiveKind.NO_HIT_MAUSOLEUM_1:
-    case CharacterObjectiveKind.NO_HIT_MAUSOLEUM_2:
-    case CharacterObjectiveKind.NO_HIT_CORPSE_1:
-    case CharacterObjectiveKind.NO_HIT_CORPSE_2: {
-      return UnlockableArea.REPENTANCE_FLOORS;
-    }
-  }
+  return CHARACTER_OBJECTIVE_KIND_TO_UNLOCKABLE_AREA[kind];
 }
 
+const UNLOCKABLE_AREA_NAMES = {
+  [UnlockableArea.WOMB]: "The Womb",
+  [UnlockableArea.CATHEDRAL]: "Cathedral",
+  [UnlockableArea.SHEOL]: "Sheol",
+  [UnlockableArea.CHEST]: "The Chest",
+  [UnlockableArea.DARK_ROOM]: "Dark Room",
+  [UnlockableArea.MEGA_SATAN]: "Mega Satan",
+  [UnlockableArea.BOSS_RUSH]: "Boss Rush",
+  [UnlockableArea.BLUE_WOMB]: "Blue Womb",
+  [UnlockableArea.VOID]: "The Void",
+  [UnlockableArea.REPENTANCE_FLOORS]: "Repentance Floors",
+  [UnlockableArea.ASCENT]: "The Ascent",
+  [UnlockableArea.GREED_MODE]: "Greed Mode",
+} as const satisfies Record<UnlockableArea, string>;
+
 export function getAreaName(unlockableArea: UnlockableArea): string {
-  switch (unlockableArea) {
-    case UnlockableArea.WOMB: {
-      return "The Womb";
-    }
-
-    case UnlockableArea.CATHEDRAL: {
-      return "Cathedral";
-    }
-
-    case UnlockableArea.SHEOL: {
-      return "Sheol";
-    }
-
-    case UnlockableArea.CHEST: {
-      return "The Chest";
-    }
-
-    case UnlockableArea.DARK_ROOM: {
-      return "Dark Room";
-    }
-
-    case UnlockableArea.MEGA_SATAN: {
-      return "Mega Satan";
-    }
-
-    case UnlockableArea.BOSS_RUSH: {
-      return "Boss Rush";
-    }
-
-    case UnlockableArea.BLUE_WOMB: {
-      return "Blue Womb";
-    }
-
-    case UnlockableArea.VOID: {
-      return "The Void";
-    }
-
-    case UnlockableArea.REPENTANCE_FLOORS: {
-      return "Repentance Floors";
-    }
-
-    case UnlockableArea.ASCENT: {
-      return "The Ascent";
-    }
-
-    case UnlockableArea.GREED_MODE: {
-      return "Greed Mode";
-    }
-  }
+  return UNLOCKABLE_AREA_NAMES[unlockableArea];
 }

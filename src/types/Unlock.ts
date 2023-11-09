@@ -18,6 +18,7 @@ import type {
 } from "isaac-typescript-definitions";
 import type { CompositionTypeSatisfiesEnum } from "isaacscript-common";
 import {
+  assertDefined,
   getBatteryName,
   getBombName,
   getCardName,
@@ -36,11 +37,13 @@ import {
 } from "isaacscript-common";
 import type { UNLOCKABLE_GRID_ENTITY_TYPES } from "../arrays/unlockableGridEntityTypes";
 import { getGridEntityName } from "../arrays/unlockableGridEntityTypes";
+import { UNLOCK_TYPES_SET } from "../cachedEnums";
 import type { OtherUnlockKind } from "../enums/OtherUnlockKind";
 import { getOtherUnlockName } from "../enums/OtherUnlockKind";
 import { UnlockType } from "../enums/UnlockType";
 import type { UnlockableArea } from "../enums/UnlockableArea";
 import { getAreaName } from "../enums/UnlockableArea";
+import type { UnlockID } from "./UnlockID";
 
 export interface CharacterUnlock {
   type: UnlockType.CHARACTER;
@@ -154,6 +157,98 @@ export type Unlock =
 
 type _Test = CompositionTypeSatisfiesEnum<Unlock, UnlockType>;
 
+const UNLOCK_TYPE_TO_UNLOCK_CONSTRUCTOR = {
+  [UnlockType.CHARACTER]: (arg) => ({
+    type: UnlockType.CHARACTER,
+    character: arg,
+  }),
+
+  [UnlockType.AREA]: (arg) => ({
+    type: UnlockType.AREA,
+    unlockableArea: arg,
+  }),
+
+  [UnlockType.ROOM]: (arg) => ({
+    type: UnlockType.ROOM,
+    roomType: arg,
+  }),
+
+  [UnlockType.CHALLENGE]: (arg) => ({
+    type: UnlockType.CHALLENGE,
+    challenge: arg,
+  }),
+
+  [UnlockType.COLLECTIBLE]: (arg) => ({
+    type: UnlockType.COLLECTIBLE,
+    collectibleType: arg,
+  }),
+
+  [UnlockType.TRINKET]: (arg) => ({
+    type: UnlockType.TRINKET,
+    trinketType: arg,
+  }),
+
+  [UnlockType.CARD]: (arg) => ({
+    type: UnlockType.CARD,
+    cardType: arg,
+  }),
+
+  [UnlockType.PILL_EFFECT]: (arg) => ({
+    type: UnlockType.PILL_EFFECT,
+    pillEffect: arg,
+  }),
+
+  [UnlockType.HEART]: (arg) => ({
+    type: UnlockType.HEART,
+    heartSubType: arg,
+  }),
+
+  [UnlockType.COIN]: (arg) => ({
+    type: UnlockType.COIN,
+    coinSubType: arg,
+  }),
+
+  [UnlockType.BOMB]: (arg) => ({
+    type: UnlockType.BOMB,
+    bombSubType: arg,
+  }),
+
+  [UnlockType.KEY]: (arg) => ({
+    type: UnlockType.KEY,
+    keySubType: arg,
+  }),
+
+  [UnlockType.BATTERY]: (arg) => ({
+    type: UnlockType.BATTERY,
+    batterySubType: arg,
+  }),
+
+  [UnlockType.SACK]: (arg) => ({
+    type: UnlockType.SACK,
+    sackSubType: arg,
+  }),
+
+  [UnlockType.CHEST]: (arg) => ({
+    type: UnlockType.CHEST,
+    pickupVariant: arg,
+  }),
+
+  [UnlockType.SLOT]: (arg) => ({
+    type: UnlockType.SLOT,
+    slotVariant: arg,
+  }),
+
+  [UnlockType.GRID_ENTITY]: (arg) => ({
+    type: UnlockType.GRID_ENTITY,
+    gridEntityType: arg,
+  }),
+
+  [UnlockType.OTHER]: (arg) => ({
+    type: UnlockType.OTHER,
+    kind: arg,
+  }),
+} as const satisfies Record<UnlockType, (arg: number) => Unlock>;
+
 export function getUnlock(
   type: UnlockType.CHARACTER,
   character: PlayerType,
@@ -227,136 +322,49 @@ export function getUnlock(
   kind: OtherUnlockKind,
 ): OtherUnlock;
 export function getUnlock(type: UnlockType, arg: int): Unlock {
-  switch (type) {
-    case UnlockType.CHARACTER: {
-      return {
-        type,
-        character: arg,
-      };
-    }
-
-    case UnlockType.AREA: {
-      return {
-        type,
-        unlockableArea: arg,
-      };
-    }
-
-    case UnlockType.ROOM: {
-      return {
-        type,
-        roomType: arg,
-      };
-    }
-
-    case UnlockType.CHALLENGE: {
-      return {
-        type,
-        challenge: arg,
-      };
-    }
-
-    case UnlockType.COLLECTIBLE: {
-      return {
-        type,
-        collectibleType: arg,
-      };
-    }
-
-    case UnlockType.TRINKET: {
-      return {
-        type,
-        trinketType: arg,
-      };
-    }
-
-    case UnlockType.CARD: {
-      return {
-        type,
-        cardType: arg,
-      };
-    }
-
-    case UnlockType.PILL_EFFECT: {
-      return {
-        type,
-        pillEffect: arg,
-      };
-    }
-
-    case UnlockType.HEART: {
-      return {
-        type,
-        heartSubType: arg,
-      };
-    }
-
-    case UnlockType.COIN: {
-      return {
-        type,
-        coinSubType: arg,
-      };
-    }
-
-    case UnlockType.BOMB: {
-      return {
-        type,
-        bombSubType: arg,
-      };
-    }
-
-    case UnlockType.KEY: {
-      return {
-        type,
-        keySubType: arg,
-      };
-    }
-
-    case UnlockType.BATTERY: {
-      return {
-        type,
-        batterySubType: arg,
-      };
-    }
-
-    case UnlockType.SACK: {
-      return {
-        type,
-        sackSubType: arg,
-      };
-    }
-
-    case UnlockType.CHEST: {
-      return {
-        type,
-        pickupVariant: arg,
-      };
-    }
-
-    case UnlockType.SLOT: {
-      return {
-        type,
-        slotVariant: arg,
-      };
-    }
-
-    case UnlockType.GRID_ENTITY: {
-      return {
-        type,
-        gridEntityType: arg,
-      };
-    }
-
-    case UnlockType.OTHER: {
-      return {
-        type,
-        kind: arg,
-      };
-    }
-  }
+  const constructor = UNLOCK_TYPE_TO_UNLOCK_CONSTRUCTOR[type];
+  return constructor(arg);
 }
 
-export function getUnlockText(unlock: Unlock): [string, string] {
+export function getUnlockFromID(unlockID: UnlockID): Unlock {
+  const parts = unlockID.split(".");
+
+  const typeString = parts[0];
+  assertDefined(
+    typeString,
+    `Failed to parse the type from an unlock ID: ${unlockID}`,
+  );
+
+  const typeNumber = tonumber(typeString);
+  assertDefined(
+    typeNumber,
+    `Failed to convert the type from an unlock ID to a number: ${unlockID}`,
+  );
+
+  // eslint-disable-next-line isaacscript/strict-enums
+  if (!UNLOCK_TYPES_SET.has(typeNumber)) {
+    error(`The type of ${typeNumber} in an unlock ID is not valid.`);
+  }
+
+  const type = typeNumber as UnlockType;
+  const constructor = UNLOCK_TYPE_TO_UNLOCK_CONSTRUCTOR[type];
+
+  const argString = parts[1];
+  assertDefined(
+    argString,
+    `Failed to parse the second number from an unlock ID: ${unlockID}`,
+  );
+
+  const arg = tonumber(argString);
+  assertDefined(
+    arg,
+    `Failed to convert the second number from an unlock ID to a number: ${unlockID}`,
+  );
+
+  return constructor(arg);
+}
+
+export function getUnlockText(unlock: Unlock): readonly [string, string] {
   switch (unlock.type) {
     case UnlockType.CHARACTER: {
       return ["character", getCharacterName(unlock.character)];
