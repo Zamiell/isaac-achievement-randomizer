@@ -10,7 +10,7 @@ import {
   inRoomType,
   isGlitchedCollectible,
   onChallenge,
-  spawnCollectibleUnsafe,
+  spawnCollectible,
 } from "isaacscript-common";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 
@@ -75,7 +75,7 @@ export class RemoveGlitchedCollectibles extends RandomizerModFeature {
       // spawn a new one. Even if we use the same `InitSeed`, it will still not change back to a
       // glitched item.
       collectible.Remove();
-      spawnCollectibleUnsafe(
+      spawnCollectible(
         storedCollectibleType,
         collectible.Position,
         collectible.InitSeed,

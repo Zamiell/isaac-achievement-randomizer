@@ -88,7 +88,7 @@ This mode can make a randomizer playthrough extremely easy, because if your firs
 In hardcore mode, we want to prevent the situation where you unlock powerful items early on in your playthrough.
 
 - Collectibles, trinkets, and cards will progressively unlock based on their quality classification. (50% of 0 quality items must unlock first before 1 quality items, and so on.)
-  - Since trinkets and cards do not have vanilla quality classifications, custom qualities were created by [Gamonymous](https://github.com/Rchardon) & [Moucheron Quipet](https://www.twitch.tv/moucheronquipet).
+  - Since [trinkets](https://github.com/Zamiell/isaac-achievement-randomizer/blob/main/src/objects/trinketQualities.ts) and [cards](https://github.com/Zamiell/isaac-achievement-randomizer/blob/main/src/objects/cardQualities.ts) do not have vanilla quality classifications, custom qualities were created by [Gamonymous](https://github.com/Rchardon) & [Moucheron Quipet](https://www.twitch.tv/moucheronquipet).
   - Some collectibles have a [custom quality](https://github.com/Zamiell/isaac-achievement-randomizer/blob/main/mod/resources/items_metadata.xml) (like Cursed Eye).
 - Pill effects will unlock on a cycle of one negative, one neutral, and one positive.
 - Hearts will unlock in the following order:
@@ -199,8 +199,6 @@ Unlike the timer in Racing+, the timer in this mod tracks in-game time. Thus, th
 
 There are thousands of rooms in the game, but many players have already seen them all. To increase run variety, all rooms have a chance to be flipped on the X axis, Y axis, or both axes.
 
-Gehenna is exempt from this behavior due to unavoidable damage with Ball and Chains.
-
 ### 5) More Champions
 
 In the vanilla game, only certain specific enemies have the chance to spawn as a champion variant. In this mod, every enemy in the game has a chance to spawn as a champion variant.
@@ -304,9 +302,9 @@ In this directory, there will be either a "save1.dat", "save2.dat", or "save3.da
 
 It is important that you backup this file after every run.
 
-### How do I change the data inside of my safe file?
+### How do I change the data inside of my save file?
 
-See the previous section for the location of the save file.
+See [the previous section](#how-do-i-backuprestoreedit-my-randomizer-save-file) for the location of the save file.
 
 Obviously, modifying your save file is normally considered to be cheating, but you might need to do it if the format of the save file needs to be updated or if you encounter a game-breaking bug that corrupts your save file in some way.
 
@@ -315,6 +313,31 @@ The save file is simply [a JSON file](https://www.w3schools.com/js/js_json_intro
 The format of the JSON file is minified (i.e. all whitespace is removed), which makes it hard to read. First, you should prettify it by pasting the contents into [a JSON beautifier such as this one](https://codebeautify.org/jsonviewer). (After pasting it in on the left side, click on the "Beautify" button.)
 
 Once it is beautified, you can see that the top level keys correspond to various mod features, with the most important ones being "AchievementTracker" and "StatsTracker".
+
+### How do I manually change an unlock inside of my save file?
+
+See [the previous section](#how-do-i-change-the-data-inside-of-my-save-file) for how to edit the save file.
+
+Your unlocks are contained within the `completedUnlocks` array. This is an array containing `Unlock` objects. For example, this is the unlock object for Magdalene:
+
+```json
+{
+  "type": 0,
+  "character": 1
+}
+```
+
+The `type` refers to the [`UnlockType` enum](https://github.com/Zamiell/isaac-achievement-randomizer/blob/main/src/enums/UnlockType.ts). In this case, 0 is the first value, so it refers to `UnlockType.CHARACTER`.
+
+Depending on which type of unlock it is, the other field will contain data about the kind of unlock. In this case, since this is a character unlock, the `character` field refers to the game's internal number for the character, which is represented by the [`PlayerType` enum](https://isaacscript.github.io/isaac-typescript-definitions/enums/PlayerType/).
+
+Thus, if we wanted to change our Magdalene unlock to a Cain unlock, we could change the value of `"character": 1` to `"character": 2`.
+
+### How do I manually swap an achievement inside of my save file?
+
+See [the previous section](#how-do-i-change-the-data-inside-of-my-save-file) for how to edit the save file.
+
+Remember that an _achievement_ is [the unique pair of an _objective_ and an _unlock_](#terminology). In your save file, this is represented in the `objectiveToUnlockMap` object. For example, TODO
 
 ### Is this mod compatible with other mods that add items and achievements?
 

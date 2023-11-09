@@ -3,6 +3,17 @@
 <!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.10.2_ - October 23rd, 2023
+
+- !CHAR ORDER
+- Gehenna is now flipped. (However, rooms with Ball and Chains are not flipped to avoid bugs.)
+- Fixed the bug where the following rooms were flipped incorrectly:
+  - Caves: #11058, #21058
+  - Catacombs: #11067, #11088, #21067, #21088
+  - Flooded: #11233, #21233
+  - Necropolis: #10023, #10998, #20023, #20998
+  - Mausoleum: #10248, #20248
+
 ### _v0.9.2_ - October 23rd, 2023
 
 - Fixed the bug where the Ultra Pride no-hit timer did not work correctly. (Thanks Neonomi)

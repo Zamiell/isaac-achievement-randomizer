@@ -1,5 +1,7 @@
 TODO:
 
+- about.md - info about swapping save file unlocks
+
 - draw black sprite behind DSS menu by changing callback priority
 
 - recent achievements menu: show run number in title
