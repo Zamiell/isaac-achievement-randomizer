@@ -1,7 +1,6 @@
 import {
   Challenge,
   PocketItemSlot,
-  StageType,
   TrinketSlot,
 } from "isaac-typescript-definitions";
 import { ReadonlySet, getEnumValues } from "isaacscript-common";
@@ -30,8 +29,6 @@ export const POCKET_ITEM_SLOTS: readonly PocketItemSlot[] =
 
 export const RANDOMIZER_MODES: readonly RandomizerMode[] =
   getEnumValues(RandomizerMode);
-
-export const STAGE_TYPES: readonly StageType[] = getEnumValues(StageType);
 
 export const TRINKET_SLOTS: readonly TrinketSlot[] = getEnumValues(TrinketSlot);
 
