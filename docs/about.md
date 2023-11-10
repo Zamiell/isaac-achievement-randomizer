@@ -318,26 +318,12 @@ Once it is beautified, you can see that the top level keys correspond to various
 
 See [the previous section](#how-do-i-change-the-data-inside-of-my-save-file) for how to edit the save file.
 
-Your unlocks are contained within the `completedUnlocks` array. This is an array containing `Unlock` objects. For example, this is the unlock object for Magdalene:
+Your unlocks are contained within the `completedUnlockIDs` array. This is an array containing `UnlockID` strings. For example, the unlock string for Magdalene is "0.1":
 
-```json
-{
-  "type": 0,
-  "character": 1
-}
-```
+- The 0 represents the [`UnlockType`](https://github.com/Zamiell/isaac-achievement-randomizer/blob/main/src/enums/UnlockType.ts). Specifically, 0 is the first value, so it refers to `UnlockType.CHARACTER`.
+- The 1 represents the [character number for Magdalene](https://isaacscript.github.io/isaac-typescript-definitions/enums/PlayerType/).
 
-The `type` refers to the [`UnlockType` enum](https://github.com/Zamiell/isaac-achievement-randomizer/blob/main/src/enums/UnlockType.ts). In this case, 0 is the first value, so it refers to `UnlockType.CHARACTER`.
-
-Depending on which type of unlock it is, the other field will contain data about the kind of unlock. In this case, since this is a character unlock, the `character` field refers to the game's internal number for the character, which is represented by the [`PlayerType` enum](https://isaacscript.github.io/isaac-typescript-definitions/enums/PlayerType/).
-
-Thus, if we wanted to change our Magdalene unlock to a Cain unlock, we could change the value of `"character": 1` to `"character": 2`.
-
-### How do I manually swap an achievement inside of my save file?
-
-See [the previous section](#how-do-i-change-the-data-inside-of-my-save-file) for how to edit the save file.
-
-Remember that an _achievement_ is [the unique pair of an _objective_ and an _unlock_](#terminology). In your save file, this is represented in the `objectiveToUnlockMap` object. For example, TODO
+Thus, if we wanted to change our Magdalene unlock to a Cain unlock, we could change the value of "0.1" to "0.2".
 
 ### Is this mod compatible with other mods that add items and achievements?
 

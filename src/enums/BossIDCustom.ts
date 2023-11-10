@@ -36,7 +36,7 @@ validateCustomEnum("BossIDCustom", BossIDCustom);
  * We cannot use a type-safe object because the type-assertion to `BossID` prevents the custom enum
  * from being a union.
  */
-export const BOSS_ID_CUSTOM_NAMES = new ReadonlyMap<BossID, string>([
+const BOSS_ID_CUSTOM_NAMES = new ReadonlyMap<BossID, string>([
   [BossIDCustom.ULTRA_PRIDE, "Ultra Pride"],
   [BossIDCustom.KRAMPUS, "Krampus"],
   [BossIDCustom.URIEL, "Uriel"],
