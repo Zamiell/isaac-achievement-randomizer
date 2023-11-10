@@ -73,29 +73,10 @@ const CHARACTER_OBJECTIVE_KIND_TO_UNLOCKABLE_AREA = {
   [CharacterObjectiveKind.MOTHER]: UnlockableArea.REPENTANCE_FLOORS,
   [CharacterObjectiveKind.BEAST]: UnlockableArea.ASCENT,
   [CharacterObjectiveKind.ULTRA_GREED]: UnlockableArea.GREED_MODE,
-  [CharacterObjectiveKind.NO_HIT_BASEMENT_1]: undefined,
-  [CharacterObjectiveKind.NO_HIT_BASEMENT_2]: undefined,
-  [CharacterObjectiveKind.NO_HIT_CAVES_1]: undefined,
-  [CharacterObjectiveKind.NO_HIT_CAVES_2]: undefined,
-  [CharacterObjectiveKind.NO_HIT_DEPTHS_1]: undefined,
-  [CharacterObjectiveKind.NO_HIT_DEPTHS_2]: undefined,
-  [CharacterObjectiveKind.NO_HIT_WOMB_1]: UnlockableArea.WOMB,
-  [CharacterObjectiveKind.NO_HIT_WOMB_2]: UnlockableArea.WOMB,
-
-  // Note that this can unlock from either Dark Room or The Chest, so this value is misleading.
-  [CharacterObjectiveKind.NO_HIT_SHEOL_CATHEDRAL]: UnlockableArea.CATHEDRAL,
-
-  // Note that this can unlock from either Dark Room or The Chest, so this value is misleading.
-  [CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST]: UnlockableArea.CHEST,
-
-  [CharacterObjectiveKind.NO_HIT_DOWNPOUR_1]: UnlockableArea.REPENTANCE_FLOORS,
-  [CharacterObjectiveKind.NO_HIT_DOWNPOUR_2]: UnlockableArea.REPENTANCE_FLOORS,
-  [CharacterObjectiveKind.NO_HIT_MINES_1]: UnlockableArea.REPENTANCE_FLOORS,
-  [CharacterObjectiveKind.NO_HIT_MINES_2]: UnlockableArea.REPENTANCE_FLOORS,
-  [CharacterObjectiveKind.NO_HIT_MAUSOLEUM_1]: UnlockableArea.REPENTANCE_FLOORS,
-  [CharacterObjectiveKind.NO_HIT_MAUSOLEUM_2]: UnlockableArea.REPENTANCE_FLOORS,
-  [CharacterObjectiveKind.NO_HIT_CORPSE_1]: UnlockableArea.REPENTANCE_FLOORS,
-  [CharacterObjectiveKind.NO_HIT_CORPSE_2]: UnlockableArea.REPENTANCE_FLOORS,
+  [CharacterObjectiveKind.NO_HIT_BASEMENT]: undefined,
+  [CharacterObjectiveKind.NO_HIT_CAVES]: undefined,
+  [CharacterObjectiveKind.NO_HIT_DEPTHS]: undefined,
+  [CharacterObjectiveKind.NO_HIT_WOMB]: UnlockableArea.WOMB,
 } as const satisfies Record<CharacterObjectiveKind, UnlockableArea | undefined>;
 
 export function getUnlockableAreaFromCharacterObjectiveKind(

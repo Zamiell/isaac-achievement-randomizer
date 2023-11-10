@@ -1,6 +1,5 @@
 import { ObjectiveType } from "../enums/ObjectiveType";
 import type {
-  BossObjective,
   ChallengeObjective,
   CharacterObjective,
   Objective,
@@ -16,11 +15,7 @@ export type ObjectiveID = string & { readonly __objectiveIDBrand: symbol };
 const OBJECTIVE_TYPE_TO_ID_CONSTRUCTOR = {
   [ObjectiveType.CHARACTER]: (objective) => {
     const characterObjective = objective as CharacterObjective;
-    return `${characterObjective.type}.${characterObjective.character}.${characterObjective.kind}` as ObjectiveID;
-  },
-  [ObjectiveType.BOSS]: (objective) => {
-    const bossObjective = objective as BossObjective;
-    return `${bossObjective.type}.${bossObjective.bossID}` as ObjectiveID;
+    return `${characterObjective.type}.${characterObjective.character}.${characterObjective.kind}.${characterObjective.difficulty}` as ObjectiveID;
   },
   [ObjectiveType.CHALLENGE]: (objective) => {
     const challengeObjective = objective as ChallengeObjective;

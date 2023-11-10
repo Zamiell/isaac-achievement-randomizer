@@ -1,4 +1,5 @@
 import {
+  Difficulty,
   ModCallback,
   PlayerType,
   SeedEffect,
@@ -15,8 +16,8 @@ import { getAdjustedCharacterForObjective } from "../../utils";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   getCharacterObjectiveKindNoHit,
-  hasTakenHitOnFloor,
-} from "./FloorObjectiveDetection";
+  hasTakenHitOnChapter,
+} from "./ChapterObjectiveDetection";
 import { isCharacterObjectiveCompleted } from "./achievementTracker/completedObjectives";
 
 const TOP_LEFT_UI_POSITION = Vector(42, 77); // To the right of the coin count.
@@ -24,23 +25,30 @@ const TAINTED_CHARACTER_UI_OFFSET = Vector(4, 24);
 
 const iconSprite = newSprite("gfx/crownoflight.anm2");
 
-export class FloorHitIcon extends RandomizerModFeature {
+export class ChapterHitIcon extends RandomizerModFeature {
   // 2
   @Callback(ModCallback.POST_RENDER)
   postRender(): void {
+    const player = Isaac.GetPlayer();
+    const character = getAdjustedCharacterForObjective(player);
+
     const kindNoHit = getCharacterObjectiveKindNoHit();
     if (kindNoHit === undefined) {
       return;
     }
 
-    const player = Isaac.GetPlayer();
-    const character = getAdjustedCharacterForObjective(player);
-
-    if (isCharacterObjectiveCompleted(character, kindNoHit)) {
+    if (
+      game.Difficulty !== Difficulty.NORMAL &&
+      game.Difficulty !== Difficulty.HARD
+    ) {
       return;
     }
 
-    const animationName = hasTakenHitOnFloor() ? "FloatNoGlow" : "FloatGlow";
+    if (isCharacterObjectiveCompleted(character, kindNoHit, game.Difficulty)) {
+      return;
+    }
+
+    const animationName = hasTakenHitOnChapter() ? "FloatNoGlow" : "FloatGlow";
     iconSprite.Play(animationName, true);
 
     this.drawIconSprite();

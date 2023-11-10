@@ -1,17 +1,12 @@
-import type {
-  BossID,
-  Challenge,
-  PlayerType,
-} from "isaac-typescript-definitions";
+import type { Challenge, PlayerType } from "isaac-typescript-definitions";
+import { Difficulty } from "isaac-typescript-definitions";
 import type { CompositionTypeSatisfiesEnum } from "isaacscript-common";
 import {
   assertDefined,
   getChallengeName,
   getCharacterName,
 } from "isaacscript-common";
-import { getNumMinutesForBossObjective } from "../arrays/noHitBosses";
 import { OBJECTIVE_TYPES_SET } from "../cachedEnums";
-import { getBossNameCustom } from "../enums/BossIDCustom";
 import {
   CharacterObjectiveKind,
   getCharacterObjectiveKindName,
@@ -23,11 +18,7 @@ export interface CharacterObjective {
   type: ObjectiveType.CHARACTER;
   character: PlayerType;
   kind: CharacterObjectiveKind;
-}
-
-export interface BossObjective {
-  type: ObjectiveType.BOSS;
-  bossID: BossID;
+  difficulty: Difficulty.NORMAL | Difficulty.HARD;
 }
 
 export interface ChallengeObjective {
@@ -35,19 +26,16 @@ export interface ChallengeObjective {
   challenge: Challenge;
 }
 
-export type Objective = CharacterObjective | BossObjective | ChallengeObjective;
+export type Objective = CharacterObjective | ChallengeObjective;
 
 type _Test = CompositionTypeSatisfiesEnum<Objective, ObjectiveType>;
 
 const OBJECTIVE_TYPE_TO_OBJECTIVE_CONSTRUCTOR = {
-  [ObjectiveType.CHARACTER]: (arg1, arg2) => ({
+  [ObjectiveType.CHARACTER]: (arg1, arg2, arg3) => ({
     type: ObjectiveType.CHARACTER,
     character: arg1,
-    kind: arg2!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-  }),
-  [ObjectiveType.BOSS]: (arg1) => ({
-    type: ObjectiveType.BOSS,
-    bossID: arg1,
+    kind: arg2,
+    difficulty: arg3,
   }),
   [ObjectiveType.CHALLENGE]: (arg1) => ({
     type: ObjectiveType.CHALLENGE,
@@ -55,18 +43,15 @@ const OBJECTIVE_TYPE_TO_OBJECTIVE_CONSTRUCTOR = {
   }),
 } as const satisfies Record<
   ObjectiveType,
-  (arg1: number, arg2: number | undefined) => Objective
+  (arg1: number, arg2: number, arg3: number) => Objective
 >;
 
 export function getObjective(
   type: ObjectiveType.CHARACTER,
   character: PlayerType,
   kind: CharacterObjectiveKind,
+  difficulty: Difficulty.NORMAL | Difficulty.HARD,
 ): CharacterObjective;
-export function getObjective(
-  type: ObjectiveType.BOSS,
-  bossID: BossID,
-): BossObjective;
 export function getObjective(
   type: ObjectiveType.CHALLENGE,
   challenge: Challenge,
@@ -75,9 +60,10 @@ export function getObjective(
   type: ObjectiveType,
   arg1: int,
   arg2?: int,
+  arg3?: int,
 ): Objective {
   const constructor = OBJECTIVE_TYPE_TO_OBJECTIVE_CONSTRUCTOR[type];
-  return constructor(arg1, arg2);
+  return constructor(arg1, arg2 ?? -1, arg3 ?? -1);
 }
 
 export function getObjectiveFromID(objectiveID: ObjectiveID): Objective {
@@ -128,10 +114,22 @@ export function getObjectiveFromID(objectiveID: ObjectiveID): Objective {
       `Failed to convert the third number from an objective ID to a number: ${objectiveID}`,
     );
 
-    return constructor(arg1, arg2);
+    const arg3String = parts[3];
+    assertDefined(
+      arg3String,
+      `Failed to parse the fourth number from an objective ID: ${objectiveID}`,
+    );
+
+    const arg3 = tonumber(arg3String);
+    assertDefined(
+      arg3,
+      `Failed to convert the fourth number from an objective ID to a number: ${objectiveID}`,
+    );
+
+    return constructor(arg1, arg2, arg3);
   }
 
-  return constructor(arg1, undefined);
+  return constructor(arg1, -1, -1);
 }
 
 export function getObjectiveText(objective: Objective): string[] {
@@ -139,20 +137,12 @@ export function getObjectiveText(objective: Objective): string[] {
     case ObjectiveType.CHARACTER: {
       const characterName = getCharacterName(objective.character);
       const kindName = getCharacterObjectiveKindName(objective.kind);
+      const difficultyText =
+        objective.difficulty === Difficulty.NORMAL ? "(normal)" : "(hard)";
 
-      return objective.kind < CharacterObjectiveKind.NO_HIT_BASEMENT_1
-        ? ["Defeated", kindName, "on", characterName]
-        : ["No damage on", `floor ${kindName}`, "on", characterName];
-    }
-
-    case ObjectiveType.BOSS: {
-      const bossName = getBossNameCustom(objective.bossID);
-      return [
-        "No hit",
-        bossName,
-        "for",
-        `${getNumMinutesForBossObjective(objective.bossID)} minutes`,
-      ];
+      return objective.kind < CharacterObjectiveKind.NO_HIT_BASEMENT
+        ? ["Defeated", kindName, "on", characterName, difficultyText]
+        : ["No damage on", kindName, "on", characterName, difficultyText];
     }
 
     case ObjectiveType.CHALLENGE: {
@@ -160,9 +150,4 @@ export function getObjectiveText(objective: Objective): string[] {
       return ["Completed challenge:", challengeName];
     }
   }
-}
-
-export function getNumSecondsForBossObjective(bossID: BossID): int {
-  const numMinutesForBossObjective = getNumMinutesForBossObjective(bossID);
-  return numMinutesForBossObjective * 60;
 }

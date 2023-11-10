@@ -173,8 +173,8 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
   - Tainted Forgotten (#35)
   - Tainted Bethany (#36)
   - Tainted Jacob (#37)
-- Due to technical limitations, Bag of Crafting is not affected by collectible unlocks. Thus, Tainted Cain is guaranteed to be the final character unlocked.
 - Besides that, there is no logic that makes things unlock in a particular order. However, certain specific unlocks will be swapped to ensure that unlocked things are not "useless", [as described in the casual mode section](#1-casual-mode-full-random).
+- Since there are more unlocks than objectives, a completed randomizer playthrough will not be able to unlock everything. Thus, trinkets are arbitrarily selected to be the "least impactful" unlock, and are paired last. Thus, a "completed" randomizer playthrough will not have N trinkets unlocked, where N is total unlock count minus total objective count.
 
 <br>
 
@@ -200,11 +200,7 @@ Unlike the timer in Racing+, the timer in this mod tracks in-game time. Thus, th
 
 There are thousands of rooms in the game, but many players have already seen them all. To increase run variety, all rooms have a chance to be flipped on the X axis, Y axis, or both axes.
 
-### 5) More Champions
-
-In the vanilla game, only certain specific enemies have the chance to spawn as a champion variant. In this mod, every enemy in the game has a chance to spawn as a champion variant.
-
-### 6) Gameplay Removals
+### 5) Gameplay Removals
 
 #### Donation Machine Removal <!-- RemoveDonationMachines -->
 
@@ -224,11 +220,11 @@ Glitched items are removed for the same reason that TMTRAINER is.
 
 Victory Laps and the "Rerun" feature on the main menu are banned for the same reason that R Key is.
 
-### 7) Chill Room <!-- ChillRoom -->
+### 6) Chill Room <!-- ChillRoom -->
 
 The mod provides a custom challenge that simply locks you in the starting room of the run. You can use this challenge to review your achievements and plan for your next run. Runs started inside of the challenge will not count towards your randomizer stats or deaths.
 
-### 8) Custom Console Commands <!-- consoleCommands.ts -->
+### 7) Custom Console Commands <!-- consoleCommands.ts -->
 
 The mod provides several custom [console commands](https://bindingofisaacrebirth.fandom.com/wiki/Debug_Console):
 
@@ -245,7 +241,7 @@ The mod provides several custom [console commands](https://bindingofisaacrebirth
 - `unlockPillEffect [pill effect]` - For debugging. Immediately unlocks the specified pill effect.
 - `unlockRoom [room]` - For debugging. Immediately unlocks the specified room.
 
-### 9) Crash & Softlock Prevention <!-- FixVanillaBugs -->
+### 8) Crash & Softlock Prevention <!-- FixVanillaBugs -->
 
 This mod attempts to fix as many vanilla crashes & softlocks as possible. The following situations are fixed:
 
@@ -275,17 +271,17 @@ In the Isaac streaking community, you are not allowed to use the save & quit fea
 
 ## F.A.Q. (Frequently Asked Questions)
 
-### What is the latest version?
+### What is the latest released version?
 
-The latest version can always be found [on the Steam Workshop change notes page](https://steamcommunity.com/sharedfiles/filedetails/changelog/3050399093).
+The latest released version can always be found [on the Steam Workshop change notes page](https://steamcommunity.com/sharedfiles/filedetails/changelog/3050399093).
 
 ### How do I tell what version I have?
 
-The version of the mod is shown on the title screen and on the starting room of the run. You can also get the version by typing "randomizerVersion" into the in-game console.
+The version of the mod is shown on the title screen and in the starting room of the run. You can also get the version by typing "randomizerVersion" into the in-game console.
 
 ### My game is stuck on an older version. How do I get it to update to the latest version?
 
-If [the version that you have](#how-do-i-tell-what-version-i-have) is not the same as [the latest version on the Steam Workshop](#what-is-the-latest-version), then try restarting Steam. If that does not work, then try closing the game, unsubscribing from the mod, starting the game, closing the game, resubscribing to the mod, and then opening the game.
+If [the version that you have](#how-do-i-tell-what-version-i-have) is not the same as [the latest version on the Steam Workshop](#what-is-the-latest-released-version), then try restarting Steam. If that does not work, then try closing the game, unsubscribing from the mod, starting the game, closing the game, resubscribing to the mod, and then opening the game.
 
 ### How do I contact the developers, report a bug, or chat with other people about the mod?
 

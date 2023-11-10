@@ -1,13 +1,22 @@
-import { BossID, ModCallback, RoomType } from "isaac-typescript-definitions";
+import {
+  BossID,
+  Difficulty,
+  LevelStage,
+  ModCallback,
+  PlayerType,
+  RoomType,
+} from "isaac-typescript-definitions";
 import {
   Callback,
   ReadonlyMap,
   game,
+  getBossID,
   getRoomListIndex,
   inBeastRoom,
   inMegaSatanRoom,
+  inRoomType,
+  onStage,
 } from "isaacscript-common";
-import { getModifiedBossID } from "../../enums/BossIDCustom";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import { getObjective } from "../../types/Objective";
@@ -45,10 +54,30 @@ export class BossKillObjectiveDetection extends RandomizerModFeature {
 }
 
 export function bossObjectiveDetectionPreSpawnClearAward(): void {
-  const room = game.GetRoom();
-  const roomType = room.GetType();
   const player = Isaac.GetPlayer();
   const character = getAdjustedCharacterForObjective(player);
+
+  switch (game.Difficulty) {
+    case Difficulty.NORMAL:
+    case Difficulty.HARD: {
+      preSpawnClearAwardNonGreedMode(character, game.Difficulty);
+      break;
+    }
+
+    case Difficulty.GREED:
+    case Difficulty.GREEDIER: {
+      preSpawnClearAwardGreedMode(character, game.Difficulty);
+      break;
+    }
+  }
+}
+
+function preSpawnClearAwardNonGreedMode(
+  character: PlayerType,
+  difficulty: Difficulty.NORMAL | Difficulty.HARD,
+) {
+  const room = game.GetRoom();
+  const roomType = room.GetType();
 
   // Mega Satan has to be handled outside of the switch statement since its boss room is outside of
   // the grid.
@@ -57,6 +86,7 @@ export function bossObjectiveDetectionPreSpawnClearAward(): void {
       ObjectiveType.CHARACTER,
       character,
       CharacterObjectiveKind.MEGA_SATAN,
+      difficulty,
     );
     addObjective(objective);
 
@@ -66,7 +96,7 @@ export function bossObjectiveDetectionPreSpawnClearAward(): void {
   switch (roomType) {
     // 5
     case RoomType.BOSS: {
-      const bossID = getModifiedBossID();
+      const bossID = getBossID();
       if (bossID === undefined) {
         return;
       }
@@ -97,6 +127,7 @@ export function bossObjectiveDetectionPreSpawnClearAward(): void {
         ObjectiveType.CHARACTER,
         character,
         kindBoss,
+        difficulty,
       );
       addObjective(objective);
 
@@ -110,6 +141,7 @@ export function bossObjectiveDetectionPreSpawnClearAward(): void {
           ObjectiveType.CHARACTER,
           character,
           CharacterObjectiveKind.BEAST,
+          difficulty,
         );
         addObjective(objective);
       }
@@ -123,6 +155,7 @@ export function bossObjectiveDetectionPreSpawnClearAward(): void {
         ObjectiveType.CHARACTER,
         character,
         CharacterObjectiveKind.BOSS_RUSH,
+        difficulty,
       );
       addObjective(objective);
       break;
@@ -131,5 +164,26 @@ export function bossObjectiveDetectionPreSpawnClearAward(): void {
     default: {
       break;
     }
+  }
+}
+
+const ADJUSTED_GREED_MODE_DIFFICULTY = {
+  [Difficulty.GREED]: Difficulty.NORMAL,
+  [Difficulty.GREEDIER]: Difficulty.HARD,
+} as const;
+
+function preSpawnClearAwardGreedMode(
+  character: PlayerType,
+  difficulty: Difficulty.GREED | Difficulty.GREEDIER,
+) {
+  if (onStage(LevelStage.ULTRA_GREED_GREED_MODE) && inRoomType(RoomType.BOSS)) {
+    const adjustedDifficulty = ADJUSTED_GREED_MODE_DIFFICULTY[difficulty];
+    const objective = getObjective(
+      ObjectiveType.CHARACTER,
+      character,
+      CharacterObjectiveKind.ULTRA_GREED,
+      adjustedDifficulty,
+    );
+    addObjective(objective);
   }
 }

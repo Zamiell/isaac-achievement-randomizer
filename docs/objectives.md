@@ -29,6 +29,8 @@ Additionally, each character will unlock something upon full-clearing the follow
 
 Each character objective must be completed on both normal mode and hard mode.
 
+> Tip: By default, completing an objective on hard mode will not complete the corresponding normal mode objective. If this is undesired, you can turn on the "Enable double hard mode objectives" setting in the menu.
+
 ## Challenge-Based Objectives (44)
 
 There is one unlock for completing each challenge, with the following exceptions:

@@ -1,5 +1,5 @@
 import type { PlayerType } from "isaac-typescript-definitions";
-import { CollectibleType } from "isaac-typescript-definitions";
+import { CollectibleType, Difficulty } from "isaac-typescript-definitions";
 import {
   arrayRemoveInPlace,
   copyArray,
@@ -36,36 +36,42 @@ const UNLOCKABLE_AREA_TO_OBJECTIVE = {
     ObjectiveType.CHARACTER,
     STARTING_CHARACTER,
     CharacterObjectiveKind.MOM,
+    Difficulty.NORMAL,
   ),
 
   [UnlockableArea.CATHEDRAL]: getObjective(
     ObjectiveType.CHARACTER,
     STARTING_CHARACTER,
     CharacterObjectiveKind.IT_LIVES,
+    Difficulty.NORMAL,
   ),
 
   [UnlockableArea.SHEOL]: getObjective(
     ObjectiveType.CHARACTER,
     STARTING_CHARACTER,
     CharacterObjectiveKind.ISAAC,
+    Difficulty.NORMAL,
   ),
 
   [UnlockableArea.CHEST]: getObjective(
     ObjectiveType.CHARACTER,
     STARTING_CHARACTER,
     CharacterObjectiveKind.SATAN,
+    Difficulty.NORMAL,
   ),
 
   [UnlockableArea.DARK_ROOM]: getObjective(
     ObjectiveType.CHARACTER,
     STARTING_CHARACTER,
     CharacterObjectiveKind.BLUE_BABY,
+    Difficulty.NORMAL,
   ),
 
   [UnlockableArea.REPENTANCE_FLOORS]: getObjective(
     ObjectiveType.CHARACTER,
     STARTING_CHARACTER,
     CharacterObjectiveKind.LAMB,
+    Difficulty.NORMAL,
   ),
 } as const satisfies Record<
   (typeof STATIC_UNLOCKABLE_AREAS)[number],
@@ -77,21 +83,24 @@ const FIRST_UNLOCK_COLLECTIBLE_TO_OBJECTIVE = {
   [CollectibleType.WOODEN_SPOON]: getObjective(
     ObjectiveType.CHARACTER,
     STARTING_CHARACTER,
-    CharacterObjectiveKind.NO_HIT_BASEMENT_1,
+    CharacterObjectiveKind.NO_HIT_BASEMENT,
+    Difficulty.NORMAL,
   ),
 
   // 32
   [CollectibleType.WIRE_COAT_HANGER]: getObjective(
     ObjectiveType.CHARACTER,
     STARTING_CHARACTER,
-    CharacterObjectiveKind.NO_HIT_BASEMENT_2,
+    CharacterObjectiveKind.NO_HIT_BASEMENT,
+    Difficulty.NORMAL,
   ),
 
   // 165
   [CollectibleType.CAT_O_NINE_TAILS]: getObjective(
     ObjectiveType.CHARACTER,
     STARTING_CHARACTER,
-    CharacterObjectiveKind.NO_HIT_CAVES_1,
+    CharacterObjectiveKind.NO_HIT_CAVES,
+    Difficulty.NORMAL,
   ),
 } as const satisfies Record<
   (typeof FIRST_UNLOCK_COLLECTIBLES)[number],
@@ -154,12 +163,14 @@ export function getAchievementsForRNG(rng: RNG): {
         ? getObjective(
             ObjectiveType.CHARACTER,
             STARTING_CHARACTER,
-            CharacterObjectiveKind.NO_HIT_CAVES_2,
+            CharacterObjectiveKind.NO_HIT_DEPTHS,
+            Difficulty.NORMAL,
           )
         : getObjective(
             ObjectiveType.CHARACTER,
             lastUnlockedCharacter,
             CharacterObjectiveKind.IT_LIVES,
+            Difficulty.NORMAL,
           );
     const objectiveID = getObjectiveID(objective);
     arrayRemoveInPlace(objectiveIDs, objectiveID);

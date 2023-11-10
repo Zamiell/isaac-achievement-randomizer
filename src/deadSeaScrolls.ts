@@ -11,7 +11,6 @@ import {
 import { version } from "../package.json";
 import { ALL_OBJECTIVES } from "./arrays/allObjectives";
 import { UNLOCKABLE_CHALLENGES } from "./arrays/unlockableChallenges";
-import { BOSS_IDS } from "./cachedEnums";
 import {
   endRandomizer,
   isValidSituationForStartingRandomizer,
@@ -25,7 +24,6 @@ import {
   hasSavedAndQuit,
 } from "./classes/features/StatsTracker";
 import {
-  isAllBossObjectivesCompleted,
   isAllChallengeObjectivesCompleted,
   isAllCharactersObjectivesCompleted,
 } from "./classes/features/achievementTracker/completedObjectives";
@@ -43,7 +41,6 @@ import {
   getAreaUnlockButtons,
   getBatteryUnlockButtons,
   getBombUnlockButtons,
-  getBossObjectiveButtons,
   getCardUnlockButtons,
   getChallengeObjectiveButtons,
   getChallengeUnlockButtons,
@@ -62,7 +59,6 @@ import {
   getRoomUnlockButtons,
   getSackUnlockButtons,
   getSlotUnlockButtons,
-  getSpecificBossObjectiveButtons,
   getSpecificCardUnlockButtons,
   getSpecificChallengeObjectiveButtons,
   getSpecificChallengeUnlockButtons,
@@ -389,10 +385,6 @@ export function initDeadSeaScrolls(): void {
           dest: "characterObjectives",
         },
         {
-          str: `${getCompletedText(isAllBossObjectivesCompleted())} - bosses`,
-          dest: "bossObjectives",
-        },
-        {
           str: `${getCompletedText(
             isAllChallengeObjectivesCompleted(),
           )} - challenges`,
@@ -408,16 +400,6 @@ export function initDeadSeaScrolls(): void {
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
         menu.buttons = getCharacterObjectiveButtons();
-      },
-    },
-
-    bossObjectives: {
-      title: "boss todo",
-      fSize: 2,
-
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
-        menu.buttons = getBossObjectiveButtons();
       },
     },
 
@@ -988,23 +970,6 @@ export function initDeadSeaScrolls(): void {
       /** @noSelf */
       generate: (menu: DeadSeaScrollsMenu) => {
         menu.buttons = getSpecificCharacterObjectiveButtons(character);
-      },
-    };
-  }
-
-  const bossChunks = splitNumber(BOSS_IDS.length, MENU_PAGE_SIZE);
-  for (const chunk of bossChunks) {
-    const [min, max] = chunk;
-
-    directory[`bossObjectives${min}`] = {
-      title: "boss todo",
-      noCursor: true,
-      scroller: true,
-      fSize: 2,
-
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
-        menu.buttons = getSpecificBossObjectiveButtons(min, max);
       },
     };
   }

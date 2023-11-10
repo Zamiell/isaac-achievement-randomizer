@@ -11,14 +11,13 @@ import { AchievementRandomizer } from "./classes/features/AchievementRandomizer"
 import { AchievementTracker } from "./classes/features/AchievementTracker";
 import { AreaRemoval } from "./classes/features/AreaRemoval";
 import { BossKillObjectiveDetection } from "./classes/features/BossKillObjectiveDetection";
-import { BossNoHitObjectiveDetection } from "./classes/features/BossNoHitObjectiveDetection";
 import { ChallengeObjectiveDetection } from "./classes/features/ChallengeObjectiveDetection";
+import { ChapterHitIcon } from "./classes/features/ChapterHitIcon";
+import { ChapterObjectiveDetection } from "./classes/features/ChapterObjectiveDetection";
 import { CheckErrors } from "./classes/features/CheckErrors";
 import { ChillRoom } from "./classes/features/ChillRoom";
 import { DrawControls } from "./classes/features/DrawControls";
 import { FixVanillaBugs } from "./classes/features/FixVanillaBugs";
-import { FloorHitIcon } from "./classes/features/FloorHitIcon";
-import { FloorObjectiveDetection } from "./classes/features/FloorObjectiveDetection";
 import { ForceFadedConsoleDisplay } from "./classes/features/ForceFadedConsoleDisplay";
 import { ForceSeeds } from "./classes/features/ForceSeeds";
 import { GridEntityRemoval } from "./classes/features/GridEntityRemoval";
@@ -54,14 +53,13 @@ const MOD_FEATURES = [
   AchievementTracker,
   AreaRemoval,
   BossKillObjectiveDetection,
-  BossNoHitObjectiveDetection,
   ChallengeObjectiveDetection,
+  ChapterHitIcon,
+  ChapterObjectiveDetection,
   CheckErrors,
   ChillRoom,
   DrawControls,
   FixVanillaBugs,
-  FloorObjectiveDetection,
-  FloorHitIcon,
   ForceFadedConsoleDisplay,
   ForceSeeds,
   GridEntityRemoval,

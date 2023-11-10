@@ -20,6 +20,7 @@ import {
   ReadonlyMap,
   game,
   getBlueWombDoor,
+  getBossID,
   getBossRushDoor,
   getEffects,
   getMegaSatanDoor,
@@ -39,7 +40,6 @@ import {
   spawnGridEntity,
   spawnPickup,
 } from "isaacscript-common";
-import { getModifiedBossID } from "../../enums/BossIDCustom";
 import { PickupVariantCustom } from "../../enums/PickupVariantCustom";
 import { UnlockableArea } from "../../enums/UnlockableArea";
 import { mod } from "../../mod";
@@ -140,7 +140,7 @@ export class AreaRemoval extends RandomizerModFeature {
       return;
     }
 
-    const bossID = getModifiedBossID();
+    const bossID = getBossID();
     if (bossID !== BossID.MOM) {
       return;
     }
@@ -161,7 +161,7 @@ export class AreaRemoval extends RandomizerModFeature {
   }
 
   checkItLivesTrapdoorHeavenDoor(): void {
-    const bossID = getModifiedBossID();
+    const bossID = getBossID();
     if (bossID !== BossID.IT_LIVES) {
       return;
     }

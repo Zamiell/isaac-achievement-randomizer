@@ -1,8 +1,9 @@
-import type {
-  CollectibleType,
-  PillEffect,
-  PlayerType,
-  RoomType,
+import {
+  Difficulty,
+  type CollectibleType,
+  type PillEffect,
+  type PlayerType,
+  type RoomType,
 } from "isaac-typescript-definitions";
 import {
   CHARACTER_NAME_TO_TYPE_MAP,
@@ -14,6 +15,7 @@ import {
   asCollectibleType,
   asPillEffect,
   asRoomType,
+  game,
   getCharacterName,
   getCollectibleName,
   getMapPartialMatch,
@@ -39,13 +41,12 @@ import {
   setPillEffectUnlocked,
   setRoomUnlocked,
 } from "./classes/features/AchievementTracker";
-import { getCharacterObjectiveKindNoHit } from "./classes/features/FloorObjectiveDetection";
+import { getCharacterObjectiveKindNoHit } from "./classes/features/ChapterObjectiveDetection";
 import { addObjective } from "./classes/features/achievementTracker/addObjective";
 import {
   isRandomizerEnabled,
   setAcceptedVersionMismatch,
 } from "./classes/features/achievementTracker/v";
-import { getModifiedBossID } from "./enums/BossIDCustom";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { RandomizerMode } from "./enums/RandomizerMode";
 import { UnlockableArea, getAreaName } from "./enums/UnlockableArea";
@@ -61,8 +62,7 @@ export function initConsoleCommands(): void {
   mod.addConsoleCommand("endRandomizer", endRandomizerCommand);
   mod.addConsoleCommand("forceWrongVersion", forceWrongVersion);
   mod.addConsoleCommand("logAll", logAll);
-  mod.addConsoleCommand("objectiveBoss", objectiveBoss);
-  mod.addConsoleCommand("objectiveFloor", objectiveFloor);
+  mod.addConsoleCommand("objectiveChapter", objectiveChapter);
   mod.addConsoleCommand("startRandomizer", startRandomizerCommand);
   mod.addConsoleCommand("randomizerVersion", randomizerVersion);
   mod.addConsoleCommand("spoilerLog", spoilerLog);
@@ -87,28 +87,30 @@ function logAll(_params: string) {
   logUnlocks(ALL_UNLOCKS);
 }
 
-function objectiveBoss(_params: string) {
-  const bossID = getModifiedBossID();
-  if (bossID === undefined) {
-    print("Error: Not in a Boss Room.");
-    return;
-  }
-
-  const objective = getObjective(ObjectiveType.BOSS, bossID);
-  addObjective(objective);
-}
-
-function objectiveFloor(_params: string) {
+function objectiveChapter(_params: string) {
   const kind = getCharacterObjectiveKindNoHit();
   if (kind === undefined) {
     print("Error: Not on a no hit floor.");
     return;
   }
 
+  if (
+    game.Difficulty !== Difficulty.NORMAL &&
+    game.Difficulty !== Difficulty.HARD
+  ) {
+    print("Error: Not on the right difficulty.");
+    return;
+  }
+
   const player = Isaac.GetPlayer();
   const character = getAdjustedCharacterForObjective(player);
 
-  const objective = getObjective(ObjectiveType.CHARACTER, character, kind);
+  const objective = getObjective(
+    ObjectiveType.CHARACTER,
+    character,
+    kind,
+    game.Difficulty,
+  );
   addObjective(objective);
 }
 

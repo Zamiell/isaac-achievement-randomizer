@@ -16,6 +16,7 @@ export const HARD_CHARACTERS = [
   PlayerType.BLUE_BABY_B, // 25
   PlayerType.LAZARUS_B, // 29
   PlayerType.LOST_B, // 31
+  PlayerType.APOLLYON_B, // 34
   PlayerType.FORGOTTEN_B, // 35
   PlayerType.BETHANY_B, // 36
   PlayerType.JACOB_B, // 37

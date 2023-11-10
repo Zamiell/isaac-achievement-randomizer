@@ -1,5 +1,5 @@
+import type { BossID } from "isaac-typescript-definitions";
 import {
-  BossID,
   CardType,
   CollectibleType,
   Difficulty,
@@ -25,7 +25,6 @@ import {
   isBeforeGameFrame,
   isBeforeRenderFrame,
   isRepentanceStage,
-  isStoryBossID,
   log,
   newRNG,
   newSprite,
@@ -39,17 +38,14 @@ import { getAchievementsForRNG } from "../../achievementAssignment";
 import { ALL_OBJECTIVES } from "../../arrays/allObjectives";
 import { STAGE_TYPES } from "../../cachedEnums";
 import { DEBUG, STARTING_CHARACTER } from "../../constants";
-import { BossIDCustom } from "../../enums/BossIDCustom";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { RandomizerMode } from "../../enums/RandomizerMode";
 import {
   UnlockableArea,
   getUnlockableAreaFromCharacterObjectiveKind,
-  getUnlockableAreaFromStoryBoss,
 } from "../../enums/UnlockableArea";
 import type {
-  BossObjective,
   ChallengeObjective,
   CharacterObjective,
   Objective,
@@ -280,12 +276,8 @@ export function endRandomizer(): void {
 
 const OBJECTIVE_ACCESS_FUNCTIONS = {
   [ObjectiveType.CHARACTER]: characterObjectiveFunc,
-  [ObjectiveType.BOSS]: bossObjectiveFunc,
   [ObjectiveType.CHALLENGE]: challengeObjectiveFunc,
-} as const satisfies Record<
-  ObjectiveType,
-  (objective: Objective, reachableNonStoryBossesSet: Set<BossID>) => boolean
->;
+} as const satisfies Record<ObjectiveType, (objective: Objective) => boolean>;
 
 function characterObjectiveFunc(objective: Objective): boolean {
   const characterObjective = objective as CharacterObjective;
@@ -340,20 +332,6 @@ export function canGetToCharacterObjective(
       );
     }
 
-    case CharacterObjectiveKind.NO_HIT_SHEOL_CATHEDRAL: {
-      return (
-        isAreaUnlocked(UnlockableArea.CATHEDRAL, forRun) ||
-        isAreaUnlocked(UnlockableArea.SHEOL, forRun)
-      );
-    }
-
-    case CharacterObjectiveKind.NO_HIT_DARK_ROOM_CHEST: {
-      return (
-        isAreaUnlocked(UnlockableArea.CHEST, forRun) ||
-        isAreaUnlocked(UnlockableArea.DARK_ROOM, forRun)
-      );
-    }
-
     default: {
       const unlockableArea = getUnlockableAreaFromCharacterObjectiveKind(kind);
       return unlockableArea === undefined
@@ -361,58 +339,6 @@ export function canGetToCharacterObjective(
         : isAreaUnlocked(unlockableArea, forRun);
     }
   }
-}
-
-function bossObjectiveFunc(
-  objective: Objective,
-  reachableNonStoryBossesSet: Set<BossID>,
-): boolean {
-  const bossObjective = objective as BossObjective;
-  return canGetToBoss(bossObjective.bossID, reachableNonStoryBossesSet, false);
-}
-
-export function canGetToBoss(
-  bossID: BossID,
-  reachableBossesSet: Set<BossID>,
-  forRun: boolean,
-): boolean {
-  // First, handle custom bosses.
-  if (
-    bossID === BossIDCustom.ULTRA_PRIDE ||
-    bossID === BossIDCustom.KRAMPUS ||
-    bossID === BossIDCustom.URIEL ||
-    bossID === BossIDCustom.GABRIEL
-  ) {
-    return true;
-  }
-
-  if (
-    bossID === BossIDCustom.ULTRA_FAMINE ||
-    bossID === BossIDCustom.ULTRA_PESTILENCE ||
-    bossID === BossIDCustom.ULTRA_WAR ||
-    bossID === BossIDCustom.ULTRA_DEATH
-  ) {
-    return isAreaUnlocked(UnlockableArea.ASCENT, forRun);
-  }
-
-  if (!isStoryBossID(bossID)) {
-    return reachableBossesSet.has(bossID);
-  }
-
-  // Handle the special case of Delirium, which requires two separate areas to be unlocked. (Since
-  // the mod manually removes void portals, getting to Delirium requires going through Blue Womb.)
-  if (bossID === BossID.DELIRIUM) {
-    return (
-      isAreaUnlocked(UnlockableArea.BLUE_WOMB, forRun) &&
-      isAreaUnlocked(UnlockableArea.VOID, forRun)
-    );
-  }
-
-  const unlockableArea = getUnlockableAreaFromStoryBoss(bossID);
-
-  return unlockableArea === undefined
-    ? true
-    : isAreaUnlocked(unlockableArea, forRun);
 }
 
 function challengeObjectiveFunc(objective: Objective): boolean {
@@ -424,15 +350,13 @@ function challengeObjectiveFunc(objective: Objective): boolean {
 function tryCompleteUncompletedObjectives(): boolean {
   let accomplishedObjective = false;
 
-  const reachableNonStoryBossesSet = getReachableNonStoryBossesSet();
-
   for (const objective of ALL_OBJECTIVES) {
     if (isObjectiveCompleted(objective)) {
       continue;
     }
 
     const canAccessObjectiveFunc = OBJECTIVE_ACCESS_FUNCTIONS[objective.type];
-    if (canAccessObjectiveFunc(objective, reachableNonStoryBossesSet)) {
+    if (canAccessObjectiveFunc(objective)) {
       addObjective(objective, true);
       accomplishedObjective = true;
     }

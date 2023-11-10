@@ -5,6 +5,13 @@
 
 ### _v0.10.0_ - October 23rd, 2023
 
+- Seed generation for a new playthrough is now optimized using reverse map lookups, making it much faster. Save files from previous versions are incompatible.
+- Objectives have been revamped:
+  - There are no longer boss objectives.
+  - Floor objectives are changed to chapter objectives (and reduced in scope).
+  - Each objective must now be also completed on normal mode.
+- Tainted Cain is no longer included in the mod (since Bag of Crafting does not respect item pools).
+- The Lost and Tainted Apollyon are now considered to be "hard" characters.
 - The second random character will now always be unlocked after the three stat collectibles and before any other unlocks.
 - Each character is now guaranteed to unlock another random character from defeating It Lives.
 - Gehenna is now flipped. (However, rooms with Ball and Chains are not flipped to avoid bugs.)

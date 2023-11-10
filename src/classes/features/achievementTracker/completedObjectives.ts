@@ -1,10 +1,9 @@
 import type {
-  BossID,
   Challenge,
+  Difficulty,
   PlayerType,
 } from "isaac-typescript-definitions";
 import { MAIN_CHARACTERS, iRange } from "isaacscript-common";
-import { NO_HIT_BOSSES } from "../../../arrays/noHitBosses";
 import { UNLOCKABLE_CHALLENGES } from "../../../arrays/unlockableChallenges";
 import { CHARACTER_OBJECTIVE_KINDS } from "../../../cachedEnums";
 import type { CharacterObjectiveKind } from "../../../enums/CharacterObjectiveKind";
@@ -56,44 +55,14 @@ export function isAllCharactersObjectivesCompleted(): boolean {
 export function isCharacterObjectiveCompleted(
   character: PlayerType,
   kind: CharacterObjectiveKind,
+  difficulty: Difficulty.NORMAL | Difficulty.HARD,
 ): boolean {
-  const objective = getObjective(ObjectiveType.CHARACTER, character, kind);
-  const objectiveID = getObjectiveID(objective);
-
-  const { completedObjectiveIDs } = v.persistent;
-
-  return completedObjectiveIDs.includes(objectiveID);
-}
-
-// --------------------------
-// Objective - Boss functions
-// --------------------------
-
-export function isAllBossObjectivesCompleted(): boolean {
-  const { completedObjectiveIDs } = v.persistent;
-
-  const completedObjectives = completedObjectiveIDs.map((objectiveID) =>
-    getObjectiveFromID(objectiveID),
+  const objective = getObjective(
+    ObjectiveType.CHARACTER,
+    character,
+    kind,
+    difficulty,
   );
-
-  const completedBossObjectives = completedObjectives.filter(
-    (objective) => objective.type === ObjectiveType.BOSS,
-  );
-
-  return completedBossObjectives.length === NO_HIT_BOSSES.length;
-}
-
-export function isBossRangeObjectivesCompleted(min: int, max: int): boolean {
-  const bossIDs = iRange(min, max) as BossID[];
-  return bossIDs.every((bossID) => isBossObjectiveCompleted(bossID));
-}
-
-export function isBossObjectiveCompleted(bossID: BossID): boolean {
-  if (!NO_HIT_BOSSES.includes(bossID)) {
-    return true;
-  }
-
-  const objective = getObjective(ObjectiveType.BOSS, bossID);
   const objectiveID = getObjectiveID(objective);
 
   const { completedObjectiveIDs } = v.persistent;

@@ -6,7 +6,6 @@ import {
   TrinketSlot,
 } from "isaac-typescript-definitions";
 import { ReadonlySet, getEnumValues } from "isaacscript-common";
-import { BossIDCustom } from "./enums/BossIDCustom";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { OtherUnlockKind } from "./enums/OtherUnlockKind";
@@ -15,8 +14,6 @@ import { UnlockType } from "./enums/UnlockType";
 import { UnlockableArea } from "./enums/UnlockableArea";
 
 export const BOSS_IDS: readonly BossID[] = getEnumValues(BossID);
-
-export const BOSS_IDS_CUSTOM: readonly BossID[] = getEnumValues(BossIDCustom);
 
 export const CHALLENGES: readonly Challenge[] = getEnumValues(Challenge);
 

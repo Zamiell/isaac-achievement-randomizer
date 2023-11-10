@@ -1,5 +1,5 @@
 import type { PlayerType } from "isaac-typescript-definitions";
-import { BossID } from "isaac-typescript-definitions";
+import { Difficulty } from "isaac-typescript-definitions";
 import {
   LAST_VANILLA_CARD_TYPE,
   LAST_VANILLA_COLLECTIBLE_TYPE,
@@ -25,7 +25,6 @@ import {
   isOdd,
   splitNumber,
 } from "isaacscript-common";
-import { NO_HIT_BOSSES } from "./arrays/noHitBosses";
 import { UNLOCKABLE_CARD_TYPES } from "./arrays/unlockableCardTypes";
 import { UNLOCKABLE_CHALLENGES } from "./arrays/unlockableChallenges";
 import { UNLOCKABLE_CHARACTERS } from "./arrays/unlockableCharacters";
@@ -48,20 +47,13 @@ import { UNLOCKABLE_ROOM_TYPES } from "./arrays/unlockableRoomTypes";
 import { UNLOCKABLE_SLOT_VARIANTS } from "./arrays/unlockableSlotVariants";
 import { UNLOCKABLE_TRINKET_TYPES } from "./arrays/unlockableTrinketTypes";
 import {
-  BOSS_IDS,
   CHARACTER_OBJECTIVE_KINDS,
   OTHER_UNLOCK_KINDS,
   UNLOCKABLE_AREAS,
 } from "./cachedEnums";
-import {
-  canGetToBoss,
-  canGetToCharacterObjective,
-  getReachableNonStoryBossesSet,
-} from "./classes/features/AchievementRandomizer";
+import { canGetToCharacterObjective } from "./classes/features/AchievementRandomizer";
 import {
   isAllCharacterObjectivesCompleted,
-  isBossObjectiveCompleted,
-  isBossRangeObjectivesCompleted,
   isChallengeObjectiveCompleted,
   isChallengeRangeObjectivesCompleted,
   isCharacterObjectiveCompleted,
@@ -90,7 +82,7 @@ import {
   getCompletedObjectiveIDs,
   getCompletedUnlockIDs,
 } from "./classes/features/achievementTracker/v";
-import { getBossNameCustom } from "./enums/BossIDCustom";
+import { DIFFICULTIES } from "./constants";
 import {
   CharacterObjectiveKind,
   getCharacterObjectiveKindName,
@@ -203,90 +195,40 @@ export function getSpecificCharacterObjectiveButtons(
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const kind of CHARACTER_OBJECTIVE_KINDS) {
-    let objectiveName = getCharacterObjectiveKindName(kind).toLowerCase();
-    if (kind >= CharacterObjectiveKind.NO_HIT_BASEMENT_1) {
-      objectiveName = `no dmg. on floor ${objectiveName}`;
+    for (const difficulty of DIFFICULTIES) {
+      let objectiveName = getCharacterObjectiveKindName(kind).toLowerCase();
+      if (kind >= CharacterObjectiveKind.NO_HIT_BASEMENT) {
+        objectiveName = `no hits on ${objectiveName}`;
+      }
+      const difficultyText =
+        difficulty === Difficulty.NORMAL ? "(normal)" : "(hard)";
+      objectiveName += ` ${difficultyText}`;
+
+      const completed = isCharacterObjectiveCompleted(
+        character,
+        kind,
+        difficulty,
+      );
+      const completedText = getCompletedText(completed);
+
+      buttons.push(
+        {
+          str: objectiveName,
+        },
+        {
+          str: completedText,
+          clr: completed ? 0 : 3,
+        },
+        {
+          str: "(inaccessible)",
+          fSize: 1,
+          displayIf: () => !canGetToCharacterObjective(character, kind, false),
+        },
+        {
+          str: "",
+        },
+      );
     }
-
-    const completed = isCharacterObjectiveCompleted(character, kind);
-    const completedText = getCompletedText(completed);
-
-    buttons.push(
-      {
-        str: objectiveName,
-      },
-      {
-        str: completedText,
-        clr: completed ? 0 : 3,
-      },
-      {
-        str: "(inaccessible)",
-        fSize: 1,
-        displayIf: () => !canGetToCharacterObjective(character, kind, false),
-      },
-      {
-        str: "",
-      },
-    );
-  }
-
-  return buttons;
-}
-
-export function getBossObjectiveButtons(): DeadSeaScrollsButton[] {
-  const buttons: DeadSeaScrollsButton[] = [];
-
-  const chunks = splitNumber(BOSS_IDS.length, MENU_PAGE_SIZE);
-  for (const chunk of chunks) {
-    const [min, max] = chunk;
-    const bossRangeCompleted = isBossRangeObjectivesCompleted(min, max);
-    const completedText = getCompletedText(bossRangeCompleted);
-    buttons.push({
-      str: `${completedText} - ${min}-${max}`,
-      dest: `bossObjectives${min}`,
-    });
-  }
-
-  return buttons;
-}
-
-export function getSpecificBossObjectiveButtons(
-  min: int,
-  max: int,
-): DeadSeaScrollsButton[] {
-  const buttons: DeadSeaScrollsButton[] = [];
-
-  const reachableBosses = getReachableNonStoryBossesSet();
-
-  for (const bossID of NO_HIT_BOSSES) {
-    if (bossID < min || bossID > max) {
-      continue;
-    }
-
-    let bossName = getBossNameCustom(bossID).toLowerCase();
-    if (bossID === BossID.MAUSOLEUM_MOMS_HEART) {
-      bossName = "mom's heart (maus.)"; // cspell:ignore maus
-    }
-    const completed = isBossObjectiveCompleted(bossID);
-    const completedText = getCompletedText(completed);
-
-    buttons.push(
-      {
-        str: `${bossID} - ${bossName}`,
-      },
-      {
-        str: completedText,
-        clr: completed ? 0 : 3,
-      },
-      {
-        str: "(inaccessible)",
-        fSize: 1,
-        displayIf: () => !canGetToBoss(bossID, reachableBosses, false),
-      },
-      {
-        str: "",
-      },
-    );
   }
 
   return buttons;
