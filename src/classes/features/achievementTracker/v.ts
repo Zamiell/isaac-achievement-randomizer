@@ -16,7 +16,7 @@ export const v = {
 
     objectiveIDToUnlockIDMap: new Map<ObjectiveID, UnlockID>(),
     unlockIDToObjectiveIDMap: new Map<UnlockID, ObjectiveID>(),
-    characterUnlockOrder: [] as PlayerType[],
+    characterUnlockOrder: [] as readonly PlayerType[],
 
     completedObjectiveIDs: [] as ObjectiveID[],
     completedUnlockIDs: [] as UnlockID[],

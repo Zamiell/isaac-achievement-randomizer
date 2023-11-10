@@ -1,4 +1,5 @@
 import type { PlayerType } from "isaac-typescript-definitions";
+import { CollectibleType } from "isaac-typescript-definitions";
 import {
   arrayRemoveInPlace,
   copyArray,
@@ -8,7 +9,11 @@ import {
 } from "isaacscript-common";
 import { ALL_OBJECTIVE_IDS } from "./arrays/allObjectives";
 import { ALL_UNLOCK_IDS } from "./arrays/allUnlocks";
-import { UNLOCKABLE_CHARACTERS } from "./arrays/unlockableCharacters";
+import {
+  HARD_CHARACTERS,
+  UNLOCKABLE_CHARACTERS,
+} from "./arrays/unlockableCharacters";
+import { FIRST_UNLOCK_COLLECTIBLES } from "./classes/features/achievementTracker/swapUnlock";
 import { STARTING_CHARACTER } from "./constants";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
@@ -17,6 +22,7 @@ import {
   STATIC_UNLOCKABLE_AREAS,
   UnlockableArea,
 } from "./enums/UnlockableArea";
+import type { Objective } from "./types/Objective";
 import { getObjective } from "./types/Objective";
 import type { ObjectiveID } from "./types/ObjectiveID";
 import { getObjectiveID } from "./types/ObjectiveID";
@@ -61,7 +67,36 @@ const UNLOCKABLE_AREA_TO_OBJECTIVE = {
     STARTING_CHARACTER,
     CharacterObjectiveKind.LAMB,
   ),
-} as const;
+} as const satisfies Record<
+  (typeof STATIC_UNLOCKABLE_AREAS)[number],
+  Objective
+>;
+
+const FIRST_UNLOCK_COLLECTIBLE_TO_OBJECTIVE = {
+  // 27
+  [CollectibleType.WOODEN_SPOON]: getObjective(
+    ObjectiveType.CHARACTER,
+    STARTING_CHARACTER,
+    CharacterObjectiveKind.NO_HIT_BASEMENT_1,
+  ),
+
+  // 32
+  [CollectibleType.WIRE_COAT_HANGER]: getObjective(
+    ObjectiveType.CHARACTER,
+    STARTING_CHARACTER,
+    CharacterObjectiveKind.NO_HIT_BASEMENT_2,
+  ),
+
+  // 165
+  [CollectibleType.CAT_O_NINE_TAILS]: getObjective(
+    ObjectiveType.CHARACTER,
+    STARTING_CHARACTER,
+    CharacterObjectiveKind.NO_HIT_CAVES_1,
+  ),
+} as const satisfies Record<
+  (typeof FIRST_UNLOCK_COLLECTIBLES)[number],
+  Objective
+>;
 
 export function getAchievementsForRNG(rng: RNG): {
   objectiveIDToUnlockIDMap: Map<ObjectiveID, UnlockID>;
@@ -75,10 +110,24 @@ export function getAchievementsForRNG(rng: RNG): {
   const unlockIDs = copyArray(ALL_UNLOCK_IDS);
   const objectiveIDs = copyArray(ALL_OBJECTIVE_IDS);
 
-  // Each character is guaranteed to unlock another character from a basic objective.
   const characterUnlockOrder = getRandomCharacterUnlockOrder(rng);
 
-  // Some achievements are non-randomized, meaning that unlocks are paired to specific objectives.
+  // We want the three basic stat up collectibles to not ever be swapped with some other important
+  // unlock, so we statically assign them to specific objectives.
+  for (const collectibleType of FIRST_UNLOCK_COLLECTIBLES) {
+    const unlock = getUnlock(UnlockType.COLLECTIBLE, collectibleType);
+    const unlockID = getUnlockID(unlock);
+    arrayRemoveInPlace(unlockIDs, unlockID);
+
+    const objective = FIRST_UNLOCK_COLLECTIBLE_TO_OBJECTIVE[collectibleType];
+    const objectiveID = getObjectiveID(objective);
+    arrayRemoveInPlace(objectiveIDs, objectiveID);
+
+    objectiveIDToUnlockIDMap.set(objectiveID, unlockID);
+    unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
+  }
+
+  // Some areas are non-randomized, meaning that they are paired to specific objectives.
   for (const unlockableArea of STATIC_UNLOCKABLE_AREAS) {
     const unlock = getUnlock(UnlockType.AREA, unlockableArea);
     const unlockID = getUnlockID(unlock);
@@ -92,8 +141,34 @@ export function getAchievementsForRNG(rng: RNG): {
     unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
   }
 
-  // Statically assign the non-randomized unlocks that come before any other ones. This way, they
-  // will not ever be swapped with a character unlock.
+  // The second character is unlocked immediately, so it is statically paired with the next no-hit
+  // objective. The other characters are guaranteed to unlock from beating It Lives.
+  let lastUnlockedCharacter = STARTING_CHARACTER;
+  for (const character of characterUnlockOrder) {
+    const unlock = getUnlock(UnlockType.CHARACTER, character);
+    const unlockID = getUnlockID(unlock);
+    arrayRemoveInPlace(unlockIDs, unlockID);
+
+    const objective =
+      lastUnlockedCharacter === STARTING_CHARACTER
+        ? getObjective(
+            ObjectiveType.CHARACTER,
+            STARTING_CHARACTER,
+            CharacterObjectiveKind.NO_HIT_CAVES_2,
+          )
+        : getObjective(
+            ObjectiveType.CHARACTER,
+            lastUnlockedCharacter,
+            CharacterObjectiveKind.IT_LIVES,
+          );
+    const objectiveID = getObjectiveID(objective);
+    arrayRemoveInPlace(objectiveIDs, objectiveID);
+
+    objectiveIDToUnlockIDMap.set(objectiveID, unlockID);
+    unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
+
+    lastUnlockedCharacter = character;
+  }
 
   // Next, do all of the unlocks except for trinkets.
   for (const unlockID of unlockIDs) {
