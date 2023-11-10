@@ -22,7 +22,7 @@ The following things start off locked and are inaccessible:
 - The Ascent
 - Greed Mode
 
-## Room Types (17)
+## Room Types (16)
 
 The following room types start out locked:
 
@@ -40,8 +40,7 @@ The following room types start out locked:
 - Vaults (#20) (unlocks before the first Golden Chest pool collectible)
 - Dice Rooms (#21) (unlocks before the first dice collectible/trinket/card)
 - Planetariums (#24) (unlocks before the first Planetarium pool collectible)
-- Clean Bedrooms (#18) (unlocks before the first heart or bed)
-- Dirty Bedrooms (#19) (unlocks before the first heart or bed)
+- Bedrooms (#18, #19) (unlocks before the first heart)
 - Black Markets (#22)
 
 ## Challenges (44)
@@ -150,4 +149,4 @@ The following other things start out locked:
 
 ## Total Unlocks
 
-There are 32 + 12 + 17 + 44 + 699 + 185 + 95 + 50 + (11 + 6 + 2 + 3 + 4 + 2 + 10) + 15 + 8 + 4 = 1199 unlocks in total.
+There are 32 + 12 + 16 + 44 + 699 + 185 + 95 + 50 + (11 + 6 + 2 + 3 + 4 + 2 + 10) + 15 + 8 + 4 = 1198 unlocks in total.

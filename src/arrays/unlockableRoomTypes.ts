@@ -19,7 +19,7 @@ export const UNLOCKABLE_ROOM_TYPES = [
   // - RoomType.DUNGEON (16)
   // - RoomType.BOSS_RUSH (17)
   RoomType.CLEAN_BEDROOM, // 18
-  RoomType.DIRTY_BEDROOM, // 19
+  // - RoomType.DIRTY_BEDROOM (19) (combined with Clean Bedrooms)
   RoomType.VAULT, // 20
   RoomType.DICE, // 21
   RoomType.BLACK_MARKET, // 22

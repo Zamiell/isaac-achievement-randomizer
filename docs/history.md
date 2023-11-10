@@ -11,6 +11,7 @@
   - Floor objectives are changed to chapter objectives (and reduced in scope).
   - Each objective must now be also completed on normal mode.
 - Tainted Cain is no longer included in the mod (since Bag of Crafting does not respect item pools).
+- The unlock for Clean Bedrooms and Dirty Bedrooms is now combined.
 - Beds are no longer unlockable.
 - Reward Plates are no longer unlockable.
 - The Lost and Tainted Apollyon are now considered to be "hard" characters.

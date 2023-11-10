@@ -1796,11 +1796,6 @@ function getSwappedUnlockHeart(
     return getUnlock(UnlockType.ROOM, RoomType.CLEAN_BEDROOM);
   }
 
-  // 19
-  if (!isRoomTypeUnlocked(RoomType.DIRTY_BEDROOM, false)) {
-    return getUnlock(UnlockType.ROOM, RoomType.DIRTY_BEDROOM);
-  }
-
   if (isHardcoreMode()) {
     const worseHeartSubType = getWorseLockedHeartSubType(
       heartUnlock.heartSubType,
