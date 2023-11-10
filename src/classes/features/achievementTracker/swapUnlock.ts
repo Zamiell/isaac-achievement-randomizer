@@ -1984,23 +1984,6 @@ const SWAPPED_UNLOCK_OTHER_FUNCTIONS = new ReadonlyMap<
   (seed: Seed) => Unlock | undefined
 >([
   [
-    OtherUnlockKind.BEDS,
-    () => {
-      // 18
-      if (!isRoomTypeUnlocked(RoomType.CLEAN_BEDROOM, false)) {
-        return getUnlock(UnlockType.ROOM, RoomType.CLEAN_BEDROOM);
-      }
-
-      // 19
-      if (!isRoomTypeUnlocked(RoomType.DIRTY_BEDROOM, false)) {
-        return getUnlock(UnlockType.ROOM, RoomType.DIRTY_BEDROOM);
-      }
-
-      return undefined;
-    },
-  ],
-
-  [
     OtherUnlockKind.GOLD_TRINKETS,
     (seed) =>
       anyTrinketTypesUnlocked(false) ? undefined : getRandomTrinketUnlock(seed),

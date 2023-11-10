@@ -140,11 +140,10 @@ The following grid entities start out locked:
 - Super Tinted Rocks (#22.0)
 - Fool's Gold Rocks (#27.0)
 
-## Miscellaneous (5)
+## Miscellaneous (4)
 
 The following other things start out locked:
 
-- Beds (#5.380)
 - Shopkeepers (#17)
 - Golden Trinkets
 - Gold Pills
@@ -152,4 +151,4 @@ The following other things start out locked:
 
 ## Total Unlocks
 
-There are 32 + 12 + 17 + 44 + 699 + 185 + 95 + 50 + (11 + 6 + 2 + 3 + 4 + 2 + 10) + 15 + 9 + 5 = 1201 unlocks in total.
+There are 32 + 12 + 17 + 44 + 699 + 185 + 95 + 50 + (11 + 6 + 2 + 3 + 4 + 2 + 10) + 15 + 9 + 4 = 1200 unlocks in total.

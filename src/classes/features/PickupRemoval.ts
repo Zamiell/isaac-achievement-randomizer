@@ -593,14 +593,4 @@ export class PickupRemoval extends RandomizerModFeature {
     );
     return [PickupVariant.TRINKET, newTrinketType];
   }
-
-  @CallbackCustom(
-    ModCallbackCustom.POST_PICKUP_SELECTION_FILTER,
-    PickupVariant.BED, // 380
-  )
-  postPickupSelectionBed(): [PickupVariant, int] | undefined {
-    return isOtherUnlockKindUnlocked(OtherUnlockKind.BEDS, true)
-      ? undefined
-      : [PickupVariant.COIN, CoinSubType.PENNY];
-  }
 }

@@ -1,5 +1,4 @@
 export enum OtherUnlockKind {
-  BEDS,
   SHOPKEEPERS,
 
   GOLD_TRINKETS,
@@ -15,7 +14,6 @@ export enum OtherUnlockKind {
 }
 
 const OTHER_UNLOCK_KIND_NAMES = {
-  [OtherUnlockKind.BEDS]: ["pickup", "Beds"],
   [OtherUnlockKind.SHOPKEEPERS]: ["entity", "Shopkeepers"],
   [OtherUnlockKind.GOLD_TRINKETS]: ["trinket type", "Gold Trinkets"],
   [OtherUnlockKind.GOLD_PILLS]: ["pill type", "Gold Pills"],
