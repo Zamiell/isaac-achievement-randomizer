@@ -8,24 +8,19 @@ import type { Objective } from "./types/Objective";
 import type { Unlock } from "./types/Unlock";
 
 export function validateObjectivesUnlocksMatch(): void {
-  if (ALL_OBJECTIVES.length === ALL_UNLOCKS.length) {
+  // If there are more unlocks than objectives, then N trinkets will not be unlocked in a completed
+  // playthrough. See "achievementAssignment.ts".
+  if (ALL_OBJECTIVES.length <= ALL_UNLOCKS.length) {
     return;
   }
 
   logObjectives(ALL_OBJECTIVES);
   logUnlocks(ALL_UNLOCKS);
 
-  let errorText = `There were ${ALL_OBJECTIVES.length} total objectives and ${ALL_UNLOCKS.length} total unlocks. You need `;
-  errorText +=
-    ALL_OBJECTIVES.length > ALL_UNLOCKS.length
-      ? `${ALL_OBJECTIVES.length - ALL_UNLOCKS.length} more unlock(s) or ${
-          ALL_OBJECTIVES.length - ALL_UNLOCKS.length
-        } less objective(s).`
-      : `${ALL_UNLOCKS.length - ALL_OBJECTIVES.length} more objective(s) or ${
-          ALL_UNLOCKS.length - ALL_OBJECTIVES.length
-        } less unlock(s).`;
-
-  error(errorText);
+  const difference = ALL_UNLOCKS.length - ALL_OBJECTIVES.length;
+  error(
+    `There were ${ALL_OBJECTIVES.length} total objectives and ${ALL_UNLOCKS.length} total unlocks. You need ${difference} more objective(s) or ${difference} less unlock(s).`,
+  );
 }
 
 export function logObjectives(objectives: readonly Objective[]): void {

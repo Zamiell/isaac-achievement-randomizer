@@ -20,17 +20,16 @@ import {
   getChallengeName,
   getCharacterName,
   getCollectibleName,
-  includes,
   isRepentance,
   log,
   newSprite,
-  onAnyChallenge,
   onVictoryLap,
   parseSemanticVersion,
   removeAllDoors,
 } from "isaacscript-common";
 import { version } from "../../../package.json";
 import { BANNED_CHALLENGES } from "../../arrays/unlockableChallenges";
+import { BANNED_CHARACTERS } from "../../arrays/unlockableCharacters";
 import {
   IS_DEV,
   LAST_VERSION_WITH_ACHIEVEMENT_CHANGES,
@@ -94,14 +93,6 @@ export class CheckErrors extends ModFeature {
       this.drawErrorText(
         `You have illegal mods enabled.\n\nMake sure that ${MOD_NAME} is the only mod enabled in your mod list and then completely close and re-open the game.`,
       );
-    } else if (v.run.normalMode) {
-      this.drawErrorText(
-        `You are playing on normal mode, but you are only allowed to play ${MOD_NAME} on hard mode.`,
-      );
-    } else if (v.run.normalGreedMode) {
-      this.drawErrorText(
-        `You are playing on Greed Mode, but you are only allowed to play ${MOD_NAME} on Greedier mode.`,
-      );
     } else if (v.run.hasEasterEggs) {
       this.drawErrorText(
         `You are only allowed to play ${MOD_NAME} with all Easter Eggs disabled.`,
@@ -115,6 +106,10 @@ export class CheckErrors extends ModFeature {
       const character = player.GetPlayerType();
       const characterName = getCharacterName(character);
       this.drawErrorText(`You have not unlocked ${characterName} yet.`);
+    } else if (v.run.bannedCharacter) {
+      this.drawErrorText(
+        "This character is not part of Achievement Randomizer, so you cannot play it while in a randomizer playthrough.",
+      );
     } else if (v.run.lockedChallenge) {
       this.drawErrorText("You have not unlocked this challenge yet.");
     } else if (v.run.bannedChallenge) {
@@ -174,11 +169,10 @@ export class CheckErrors extends ModFeature {
     checkOtherModsEnabled();
 
     if (isRandomizerEnabled()) {
-      checkNormalMode();
-      checkNormalGreedMode();
       checkEasterEggs();
       checkVictoryLap();
       checkCharacterUnlocked();
+      checkCharacterBanned();
       checkChallengeUnlocked();
       checkChallengeBanned();
       checkModeUnlocked();
@@ -245,25 +239,6 @@ function checkOtherModsEnabled() {
   }
 }
 
-function checkNormalMode() {
-  // Some challenges are on normal mode.
-  if (onAnyChallenge()) {
-    return;
-  }
-
-  if (game.Difficulty === Difficulty.NORMAL) {
-    log("Error: Normal mode (non-hard mode) detected.");
-    v.run.normalMode = true;
-  }
-}
-
-function checkNormalGreedMode() {
-  if (game.Difficulty === Difficulty.GREED) {
-    log("Error: Normal Greed Mode (non-Greedier mode) detected.");
-    v.run.normalGreedMode = true;
-  }
-}
-
 function checkEasterEggs() {
   if (anyEasterEggEnabled([SeedEffect.ALL_CHAMPIONS])) {
     log("Error: Easter Egg detected.");
@@ -290,6 +265,17 @@ function checkCharacterUnlocked() {
   }
 }
 
+function checkCharacterBanned() {
+  const player = Isaac.GetPlayer();
+  const character = player.GetPlayerType();
+
+  if (BANNED_CHARACTERS.has(character)) {
+    const characterName = getCharacterName(character);
+    log(`Error: Banned character detected: ${characterName} (${character})`);
+    v.run.bannedCharacter = true;
+  }
+}
+
 function checkChallengeUnlocked() {
   const challenge = Isaac.GetChallenge();
 
@@ -303,7 +289,7 @@ function checkChallengeUnlocked() {
 function checkChallengeBanned() {
   const challenge = Isaac.GetChallenge();
 
-  if (includes(BANNED_CHALLENGES, challenge)) {
+  if (BANNED_CHALLENGES.has(challenge)) {
     const challengeName = getChallengeName(challenge);
     log(`Error: Banned challenge detected: ${challengeName} (${challenge})`);
     v.run.bannedChallenge = true;

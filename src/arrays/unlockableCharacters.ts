@@ -1,11 +1,15 @@
 import { PlayerType } from "isaac-typescript-definitions";
-import { MAIN_CHARACTERS } from "isaacscript-common";
+import { MAIN_CHARACTERS, ReadonlySet } from "isaacscript-common";
 import { STARTING_CHARACTER } from "../constants";
+
+export const BANNED_CHARACTERS = new ReadonlySet<PlayerType>([
+  PlayerType.CAIN_B,
+]);
 
 export const UNLOCKABLE_CHARACTERS: readonly PlayerType[] =
   MAIN_CHARACTERS.filter(
     (character) =>
-      character !== STARTING_CHARACTER && character !== PlayerType.CAIN_B,
+      character !== STARTING_CHARACTER && !BANNED_CHARACTERS.has(character),
   );
 
 /** These are characters that are guaranteed to not be unlocked early on. */

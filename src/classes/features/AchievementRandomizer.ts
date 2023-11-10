@@ -211,7 +211,7 @@ export class AchievementRandomizer extends RandomizerModFeature {
 }
 
 export function isValidSituationForStartingRandomizer(): boolean {
-  return game.Difficulty === Difficulty.HARD && !onAnyChallenge();
+  return game.Difficulty === Difficulty.NORMAL && !onAnyChallenge();
 }
 
 export function startRandomizer(

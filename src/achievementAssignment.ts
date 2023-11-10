@@ -184,29 +184,29 @@ export function getAchievementsForRNG(rng: RNG): {
   // Next, do all of the unlocks except for trinkets.
   for (const unlockID of unlockIDs) {
     const unlock = getUnlockFromID(unlockID);
-    if (unlock.type === UnlockType.TRINKET) {
-      continue;
+    if (unlock.type !== UnlockType.TRINKET) {
+      const objectiveID = getRandomArrayElementAndRemove(objectiveIDs, rng);
+      objectiveIDToUnlockIDMap.set(objectiveID, unlockID);
+      unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
     }
-
-    const objectiveID = getRandomArrayElementAndRemove(objectiveIDs, rng);
-    objectiveIDToUnlockIDMap.set(objectiveID, unlockID);
-    unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
   }
 
   // Finally, do the trinkets last, since they are the least important unlock, and there might not
   // be enough objectives to unlock everything.
   for (const unlockID of unlockIDs) {
-    // In some cases, the amount of unlocks may exceed the amount of objectives.
-    if (objectiveIDs.length === 0) {
-      const unlock = getUnlockFromID(unlockID);
-      const unlockText = getUnlockText(unlock).join(" - ");
-      log(`Skipping unlock: ${unlockText}`);
-      continue;
-    }
+    const unlock = getUnlockFromID(unlockID);
+    if (unlock.type === UnlockType.TRINKET) {
+      // In some cases, the amount of unlocks may exceed the amount of objectives.
+      if (objectiveIDs.length === 0) {
+        const unlockText = getUnlockText(unlock).join(" - ");
+        log(`Skipping assignment of unlock: ${unlockText}`);
+        continue;
+      }
 
-    const objectiveID = getRandomArrayElementAndRemove(objectiveIDs, rng);
-    objectiveIDToUnlockIDMap.set(objectiveID, unlockID);
-    unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
+      const objectiveID = getRandomArrayElementAndRemove(objectiveIDs, rng);
+      objectiveIDToUnlockIDMap.set(objectiveID, unlockID);
+      unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
+    }
   }
 
   return {
