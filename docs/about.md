@@ -151,20 +151,22 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
 
 - Unlocking new things will never apply to the current run and will only apply to subsequent runs.
   - For example, if you unlock Wooden Spoon on the first run by doing the no-hit objective on Basement 1, you will still get Breakfast as the boss collectible after defeating the Basement 2 boss.
-- The following stat collectibles will always be unlocked before any other unlocks:
-  - Wooden Spoon (#27)
-  - Wire Coat Hanger (#32)
-  - Cat-O-Nine-Tails (#165)
-- 6 area unlocks are not randomized and always are unlocked from specific objectives:
+- 6 area unlocks are not randomized and always are unlocked from specific objectives on Isaac:
   - Womb (by defeating Mom)
   - Cathedral (by defeating It Lives)
   - Sheol (by defeating Isaac)
   - The Chest (by defeating Satan)
   - Dark Room (by defeating Blue Baby)
   - Repentance floors (by defeating The Lamb)
-- Each character is guaranteed to unlock another random character from one of their [basic objectives](objectives.md#character-unlock-objectives).
+- The following stat collectibles will always be unlocked before any other unlocks:
+  - Wooden Spoon (#27)
+  - Wire Coat Hanger (#32)
+  - Cat-O-Nine-Tails (#165)
+- The second random character will always be unlocked after the three stat collectibles and before any other unlocks.
+- Each character is guaranteed to unlock another random character from defeating It Lives.
 - The following characters are considered to be "hard" and are guaranteed to be in the second half of characters unlocked:
   - Blue Baby (#4)
+  - Lost (#10)
   - Tainted Judas (#24)
   - Tainted Blue Baby (#25)
   - Tainted Lazarus (#29)

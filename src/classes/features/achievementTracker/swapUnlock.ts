@@ -23,6 +23,7 @@ import {
   TrinketType,
 } from "isaac-typescript-definitions";
 import {
+  MAIN_CHARACTERS,
   ReadonlyMap,
   arrayRemove,
   collectibleHasTag,
@@ -42,6 +43,7 @@ import {
   UNLOCKABLE_CARD_TYPES,
   UNLOCKABLE_RUNE_CARD_TYPES,
 } from "../../../arrays/unlockableCardTypes";
+import { HARD_CHARACTERS } from "../../../arrays/unlockableCharacters";
 import { UNLOCKABLE_COLLECTIBLE_TYPES } from "../../../arrays/unlockableCollectibleTypes";
 import { UNLOCKABLE_CHEST_PICKUP_VARIANTS } from "../../../arrays/unlockablePickupTypes";
 import { UNLOCKABLE_PILL_EFFECTS } from "../../../arrays/unlockablePillEffects";
@@ -167,12 +169,18 @@ export function getSwappedUnlockID(
   unlockID: UnlockID,
   seed: Seed,
 ): UnlockID | undefined {
+  const possibleSecondCharacters = arrayRemove(
+    MAIN_CHARACTERS,
+    ...HARD_CHARACTERS,
+  );
+  const secondCharacter = getRandomArrayElement(possibleSecondCharacters, seed);
+
   const unlock = getUnlockFromID(unlockID);
-  if (!isUnlockSwappable(unlock)) {
+  if (!isUnlockSwappable(unlock, secondCharacter)) {
     return undefined;
   }
 
-  // Guarantee some collectibles as the very first unlocks.
+  // Guarantee some stat collectibles as the very first unlocks.
   const shuffledFirstUnlockCollectibles = shuffleArray(
     FIRST_UNLOCK_COLLECTIBLES,
     seed,
@@ -182,6 +190,12 @@ export function getSwappedUnlockID(
       const swappedUnlock = getUnlock(UnlockType.COLLECTIBLE, collectibleType);
       return getUnlockID(swappedUnlock);
     }
+  }
+
+  // Guarantee the second character as the next unlock after the stat collectibles.
+  if (!isCharacterUnlocked(secondCharacter, false)) {
+    const swappedUnlock = getUnlock(UnlockType.CHARACTER, secondCharacter);
+    return getUnlockID(swappedUnlock);
   }
 
   const func = SWAPPED_UNLOCK_FUNCTIONS[unlock.type];
@@ -197,7 +211,10 @@ export function getSwappedUnlockID(
   return getUnlockID(swappedUnlock);
 }
 
-function isUnlockSwappable(unlock: Unlock): boolean {
+function isUnlockSwappable(
+  unlock: Unlock,
+  secondCharacter: PlayerType,
+): boolean {
   if (
     unlock.type === UnlockType.AREA &&
     includes(STATIC_UNLOCKABLE_AREAS, unlock.unlockableArea)
@@ -208,6 +225,13 @@ function isUnlockSwappable(unlock: Unlock): boolean {
   if (
     unlock.type === UnlockType.COLLECTIBLE &&
     includes(FIRST_UNLOCK_COLLECTIBLES, unlock.collectibleType)
+  ) {
+    return false;
+  }
+
+  if (
+    unlock.type === UnlockType.CHARACTER &&
+    unlock.character === secondCharacter
   ) {
     return false;
   }
