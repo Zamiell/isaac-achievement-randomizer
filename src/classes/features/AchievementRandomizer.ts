@@ -1,30 +1,24 @@
-import type { BossID } from "isaac-typescript-definitions";
 import {
   CardType,
   CollectibleType,
   Difficulty,
-  LevelStage,
   ModCallback,
   PlayerType,
-  StageType,
 } from "isaac-typescript-definitions";
 import {
   Callback,
   GAME_FRAMES_PER_SECOND,
   KColorDefault,
   VectorZero,
-  addSetsToSet,
   clearChallenge,
   fonts,
   game,
-  getBossSet,
   getRandomSeed,
   getScreenBottomRightPos,
   getScreenCenterPos,
   getTime,
   isBeforeGameFrame,
   isBeforeRenderFrame,
-  isRepentanceStage,
   log,
   newRNG,
   newSprite,
@@ -36,7 +30,6 @@ import {
 import { version } from "../../../package.json";
 import { getAchievementsForRNG } from "../../achievementAssignment";
 import { ALL_OBJECTIVES } from "../../arrays/allObjectives";
-import { STAGE_TYPES } from "../../cachedEnums";
 import { DEBUG, STARTING_CHARACTER } from "../../constants";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
@@ -67,13 +60,6 @@ import { v } from "./achievementTracker/v";
 
 const BLACK_SPRITE = newSprite("gfx/misc/black.anm2");
 const FONT = fonts.droid;
-
-const BOSS_STAGES = [
-  LevelStage.BASEMENT_1,
-  LevelStage.CAVES_1,
-  LevelStage.DEPTHS_1,
-  LevelStage.WOMB_1,
-] as const;
 
 let generatingRNG: RNG | undefined;
 let generationTime = 0;
@@ -363,34 +349,6 @@ function tryCompleteUncompletedObjectives(): boolean {
   }
 
   return accomplishedObjective;
-}
-
-export function getReachableNonStoryBossesSet(): Set<BossID> {
-  const reachableNonStoryBossesSet = new Set<BossID>();
-
-  for (const stage of BOSS_STAGES) {
-    for (const stageType of STAGE_TYPES) {
-      if (stageType === StageType.GREED_MODE) {
-        continue;
-      }
-
-      if (
-        isRepentanceStage(stageType) &&
-        !isAreaUnlocked(UnlockableArea.REPENTANCE_FLOORS, false)
-      ) {
-        continue;
-      }
-
-      const bossSet = getBossSet(stage, stageType);
-      if (bossSet === undefined) {
-        continue;
-      }
-
-      addSetsToSet(reachableNonStoryBossesSet, bossSet);
-    }
-  }
-
-  return reachableNonStoryBossesSet;
 }
 
 function logMissingObjectives() {

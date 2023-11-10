@@ -1,5 +1,4 @@
 import {
-  BossID,
   Challenge,
   PocketItemSlot,
   StageType,
@@ -12,8 +11,6 @@ import { OtherUnlockKind } from "./enums/OtherUnlockKind";
 import { RandomizerMode } from "./enums/RandomizerMode";
 import { UnlockType } from "./enums/UnlockType";
 import { UnlockableArea } from "./enums/UnlockableArea";
-
-export const BOSS_IDS: readonly BossID[] = getEnumValues(BossID);
 
 export const CHALLENGES: readonly Challenge[] = getEnumValues(Challenge);
 
