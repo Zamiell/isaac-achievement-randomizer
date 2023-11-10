@@ -12,6 +12,7 @@
   - Each objective must now be also completed on normal mode.
 - Tainted Cain is no longer included in the mod (since Bag of Crafting does not respect item pools).
 - Beds are no longer unlockable.
+- Reward Plates are no longer unlockable.
 - The Lost and Tainted Apollyon are now considered to be "hard" characters.
 - The second random character will now always be unlocked after the three stat collectibles and before any other unlocks.
 - Each character is now guaranteed to unlock another random character from defeating It Lives.

@@ -9,8 +9,6 @@ export enum OtherUnlockKind {
   RAINBOW_POOP, // 14.4
   BLACK_POOP, // 14.5
   CHARMING_POOP, // 14.11
-
-  REWARD_PLATES, // 20.1
 }
 
 const OTHER_UNLOCK_KIND_NAMES = {
@@ -22,7 +20,6 @@ const OTHER_UNLOCK_KIND_NAMES = {
   [OtherUnlockKind.RAINBOW_POOP]: ["grid entity", "Rainbow Poop"],
   [OtherUnlockKind.BLACK_POOP]: ["grid entity", "Black Poop"],
   [OtherUnlockKind.CHARMING_POOP]: ["grid entity", "Charming Poop"],
-  [OtherUnlockKind.REWARD_PLATES]: ["grid entity", "Reward Plates"],
 } as const satisfies Record<OtherUnlockKind, readonly [string, string]>;
 
 export function getOtherUnlockName(

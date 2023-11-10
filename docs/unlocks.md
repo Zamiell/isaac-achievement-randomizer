@@ -126,7 +126,7 @@ Every pill effect in the game is locked. If no pill effects are unlocked, pills 
 
 Every slot entity (e.g. machines and beggars) is locked behind a random objective. Locked slot entities are removed.
 
-## Grid Entities (9)
+## Grid Entities (8)
 
 The following grid entities start out locked:
 
@@ -136,7 +136,6 @@ The following grid entities start out locked:
 - Black Poop (#14.5)
 - Charming Poop (#14.11)
 - Crawlspaces (#18.0)
-- Reward Plates (#20.1)
 - Super Tinted Rocks (#22.0)
 - Fool's Gold Rocks (#27.0)
 
@@ -151,4 +150,4 @@ The following other things start out locked:
 
 ## Total Unlocks
 
-There are 32 + 12 + 17 + 44 + 699 + 185 + 95 + 50 + (11 + 6 + 2 + 3 + 4 + 2 + 10) + 15 + 9 + 4 = 1200 unlocks in total.
+There are 32 + 12 + 17 + 44 + 699 + 185 + 95 + 50 + (11 + 6 + 2 + 3 + 4 + 2 + 10) + 15 + 8 + 4 = 1199 unlocks in total.

@@ -4,7 +4,6 @@ import {
   GridEntityXMLType,
   ModCallback,
   PoopGridEntityVariant,
-  PressurePlateVariant,
 } from "isaac-typescript-definitions";
 import {
   Callback,
@@ -96,18 +95,6 @@ export class GridEntityRemoval extends RandomizerModFeature {
     }
   }
 
-  // 26
-  @CallbackCustom(
-    ModCallbackCustom.POST_GRID_ENTITY_INIT,
-    GridEntityType.PRESSURE_PLATE,
-    PressurePlateVariant.REWARD_PLATE,
-  )
-  postGridEntityInitRewardPlate(gridEntity: GridEntity): void {
-    if (!isOtherUnlockKindUnlocked(OtherUnlockKind.REWARD_PLATES, true)) {
-      setGridEntityType(gridEntity, GridEntityType.ROCK);
-    }
-  }
-
   @Callback(ModCallback.PRE_ROOM_ENTITY_SPAWN)
   preRoomEntitySpawn(
     entityTypeOrGridEntityXMLType: EntityType | GridEntityXMLType,
@@ -157,19 +144,6 @@ export class GridEntityRemoval extends RandomizerModFeature {
     | [type: EntityType | GridEntityXMLType, variant: int, subType: int]
     | undefined {
     return isAreaUnlocked(UnlockableArea.ASCENT, true)
-      ? undefined
-      : [GridEntityXMLType.ROCK, 0, 0];
-  }
-
-  @CallbackCustom(
-    ModCallbackCustom.PRE_ROOM_ENTITY_SPAWN_FILTER,
-    GridEntityXMLType.PRESSURE_PLATE, // 4500
-    PressurePlateVariant.REWARD_PLATE,
-  )
-  preRoomEntitySpawnRewardPlate():
-    | [type: EntityType | GridEntityXMLType, variant: int, subType: int]
-    | undefined {
-    return isOtherUnlockKindUnlocked(OtherUnlockKind.REWARD_PLATES, true)
       ? undefined
       : [GridEntityXMLType.ROCK, 0, 0];
   }
