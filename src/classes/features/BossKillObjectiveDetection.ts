@@ -1,9 +1,9 @@
+import type { PlayerType } from "isaac-typescript-definitions";
 import {
   BossID,
   Difficulty,
   LevelStage,
   ModCallback,
-  PlayerType,
   RoomType,
 } from "isaac-typescript-definitions";
 import {

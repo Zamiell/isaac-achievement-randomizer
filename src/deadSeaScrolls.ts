@@ -199,7 +199,7 @@ export function initDeadSeaScrolls(): void {
         } else {
           menu.buttons = [
             {
-              str: "you must be on a hard",
+              str: "you must be on a normal",
             },
             {
               str: "mode run and not inside",

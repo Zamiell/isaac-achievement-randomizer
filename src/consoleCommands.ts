@@ -1,10 +1,10 @@
-import {
-  Difficulty,
-  type CollectibleType,
-  type PillEffect,
-  type PlayerType,
-  type RoomType,
+import type {
+  CollectibleType,
+  PillEffect,
+  PlayerType,
+  RoomType,
 } from "isaac-typescript-definitions";
+import { Difficulty } from "isaac-typescript-definitions";
 import {
   CHARACTER_NAME_TO_TYPE_MAP,
   COLLECTIBLE_NAME_TO_TYPE_MAP,
