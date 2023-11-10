@@ -1,4 +1,3 @@
-import { MAIN_CHARACTERS } from "isaacscript-common";
 import { CHARACTER_OBJECTIVE_KINDS, OBJECTIVE_TYPES } from "../cachedEnums";
 import { DIFFICULTIES } from "../constants";
 import { ObjectiveType } from "../enums/ObjectiveType";
@@ -6,7 +5,7 @@ import type { Objective } from "../types/Objective";
 import type { ObjectiveID } from "../types/ObjectiveID";
 import { getObjectiveID } from "../types/ObjectiveID";
 import { UNLOCKABLE_CHALLENGES } from "./unlockableChallenges";
-import { BANNED_CHARACTERS } from "./unlockableCharacters";
+import { PLAYABLE_CHARACTERS } from "./unlockableCharacters";
 
 export const ALL_OBJECTIVES: readonly Objective[] = (() => {
   const objectives: Objective[] = [];
@@ -14,11 +13,7 @@ export const ALL_OBJECTIVES: readonly Objective[] = (() => {
   for (const objectiveType of OBJECTIVE_TYPES) {
     switch (objectiveType) {
       case ObjectiveType.CHARACTER: {
-        for (const character of MAIN_CHARACTERS) {
-          if (BANNED_CHARACTERS.has(character)) {
-            continue;
-          }
-
+        for (const character of PLAYABLE_CHARACTERS) {
           for (const kind of CHARACTER_OBJECTIVE_KINDS) {
             for (const difficulty of DIFFICULTIES) {
               const objective: Objective = {

@@ -6,11 +6,11 @@ export const BANNED_CHARACTERS = new ReadonlySet<PlayerType>([
   PlayerType.CAIN_B,
 ]);
 
+export const PLAYABLE_CHARACTERS: readonly PlayerType[] =
+  MAIN_CHARACTERS.filter((character) => !BANNED_CHARACTERS.has(character));
+
 export const UNLOCKABLE_CHARACTERS: readonly PlayerType[] =
-  MAIN_CHARACTERS.filter(
-    (character) =>
-      character !== STARTING_CHARACTER && !BANNED_CHARACTERS.has(character),
-  );
+  PLAYABLE_CHARACTERS.filter((character) => character !== STARTING_CHARACTER);
 
 /** These are characters that are guaranteed to not be unlocked early on. */
 export const HARD_CHARACTERS = [

@@ -3,7 +3,6 @@ import {
   LAST_VANILLA_COLLECTIBLE_TYPE,
   LAST_VANILLA_PILL_EFFECT,
   LAST_VANILLA_TRINKET_TYPE,
-  MAIN_CHARACTERS,
   assertDefined,
   getCharacterName,
   splitNumber,
@@ -11,6 +10,7 @@ import {
 import { version } from "../package.json";
 import { ALL_OBJECTIVES } from "./arrays/allObjectives";
 import { UNLOCKABLE_CHALLENGES } from "./arrays/unlockableChallenges";
+import { PLAYABLE_CHARACTERS } from "./arrays/unlockableCharacters";
 import {
   endRandomizer,
   isValidSituationForStartingRandomizer,
@@ -958,7 +958,7 @@ export function initDeadSeaScrolls(): void {
     },
   };
 
-  for (const character of MAIN_CHARACTERS) {
+  for (const character of PLAYABLE_CHARACTERS) {
     const characterName = getCharacterName(character).toLowerCase();
 
     directory[`characterObjectives${character}`] = {

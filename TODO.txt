@@ -11,10 +11,6 @@ TODO:
   - Best Streak: 2
   - Total Deaths: 3
 
-- bosses from challenge room should count for no-hit timer
-- show bosses where you can get them on DSS menu
-  - sort by this instead of boss number
-
 - rules card - show future unlocks
 - website - see all current unlocks after uploading save file
 - option to include banned items

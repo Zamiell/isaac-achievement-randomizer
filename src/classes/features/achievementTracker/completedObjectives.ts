@@ -3,8 +3,9 @@ import type {
   Difficulty,
   PlayerType,
 } from "isaac-typescript-definitions";
-import { MAIN_CHARACTERS, iRange } from "isaacscript-common";
+import { iRange } from "isaacscript-common";
 import { UNLOCKABLE_CHALLENGES } from "../../../arrays/unlockableChallenges";
+import { PLAYABLE_CHARACTERS } from "../../../arrays/unlockableCharacters";
 import { CHARACTER_OBJECTIVE_KINDS } from "../../../cachedEnums";
 import type { CharacterObjectiveKind } from "../../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../../enums/ObjectiveType";
@@ -47,7 +48,7 @@ export function isAllCharacterObjectivesCompleted(
 }
 
 export function isAllCharactersObjectivesCompleted(): boolean {
-  return MAIN_CHARACTERS.every((character) =>
+  return PLAYABLE_CHARACTERS.every((character) =>
     isAllCharacterObjectivesCompleted(character),
   );
 }

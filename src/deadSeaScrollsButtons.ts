@@ -5,7 +5,6 @@ import {
   LAST_VANILLA_COLLECTIBLE_TYPE,
   LAST_VANILLA_PILL_EFFECT,
   LAST_VANILLA_TRINKET_TYPE,
-  MAIN_CHARACTERS,
   getBatteryName,
   getBombName,
   getCardName,
@@ -27,7 +26,10 @@ import {
 } from "isaacscript-common";
 import { UNLOCKABLE_CARD_TYPES } from "./arrays/unlockableCardTypes";
 import { UNLOCKABLE_CHALLENGES } from "./arrays/unlockableChallenges";
-import { UNLOCKABLE_CHARACTERS } from "./arrays/unlockableCharacters";
+import {
+  PLAYABLE_CHARACTERS,
+  UNLOCKABLE_CHARACTERS,
+} from "./arrays/unlockableCharacters";
 import { UNLOCKABLE_COLLECTIBLE_TYPES } from "./arrays/unlockableCollectibleTypes";
 import {
   UNLOCKABLE_GRID_ENTITY_TYPES,
@@ -176,7 +178,7 @@ export function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
 export function getCharacterObjectiveButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const character of MAIN_CHARACTERS) {
+  for (const character of PLAYABLE_CHARACTERS) {
     const characterName = getCharacterName(character).toLowerCase();
     buttons.push({
       str: `${getCompletedText(
@@ -196,13 +198,13 @@ export function getSpecificCharacterObjectiveButtons(
 
   for (const kind of CHARACTER_OBJECTIVE_KINDS) {
     for (const difficulty of DIFFICULTIES) {
-      let objectiveName = getCharacterObjectiveKindName(kind).toLowerCase();
-      if (kind >= CharacterObjectiveKind.NO_HIT_BASEMENT) {
-        objectiveName = `no hits on ${objectiveName}`;
-      }
       const difficultyText =
         difficulty === Difficulty.NORMAL ? "(normal)" : "(hard)";
-      objectiveName += ` ${difficultyText}`;
+      const objectiveName = getCharacterObjectiveKindName(kind).toLowerCase();
+      const objectiveLines =
+        kind < CharacterObjectiveKind.NO_HIT_BASEMENT
+          ? [`${objectiveName} ${difficultyText}`]
+          : ["no hits on", `${objectiveName} ${difficultyText}`];
 
       const completed = isCharacterObjectiveCompleted(
         character,
@@ -211,10 +213,13 @@ export function getSpecificCharacterObjectiveButtons(
       );
       const completedText = getCompletedText(completed);
 
+      for (const line of objectiveLines) {
+        buttons.push({
+          str: line,
+        });
+      }
+
       buttons.push(
-        {
-          str: objectiveName,
-        },
         {
           str: completedText,
           clr: completed ? 0 : 3,
