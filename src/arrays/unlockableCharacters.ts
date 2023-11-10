@@ -3,7 +3,10 @@ import { MAIN_CHARACTERS } from "isaacscript-common";
 import { STARTING_CHARACTER } from "../constants";
 
 export const UNLOCKABLE_CHARACTERS: readonly PlayerType[] =
-  MAIN_CHARACTERS.filter((character) => character !== STARTING_CHARACTER);
+  MAIN_CHARACTERS.filter(
+    (character) =>
+      character !== STARTING_CHARACTER && character !== PlayerType.CAIN_B,
+  );
 
 /** These are characters that are guaranteed to not be unlocked early on. */
 export const HARD_CHARACTERS = [

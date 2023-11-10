@@ -1,8 +1,9 @@
 # Achievement Randomizer Unlock List
 
-## Characters (33)
+## Characters (32)
 
 - The first character unlocked will always be Isaac. All other characters start off locked.
+- Tainted Cain is not unlockable / not included in the randomizer since Bag of Crafting does not respect item pools.
 
 ## Areas (12)
 
@@ -151,4 +152,4 @@ The following other things start out locked:
 
 ## Total Unlocks
 
-There are 33 + 12 + 17 + 44 + 699 + 185 + 95 + 50 + (11 + 6 + 2 + 3 + 4 + 2 + 10) + 15 + 9 + 5 = 1202 unlocks in total.
+There are 32 + 12 + 17 + 44 + 699 + 185 + 95 + 50 + (11 + 6 + 2 + 3 + 4 + 2 + 10) + 15 + 9 + 5 = 1201 unlocks in total.

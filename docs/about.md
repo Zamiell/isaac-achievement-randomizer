@@ -7,10 +7,9 @@
 - Achievement Randomizer is a mod for [_The Binding of Isaac: Repentance_](https://store.steampowered.com/app/1426300/The_Binding_of_Isaac_Repentance/) that gives you the experience of playing through the game from scratch, unlocking each item one by one in a randomized way.
 - It does not simply randomize all of the vanilla achievements. Rather, it has [custom objectives](objectives.md) and [custom unlocks](unlocks.md).
 - Unlike vanilla, almost everything that you can imagine is locked from the start of the game. That means you will have to beat your the first run as Isaac with only Breakfast in the item pools!
-- The custom objectives are designed to be challenging and non-arbitrary. There are only 4 types of objectives:
+- The custom objectives are designed to be challenging and non-arbitrary. There are only 3 types of objectives:
   - Kill each story boss (per character).
-  - Finish each floor without taking a hit (per character).
-  - Survive each boss for 2 minutes without taking a hit.
+  - Finish each chapter without taking a hit (per character).
   - Complete each challenge.
 - For more specific details about why we designed it this way and what exact things are locked, read on.
 
@@ -343,24 +342,16 @@ This mod is only compatible with Repentance. In other words, you must own all th
 
 When you start a new randomizer playthrough, the mod assigns each objective to a random unlock. However, not all assignments are valid. For example, the mod might have randomly assigned the objective of "beat challenge #3" to the unlock of "unlock challenge #3". In this case, the playthrough seed would be unbeatable!
 
-After all of the achievements are randomized, the mod does a validation step: it pretends that it is a player and attempts to "beat" the seed by accomplishing all of the objectives that are reachable. (This part is pretty time intensive.) If the seed is not beatable, then the mod will start from scratch and randomize all of the objectives + achievements again. It will attempt to generate valid seeds until it finds one that is beatable. This is what the "attempts" count on the black screen refers to.
+After all of the achievements are randomized, the mod does a validation step: it pretends that it is a player and attempts to "beat" the seed by accomplishing all of the objectives that are reachable. This part is pretty time intensive. If the seed is not beatable, then the mod will start from scratch and randomize all of the achievements again. It will attempt to generate valid seeds until it finds one that is beatable. This is what the "attempts" count on the black screen refers to.
 
 ### What algorithm does the randomizer use to randomize the achievements?
 
 It uses the random fill algorithm, as described [by TestRunner in the AGDQ 2019 randomizer panel](https://www.youtube.com/watch?v=vGIDzGvsrV8).
 
-### Doesn't the Pause collectible trivialize the no-hit boss objectives?
-
-No. If you use Pause, the timers will be disabled until you re-enter the room.
-
 ### Why is it possible to get a soul heart in the health before unlocking the soul heart pickup? Why is it possible to get a black heart in the health before unlocking the black heart pickup?
 
 There is a difference between a _heart health type_ (which is what appears in the health UI at the top left corner of the screen) and a _heart pickup_ (which is the entity that appears on the ground that you have to touch with your body).
 **Only the pickups are unlockable, not the health type.** In other words, it is possible to unlock the Ceremonial Robes collectible before unlocking the black heart pickup. (Ceremonial Robes adds 3 black hearts directly to the player's health upon pickup.)
-
-### How can I do the Baby Plum objective if she flies away?
-
-The no-hit achievement requires that you do not get hit on Baby Plum for 2 minutes, but Baby Plum will fly away if you do not damage her over the course of a minute. Thus, all you have to do is shoot a single tear at her every minute in order to reset the timer.
 
 ### Why do the characters appear as unlocked while on the main menu?
 

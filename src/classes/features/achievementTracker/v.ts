@@ -1,3 +1,5 @@
+import type { PlayerType } from "isaac-typescript-definitions";
+import { assertDefined } from "isaacscript-common";
 import { RandomizerMode } from "../../../enums/RandomizerMode";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
 import type { UnlockID } from "../../../types/UnlockID";
@@ -14,6 +16,7 @@ export const v = {
 
     objectiveIDToUnlockIDMap: new Map<ObjectiveID, UnlockID>(),
     unlockIDToObjectiveIDMap: new Map<UnlockID, ObjectiveID>(),
+    characterUnlockOrder: [] as PlayerType[],
 
     completedObjectiveIDs: [] as ObjectiveID[],
     completedUnlockIDs: [] as UnlockID[],
@@ -54,6 +57,20 @@ export function isAcceptedVersionMismatch(): boolean {
 
 export function setAcceptedVersionMismatch(): void {
   v.persistent.acceptedVersionMismatch = true;
+}
+
+export function getCharacterUnlockOrder(): readonly PlayerType[] {
+  return v.persistent.characterUnlockOrder;
+}
+
+export function getSecondCharacter(): PlayerType {
+  const secondCharacter = v.persistent.characterUnlockOrder[1];
+  assertDefined(
+    secondCharacter,
+    "Failed to find the second character in the current playthrough's character order.",
+  );
+
+  return secondCharacter;
 }
 
 export function getCompletedObjectiveIDs(): ObjectiveID[] {

@@ -23,7 +23,6 @@ import {
   TrinketType,
 } from "isaac-typescript-definitions";
 import {
-  MAIN_CHARACTERS,
   ReadonlyMap,
   arrayRemove,
   collectibleHasTag,
@@ -43,7 +42,6 @@ import {
   UNLOCKABLE_CARD_TYPES,
   UNLOCKABLE_RUNE_CARD_TYPES,
 } from "../../../arrays/unlockableCardTypes";
-import { HARD_CHARACTERS } from "../../../arrays/unlockableCharacters";
 import { UNLOCKABLE_COLLECTIBLE_TYPES } from "../../../arrays/unlockableCollectibleTypes";
 import { UNLOCKABLE_CHEST_PICKUP_VARIANTS } from "../../../arrays/unlockablePickupTypes";
 import { UNLOCKABLE_PILL_EFFECTS } from "../../../arrays/unlockablePillEffects";
@@ -67,6 +65,7 @@ import type {
   BombUnlock,
   CardUnlock,
   ChallengeUnlock,
+  CharacterUnlock,
   ChestUnlock,
   CoinUnlock,
   CollectibleUnlock,
@@ -128,7 +127,11 @@ import {
 } from "./completedUnlocks";
 import { getPillEffectsOfQuality } from "./pillEffectQuality";
 import { getTrinketTypesOfQuality } from "./trinketQuality";
-import { isHardcoreMode } from "./v";
+import {
+  getCharacterUnlockOrder,
+  getSecondCharacter,
+  isHardcoreMode,
+} from "./v";
 
 export const FIRST_UNLOCK_COLLECTIBLES = [
   // In the "boss" and "woodenChest" pools.
@@ -142,7 +145,7 @@ export const FIRST_UNLOCK_COLLECTIBLES = [
 ] as const;
 
 const SWAPPED_UNLOCK_FUNCTIONS = {
-  [UnlockType.CHARACTER]: undefined,
+  [UnlockType.CHARACTER]: getSwappedUnlockCharacter,
   [UnlockType.AREA]: getSwappedUnlockArea,
   [UnlockType.ROOM]: getSwappedUnlockRoom,
   [UnlockType.CHALLENGE]: getSwappedUnlockChallenge,
@@ -169,14 +172,8 @@ export function getSwappedUnlockID(
   unlockID: UnlockID,
   seed: Seed,
 ): UnlockID | undefined {
-  const possibleSecondCharacters = arrayRemove(
-    MAIN_CHARACTERS,
-    ...HARD_CHARACTERS,
-  );
-  const secondCharacter = getRandomArrayElement(possibleSecondCharacters, seed);
-
   const unlock = getUnlockFromID(unlockID);
-  if (!isUnlockSwappable(unlock, secondCharacter)) {
+  if (!isUnlockSwappable(unlock)) {
     return undefined;
   }
 
@@ -193,16 +190,13 @@ export function getSwappedUnlockID(
   }
 
   // Guarantee the second character as the next unlock after the stat collectibles.
+  const secondCharacter = getSecondCharacter();
   if (!isCharacterUnlocked(secondCharacter, false)) {
     const swappedUnlock = getUnlock(UnlockType.CHARACTER, secondCharacter);
     return getUnlockID(swappedUnlock);
   }
 
   const func = SWAPPED_UNLOCK_FUNCTIONS[unlock.type];
-  if (func === undefined) {
-    return undefined;
-  }
-
   const swappedUnlock = func(unlock, seed);
   if (swappedUnlock === undefined) {
     return undefined;
@@ -211,10 +205,7 @@ export function getSwappedUnlockID(
   return getUnlockID(swappedUnlock);
 }
 
-function isUnlockSwappable(
-  unlock: Unlock,
-  secondCharacter: PlayerType,
-): boolean {
+function isUnlockSwappable(unlock: Unlock): boolean {
   if (
     unlock.type === UnlockType.AREA &&
     includes(STATIC_UNLOCKABLE_AREAS, unlock.unlockableArea)
@@ -231,12 +222,30 @@ function isUnlockSwappable(
 
   if (
     unlock.type === UnlockType.CHARACTER &&
-    unlock.character === secondCharacter
+    unlock.character === getSecondCharacter()
   ) {
     return false;
   }
 
   return true;
+}
+
+function getSwappedUnlockCharacter(
+  unlock: Unlock,
+  _seed: Seed,
+): Unlock | undefined {
+  const characterUnlock = unlock as CharacterUnlock;
+  const characterUnlockOrder = getCharacterUnlockOrder();
+
+  for (const character of characterUnlockOrder) {
+    if (!isCharacterUnlocked(character, false)) {
+      return character === characterUnlock.character
+        ? undefined
+        : getUnlock(UnlockType.CHARACTER, character);
+    }
+  }
+
+  return undefined;
 }
 
 const SWAPPED_UNLOCK_AREA_FUNCTIONS = new ReadonlyMap<

@@ -1,11 +1,14 @@
+import type { PlayerType } from "isaac-typescript-definitions";
 import {
   arrayRemoveInPlace,
   copyArray,
   getRandomArrayElementAndRemove,
   log,
+  shuffleArray,
 } from "isaacscript-common";
 import { ALL_OBJECTIVE_IDS } from "./arrays/allObjectives";
 import { ALL_UNLOCK_IDS } from "./arrays/allUnlocks";
+import { UNLOCKABLE_CHARACTERS } from "./arrays/unlockableCharacters";
 import { STARTING_CHARACTER } from "./constants";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
@@ -63,6 +66,7 @@ const UNLOCKABLE_AREA_TO_OBJECTIVE = {
 export function getAchievementsForRNG(rng: RNG): {
   objectiveIDToUnlockIDMap: Map<ObjectiveID, UnlockID>;
   unlockIDToObjectiveIDMap: Map<UnlockID, ObjectiveID>;
+  characterUnlockOrder: readonly PlayerType[];
 } {
   // When an objective/unlock is assigned, it is added to the following maps.
   const objectiveIDToUnlockIDMap = new Map<ObjectiveID, UnlockID>();
@@ -70,6 +74,9 @@ export function getAchievementsForRNG(rng: RNG): {
 
   const unlockIDs = copyArray(ALL_UNLOCK_IDS);
   const objectiveIDs = copyArray(ALL_OBJECTIVE_IDS);
+
+  // Each character is guaranteed to unlock another character from a basic objective.
+  const characterUnlockOrder = getRandomCharacterUnlockOrder(rng);
 
   // Some achievements are non-randomized, meaning that unlocks are paired to specific objectives.
   for (const unlockableArea of STATIC_UNLOCKABLE_AREAS) {
@@ -84,6 +91,9 @@ export function getAchievementsForRNG(rng: RNG): {
     objectiveIDToUnlockIDMap.set(objectiveID, unlockID);
     unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
   }
+
+  // Statically assign the non-randomized unlocks that come before any other ones. This way, they
+  // will not ever be swapped with a character unlock.
 
   // Next, do all of the unlocks except for trinkets.
   for (const unlockID of unlockIDs) {
@@ -116,5 +126,32 @@ export function getAchievementsForRNG(rng: RNG): {
   return {
     objectiveIDToUnlockIDMap,
     unlockIDToObjectiveIDMap,
+    characterUnlockOrder,
   };
+}
+
+/** Returns a shuffled array with certain character restrictions. */
+function getRandomCharacterUnlockOrder(rng: RNG): readonly PlayerType[] {
+  let unlockableCharacters = copyArray(UNLOCKABLE_CHARACTERS);
+
+  do {
+    unlockableCharacters = shuffleArray(unlockableCharacters, rng);
+  } while (!isValidUnlockableCharacterOrder(unlockableCharacters));
+
+  return unlockableCharacters;
+}
+
+function isValidUnlockableCharacterOrder(characters: PlayerType[]): boolean {
+  return HARD_CHARACTERS.every((character) =>
+    inSecondHalfOfArray(character, characters),
+  );
+}
+
+function inSecondHalfOfArray<T>(element: T, array: T[]): boolean {
+  const index = array.indexOf(element);
+  if (index === -1) {
+    return false;
+  }
+
+  return index > (array.length - 1) / 2;
 }
