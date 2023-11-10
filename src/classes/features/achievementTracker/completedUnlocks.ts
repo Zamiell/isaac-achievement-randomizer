@@ -66,6 +66,7 @@ import { getCardTypesOfQuality } from "./cardQuality";
 import { getTrinketTypesOfQuality } from "./trinketQuality";
 import { v } from "./v";
 
+/** For hardcore & nightmare mode. */
 const QUALITY_THRESHOLD_PERCENT = 0.5;
 
 const SOUL_HEART_SUB_TYPES = [
@@ -83,6 +84,92 @@ function isUnlocked(unlock: Unlock, forRun: boolean): boolean {
   const unlockID = getUnlockID(unlock);
 
   return completedUnlockIDs.includes(unlockID);
+}
+
+function getWorseUnlock<T extends CollectibleType | TrinketType | CardType>(
+  type: T,
+  getQuality: (type: T) => Quality,
+  getTypesOfQuality: (quality: Quality) => readonly T[],
+  isTypeUnlocked: (type: T, forRun: boolean) => boolean,
+  unlockType: UnlockType.COLLECTIBLE | UnlockType.TRINKET | UnlockType.CARD,
+): T | undefined {
+  // eslint-disable-next-line isaacscript/strict-enums
+  const quality = getQuality(type);
+
+  for (const lowerQualityInt of eRange(quality)) {
+    const lowerQuality = lowerQualityInt as Quality;
+    const lowerQualityTypes = getTypesOfQuality(lowerQuality);
+    const unlockedLowerQualityTypes = lowerQualityTypes.filter(
+      // eslint-disable-next-line isaacscript/strict-enums
+      (lowerQualityType) => isTypeUnlocked(lowerQualityType, false),
+    );
+
+    if (
+      unlockedLowerQualityTypes.length >=
+      lowerQualityTypes.length * QUALITY_THRESHOLD_PERCENT
+    ) {
+      continue;
+    }
+
+    const lockedLowerQualityTypes = lowerQualityTypes.filter(
+      // eslint-disable-next-line isaacscript/strict-enums
+      (lowerQualityType) => !isTypeUnlocked(lowerQualityType, false),
+    );
+    const lockedLowerQualityTypesInPlaythrough = lockedLowerQualityTypes.filter(
+      (lowerQualityType) => {
+        const unlock = getUnlock(unlockType, lowerQualityType);
+        const unlockID = getUnlockID(unlock);
+        const objectiveID = v.persistent.unlockIDToObjectiveIDMap.get(unlockID);
+
+        return objectiveID !== undefined;
+      },
+    );
+
+    assertNotNull(
+      v.persistent.seed,
+      "Failed to get a worse unlock since the seed was null.",
+    );
+
+    return getRandomArrayElement(
+      lockedLowerQualityTypesInPlaythrough,
+      v.persistent.seed,
+    );
+  }
+
+  return undefined;
+}
+
+function getWorseUnlockProgressive<
+  T extends
+    | HeartSubType
+    | CoinSubType
+    | BombSubType
+    | KeySubType
+    | BatterySubType
+    | SackSubType
+    | PickupVariant,
+>(
+  type: T,
+  unlockableTypes: readonly T[],
+  isTypeUnlocked: (type: T, forRun: boolean) => boolean,
+): T | undefined {
+  const quality = unlockableTypes.indexOf(type);
+  if (quality === -1) {
+    error(`Failed to get the quality for progressive unlock type: ${type}`);
+  }
+
+  for (const lowerQuality of eRange(quality)) {
+    const lowerQualityType = unlockableTypes[lowerQuality];
+    if (
+      lowerQualityType !== undefined &&
+      // eslint-disable-next-line isaacscript/strict-enums
+      !isTypeUnlocked(lowerQualityType, false)
+    ) {
+      return lowerQualityType;
+    }
+  }
+
+  return undefined;
 }
 
 // ----------------------------
@@ -223,41 +310,13 @@ function getUnlockedCollectibleTypes(
 export function getWorseLockedCollectibleType(
   collectibleType: CollectibleType,
 ): CollectibleType | undefined {
-  assertNotNull(
-    v.persistent.seed,
-    "Failed to get a worse collectible type since the seed was null.",
+  return getWorseUnlock(
+    collectibleType,
+    getCollectibleQuality,
+    getVanillaCollectibleTypesOfQuality,
+    isCollectibleTypeUnlocked,
+    UnlockType.COLLECTIBLE,
   );
-
-  const quality = getCollectibleQuality(collectibleType);
-
-  for (const lowerQualityInt of eRange(quality)) {
-    const lowerQuality = lowerQualityInt as Quality;
-    const lowerQualityCollectibleTypes = [
-      ...getVanillaCollectibleTypesOfQuality(lowerQuality),
-    ];
-    const unlockedLowerQualityCollectibleTypes =
-      lowerQualityCollectibleTypes.filter((lowerQualityCollectibleType) =>
-        isCollectibleTypeUnlocked(lowerQualityCollectibleType, false),
-      );
-
-    if (
-      unlockedLowerQualityCollectibleTypes.length <
-      lowerQualityCollectibleTypes.length * QUALITY_THRESHOLD_PERCENT
-    ) {
-      const lockedLowerQualityCollectibleTypes =
-        lowerQualityCollectibleTypes.filter(
-          (lowerQualityCollectibleType) =>
-            !isCollectibleTypeUnlocked(lowerQualityCollectibleType, false),
-        );
-
-      return getRandomArrayElement(
-        lockedLowerQualityCollectibleTypes,
-        v.persistent.seed,
-      );
-    }
-  }
-
-  return undefined;
 }
 
 // --------------------------
@@ -308,47 +367,17 @@ export function getUnlockedTrinketTypes(forRun: boolean): TrinketType[] {
 export function getWorseLockedTrinketType(
   trinketType: TrinketType,
 ): TrinketType | undefined {
-  assertNotNull(
-    v.persistent.seed,
-    "Failed to get a worse trinket type since the seed was null.",
+  return getWorseUnlock(
+    trinketType,
+    getTrinketQuality,
+    getTrinketTypesOfQuality,
+    isTrinketTypeUnlocked,
+    UnlockType.TRINKET,
   );
+}
 
-  const quality = TRINKET_QUALITIES[trinketType];
-
-  for (const lowerQualityInt of eRange(quality)) {
-    const lowerQuality = lowerQualityInt as Quality;
-    const lowerQualityTrinketTypes = getTrinketTypesOfQuality(lowerQuality);
-    const unlockedLowerQualityTrinketTypes = lowerQualityTrinketTypes.filter(
-      (lowerQualityTrinketType) =>
-        isTrinketTypeUnlocked(lowerQualityTrinketType, false),
-    );
-
-    if (
-      unlockedLowerQualityTrinketTypes.length <
-      lowerQualityTrinketTypes.length * QUALITY_THRESHOLD_PERCENT
-    ) {
-      const lockedLowerQualityTrinketTypes = lowerQualityTrinketTypes.filter(
-        (lowerQualityTrinketType) =>
-          !isTrinketTypeUnlocked(lowerQualityTrinketType, false),
-      );
-      const lockedLowerQualityTrinketTypesInPlaythrough =
-        lockedLowerQualityTrinketTypes.filter((lowerQualityTrinketType) => {
-          const unlock = getUnlock(UnlockType.TRINKET, lowerQualityTrinketType);
-          const unlockID = getUnlockID(unlock);
-          const objectiveID =
-            v.persistent.unlockIDToObjectiveIDMap.get(unlockID);
-
-          return objectiveID !== undefined;
-        });
-
-      return getRandomArrayElement(
-        lockedLowerQualityTrinketTypesInPlaythrough,
-        v.persistent.seed,
-      );
-    }
-  }
-
-  return undefined;
+function getTrinketQuality(trinketType: TrinketType): Quality {
+  return TRINKET_QUALITIES[trinketType];
 }
 
 // -----------------------
@@ -436,37 +465,17 @@ export function getUnlockedCardTypes(forRun: boolean): CardType[] {
 export function getWorseLockedCardType(
   cardType: CardType,
 ): CardType | undefined {
-  assertNotNull(
-    v.persistent.seed,
-    "Failed to get a worse card type since the seed was null.",
+  return getWorseUnlock(
+    cardType,
+    getCardQuality,
+    getCardTypesOfQuality,
+    isCardTypeUnlocked,
+    UnlockType.CARD,
   );
+}
 
-  const quality = CARD_QUALITIES[cardType];
-
-  for (const lowerQualityInt of eRange(quality)) {
-    const lowerQuality = lowerQualityInt as Quality;
-    const lowerQualityCardTypes = getCardTypesOfQuality(lowerQuality);
-    const unlockedLowerQualityCardTypes = lowerQualityCardTypes.filter(
-      (lowerQualityCardType) => isCardTypeUnlocked(lowerQualityCardType, false),
-    );
-
-    if (
-      unlockedLowerQualityCardTypes.length <
-      lowerQualityCardTypes.length * QUALITY_THRESHOLD_PERCENT
-    ) {
-      const lockedLowerQualityCardTypes = lowerQualityCardTypes.filter(
-        (lowerQualityCardType) =>
-          !isCardTypeUnlocked(lowerQualityCardType, false),
-      );
-
-      return getRandomArrayElement(
-        lockedLowerQualityCardTypes,
-        v.persistent.seed,
-      );
-    }
-  }
-
-  return undefined;
+function getCardQuality(cardType: CardType): Quality {
+  return CARD_QUALITIES[cardType];
 }
 
 // ------------------------------
@@ -688,24 +697,11 @@ export function anySoulHeartUnlocked(forRun: boolean): boolean {
 export function getWorseLockedHeartSubType(
   heartSubType: HeartSubType,
 ): HeartSubType | undefined {
-  const quality = UNLOCKABLE_HEART_SUB_TYPES.indexOf(
-    heartSubType as (typeof UNLOCKABLE_HEART_SUB_TYPES)[number],
+  return getWorseUnlockProgressive(
+    heartSubType,
+    UNLOCKABLE_HEART_SUB_TYPES,
+    isHeartSubTypeUnlocked,
   );
-  if (quality === -1) {
-    error(`Failed to get the quality for heart sub-type: ${heartSubType}`);
-  }
-
-  for (const lowerQuality of eRange(quality)) {
-    const lowerQualityHeartSubType = UNLOCKABLE_HEART_SUB_TYPES[lowerQuality];
-    if (
-      lowerQualityHeartSubType !== undefined &&
-      !isHeartSubTypeUnlocked(lowerQualityHeartSubType, false)
-    ) {
-      return lowerQualityHeartSubType;
-    }
-  }
-
-  return undefined;
 }
 
 export function isCoinSubTypeUnlocked(
@@ -723,24 +719,11 @@ export function isCoinSubTypeUnlocked(
 export function getWorseLockedCoinSubType(
   coinSubType: CoinSubType,
 ): CoinSubType | undefined {
-  const quality = UNLOCKABLE_COIN_SUB_TYPES.indexOf(
-    coinSubType as (typeof UNLOCKABLE_COIN_SUB_TYPES)[number],
+  return getWorseUnlockProgressive(
+    coinSubType,
+    UNLOCKABLE_COIN_SUB_TYPES,
+    isCoinSubTypeUnlocked,
   );
-  if (quality === -1) {
-    error(`Failed to get the quality for coin sub-type: ${coinSubType}`);
-  }
-
-  for (const lowerQuality of eRange(quality)) {
-    const lowerQualityCoinSubType = UNLOCKABLE_COIN_SUB_TYPES[lowerQuality];
-    if (
-      lowerQualityCoinSubType !== undefined &&
-      !isCoinSubTypeUnlocked(lowerQualityCoinSubType, false)
-    ) {
-      return lowerQualityCoinSubType;
-    }
-  }
-
-  return undefined;
 }
 
 export function isBombSubTypeUnlocked(
@@ -758,24 +741,11 @@ export function isBombSubTypeUnlocked(
 export function getWorseLockedBombSubType(
   bombSubType: BombSubType,
 ): BombSubType | undefined {
-  const quality = UNLOCKABLE_BOMB_SUB_TYPES.indexOf(
-    bombSubType as (typeof UNLOCKABLE_BOMB_SUB_TYPES)[number],
+  return getWorseUnlockProgressive(
+    bombSubType,
+    UNLOCKABLE_BOMB_SUB_TYPES,
+    isBombSubTypeUnlocked,
   );
-  if (quality === -1) {
-    error(`Failed to get the quality for bomb sub-type: ${bombSubType}`);
-  }
-
-  for (const lowerQuality of eRange(quality)) {
-    const lowerQualityBombSubType = UNLOCKABLE_BOMB_SUB_TYPES[lowerQuality];
-    if (
-      lowerQualityBombSubType !== undefined &&
-      !isBombSubTypeUnlocked(lowerQualityBombSubType, false)
-    ) {
-      return lowerQualityBombSubType;
-    }
-  }
-
-  return undefined;
 }
 
 export function isKeySubTypeUnlocked(
@@ -793,24 +763,11 @@ export function isKeySubTypeUnlocked(
 export function getWorseLockedKeySubType(
   keySubType: KeySubType,
 ): KeySubType | undefined {
-  const quality = UNLOCKABLE_KEY_SUB_TYPES.indexOf(
-    keySubType as (typeof UNLOCKABLE_KEY_SUB_TYPES)[number],
+  return getWorseUnlockProgressive(
+    keySubType,
+    UNLOCKABLE_KEY_SUB_TYPES,
+    isKeySubTypeUnlocked,
   );
-  if (quality === -1) {
-    error(`Failed to get the quality for key sub-type: ${keySubType}`);
-  }
-
-  for (const lowerQuality of eRange(quality)) {
-    const lowerQualityKeySubType = UNLOCKABLE_KEY_SUB_TYPES[lowerQuality];
-    if (
-      lowerQualityKeySubType !== undefined &&
-      !isKeySubTypeUnlocked(lowerQualityKeySubType, false)
-    ) {
-      return lowerQualityKeySubType;
-    }
-  }
-
-  return undefined;
 }
 
 export function isBatterySubTypeUnlocked(
@@ -828,25 +785,11 @@ export function isBatterySubTypeUnlocked(
 export function getWorseLockedBatterySubType(
   batterySubType: BatterySubType,
 ): BatterySubType | undefined {
-  const quality = UNLOCKABLE_BATTERY_SUB_TYPES.indexOf(
-    batterySubType as (typeof UNLOCKABLE_BATTERY_SUB_TYPES)[number],
+  return getWorseUnlockProgressive(
+    batterySubType,
+    UNLOCKABLE_BATTERY_SUB_TYPES,
+    isBatterySubTypeUnlocked,
   );
-  if (quality === -1) {
-    error(`Failed to get the quality for battery sub-type: ${batterySubType}`);
-  }
-
-  for (const lowerQuality of eRange(quality)) {
-    const lowerQualityBatterySubType =
-      UNLOCKABLE_BATTERY_SUB_TYPES[lowerQuality];
-    if (
-      lowerQualityBatterySubType !== undefined &&
-      !isBatterySubTypeUnlocked(lowerQualityBatterySubType, false)
-    ) {
-      return lowerQualityBatterySubType;
-    }
-  }
-
-  return undefined;
 }
 
 export function isSackSubTypeUnlocked(
@@ -864,24 +807,11 @@ export function isSackSubTypeUnlocked(
 export function getWorseLockedSackSubType(
   sackSubType: SackSubType,
 ): SackSubType | undefined {
-  const quality = UNLOCKABLE_SACK_SUB_TYPES.indexOf(
-    sackSubType as (typeof UNLOCKABLE_SACK_SUB_TYPES)[number],
+  return getWorseUnlockProgressive(
+    sackSubType,
+    UNLOCKABLE_SACK_SUB_TYPES,
+    isSackSubTypeUnlocked,
   );
-  if (quality === -1) {
-    error(`Failed to get the quality for battery sub-type: ${sackSubType}`);
-  }
-
-  for (const lowerQuality of eRange(quality)) {
-    const lowerQualitySackSubType = UNLOCKABLE_SACK_SUB_TYPES[lowerQuality];
-    if (
-      lowerQualitySackSubType !== undefined &&
-      !isSackSubTypeUnlocked(lowerQualitySackSubType, false)
-    ) {
-      return lowerQualitySackSubType;
-    }
-  }
-
-  return undefined;
 }
 
 export function anyChestPickupVariantUnlocked(forRun: boolean): boolean {
@@ -911,27 +841,11 @@ export function isChestPickupVariantUnlocked(
 export function getWorseLockedChestPickupVariant(
   pickupVariant: PickupVariant,
 ): PickupVariant | undefined {
-  const quality = UNLOCKABLE_CHEST_PICKUP_VARIANTS.indexOf(
-    pickupVariant as (typeof UNLOCKABLE_CHEST_PICKUP_VARIANTS)[number],
+  return getWorseUnlockProgressive(
+    pickupVariant,
+    UNLOCKABLE_CHEST_PICKUP_VARIANTS,
+    isChestPickupVariantUnlocked,
   );
-  if (quality === -1) {
-    error(
-      `Failed to get the quality for chest pickup variant: ${pickupVariant}`,
-    );
-  }
-
-  for (const lowerQuality of eRange(quality)) {
-    const lowerQualityChestPickupVariant =
-      UNLOCKABLE_CHEST_PICKUP_VARIANTS[lowerQuality];
-    if (
-      lowerQualityChestPickupVariant !== undefined &&
-      !isChestPickupVariantUnlocked(lowerQualityChestPickupVariant, false)
-    ) {
-      return lowerQualityChestPickupVariant;
-    }
-  }
-
-  return undefined;
 }
 
 // -----------------------

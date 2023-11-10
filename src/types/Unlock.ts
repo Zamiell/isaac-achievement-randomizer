@@ -321,6 +321,8 @@ export function getUnlock(
   type: UnlockType.OTHER,
   kind: OtherUnlockKind,
 ): OtherUnlock;
+// A generic overload is required for use in generic functions.
+export function getUnlock(type: UnlockType, arg: number): Unlock;
 export function getUnlock(type: UnlockType, arg: int): Unlock {
   const constructor = UNLOCK_TYPE_TO_UNLOCK_CONSTRUCTOR[type];
   return constructor(arg);
