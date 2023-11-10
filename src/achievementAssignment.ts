@@ -14,7 +14,7 @@ import {
   UNLOCKABLE_CHARACTERS,
 } from "./arrays/unlockableCharacters";
 import { FIRST_UNLOCK_COLLECTIBLES } from "./classes/features/achievementTracker/swapUnlock";
-import { STARTING_CHARACTER } from "./constants";
+import { IS_DEV, STARTING_CHARACTER } from "./constants";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { UnlockType } from "./enums/UnlockType";
@@ -198,8 +198,11 @@ export function getAchievementsForRNG(rng: RNG): {
     if (unlock.type === UnlockType.TRINKET) {
       // In some cases, the amount of unlocks may exceed the amount of objectives.
       if (objectiveIDs.length === 0) {
-        const unlockText = getUnlockText(unlock).join(" - ");
-        log(`Skipping assignment of unlock: ${unlockText}`);
+        if (IS_DEV) {
+          const unlockText = getUnlockText(unlock).join(" - ");
+          log(`Skipping assignment of unlock: ${unlockText}`);
+        }
+
         continue;
       }
 

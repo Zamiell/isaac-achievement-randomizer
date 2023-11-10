@@ -2,10 +2,6 @@ TODO:
 
 - If this is undesired, you can turn on the "Enable double hard mode objectives" in the options.
 
-- character automatic unlock at beginning of playthrough
-
-- draw black sprite behind DSS menu by changing callback priority
-
 - recent achievements menu: show run number in title
 
 - file.txt:

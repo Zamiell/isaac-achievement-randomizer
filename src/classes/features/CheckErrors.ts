@@ -12,6 +12,7 @@ import {
   LAST_VANILLA_COLLECTIBLE_TYPE,
   ModCallbackCustom,
   ModFeature,
+  PriorityCallback,
   PriorityCallbackCustom,
   VectorZero,
   anyEasterEggEnabled,
@@ -65,6 +66,22 @@ export class CheckErrors extends ModFeature {
   // 2
   @Callback(ModCallback.POST_RENDER)
   postRender(): void {
+    this.checkDrawErrorText();
+  }
+
+  /**
+   * We want the black sprite to be drawn behind the Dead Sea Scrolls menu, so it has to be in a
+   * separate priority callback.
+   */
+  // 2
+  @PriorityCallback(ModCallback.POST_RENDER, CallbackPriority.EARLY)
+  postRenderEarly(): void {
+    if (hasErrors()) {
+      BLACK_SPRITE.Render(VectorZero);
+    }
+  }
+
+  checkDrawErrorText(): void {
     if (ModConfigMenu !== undefined && ModConfigMenu.IsVisible) {
       return;
     }
@@ -73,14 +90,6 @@ export class CheckErrors extends ModFeature {
       return;
     }
 
-    if (hasErrors()) {
-      BLACK_SPRITE.Render(VectorZero);
-    }
-
-    this.checkDrawErrorText();
-  }
-
-  checkDrawErrorText(): void {
     if (v.run.afterbirthPlus) {
       this.drawErrorText(
         `You must have the Repentance DLC installed in order to use ${MOD_NAME}.`,

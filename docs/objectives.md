@@ -25,7 +25,7 @@ Additionally, each character will unlock something upon full-clearing the follow
 3. Depths 1 + Depths 2
 4. Womb 1 + Womb 2
 
-> Tip: A Crown of Light icon will appear next to the coin count UI when the "no hit" objective has not yet been accomplished for the particular character and floor combination.
+> Tip: A Crown of Light icon will appear next to the coin count UI when the "no hit" objective has not yet been accomplished for the particular character and chapter combination.
 
 Each character objective must be completed on both normal mode and hard mode.
 
