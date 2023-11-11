@@ -1,7 +1,5 @@
 TODO:
 
-- If this is undesired, you can turn on the "Enable double hard mode objectives" in the options.
-
 - recent achievements menu: show run number in title
 
 - file.txt:

@@ -18,6 +18,7 @@
 - The second random character will now always be unlocked after the three stat collectibles and before any other unlocks.
 - Each character is now guaranteed to unlock another random character from defeating It Lives.
 - Gehenna is now flipped. (However, rooms with Ball and Chains are not flipped to avoid bugs.)
+- Gnawed Leaf is no longer banned.
 - Fixed the bug where the following rooms were flipped incorrectly:
   - Caves: #11058, #21058
   - Catacombs: #11067, #11088, #21067, #21088

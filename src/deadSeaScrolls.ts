@@ -960,16 +960,18 @@ export function initDeadSeaScrolls(): void {
         },
         {
           str: "",
+          noSel: true,
         },
         {
           str: "cheat settings",
           dest: "cheatSettings",
           tooltip: {
             strSet: [
-              "other options",
-              "to make the",
-              "game easier",
-              "for noobs.",
+              "options to",
+              "make to make",
+              "the game",
+              "easier for",
+              "noobs.",
             ],
           },
         },

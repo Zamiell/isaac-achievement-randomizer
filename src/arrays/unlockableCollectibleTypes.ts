@@ -24,7 +24,6 @@ export const NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS = [
 
 export const BANNED_COLLECTIBLE_TYPES = [
   // D100 (283) / D4 (#284) seems to work correctly with reduced pools.
-  CollectibleType.GNAWED_LEAF, // 210
   CollectibleType.EDENS_BLESSING, // 381
   CollectibleType.PLAN_C, // 475
   CollectibleType.CLICKER, // 482
