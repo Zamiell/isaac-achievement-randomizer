@@ -150,18 +150,17 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
 
 - Unlocking new things will never apply to the current run and will only apply to subsequent runs.
   - For example, if you unlock Wooden Spoon on the first run by doing the no-hit objective on Basement 1, you will still get Breakfast as the boss collectible after defeating the Basement 2 boss.
-- 6 area unlocks are not randomized and always are unlocked from specific objectives on Isaac:
-  - Womb (by defeating Mom)
-  - Cathedral (by defeating It Lives)
-  - Sheol (by defeating Isaac)
-  - The Chest (by defeating Satan)
-  - Dark Room (by defeating Blue Baby)
-  - Repentance floors (by defeating The Lamb)
+- 6 area unlocks are not randomized and always are unlocked from specific objectives:
+  - Womb (by defeating Mom on Isaac)
+  - Cathedral (by defeating It Lives on the final randomized character)
+  - Sheol (by defeating Isaac on Isaac)
+  - The Chest (by defeating Satan on Isaac)
+  - Dark Room (by defeating Blue Baby on Isaac)
+  - Repentance floors (by defeating The Lamb on Isaac)
 - The following stat collectibles will always be unlocked before any other unlocks:
   - Wooden Spoon (#27)
   - Wire Coat Hanger (#32)
   - Cat-O-Nine-Tails (#165)
-- The second random character will always be unlocked after the three stat collectibles and before any other unlocks.
 - Each character is guaranteed to unlock another random character from defeating It Lives.
 - The following characters are considered to be "hard" and are guaranteed to be in the second half of characters unlocked:
   - Blue Baby (#4)
@@ -174,7 +173,7 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
   - Tainted Bethany (#36)
   - Tainted Jacob (#37)
 - Besides that, there is no logic that makes things unlock in a particular order. However, certain specific unlocks will be swapped to ensure that unlocked things are not "useless", [as described in the casual mode section](#1-casual-mode-full-random).
-- Since there are more unlocks than objectives, a completed randomizer playthrough will not be able to unlock everything. Thus, trinkets are arbitrarily selected to be the "least impactful" unlock, and are paired last. Thus, a "completed" randomizer playthrough will not have N trinkets unlocked, where N is total unlock count minus total objective count.
+- Since there are more unlocks than objectives, a completed randomizer playthrough will not be able to unlock everything. Thus, trinkets are arbitrarily selected to be the "least impactful" unlock, and are paired last. Thus, a completed randomizer playthrough will not have N trinkets unlocked, where N is total unlock count minus total objective count.
 
 <br>
 

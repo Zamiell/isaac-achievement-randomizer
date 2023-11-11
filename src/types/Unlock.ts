@@ -252,75 +252,75 @@ const UNLOCK_TYPE_TO_UNLOCK_CONSTRUCTOR = {
 export function getUnlock(
   type: UnlockType.CHARACTER,
   character: PlayerType,
-): CharacterUnlock;
+): Readonly<CharacterUnlock>;
 export function getUnlock(
   type: UnlockType.AREA,
   unlockableArea: UnlockableArea,
-): AreaUnlock;
+): Readonly<AreaUnlock>;
 export function getUnlock(
   type: UnlockType.ROOM,
   roomType: RoomType,
-): RoomUnlock;
+): Readonly<RoomUnlock>;
 export function getUnlock(
   type: UnlockType.CHALLENGE,
   challenge: Challenge,
-): ChallengeUnlock;
+): Readonly<ChallengeUnlock>;
 export function getUnlock(
   type: UnlockType.COLLECTIBLE,
   collectibleType: CollectibleType,
-): CollectibleUnlock;
+): Readonly<CollectibleUnlock>;
 export function getUnlock(
   type: UnlockType.TRINKET,
   trinketType: TrinketType,
-): TrinketUnlock;
+): Readonly<TrinketUnlock>;
 export function getUnlock(
   type: UnlockType.CARD,
   cardType: CardType,
-): CardUnlock;
+): Readonly<CardUnlock>;
 export function getUnlock(
   type: UnlockType.PILL_EFFECT,
   pillEffect: PillEffect,
-): PillEffectUnlock;
+): Readonly<PillEffectUnlock>;
 export function getUnlock(
   type: UnlockType.HEART,
   heartSubType: HeartSubType,
-): HeartUnlock;
+): Readonly<HeartUnlock>;
 export function getUnlock(
   type: UnlockType.COIN,
   coinSubType: CoinSubType,
-): CoinUnlock;
+): Readonly<CoinUnlock>;
 export function getUnlock(
   type: UnlockType.BOMB,
   bombSubType: BombSubType,
-): BombUnlock;
+): Readonly<BombUnlock>;
 export function getUnlock(
   type: UnlockType.KEY,
   keySubType: KeySubType,
-): KeyUnlock;
+): Readonly<KeyUnlock>;
 export function getUnlock(
   type: UnlockType.BATTERY,
   batterySubType: BatterySubType,
-): BatteryUnlock;
+): Readonly<BatteryUnlock>;
 export function getUnlock(
   type: UnlockType.SACK,
   sackSubType: SackSubType,
-): SackUnlock;
+): Readonly<SackUnlock>;
 export function getUnlock(
   type: UnlockType.CHEST,
   pickupVariant: PickupVariant,
-): ChestUnlock;
+): Readonly<ChestUnlock>;
 export function getUnlock(
   type: UnlockType.SLOT,
   slotVariant: SlotVariant,
-): SlotUnlock;
+): Readonly<SlotUnlock>;
 export function getUnlock(
   type: UnlockType.GRID_ENTITY,
   gridEntityType: GridEntityType,
-): GridEntityUnlock;
+): Readonly<GridEntityUnlock>;
 export function getUnlock(
   type: UnlockType.OTHER,
   kind: OtherUnlockKind,
-): OtherUnlock;
+): Readonly<OtherUnlock>;
 // A generic overload is required for use in generic functions.
 export function getUnlock(type: UnlockType, arg: number): Unlock;
 export function getUnlock(type: UnlockType, arg: int): Unlock {

@@ -51,17 +51,17 @@ export function getObjective(
   character: PlayerType,
   kind: CharacterObjectiveKind,
   difficulty: Difficulty.NORMAL | Difficulty.HARD,
-): CharacterObjective;
+): Readonly<CharacterObjective>;
 export function getObjective(
   type: ObjectiveType.CHALLENGE,
   challenge: Challenge,
-): ChallengeObjective;
+): Readonly<ChallengeObjective>;
 export function getObjective(
   type: ObjectiveType,
   arg1: int,
   arg2?: int,
   arg3?: int,
-): Objective {
+): Readonly<Objective> {
   const constructor = OBJECTIVE_TYPE_TO_OBJECTIVE_CONSTRUCTOR[type];
   return constructor(arg1, arg2 ?? -1, arg3 ?? -1);
 }

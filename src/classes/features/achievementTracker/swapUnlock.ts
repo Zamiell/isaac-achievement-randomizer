@@ -36,6 +36,7 @@ import {
   isActiveCollectible,
   isCollectibleTypeInDefaultItemPool,
   isFamiliarCollectible,
+  isStoryBossID,
   shuffleArray,
 } from "isaacscript-common";
 import {
@@ -334,6 +335,12 @@ function getSwappedUnlockChallenge(
 
   // All the challenge bosses are story bosses.
   const challengeBossID = getChallengeBoss(challengeUnlock.challenge);
+  if (!isStoryBossID(challengeBossID)) {
+    error(
+      `The challenge boss ID of "${challengeBossID}" was not a story boss ID.`,
+    );
+  }
+
   const unlockableArea = getUnlockableAreaFromStoryBoss(challengeBossID);
   if (unlockableArea !== undefined && !isAreaUnlocked(unlockableArea, false)) {
     return getUnlock(UnlockType.AREA, unlockableArea);

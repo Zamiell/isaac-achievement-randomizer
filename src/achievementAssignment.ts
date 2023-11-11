@@ -2,6 +2,7 @@ import type { PlayerType } from "isaac-typescript-definitions";
 import { CollectibleType, Difficulty } from "isaac-typescript-definitions";
 import {
   arrayRemoveInPlace,
+  assertDefined,
   copyArray,
   getRandomArrayElementAndRemove,
   log,
@@ -142,7 +143,10 @@ export function getAchievementsForRNG(rng: RNG): {
     const unlockID = getUnlockID(unlock);
     arrayRemoveInPlace(unlockIDs, unlockID);
 
-    const objective = UNLOCKABLE_AREA_TO_OBJECTIVE[unlockableArea];
+    const objective = getObjectiveFromUnlockableArea(
+      unlockableArea,
+      characterUnlockOrder,
+    );
     const objectiveID = getObjectiveID(objective);
     arrayRemoveInPlace(objectiveIDs, objectiveID);
 
@@ -150,28 +154,19 @@ export function getAchievementsForRNG(rng: RNG): {
     unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
   }
 
-  // The second character is unlocked immediately, so it is statically paired with the next no-hit
-  // objective. The other characters are guaranteed to unlock from beating It Lives.
+  // Each character is guaranteed to unlock from beating It Lives.
   let lastUnlockedCharacter = STARTING_CHARACTER;
   for (const character of characterUnlockOrder) {
     const unlock = getUnlock(UnlockType.CHARACTER, character);
     const unlockID = getUnlockID(unlock);
     arrayRemoveInPlace(unlockIDs, unlockID);
 
-    const objective =
-      lastUnlockedCharacter === STARTING_CHARACTER
-        ? getObjective(
-            ObjectiveType.CHARACTER,
-            STARTING_CHARACTER,
-            CharacterObjectiveKind.NO_HIT_DEPTHS,
-            Difficulty.NORMAL,
-          )
-        : getObjective(
-            ObjectiveType.CHARACTER,
-            lastUnlockedCharacter,
-            CharacterObjectiveKind.IT_LIVES,
-            Difficulty.NORMAL,
-          );
+    const objective = getObjective(
+      ObjectiveType.CHARACTER,
+      lastUnlockedCharacter,
+      CharacterObjectiveKind.IT_LIVES,
+      Difficulty.NORMAL,
+    );
     const objectiveID = getObjectiveID(objective);
     arrayRemoveInPlace(objectiveIDs, objectiveID);
 
@@ -243,4 +238,25 @@ function inSecondHalfOfArray<T>(element: T, array: T[]): boolean {
   }
 
   return index > (array.length - 1) / 2;
+}
+
+function getObjectiveFromUnlockableArea(
+  unlockableArea: (typeof STATIC_UNLOCKABLE_AREAS)[number],
+  characterUnlockOrder: readonly PlayerType[],
+): Readonly<Objective> {
+  if (unlockableArea === UnlockableArea.CATHEDRAL) {
+    const finalCharacter = characterUnlockOrder.at(-1);
+    assertDefined(
+      finalCharacter,
+      "Failed to get the final character of the character unlock order.",
+    );
+    return getObjective(
+      ObjectiveType.CHARACTER,
+      finalCharacter,
+      CharacterObjectiveKind.IT_LIVES,
+      Difficulty.NORMAL,
+    );
+  }
+
+  return UNLOCKABLE_AREA_TO_OBJECTIVE[unlockableArea];
 }
