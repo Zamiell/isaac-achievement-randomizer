@@ -20,6 +20,7 @@ import {
   getPlaythroughNumCompletedRuns,
   getPlaythroughNumDeaths,
   getPlaythroughTimeElapsed,
+  hasDoubleUnlocked,
   hasIllegalPause,
   hasSavedAndQuit,
 } from "./classes/features/StatsTracker";
@@ -33,7 +34,7 @@ import {
   getRandomizerSeed,
   isRandomizerEnabled,
 } from "./classes/features/achievementTracker/v";
-import { v } from "./config";
+import { DSS_CHOICE_DISABLED, v } from "./config";
 import { MAX_SEED, MIN_SEED } from "./consoleCommands";
 import { MOD_NAME } from "./constants";
 import {
@@ -785,6 +786,20 @@ export function initDeadSeaScrolls(): void {
         {
           str: "",
         },
+        {
+          str: "ever illegally double",
+        },
+        {
+          str: "unlocked?",
+        },
+        {
+          str: () => (hasDoubleUnlocked() ? "yes" : "no"),
+          colorSelect: true,
+          noSel: true,
+        },
+        {
+          str: "",
+        },
       ],
     },
 
@@ -845,7 +860,7 @@ export function initDeadSeaScrolls(): void {
         {
           str: "show timer",
           choices: DSS_CHOICES,
-          setting: 1,
+          setting: DSS_CHOICE_DISABLED,
           variable: "timer",
 
           load: () => v.persistent.timer,
@@ -866,7 +881,7 @@ export function initDeadSeaScrolls(): void {
         {
           str: "prevent illegal pausing",
           choices: DSS_CHOICES,
-          setting: 1,
+          setting: DSS_CHOICE_DISABLED,
           variable: "preventPause",
 
           load: () => v.persistent.preventPause,
@@ -893,7 +908,7 @@ export function initDeadSeaScrolls(): void {
         {
           str: "prevent illegal s+q",
           choices: DSS_CHOICES,
-          setting: 1,
+          setting: DSS_CHOICE_DISABLED,
           variable: "preventSaveAndQuit",
 
           load: () => v.persistent.preventSaveAndQuit,
@@ -921,7 +936,7 @@ export function initDeadSeaScrolls(): void {
         {
           str: "delay achievement text",
           choices: DSS_CHOICES,
-          setting: 1,
+          setting: DSS_CHOICE_DISABLED,
           variable: "delayAchievementText",
 
           load: () => v.persistent.delayAchievementText,
@@ -942,6 +957,56 @@ export function initDeadSeaScrolls(): void {
               "of a battle.",
             ],
           },
+        },
+        {
+          str: "",
+        },
+        {
+          str: "cheat settings",
+          dest: "cheatSettings",
+          tooltip: {
+            strSet: [
+              "other options",
+              "to make the",
+              "game easier",
+              "for noobs.",
+            ],
+          },
+        },
+      ],
+    },
+
+    cheatSettings: {
+      title: "cheat settings",
+      fSize: 2,
+      buttons: [
+        {
+          str: "double unlocks",
+          choices: DSS_CHOICES,
+          setting: DSS_CHOICE_DISABLED,
+          variable: "doubleUnlocks",
+
+          load: () => v.persistent.doubleUnlocks,
+
+          /** @noSelf */
+          store: (choiceIndex: int) => {
+            v.persistent.doubleUnlocks = choiceIndex;
+          },
+
+          tooltip: {
+            strSet: [
+              "whether to",
+              "make hard",
+              "mode unlocks",
+              "count as",
+              "normal mode",
+              "unlocks.",
+            ],
+          },
+        },
+        {
+          str: "",
+          noSel: true,
         },
       ],
     },

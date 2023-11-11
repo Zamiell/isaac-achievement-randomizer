@@ -1,13 +1,20 @@
+import { Difficulty } from "isaac-typescript-definitions";
 import { assertDefined, log, onAnyChallenge } from "isaacscript-common";
+import { isDoubleUnlocksEnabled } from "../../../config";
 import { DEBUG } from "../../../constants";
 import { ObjectiveType } from "../../../enums/ObjectiveType";
 import type { Objective } from "../../../types/Objective";
-import { getObjectiveFromID, getObjectiveText } from "../../../types/Objective";
+import {
+  getObjective,
+  getObjectiveFromID,
+  getObjectiveText,
+} from "../../../types/Objective";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
 import { getObjectiveID } from "../../../types/ObjectiveID";
 import { getUnlockFromID, getUnlockText } from "../../../types/Unlock";
 import type { UnlockID } from "../../../types/UnlockID";
 import { showNewUnlock } from "../AchievementNotification";
+import { setDoubleUnlocked } from "../StatsTracker";
 import { hasErrors } from "../checkErrors/v";
 import { isObjectiveCompleted } from "./completedObjectives";
 import { getSwappedUnlockID } from "./swapUnlock";
@@ -67,6 +74,23 @@ export function addObjective(objective: Objective, emulating = false): void {
   if (!emulating) {
     const unlock = getUnlockFromID(potentiallySwappedUnlockID);
     showNewUnlock(unlock);
+  }
+
+  // Handle the "double unlocks" feature.
+  if (
+    objective.type === ObjectiveType.CHARACTER &&
+    objective.difficulty === Difficulty.HARD &&
+    isDoubleUnlocksEnabled()
+  ) {
+    setDoubleUnlocked();
+
+    const normalModeObjective = getObjective(
+      objective.type,
+      objective.character,
+      objective.kind,
+      Difficulty.NORMAL,
+    );
+    addObjective(normalModeObjective, emulating);
   }
 }
 

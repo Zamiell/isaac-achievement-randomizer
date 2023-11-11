@@ -37,6 +37,7 @@ class PlaythroughStats {
   gameFramesElapsed = 0;
   usedIllegalPause = false;
   usedSaveAndQuit = false;
+  doubleUnlocked = false;
 }
 
 const v = {
@@ -214,4 +215,12 @@ export function hasIllegalPause(): boolean {
 
 export function hasSavedAndQuit(): boolean {
   return v.persistent.stats.usedSaveAndQuit;
+}
+
+export function hasDoubleUnlocked(): boolean {
+  return v.persistent.stats.doubleUnlocked;
+}
+
+export function setDoubleUnlocked(): void {
+  v.persistent.stats.doubleUnlocked = true;
 }

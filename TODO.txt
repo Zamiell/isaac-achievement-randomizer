@@ -11,15 +11,18 @@ TODO:
   - Best Streak: 2
   - Total Deaths: 3
 
+- option to include banned items
 - rules card - show future unlocks
 - website - see all current unlocks after uploading save file
-- option to include banned items
 - emulate vanilla pill pool
 
 ------------------------------
 
 OTHER POTENTIAL UNLOCKS:
 
+- split bedrooms
+- reward plates
+- blue fire / purple fire
 - champions that drop items - https://bindingofisaacrebirth.fandom.com/wiki/Monsters#Champions
 - randomized starting items
   - characters that can't be randomized (10 in total):
