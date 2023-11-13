@@ -1,5 +1,10 @@
 TODO:
 
+- startRandomizer casual 851815763
+- allow mods setting
+- prevent rerun
+- make cheat settings work
+
 - recent achievements menu: show run number in title
 
 - file.txt:

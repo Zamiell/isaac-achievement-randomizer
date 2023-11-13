@@ -1,8 +1,11 @@
-import type { PlayerType } from "isaac-typescript-definitions";
+import type { PlayerType, TrinketType } from "isaac-typescript-definitions";
 import { assertDefined } from "isaacscript-common";
 import { RandomizerMode } from "../../../enums/RandomizerMode";
+import { UnlockType } from "../../../enums/UnlockType";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
+import { getUnlock } from "../../../types/Unlock";
 import type { UnlockID } from "../../../types/UnlockID";
+import { getUnlockID } from "../../../types/UnlockID";
 
 // This is registered in "AchievementTracker.ts".
 // eslint-disable-next-line isaacscript/require-v-registration
@@ -83,4 +86,16 @@ export function getNumCompletedObjectives(): int {
 
 export function getCompletedUnlockIDs(): UnlockID[] {
   return v.persistent.completedUnlockIDs;
+}
+
+/**
+ * Since trinket unlocks are assigned last, it is possible that some trinket types can never be
+ * unlocked in the current randomizer playthrough.
+ */
+export function isTrinketTypeInPlaythrough(trinketType: TrinketType): boolean {
+  const unlock = getUnlock(UnlockType.TRINKET, trinketType);
+  const unlockID = getUnlockID(unlock);
+  const objectiveID = v.persistent.unlockIDToObjectiveIDMap.get(unlockID);
+
+  return objectiveID !== undefined;
 }

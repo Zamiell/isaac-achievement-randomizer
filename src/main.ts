@@ -28,6 +28,7 @@ import { PickupRemoval } from "./classes/features/PickupRemoval";
 import { PillRemoval } from "./classes/features/PillRemoval";
 import { PreventEndMegaSatan } from "./classes/features/PreventEndMegaSatan";
 import { PreventPause } from "./classes/features/PreventPause";
+import { PreventRerun } from "./classes/features/PreventRerun";
 import { PreventSaveAndQuit } from "./classes/features/PreventSaveAndQuit";
 import { PreventVictoryLapPopup } from "./classes/features/PreventVictoryLapPopup";
 import { RemoveDonationMachines } from "./classes/features/RemoveDonationMachines";
@@ -70,6 +71,7 @@ const MOD_FEATURES = [
   PillRemoval,
   PreventEndMegaSatan,
   PreventPause,
+  PreventRerun,
   PreventSaveAndQuit,
   PreventVictoryLapPopup,
   RemoveDonationMachines,

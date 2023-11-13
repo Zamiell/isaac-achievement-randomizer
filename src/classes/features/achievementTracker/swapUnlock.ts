@@ -55,6 +55,7 @@ import {
   UnlockableArea,
   getUnlockableAreaFromStoryBoss,
 } from "../../../enums/UnlockableArea";
+import { TRINKET_QUALITIES } from "../../../objects/trinketQualities";
 import {
   DICE_CARDS,
   DICE_COLLECTIBLES,
@@ -127,11 +128,11 @@ import {
   isTrinketTypeUnlocked,
 } from "./completedUnlocks";
 import { getPillEffectsOfQuality } from "./pillEffectQuality";
-import { getTrinketTypesOfQuality } from "./trinketQuality";
 import {
   getCharacterUnlockOrder,
   getSecondCharacter,
   isHardcoreMode,
+  isTrinketTypeInPlaythrough,
 } from "./v";
 
 export const FIRST_UNLOCK_COLLECTIBLES = [
@@ -2082,12 +2083,27 @@ function getRandomFamiliarCollectibleUnlock(seed: Seed): CollectibleUnlock {
   return getUnlock(UnlockType.COLLECTIBLE, collectibleType);
 }
 
+/**
+ * It is possible that some trinkets are not unlockable on the current playthrough, since trinket
+ * unlocks are assigned last.
+ */
 function getRandomTrinketUnlock(seed: Seed): TrinketUnlock {
+  const lockedTrinketTypes = UNLOCKABLE_TRINKET_TYPES.filter(
+    (trinketType) => !isTrinketTypeUnlocked(trinketType, false),
+  );
+
+  const lockedTrinketTypesInPlaythrough = lockedTrinketTypes.filter(
+    (trinketType) => isTrinketTypeInPlaythrough(trinketType),
+  );
+
+  const lockedTrinketTypesInPlaythroughQuality0 =
+    lockedTrinketTypesInPlaythrough.filter(
+      (trinketType) => TRINKET_QUALITIES[trinketType] === 0,
+    );
+
   const trinketTypes = isHardcoreMode()
-    ? getTrinketTypesOfQuality(0).filter((trinketType) =>
-        UNLOCKABLE_TRINKET_TYPES.includes(trinketType),
-      )
-    : UNLOCKABLE_TRINKET_TYPES;
+    ? lockedTrinketTypesInPlaythroughQuality0
+    : lockedTrinketTypesInPlaythrough;
 
   const trinketType = getRandomArrayElement(trinketTypes, seed);
 

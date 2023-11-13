@@ -124,6 +124,11 @@ export class AchievementRandomizer extends RandomizerModFeature {
     }
     renderFrameToTryGenerate = undefined;
 
+    log(
+      `Generating achievements for randomizer seed: ${
+        v.persistent.seed
+      } (attempt #${numGenerationAttempts}, using seed: ${generatingRNG.GetSeed()})`,
+    );
     const {
       objectiveIDToUnlockIDMap,
       unlockIDToObjectiveIDMap,

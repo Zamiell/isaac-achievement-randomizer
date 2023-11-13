@@ -146,10 +146,13 @@ function swapAchievement(
 ) {
   const swappedObjectiveID =
     v.persistent.unlockIDToObjectiveIDMap.get(swappedUnlockID);
-  assertDefined(
-    swappedObjectiveID,
-    `Failed to find the objective ID corresponding to unlock ID: ${swappedUnlockID}`,
-  );
+  if (swappedObjectiveID === undefined) {
+    const swappedUnlock = getUnlockFromID(swappedUnlockID);
+    const swappedUnlockText = getUnlockText(swappedUnlock).join(" - ");
+    error(
+      `Failed to find the objective ID corresponding to unlock ID: ${swappedUnlockID} (${swappedUnlockText})`,
+    );
+  }
 
   v.persistent.objectiveIDToUnlockIDMap.set(objectiveID, swappedUnlockID);
   v.persistent.objectiveIDToUnlockIDMap.set(swappedObjectiveID, unlockID);
