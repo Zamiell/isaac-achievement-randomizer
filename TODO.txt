@@ -1,8 +1,9 @@
 TODO:
 
+- generatedWithCheat
+
 - startRandomizer casual 851815763
   - takes too many attempts, something is probably wrong
-- prevent rerun
 - allow mods setting
 - make cheat settings work
 

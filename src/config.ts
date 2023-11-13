@@ -49,3 +49,7 @@ export function isDelayAchievementTextEnabled(): boolean {
 export function isDoubleUnlocksEnabled(): boolean {
   return v.persistent.doubleUnlocks === DSS_CHOICE_ENABLED;
 }
+
+export function isAllowModsEnabled(): boolean {
+  return v.persistent.allowMods === DSS_CHOICE_ENABLED;
+}

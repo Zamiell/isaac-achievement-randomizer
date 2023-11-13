@@ -9,6 +9,10 @@ import {
   Callback,
   CallbackCustom,
   GAME_FRAMES_PER_SECOND,
+  LAST_VANILLA_CARD_TYPE,
+  LAST_VANILLA_COLLECTIBLE_TYPE,
+  LAST_VANILLA_PILL_EFFECT,
+  LAST_VANILLA_TRINKET_TYPE,
   ModCallbackCustom,
   ModFeature,
   PriorityCallback,
@@ -23,6 +27,7 @@ import {
 } from "isaacscript-common";
 import { isPreventPauseEnabled } from "../../config";
 import { ChallengeCustom } from "../../enums/ChallengeCustom";
+import { mod } from "../../mod";
 import { convertSecondsToTimerValues } from "../../timer";
 import { getRandomizerSeed, isRandomizerEnabled } from "./achievementTracker/v";
 import { hasErrors } from "./checkErrors/v";
@@ -38,6 +43,8 @@ class PlaythroughStats {
   usedIllegalPause = false;
   usedSaveAndQuit = false;
   doubleUnlocked = false;
+  usedMods = false;
+  generatedWithCheat = false;
 }
 
 const v = {
@@ -135,6 +142,22 @@ export class StatsTracker extends ModFeature {
     }
 
     v.persistent.stats.numDeaths++;
+  }
+
+  @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, undefined)
+  postGameStartedReordered(): void {
+    if (this.isOtherModsEnabled()) {
+      v.persistent.stats.usedMods = true;
+    }
+  }
+
+  isOtherModsEnabled(): boolean {
+    return (
+      mod.getLastCollectibleType() !== LAST_VANILLA_COLLECTIBLE_TYPE ||
+      mod.getLastTrinketType() !== LAST_VANILLA_TRINKET_TYPE ||
+      mod.getLastCardType() !== LAST_VANILLA_CARD_TYPE ||
+      mod.getLastPillEffect() !== LAST_VANILLA_PILL_EFFECT
+    );
   }
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, true)

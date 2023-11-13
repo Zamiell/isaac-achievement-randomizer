@@ -33,6 +33,7 @@ import {
 import { version } from "../../../package.json";
 import { BANNED_CHALLENGES } from "../../arrays/unlockableChallenges";
 import { BANNED_CHARACTERS } from "../../arrays/unlockableCharacters";
+import { isAllowModsEnabled } from "../../config";
 import {
   IS_DEV,
   LAST_VERSION_WITH_ACHIEVEMENT_CHANGES,
@@ -249,6 +250,10 @@ function checkIncompleteSave() {
  * We hardcode a check for External Item Descriptions, since it is a popular mod.
  */
 function checkOtherModsEnabled() {
+  if (isAllowModsEnabled()) {
+    return;
+  }
+
   const lastCollectibleType = mod.getLastCollectibleType();
   if (lastCollectibleType !== LAST_VANILLA_COLLECTIBLE_TYPE) {
     log(
