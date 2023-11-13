@@ -22,16 +22,16 @@
   },
   "dependencies": {
     "isaac-typescript-definitions": "^38.2.0",
-    "isaacscript-common": "^77.2.1"
+    "isaacscript-common": "^77.3.0"
   },
   "devDependencies": {
     "cloc": "^1.98.0-cloc",
     "isaacscript": "^3.19.2",
     "isaacscript-common-node": "^1.2.0",
-    "isaacscript-lint": "^6.3.0",
+    "isaacscript-lint": "^6.4.0",
     "isaacscript-spell": "^1.10.0",
     "isaacscript-tsconfig": "^5.0.0",
-    "tsx": "^4.1.0",
+    "tsx": "^4.1.1",
     "typescript": "^5.2.2",
     "typescript-to-lua": "^1.21.0"
   },

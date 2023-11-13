@@ -13,6 +13,7 @@ export const v = {
     bannedChallenge: false,
     lockedMode: false,
     versionMismatch: false,
+    rerun: false,
   },
 };
 

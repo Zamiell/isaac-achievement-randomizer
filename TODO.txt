@@ -1,8 +1,9 @@
 TODO:
 
 - startRandomizer casual 851815763
-- allow mods setting
+  - takes too many attempts, something is probably wrong
 - prevent rerun
+- allow mods setting
 - make cheat settings work
 
 - recent achievements menu: show run number in title

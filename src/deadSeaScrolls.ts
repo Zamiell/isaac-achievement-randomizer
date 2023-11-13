@@ -997,6 +997,26 @@ export function initDeadSeaScrolls(): void {
           str: "",
           noSel: true,
         },
+        {
+          str: "allow mods",
+          choices: DSS_CHOICES,
+          setting: DSS_CHOICE_DISABLED,
+          variable: "allowMods",
+
+          load: () => v.persistent.allowMods,
+
+          store: (choiceIndex) => {
+            v.persistent.allowMods = choiceIndex;
+          },
+
+          tooltip: {
+            strSet: ["whether to", "allow other", "mods that", "add items."],
+          },
+        },
+        {
+          str: "",
+          noSel: true,
+        },
       ],
     },
 

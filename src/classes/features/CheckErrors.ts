@@ -1,7 +1,6 @@
 import {
   CallbackPriority,
   CollectibleType,
-  Difficulty,
   ItemPoolType,
   ModCallback,
   PlayerType,
@@ -9,7 +8,10 @@ import {
 } from "isaac-typescript-definitions";
 import {
   Callback,
+  LAST_VANILLA_CARD_TYPE,
   LAST_VANILLA_COLLECTIBLE_TYPE,
+  LAST_VANILLA_PILL_EFFECT,
+  LAST_VANILLA_TRINKET_TYPE,
   ModCallbackCustom,
   ModFeature,
   PriorityCallback,
@@ -134,6 +136,10 @@ export class CheckErrors extends ModFeature {
       this.drawErrorText(
         `The achievements that were created at the beginning of your current playthrough are now out of date with the latest version of the Achievement Randomizer mod. (The current version is ${version}, the last version with achievement changes was ${LAST_VERSION_WITH_ACHIEVEMENT_CHANGES}, and the version that you started the playthrough on was ${achievementsVersionString}.\n\nIt is recommended that you start over with a fresh playthrough by typing the console command of "endRandomizer". Otherwise, you can proceed and potentially finish the playthrough by typing the console command of "forceWrongVersion". (However, if you do this, there may be bugs.)`,
       );
+    } else if (v.run.rerun) {
+      this.drawErrorText(
+        `You are not allowed to play ${MOD_NAME} using reruns.`,
+      );
     }
   }
 
@@ -199,6 +205,15 @@ export class CheckErrors extends ModFeature {
       player.AddControlsCooldown(1_000_000_000);
     }
   }
+
+  @PriorityCallbackCustom(
+    ModCallbackCustom.POST_GAME_STARTED_REORDERED,
+    CallbackPriority.EARLY,
+    true,
+  )
+  postGameStartedReorderedTrueEarly(): void {
+    checkRerun();
+  }
 }
 
 function checkAfterbirthPlus() {
@@ -238,6 +253,30 @@ function checkOtherModsEnabled() {
   if (lastCollectibleType !== LAST_VANILLA_COLLECTIBLE_TYPE) {
     log(
       `Error: Other mods detected. (The highest collectible ID is ${lastCollectibleType}, but it should be ${LAST_VANILLA_COLLECTIBLE_TYPE}.)`,
+    );
+    v.run.otherModsEnabled = true;
+  }
+
+  const lastTrinketType = mod.getLastTrinketType();
+  if (lastTrinketType !== LAST_VANILLA_TRINKET_TYPE) {
+    log(
+      `Error: Other mods detected. (The highest trinket ID is ${lastTrinketType}, but it should be ${LAST_VANILLA_TRINKET_TYPE}.)`,
+    );
+    v.run.otherModsEnabled = true;
+  }
+
+  const lastCardType = mod.getLastCardType();
+  if (lastCardType !== LAST_VANILLA_CARD_TYPE) {
+    log(
+      `Error: Other mods detected. (The highest card ID is ${lastCardType}, but it should be ${LAST_VANILLA_CARD_TYPE}.)`,
+    );
+    v.run.otherModsEnabled = true;
+  }
+
+  const lastPillEffect = mod.getLastPillEffect();
+  if (lastPillEffect !== LAST_VANILLA_PILL_EFFECT) {
+    log(
+      `Error: Other mods detected. (The highest pill effect ID is ${lastPillEffect}, but it should be ${LAST_VANILLA_PILL_EFFECT}.)`,
     );
     v.run.otherModsEnabled = true;
   }
@@ -306,10 +345,7 @@ function checkChallengeBanned() {
 }
 
 function checkModeUnlocked() {
-  if (
-    game.Difficulty === Difficulty.GREEDIER &&
-    !isAreaUnlocked(UnlockableArea.GREED_MODE, false)
-  ) {
+  if (game.IsGreedMode() && !isAreaUnlocked(UnlockableArea.GREED_MODE, false)) {
     log("Error: Locked Greed Mode detected.");
     v.run.lockedMode = true;
   }
@@ -369,4 +405,11 @@ function doVersionsMatch(): boolean {
   }
 
   return true;
+}
+
+function checkRerun() {
+  if (mod.onRerun()) {
+    log("Error: Rerun detected.");
+    v.run.rerun = true;
+  }
 }

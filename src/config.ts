@@ -16,6 +16,7 @@ export const v = {
 
     // Cheat settings
     doubleUnlocks: DSS_CHOICE_DISABLED,
+    allowMods: DSS_CHOICE_DISABLED,
     unbanEdensBlessing: DSS_CHOICE_DISABLED,
     unbanPlanC: DSS_CHOICE_DISABLED,
     unbanClicker: DSS_CHOICE_DISABLED,
