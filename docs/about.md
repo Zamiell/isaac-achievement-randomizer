@@ -41,12 +41,10 @@
 We do not want to randomize the vanilla achievements. This is for several reasons:
 
 1. [Other mods](https://steamcommunity.com/sharedfiles/filedetails/?id=2838967057) have already done that.
-1. Some of the vanilla achievements do not make sense in the context of a player trying to "beat the game" in the least amount of death possible, like `The Scissors - Die 100 times` or `Mr. Resetter! - Reset 7 times in a row`. (This would make the minimum amount of deaths always be 100 and it is possible to complete the game in less than that.)
-1. Some vanilla achievements do not make sense in the context of a player trying to "beat the game" in the fastest time possible, like `Dedication - Participate in 31 Daily Challenges`. (This would make the minimum amount of time always be 31 days and it is possible to complete the game in less than that.)
-1. Most vanilla achievements are arbitrary conditions and are not very fun to play, like `They will charge you up... for a small fee - Donate to Battery Bums until they pay out with an item 5 times`. (If you are not lucky enough to get this achievement during your playthrough, the most consistent strategy is to reset as Tainted Keeper in Greed Mode until you see a Battery Bum in the shop. This is "busywork" and is not skill-based in any way.)
-1. Many things are not gated behind vanilla achievements and it would be fun if they were (e.g. soul hearts, locked chests).
+1. Most vanilla achievements are arbitrary tasks and are not very fun to play, like `Charged Penny - Donate to Battery Bums until they pay out with an item 5 times`. (If you are not lucky enough to get this achievement during your playthrough, the most consistent strategy is to reset as Tainted Keeper in Greed Mode until you see a Battery Bum in the shop. This is "busywork" and is not skill-based in any way.)
+1. In vanilla, some items are arbitrary unlocked from the start, and other items are not. It would be fun if every single item in the game was unlockable. And not just every collectible, but also soul hearts, locked chests, and so on.
 
-Thus, this mod takes a completely different approach. We want each objective to be non-arbitrary, difficult, and represent a meaningful accomplishment inside of the game. And we want to unlock as many things as possible.
+Thus, this mod takes a completely different approach. We want each objective to be fairly non-arbitrary. And we want to unlock as many things as possible.
 
 <br>
 
@@ -86,7 +84,7 @@ This mode can make a randomizer playthrough extremely easy, because if your firs
 
 In hardcore mode, we want to prevent the situation where you unlock powerful items early on in your playthrough.
 
-- Collectibles, trinkets, and cards will progressively unlock based on their quality classification. (50% of 0 quality items must unlock first before 1 quality items, and so on.)
+- Collectibles, trinkets, and cards will progressively unlock based on their quality classification. (33% of 0 quality items must unlock first before 1 quality items, and so on.)
   - Since [trinkets](https://github.com/Zamiell/isaac-achievement-randomizer/blob/main/src/objects/trinketQualities.ts) and [cards](https://github.com/Zamiell/isaac-achievement-randomizer/blob/main/src/objects/cardQualities.ts) do not have vanilla quality classifications, custom qualities were created by [Gamonymous](https://github.com/Rchardon) & [Moucheron Quipet](https://www.twitch.tv/moucheronquipet).
   - Some collectibles have a [custom quality](https://github.com/Zamiell/isaac-achievement-randomizer/blob/main/mod/resources/items_metadata.xml) (like Cursed Eye).
 - Pill effects will unlock on a cycle of one negative, one neutral, and one positive.

@@ -12,9 +12,9 @@ interface DSSMod extends Mod {
   closeMenu: (fullClose: boolean, noAnimate: boolean) => void;
   setEnabled: (enabled: boolean) => void; // A custom added function to work around DSS bugs.
 
-  gamepadToggleButton: unknown;
-  menuKeybindButton: unknown;
-  paletteButton: unknown;
-  menuHintButton: unknown;
-  menuBuzzerButton: unknown;
+  gamepadToggleButton: DeadSeaScrollsButton;
+  menuKeybindButton: DeadSeaScrollsButton;
+  paletteButton: DeadSeaScrollsButton;
+  menuHintButton: DeadSeaScrollsButton;
+  menuBuzzerButton: DeadSeaScrollsButton;
 }

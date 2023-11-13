@@ -67,7 +67,7 @@ import { getTrinketTypesOfQuality } from "./trinketQuality";
 import { v } from "./v";
 
 /** For hardcore & nightmare mode. */
-const QUALITY_THRESHOLD_PERCENT = 0.5;
+const QUALITY_THRESHOLD_PERCENT = 0.333;
 
 const SOUL_HEART_SUB_TYPES = [
   HeartSubType.SOUL, // 3

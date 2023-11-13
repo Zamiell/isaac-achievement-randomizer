@@ -3,6 +3,7 @@ import {
   LAST_VANILLA_COLLECTIBLE_TYPE,
   LAST_VANILLA_PILL_EFFECT,
   LAST_VANILLA_TRINKET_TYPE,
+  ReadonlyMap,
   assertDefined,
   getCharacterName,
   splitNumber,
@@ -76,11 +77,24 @@ import { mod } from "./mod";
 
 const DSS_CHOICES = ["disabled", "enabled"] as const;
 
+const UNBAN_KEY_TO_NAME = new ReadonlyMap<keyof typeof v.persistent, string>([
+  ["unbanEdensBlessing", "Eden's Blessing"], // 381
+  ["unbanPlanC", "Plan C"], // 475
+  ["unbanClicker", "Clicker"], // 482
+  ["unbanMetronome", "Metronome"], // 488
+  ["unbanRKey", "R Key"], // 636
+  ["unbanTMTRAINER", "TMTRAINER"], // 721
+  ["unbanError", "Error"], // 75
+  ["unbanKarma", "Karma"], // 85
+  ["unbanM", "'M"], // 138
+  ["unbanChaosCard", "Chaos Card"], // 42
+]);
+
 export function initDeadSeaScrolls(): void {
   mod.saveDataManager("deadSeaScrolls", v);
   const DSSMod = init(`${MOD_NAME}-DSS`, 1, v.persistent);
 
-  const directory: Record<string, unknown> = {
+  const directory: Record<string, DeadSeaScrollsSubMenu> = {
     main: {
       title: "randomizer menu",
       fSize: 2,
@@ -90,7 +104,7 @@ export function initDeadSeaScrolls(): void {
           noSel: true,
         },
         {
-          str: () => getRandomizerSeed() ?? "[disabled]",
+          str: () => getRandomizerSeed()?.toString() ?? "[disabled]",
           colorSelect: true,
           noSel: true,
         },
@@ -182,8 +196,7 @@ export function initDeadSeaScrolls(): void {
     selectSeed: {
       title: "select seed",
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         if (isValidSituationForStartingRandomizer()) {
           menu.buttons = [
             {
@@ -370,8 +383,7 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getRecentAchievementsButtons();
       },
     },
@@ -398,8 +410,7 @@ export function initDeadSeaScrolls(): void {
       title: "character todo",
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getCharacterObjectiveButtons();
       },
     },
@@ -408,8 +419,7 @@ export function initDeadSeaScrolls(): void {
       title: "challenge todo",
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getChallengeObjectiveButtons();
       },
     },
@@ -499,8 +509,7 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getCharacterUnlockButtons();
       },
     },
@@ -511,8 +520,7 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getAreaUnlockButtons();
       },
     },
@@ -523,8 +531,7 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getRoomUnlockButtons();
       },
     },
@@ -533,8 +540,7 @@ export function initDeadSeaScrolls(): void {
       title: "challenge unlocks",
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getChallengeUnlockButtons();
       },
     },
@@ -543,8 +549,7 @@ export function initDeadSeaScrolls(): void {
       title: "collectible unlocks",
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getCollectibleUnlockButtons();
       },
     },
@@ -553,8 +558,7 @@ export function initDeadSeaScrolls(): void {
       title: "trinket unlocks",
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getTrinketUnlockButtons();
       },
     },
@@ -563,8 +567,7 @@ export function initDeadSeaScrolls(): void {
       title: "card unlocks",
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getCardUnlockButtons();
       },
     },
@@ -573,8 +576,7 @@ export function initDeadSeaScrolls(): void {
       title: "pill effect unlocks",
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getPillEffectUnlockButtons();
       },
     },
@@ -585,8 +587,7 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getHeartUnlockButtons();
       },
     },
@@ -597,8 +598,7 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getCoinUnlockButtons();
       },
     },
@@ -609,8 +609,7 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getBombUnlockButtons();
       },
     },
@@ -621,8 +620,7 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getKeyUnlockButtons();
       },
     },
@@ -633,8 +631,7 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getBatteryUnlockButtons();
       },
     },
@@ -645,8 +642,7 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getSackUnlockButtons();
       },
     },
@@ -657,8 +653,7 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getChestUnlockButtons();
       },
     },
@@ -669,8 +664,7 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getSlotUnlockButtons();
       },
     },
@@ -681,8 +675,7 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getGridEntityUnlockButtons();
       },
     },
@@ -693,8 +686,7 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getOtherUnlockButtons();
       },
     },
@@ -732,7 +724,7 @@ export function initDeadSeaScrolls(): void {
           str: "completed runs:",
         },
         {
-          str: getPlaythroughNumCompletedRuns,
+          str: () => getPlaythroughNumCompletedRuns().toString(),
           colorSelect: true,
           noSel: true,
         },
@@ -743,7 +735,7 @@ export function initDeadSeaScrolls(): void {
           str: "deaths:",
         },
         {
-          str: getPlaythroughNumDeaths,
+          str: () => getPlaythroughNumDeaths().toString(),
           colorSelect: true,
           noSel: true,
         },
@@ -865,8 +857,7 @@ export function initDeadSeaScrolls(): void {
 
           load: () => v.persistent.timer,
 
-          /** @noSelf */
-          store: (choiceIndex: int) => {
+          store: (choiceIndex) => {
             v.persistent.timer = choiceIndex;
           },
 
@@ -886,8 +877,7 @@ export function initDeadSeaScrolls(): void {
 
           load: () => v.persistent.preventPause,
 
-          /** @noSelf */
-          store: (choiceIndex: int) => {
+          store: (choiceIndex) => {
             v.persistent.preventPause = choiceIndex;
           },
 
@@ -913,8 +903,7 @@ export function initDeadSeaScrolls(): void {
 
           load: () => v.persistent.preventSaveAndQuit,
 
-          /** @noSelf */
-          store: (choiceIndex: int) => {
+          store: (choiceIndex) => {
             v.persistent.preventSaveAndQuit = choiceIndex;
           },
 
@@ -941,8 +930,7 @@ export function initDeadSeaScrolls(): void {
 
           load: () => v.persistent.delayAchievementText,
 
-          /** @noSelf */
-          store: (choiceIndex: int) => {
+          store: (choiceIndex) => {
             v.persistent.delayAchievementText = choiceIndex;
           },
 
@@ -990,8 +978,7 @@ export function initDeadSeaScrolls(): void {
 
           load: () => v.persistent.doubleUnlocks,
 
-          /** @noSelf */
-          store: (choiceIndex: int) => {
+          store: (choiceIndex) => {
             v.persistent.doubleUnlocks = choiceIndex;
           },
 
@@ -1025,6 +1012,7 @@ export function initDeadSeaScrolls(): void {
     },
   };
 
+  // Fill in the "characterObjectivesFoo" menus.
   for (const character of PLAYABLE_CHARACTERS) {
     const characterName = getCharacterName(character).toLowerCase();
 
@@ -1034,15 +1022,15 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getSpecificCharacterObjectiveButtons(character);
       },
     };
   }
 
-  // We can use `UNLOCKABLE_CHALLENGES.length` here because the only banned challenge is the final
-  // one. In other words, having the final page go to 45 would look like a bug.
+  // Fill in the "challengeObjectivesFoo" and "challengeUnlocksFoo" menus. We can use
+  // `UNLOCKABLE_CHALLENGES.length` here because the only banned challenge is the final one. In
+  // other words, having the final page go to 45 would look like a bug.
   const challengeChunks = splitNumber(
     UNLOCKABLE_CHALLENGES.length,
     MENU_PAGE_SIZE,
@@ -1056,8 +1044,7 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getSpecificChallengeObjectiveButtons(min, max);
       },
     };
@@ -1068,13 +1055,13 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getSpecificChallengeUnlockButtons(min, max);
       },
     };
   }
 
+  // Fill in the "collectibleUnlocksFoo" menus.
   const collectibleChunks = splitNumber(
     LAST_VANILLA_COLLECTIBLE_TYPE,
     MENU_PAGE_SIZE,
@@ -1088,13 +1075,13 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getSpecificCollectibleUnlockButtons(min, max);
       },
     };
   }
 
+  // Fill in the "trinketUnlocksFoo" menus.
   const trinketChunks = splitNumber(LAST_VANILLA_TRINKET_TYPE, MENU_PAGE_SIZE);
   for (const chunk of trinketChunks) {
     const [min, max] = chunk;
@@ -1105,13 +1092,13 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getSpecificTrinketUnlockButtons(min, max);
       },
     };
   }
 
+  // Fill in the "cardUnlocksFoo" menus.
   const cardChunks = splitNumber(LAST_VANILLA_CARD_TYPE, MENU_PAGE_SIZE);
   for (const chunk of cardChunks) {
     const [min, max] = chunk;
@@ -1122,13 +1109,13 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getSpecificCardUnlockButtons(min, max);
       },
     };
   }
 
+  // Fill in the "pillEffectUnlocksFoo" menus.
   const pillEffectChunks = splitNumber(
     LAST_VANILLA_PILL_EFFECT,
     MENU_PAGE_SIZE,
@@ -1143,11 +1130,58 @@ export function initDeadSeaScrolls(): void {
       scroller: true,
       fSize: 2,
 
-      /** @noSelf */
-      generate: (menu: DeadSeaScrollsMenu) => {
+      generate: (menu) => {
         menu.buttons = getSpecificPillEffectUnlockButtons(min, max);
       },
     };
+  }
+
+  // Fill in the "cheatSettings" menus.
+  const { cheatSettings } = directory;
+  assertDefined(
+    cheatSettings,
+    "Failed to find the directory key: cheatSettings",
+  );
+  const cheatSettingsButtons = cheatSettings.buttons;
+  assertDefined(
+    cheatSettingsButtons,
+    "Failed to find the cheat settings buttons.",
+  );
+  for (const [key, nameRaw] of UNBAN_KEY_TO_NAME) {
+    const name = nameRaw.toLowerCase();
+
+    cheatSettingsButtons.push(
+      {
+        str: `unban ${name}`,
+        choices: DSS_CHOICES,
+        setting: DSS_CHOICE_DISABLED,
+        variable: key,
+
+        load: () => v.persistent.unbanPlanC,
+
+        store: (choiceIndex) => {
+          v.persistent[key] = choiceIndex;
+        },
+
+        tooltip: {
+          strSet: [
+            "whether to",
+            "unban",
+            `${name}.`,
+            "",
+            "(this only",
+            "takes effect",
+            "when starting",
+            "a new",
+            "playthrough.)",
+          ],
+        },
+      },
+      {
+        str: "",
+        noSel: true,
+      },
+    );
   }
 
   const directoryKey = {

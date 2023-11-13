@@ -1,8 +1,8 @@
 /** This is 1 instead of 0 because Lua has 1-indexed arrays. */
-export const DSS_CHOICE_DISABLED = 1;
+export const DSS_CHOICE_DISABLED = 1 as 1 | 2;
 
 /** This is 2 instead of 1 because Lua has 1-indexed arrays. */
-const DSS_CHOICE_ENABLED = 2;
+const DSS_CHOICE_ENABLED = 2 as 1 | 2;
 
 // Registered in "deadSeaScrolls.ts".
 // eslint-disable-next-line isaacscript/require-v-registration
@@ -16,6 +16,16 @@ export const v = {
 
     // Cheat settings
     doubleUnlocks: DSS_CHOICE_DISABLED,
+    unbanEdensBlessing: DSS_CHOICE_DISABLED,
+    unbanPlanC: DSS_CHOICE_DISABLED,
+    unbanClicker: DSS_CHOICE_DISABLED,
+    unbanMetronome: DSS_CHOICE_DISABLED,
+    unbanRKey: DSS_CHOICE_DISABLED,
+    unbanTMTRAINER: DSS_CHOICE_DISABLED,
+    unbanError: DSS_CHOICE_DISABLED,
+    unbanKarma: DSS_CHOICE_DISABLED,
+    unbanM: DSS_CHOICE_DISABLED,
+    unbanChaosCard: DSS_CHOICE_DISABLED,
   },
 };
 

@@ -49,7 +49,7 @@ All challenges start off locked, with the following exceptions:
 
 - DELETE THIS (#45) (since TMTRAINER is banned)
 
-## Collectibles (699)
+## Collectibles (700)
 
 Every collectible in the game is locked, with the following exceptions:
 
@@ -67,7 +67,6 @@ Every collectible in the game is locked, with the following exceptions:
   - Damocles Passive (#656)
   - Recall (#714)
 - Banned collectibles (since they would potentially trivialize difficult objectives):
-  - Gnawed Leaf (#210)
   - Eden's Blessing (#381)
   - Plan C (#475)
   - Clicker (#482)
@@ -149,4 +148,4 @@ The following other things start out locked:
 
 ## Total Unlocks
 
-There are 32 + 12 + 16 + 44 + 699 + 185 + 95 + 50 + (11 + 6 + 2 + 3 + 4 + 2 + 10) + 15 + 8 + 4 = 1198 unlocks in total.
+There are 32 + 12 + 16 + 44 + 700 + 185 + 95 + 50 + (11 + 6 + 2 + 3 + 4 + 2 + 10) + 15 + 8 + 4 = 1199 unlocks in total.

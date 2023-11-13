@@ -26,22 +26,40 @@ interface DeadSeaScrollsPalette {
   [3]: [r: int, g: int, b: int];
 }
 
-interface DeadSeaScrollsMenu {
+interface DeadSeaScrollsSubMenu {
   title: string;
-  buttons: DeadSeaScrollsButton[];
+  buttons?: DeadSeaScrollsButton[];
   noCursor?: boolean;
+  scroller?: boolean;
   fSize?: int;
+  generate?: (this: void, menu: DeadSeaScrollsSubMenu) => void;
 }
 
 interface DeadSeaScrollsButton {
-  str: string;
+  str: string | (() => string);
+  action?: "resume" | "back";
   dest?: string;
   noSel?: boolean;
   clr?: int;
   colorSelect?: boolean;
   fSize?: int;
+  tooltip?: {
+    strSet: string[];
+  };
+  choices?: readonly string[];
+  setting?: 1 | 2;
+  variable?: string;
   displayIf?: () => boolean;
   func?: () => void;
+  load?: () => 1 | 2;
+
+  store?: (
+    this: void,
+    choiceIndex: 1 | 2,
+    button: DeadSeaScrollsButton,
+    item: DeadSeaScrollsSubMenu,
+    tbl: DeadSeaScrollsMenuSettings,
+  ) => void;
 }
 
 declare const DeadSeaScrollsMenu: DeadSeaScrollsMenu | undefined;
