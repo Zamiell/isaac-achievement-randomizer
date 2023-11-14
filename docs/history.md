@@ -17,6 +17,7 @@
 - Reward Plates are no longer unlockable.
 - The Lost and Tainted Apollyon are now considered to be "hard" characters.
 - Gnawed Leaf is no longer banned.
+- The info displayed in the starting room has been revamped.
 - A new "Cheat Settings" menu has been added for people who want to cheat.
 - The quality threshold on hardcore and nightmare modes has been reduced from 0.5 to 0.333.
 - Gehenna is now flipped. (However, rooms with Ball and Chains are not flipped to avoid bugs.)

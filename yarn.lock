@@ -4185,25 +4185,25 @@ __metadata:
   resolution: "isaac-achievement-randomizer@workspace:."
   dependencies:
     cloc: "npm:^1.98.0-cloc"
-    isaac-typescript-definitions: "npm:^38.2.0"
+    isaac-typescript-definitions: "npm:^38.3.0"
     isaacscript: "npm:^3.19.2"
-    isaacscript-common: "npm:^77.3.1"
+    isaacscript-common: "npm:^78.0.0"
     isaacscript-common-node: "npm:^1.2.0"
     isaacscript-lint: "npm:^6.4.0"
     isaacscript-spell: "npm:^1.10.0"
     isaacscript-tsconfig: "npm:^5.0.0"
-    tsx: "npm:^4.1.1"
+    tsx: "npm:^4.1.2"
     typescript: "npm:^5.2.2"
     typescript-to-lua: "npm:^1.21.0"
   languageName: unknown
   linkType: soft
 
-"isaac-typescript-definitions@npm:^38.2.0":
-  version: 38.2.0
-  resolution: "isaac-typescript-definitions@npm:38.2.0"
+"isaac-typescript-definitions@npm:^38.3.0":
+  version: 38.3.0
+  resolution: "isaac-typescript-definitions@npm:38.3.0"
   dependencies:
     lua-types: "npm:^2.13.1"
-  checksum: 77ebfa8f16b269966a85d6382f8ea0539909c659a6c8a1d5380d3e6d9ff10bd0f6ee38bb36dbe8b35d848a33a687956ee4435994f45d344bcb4c02bec90e53d9
+  checksum: 437073bcd764699a455bd9185d8b1597210433a5b2907a2a129f2baafc39fdf2b78ca08cf6c2109ca90d999dbb33511e75d26299b4dcc2645b63135b924f4ee6
   languageName: node
   linkType: hard
 
@@ -4230,12 +4230,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common@npm:^77.3.1":
-  version: 77.3.1
-  resolution: "isaacscript-common@npm:77.3.1"
+"isaacscript-common@npm:^78.0.0":
+  version: 78.0.0
+  resolution: "isaacscript-common@npm:78.0.0"
   dependencies:
-    isaac-typescript-definitions: "npm:^38.2.0"
-  checksum: 9e2b6ef2d0cbaa80ef490d9eb978cb7a1f207b88f413a32d1cc053ac8ff3ee4c47435b99c193c914503f60e81febbc8413399c0ae7ebaad5800fea3723d48288
+    isaac-typescript-definitions: "npm:^38.3.0"
+  checksum: a43eda9cc615015e28999c7fa880ed4b543933cf4accaa9922b8193865576bcb9a6678b82237b64e51177d9c29abdd7f27f5c89f51d52959f212f3686a20a06c
   languageName: node
   linkType: hard
 
@@ -6678,9 +6678,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsx@npm:^4.1.1":
-  version: 4.1.1
-  resolution: "tsx@npm:4.1.1"
+"tsx@npm:^4.1.2":
+  version: 4.1.2
+  resolution: "tsx@npm:4.1.2"
   dependencies:
     esbuild: "npm:~0.18.20"
     fsevents: "npm:~2.3.3"
@@ -6691,7 +6691,7 @@ __metadata:
       optional: true
   bin:
     tsx: dist/cli.mjs
-  checksum: a409d3316295ec4047be4afab568db331b5eb44940cf5a355469e1d767445acfd0c4e3a2c5e1862586423142511ff1233c25a8b9fc5045406209f61fecc72ccd
+  checksum: b6318f8702b57d15881fe65e889e118abc48605c4aad68d31748cf0b376c45d87c656034deb01ecd9d2cbc1882699fa5428335e6af6f332f79c76f6eaa8c3ad0
   languageName: node
   linkType: hard
 

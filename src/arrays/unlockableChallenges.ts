@@ -10,3 +10,5 @@ export const UNLOCKABLE_CHALLENGES: readonly Challenge[] = CHALLENGES.filter(
   (challenge) =>
     challenge !== Challenge.NULL && !BANNED_CHALLENGES.has(challenge),
 );
+
+export const UNLOCKABLE_CHALLENGES_SET = new ReadonlySet(UNLOCKABLE_CHALLENGES);

@@ -18,10 +18,10 @@ import {
   fonts,
   game,
   getScreenBottomRightPos,
-  goToStage,
   onChallenge,
   removeAllDoors,
   setBackdrop,
+  setStage,
   spawnEffect,
   spawnNPC,
 } from "isaacscript-common";
@@ -56,7 +56,7 @@ export class ChillRoom extends ModFeature {
     const level = game.GetLevel();
     const stageType = level.GetStageType();
     if (stageType !== StageType.ORIGINAL) {
-      goToStage(LevelStage.BASEMENT_1, StageType.ORIGINAL);
+      setStage(LevelStage.BASEMENT_1, StageType.ORIGINAL);
       mod.reorderedCallbacksSetStage(LevelStage.BASEMENT_1, StageType.ORIGINAL);
     }
 

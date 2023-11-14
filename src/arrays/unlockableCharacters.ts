@@ -12,6 +12,8 @@ export const PLAYABLE_CHARACTERS: readonly PlayerType[] =
 export const UNLOCKABLE_CHARACTERS: readonly PlayerType[] =
   PLAYABLE_CHARACTERS.filter((character) => character !== STARTING_CHARACTER);
 
+export const UNLOCKABLE_CHARACTERS_SET = new ReadonlySet(UNLOCKABLE_CHARACTERS);
+
 /** These are characters that are guaranteed to not be unlocked early on. */
 export const HARD_CHARACTERS = [
   PlayerType.BLUE_BABY, // 4

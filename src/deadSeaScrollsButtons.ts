@@ -83,6 +83,10 @@ import {
 import {
   getCompletedObjectiveIDs,
   getCompletedUnlockIDs,
+  isCardTypeInPlaythrough,
+  isCollectibleTypeInPlaythrough,
+  isPillEffectInPlaythrough,
+  isTrinketTypeInPlaythrough,
 } from "./classes/features/achievementTracker/v";
 import { DIFFICULTIES } from "./constants";
 import {
@@ -454,6 +458,10 @@ export function getSpecificCollectibleUnlockButtons(
       continue;
     }
 
+    if (!isCollectibleTypeInPlaythrough(collectibleType)) {
+      continue;
+    }
+
     const collectibleName = getCollectibleName(collectibleType).toLowerCase();
     const completed = isCollectibleTypeUnlocked(collectibleType, false);
     const completedText = getCompletedText(completed);
@@ -498,6 +506,10 @@ export function getSpecificTrinketUnlockButtons(
 
   for (const trinketType of UNLOCKABLE_TRINKET_TYPES) {
     if (trinketType < min || trinketType > max) {
+      continue;
+    }
+
+    if (!isTrinketTypeInPlaythrough(trinketType)) {
       continue;
     }
 
@@ -548,6 +560,10 @@ export function getSpecificCardUnlockButtons(
       continue;
     }
 
+    if (!isCardTypeInPlaythrough(cardType)) {
+      continue;
+    }
+
     const cardName = getCardName(cardType).toLowerCase();
     const completed = isCardTypeUnlocked(cardType, false);
     const completedText = getCompletedText(completed);
@@ -593,6 +609,10 @@ export function getSpecificPillEffectUnlockButtons(
 
   for (const pillEffect of UNLOCKABLE_PILL_EFFECTS) {
     if (pillEffect < min || pillEffect > max) {
+      continue;
+    }
+
+    if (!isPillEffectInPlaythrough(pillEffect)) {
       continue;
     }
 

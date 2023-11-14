@@ -21,8 +21,8 @@
     "update": "isaacscript update"
   },
   "dependencies": {
-    "isaac-typescript-definitions": "^38.2.0",
-    "isaacscript-common": "^77.3.1"
+    "isaac-typescript-definitions": "^38.3.0",
+    "isaacscript-common": "^78.0.0"
   },
   "devDependencies": {
     "cloc": "^1.98.0-cloc",
@@ -31,9 +31,9 @@
     "isaacscript-lint": "^6.4.0",
     "isaacscript-spell": "^1.10.0",
     "isaacscript-tsconfig": "^5.0.0",
-    "tsx": "^4.1.1",
+    "tsx": "^4.1.2",
     "typescript": "^5.2.2",
     "typescript-to-lua": "^1.21.0"
   },
-  "packageManager": "yarn@4.0.1"
+  "packageManager": "yarn@4.0.2"
 }

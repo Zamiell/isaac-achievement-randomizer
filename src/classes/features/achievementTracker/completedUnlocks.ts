@@ -36,10 +36,10 @@ import {
   isPassiveOrFamiliarCollectible,
   isRune,
 } from "isaacscript-common";
-import { UNLOCKABLE_CARD_TYPES } from "../../../arrays/unlockableCardTypes";
-import { UNLOCKABLE_CHALLENGES } from "../../../arrays/unlockableChallenges";
-import { UNLOCKABLE_CHARACTERS } from "../../../arrays/unlockableCharacters";
-import { UNLOCKABLE_COLLECTIBLE_TYPES } from "../../../arrays/unlockableCollectibleTypes";
+import { UNLOCKABLE_CARD_TYPES_SET } from "../../../arrays/unlockableCardTypes";
+import { UNLOCKABLE_CHALLENGES_SET } from "../../../arrays/unlockableChallenges";
+import { UNLOCKABLE_CHARACTERS_SET } from "../../../arrays/unlockableCharacters";
+import { UNLOCKABLE_COLLECTIBLE_TYPES_SET } from "../../../arrays/unlockableCollectibleTypes";
 import { UNLOCKABLE_GRID_ENTITY_TYPES } from "../../../arrays/unlockableGridEntityTypes";
 import {
   UNLOCKABLE_BATTERY_SUB_TYPES,
@@ -50,10 +50,13 @@ import {
   UNLOCKABLE_KEY_SUB_TYPES,
   UNLOCKABLE_SACK_SUB_TYPES,
 } from "../../../arrays/unlockablePickupTypes";
-import { UNLOCKABLE_PILL_EFFECTS } from "../../../arrays/unlockablePillEffects";
+import {
+  UNLOCKABLE_PILL_EFFECTS,
+  UNLOCKABLE_PILL_EFFECTS_SET,
+} from "../../../arrays/unlockablePillEffects";
 import { UNLOCKABLE_ROOM_TYPES } from "../../../arrays/unlockableRoomTypes";
 import { UNLOCKABLE_SLOT_VARIANTS } from "../../../arrays/unlockableSlotVariants";
-import { UNLOCKABLE_TRINKET_TYPES } from "../../../arrays/unlockableTrinketTypes";
+import { UNLOCKABLE_TRINKET_TYPES_SET } from "../../../arrays/unlockableTrinketTypes";
 import type { OtherUnlockKind } from "../../../enums/OtherUnlockKind";
 import { UnlockType } from "../../../enums/UnlockType";
 import type { UnlockableArea } from "../../../enums/UnlockableArea";
@@ -64,7 +67,7 @@ import { getUnlock, getUnlockFromID } from "../../../types/Unlock";
 import { getUnlockID } from "../../../types/UnlockID";
 import { getCardTypesOfQuality } from "./cardQuality";
 import { getTrinketTypesOfQuality } from "./trinketQuality";
-import { v } from "./v";
+import { isPillEffectInPlaythrough, v } from "./v";
 
 /** For hardcore & nightmare mode. */
 const QUALITY_THRESHOLD_PERCENT = 0.333;
@@ -180,7 +183,7 @@ export function isCharacterUnlocked(
   character: PlayerType,
   forRun: boolean,
 ): boolean {
-  if (!UNLOCKABLE_CHARACTERS.includes(character)) {
+  if (!UNLOCKABLE_CHARACTERS_SET.has(character)) {
     return true;
   }
 
@@ -229,7 +232,7 @@ export function isChallengeUnlocked(
   challenge: Challenge,
   forRun: boolean,
 ): boolean {
-  if (!UNLOCKABLE_CHALLENGES.includes(challenge)) {
+  if (!UNLOCKABLE_CHALLENGES_SET.has(challenge)) {
     return true;
   }
 
@@ -245,7 +248,7 @@ export function isCollectibleTypeUnlocked(
   collectibleType: CollectibleType,
   forRun: boolean,
 ): boolean {
-  if (!UNLOCKABLE_COLLECTIBLE_TYPES.includes(collectibleType)) {
+  if (!UNLOCKABLE_COLLECTIBLE_TYPES_SET.has(collectibleType)) {
     return true;
   }
 
@@ -344,7 +347,7 @@ export function isTrinketTypeUnlocked(
   trinketType: TrinketType,
   forRun: boolean,
 ): boolean {
-  if (!UNLOCKABLE_TRINKET_TYPES.includes(trinketType)) {
+  if (!UNLOCKABLE_TRINKET_TYPES_SET.has(trinketType)) {
     return true;
   }
 
@@ -433,7 +436,7 @@ export function isCardTypeUnlocked(
   cardType: CardType,
   forRun: boolean,
 ): boolean {
-  if (!UNLOCKABLE_CARD_TYPES.includes(cardType)) {
+  if (!UNLOCKABLE_CARD_TYPES_SET.has(cardType)) {
     return true;
   }
 
@@ -539,7 +542,7 @@ export function isPillEffectUnlocked(
   pillEffect: PillEffect,
   forRun: boolean,
 ): boolean {
-  if (!UNLOCKABLE_PILL_EFFECTS.includes(pillEffect)) {
+  if (!UNLOCKABLE_PILL_EFFECTS_SET.has(pillEffect)) {
     return true;
   }
 
@@ -669,11 +672,10 @@ function getNextPillEffectUnlockTypeForHardcore(): ItemConfigPillEffectType {
 }
 
 function getLockedPillEffects(forRun: boolean): PillEffect[] {
-  const unlockedPillEffects = getUnlockedPillEffects(forRun);
-  const unlockedPillEffectsSet = new Set(unlockedPillEffects);
-
   return UNLOCKABLE_PILL_EFFECTS.filter(
-    (pillEffect) => !unlockedPillEffectsSet.has(pillEffect),
+    (pillEffect) =>
+      !isPillEffectUnlocked(pillEffect, forRun) &&
+      isPillEffectInPlaythrough(pillEffect),
   );
 }
 

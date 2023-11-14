@@ -7,6 +7,7 @@ import {
   fonts,
   game,
   inStartingRoom,
+  newReadonlyVector,
   newSprite,
   onFirstFloor,
 } from "isaacscript-common";
@@ -14,6 +15,7 @@ import { version } from "../../../package.json";
 import { ALL_OBJECTIVES } from "../../arrays/allObjectives";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
+  getPlaythroughNumCompletedRuns,
   getPlaythroughNumDeaths,
   getPlaythroughTimeElapsed,
 } from "./StatsTracker";
@@ -30,6 +32,8 @@ const MOD_ICON_SPRITE = newSprite(
   "gfx/misc/glowing-item.anm2",
   "gfx/misc/shuffle-icon.png",
 );
+
+const VERTICAL_TEXT_SPACING = newReadonlyVector(0, 30);
 
 export class StartingRoomInfo extends RandomizerModFeature {
   @Callback(ModCallback.POST_RENDER)
@@ -78,48 +82,78 @@ export class StartingRoomInfo extends RandomizerModFeature {
     const room = game.GetRoom();
     const topLeftPosition = room.GetGridPosition(18);
     const topRightPosition = room.GetGridPosition(26);
-    const centerTopPosition = room.GetGridPosition(37);
+    const leftPosition = room.GetGridPosition(48);
     const centerPosition = room.GetGridPosition(52);
+    const rightPosition = room.GetGridPosition(56);
     const bottomLeftPosition = room.GetGridPosition(78);
     const bottomRightPosition = room.GetGridPosition(86);
+    const centerTopPosition = room.GetGridPosition(22);
 
     const randomizerMode = getRandomizerMode();
     const modeText = capitalizeFirstLetter(randomizerMode);
-    this.drawCenteredText(`${modeText} seed:`, topLeftPosition);
+
+    // Top left
+    this.drawCenteredText("Run number:", topLeftPosition);
     this.drawCenteredText(
-      seed.toString(),
-      topLeftPosition.add(Vector(0, 30)),
+      `${getPlaythroughNumCompletedRuns() + 1}`,
+      topLeftPosition.add(VERTICAL_TEXT_SPACING),
       K_COLORS.Green,
     );
 
-    this.drawCenteredText("Objectives:", topRightPosition);
-    this.drawCenteredText(
-      `${getNumCompletedObjectives()} / ${ALL_OBJECTIVES.length}`,
-      topRightPosition.add(Vector(0, 30)),
-      K_COLORS.Green,
-    );
-
-    const position = Isaac.WorldToScreen(centerTopPosition).add(Vector(0, 10));
-    MOD_ICON_SPRITE.Render(position);
-
-    this.drawCenteredText("Mod version:", centerPosition);
-    this.drawCenteredText(
-      version,
-      centerPosition.add(Vector(0, 30)),
-      K_COLORS.Green,
-    );
-
-    this.drawCenteredText("Deaths/resets:", bottomLeftPosition);
+    // Top right
+    this.drawCenteredText("Deaths/resets:", topRightPosition);
     this.drawCenteredText(
       getPlaythroughNumDeaths().toString(),
-      bottomLeftPosition.add(Vector(0, 30)),
+      topRightPosition.add(VERTICAL_TEXT_SPACING),
       K_COLORS.Green,
     );
 
+    // Left
+    this.drawCenteredText("Run seed:", leftPosition);
+    this.drawCenteredText(
+      seeds.GetStartSeedString(),
+      leftPosition.add(VERTICAL_TEXT_SPACING),
+      K_COLORS.Green,
+    );
+
+    // Right
+    this.drawCenteredText("Playthrough seed:", rightPosition);
+    this.drawCenteredText(
+      seed.toString(),
+      rightPosition.add(VERTICAL_TEXT_SPACING),
+      K_COLORS.Green,
+    );
+
+    // Bottom-left
+    this.drawCenteredText("Objectives:", bottomLeftPosition);
+    this.drawCenteredText(
+      `${getNumCompletedObjectives()} / ${ALL_OBJECTIVES.length}`,
+      bottomLeftPosition.add(VERTICAL_TEXT_SPACING),
+      K_COLORS.Green,
+    );
+
+    // Bottom-right
     this.drawCenteredText("Total time:", bottomRightPosition);
     this.drawCenteredText(
       getPlaythroughTimeElapsed(),
-      bottomRightPosition.add(Vector(0, 30)),
+      bottomRightPosition.add(VERTICAL_TEXT_SPACING),
+      K_COLORS.Green,
+    );
+
+    // Center-top
+    const spritePosition = Isaac.WorldToScreen(centerTopPosition).add(
+      Vector(0, 8),
+    );
+    MOD_ICON_SPRITE.Render(spritePosition);
+
+    const modePosition = centerTopPosition.add(Vector(0, 40));
+    this.drawCenteredText(modeText, modePosition, K_COLORS.Green);
+
+    // Center
+    this.drawCenteredText("Mod version:", centerPosition);
+    this.drawCenteredText(
+      version,
+      centerPosition.add(VERTICAL_TEXT_SPACING),
       K_COLORS.Green,
     );
   }

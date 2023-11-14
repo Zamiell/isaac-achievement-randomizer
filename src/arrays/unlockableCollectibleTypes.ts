@@ -35,7 +35,6 @@ export const BANNED_COLLECTIBLE_TYPES = [
 const ALWAYS_UNLOCKED_COLLECTIBLE_TYPES = new ReadonlySet<CollectibleType>([
   ...QUEST_COLLECTIBLE_TYPES,
   ...NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS,
-  ...BANNED_COLLECTIBLE_TYPES,
 ]);
 
 export const UNLOCKABLE_COLLECTIBLE_TYPES: readonly CollectibleType[] =
@@ -43,3 +42,7 @@ export const UNLOCKABLE_COLLECTIBLE_TYPES: readonly CollectibleType[] =
     (collectibleType) =>
       !ALWAYS_UNLOCKED_COLLECTIBLE_TYPES.has(collectibleType),
   );
+
+export const UNLOCKABLE_COLLECTIBLE_TYPES_SET = new ReadonlySet(
+  UNLOCKABLE_COLLECTIBLE_TYPES,
+);

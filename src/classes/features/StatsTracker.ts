@@ -146,12 +146,12 @@ export class StatsTracker extends ModFeature {
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, undefined)
   postGameStartedReordered(): void {
-    if (this.isOtherModsEnabled()) {
+    if (this.isModsWithItemsEnabled()) {
       v.persistent.stats.usedMods = true;
     }
   }
 
-  isOtherModsEnabled(): boolean {
+  isModsWithItemsEnabled(): boolean {
     return (
       mod.getLastCollectibleType() !== LAST_VANILLA_COLLECTIBLE_TYPE ||
       mod.getLastTrinketType() !== LAST_VANILLA_TRINKET_TYPE ||
@@ -246,4 +246,12 @@ export function hasDoubleUnlocked(): boolean {
 
 export function setDoubleUnlocked(): void {
   v.persistent.stats.doubleUnlocked = true;
+}
+
+export function hasUsedMods(): boolean {
+  return v.persistent.stats.usedMods;
+}
+
+export function hasGeneratedWithCheat(): boolean {
+  return v.persistent.stats.generatedWithCheat;
 }

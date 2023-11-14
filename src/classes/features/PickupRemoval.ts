@@ -39,8 +39,6 @@ import {
   onChest,
   onDarkRoom,
   removeAllPickups,
-  removeCollectibleFromPools,
-  removeTrinketFromPools,
   setCollectibleEmpty,
   setCollectibleSubType,
   spawnCoinWithSeed,
@@ -52,10 +50,7 @@ import {
   QUEST_COLLECTIBLE_TYPES,
   UNLOCKABLE_COLLECTIBLE_TYPES,
 } from "../../arrays/unlockableCollectibleTypes";
-import {
-  BANNED_TRINKET_TYPES,
-  UNLOCKABLE_TRINKET_TYPES,
-} from "../../arrays/unlockableTrinketTypes";
+import { UNLOCKABLE_TRINKET_TYPES } from "../../arrays/unlockableTrinketTypes";
 import { MOD_NAME } from "../../constants";
 import { OtherUnlockKind } from "../../enums/OtherUnlockKind";
 import { isItemPoolsDepleted } from "../../utils";
@@ -305,15 +300,11 @@ export class PickupRemoval extends RandomizerModFeature {
       }
     }
 
-    removeCollectibleFromPools(...BANNED_COLLECTIBLE_TYPES);
-
     for (const trinketType of UNLOCKABLE_TRINKET_TYPES) {
       if (!isTrinketTypeUnlocked(trinketType, true)) {
         itemPool.RemoveTrinket(trinketType);
       }
     }
-
-    removeTrinketFromPools(...BANNED_TRINKET_TYPES);
 
     this.conditionallyRemoveRevivalCollectible(
       itemPool,

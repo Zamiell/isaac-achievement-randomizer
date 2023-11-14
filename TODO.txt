@@ -1,11 +1,9 @@
 TODO:
 
-- generatedWithCheat
+- make cheat settings work
 
 - startRandomizer casual 851815763
   - takes too many attempts, something is probably wrong
-- allow mods setting
-- make cheat settings work
 
 - recent achievements menu: show run number in title
 
@@ -16,7 +14,6 @@ TODO:
   - Best Streak: 2
   - Total Deaths: 3
 
-- option to include banned items
 - rules card - show future unlocks
 - website - see all current unlocks after uploading save file
 - emulate vanilla pill pool

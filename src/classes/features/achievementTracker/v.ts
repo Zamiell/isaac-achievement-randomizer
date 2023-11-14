@@ -1,4 +1,10 @@
-import type { PlayerType, TrinketType } from "isaac-typescript-definitions";
+import type {
+  CardType,
+  CollectibleType,
+  PillEffect,
+  PlayerType,
+  TrinketType,
+} from "isaac-typescript-definitions";
 import { assertDefined } from "isaacscript-common";
 import { RandomizerMode } from "../../../enums/RandomizerMode";
 import { UnlockType } from "../../../enums/UnlockType";
@@ -89,11 +95,46 @@ export function getCompletedUnlockIDs(): UnlockID[] {
 }
 
 /**
- * Since trinket unlocks are assigned last, it is possible that some trinket types can never be
+ * Since some collectibles are banned, it is possible that some collectible types can never be
  * unlocked in the current randomizer playthrough.
+ */
+export function isCollectibleTypeInPlaythrough(
+  collectibleType: CollectibleType,
+): boolean {
+  const unlock = getUnlock(UnlockType.COLLECTIBLE, collectibleType);
+  const unlockID = getUnlockID(unlock);
+  const objectiveID = v.persistent.unlockIDToObjectiveIDMap.get(unlockID);
+
+  return objectiveID !== undefined;
+}
+
+/**
+ * Since some trinkets are banned, it is possible that some trinket types can never be unlocked in
+ * the current randomizer playthrough.
  */
 export function isTrinketTypeInPlaythrough(trinketType: TrinketType): boolean {
   const unlock = getUnlock(UnlockType.TRINKET, trinketType);
+  const unlockID = getUnlockID(unlock);
+  const objectiveID = v.persistent.unlockIDToObjectiveIDMap.get(unlockID);
+
+  return objectiveID !== undefined;
+}
+
+/**
+ * Since some cards are banned, it is possible that some card types can never be unlocked in the
+ * current randomizer playthrough.
+ */
+export function isCardTypeInPlaythrough(cardType: CardType): boolean {
+  const unlock = getUnlock(UnlockType.CARD, cardType);
+  const unlockID = getUnlockID(unlock);
+  const objectiveID = v.persistent.unlockIDToObjectiveIDMap.get(unlockID);
+
+  return objectiveID !== undefined;
+}
+
+/** No pill effects are currently banned, but this function is used to keep the code consistent. */
+export function isPillEffectInPlaythrough(pillEffect: PillEffect): boolean {
+  const unlock = getUnlock(UnlockType.PILL_EFFECT, pillEffect);
   const unlockID = getUnlockID(unlock);
   const objectiveID = v.persistent.unlockIDToObjectiveIDMap.get(unlockID);
 

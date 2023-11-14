@@ -22,8 +22,10 @@ import {
   getPlaythroughNumDeaths,
   getPlaythroughTimeElapsed,
   hasDoubleUnlocked,
+  hasGeneratedWithCheat,
   hasIllegalPause,
   hasSavedAndQuit,
+  hasUsedMods,
 } from "./classes/features/StatsTracker";
 import {
   isAllChallengeObjectivesCompleted,
@@ -100,7 +102,7 @@ export function initDeadSeaScrolls(): void {
       fSize: 2,
       buttons: [
         {
-          str: "current seed:",
+          str: "playthrough seed:",
           noSel: true,
         },
         {
@@ -698,7 +700,7 @@ export function initDeadSeaScrolls(): void {
       fSize: 2,
       buttons: [
         {
-          str: "mode:",
+          str: "randomizer mode:",
         },
         {
           str: () => getRandomizerMode(),
@@ -732,7 +734,7 @@ export function initDeadSeaScrolls(): void {
           str: "",
         },
         {
-          str: "deaths:",
+          str: "deaths/resets:",
         },
         {
           str: () => getPlaythroughNumDeaths().toString(),
@@ -786,6 +788,34 @@ export function initDeadSeaScrolls(): void {
         },
         {
           str: () => (hasDoubleUnlocked() ? "yes" : "no"),
+          colorSelect: true,
+          noSel: true,
+        },
+        {
+          str: "",
+        },
+        {
+          str: "ever used illegally",
+        },
+        {
+          str: "mods?",
+        },
+        {
+          str: () => (hasUsedMods() ? "yes" : "no"),
+          colorSelect: true,
+          noSel: true,
+        },
+        {
+          str: "",
+        },
+        {
+          str: "ever used illegal",
+        },
+        {
+          str: "items?",
+        },
+        {
+          str: () => (hasGeneratedWithCheat() ? "yes" : "no"),
           colorSelect: true,
           noSel: true,
         },
