@@ -43,7 +43,6 @@ import {
   setCollectibleSubType,
   spawnCoinWithSeed,
 } from "isaacscript-common";
-import { BANNED_CARD_TYPES } from "../../arrays/unlockableCardTypes";
 import {
   BANNED_COLLECTIBLE_TYPES,
   NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS,
@@ -234,10 +233,7 @@ export class PickupRemoval extends RandomizerModFeature {
   postPickupInitCard(pickup: EntityPickup): void {
     const card = pickup as EntityPickupCard;
 
-    if (
-      !isCardTypeUnlocked(card.SubType, true) ||
-      BANNED_CARD_TYPES.has(card.SubType)
-    ) {
+    if (!isCardTypeUnlocked(card.SubType, true)) {
       const cardTypes = getUnlockedCardTypes(true);
       if (cardTypes.length === 0) {
         card.Remove();

@@ -25,7 +25,7 @@ import {
   onChallenge,
   repeat,
 } from "isaacscript-common";
-import { isPreventPauseEnabled } from "../../config";
+import { isGenerationCheatsEnabled, isPreventPauseEnabled } from "../../config";
 import { ChallengeCustom } from "../../enums/ChallengeCustom";
 import { mod } from "../../mod";
 import { convertSecondsToTimerValues } from "../../timer";
@@ -169,6 +169,10 @@ export class StatsTracker extends ModFeature {
 
 export function resetStats(): void {
   v.persistent.stats = new PlaythroughStats();
+
+  if (isGenerationCheatsEnabled()) {
+    v.persistent.stats.generatedWithCheat = true;
+  }
 }
 
 export function preForcedRestart(): void {

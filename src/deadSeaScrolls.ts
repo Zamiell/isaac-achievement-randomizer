@@ -79,7 +79,10 @@ import { mod } from "./mod";
 
 const DSS_CHOICES = ["disabled", "enabled"] as const;
 
-const UNBAN_KEY_TO_NAME = new ReadonlyMap<keyof typeof v.persistent, string>([
+const UNBAN_KEY_TO_NAME = new ReadonlyMap<
+  keyof typeof v.persistent.generation,
+  string
+>([
   ["unbanEdensBlessing", "Eden's Blessing"], // 381
   ["unbanPlanC", "Plan C"], // 475
   ["unbanClicker", "Clicker"], // 482
@@ -1207,10 +1210,10 @@ export function initDeadSeaScrolls(): void {
         setting: DSS_CHOICE_DISABLED,
         variable: key,
 
-        load: () => v.persistent.unbanPlanC,
+        load: () => v.persistent.generation[key],
 
         store: (choiceIndex) => {
-          v.persistent[key] = choiceIndex;
+          v.persistent.generation[key] = choiceIndex;
         },
 
         tooltip: {

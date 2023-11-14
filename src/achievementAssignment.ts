@@ -15,6 +15,11 @@ import {
   UNLOCKABLE_CHARACTERS,
 } from "./arrays/unlockableCharacters";
 import { FIRST_UNLOCK_COLLECTIBLES } from "./classes/features/achievementTracker/swapUnlock";
+import {
+  isCardTypeBannedForNewPlaythrough,
+  isCollectibleTypeBannedForNewPlaythrough,
+  isTrinketTypeBannedForNewPlaythrough,
+} from "./config";
 import { DEBUG, STARTING_CHARACTER } from "./constants";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
@@ -27,6 +32,7 @@ import type { Objective } from "./types/Objective";
 import { getObjective } from "./types/Objective";
 import type { ObjectiveID } from "./types/ObjectiveID";
 import { getObjectiveID } from "./types/ObjectiveID";
+import type { Unlock } from "./types/Unlock";
 import { getUnlock, getUnlockFromID, getUnlockText } from "./types/Unlock";
 import type { UnlockID } from "./types/UnlockID";
 import { getUnlockID } from "./types/UnlockID";
@@ -180,6 +186,10 @@ export function getAchievementsForRNG(rng: RNG): {
   for (const unlockID of unlockIDs) {
     const unlock = getUnlockFromID(unlockID);
     if (unlock.type !== UnlockType.TRINKET) {
+      if (isBannedUnlock(unlock)) {
+        continue;
+      }
+
       const objectiveID = getRandomArrayElementAndRemove(objectiveIDs, rng);
       objectiveIDToUnlockIDMap.set(objectiveID, unlockID);
       unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
@@ -191,6 +201,10 @@ export function getAchievementsForRNG(rng: RNG): {
   for (const unlockID of unlockIDs) {
     const unlock = getUnlockFromID(unlockID);
     if (unlock.type === UnlockType.TRINKET) {
+      if (isBannedUnlock(unlock)) {
+        continue;
+      }
+
       // In some cases, the amount of unlocks may exceed the amount of objectives.
       if (objectiveIDs.length === 0) {
         if (DEBUG) {
@@ -259,4 +273,24 @@ function getObjectiveFromUnlockableArea(
   }
 
   return UNLOCKABLE_AREA_TO_OBJECTIVE[unlockableArea];
+}
+
+function isBannedUnlock(unlock: Unlock): boolean {
+  switch (unlock.type) {
+    case UnlockType.COLLECTIBLE: {
+      return isCollectibleTypeBannedForNewPlaythrough(unlock.collectibleType);
+    }
+
+    case UnlockType.TRINKET: {
+      return isTrinketTypeBannedForNewPlaythrough(unlock.trinketType);
+    }
+
+    case UnlockType.CARD: {
+      return isCardTypeBannedForNewPlaythrough(unlock.cardType);
+    }
+
+    default: {
+      return false;
+    }
+  }
 }
