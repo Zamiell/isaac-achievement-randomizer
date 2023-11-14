@@ -1,7 +1,5 @@
 TODO:
 
-- make cheat settings work
-
 - startRandomizer casual 851815763
   - takes too many attempts, something is probably wrong
 

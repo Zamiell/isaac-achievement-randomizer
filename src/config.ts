@@ -106,7 +106,7 @@ export function isCollectibleTypeBannedForNewPlaythrough(
 
   return key === undefined
     ? false
-    : v.persistent.generation[key] === DSS_CHOICE_ENABLED;
+    : v.persistent.generation[key] === DSS_CHOICE_DISABLED;
 }
 
 export function isTrinketTypeBannedForNewPlaythrough(
@@ -118,7 +118,7 @@ export function isTrinketTypeBannedForNewPlaythrough(
 
   return key === undefined
     ? false
-    : v.persistent.generation[key] === DSS_CHOICE_ENABLED;
+    : v.persistent.generation[key] === DSS_CHOICE_DISABLED;
 }
 
 export function isCardTypeBannedForNewPlaythrough(cardType: CardType): boolean {
@@ -128,5 +128,5 @@ export function isCardTypeBannedForNewPlaythrough(cardType: CardType): boolean {
 
   return key === undefined
     ? false
-    : v.persistent.generation[key] === DSS_CHOICE_ENABLED;
+    : v.persistent.generation[key] === DSS_CHOICE_DISABLED;
 }
