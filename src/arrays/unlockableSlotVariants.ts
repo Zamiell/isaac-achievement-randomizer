@@ -1,4 +1,5 @@
 import { SlotVariant } from "isaac-typescript-definitions";
+import { ReadonlySet } from "isaacscript-common";
 
 export const UNLOCKABLE_SLOT_VARIANTS = [
   SlotVariant.SLOT_MACHINE, // 1
@@ -20,3 +21,7 @@ export const UNLOCKABLE_SLOT_VARIANTS = [
   SlotVariant.CONFESSIONAL, // 17
   SlotVariant.ROTTEN_BEGGAR, // 18
 ] as const;
+
+export const UNLOCKABLE_SLOT_VARIANTS_SET = new ReadonlySet<SlotVariant>(
+  UNLOCKABLE_SLOT_VARIANTS,
+);

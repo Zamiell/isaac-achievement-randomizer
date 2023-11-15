@@ -44,7 +44,6 @@ import {
   spawnCoinWithSeed,
 } from "isaacscript-common";
 import {
-  BANNED_COLLECTIBLE_TYPES,
   NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS,
   QUEST_COLLECTIBLE_TYPES,
   UNLOCKABLE_COLLECTIBLE_TYPES,
@@ -174,8 +173,7 @@ export class PickupRemoval extends RandomizerModFeature {
           includes(
             NON_OBTAINABLE_COLLECTIBLE_TYPE_EXCEPTIONS,
             newCollectibleType,
-          ) ||
-          includes(BANNED_COLLECTIBLE_TYPES, newCollectibleType)
+          )
         ) {
           continue;
         }
@@ -214,12 +212,11 @@ export class PickupRemoval extends RandomizerModFeature {
       return;
     }
 
-    if (
-      !isCollectibleTypeUnlocked(collectible.SubType, true) ||
-      // Prevent e.g. Spindown Dice from producing banned collectibles.
-      includes(BANNED_COLLECTIBLE_TYPES, collectible.SubType)
-    ) {
+    if (!isCollectibleTypeUnlocked(collectible.SubType, true)) {
       if (isQuestCollectible(collectible.SubType)) {
+        // Some quest items are unlockable, like The Polaroid and Key Piece 1. In this case, we want
+        // to remove it entirely instead of replacing it with Breakfast (to e.g. prevent players
+        // from intentionally killing angels for this purpose).
         collectible.Remove();
       } else {
         setCollectibleSubType(collectible, CollectibleType.BREAKFAST);

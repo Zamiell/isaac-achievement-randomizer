@@ -1,4 +1,5 @@
 import { RoomType } from "isaac-typescript-definitions";
+import { ReadonlySet } from "isaacscript-common";
 
 export const UNLOCKABLE_ROOM_TYPES = [
   // - RoomType.DEFAULT (1)
@@ -35,3 +36,7 @@ export const UNLOCKABLE_ROOM_TYPES = [
 // Possible additions:
 // - RoomType.ERROR (3)
 // - RoomType.ULTRA_SECRET (29)
+
+export const UNLOCKABLE_ROOM_TYPES_SET = new ReadonlySet<RoomType>(
+  UNLOCKABLE_ROOM_TYPES,
+);

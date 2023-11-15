@@ -6,6 +6,7 @@ export const BANNED_CHARACTERS = new ReadonlySet<PlayerType>([
   PlayerType.CAIN_B,
 ]);
 
+/** An array representing main characters minus banned characters. */
 export const PLAYABLE_CHARACTERS: readonly PlayerType[] =
   MAIN_CHARACTERS.filter((character) => !BANNED_CHARACTERS.has(character));
 

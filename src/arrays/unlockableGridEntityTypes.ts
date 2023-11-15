@@ -1,4 +1,5 @@
 import { GridEntityType } from "isaac-typescript-definitions";
+import { ReadonlySet } from "isaacscript-common";
 
 export const UNLOCKABLE_GRID_ENTITY_TYPES = [
   GridEntityType.ROCK_TINTED, // 4
@@ -6,6 +7,10 @@ export const UNLOCKABLE_GRID_ENTITY_TYPES = [
   GridEntityType.ROCK_SUPER_SPECIAL, // 22
   GridEntityType.ROCK_GOLD, // 27
 ] as const;
+
+export const UNLOCKABLE_GRID_ENTITY_TYPES_SET = new ReadonlySet<GridEntityType>(
+  UNLOCKABLE_GRID_ENTITY_TYPES,
+);
 
 const GRID_ENTITY_NAMES = {
   // 4

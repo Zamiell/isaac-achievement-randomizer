@@ -8,7 +8,7 @@ import {
   CallbackCustom,
   ModCallbackCustom,
   assertDefined,
-  copyArray,
+  copySet,
   getCharacterName,
   getCollectibleName,
   getPillEffectName,
@@ -34,7 +34,7 @@ export class AchievementTracker extends RandomizerModFeature {
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)
   postGameStartedReorderedFalse(): void {
-    v.persistent.completedUnlockIDsForRun = copyArray(
+    v.persistent.completedUnlockIDsForRun = copySet(
       v.persistent.completedUnlockIDs,
     );
   }

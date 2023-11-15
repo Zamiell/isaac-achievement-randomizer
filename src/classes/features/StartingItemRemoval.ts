@@ -14,7 +14,6 @@ import {
   VANILLA_COLLECTIBLE_TYPES,
   game,
   getRandomArrayElement,
-  includes,
   isCharacter,
   isEden,
   isGoldenTrinketType,
@@ -27,8 +26,6 @@ import {
   setPlayerHealth,
   sfxManager,
 } from "isaacscript-common";
-import { BANNED_COLLECTIBLE_TYPES } from "../../arrays/unlockableCollectibleTypes";
-import { BANNED_TRINKET_TYPES } from "../../arrays/unlockableTrinketTypes";
 import { POCKET_ITEM_SLOTS, TRINKET_SLOTS } from "../../cachedEnums";
 import { OtherUnlockKind } from "../../enums/OtherUnlockKind";
 import { mod } from "../../mod";
@@ -59,9 +56,7 @@ export class StartingItemRemoval extends RandomizerModFeature {
     for (const collectibleType of VANILLA_COLLECTIBLE_TYPES) {
       if (
         player.HasCollectible(collectibleType) &&
-        (!isCollectibleTypeUnlocked(collectibleType, true) ||
-          includes(BANNED_COLLECTIBLE_TYPES, collectibleType) ||
-          isEden(player)) &&
+        (!isCollectibleTypeUnlocked(collectibleType, true) || isEden(player)) &&
         !(
           isCharacter(player, PlayerType.CAIN_B) &&
           collectibleType === CollectibleType.BAG_OF_CRAFTING
@@ -79,7 +74,6 @@ export class StartingItemRemoval extends RandomizerModFeature {
         (!isTrinketTypeUnlocked(trinketType, true) ||
           (isGoldenTrinketType(trinketType) &&
             !isOtherUnlockKindUnlocked(OtherUnlockKind.GOLD_TRINKETS, true)) ||
-          includes(BANNED_TRINKET_TYPES, trinketType) ||
           isEden(player))
       ) {
         player.TryRemoveTrinket(trinketType);

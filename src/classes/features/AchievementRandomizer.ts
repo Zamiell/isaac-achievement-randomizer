@@ -98,7 +98,7 @@ export class AchievementRandomizer extends RandomizerModFeature {
     const text2Y = screenCenterPos.Y - 10;
     FONT.DrawString(text2, 0, text2Y, KColorDefault, rightX, true);
 
-    const text3 = `Confirmed objectives completable: ${v.persistent.completedObjectiveIDs.length} / ${ALL_OBJECTIVES.length}`;
+    const text3 = `Confirmed objectives completable: ${v.persistent.completedObjectiveIDs.size} / ${ALL_OBJECTIVES.length}`;
     const text3Y = screenCenterPos.Y + 10;
     FONT.DrawString(text3, 0, text3Y, KColorDefault, rightX, true);
 
@@ -141,8 +141,8 @@ export class AchievementRandomizer extends RandomizerModFeature {
       `Generated achievements for randomizer seed: ${v.persistent.seed} (attempt #${numGenerationAttempts})`,
     );
 
-    v.persistent.completedObjectiveIDs = [];
-    v.persistent.completedUnlockIDs = [];
+    v.persistent.completedObjectiveIDs = new Set();
+    v.persistent.completedUnlockIDs = new Set();
 
     generationTime = 0;
     renderFrameToTestSeed = Isaac.GetFrameCount();
@@ -176,7 +176,7 @@ export class AchievementRandomizer extends RandomizerModFeature {
 
     if (!accomplishedObjective) {
       log(
-        `Failed to emulate beating seed ${v.persistent.seed}: ${v.persistent.completedObjectiveIDs.length} / ${ALL_OBJECTIVES.length}. Milliseconds taken: ${generationTime}`,
+        `Failed to emulate beating seed ${v.persistent.seed}: ${v.persistent.completedObjectiveIDs.size} / ${ALL_OBJECTIVES.length}. Milliseconds taken: ${generationTime}`,
       );
 
       logMissingObjectives();
@@ -185,12 +185,12 @@ export class AchievementRandomizer extends RandomizerModFeature {
       renderFrameToTryGenerate = renderFrameCount + 1;
 
       // Clear out the objectives now so that the progress screen goes back to 0.
-      v.persistent.completedObjectiveIDs = [];
+      v.persistent.completedObjectiveIDs = new Set();
 
       return;
     }
 
-    if (v.persistent.completedObjectiveIDs.length < ALL_OBJECTIVES.length) {
+    if (v.persistent.completedObjectiveIDs.size < ALL_OBJECTIVES.length) {
       renderFrameToTestSeed = renderFrameCount + 1;
       return;
     }
@@ -201,8 +201,8 @@ export class AchievementRandomizer extends RandomizerModFeature {
     generationTime = 0;
 
     // Reset the persistent variable relating to our playthrough.
-    v.persistent.completedObjectiveIDs = [];
-    v.persistent.completedUnlockIDs = [];
+    v.persistent.completedObjectiveIDs = new Set();
+    v.persistent.completedUnlockIDs = new Set();
     resetStats();
     preForcedRestart();
 

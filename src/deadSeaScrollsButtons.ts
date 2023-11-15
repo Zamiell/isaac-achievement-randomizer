@@ -81,8 +81,7 @@ import {
   isTrinketTypeUnlocked,
 } from "./classes/features/achievementTracker/completedUnlocks";
 import {
-  getCompletedObjectiveIDs,
-  getCompletedUnlockIDs,
+  getAchievementHistory,
   isCardTypeInPlaythrough,
   isCollectibleTypeInPlaythrough,
   isPillEffectInPlaythrough,
@@ -105,19 +104,9 @@ export const MENU_PAGE_SIZE = 25;
 // -------------
 
 export function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
-  const completedUnlockIDs = getCompletedUnlockIDs();
-  const completedUnlocks = completedUnlockIDs.map((unlockID) =>
-    getUnlockFromID(unlockID),
-  );
-  completedUnlocks.reverse();
+  const achievementHistory = getAchievementHistory().toReversed();
 
-  const completedObjectiveIDs = getCompletedObjectiveIDs();
-  const completedObjectives = completedObjectiveIDs.map((objectiveID) =>
-    getObjectiveFromID(objectiveID),
-  );
-  completedObjectives.reverse();
-
-  if (completedUnlocks.length === 0) {
+  if (achievementHistory.length === 0) {
     return [
       {
         str: "no achievements",
@@ -131,18 +120,31 @@ export function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const i of iRange(MENU_PAGE_SIZE)) {
-    const unlock = completedUnlocks[i];
-    const objective = completedObjectives[i];
-
-    if (unlock === undefined || objective === undefined) {
+    const achievementTuple = achievementHistory[i];
+    if (achievementTuple === undefined) {
       continue;
     }
 
+    const [runNum, achievement] = achievementTuple;
+    const { objectiveID, unlockID } = achievement;
+
+    const objective = getObjectiveFromID(objectiveID);
     const objectiveText = getObjectiveText(objective);
 
-    buttons.push({
-      str: `${i + 1}.`,
-    });
+    buttons.push(
+      {
+        str: `${i + 1}.`,
+      },
+      {
+        str: "",
+      },
+      {
+        str: `run #${runNum}`,
+      },
+      {
+        str: "",
+      },
+    );
 
     for (const [j, line] of objectiveText.entries()) {
       buttons.push({
@@ -155,6 +157,7 @@ export function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
       str: "",
     });
 
+    const unlock = getUnlockFromID(unlockID);
     const unlockText = getUnlockText(unlock);
 
     for (const [j, line] of unlockText.entries()) {

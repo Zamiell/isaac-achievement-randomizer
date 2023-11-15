@@ -21,6 +21,7 @@
 - A new "Cheat Settings" menu has been added for people who want to cheat.
 - The quality threshold on hardcore and nightmare modes has been reduced from 0.5 to 0.333.
 - Gehenna is now flipped. (However, rooms with Ball and Chains are not flipped to avoid bugs.)
+- The "Recent Achievements" menu will now show the run number.
 - Fixed the bug where the following rooms were flipped incorrectly:
   - Caves: #11058, #21058
   - Catacombs: #11067, #11088, #21067, #21088

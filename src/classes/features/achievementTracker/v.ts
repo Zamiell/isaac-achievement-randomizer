@@ -8,6 +8,7 @@ import type {
 import { assertDefined } from "isaacscript-common";
 import { RandomizerMode } from "../../../enums/RandomizerMode";
 import { UnlockType } from "../../../enums/UnlockType";
+import type { Achievement } from "../../../types/Achievement";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
 import { getUnlock } from "../../../types/Unlock";
 import type { UnlockID } from "../../../types/UnlockID";
@@ -27,9 +28,9 @@ export const v = {
     unlockIDToObjectiveIDMap: new Map<UnlockID, ObjectiveID>(),
     characterUnlockOrder: [] as readonly PlayerType[],
 
-    completedObjectiveIDs: [] as ObjectiveID[],
-    completedUnlockIDs: [] as UnlockID[],
-    completedUnlockIDsForRun: [] as UnlockID[],
+    completedObjectiveIDs: new Set<ObjectiveID>(),
+    completedUnlockIDs: new Set<UnlockID>(),
+    completedUnlockIDsForRun: new Set<UnlockID>(),
   },
 };
 
@@ -82,16 +83,15 @@ export function getSecondCharacter(): PlayerType {
   return secondCharacter;
 }
 
-export function getCompletedObjectiveIDs(): ObjectiveID[] {
-  return v.persistent.completedObjectiveIDs;
+export function getAchievementHistory(): Readonly<
+  Array<readonly [int, Achievement]>
+> {
+  // TODO
+  return [];
 }
 
 export function getNumCompletedObjectives(): int {
-  return v.persistent.completedObjectiveIDs.length;
-}
-
-export function getCompletedUnlockIDs(): UnlockID[] {
-  return v.persistent.completedUnlockIDs;
+  return v.persistent.completedObjectiveIDs.size;
 }
 
 /**

@@ -58,8 +58,8 @@ export function addObjective(objective: Objective, emulating = false): void {
     emulating,
   );
 
-  v.persistent.completedObjectiveIDs.push(objectiveID);
-  v.persistent.completedUnlockIDs.push(potentiallySwappedUnlockID);
+  v.persistent.completedObjectiveIDs.add(objectiveID);
+  v.persistent.completedUnlockIDs.add(potentiallySwappedUnlockID);
 
   if (DEBUG || !emulating) {
     const objectiveText = getObjectiveText(objective).join(" ");
