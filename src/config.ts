@@ -23,12 +23,12 @@ const BANNED_COLLECTIBLE_TYPE_TO_KEY = {
   [CollectibleType.TMTRAINER]: "unbanTMTRAINER", // 721
 } as const satisfies Record<
   (typeof BANNED_COLLECTIBLE_TYPES)[number],
-  keyof typeof v.persistent.generation
+  keyof typeof v.persistent.cheat.generation
 >;
 
 const BANNED_COLLECTIBLE_TYPE_TO_KEY_MAP: ReadonlyMap<
   CollectibleType,
-  keyof typeof v.persistent.generation
+  keyof typeof v.persistent.cheat.generation
 > = objectToReadonlyMap(BANNED_COLLECTIBLE_TYPE_TO_KEY);
 
 const BANNED_TRINKET_TYPE_TO_KEY = {
@@ -37,51 +37,53 @@ const BANNED_TRINKET_TYPE_TO_KEY = {
   [TrinketType.M]: "unbanM", // 138
 } as const satisfies Record<
   (typeof BANNED_TRINKET_TYPES)[number],
-  keyof typeof v.persistent.generation
+  keyof typeof v.persistent.cheat.generation
 >;
 
 const BANNED_TRINKET_TYPE_TO_KEY_MAP: ReadonlyMap<
   TrinketType,
-  keyof typeof v.persistent.generation
+  keyof typeof v.persistent.cheat.generation
 > = objectToReadonlyMap(BANNED_TRINKET_TYPE_TO_KEY);
 
 const BANNED_CARD_TYPE_TO_KEY = {
   [CardType.CHAOS]: "unbanChaosCard", // 42
 } as const satisfies Record<
   (typeof BANNED_CARD_TYPES)[number],
-  keyof typeof v.persistent.generation
+  keyof typeof v.persistent.cheat.generation
 >;
 
 const BANNED_CARD_TYPE_TO_KEY_MAP: ReadonlyMap<
   CardType,
-  keyof typeof v.persistent.generation
+  keyof typeof v.persistent.cheat.generation
 > = objectToReadonlyMap(BANNED_CARD_TYPE_TO_KEY);
 
 // Registered in "deadSeaScrolls.ts".
 // eslint-disable-next-line isaacscript/require-v-registration
 export const v = {
   persistent: {
-    // Randomizer settings
     timer: DSS_CHOICE_DISABLED,
     preventPause: DSS_CHOICE_DISABLED,
     preventSaveAndQuit: DSS_CHOICE_DISABLED,
     delayAchievementText: DSS_CHOICE_DISABLED,
 
-    // Cheat settings
-    doubleUnlocks: DSS_CHOICE_DISABLED,
-    allowMods: DSS_CHOICE_DISABLED,
-    generation: {
-      unbanEdensBlessing: DSS_CHOICE_DISABLED,
-      unbanPlanC: DSS_CHOICE_DISABLED,
-      unbanClicker: DSS_CHOICE_DISABLED,
-      unbanMetronome: DSS_CHOICE_DISABLED,
-      unbanRKey: DSS_CHOICE_DISABLED,
-      unbanTMTRAINER: DSS_CHOICE_DISABLED,
-      unbanError: DSS_CHOICE_DISABLED,
-      unbanKarma: DSS_CHOICE_DISABLED,
-      unbanM: DSS_CHOICE_DISABLED,
-      unbanChaosCard: DSS_CHOICE_DISABLED,
+    cheat: {
+      doubleUnlocks: DSS_CHOICE_DISABLED,
+      allowMods: DSS_CHOICE_DISABLED,
+      generation: {
+        unbanEdensBlessing: DSS_CHOICE_DISABLED,
+        unbanPlanC: DSS_CHOICE_DISABLED,
+        unbanClicker: DSS_CHOICE_DISABLED,
+        unbanMetronome: DSS_CHOICE_DISABLED,
+        unbanRKey: DSS_CHOICE_DISABLED,
+        unbanTMTRAINER: DSS_CHOICE_DISABLED,
+        unbanError: DSS_CHOICE_DISABLED,
+        unbanKarma: DSS_CHOICE_DISABLED,
+        unbanM: DSS_CHOICE_DISABLED,
+        unbanChaosCard: DSS_CHOICE_DISABLED,
+      },
     },
+
+    deadSeaScrolls: {},
   },
 };
 
@@ -102,15 +104,17 @@ export function isDelayAchievementTextEnabled(): boolean {
 }
 
 export function isDoubleUnlocksEnabled(): boolean {
-  return v.persistent.doubleUnlocks === DSS_CHOICE_ENABLED;
+  return v.persistent.cheat.doubleUnlocks === DSS_CHOICE_ENABLED;
 }
 
 export function isAllowModsEnabled(): boolean {
-  return v.persistent.allowMods === DSS_CHOICE_ENABLED;
+  return v.persistent.cheat.allowMods === DSS_CHOICE_ENABLED;
 }
 
 export function isGenerationCheatsEnabled(): boolean {
-  return Object.values(v.persistent.generation).includes(DSS_CHOICE_ENABLED);
+  return Object.values(v.persistent.cheat.generation).includes(
+    DSS_CHOICE_ENABLED,
+  );
 }
 
 export function isCollectibleTypeBannedForNewPlaythrough(
@@ -120,7 +124,7 @@ export function isCollectibleTypeBannedForNewPlaythrough(
 
   return key === undefined
     ? false
-    : v.persistent.generation[key] === DSS_CHOICE_DISABLED;
+    : v.persistent.cheat.generation[key] === DSS_CHOICE_DISABLED;
 }
 
 export function isTrinketTypeBannedForNewPlaythrough(
@@ -130,7 +134,7 @@ export function isTrinketTypeBannedForNewPlaythrough(
 
   return key === undefined
     ? false
-    : v.persistent.generation[key] === DSS_CHOICE_DISABLED;
+    : v.persistent.cheat.generation[key] === DSS_CHOICE_DISABLED;
 }
 
 export function isCardTypeBannedForNewPlaythrough(cardType: CardType): boolean {
@@ -138,5 +142,5 @@ export function isCardTypeBannedForNewPlaythrough(cardType: CardType): boolean {
 
   return key === undefined
     ? false
-    : v.persistent.generation[key] === DSS_CHOICE_DISABLED;
+    : v.persistent.cheat.generation[key] === DSS_CHOICE_DISABLED;
 }

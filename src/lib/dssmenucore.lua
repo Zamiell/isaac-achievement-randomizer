@@ -68,7 +68,7 @@ local function tableToString(o)
 ---global variable if it does not already exist.
 ---@param DSSModName string A string used as an identifier for your mod's menu. It should be unique.
 ---                         We recommend something like "Dead Sea Scrolls (Mod Name)".
----@param v table TODO
+---@param v table An empty table which will store the DSS settings.
 ---@return DSSMod
 function dssmenucore.init(DSSModName, v)
     local DSSMod = RegisterMod(DSSModName, 1)
@@ -269,26 +269,6 @@ function dssmenucore.init(DSSModName, v)
 
     local function Lerp(aa, bb, cc)
         return (aa + (bb - aa) * cc)
-    end
-
-    local function KeysShareValues(tbl1, tbl2)
-        if not tbl1 or not tbl2 then
-            return false
-        end
-
-        for k, v in pairs(tbl1) do
-            if tbl2[k] ~= v then
-                return false
-            end
-        end
-
-        for k, v in pairs(tbl2) do
-            if tbl1[k] ~= v then
-                return false
-            end
-        end
-
-        return true
     end
 
     local function SafeKeyboardTriggered(key, controllerIndex)
@@ -2135,7 +2115,8 @@ function dssmenucore.init(DSSModName, v)
 
         local DSSMenu = DeadSeaScrollsMenu
         if input.toggle and not DSSMenu.IsOpen() then
-            if true then -- TODO: Better room dangerous function?
+            local isClear = game:GetRoom():IsClear()
+            if isClear then
                 if DSSMenu.CanOpenGlobalMenu() then
                     DSSMenu.OpenMenu("Menu")
                 else
@@ -2308,8 +2289,6 @@ function dssmenucore.init(DSSModName, v)
         -- If not in control of certain settings, be sure to store them!
         if not isCore and DSSMenu and openToggle ~= isOpen then
             openToggle = isOpen
-
-            -- TODO
         end
     end
 
@@ -2329,10 +2308,13 @@ function dssmenucore.init(DSSModName, v)
         slider = true,
         setting = 0,
         load = function()
-            return DeadSeaScrollsMenu.GetHudOffsetSetting()
+            if v.HudOffset == nil then
+                v.HudOffset = 0 -- Same as "setting"
+            end
+            return v.HudOffset
         end,
         store = function(var)
-            DeadSeaScrollsMenu.SaveHudOffsetSetting(var)
+            v.HudOffset = var
         end,
         displayIf = function(btn, item, tbl)
             return not REPENTANCE and sharedButtonDisplayCondition(btn, item, tbl)
@@ -2365,10 +2347,13 @@ function dssmenucore.init(DSSModName, v)
         },
         setting = 1,
         load = function()
-            return DeadSeaScrollsMenu.GetGamepadToggleSetting()
+            if v.ControllerToggle == nil then
+                v.ControllerToggle = 1 -- Same as "setting"
+            end
+            return v.ControllerToggle
         end,
         store = function(var)
-            DeadSeaScrollsMenu.SaveGamepadToggleSetting(var)
+            v.ControllerToggle = var
         end,
         displayIf = sharedButtonDisplayCondition
     }
@@ -2388,10 +2373,13 @@ function dssmenucore.init(DSSModName, v)
         keybind = true,
         setting = Keyboard.KEY_C,
         load = function()
-            return DeadSeaScrollsMenu.GetMenuKeybindSetting()
+            if v.MenuKeybind == nil then
+                v.MenuKeybind = Keyboard.KEY_C -- Same as "setting"
+            end
+            return v.MenuKeybind
         end,
         store = function(var)
-            DeadSeaScrollsMenu.SaveMenuKeybindSetting(var)
+            v.MenuKeybind = var
         end,
         changeFunc = function(button)
             DeadSeaScrollsMenu.SaveMenuKeybindSetting(button.setting)
@@ -2415,10 +2403,13 @@ function dssmenucore.init(DSSModName, v)
         variable = 'MenuHint',
         setting = 1,
         load = function()
-            return DeadSeaScrollsMenu.GetMenuHintSetting()
+            if v.MenuHint == nil then
+                v.MenuHint = 1 -- Same as "setting"
+            end
+            return v.MenuHint
         end,
         store = function(var)
-            DeadSeaScrollsMenu.SaveMenuHintSetting(var)
+            v.MenuHint = var
         end,
         changeFunc = function(button)
             DeadSeaScrollsMenu.SaveMenuHintSetting(button.setting)
@@ -2442,10 +2433,13 @@ function dssmenucore.init(DSSModName, v)
         variable = 'MenuBuzzer',
         setting = 1,
         load = function()
-            return DeadSeaScrollsMenu.GetMenuBuzzerSetting()
+            if v.MenuBuzzer == nil then
+                v.MenuBuzzer = 1 -- Same as "setting"
+            end
+            return v.MenuBuzzer
         end,
         store = function(var)
-            DeadSeaScrollsMenu.SaveMenuBuzzerSetting(var)
+            v.MenuBuzzer = var
         end,
         changeFunc = function(button)
             DeadSeaScrollsMenu.SaveMenuBuzzerSetting(button.setting)
@@ -2458,10 +2452,13 @@ function dssmenucore.init(DSSModName, v)
         variable = "MenuPalette",
         setting = 1,
         load = function()
-            return DeadSeaScrollsMenu.GetPaletteSetting()
+            if v.MenuPalette == nil then
+                v.MenuPalette = 1 -- Same as "setting"
+            end
+            return v.MenuPalette
         end,
         store = function(var)
-            DeadSeaScrollsMenu.SavePaletteSetting(var)
+            v.MenuPalette = var
         end,
         changeFunc = function(button)
             DeadSeaScrollsMenu.SavePaletteSetting(button.setting)
@@ -2526,7 +2523,6 @@ function dssmenucore.init(DSSModName, v)
             return false
         end
     }
-
 
     DSSMod.menuOpenToolTip = {
         strSet = {

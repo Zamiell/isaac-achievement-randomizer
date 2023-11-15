@@ -1,9 +1,4 @@
-export function init(
-  this: void,
-  dssModName: string,
-  dssCoreVersion: number,
-  v: unknown,
-): DSSMod;
+export function init(this: void, dssModName: string, v: unknown): DSSMod;
 
 // ts-prune-ignore-next
 interface DSSMod extends Mod {

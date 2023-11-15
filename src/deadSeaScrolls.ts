@@ -80,7 +80,7 @@ import { mod } from "./mod";
 const DSS_CHOICES = ["disabled", "enabled"] as const;
 
 const UNBAN_KEY_TO_NAME = new ReadonlyMap<
-  keyof typeof v.persistent.generation,
+  keyof typeof v.persistent.cheat.generation,
   string
 >([
   ["unbanEdensBlessing", "Eden's Blessing"], // 381
@@ -97,7 +97,7 @@ const UNBAN_KEY_TO_NAME = new ReadonlyMap<
 
 export function initDeadSeaScrolls(): void {
   mod.saveDataManager("deadSeaScrolls", v);
-  const DSSMod = init(`${MOD_NAME}-DSS`, 1, v.persistent);
+  const DSSMod = init(`${MOD_NAME}-DSS`, v.persistent.deadSeaScrolls);
 
   const directory: Record<string, DeadSeaScrollsSubMenu> = {
     main: {
@@ -1009,10 +1009,10 @@ export function initDeadSeaScrolls(): void {
           setting: DSS_CHOICE_DISABLED,
           variable: "doubleUnlocks",
 
-          load: () => v.persistent.doubleUnlocks,
+          load: () => v.persistent.cheat.doubleUnlocks,
 
           store: (choiceIndex) => {
-            v.persistent.doubleUnlocks = choiceIndex;
+            v.persistent.cheat.doubleUnlocks = choiceIndex;
           },
 
           tooltip: {
@@ -1036,10 +1036,10 @@ export function initDeadSeaScrolls(): void {
           setting: DSS_CHOICE_DISABLED,
           variable: "allowMods",
 
-          load: () => v.persistent.allowMods,
+          load: () => v.persistent.cheat.allowMods,
 
           store: (choiceIndex) => {
-            v.persistent.allowMods = choiceIndex;
+            v.persistent.cheat.allowMods = choiceIndex;
           },
 
           tooltip: {
@@ -1055,12 +1055,33 @@ export function initDeadSeaScrolls(): void {
 
     menuSettings: {
       title: "settings",
+      fSize: 2,
       buttons: [
         DSSMod.gamepadToggleButton,
+        {
+          str: "",
+          noSel: true,
+        },
         DSSMod.menuKeybindButton,
+        {
+          str: "",
+          noSel: true,
+        },
         DSSMod.paletteButton,
+        {
+          str: "",
+          noSel: true,
+        },
         DSSMod.menuHintButton,
+        {
+          str: "",
+          noSel: true,
+        },
         DSSMod.menuBuzzerButton,
+        {
+          str: "",
+          noSel: true,
+        },
       ],
     },
   };
@@ -1210,10 +1231,10 @@ export function initDeadSeaScrolls(): void {
         setting: DSS_CHOICE_DISABLED,
         variable: key,
 
-        load: () => v.persistent.generation[key],
+        load: () => v.persistent.cheat.generation[key],
 
         store: (choiceIndex) => {
-          v.persistent.generation[key] = choiceIndex;
+          v.persistent.cheat.generation[key] = choiceIndex;
         },
 
         tooltip: {

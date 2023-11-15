@@ -20,7 +20,6 @@ import {
   game,
   isActionPressedOnAnyInput,
   isAfterRenderFrame,
-  isRoomDangerous,
   newRNG,
   onChallenge,
   repeat,
@@ -29,6 +28,7 @@ import { isGenerationCheatsEnabled, isPreventPauseEnabled } from "../../config";
 import { ChallengeCustom } from "../../enums/ChallengeCustom";
 import { mod } from "../../mod";
 import { convertSecondsToTimerValues } from "../../timer";
+import { isRoomClear } from "./PreventPause";
 import { getRandomizerSeed, isRandomizerEnabled } from "./achievementTracker/v";
 import { hasErrors } from "./checkErrors/v";
 
@@ -74,7 +74,7 @@ export class StatsTracker extends ModFeature {
   postRender(): void {
     if (
       !isPreventPauseEnabled() &&
-      isRoomDangerous() &&
+      isRoomClear() &&
       isActionPressedOnAnyInput(
         ButtonAction.PAUSE, // 12
         ButtonAction.CONSOLE, // 28
