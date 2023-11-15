@@ -298,11 +298,9 @@ export class PickupRemoval extends RandomizerModFeature {
         break;
       }
 
-      if (unlockableChestPickupVariant === PickupVariant.RED_CHEST) {
-        continue;
+      if (unlockableChestPickupVariant !== PickupVariant.RED_CHEST) {
+        worseChestPickupVariants.push(unlockableChestPickupVariant);
       }
-
-      worseChestPickupVariants.push(unlockableChestPickupVariant);
     }
 
     return worseChestPickupVariants;

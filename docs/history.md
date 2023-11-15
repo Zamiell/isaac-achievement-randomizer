@@ -35,7 +35,7 @@
 - Fixed the bug where pills from champions would not have proper seeds. (Thanks Neonomi)
 - !Fixed the bug where some settings in the Dead Sea Scrolls menu would not save properly. (Thanks setJy)
 - Fixed the bug where alt-tabbing would let you illegally pause the game. (Thanks CorvusOnStream)
-- !Fixed the bug where the Backasswards challenge would not work properly. (Thanks Andrew)
+- Fixed the bug where the Backasswards challenge would not work properly. (Thanks Andrew)
 
 ### _v0.9.2_ - October 23rd, 2023
 

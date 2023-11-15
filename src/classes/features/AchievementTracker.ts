@@ -1,18 +1,22 @@
 import type {
+  Challenge,
   CollectibleType,
   PillEffect,
   PlayerType,
   RoomType,
+  TrinketType,
 } from "isaac-typescript-definitions";
 import {
   CallbackCustom,
   ModCallbackCustom,
   assertDefined,
   copySet,
+  getChallengeName,
   getCharacterName,
   getCollectibleName,
   getPillEffectName,
   getRoomTypeName,
+  getTrinketName,
   log,
   logError,
 } from "isaacscript-common";
@@ -77,6 +81,22 @@ export function setAreaUnlocked(unlockableArea: UnlockableArea): void {
 }
 
 /** Only used for debugging. */
+export function setChallengeUnlocked(challenge: Challenge): void {
+  const unlock = getUnlock(UnlockType.CHALLENGE, challenge);
+  const unlockID = getUnlockID(unlock);
+  const objectiveID = v.persistent.unlockIDToObjectiveIDMap.get(unlockID);
+  if (objectiveID === undefined) {
+    const challengeName = getChallengeName(challenge);
+    error(
+      `Failed to find the objective to unlock challenge: ${challengeName} (${challenge})`,
+    );
+  }
+
+  const objective = getObjectiveFromID(objectiveID);
+  addObjective(objective);
+}
+
+/** Only used for debugging. */
 export function setCollectibleUnlocked(collectibleType: CollectibleType): void {
   const unlock = getUnlock(UnlockType.COLLECTIBLE, collectibleType);
   const unlockID = getUnlockID(unlock);
@@ -85,6 +105,22 @@ export function setCollectibleUnlocked(collectibleType: CollectibleType): void {
     const collectibleName = getCollectibleName(collectibleType);
     error(
       `Failed to find the objective to unlock collectible: ${collectibleName} (${collectibleType})`,
+    );
+  }
+
+  const objective = getObjectiveFromID(objectiveID);
+  addObjective(objective);
+}
+
+/** Only used for debugging. */
+export function setTrinketUnlocked(trinketType: TrinketType): void {
+  const unlock = getUnlock(UnlockType.TRINKET, trinketType);
+  const unlockID = getUnlockID(unlock);
+  const objectiveID = v.persistent.unlockIDToObjectiveIDMap.get(unlockID);
+  if (objectiveID === undefined) {
+    const trinketName = getTrinketName(trinketType);
+    error(
+      `Failed to find the objective to unlock trinket: ${trinketName} (${trinketType})`,
     );
   }
 

@@ -233,10 +233,12 @@ The mod provides several custom [console commands](https://bindingofisaacrebirth
 - `randomizerVersion` - Prints the version of the Achievement Randomizer mod.
 - `spoilerLog` - Writes out a spoiler log to the "log.txt" file. Note that the unlocks may not be accurate, since the mod swaps an unlock if it detects that you should not get it yet.
 - `unlockArea [area]` - For debugging. Immediately unlocks the specified area.
+- `unlockChallenge [challenge]` - For debugging. Immediately unlocks the specified challenge.
 - `unlockCharacter [character]` - For debugging. Immediately unlocks the specified character.
 - `unlockCollectible [collectible]` - For debugging. Immediately unlocks the specified collectible.
 - `unlockPillEffect [pill effect]` - For debugging. Immediately unlocks the specified pill effect.
 - `unlockRoom [room]` - For debugging. Immediately unlocks the specified room.
+- `unlockTrinket [trinket]` - For debugging. Immediately unlocks the specified trinket.
 
 ### 8) Crash & Softlock Prevention <!-- FixVanillaBugs -->
 

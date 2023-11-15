@@ -1,5 +1,6 @@
 import {
   CardType,
+  Challenge,
   CollectibleType,
   EffectVariant,
   PillColor,
@@ -12,17 +13,22 @@ import {
   CallbackCustom,
   ModCallbackCustom,
   VANILLA_COLLECTIBLE_TYPES,
+  addCollectible,
+  copyArray,
   game,
   getRandomArrayElement,
+  getRandomArrayElementAndRemove,
   isCharacter,
   isEden,
   isGoldenTrinketType,
   newRNG,
+  onChallenge,
   rebirthItemTrackerRemoveCollectible,
   removeAllEffects,
   removeAllFamiliars,
   removeAllPickups,
   removeAllTears,
+  repeat,
   setPlayerHealth,
   sfxManager,
 } from "isaacscript-common";
@@ -42,6 +48,12 @@ import {
   isTrinketTypeUnlocked,
 } from "./achievementTracker/completedUnlocks";
 
+/**
+ * This does not include Key Piece 1 and Key Piece 2, which you also always start with in this
+ * challenge.
+ */
+const NUM_BACKASSWARDS_STARTING_COLLECTIBLES = 10;
+
 /** This feature handles removing the starting items of a player that are not unlocked yet. */
 export class StartingItemRemoval extends RandomizerModFeature {
   @CallbackCustom(ModCallbackCustom.POST_PLAYER_INIT_FIRST)
@@ -56,7 +68,9 @@ export class StartingItemRemoval extends RandomizerModFeature {
     for (const collectibleType of VANILLA_COLLECTIBLE_TYPES) {
       if (
         player.HasCollectible(collectibleType) &&
-        (!isCollectibleTypeUnlocked(collectibleType, true) || isEden(player)) &&
+        (!isCollectibleTypeUnlocked(collectibleType, true) ||
+          isEden(player) ||
+          onChallenge(Challenge.BACKASSWARDS)) &&
         !(
           isCharacter(player, PlayerType.CAIN_B) &&
           collectibleType === CollectibleType.BAG_OF_CRAFTING
@@ -116,6 +130,10 @@ export class StartingItemRemoval extends RandomizerModFeature {
         break;
       }
     }
+
+    if (onChallenge(Challenge.BACKASSWARDS)) {
+      this.addBackasswardsRandomCollectibles(player);
+    }
   }
 
   /** Collectibles, trinkets, cards, and pills were removed earlier on. */
@@ -166,5 +184,31 @@ export class StartingItemRemoval extends RandomizerModFeature {
 
     player.AddCollectible(activeCollectibleType);
     player.AddCollectible(passiveCollectibleType);
+  }
+
+  addBackasswardsRandomCollectibles(player: EntityPlayer): void {
+    const seeds = game.GetSeeds();
+    const startSeed = seeds.GetStartSeed();
+    const rng = newRNG(startSeed);
+
+    const passiveCollectibleTypes = copyArray(
+      getUnlockedEdenPassiveCollectibleTypes(true),
+    );
+
+    const randomStartingCollectibles: CollectibleType[] = [];
+    repeat(NUM_BACKASSWARDS_STARTING_COLLECTIBLES, () => {
+      // We might not have 10 passive collectibles unlocked.
+      if (passiveCollectibleTypes.length === 0) {
+        return;
+      }
+
+      const randomStartingCollectible = getRandomArrayElementAndRemove(
+        passiveCollectibleTypes,
+        rng,
+      );
+      randomStartingCollectibles.push(randomStartingCollectible);
+    });
+
+    addCollectible(player, ...randomStartingCollectibles);
   }
 }

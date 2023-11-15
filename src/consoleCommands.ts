@@ -1,10 +1,14 @@
 import type {
-  CollectibleType,
   PillEffect,
   PlayerType,
   RoomType,
 } from "isaac-typescript-definitions";
-import { Difficulty } from "isaac-typescript-definitions";
+import {
+  Challenge,
+  CollectibleType,
+  Difficulty,
+  TrinketType,
+} from "isaac-typescript-definitions";
 import {
   CHARACTER_NAME_TO_TYPE_MAP,
   COLLECTIBLE_NAME_TO_TYPE_MAP,
@@ -12,15 +16,17 @@ import {
   LAST_VANILLA_CHARACTER,
   PILL_NAME_TO_EFFECT_MAP,
   ROOM_NAME_TO_TYPE_MAP,
-  asCollectibleType,
+  TRINKET_NAME_TO_TYPE_MAP,
   asPillEffect,
   asRoomType,
   game,
+  getChallengeName,
   getCharacterName,
   getCollectibleName,
   getMapPartialMatch,
   getPillEffectName,
   getRoomTypeName,
+  getTrinketName,
   isEnumValue,
   restart,
 } from "isaacscript-common";
@@ -36,13 +42,24 @@ import {
 import {
   logSpoilerLog,
   setAreaUnlocked,
+  setChallengeUnlocked,
   setCharacterUnlocked,
   setCollectibleUnlocked,
   setPillEffectUnlocked,
   setRoomUnlocked,
+  setTrinketUnlocked,
 } from "./classes/features/AchievementTracker";
 import { getCharacterObjectiveKindNoHit } from "./classes/features/ChapterObjectiveDetection";
 import { addObjective } from "./classes/features/achievementTracker/addObjective";
+import {
+  isAreaUnlocked,
+  isChallengeUnlocked,
+  isCharacterUnlocked,
+  isCollectibleTypeUnlocked,
+  isPillEffectUnlocked,
+  isRoomTypeUnlocked,
+  isTrinketTypeUnlocked,
+} from "./classes/features/achievementTracker/completedUnlocks";
 import {
   isRandomizerEnabled,
   setAcceptedVersionMismatch,
@@ -67,10 +84,12 @@ export function initConsoleCommands(): void {
   mod.addConsoleCommand("randomizerVersion", randomizerVersion);
   mod.addConsoleCommand("spoilerLog", spoilerLog);
   mod.addConsoleCommand("unlockArea", unlockArea);
+  mod.addConsoleCommand("unlockChallenge", unlockChallenge);
   mod.addConsoleCommand("unlockCharacter", unlockCharacter);
   mod.addConsoleCommand("unlockCollectible", unlockCollectible);
   mod.addConsoleCommand("unlockPillEffect", unlockPillEffect);
   mod.addConsoleCommand("unlockRoom", unlockRoom);
+  mod.addConsoleCommand("unlockTrinket", unlockTrinket);
 }
 
 function endRandomizerCommand(_params: string) {
@@ -195,22 +214,61 @@ function unlockArea(params: string) {
     return;
   }
 
-  const unlockableAreaNumber = tonumber(params);
-  if (unlockableAreaNumber === undefined) {
+  const unlockableArea = tonumber(params);
+  if (unlockableArea === undefined) {
     print(`That is not a valid number: ${params}`);
     return;
   }
 
-  if (!isEnumValue(unlockableAreaNumber, UnlockableArea)) {
+  if (!isEnumValue(unlockableArea, UnlockableArea)) {
     print(`Invalid area number: ${params}`);
     return;
   }
 
-  const unlockableArea = unlockableAreaNumber as UnlockableArea;
-  setAreaUnlocked(unlockableArea);
-
   const areaName = getAreaName(unlockableArea);
+  if (isAreaUnlocked(unlockableArea, false)) {
+    print(`The area of "${areaName}" (${unlockableArea}) is already unlocked.`);
+    return;
+  }
+
+  setAreaUnlocked(unlockableArea);
   print(`Unlocked area: ${areaName} (${unlockableArea})`);
+}
+
+function unlockChallenge(params: string) {
+  if (!isRandomizerEnabled()) {
+    print(
+      "Error: You are not currently in a randomizer playthrough, so you can not unlock anything.",
+    );
+    return;
+  }
+
+  if (params === "") {
+    print("You must specify the number corresponding to the challenge.");
+    return;
+  }
+
+  const challenge = tonumber(params);
+  if (challenge === undefined) {
+    print(`That is not a valid number: ${params}`);
+    return;
+  }
+
+  if (!isEnumValue(challenge, Challenge)) {
+    print(`Invalid challenge number: ${params}`);
+    return;
+  }
+
+  const challengeName = getChallengeName(challenge);
+  if (isChallengeUnlocked(challenge, false)) {
+    print(
+      `The challenge of "${challengeName}" (${challenge}) is already unlocked.`,
+    );
+    return;
+  }
+
+  setChallengeUnlocked(challenge);
+  print(`Unlocked challenge: ${challengeName} (${challenge})`);
 }
 
 function unlockCharacter(params: string) {
@@ -245,9 +303,15 @@ function unlockCharacter(params: string) {
     character = num;
   }
 
-  setCharacterUnlocked(character);
-
   const characterName = getCharacterName(character);
+  if (isCharacterUnlocked(character, false)) {
+    print(
+      `The character of "${characterName}" (${character}) is already unlocked.`,
+    );
+    return;
+  }
+
+  setCharacterUnlocked(character);
   print(`Unlocked character: ${characterName} (${character})`);
 }
 
@@ -277,12 +341,22 @@ function unlockCollectible(params: string) {
 
     collectibleType = match[1];
   } else {
-    collectibleType = asCollectibleType(collectibleTypeNumber);
+    if (!isEnumValue(collectibleTypeNumber, CollectibleType)) {
+      print(`Unknown collectible type: ${collectibleTypeNumber}`);
+      return;
+    }
+    collectibleType = collectibleTypeNumber;
+  }
+
+  const collectibleName = getCollectibleName(collectibleType);
+  if (isCollectibleTypeUnlocked(collectibleType, false)) {
+    print(
+      `The collectible of "${collectibleName}" (${collectibleType}) is already unlocked.`,
+    );
+    return;
   }
 
   setCollectibleUnlocked(collectibleType);
-
-  const collectibleName = getCollectibleName(collectibleType);
   print(`Unlocked collectible: ${collectibleName} (${collectibleType})`);
 }
 
@@ -315,9 +389,15 @@ function unlockPillEffect(params: string) {
     pillEffect = asPillEffect(pillEffectNumber);
   }
 
-  setPillEffectUnlocked(pillEffect);
-
   const pillEffectName = getPillEffectName(pillEffect);
+  if (isPillEffectUnlocked(pillEffect, false)) {
+    print(
+      `The pill effect of "${pillEffectName}" (${pillEffect}) is already unlocked.`,
+    );
+    return;
+  }
+
+  setPillEffectUnlocked(pillEffect);
   print(`Unlocked pill effect: ${pillEffectName} (${pillEffect})`);
 }
 
@@ -350,8 +430,57 @@ function unlockRoom(params: string) {
     roomType = asRoomType(roomTypeNumber);
   }
 
-  setRoomUnlocked(roomType);
-
   const roomTypeName = getRoomTypeName(roomType);
+  if (isRoomTypeUnlocked(roomType, false)) {
+    print(`The room of "${roomTypeName}" (${roomType}) is already unlocked.`);
+    return;
+  }
+
+  setRoomUnlocked(roomType);
   print(`Unlocked room: ${roomTypeName} (${roomType})`);
+}
+
+function unlockTrinket(params: string) {
+  if (!isRandomizerEnabled()) {
+    print(
+      "Error: You are not currently in a randomizer playthrough, so you can not unlock anything.",
+    );
+    return;
+  }
+
+  if (params === "") {
+    print(
+      "You must specify the trinket name or the number corresponding to the trinket type.",
+    );
+    return;
+  }
+
+  const trinketTypeNumber = tonumber(params);
+  let trinketType: TrinketType;
+  if (trinketTypeNumber === undefined) {
+    const match = getMapPartialMatch(params, TRINKET_NAME_TO_TYPE_MAP);
+    if (match === undefined) {
+      print(`Unknown trinket: ${params}`);
+      return;
+    }
+
+    trinketType = match[1];
+  } else {
+    if (!isEnumValue(trinketTypeNumber, TrinketType)) {
+      print(`Unknown trinket type: ${trinketTypeNumber}`);
+      return;
+    }
+    trinketType = trinketTypeNumber;
+  }
+
+  const trinketName = getTrinketName(trinketType);
+  if (isTrinketTypeUnlocked(trinketType, false)) {
+    print(
+      `The trinket of "${trinketName}" (${trinketType}) is already unlocked.`,
+    );
+    return;
+  }
+
+  setTrinketUnlocked(trinketType);
+  print(`Unlocked trinket: ${trinketName} (${trinketType})`);
 }
