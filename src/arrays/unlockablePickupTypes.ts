@@ -88,10 +88,10 @@ export const UNLOCKABLE_SACK_SUB_TYPES_SET = new ReadonlySet<SackSubType>(
 );
 
 export const UNLOCKABLE_CHEST_PICKUP_VARIANTS = [
+  PickupVariant.CHEST, // 50
   PickupVariant.SPIKED_CHEST, // 52
   PickupVariant.MIMIC_CHEST, // 54
   PickupVariant.HAUNTED_CHEST, // 58
-  PickupVariant.CHEST, // 50
   PickupVariant.LOCKED_CHEST, // 60
   PickupVariant.BOMB_CHEST, // 51
   PickupVariant.RED_CHEST, // 360

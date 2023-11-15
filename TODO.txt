@@ -1,5 +1,8 @@
 TODO:
 
+- Alt+tab lets you illegally pause the game. That pause doesn't count to the stats
+- Make an option to prevent opening randomizer menu in fight
+
 - file.txt:
   - Run: 7
   - Unlocks: 33
