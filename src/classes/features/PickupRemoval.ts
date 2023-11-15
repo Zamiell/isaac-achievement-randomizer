@@ -39,7 +39,7 @@ import {
   log,
   onChest,
   onDarkRoom,
-  removeAllPickups,
+  removeAllChests,
   setCollectibleEmpty,
   setCollectibleSubType,
   spawnCoinWithSeed,
@@ -401,14 +401,14 @@ export class PickupRemoval extends RandomizerModFeature {
       onChest() &&
       !isChestPickupVariantUnlocked(PickupVariant.LOCKED_CHEST, true)
     ) {
-      removeAllPickups(PickupVariant.CHEST);
+      removeAllChests();
     }
 
     if (
       onDarkRoom() &&
       !isChestPickupVariantUnlocked(PickupVariant.RED_CHEST, true)
     ) {
-      removeAllPickups(PickupVariant.CHEST);
+      removeAllChests();
     }
   }
 

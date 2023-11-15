@@ -3,6 +3,7 @@ import {
   CollectibleType,
   TrinketType,
 } from "isaac-typescript-definitions";
+import { objectToReadonlyMap } from "isaacscript-common";
 import type { BANNED_CARD_TYPES } from "./arrays/unlockableCardTypes";
 import type { BANNED_COLLECTIBLE_TYPES } from "./arrays/unlockableCollectibleTypes";
 import type { BANNED_TRINKET_TYPES } from "./arrays/unlockableTrinketTypes";
@@ -25,6 +26,11 @@ const BANNED_COLLECTIBLE_TYPE_TO_KEY = {
   keyof typeof v.persistent.generation
 >;
 
+const BANNED_COLLECTIBLE_TYPE_TO_KEY_MAP: ReadonlyMap<
+  CollectibleType,
+  keyof typeof v.persistent.generation
+> = objectToReadonlyMap(BANNED_COLLECTIBLE_TYPE_TO_KEY);
+
 const BANNED_TRINKET_TYPE_TO_KEY = {
   [TrinketType.ERROR]: "unbanError", // 75
   [TrinketType.KARMA]: "unbanKarma", // 85
@@ -34,12 +40,22 @@ const BANNED_TRINKET_TYPE_TO_KEY = {
   keyof typeof v.persistent.generation
 >;
 
+const BANNED_TRINKET_TYPE_TO_KEY_MAP: ReadonlyMap<
+  TrinketType,
+  keyof typeof v.persistent.generation
+> = objectToReadonlyMap(BANNED_TRINKET_TYPE_TO_KEY);
+
 const BANNED_CARD_TYPE_TO_KEY = {
   [CardType.CHAOS]: "unbanChaosCard", // 42
 } as const satisfies Record<
   (typeof BANNED_CARD_TYPES)[number],
   keyof typeof v.persistent.generation
 >;
+
+const BANNED_CARD_TYPE_TO_KEY_MAP: ReadonlyMap<
+  CardType,
+  keyof typeof v.persistent.generation
+> = objectToReadonlyMap(BANNED_CARD_TYPE_TO_KEY);
 
 // Registered in "deadSeaScrolls.ts".
 // eslint-disable-next-line isaacscript/require-v-registration
@@ -100,9 +116,7 @@ export function isGenerationCheatsEnabled(): boolean {
 export function isCollectibleTypeBannedForNewPlaythrough(
   collectibleType: CollectibleType,
 ): boolean {
-  const key = BANNED_COLLECTIBLE_TYPE_TO_KEY[
-    collectibleType as keyof typeof BANNED_COLLECTIBLE_TYPE_TO_KEY
-  ] as keyof typeof v.persistent.generation | undefined;
+  const key = BANNED_COLLECTIBLE_TYPE_TO_KEY_MAP.get(collectibleType);
 
   return key === undefined
     ? false
@@ -112,9 +126,7 @@ export function isCollectibleTypeBannedForNewPlaythrough(
 export function isTrinketTypeBannedForNewPlaythrough(
   trinketType: TrinketType,
 ): boolean {
-  const key = BANNED_TRINKET_TYPE_TO_KEY[
-    trinketType as keyof typeof BANNED_TRINKET_TYPE_TO_KEY
-  ] as keyof typeof v.persistent.generation | undefined;
+  const key = BANNED_TRINKET_TYPE_TO_KEY_MAP.get(trinketType);
 
   return key === undefined
     ? false
@@ -122,9 +134,7 @@ export function isTrinketTypeBannedForNewPlaythrough(
 }
 
 export function isCardTypeBannedForNewPlaythrough(cardType: CardType): boolean {
-  const key = BANNED_CARD_TYPE_TO_KEY[
-    cardType as keyof typeof BANNED_CARD_TYPE_TO_KEY
-  ] as keyof typeof v.persistent.generation | undefined;
+  const key = BANNED_CARD_TYPE_TO_KEY_MAP.get(cardType);
 
   return key === undefined
     ? false

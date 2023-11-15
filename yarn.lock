@@ -4187,7 +4187,7 @@ __metadata:
     cloc: "npm:^1.98.0-cloc"
     isaac-typescript-definitions: "npm:^39.0.2"
     isaacscript: "npm:^3.19.3"
-    isaacscript-common: "npm:^79.1.1"
+    isaacscript-common: "npm:^79.3.0"
     isaacscript-common-node: "npm:^1.2.0"
     isaacscript-lint: "npm:^6.4.0"
     isaacscript-spell: "npm:^1.10.0"
@@ -4230,12 +4230,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common@npm:^79.1.1":
-  version: 79.1.1
-  resolution: "isaacscript-common@npm:79.1.1"
+"isaacscript-common@npm:^79.3.0":
+  version: 79.3.0
+  resolution: "isaacscript-common@npm:79.3.0"
   dependencies:
     isaac-typescript-definitions: "npm:^39.0.2"
-  checksum: 73e6eb7afa7ff1b3fb08eac2943f1c188794dd0f4731cf5ee5da46267842c9f02a776d5f905d9e5553bc78cc6811ff6503bb4c8c7f57dd04285d69c5eca9c268
+  checksum: 21841dd9b8b87fff9e289edf2720b53c862c28bd06d71af532d0bc3780b2a9144b914023bda03d7fa01f0c896ec49dc7de991acf18df88b95af2b2dd87d58d34
   languageName: node
   linkType: hard
 
