@@ -4185,9 +4185,9 @@ __metadata:
   resolution: "isaac-achievement-randomizer@workspace:."
   dependencies:
     cloc: "npm:^1.98.0-cloc"
-    isaac-typescript-definitions: "npm:^39.0.1"
+    isaac-typescript-definitions: "npm:^39.0.2"
     isaacscript: "npm:^3.19.3"
-    isaacscript-common: "npm:^79.1.0"
+    isaacscript-common: "npm:^79.1.1"
     isaacscript-common-node: "npm:^1.2.0"
     isaacscript-lint: "npm:^6.4.0"
     isaacscript-spell: "npm:^1.10.0"
@@ -4198,12 +4198,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"isaac-typescript-definitions@npm:^39.0.1":
-  version: 39.0.1
-  resolution: "isaac-typescript-definitions@npm:39.0.1"
+"isaac-typescript-definitions@npm:^39.0.2":
+  version: 39.0.2
+  resolution: "isaac-typescript-definitions@npm:39.0.2"
   dependencies:
     lua-types: "npm:^2.13.1"
-  checksum: e5ed62469b62c4f5287ba740b9c64b5c138c88ec5a1ebc7572bdb7f49559a406dc769837082147b9f6f52ab86b76b900608867f90cd09c9673731abb010b3515
+  checksum: b3db1fab85e452907f1b813bd1dc6e85315321ba4d7a9982c1b5d4738e1946dae09e5d2d6f9c3ea7fbdb1ddc2d68f783763c8d648bc03e0158b3d44779ddbb80
   languageName: node
   linkType: hard
 
@@ -4230,12 +4230,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common@npm:^79.1.0":
-  version: 79.1.0
-  resolution: "isaacscript-common@npm:79.1.0"
+"isaacscript-common@npm:^79.1.1":
+  version: 79.1.1
+  resolution: "isaacscript-common@npm:79.1.1"
   dependencies:
-    isaac-typescript-definitions: "npm:^39.0.1"
-  checksum: 1146eeb845eba9c0c55a15d1f71bb80d69f0ad0c3f59ca5f7dd29c64e0c5eedcf2438c3e0d97afbe554cfcfb4ccb4527c157bf5a6f781fa0f851fbb483ef9e49
+    isaac-typescript-definitions: "npm:^39.0.2"
+  checksum: 73e6eb7afa7ff1b3fb08eac2943f1c188794dd0f4731cf5ee5da46267842c9f02a776d5f905d9e5553bc78cc6811ff6503bb4c8c7f57dd04285d69c5eca9c268
   languageName: node
   linkType: hard
 

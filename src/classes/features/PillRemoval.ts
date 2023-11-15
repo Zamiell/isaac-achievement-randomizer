@@ -13,6 +13,7 @@ import {
   game,
   getNormalPillColorFromHorse,
   getRandomArrayElement,
+  getRandomSeed,
   isGoldPill,
   isHorsePill,
   shuffleArray,
@@ -75,7 +76,7 @@ export class PillRemoval extends RandomizerModFeature {
     pickup: EntityPickup,
     _pickupVariant: PickupVariant,
     subType: int,
-  ): [PickupVariant, int] | undefined {
+  ): [pickupVariant: PickupVariant, subType: int] | undefined {
     if (!anyPillEffectsUnlocked(true)) {
       return [PickupVariant.COIN, CoinSubType.PENNY];
     }
@@ -93,10 +94,11 @@ export class PillRemoval extends RandomizerModFeature {
     const normalizedPillColor = getNormalPillColorFromHorse(pillColor);
     if (!v.run.pillPool.has(normalizedPillColor)) {
       const pillColors = [...v.run.pillPool.keys()];
-      const randomPillColor = getRandomArrayElement(
-        pillColors,
-        pickup.InitSeed,
-      );
+      // The `InitSeed` is 0 when giant/small champions drop pills.
+      const initSeed = pickup.InitSeed === 0 ? undefined : pickup.InitSeed;
+      const dropSeed = pickup.DropSeed === 0 ? undefined : pickup.DropSeed;
+      const seed = initSeed ?? dropSeed ?? getRandomSeed();
+      const randomPillColor = getRandomArrayElement(pillColors, seed);
 
       return [PickupVariant.PILL, randomPillColor];
     }

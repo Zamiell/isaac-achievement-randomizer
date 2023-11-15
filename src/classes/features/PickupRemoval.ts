@@ -264,7 +264,7 @@ export class PickupRemoval extends RandomizerModFeature {
     _pickup: EntityPickup,
     pickupVariant: PickupVariant,
     _subType: int,
-  ): [PickupVariant, int] | undefined {
+  ): [pickupVariant: PickupVariant, subType: int] | undefined {
     if (!isChestVariant(pickupVariant)) {
       return undefined;
     }
@@ -386,7 +386,7 @@ export class PickupRemoval extends RandomizerModFeature {
     _pickup: EntityPickup,
     _pickupVariant: PickupVariant,
     subType: int,
-  ): [PickupVariant, int] | undefined {
+  ): [pickupVariant: PickupVariant, subType: int] | undefined {
     const heartSubType = subType as HeartSubType;
 
     return isHeartSubTypeUnlocked(heartSubType, true)
@@ -402,7 +402,7 @@ export class PickupRemoval extends RandomizerModFeature {
     _pickup: EntityPickup,
     _pickupVariant: PickupVariant,
     subType: int,
-  ): [PickupVariant, int] | undefined {
+  ): [pickupVariant: PickupVariant, subType: int] | undefined {
     const coinSubType = subType as CoinSubType;
 
     return isCoinSubTypeUnlocked(coinSubType, true)
@@ -418,7 +418,7 @@ export class PickupRemoval extends RandomizerModFeature {
     _pickup: EntityPickup,
     _pickupVariant: PickupVariant,
     subType: int,
-  ): [PickupVariant, int] | undefined {
+  ): [pickupVariant: PickupVariant, subType: int] | undefined {
     const keySubType = subType as KeySubType;
 
     return isKeySubTypeUnlocked(keySubType, true)
@@ -434,7 +434,7 @@ export class PickupRemoval extends RandomizerModFeature {
     _pickup: EntityPickup,
     _pickupVariant: PickupVariant,
     subType: int,
-  ): [PickupVariant, int] | undefined {
+  ): [pickupVariant: PickupVariant, subType: int] | undefined {
     const bombSubType = subType as BombSubType;
 
     return isBombSubTypeUnlocked(bombSubType, true)
@@ -450,7 +450,7 @@ export class PickupRemoval extends RandomizerModFeature {
     _pickup: EntityPickup,
     _pickupVariant: PickupVariant,
     subType: int,
-  ): [PickupVariant, int] | undefined {
+  ): [pickupVariant: PickupVariant, subType: int] | undefined {
     const sackSubType = subType as SackSubType;
 
     return isSackSubTypeUnlocked(sackSubType, true)
@@ -466,7 +466,7 @@ export class PickupRemoval extends RandomizerModFeature {
     _pickup: EntityPickup,
     _pickupVariant: PickupVariant,
     subType: int,
-  ): [PickupVariant, int] | undefined {
+  ): [pickupVariant: PickupVariant, subType: int] | undefined {
     const batterySubType = subType as BatterySubType;
 
     return isBatterySubTypeUnlocked(batterySubType, true)
@@ -482,7 +482,7 @@ export class PickupRemoval extends RandomizerModFeature {
     _pickup: EntityPickup,
     _pickupVariant: PickupVariant,
     subType: int,
-  ): [PickupVariant, int] | undefined {
+  ): [pickupVariant: PickupVariant, subType: int] | undefined {
     if (!anyCardTypesUnlocked(true)) {
       return [PickupVariant.COIN, CoinSubType.PENNY];
     }
@@ -511,7 +511,7 @@ export class PickupRemoval extends RandomizerModFeature {
     _pickup: EntityPickup,
     _pickupVariant: PickupVariant,
     subType: int,
-  ): [PickupVariant, int] | undefined {
+  ): [pickupVariant: PickupVariant, subType: int] | undefined {
     const trinketType = subType as TrinketType;
 
     const unlockedTrinketTypes = getUnlockedTrinketTypes(true);
@@ -531,7 +531,7 @@ export class PickupRemoval extends RandomizerModFeature {
   postPickupSelectionGoldTrinket(
     trinketType: TrinketType,
     unlockedTrinketTypes: TrinketType[],
-  ): [PickupVariant, int] | undefined {
+  ): [pickupVariant: PickupVariant, subType: int] | undefined {
     const normalizedTrinketType = getNormalTrinketType(trinketType);
     const goldTrinketsUnlocked = isOtherUnlockKindUnlocked(
       OtherUnlockKind.GOLD_TRINKETS,
@@ -562,7 +562,7 @@ export class PickupRemoval extends RandomizerModFeature {
   postPickupSelectionNormalTrinket(
     trinketType: TrinketType,
     unlockedTrinketTypes: TrinketType[],
-  ): [PickupVariant, int] | undefined {
+  ): [pickupVariant: PickupVariant, subType: int] | undefined {
     // Perfection should always be selected but will be conditionally removed after spawning.
     if (
       unlockedTrinketTypes.includes(trinketType) ||

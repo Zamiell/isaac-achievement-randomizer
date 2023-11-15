@@ -21,8 +21,8 @@
     "update": "isaacscript update"
   },
   "dependencies": {
-    "isaac-typescript-definitions": "^39.0.1",
-    "isaacscript-common": "^79.1.0"
+    "isaac-typescript-definitions": "^39.0.2",
+    "isaacscript-common": "^79.1.1"
   },
   "devDependencies": {
     "cloc": "^1.98.0-cloc",
