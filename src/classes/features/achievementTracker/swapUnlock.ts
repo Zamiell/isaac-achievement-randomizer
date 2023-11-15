@@ -1064,9 +1064,14 @@ function getSwappedUnlockCollectible(
   }
 
   if (isAtLeastHalfCollectiblesUnlocked()) {
-    const unlocks = getUncompletedNonCollectiblesNonTrinkets();
-    if (unlocks.length > 0) {
-      return getRandomArrayElement(unlocks, seed);
+    // We have to filter for non-swappable unlocks to prevent an infinite loop.
+    const unlockIDs = getUncompletedNonCollectiblesNonTrinkets();
+    const nonSwappableUnlockIDs = unlockIDs.filter(
+      (unlockID) => getSwappedUnlockID(unlockID, seed) === undefined,
+    );
+    if (nonSwappableUnlockIDs.length > 0) {
+      const unlockID = getRandomArrayElement(nonSwappableUnlockIDs, seed);
+      return getUnlockFromID(unlockID);
     }
   }
 
@@ -1527,9 +1532,14 @@ function getSwappedUnlockTrinket(
   }
 
   if (isAtLeastHalfTrinketsUnlocked()) {
-    const unlocks = getUncompletedNonCollectiblesNonTrinkets();
-    if (unlocks.length > 0) {
-      return getRandomArrayElement(unlocks, seed);
+    // We have to filter for non-swappable unlocks to prevent an infinite loop.
+    const unlockIDs = getUncompletedNonCollectiblesNonTrinkets();
+    const nonSwappableUnlockIDs = unlockIDs.filter(
+      (unlockID) => getSwappedUnlockID(unlockID, seed) === undefined,
+    );
+    if (nonSwappableUnlockIDs.length > 0) {
+      const unlockID = getRandomArrayElement(nonSwappableUnlockIDs, seed);
+      return getUnlockFromID(unlockID);
     }
   }
 

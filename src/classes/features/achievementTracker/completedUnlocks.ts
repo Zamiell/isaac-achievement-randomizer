@@ -73,6 +73,7 @@ import {
   getUnlock,
   getUnlockFromID,
 } from "../../../types/Unlock";
+import type { UnlockID } from "../../../types/UnlockID";
 import { getUnlockID } from "../../../types/UnlockID";
 import { v } from "./v";
 
@@ -264,7 +265,7 @@ function getNumUnlockTypeUnlocked(
   return numUnlockedTypes;
 }
 
-export function getUncompletedNonCollectiblesNonTrinkets(): Unlock[] {
+export function getUncompletedNonCollectiblesNonTrinkets(): UnlockID[] {
   const unlocks: Unlock[] = [];
 
   for (const unlockID of v.persistent.uncompletedUnlockIDs) {
@@ -277,7 +278,7 @@ export function getUncompletedNonCollectiblesNonTrinkets(): Unlock[] {
     }
   }
 
-  return unlocks;
+  return unlocks.map((unlock) => getUnlockID(unlock));
 }
 
 // ----------------------------
