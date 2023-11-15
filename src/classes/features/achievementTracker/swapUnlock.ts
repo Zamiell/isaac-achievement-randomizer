@@ -96,8 +96,11 @@ import {
   anyRunesUnlocked,
   anySoulHeartUnlocked,
   anyTrinketTypesUnlocked,
+  getLockedNonCollectiblesNonTrinkets,
   getNextCharacterUnlock,
   getNumCardsUnlocked,
+  getNumUnlockedCollectibleTypes,
+  getNumUnlockedTrinketTypes,
   getWorseLockedBatterySubType,
   getWorseLockedBombSubType,
   getWorseLockedCardType,
@@ -129,6 +132,8 @@ import {
 } from "./completedUnlocks";
 import {
   getCharacterUnlockOrder,
+  getNumCollectibleTypesInPlaythrough,
+  getNumTrinketTypesInPlaythrough,
   isCardTypeInPlaythrough,
   isCollectibleTypeInPlaythrough,
   isHardcoreMode,
@@ -1063,6 +1068,13 @@ function getSwappedUnlockCollectible(
     return getUnlock(UnlockType.ROOM, RoomType.PLANETARIUM);
   }
 
+  if (isAtLeastHalfCollectiblesUnlocked()) {
+    const unlocks = getLockedNonCollectiblesNonTrinkets();
+    if (unlocks.length > 0) {
+      return getRandomArrayElement(unlocks, seed);
+    }
+  }
+
   if (isHardcoreMode()) {
     const worseCollectibleType = getWorseLockedCollectibleType(
       collectibleUnlock.collectibleType,
@@ -1076,6 +1088,14 @@ function getSwappedUnlockCollectible(
     collectibleUnlock.collectibleType,
   );
   return func === undefined ? undefined : func(seed);
+}
+
+function isAtLeastHalfCollectiblesUnlocked(): boolean {
+  const numCollectibleTypesInPlaythrough =
+    getNumCollectibleTypesInPlaythrough();
+  const numUnlockedCollectibleTypes = getNumUnlockedCollectibleTypes(false);
+
+  return numUnlockedCollectibleTypes / numCollectibleTypesInPlaythrough >= 0.5;
 }
 
 const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
@@ -1511,6 +1531,13 @@ function getSwappedUnlockTrinket(
     return getUnlock(UnlockType.ROOM, RoomType.DICE);
   }
 
+  if (isAtLeastHalfTrinketsUnlocked()) {
+    const unlocks = getLockedNonCollectiblesNonTrinkets();
+    if (unlocks.length > 0) {
+      return getRandomArrayElement(unlocks, seed);
+    }
+  }
+
   if (isHardcoreMode()) {
     const worseTrinketType = getWorseLockedTrinketType(
       trinketUnlock.trinketType,
@@ -1522,6 +1549,13 @@ function getSwappedUnlockTrinket(
 
   const func = SWAPPED_UNLOCK_TRINKET_FUNCTIONS.get(trinketUnlock.trinketType);
   return func === undefined ? undefined : func(seed);
+}
+
+function isAtLeastHalfTrinketsUnlocked(): boolean {
+  const numTrinketTypesInPlaythrough = getNumTrinketTypesInPlaythrough();
+  const numUnlockedTrinketTypes = getNumUnlockedTrinketTypes(false);
+
+  return numUnlockedTrinketTypes / numTrinketTypesInPlaythrough >= 0.5;
 }
 
 const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<

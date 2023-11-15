@@ -1,8 +1,6 @@
 TODO:
 
-- !Fixed the bug where some settings in the Dead Sea Scrolls menu would not save properly. (Thanks setJy)
-
-- Make an option to prevent opening randomizer menu in fight
+- search for all "locked" and use new data structure
 
 - add logic for collectibles/trinkets at 50% to unlock others
 

@@ -25,6 +25,8 @@
 - The "Recent Achievements" menu will now show the run number.
 - In hardcore/nightmare mode, normal chests will now unlock as your first chest unlock.
 - Booster Pack will no longer unlock until you have 10 cards.
+- Once 50% of collectibles are unlocked, further collectible unlocks will be swapped with any remaining non-collectible and non-trinket unlocks.
+- Once 50% of trinkets are unlocked, further trinket unlocks will be swapped with any remaining non-collectible and non-trinket unlocks.
 - Fixed the bug where the following rooms were flipped incorrectly:
   - Caves: #11058, #21058
   - Catacombs: #11067, #11088, #21067, #21088

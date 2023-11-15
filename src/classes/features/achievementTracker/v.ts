@@ -9,7 +9,7 @@ import { RandomizerMode } from "../../../enums/RandomizerMode";
 import { UnlockType } from "../../../enums/UnlockType";
 import type { Achievement } from "../../../types/Achievement";
 import type { ObjectiveID } from "../../../types/ObjectiveID";
-import { getUnlock } from "../../../types/Unlock";
+import { getUnlock, getUnlockFromID } from "../../../types/Unlock";
 import type { UnlockID } from "../../../types/UnlockID";
 import { getUnlockID } from "../../../types/UnlockID";
 
@@ -30,6 +30,7 @@ export const v = {
     completedObjectiveIDs: new Set<ObjectiveID>(),
     completedUnlockIDs: new Set<UnlockID>(),
     completedUnlockIDsForRun: new Set<UnlockID>(),
+    uncompletedUnlockIDs: new Set<UnlockID>(),
     achievementHistory: [] as Array<readonly [int, Achievement]>,
   },
 };
@@ -97,6 +98,19 @@ export function isCollectibleTypeInPlaythrough(
   return objectiveID !== undefined;
 }
 
+export function getNumCollectibleTypesInPlaythrough(): int {
+  let numCollectibleTypesInPlaythrough = 0;
+
+  for (const unlockID of v.persistent.objectiveIDToUnlockIDMap.values()) {
+    const unlock = getUnlockFromID(unlockID);
+    if (unlock.type === UnlockType.COLLECTIBLE) {
+      numCollectibleTypesInPlaythrough++;
+    }
+  }
+
+  return numCollectibleTypesInPlaythrough;
+}
+
 /**
  * Since some trinkets are banned, it is possible that some trinket types can never be unlocked in
  * the current randomizer playthrough.
@@ -107,6 +121,19 @@ export function isTrinketTypeInPlaythrough(trinketType: TrinketType): boolean {
   const objectiveID = v.persistent.unlockIDToObjectiveIDMap.get(unlockID);
 
   return objectiveID !== undefined;
+}
+
+export function getNumTrinketTypesInPlaythrough(): int {
+  let numTrinketTypesInPlaythrough = 0;
+
+  for (const unlockID of v.persistent.objectiveIDToUnlockIDMap.values()) {
+    const unlock = getUnlockFromID(unlockID);
+    if (unlock.type === UnlockType.TRINKET) {
+      numTrinketTypesInPlaythrough++;
+    }
+  }
+
+  return numTrinketTypesInPlaythrough;
 }
 
 /**

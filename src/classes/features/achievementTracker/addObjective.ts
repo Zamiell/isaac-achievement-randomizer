@@ -64,6 +64,7 @@ export function addObjective(objective: Objective, emulating = false): void {
 
   v.persistent.completedObjectiveIDs.add(objectiveID);
   v.persistent.completedUnlockIDs.add(potentiallySwappedUnlockID);
+  v.persistent.uncompletedUnlockIDs.delete(potentiallySwappedUnlockID);
 
   const achievement: Achievement = {
     objectiveID,

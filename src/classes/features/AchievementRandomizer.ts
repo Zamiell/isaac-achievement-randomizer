@@ -145,6 +145,10 @@ export class AchievementRandomizer extends RandomizerModFeature {
 
     v.persistent.completedObjectiveIDs = new Set();
     v.persistent.completedUnlockIDs = new Set();
+    v.persistent.completedUnlockIDsForRun = new Set();
+    v.persistent.uncompletedUnlockIDs = new Set(
+      v.persistent.objectiveIDToUnlockIDMap.values(),
+    );
     v.persistent.achievementHistory = [];
 
     generationTime = 0;
@@ -207,6 +211,10 @@ export class AchievementRandomizer extends RandomizerModFeature {
     // Reset the persistent variable relating to our playthrough.
     v.persistent.completedObjectiveIDs = new Set();
     v.persistent.completedUnlockIDs = new Set();
+    v.persistent.completedUnlockIDsForRun = new Set();
+    v.persistent.uncompletedUnlockIDs = new Set(
+      v.persistent.objectiveIDToUnlockIDMap.values(),
+    );
     v.persistent.achievementHistory = [];
     resetStats();
     preForcedRestart();

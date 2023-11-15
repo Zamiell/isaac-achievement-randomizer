@@ -562,7 +562,7 @@ export class PickupRemoval extends RandomizerModFeature {
   /** Convert gold trinkets to the corresponding non-gold version. */
   postPickupSelectionGoldTrinket(
     trinketType: TrinketType,
-    unlockedTrinketTypes: TrinketType[],
+    unlockedTrinketTypes: readonly TrinketType[],
   ): [pickupVariant: PickupVariant, subType: int] | undefined {
     const normalizedTrinketType = getNormalTrinketType(trinketType);
     const goldTrinketsUnlocked = isOtherUnlockKindUnlocked(
@@ -593,7 +593,7 @@ export class PickupRemoval extends RandomizerModFeature {
 
   postPickupSelectionNormalTrinket(
     trinketType: TrinketType,
-    unlockedTrinketTypes: TrinketType[],
+    unlockedTrinketTypes: readonly TrinketType[],
   ): [pickupVariant: PickupVariant, subType: int] | undefined {
     // Perfection should always be selected but will be conditionally removed after spawning.
     if (

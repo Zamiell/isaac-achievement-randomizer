@@ -366,6 +366,81 @@ export function getUnlockFromID(unlockID: UnlockID): Unlock {
   return constructor(arg);
 }
 
+export const UNLOCK_MAP_FUNCTIONS = {
+  [UnlockType.CHARACTER]: (unlock) => {
+    const characterUnlock = unlock as CharacterUnlock;
+    return characterUnlock.character;
+  },
+  [UnlockType.AREA]: (unlock) => {
+    const areaUnlock = unlock as AreaUnlock;
+    return areaUnlock.unlockableArea;
+  },
+  [UnlockType.ROOM]: (unlock) => {
+    const roomUnlock = unlock as RoomUnlock;
+    return roomUnlock.roomType;
+  },
+  [UnlockType.CHALLENGE]: (unlock) => {
+    const challengeUnlock = unlock as ChallengeUnlock;
+    return challengeUnlock.challenge;
+  },
+  [UnlockType.COLLECTIBLE]: (unlock) => {
+    const collectibleUnlock = unlock as CollectibleUnlock;
+    return collectibleUnlock.collectibleType;
+  },
+  [UnlockType.TRINKET]: (unlock) => {
+    const trinketUnlock = unlock as TrinketUnlock;
+    return trinketUnlock.trinketType;
+  },
+  [UnlockType.CARD]: (unlock) => {
+    const cardUnlock = unlock as CardUnlock;
+    return cardUnlock.cardType;
+  },
+  [UnlockType.PILL_EFFECT]: (unlock) => {
+    const pillEffectUnlock = unlock as PillEffectUnlock;
+    return pillEffectUnlock.pillEffect;
+  },
+  [UnlockType.HEART]: (unlock) => {
+    const heartUnlock = unlock as HeartUnlock;
+    return heartUnlock.heartSubType;
+  },
+  [UnlockType.COIN]: (unlock) => {
+    const coinUnlock = unlock as CoinUnlock;
+    return coinUnlock.coinSubType;
+  },
+  [UnlockType.BOMB]: (unlock) => {
+    const bombUnlock = unlock as BombUnlock;
+    return bombUnlock.bombSubType;
+  },
+  [UnlockType.KEY]: (unlock) => {
+    const keyUnlock = unlock as KeyUnlock;
+    return keyUnlock.keySubType;
+  },
+  [UnlockType.BATTERY]: (unlock) => {
+    const batteryUnlock = unlock as BatteryUnlock;
+    return batteryUnlock.batterySubType;
+  },
+  [UnlockType.SACK]: (unlock) => {
+    const sackUnlock = unlock as SackUnlock;
+    return sackUnlock.sackSubType;
+  },
+  [UnlockType.CHEST]: (unlock) => {
+    const chestUnlock = unlock as ChestUnlock;
+    return chestUnlock.pickupVariant;
+  },
+  [UnlockType.SLOT]: (unlock) => {
+    const slotUnlock = unlock as SlotUnlock;
+    return slotUnlock.slotVariant;
+  },
+  [UnlockType.GRID_ENTITY]: (unlock) => {
+    const gridEntityUnlock = unlock as GridEntityUnlock;
+    return gridEntityUnlock.gridEntityType;
+  },
+  [UnlockType.OTHER]: (unlock) => {
+    const otherUnlock = unlock as OtherUnlock;
+    return otherUnlock.kind;
+  },
+} as const satisfies Record<UnlockType, (unlock: Unlock) => int>;
+
 export function getUnlockText(unlock: Unlock): readonly [string, string] {
   switch (unlock.type) {
     case UnlockType.CHARACTER: {

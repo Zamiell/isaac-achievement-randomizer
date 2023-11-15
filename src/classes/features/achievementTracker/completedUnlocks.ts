@@ -27,7 +27,6 @@ import {
   getCollectibleQuality,
   getPillEffectType,
   getRandomArrayElement,
-  getVanillaCollectibleTypesOfQuality,
   isActiveCollectible,
   isCard,
   isFamiliarCollectible,
@@ -68,18 +67,13 @@ import { UnlockType } from "../../../enums/UnlockType";
 import type { UnlockableArea } from "../../../enums/UnlockableArea";
 import { CARD_QUALITIES } from "../../../objects/cardQualities";
 import { TRINKET_QUALITIES } from "../../../objects/trinketQualities";
-import type {
-  CardUnlock,
-  ChestUnlock,
-  CollectibleUnlock,
-  PillEffectUnlock,
-  TrinketUnlock,
-  Unlock,
+import type { Unlock } from "../../../types/Unlock";
+import {
+  UNLOCK_MAP_FUNCTIONS,
+  getUnlock,
+  getUnlockFromID,
 } from "../../../types/Unlock";
-import { getUnlock, getUnlockFromID } from "../../../types/Unlock";
 import { getUnlockID } from "../../../types/UnlockID";
-import { getCardTypesOfQuality } from "./cardQuality";
-import { getTrinketTypesOfQuality } from "./trinketQuality";
 import { isPillEffectInPlaythrough, v } from "./v";
 
 /** For hardcore & nightmare mode. */
@@ -106,80 +100,80 @@ function isUnlocked(unlock: Unlock, forRun: boolean): boolean {
   return completedUnlockIDs.has(unlockID);
 }
 
-function getCompletedUnlocksOfType(
-  unlockType: UnlockType.COLLECTIBLE,
-  forRun: boolean,
-): CollectibleUnlock[];
-function getCompletedUnlocksOfType(
-  unlockType: UnlockType.TRINKET,
-  forRun: boolean,
-): TrinketUnlock[];
-function getCompletedUnlocksOfType(
-  unlockType: UnlockType.CARD,
-  forRun: boolean,
-): CardUnlock[];
-function getCompletedUnlocksOfType(
-  unlockType: UnlockType.PILL_EFFECT,
-  forRun: boolean,
-): PillEffectUnlock[];
-function getCompletedUnlocksOfType(
-  unlockType: UnlockType.CHEST,
-  forRun: boolean,
-): ChestUnlock[];
-function getCompletedUnlocksOfType(
+function getCompletedUnlockTypes(
   unlockType: UnlockType,
   forRun: boolean,
-): Unlock[] {
+): int[] {
   const completedUnlockIDsSet = forRun
     ? v.persistent.completedUnlockIDsForRun
     : v.persistent.completedUnlockIDs;
 
   const completedUnlockIDs = [...completedUnlockIDsSet];
+
   const completedUnlocks = completedUnlockIDs.map((unlockID) =>
     getUnlockFromID(unlockID),
   );
 
-  return completedUnlocks.filter((unlock) => unlock.type === unlockType);
+  const completedUnlocksOfType = completedUnlocks.filter(
+    (unlock) => unlock.type === unlockType,
+  );
+
+  const mapFunc = UNLOCK_MAP_FUNCTIONS[unlockType] as (unlock: Unlock) => int;
+  return completedUnlocksOfType.map(mapFunc);
+}
+
+function getUncompletedUnlockTypes(unlockType: UnlockType): int[] {
+  const uncompletedUnlockIDs = [...v.persistent.uncompletedUnlockIDs];
+
+  const uncompletedUnlocks = uncompletedUnlockIDs.map((unlockID) =>
+    getUnlockFromID(unlockID),
+  );
+
+  const uncompletedUnlocksOfType = uncompletedUnlocks.filter(
+    (unlock) => unlock.type === unlockType,
+  );
+
+  const mapFunc = UNLOCK_MAP_FUNCTIONS[unlockType] as (unlock: Unlock) => int;
+  return uncompletedUnlocksOfType.map(mapFunc);
 }
 
 function getWorseUnlock<T extends CollectibleType | TrinketType | CardType>(
   type: T,
   getQuality: (type: T) => Quality,
-  getTypesOfQuality: (quality: Quality) => readonly T[],
-  isTypeUnlocked: (type: T, forRun: boolean) => boolean,
   unlockType: UnlockType.COLLECTIBLE | UnlockType.TRINKET | UnlockType.CARD,
 ): T | undefined {
+  const completedUnlockTypes = getCompletedUnlockTypes(
+    unlockType,
+    false,
+  ) as T[];
+  const uncompletedUnlockTypes = getUncompletedUnlockTypes(unlockType) as T[];
+
   // eslint-disable-next-line isaacscript/strict-enums
   const quality = getQuality(type);
 
   for (const lowerQualityInt of eRange(quality)) {
     const lowerQuality = lowerQualityInt as Quality;
-    const lowerQualityTypes = getTypesOfQuality(lowerQuality);
-    const unlockedLowerQualityTypes = lowerQualityTypes.filter(
+
+    const lowerQualityCompletedUnlockTypes = completedUnlockTypes.filter(
       // eslint-disable-next-line isaacscript/strict-enums
-      (lowerQualityType) => isTypeUnlocked(lowerQualityType, false),
+      (t) => getQuality(t) === lowerQuality,
     );
 
+    const lowerQualityUncompletedUnlockTypes = uncompletedUnlockTypes.filter(
+      // eslint-disable-next-line isaacscript/strict-enums
+      (t) => getQuality(t) === lowerQuality,
+    );
+
+    const numLowerQuality =
+      lowerQualityCompletedUnlockTypes.length +
+      lowerQualityUncompletedUnlockTypes.length;
+
     if (
-      unlockedLowerQualityTypes.length >=
-      lowerQualityTypes.length * QUALITY_THRESHOLD_PERCENT
+      lowerQualityCompletedUnlockTypes.length >=
+      numLowerQuality * QUALITY_THRESHOLD_PERCENT
     ) {
       continue;
     }
-
-    const lockedLowerQualityTypes = lowerQualityTypes.filter(
-      // eslint-disable-next-line isaacscript/strict-enums
-      (lowerQualityType) => !isTypeUnlocked(lowerQualityType, false),
-    );
-    const lockedLowerQualityTypesInPlaythrough = lockedLowerQualityTypes.filter(
-      (lowerQualityType) => {
-        const unlock = getUnlock(unlockType, lowerQualityType);
-        const unlockID = getUnlockID(unlock);
-        const objectiveID = v.persistent.unlockIDToObjectiveIDMap.get(unlockID);
-
-        return objectiveID !== undefined;
-      },
-    );
 
     assertNotNull(
       v.persistent.seed,
@@ -187,7 +181,7 @@ function getWorseUnlock<T extends CollectibleType | TrinketType | CardType>(
     );
 
     return getRandomArrayElement(
-      lockedLowerQualityTypesInPlaythrough,
+      lowerQualityUncompletedUnlockTypes,
       v.persistent.seed,
     );
   }
@@ -226,6 +220,22 @@ function getWorseUnlockProgressive<
   }
 
   return undefined;
+}
+
+export function getLockedNonCollectiblesNonTrinkets(): Unlock[] {
+  const unlocks: Unlock[] = [];
+
+  for (const unlockID of v.persistent.uncompletedUnlockIDs) {
+    const unlock = getUnlockFromID(unlockID);
+    if (
+      unlock.type !== UnlockType.COLLECTIBLE &&
+      unlock.type !== UnlockType.TRINKET
+    ) {
+      unlocks.push(unlock);
+    }
+  }
+
+  return unlocks;
 }
 
 // ----------------------------
@@ -358,12 +368,25 @@ export function anyFamiliarCollectibleUnlocked(forRun: boolean): boolean {
 function getUnlockedCollectibleTypes(
   forRun: boolean,
 ): readonly CollectibleType[] {
-  const collectibleUnlocks = getCompletedUnlocksOfType(
-    UnlockType.COLLECTIBLE,
-    forRun,
-  );
+  return getCompletedUnlockTypes(UnlockType.COLLECTIBLE, forRun);
+}
 
-  return collectibleUnlocks.map((unlock) => unlock.collectibleType);
+/** Does not use the `getUnlockedCollectibleTypes` function as an optimization. */
+export function getNumUnlockedCollectibleTypes(forRun: boolean): int {
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
+
+  let numUnlockedCollectibleTypes = 0;
+
+  for (const unlockID of completedUnlockIDs) {
+    const unlock = getUnlockFromID(unlockID);
+    if (unlock.type === UnlockType.COLLECTIBLE) {
+      numUnlockedCollectibleTypes++;
+    }
+  }
+
+  return numUnlockedCollectibleTypes;
 }
 
 export function getWorseLockedCollectibleType(
@@ -372,8 +395,6 @@ export function getWorseLockedCollectibleType(
   return getWorseUnlock(
     collectibleType,
     getCollectibleQuality,
-    getVanillaCollectibleTypesOfQuality,
-    isCollectibleTypeUnlocked,
     UnlockType.COLLECTIBLE,
   );
 }
@@ -383,7 +404,7 @@ export function getWorseLockedCollectibleType(
 // --------------------------
 
 export function anyTrinketTypesUnlocked(forRun: boolean): boolean {
-  const trinketUnlocks = getCompletedUnlocksOfType(UnlockType.TRINKET, forRun);
+  const trinketUnlocks = getCompletedUnlockTypes(UnlockType.TRINKET, forRun);
   return trinketUnlocks.length > 0;
 }
 
@@ -399,22 +420,34 @@ export function isTrinketTypeUnlocked(
   return isUnlocked(unlock, forRun);
 }
 
-export function getUnlockedTrinketTypes(forRun: boolean): TrinketType[] {
-  const trinketUnlocks = getCompletedUnlocksOfType(UnlockType.TRINKET, forRun);
+export function getUnlockedTrinketTypes(
+  forRun: boolean,
+): readonly TrinketType[] {
+  return getCompletedUnlockTypes(UnlockType.TRINKET, forRun);
+}
 
-  return trinketUnlocks.map((unlock) => unlock.trinketType);
+/** Does not use the `getUnlockedTrinketTypes` function as an optimization. */
+export function getNumUnlockedTrinketTypes(forRun: boolean): int {
+  const completedUnlockIDs = forRun
+    ? v.persistent.completedUnlockIDsForRun
+    : v.persistent.completedUnlockIDs;
+
+  let numUnlockedTrinketTypes = 0;
+
+  for (const unlockID of completedUnlockIDs) {
+    const unlock = getUnlockFromID(unlockID);
+    if (unlock.type === UnlockType.TRINKET) {
+      numUnlockedTrinketTypes++;
+    }
+  }
+
+  return numUnlockedTrinketTypes;
 }
 
 export function getWorseLockedTrinketType(
   trinketType: TrinketType,
 ): TrinketType | undefined {
-  return getWorseUnlock(
-    trinketType,
-    getTrinketQuality,
-    getTrinketTypesOfQuality,
-    isTrinketTypeUnlocked,
-    UnlockType.TRINKET,
-  );
+  return getWorseUnlock(trinketType, getTrinketQuality, UnlockType.TRINKET);
 }
 
 function getTrinketQuality(trinketType: TrinketType): Quality {
@@ -426,7 +459,7 @@ function getTrinketQuality(trinketType: TrinketType): Quality {
 // -----------------------
 
 export function anyCardTypesUnlocked(forRun: boolean): boolean {
-  const cardUnlocks = getCompletedUnlocksOfType(UnlockType.CARD, forRun);
+  const cardUnlocks = getCompletedUnlockTypes(UnlockType.CARD, forRun);
   return cardUnlocks.length > 0;
 }
 
@@ -464,22 +497,14 @@ export function getNumCardsUnlocked(forRun: boolean): int {
   return cardTypesCard.length;
 }
 
-export function getUnlockedCardTypes(forRun: boolean): CardType[] {
-  const cardUnlocks = getCompletedUnlocksOfType(UnlockType.CARD, forRun);
-
-  return cardUnlocks.map((unlock) => unlock.cardType);
+export function getUnlockedCardTypes(forRun: boolean): readonly CardType[] {
+  return getCompletedUnlockTypes(UnlockType.CARD, forRun);
 }
 
 export function getWorseLockedCardType(
   cardType: CardType,
 ): CardType | undefined {
-  return getWorseUnlock(
-    cardType,
-    getCardQuality,
-    getCardTypesOfQuality,
-    isCardTypeUnlocked,
-    UnlockType.CARD,
-  );
+  return getWorseUnlock(cardType, getCardQuality, UnlockType.CARD);
 }
 
 function getCardQuality(cardType: CardType): Quality {
@@ -491,7 +516,7 @@ function getCardQuality(cardType: CardType): Quality {
 // ------------------------------
 
 export function anyPillEffectsUnlocked(forRun: boolean): boolean {
-  const pillEffectUnlocks = getCompletedUnlocksOfType(
+  const pillEffectUnlocks = getCompletedUnlockTypes(
     UnlockType.PILL_EFFECT,
     forRun,
   );
@@ -537,12 +562,7 @@ export function isAllPillEffectsUnlocked(forRun: boolean): boolean {
 }
 
 export function getUnlockedPillEffects(forRun: boolean): PillEffect[] {
-  const pillEffectUnlocks = getCompletedUnlocksOfType(
-    UnlockType.PILL_EFFECT,
-    forRun,
-  );
-
-  return pillEffectUnlocks.map((unlock) => unlock.pillEffect);
+  return getCompletedUnlockTypes(UnlockType.PILL_EFFECT, forRun);
 }
 
 /**
@@ -795,7 +815,7 @@ export function getWorseLockedSackSubType(
 }
 
 export function anyChestPickupVariantUnlocked(forRun: boolean): boolean {
-  const chestUnlocks = getCompletedUnlocksOfType(UnlockType.CHEST, forRun);
+  const chestUnlocks = getCompletedUnlockTypes(UnlockType.CHEST, forRun);
   return chestUnlocks.length > 0;
 }
 
