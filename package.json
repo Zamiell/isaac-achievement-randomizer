@@ -21,12 +21,12 @@
     "update": "isaacscript update"
   },
   "dependencies": {
-    "isaac-typescript-definitions": "^38.3.0",
-    "isaacscript-common": "^78.0.0"
+    "isaac-typescript-definitions": "^39.0.1",
+    "isaacscript-common": "^79.1.0"
   },
   "devDependencies": {
     "cloc": "^1.98.0-cloc",
-    "isaacscript": "^3.19.2",
+    "isaacscript": "^3.19.3",
     "isaacscript-common-node": "^1.2.0",
     "isaacscript-lint": "^6.4.0",
     "isaacscript-spell": "^1.10.0",

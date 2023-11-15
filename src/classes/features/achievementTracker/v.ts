@@ -31,6 +31,7 @@ export const v = {
     completedObjectiveIDs: new Set<ObjectiveID>(),
     completedUnlockIDs: new Set<UnlockID>(),
     completedUnlockIDsForRun: new Set<UnlockID>(),
+    achievementHistory: [] as Array<readonly [int, Achievement]>,
   },
 };
 
@@ -86,8 +87,7 @@ export function getSecondCharacter(): PlayerType {
 export function getAchievementHistory(): Readonly<
   Array<readonly [int, Achievement]>
 > {
-  // TODO
-  return [];
+  return v.persistent.achievementHistory;
 }
 
 export function getNumCompletedObjectives(): int {

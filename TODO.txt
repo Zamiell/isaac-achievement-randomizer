@@ -1,8 +1,7 @@
 TODO:
 
-- recent achievements menu: show run number in title
-
 - startRandomizer casual 851815763
+- startRandomizer casual 138019312
   - takes too many attempts, something is probably wrong
 
 - file.txt:

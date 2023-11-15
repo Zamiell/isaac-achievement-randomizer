@@ -3,6 +3,7 @@ import { assertDefined, log, onAnyChallenge } from "isaacscript-common";
 import { isDoubleUnlocksEnabled } from "../../../config";
 import { DEBUG } from "../../../constants";
 import { ObjectiveType } from "../../../enums/ObjectiveType";
+import type { Achievement } from "../../../types/Achievement";
 import type { Objective } from "../../../types/Objective";
 import {
   getObjective,
@@ -14,7 +15,10 @@ import { getObjectiveID } from "../../../types/ObjectiveID";
 import { getUnlockFromID, getUnlockText } from "../../../types/Unlock";
 import type { UnlockID } from "../../../types/UnlockID";
 import { showNewUnlock } from "../AchievementNotification";
-import { setDoubleUnlocked } from "../StatsTracker";
+import {
+  getPlaythroughNumCompletedRuns,
+  setDoubleUnlocked,
+} from "../StatsTracker";
 import { hasErrors } from "../checkErrors/v";
 import { isObjectiveCompleted } from "./completedObjectives";
 import { getSwappedUnlockID } from "./swapUnlock";
@@ -60,6 +64,14 @@ export function addObjective(objective: Objective, emulating = false): void {
 
   v.persistent.completedObjectiveIDs.add(objectiveID);
   v.persistent.completedUnlockIDs.add(potentiallySwappedUnlockID);
+
+  const achievement: Achievement = {
+    objectiveID,
+    unlockID: potentiallySwappedUnlockID,
+  };
+  const runNum = getPlaythroughNumCompletedRuns() + 1;
+  const achievementTuple = [runNum, achievement] as const;
+  v.persistent.achievementHistory.push(achievementTuple);
 
   if (DEBUG || !emulating) {
     const objectiveText = getObjectiveText(objective).join(" ");

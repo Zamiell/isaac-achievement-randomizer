@@ -28,6 +28,7 @@
   - Flooded: #11233, #21233
   - Necropolis: #10023, #10998, #20023, #20998
   - Mausoleum: #10248, #20248
+- Fixed the bug where the "Recent Achievements" menu would sometimes be in the reverse order.
 
 ### _v0.9.2_ - October 23rd, 2023
 

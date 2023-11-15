@@ -4185,9 +4185,9 @@ __metadata:
   resolution: "isaac-achievement-randomizer@workspace:."
   dependencies:
     cloc: "npm:^1.98.0-cloc"
-    isaac-typescript-definitions: "npm:^38.3.0"
-    isaacscript: "npm:^3.19.2"
-    isaacscript-common: "npm:^78.0.0"
+    isaac-typescript-definitions: "npm:^39.0.1"
+    isaacscript: "npm:^3.19.3"
+    isaacscript-common: "npm:^79.1.0"
     isaacscript-common-node: "npm:^1.2.0"
     isaacscript-lint: "npm:^6.4.0"
     isaacscript-spell: "npm:^1.10.0"
@@ -4198,12 +4198,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"isaac-typescript-definitions@npm:^38.3.0":
-  version: 38.3.0
-  resolution: "isaac-typescript-definitions@npm:38.3.0"
+"isaac-typescript-definitions@npm:^39.0.1":
+  version: 39.0.1
+  resolution: "isaac-typescript-definitions@npm:39.0.1"
   dependencies:
     lua-types: "npm:^2.13.1"
-  checksum: 437073bcd764699a455bd9185d8b1597210433a5b2907a2a129f2baafc39fdf2b78ca08cf6c2109ca90d999dbb33511e75d26299b4dcc2645b63135b924f4ee6
+  checksum: e5ed62469b62c4f5287ba740b9c64b5c138c88ec5a1ebc7572bdb7f49559a406dc769837082147b9f6f52ab86b76b900608867f90cd09c9673731abb010b3515
   languageName: node
   linkType: hard
 
@@ -4230,12 +4230,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common@npm:^78.0.0":
-  version: 78.0.0
-  resolution: "isaacscript-common@npm:78.0.0"
+"isaacscript-common@npm:^79.1.0":
+  version: 79.1.0
+  resolution: "isaacscript-common@npm:79.1.0"
   dependencies:
-    isaac-typescript-definitions: "npm:^38.3.0"
-  checksum: a43eda9cc615015e28999c7fa880ed4b543933cf4accaa9922b8193865576bcb9a6678b82237b64e51177d9c29abdd7f27f5c89f51d52959f212f3686a20a06c
+    isaac-typescript-definitions: "npm:^39.0.1"
+  checksum: 1146eeb845eba9c0c55a15d1f71bb80d69f0ad0c3f59ca5f7dd29c64e0c5eedcf2438c3e0d97afbe554cfcfb4ccb4527c157bf5a6f781fa0f851fbb483ef9e49
   languageName: node
   linkType: hard
 
@@ -4288,9 +4288,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript@npm:^3.19.2":
-  version: 3.19.2
-  resolution: "isaacscript@npm:3.19.2"
+"isaacscript@npm:^3.19.3":
+  version: 3.19.3
+  resolution: "isaacscript@npm:3.19.3"
   dependencies:
     "@commander-js/extra-typings": "npm:^11.1.0"
     "@zamiell/sync-directory": "npm:^6.0.5"
@@ -4313,7 +4313,7 @@ __metadata:
     typescript: ">= 5.0.0"
   bin:
     isaacscript: dist/main.js
-  checksum: 960cffa6b6c47f149134e604a7acf085370fa43c33ab4123f35094ab874d0c010cbff993becdde63ed7b333ce3331f7c23612f828fbcf541ee1a9a1bb095f3a1
+  checksum: 96cb6ea9c2f32803d0ded5c3c96021607a403ecf62f1512751db583ef975dd31364f8e21a4c3fa6a29dfcfee0fc739cfc48f1419f7e1617e6b076981fdd54096
   languageName: node
   linkType: hard
 

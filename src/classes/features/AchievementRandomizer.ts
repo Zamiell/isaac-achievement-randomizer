@@ -143,6 +143,7 @@ export class AchievementRandomizer extends RandomizerModFeature {
 
     v.persistent.completedObjectiveIDs = new Set();
     v.persistent.completedUnlockIDs = new Set();
+    v.persistent.achievementHistory = [];
 
     generationTime = 0;
     renderFrameToTestSeed = Isaac.GetFrameCount();
@@ -184,7 +185,8 @@ export class AchievementRandomizer extends RandomizerModFeature {
       numGenerationAttempts++;
       renderFrameToTryGenerate = renderFrameCount + 1;
 
-      // Clear out the objectives now so that the progress screen goes back to 0.
+      // Clear out the objectives now so that the progress screen goes back to 0. (The "completed"
+      // data structures will all be properly reset later on.)
       v.persistent.completedObjectiveIDs = new Set();
 
       return;
@@ -203,6 +205,7 @@ export class AchievementRandomizer extends RandomizerModFeature {
     // Reset the persistent variable relating to our playthrough.
     v.persistent.completedObjectiveIDs = new Set();
     v.persistent.completedUnlockIDs = new Set();
+    v.persistent.achievementHistory = [];
     resetStats();
     preForcedRestart();
 

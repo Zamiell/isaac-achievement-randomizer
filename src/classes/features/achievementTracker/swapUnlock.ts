@@ -556,7 +556,7 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
 
   // 203
   [
-    CollectibleType.HUMBLING_BUNDLE,
+    CollectibleType.HUMBLEING_BUNDLE,
     () =>
       isCoinSubTypeUnlocked(CoinSubType.DOUBLE_PACK, false)
         ? undefined

@@ -133,13 +133,13 @@ export function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
 
     buttons.push(
       {
-        str: `${i + 1}.`,
+        str: `--- ${i + 1} ---`,
       },
       {
         str: "",
       },
       {
-        str: `run #${runNum}`,
+        str: `run num. ${runNum}`,
       },
       {
         str: "",

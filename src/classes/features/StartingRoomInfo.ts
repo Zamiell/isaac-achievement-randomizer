@@ -83,7 +83,6 @@ export class StartingRoomInfo extends RandomizerModFeature {
     const topLeftPosition = room.GetGridPosition(18);
     const topRightPosition = room.GetGridPosition(26);
     const leftPosition = room.GetGridPosition(48);
-    const centerPosition = room.GetGridPosition(52);
     const rightPosition = room.GetGridPosition(56);
     const bottomLeftPosition = room.GetGridPosition(78);
     const bottomRightPosition = room.GetGridPosition(86);
@@ -148,12 +147,9 @@ export class StartingRoomInfo extends RandomizerModFeature {
 
     const modePosition = centerTopPosition.add(Vector(0, 40));
     this.drawCenteredText(modeText, modePosition, K_COLORS.Green);
-
-    // Center
-    this.drawCenteredText("Mod version:", centerPosition);
     this.drawCenteredText(
-      version,
-      centerPosition.add(VERTICAL_TEXT_SPACING),
+      `v${version}`,
+      modePosition.add(VERTICAL_TEXT_SPACING),
       K_COLORS.Green,
     );
   }
