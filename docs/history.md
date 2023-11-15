@@ -3,7 +3,7 @@
 <!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
-### _v0.10.0_ - October 23rd, 2023
+### _v0.10.0_ - November 16th, 2023
 
 - Seed generation for a new playthrough is now optimized using reverse map lookups, making it much faster. Save files from previous versions are incompatible.
 - Objectives have been revamped:
@@ -15,7 +15,7 @@
 - The unlock for Clean Bedrooms and Dirty Bedrooms is now combined.
 - Beds are no longer unlockable.
 - Reward Plates are no longer unlockable.
-- Even, The Lost, and Tainted Apollyon are now considered to be "hard" characters.
+- Eden, The Lost, and Tainted Apollyon are now considered to be "hard" characters.
 - Gnawed Leaf is no longer banned.
 - The info displayed in the starting room has been revamped.
 - A new "Cheat Settings" menu has been added for people who want to cheat.
@@ -33,6 +33,8 @@
 - Fixed the bug where the "Recent Achievements" menu would sometimes be in the reverse order.
 - Fixed the bug where pills from champions would not have proper seeds. (Thanks Neonomi)
 - !Fixed the bug where some settings in the Dead Sea Scrolls menu would not save properly. (Thanks setJy)
+- !Fixed the bug where alt-tabbing would let you illegally pause the game. (Thanks CorvusOnStream)
+- !Fixed the bug where the Backasswards challenge would not work properly. (Thanks Andrew)
 
 ### _v0.9.2_ - October 23rd, 2023
 

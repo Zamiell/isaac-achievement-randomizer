@@ -1,7 +1,8 @@
 TODO:
 
-- Alt+tab lets you illegally pause the game. That pause doesn't count to the stats
 - Make an option to prevent opening randomizer menu in fight
+
+- add logic for collectibles/trinkets at 50% to unlock others
 
 - file.txt:
   - Run: 7

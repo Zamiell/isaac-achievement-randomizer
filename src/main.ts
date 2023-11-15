@@ -18,7 +18,6 @@ import { CheckErrors } from "./classes/features/CheckErrors";
 import { ChillRoom } from "./classes/features/ChillRoom";
 import { DrawControls } from "./classes/features/DrawControls";
 import { FixVanillaBugs } from "./classes/features/FixVanillaBugs";
-import { ForceFadedConsoleDisplay } from "./classes/features/ForceFadedConsoleDisplay";
 import { ForceSeeds } from "./classes/features/ForceSeeds";
 import { GridEntityRemoval } from "./classes/features/GridEntityRemoval";
 import { InvisibleEntities } from "./classes/features/InvisibleEntities";
@@ -34,6 +33,7 @@ import { RemoveDonationMachines } from "./classes/features/RemoveDonationMachine
 import { RemoveGlitchedCollectibles } from "./classes/features/RemoveGlitchedCollectibles";
 import { RemoveVoidPortals } from "./classes/features/RemoveVoidPortals";
 import { RoomRemoval } from "./classes/features/RoomRemoval";
+import { SetOptions } from "./classes/features/SetOptions";
 import { SilenceMomDad } from "./classes/features/SilenceMomDad";
 import { SlotRemoval } from "./classes/features/SlotRemoval";
 import { StartingItemRemoval } from "./classes/features/StartingItemRemoval";
@@ -60,7 +60,6 @@ const MOD_FEATURES = [
   ChillRoom,
   DrawControls,
   FixVanillaBugs,
-  ForceFadedConsoleDisplay,
   ForceSeeds,
   GridEntityRemoval,
   InvisibleEntities,
@@ -76,6 +75,7 @@ const MOD_FEATURES = [
   RemoveGlitchedCollectibles,
   RemoveVoidPortals,
   RoomRemoval,
+  SetOptions,
   SilenceMomDad,
   SlotRemoval,
   StartingItemRemoval,
