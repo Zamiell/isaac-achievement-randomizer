@@ -1,4 +1,5 @@
 import type {
+  CardType,
   Challenge,
   CollectibleType,
   PillEffect,
@@ -11,6 +12,7 @@ import {
   ModCallbackCustom,
   assertDefined,
   copySet,
+  getCardName,
   getChallengeName,
   getCharacterName,
   getCollectibleName,
@@ -121,6 +123,22 @@ export function setTrinketUnlocked(trinketType: TrinketType): void {
     const trinketName = getTrinketName(trinketType);
     error(
       `Failed to find the objective to unlock trinket: ${trinketName} (${trinketType})`,
+    );
+  }
+
+  const objective = getObjectiveFromID(objectiveID);
+  addObjective(objective);
+}
+
+/** Only used for debugging. */
+export function setCardUnlocked(cardType: CardType): void {
+  const unlock = getUnlock(UnlockType.CARD, cardType);
+  const unlockID = getUnlockID(unlock);
+  const objectiveID = v.persistent.unlockIDToObjectiveIDMap.get(unlockID);
+  if (objectiveID === undefined) {
+    const cardName = getCardName(cardType);
+    error(
+      `Failed to find the objective to unlock card: ${cardName} (${cardType})`,
     );
   }
 

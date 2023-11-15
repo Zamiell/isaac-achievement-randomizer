@@ -39,6 +39,7 @@ import {
   LAST_VERSION_WITH_ACHIEVEMENT_CHANGES,
   MOD_NAME,
 } from "../../constants";
+import { CardTypeCustom } from "../../enums/CardTypeCustom";
 import { UnlockableArea } from "../../enums/UnlockableArea";
 import { mod } from "../../mod";
 import {
@@ -271,7 +272,9 @@ function checkOtherModsEnabled() {
   }
 
   const lastCardType = mod.getLastCardType();
-  if (lastCardType !== LAST_VANILLA_CARD_TYPE) {
+  const customCardTypes = Object.keys(CardTypeCustom).length;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+  if (lastCardType !== LAST_VANILLA_CARD_TYPE + customCardTypes) {
     log(
       `Error: Other mods detected. (The highest card ID is ${lastCardType}, but it should be ${LAST_VANILLA_CARD_TYPE}.)`,
     );

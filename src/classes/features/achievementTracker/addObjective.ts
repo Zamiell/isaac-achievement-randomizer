@@ -18,6 +18,7 @@ import { showNewUnlock } from "../AchievementNotification";
 import {
   getPlaythroughNumCompletedRuns,
   setDoubleUnlocked,
+  writeStatsToFile,
 } from "../StatsTracker";
 import { hasErrors } from "../checkErrors/v";
 import { isObjectiveCompleted } from "./completedObjectives";
@@ -87,10 +88,12 @@ export function addObjective(objective: Objective, emulating = false): void {
   if (!emulating) {
     const unlock = getUnlockFromID(potentiallySwappedUnlockID);
     showNewUnlock(unlock);
+    writeStatsToFile();
   }
 
   // Handle the "double unlocks" feature.
   if (
+    !emulating &&
     objective.type === ObjectiveType.CHARACTER &&
     objective.difficulty === Difficulty.HARD &&
     isDoubleUnlocksEnabled()

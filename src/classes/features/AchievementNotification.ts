@@ -6,11 +6,14 @@ import {
   game,
   getScreenBottomRightPos,
   sfxManager,
+  uncapitalizeFirstLetter,
 } from "isaacscript-common";
 import { isDelayAchievementTextEnabled } from "../../config";
 import { SoundEffectCustom } from "../../enums/SoundEffectCustom";
+import type { Achievement } from "../../types/Achievement";
+import { getObjectiveFromID, getObjectiveText } from "../../types/Objective";
 import type { Unlock } from "../../types/Unlock";
-import { getUnlockText } from "../../types/Unlock";
+import { getUnlockFromID, getUnlockText } from "../../types/Unlock";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 
 const FONT = fonts.droid;
@@ -83,7 +86,7 @@ export class AchievementNotification extends RandomizerModFeature {
       return;
     }
 
-    // The streak text will slowly fade out.
+    // The text will slowly fade out.
     const fade = this.getFade(v.run.gameFrameSet);
     if (fade > 0) {
       this.draw(v.run.text, fade);
@@ -126,4 +129,18 @@ export function showNewUnlock(unlock: Unlock): void {
   );
 
   sfxManager.Play(SoundEffectCustom.GOLDEN_WALNUT);
+}
+
+export function showNewAchievement(achievement: Achievement): void {
+  const { objectiveID, unlockID } = achievement;
+  const objective = getObjectiveFromID(objectiveID);
+  const unlock = getUnlockFromID(unlockID);
+  const objectiveText = getObjectiveText(objective).join(" ");
+  const unlockText = getUnlockText(unlock);
+
+  v.run.queuedTexts.push(
+    `It is said that if you\n${uncapitalizeFirstLetter(
+      objectiveText,
+    )},\nyou will unlock a new ${unlockText[0]}:\n${unlockText[1]}`,
+  );
 }

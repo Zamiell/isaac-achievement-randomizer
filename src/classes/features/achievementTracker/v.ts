@@ -84,6 +84,13 @@ export function getNumCompletedObjectives(): int {
   return v.persistent.completedObjectiveIDs.size;
 }
 
+export function getObjectiveIDToUnlockIDMap(): ReadonlyMap<
+  ObjectiveID,
+  UnlockID
+> {
+  return v.persistent.objectiveIDToUnlockIDMap;
+}
+
 /**
  * Since some collectibles are banned, it is possible that some collectible types can never be
  * unlocked in the current randomizer playthrough.

@@ -1,17 +1,5 @@
 TODO:
 
-- search for all "locked" and use new data structure
-
-- add logic for collectibles/trinkets at 50% to unlock others
-
-- file.txt:
-  - Run: 7
-  - Unlocks: 33
-  - Current Streak: 1
-  - Best Streak: 2
-  - Total Deaths: 3
-
-- rules card - show future unlocks
 - website - see all current unlocks after uploading save file
 - emulate vanilla pill pool
 

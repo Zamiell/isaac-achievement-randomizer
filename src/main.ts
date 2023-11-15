@@ -33,6 +33,7 @@ import { RemoveDonationMachines } from "./classes/features/RemoveDonationMachine
 import { RemoveGlitchedCollectibles } from "./classes/features/RemoveGlitchedCollectibles";
 import { RemoveVoidPortals } from "./classes/features/RemoveVoidPortals";
 import { RoomRemoval } from "./classes/features/RoomRemoval";
+import { RulesCard } from "./classes/features/RulesCard";
 import { SetOptions } from "./classes/features/SetOptions";
 import { SilenceMomDad } from "./classes/features/SilenceMomDad";
 import { SlotRemoval } from "./classes/features/SlotRemoval";
@@ -75,6 +76,7 @@ const MOD_FEATURES = [
   RemoveGlitchedCollectibles,
   RemoveVoidPortals,
   RoomRemoval,
+  RulesCard,
   SetOptions,
   SilenceMomDad,
   SlotRemoval,

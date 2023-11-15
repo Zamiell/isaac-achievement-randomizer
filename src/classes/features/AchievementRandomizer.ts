@@ -278,7 +278,7 @@ export function endRandomizer(): void {
   restart(STARTING_CHARACTER);
 }
 
-const OBJECTIVE_ACCESS_FUNCTIONS = {
+export const OBJECTIVE_ACCESS_FUNCTIONS = {
   [ObjectiveType.CHARACTER]: characterObjectiveFunc,
   [ObjectiveType.CHALLENGE]: challengeObjectiveFunc,
 } as const satisfies Record<ObjectiveType, (objective: Objective) => boolean>;

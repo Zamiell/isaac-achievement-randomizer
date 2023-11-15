@@ -5,7 +5,7 @@
 
 ### _v0.10.0_ - November 16th, 2023
 
-- Seed generation for a new playthrough is now optimized using reverse map lookups, making it much faster. Save files from previous versions are incompatible.
+- Seed generation for a new playthrough is now optimized using reverse map lookups. Save files from previous versions are incompatible.
 - Objectives have been revamped:
   - There are no longer boss objectives.
   - Floor objectives are changed to chapter objectives (and reduced in scope).
@@ -20,13 +20,15 @@
 - Chests will now no longer be replaced with coins if you have a "worse" version of a chest unlocked.
 - The info displayed in the starting room has been revamped.
 - A new "Cheat Settings" menu has been added for people who want to cheat.
+- If you use the [Rebirth Item Tracker](https://github.com/Rchardon/RebirthItemTracker), playthrough stats will be written to the "mod_text.txt" file, which is located next to "Rebirth Item Tracker.exe". You can use Open Broadcaster Software (OBS) to capture this text file in order to easily show the playthrough stats to your live stream on Twitch/YouTube.
 - The quality threshold on hardcore and nightmare modes has been reduced from 0.5 to 0.333.
 - Gehenna is now flipped. (However, rooms with Ball and Chains are not flipped to avoid bugs.)
-- The "Recent Achievements" menu will now show the run number.
+- The "Recent Achievements" menu will now show the run number that you got the achievement on.
 - In hardcore/nightmare mode, normal chests will now unlock as your first chest unlock.
 - Booster Pack will no longer unlock until you have 10 cards.
 - Once 50% of collectibles are unlocked, further collectible unlocks will be swapped with any remaining non-collectible and non-trinket unlocks.
 - Once 50% of trinkets are unlocked, further trinket unlocks will be swapped with any remaining non-collectible and non-trinket unlocks.
+- The Rules Card will now give you a hint about a random achievement.
 - Fixed the bug where the following rooms were flipped incorrectly:
   - Caves: #11058, #21058
   - Catacombs: #11067, #11088, #21067, #21088

@@ -4,12 +4,14 @@ import type {
   RoomType,
 } from "isaac-typescript-definitions";
 import {
+  CardType,
   Challenge,
   CollectibleType,
   Difficulty,
   TrinketType,
 } from "isaac-typescript-definitions";
 import {
+  CARD_NAME_TO_TYPE_MAP,
   CHARACTER_NAME_TO_TYPE_MAP,
   COLLECTIBLE_NAME_TO_TYPE_MAP,
   FIRST_CHARACTER,
@@ -20,6 +22,7 @@ import {
   asPillEffect,
   asRoomType,
   game,
+  getCardName,
   getChallengeName,
   getCharacterName,
   getCollectibleName,
@@ -42,6 +45,7 @@ import {
 import {
   logSpoilerLog,
   setAreaUnlocked,
+  setCardUnlocked,
   setChallengeUnlocked,
   setCharacterUnlocked,
   setCollectibleUnlocked,
@@ -53,6 +57,7 @@ import { getCharacterObjectiveKindNoHit } from "./classes/features/ChapterObject
 import { addObjective } from "./classes/features/achievementTracker/addObjective";
 import {
   isAreaUnlocked,
+  isCardTypeUnlocked,
   isChallengeUnlocked,
   isCharacterUnlocked,
   isCollectibleTypeUnlocked,
@@ -84,6 +89,7 @@ export function initConsoleCommands(): void {
   mod.addConsoleCommand("randomizerVersion", randomizerVersion);
   mod.addConsoleCommand("spoilerLog", spoilerLog);
   mod.addConsoleCommand("unlockArea", unlockArea);
+  mod.addConsoleCommand("unlockCard", unlockCard);
   mod.addConsoleCommand("unlockChallenge", unlockChallenge);
   mod.addConsoleCommand("unlockCharacter", unlockCharacter);
   mod.addConsoleCommand("unlockCollectible", unlockCollectible);
@@ -233,6 +239,49 @@ function unlockArea(params: string) {
 
   setAreaUnlocked(unlockableArea);
   print(`Unlocked area: ${areaName} (${unlockableArea})`);
+}
+
+function unlockCard(params: string) {
+  if (!isRandomizerEnabled()) {
+    print(
+      "Error: You are not currently in a randomizer playthrough, so you can not unlock anything.",
+    );
+    return;
+  }
+
+  if (params === "") {
+    print(
+      "You must specify the card name or the number corresponding to the card type.",
+    );
+    return;
+  }
+
+  const cardTypeNumber = tonumber(params);
+  let cardType: CardType;
+  if (cardTypeNumber === undefined) {
+    const match = getMapPartialMatch(params, CARD_NAME_TO_TYPE_MAP);
+    if (match === undefined) {
+      print(`Unknown card: ${params}`);
+      return;
+    }
+
+    cardType = match[1];
+  } else {
+    if (!isEnumValue(cardTypeNumber, CardType)) {
+      print(`Unknown card type: ${cardTypeNumber}`);
+      return;
+    }
+    cardType = cardTypeNumber;
+  }
+
+  const cardName = getCardName(cardType);
+  if (isCardTypeUnlocked(cardType, false)) {
+    print(`The card of "${cardName}" (${cardType}) is already unlocked.`);
+    return;
+  }
+
+  setCardUnlocked(cardType);
+  print(`Unlocked card: ${cardName} (${cardType})`);
 }
 
 function unlockChallenge(params: string) {

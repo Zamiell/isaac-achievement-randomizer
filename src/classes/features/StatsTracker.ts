@@ -22,14 +22,20 @@ import {
   isAfterRenderFrame,
   newRNG,
   onChallenge,
+  rebirthItemTrackerWriteToFile,
   repeat,
 } from "isaacscript-common";
+import { ALL_OBJECTIVES } from "../../arrays/allObjectives";
 import { isGenerationCheatsEnabled, isPreventPauseEnabled } from "../../config";
 import { ChallengeCustom } from "../../enums/ChallengeCustom";
 import { mod } from "../../mod";
 import { convertSecondsToTimerValues } from "../../timer";
 import { isRoomClear } from "./PreventPause";
-import { getRandomizerSeed, isRandomizerEnabled } from "./achievementTracker/v";
+import {
+  getNumCompletedObjectives,
+  getRandomizerSeed,
+  isRandomizerEnabled,
+} from "./achievementTracker/v";
 import { hasErrors } from "./checkErrors/v";
 
 /** `isaacscript-common` uses `CallbackPriority.IMPORTANT` (-200). */
@@ -40,6 +46,9 @@ class PlaythroughStats {
   numCompletedRuns = 0;
   numDeaths = 0;
   gameFramesElapsed = 0;
+  currentStreak = 0;
+  bestStreak = 0;
+
   usedIllegalPause = false;
   usedSaveAndQuit = false;
   doubleUnlocked = false;
@@ -115,6 +124,7 @@ export class StatsTracker extends ModFeature {
     this.incrementTime();
     this.incrementCompletedRunsCounter();
     this.incrementDeathCounter();
+    writeStatsToFile();
   }
 
   incrementTime(): void {
@@ -133,6 +143,10 @@ export class StatsTracker extends ModFeature {
     }
 
     v.persistent.stats.numCompletedRuns++;
+    v.persistent.stats.currentStreak++;
+    if (v.persistent.stats.currentStreak > v.persistent.stats.bestStreak) {
+      v.persistent.stats.bestStreak = v.persistent.stats.currentStreak;
+    }
   }
 
   incrementDeathCounter(): void {
@@ -142,6 +156,7 @@ export class StatsTracker extends ModFeature {
     }
 
     v.persistent.stats.numDeaths++;
+    v.persistent.stats.currentStreak = 0;
   }
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, undefined)
@@ -165,6 +180,18 @@ export class StatsTracker extends ModFeature {
     print("Illegal save and quit detected.");
     v.persistent.stats.usedSaveAndQuit = true;
   }
+}
+
+export function writeStatsToFile(): void {
+  rebirthItemTrackerWriteToFile(
+    `
+- Run number: ${v.persistent.stats.numCompletedRuns + 1}
+- Deaths/resets: ${v.persistent.stats.numDeaths}
+- Objectives: ${getNumCompletedObjectives()} / ${ALL_OBJECTIVES.length}
+- Current streak: ${v.persistent.stats.currentStreak}
+- Best streak: ${v.persistent.stats.bestStreak}
+`.trimStart(),
+  );
 }
 
 export function resetStats(): void {

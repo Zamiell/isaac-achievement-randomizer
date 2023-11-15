@@ -1,0 +1,4 @@
+<?xml-model href="https://wofsauge.github.io/isaac-xml-validator/xsd/pocketitems.xsd" ?>
+<pocketitems>
+  <card type="special" pickup="2" achievement="99" description="???" name="Rules Card" hud="Rules Card" announcer="361" announcerdelay="30" mimiccharge="1" />
+</pocketitems>

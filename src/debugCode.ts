@@ -1,23 +1,16 @@
-import { PlayerType } from "isaac-typescript-definitions";
 import {
   log,
   logAndPrint,
-  restart,
   setLogFunctionsGlobal,
   setTracebackFunctionsGlobal,
 } from "isaacscript-common";
-import { FIRST_UNLOCK_COLLECTIBLES } from "./classes/features/achievementTracker/swapUnlock";
+import { showRandomAchievement } from "./classes/features/RulesCard";
 import { mod } from "./mod";
 
 /** Currently, F3 is set to execute this function. (`IS_DEV` must be set to true.) */
 function debugCode(_params?: string) {
   // Add code here.
-  for (const collectibleType of FIRST_UNLOCK_COLLECTIBLES) {
-    Isaac.ExecuteCommand(`unlockCollectible ${collectibleType}`);
-  }
-
-  Isaac.ExecuteCommand(`unlockCharacter ${PlayerType.CAIN_B}`);
-  restart(); // We need to restart the run for the unlocks to take effect.
+  showRandomAchievement();
 }
 
 /** Hotkey 1 is bound to F3. */

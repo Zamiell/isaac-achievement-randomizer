@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "isaac-typescript-definitions": "^39.0.2",
-    "isaacscript-common": "^80.0.0"
+    "isaacscript-common": "^80.1.0"
   },
   "devDependencies": {
     "cloc": "^1.98.0-cloc",
