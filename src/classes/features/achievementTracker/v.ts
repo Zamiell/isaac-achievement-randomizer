@@ -5,7 +5,6 @@ import type {
   PlayerType,
   TrinketType,
 } from "isaac-typescript-definitions";
-import { assertDefined } from "isaacscript-common";
 import { RandomizerMode } from "../../../enums/RandomizerMode";
 import { UnlockType } from "../../../enums/UnlockType";
 import type { Achievement } from "../../../types/Achievement";
@@ -72,16 +71,6 @@ export function setAcceptedVersionMismatch(): void {
 
 export function getCharacterUnlockOrder(): readonly PlayerType[] {
   return v.persistent.characterUnlockOrder;
-}
-
-export function getSecondCharacter(): PlayerType {
-  const secondCharacter = v.persistent.characterUnlockOrder[1];
-  assertDefined(
-    secondCharacter,
-    "Failed to find the second character in the current playthrough's character order.",
-  );
-
-  return secondCharacter;
 }
 
 export function getAchievementHistory(): Readonly<

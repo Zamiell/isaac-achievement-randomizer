@@ -96,6 +96,7 @@ import {
   anyRunesUnlocked,
   anySoulHeartUnlocked,
   anyTrinketTypesUnlocked,
+  getNextCharacterUnlock,
   getNumCardsUnlocked,
   getWorseLockedBatterySubType,
   getWorseLockedBombSubType,
@@ -128,7 +129,6 @@ import {
 } from "./completedUnlocks";
 import {
   getCharacterUnlockOrder,
-  getSecondCharacter,
   isCardTypeInPlaythrough,
   isCollectibleTypeInPlaythrough,
   isHardcoreMode,
@@ -192,13 +192,6 @@ export function getSwappedUnlockID(
     }
   }
 
-  // Guarantee the second character as the next unlock after the stat collectibles.
-  const secondCharacter = getSecondCharacter();
-  if (!isCharacterUnlocked(secondCharacter, false)) {
-    const swappedUnlock = getUnlock(UnlockType.CHARACTER, secondCharacter);
-    return getUnlockID(swappedUnlock);
-  }
-
   const func = SWAPPED_UNLOCK_FUNCTIONS[unlock.type];
   const swappedUnlock = func(unlock, seed);
   if (swappedUnlock === undefined) {
@@ -225,7 +218,7 @@ function isUnlockSwappable(unlock: Unlock): boolean {
 
   if (
     unlock.type === UnlockType.CHARACTER &&
-    unlock.character === getSecondCharacter()
+    unlock.character === getNextCharacterUnlock()
   ) {
     return false;
   }

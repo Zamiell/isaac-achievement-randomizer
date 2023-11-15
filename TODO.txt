@@ -1,10 +1,5 @@
 TODO:
 
-startRandomizer casual 851815763
-  - takes 58 attempts
-startRandomizer casual 138019312
-  - takes too many attempts, something is probably wrong
-
 - file.txt:
   - Run: 7
   - Unlocks: 33

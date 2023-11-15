@@ -244,6 +244,12 @@ export function isCharacterUnlocked(
   return isUnlocked(unlock, forRun);
 }
 
+export function getNextCharacterUnlock(): PlayerType | undefined {
+  return v.persistent.characterUnlockOrder.find(
+    (character) => !isCharacterUnlocked(character, false),
+  );
+}
+
 // -----------------------
 // Unlock - Area functions
 // -----------------------

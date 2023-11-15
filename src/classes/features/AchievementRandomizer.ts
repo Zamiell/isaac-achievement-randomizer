@@ -21,6 +21,7 @@ import {
   isBeforeGameFrame,
   isBeforeRenderFrame,
   log,
+  logArray,
   newRNG,
   newSprite,
   onAnyChallenge,
@@ -365,12 +366,22 @@ function logMissingObjectives() {
     return;
   }
 
-  log("Missing characters:");
+  const missingCharacters = v.persistent.characterUnlockOrder.filter(
+    (character) => !isCharacterUnlocked(character, false),
+  );
+  if (missingCharacters.length === 0) {
+    log("Missing characters: [n/a; all characters unlocked]");
+  } else {
+    logArray(v.persistent.characterUnlockOrder, "characterUnlockOrder");
+    log(
+      `Missing characters (${missingCharacters.length} / ${v.persistent.characterUnlockOrder.length}):`,
+    );
 
-  for (const [i, character] of v.persistent.characterUnlockOrder.entries()) {
-    if (!isCharacterUnlocked(character, false)) {
-      const characterName = getCharacterName(character);
-      log(`- ${i}) ${characterName} (${character})`);
+    for (const [i, character] of v.persistent.characterUnlockOrder.entries()) {
+      if (!isCharacterUnlocked(character, false)) {
+        const characterName = getCharacterName(character);
+        log(`- ${i + 1}) ${characterName} (${character})`);
+      }
     }
   }
 
