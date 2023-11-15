@@ -7,6 +7,7 @@ import type {
 import {
   BombSubType,
   CardType,
+  ChestSubType,
   CoinSubType,
   CollectibleType,
   HeartSubType,
@@ -48,6 +49,7 @@ import {
   QUEST_COLLECTIBLE_TYPES,
   UNLOCKABLE_COLLECTIBLE_TYPES,
 } from "../../arrays/unlockableCollectibleTypes";
+import { UNLOCKABLE_CHEST_PICKUP_VARIANTS } from "../../arrays/unlockablePickupTypes";
 import { UNLOCKABLE_TRINKET_TYPES } from "../../arrays/unlockableTrinketTypes";
 import { MOD_NAME } from "../../constants";
 import { OtherUnlockKind } from "../../enums/OtherUnlockKind";
@@ -269,9 +271,41 @@ export class PickupRemoval extends RandomizerModFeature {
       return undefined;
     }
 
-    return isChestPickupVariantUnlocked(pickupVariant, true)
-      ? undefined
-      : [PickupVariant.COIN, CoinSubType.PENNY];
+    if (isChestPickupVariantUnlocked(pickupVariant, true)) {
+      return undefined;
+    }
+
+    // If this chest type is not unlocked, replace it with a worse version of a chest. (We use the
+    // best currently unlocked worse chest, with the exception of a Red Chest, since it is too
+    // different.)
+    const worseChestPickupVariants =
+      this.getWorseChestPickupVariants(pickupVariant).toReversed();
+    for (const worseChestPickupVariant of worseChestPickupVariants) {
+      if (isChestPickupVariantUnlocked(worseChestPickupVariant, true)) {
+        return [worseChestPickupVariant, ChestSubType.CLOSED];
+      }
+    }
+
+    // If no worse chests are currently unlocked, replace the chest with a penny.
+    return [PickupVariant.COIN, CoinSubType.PENNY];
+  }
+
+  getWorseChestPickupVariants(pickupVariant: PickupVariant): PickupVariant[] {
+    const worseChestPickupVariants: PickupVariant[] = [];
+
+    for (const unlockableChestPickupVariant of UNLOCKABLE_CHEST_PICKUP_VARIANTS) {
+      if (unlockableChestPickupVariant === pickupVariant) {
+        break;
+      }
+
+      if (unlockableChestPickupVariant === PickupVariant.RED_CHEST) {
+        continue;
+      }
+
+      worseChestPickupVariants.push(unlockableChestPickupVariant);
+    }
+
+    return worseChestPickupVariants;
   }
 
   @CallbackCustom(ModCallbackCustom.POST_GAME_STARTED_REORDERED, false)

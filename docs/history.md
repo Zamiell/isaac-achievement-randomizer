@@ -17,6 +17,7 @@
 - Reward Plates are no longer unlockable.
 - Eden, The Lost, and Tainted Apollyon are now considered to be "hard" characters.
 - Gnawed Leaf is no longer banned.
+- Chests will now no longer be replaced with coins if you have a "worse" version of a chest unlocked.
 - The info displayed in the starting room has been revamped.
 - A new "Cheat Settings" menu has been added for people who want to cheat.
 - The quality threshold on hardcore and nightmare modes has been reduced from 0.5 to 0.333.
@@ -33,7 +34,7 @@
 - Fixed the bug where the "Recent Achievements" menu would sometimes be in the reverse order.
 - Fixed the bug where pills from champions would not have proper seeds. (Thanks Neonomi)
 - !Fixed the bug where some settings in the Dead Sea Scrolls menu would not save properly. (Thanks setJy)
-- !Fixed the bug where alt-tabbing would let you illegally pause the game. (Thanks CorvusOnStream)
+- Fixed the bug where alt-tabbing would let you illegally pause the game. (Thanks CorvusOnStream)
 - !Fixed the bug where the Backasswards challenge would not work properly. (Thanks Andrew)
 
 ### _v0.9.2_ - October 23rd, 2023
