@@ -13,6 +13,7 @@ import {
   clearChallenge,
   fonts,
   game,
+  getCharacterName,
   getRandomSeed,
   getScreenBottomRightPos,
   getScreenCenterPos,
@@ -362,6 +363,15 @@ function tryCompleteUncompletedObjectives(): boolean {
 function logMissingObjectives() {
   if (!DEBUG) {
     return;
+  }
+
+  log("Missing characters:");
+
+  for (const [i, character] of v.persistent.characterUnlockOrder.entries()) {
+    if (!isCharacterUnlocked(character, false)) {
+      const characterName = getCharacterName(character);
+      log(`- ${i}) ${characterName} (${character})`);
+    }
   }
 
   log("Missing objectives:");
