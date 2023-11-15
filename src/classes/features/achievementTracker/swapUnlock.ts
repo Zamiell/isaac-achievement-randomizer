@@ -39,6 +39,7 @@ import {
   isStoryBossID,
   shuffleArray,
 } from "isaacscript-common";
+import { CORE_STAT_COLLECTIBLES } from "../../../arrays/unlockableCollectibleTypes";
 import { UNLOCKABLE_ROOM_TYPES } from "../../../arrays/unlockableRoomTypes";
 import { OtherUnlockKind } from "../../../enums/OtherUnlockKind";
 import { UnlockType } from "../../../enums/UnlockType";
@@ -136,17 +137,6 @@ import {
   isHardcoreMode,
 } from "./v";
 
-export const FIRST_UNLOCK_COLLECTIBLES = [
-  // In the "boss" and "woodenChest" pools.
-  CollectibleType.WOODEN_SPOON, // 27
-
-  // In the "boss" and "goldenChest" and "craneGame" pools.
-  CollectibleType.WIRE_COAT_HANGER, // 32
-
-  // In the "boss" pool.
-  CollectibleType.CAT_O_NINE_TAILS, // 165
-] as const;
-
 const SWAPPED_UNLOCK_FUNCTIONS = {
   [UnlockType.CHARACTER]: getSwappedUnlockCharacter,
   [UnlockType.AREA]: getSwappedUnlockArea,
@@ -182,7 +172,7 @@ export function getSwappedUnlockID(
 
   // Guarantee some stat collectibles as the very first unlocks.
   const shuffledFirstUnlockCollectibles = shuffleArray(
-    FIRST_UNLOCK_COLLECTIBLES,
+    CORE_STAT_COLLECTIBLES,
     seed,
   );
   for (const collectibleType of shuffledFirstUnlockCollectibles) {
@@ -211,7 +201,7 @@ function isUnlockSwappable(unlock: Unlock): boolean {
 
   if (
     unlock.type === UnlockType.COLLECTIBLE &&
-    includes(FIRST_UNLOCK_COLLECTIBLES, unlock.collectibleType)
+    includes(CORE_STAT_COLLECTIBLES, unlock.collectibleType)
   ) {
     return false;
   }

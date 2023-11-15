@@ -5,6 +5,7 @@ import {
   assertDefined,
   copyArray,
   getRandomArrayElementAndRemove,
+  includes,
   log,
   shuffleArray,
 } from "isaacscript-common";
@@ -14,7 +15,8 @@ import {
   HARD_CHARACTERS,
   UNLOCKABLE_CHARACTERS,
 } from "./arrays/unlockableCharacters";
-import { FIRST_UNLOCK_COLLECTIBLES } from "./classes/features/achievementTracker/swapUnlock";
+import { CORE_STAT_COLLECTIBLES } from "./arrays/unlockableCollectibleTypes";
+import { isHardcoreMode } from "./classes/features/achievementTracker/v";
 import {
   isCardTypeBannedForNewPlaythrough,
   isCollectibleTypeBannedForNewPlaythrough,
@@ -85,7 +87,7 @@ const UNLOCKABLE_AREA_TO_OBJECTIVE = {
   Objective
 >;
 
-const FIRST_UNLOCK_COLLECTIBLE_TO_OBJECTIVE = {
+const CORE_STAT_COLLECTIBLE_TO_OBJECTIVE = {
   // 27
   [CollectibleType.WOODEN_SPOON]: getObjective(
     ObjectiveType.CHARACTER,
@@ -109,10 +111,7 @@ const FIRST_UNLOCK_COLLECTIBLE_TO_OBJECTIVE = {
     CharacterObjectiveKind.NO_HIT_CAVES,
     Difficulty.NORMAL,
   ),
-} as const satisfies Record<
-  (typeof FIRST_UNLOCK_COLLECTIBLES)[number],
-  Objective
->;
+} as const satisfies Record<(typeof CORE_STAT_COLLECTIBLES)[number], Objective>;
 
 export function getAchievementsForRNG(rng: RNG): {
   objectiveIDToUnlockIDMap: Map<ObjectiveID, UnlockID>;
@@ -130,17 +129,19 @@ export function getAchievementsForRNG(rng: RNG): {
 
   // We want the three basic stat up collectibles to not ever be swapped with some other important
   // unlock, so we statically assign them to specific objectives.
-  for (const collectibleType of FIRST_UNLOCK_COLLECTIBLES) {
-    const unlock = getUnlock(UnlockType.COLLECTIBLE, collectibleType);
-    const unlockID = getUnlockID(unlock);
-    arrayRemoveInPlace(unlockIDs, unlockID);
+  if (isHardcoreMode()) {
+    for (const collectibleType of CORE_STAT_COLLECTIBLES) {
+      const unlock = getUnlock(UnlockType.COLLECTIBLE, collectibleType);
+      const unlockID = getUnlockID(unlock);
+      arrayRemoveInPlace(unlockIDs, unlockID);
 
-    const objective = FIRST_UNLOCK_COLLECTIBLE_TO_OBJECTIVE[collectibleType];
-    const objectiveID = getObjectiveID(objective);
-    arrayRemoveInPlace(objectiveIDs, objectiveID);
+      const objective = CORE_STAT_COLLECTIBLE_TO_OBJECTIVE[collectibleType];
+      const objectiveID = getObjectiveID(objective);
+      arrayRemoveInPlace(objectiveIDs, objectiveID);
 
-    objectiveIDToUnlockIDMap.set(objectiveID, unlockID);
-    unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
+      objectiveIDToUnlockIDMap.set(objectiveID, unlockID);
+      unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
+    }
   }
 
   // Some areas are non-randomized, meaning that they are paired to specific objectives.
@@ -186,6 +187,15 @@ export function getAchievementsForRNG(rng: RNG): {
   for (const unlockID of unlockIDs) {
     const unlock = getUnlockFromID(unlockID);
     if (unlock.type !== UnlockType.TRINKET) {
+      // Core stat collectibles start out unlocked in casual mode.
+      if (
+        !isHardcoreMode() &&
+        unlock.type === UnlockType.COLLECTIBLE &&
+        includes(CORE_STAT_COLLECTIBLES, unlock.collectibleType)
+      ) {
+        continue;
+      }
+
       if (isBannedUnlock(unlock)) {
         continue;
       }

@@ -3,6 +3,10 @@
 <!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.11.0_ - November 15th, 2023
+
+- Wooden Spoon, Wire Coat Hanger, and Cat-O-Nine-Tails are now automatically unlocked on casual mode.
+
 ### _v0.10.0_ - November 15th, 2023
 
 - Seed generation for a new playthrough is now optimized using reverse map lookups. Save files from previous versions are incompatible.

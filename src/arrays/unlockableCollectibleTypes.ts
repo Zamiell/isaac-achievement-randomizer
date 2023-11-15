@@ -46,3 +46,18 @@ export const UNLOCKABLE_COLLECTIBLE_TYPES: readonly CollectibleType[] =
 export const UNLOCKABLE_COLLECTIBLE_TYPES_SET = new ReadonlySet(
   UNLOCKABLE_COLLECTIBLE_TYPES,
 );
+
+/**
+ * These are collectibles that are automatically unlocked on casual mode and are unlocked first in
+ * the other modes.
+ */
+export const CORE_STAT_COLLECTIBLES = [
+  // In the "boss" and "woodenChest" pools.
+  CollectibleType.WOODEN_SPOON, // 27
+
+  // In the "boss" and "goldenChest" and "craneGame" pools.
+  CollectibleType.WIRE_COAT_HANGER, // 32
+
+  // In the "boss" pool.
+  CollectibleType.CAT_O_NINE_TAILS, // 165
+] as const;
