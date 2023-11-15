@@ -859,7 +859,9 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   [
     CollectibleType.BOOSTER_PACK,
     (seed) =>
-      anyCardsUnlocked(false) ? undefined : getRandomCardTypeUnlock(seed),
+      getNumCardsUnlocked(false) >= 10
+        ? undefined
+        : getRandomCardTypeUnlock(seed),
   ],
 
   // 647

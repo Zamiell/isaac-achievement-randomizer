@@ -15,13 +15,14 @@
 - The unlock for Clean Bedrooms and Dirty Bedrooms is now combined.
 - Beds are no longer unlockable.
 - Reward Plates are no longer unlockable.
-- The Lost and Tainted Apollyon are now considered to be "hard" characters.
+- Even, The Lost, and Tainted Apollyon are now considered to be "hard" characters.
 - Gnawed Leaf is no longer banned.
 - The info displayed in the starting room has been revamped.
 - A new "Cheat Settings" menu has been added for people who want to cheat.
 - The quality threshold on hardcore and nightmare modes has been reduced from 0.5 to 0.333.
 - Gehenna is now flipped. (However, rooms with Ball and Chains are not flipped to avoid bugs.)
 - The "Recent Achievements" menu will now show the run number.
+- Booster Pack will no longer unlock until you have 10 cards.
 - Fixed the bug where the following rooms were flipped incorrectly:
   - Caves: #11058, #21058
   - Catacombs: #11067, #11088, #21067, #21088
@@ -30,6 +31,7 @@
   - Mausoleum: #10248, #20248
 - Fixed the bug where the "Recent Achievements" menu would sometimes be in the reverse order.
 - Fixed the bug where pills from champions would not have proper seeds. (Thanks Neonomi)
+- !Fixed the bug where some settings in the Dead Sea Scrolls menu would not save properly. (Thanks setJy)
 
 ### _v0.9.2_ - October 23rd, 2023
 

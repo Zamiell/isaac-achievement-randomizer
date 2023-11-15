@@ -18,6 +18,7 @@ export const UNLOCKABLE_CHARACTERS_SET = new ReadonlySet(UNLOCKABLE_CHARACTERS);
 /** These are characters that are guaranteed to not be unlocked early on. */
 export const HARD_CHARACTERS = [
   PlayerType.BLUE_BABY, // 4
+  PlayerType.EVE, // 5
   PlayerType.LOST, // 10
   PlayerType.JUDAS_B, // 24
   PlayerType.BLUE_BABY_B, // 25
