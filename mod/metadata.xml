@@ -18,7 +18,7 @@ For more specific details about why we designed it this way and what exact thing
 [*] To report bugs, please post in the "#randomizer-bugs" channel.
 [*] The mod is open source and developed on GitHub. If you want to help with development, please post in the "#randomizer-development" channel.
   </description>
-  <version>0.9.2</version>
+  <version>0.10.0</version>
   <visibility>Public</visibility>
   <tag id="Lua" />
   <tag id="Tweaks" />
