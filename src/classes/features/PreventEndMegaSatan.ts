@@ -9,6 +9,7 @@ import {
   addRoomClearCharges,
   game,
   log,
+  onAnyChallenge,
   spawnPickup,
 } from "isaacscript-common";
 import { RandomizerModFeature } from "../RandomizerModFeature";
@@ -23,11 +24,9 @@ export class PreventEndMegaSatan extends RandomizerModFeature {
   // 68, 275
   @Callback(ModCallback.POST_ENTITY_KILL, EntityType.MEGA_SATAN_2)
   postEntityKillMegaSatan2(entity: Entity): void {
-    if (entity.HasEntityFlags(EntityFlag.FRIENDLY)) {
-      return;
+    if (!entity.HasEntityFlags(EntityFlag.FRIENDLY) && !onAnyChallenge()) {
+      this.emulateRoomClear();
     }
-
-    this.emulateRoomClear();
   }
 
   emulateRoomClear(): void {

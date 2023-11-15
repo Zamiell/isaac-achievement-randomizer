@@ -15,7 +15,7 @@
 - The unlock for Clean Bedrooms and Dirty Bedrooms is now combined.
 - Beds are no longer unlockable.
 - Reward Plates are no longer unlockable.
-- Eden, The Lost, and Tainted Apollyon are now considered to be "hard" characters.
+- Eve, The Lost, and Tainted Apollyon are now considered to be "hard" characters.
 - Gnawed Leaf is no longer banned.
 - Chests will now no longer be replaced with coins if you have a "worse" version of a chest unlocked.
 - The info displayed in the starting room has been revamped.
