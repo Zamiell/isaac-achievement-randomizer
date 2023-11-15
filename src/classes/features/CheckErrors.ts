@@ -272,9 +272,9 @@ function checkOtherModsEnabled() {
   }
 
   const lastCardType = mod.getLastCardType();
-  const customCardTypes = Object.keys(CardTypeCustom).length;
+  const numCustomCardTypes = Object.keys(CardTypeCustom).length;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-  if (lastCardType !== LAST_VANILLA_CARD_TYPE + customCardTypes) {
+  if (lastCardType !== LAST_VANILLA_CARD_TYPE + numCustomCardTypes) {
     log(
       `Error: Other mods detected. (The highest card ID is ${lastCardType}, but it should be ${LAST_VANILLA_CARD_TYPE}.)`,
     );

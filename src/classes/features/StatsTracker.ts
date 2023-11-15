@@ -27,6 +27,7 @@ import {
 } from "isaacscript-common";
 import { ALL_OBJECTIVES } from "../../arrays/allObjectives";
 import { isGenerationCheatsEnabled, isPreventPauseEnabled } from "../../config";
+import { CardTypeCustom } from "../../enums/CardTypeCustom";
 import { ChallengeCustom } from "../../enums/ChallengeCustom";
 import { mod } from "../../mod";
 import { convertSecondsToTimerValues } from "../../timer";
@@ -167,10 +168,12 @@ export class StatsTracker extends ModFeature {
   }
 
   isModsWithItemsEnabled(): boolean {
+    const numCustomCardTypes = Object.keys(CardTypeCustom).length;
     return (
       mod.getLastCollectibleType() !== LAST_VANILLA_COLLECTIBLE_TYPE ||
       mod.getLastTrinketType() !== LAST_VANILLA_TRINKET_TYPE ||
-      mod.getLastCardType() !== LAST_VANILLA_CARD_TYPE ||
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+      mod.getLastCardType() !== LAST_VANILLA_CARD_TYPE + numCustomCardTypes ||
       mod.getLastPillEffect() !== LAST_VANILLA_PILL_EFFECT
     );
   }
