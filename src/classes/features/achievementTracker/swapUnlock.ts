@@ -39,13 +39,7 @@ import {
   isStoryBossID,
   shuffleArray,
 } from "isaacscript-common";
-import { PILL_EFFECT_QUALITIES } from "../../../arrays/pillEffectQualities";
-import { UNLOCKABLE_CARD_TYPES } from "../../../arrays/unlockableCardTypes";
-import { UNLOCKABLE_COLLECTIBLE_TYPES } from "../../../arrays/unlockableCollectibleTypes";
-import { UNLOCKABLE_CHEST_PICKUP_VARIANTS } from "../../../arrays/unlockablePickupTypes";
-import { UNLOCKABLE_PILL_EFFECTS } from "../../../arrays/unlockablePillEffects";
 import { UNLOCKABLE_ROOM_TYPES } from "../../../arrays/unlockableRoomTypes";
-import { UNLOCKABLE_TRINKET_TYPES } from "../../../arrays/unlockableTrinketTypes";
 import { OtherUnlockKind } from "../../../enums/OtherUnlockKind";
 import { UnlockType } from "../../../enums/UnlockType";
 import {
@@ -54,6 +48,7 @@ import {
   getUnlockableAreaFromStoryBoss,
 } from "../../../enums/UnlockableArea";
 import { CARD_QUALITIES } from "../../../objects/cardQualities";
+import { PILL_EFFECT_QUALITIES } from "../../../objects/pillEffectQualities";
 import { TRINKET_QUALITIES } from "../../../objects/trinketQualities";
 import {
   DICE_CARDS,
@@ -96,11 +91,16 @@ import {
   anyRunesUnlocked,
   anySoulHeartUnlocked,
   anyTrinketTypesUnlocked,
-  getLockedNonCollectiblesNonTrinkets,
+  getLockedCardTypes,
+  getLockedChestPickupVariants,
+  getLockedCollectibleTypes,
+  getLockedPillEffects,
+  getLockedTrinketTypes,
   getNextCharacterUnlock,
   getNumCardsUnlocked,
   getNumUnlockedCollectibleTypes,
   getNumUnlockedTrinketTypes,
+  getUncompletedNonCollectiblesNonTrinkets,
   getWorseLockedBatterySubType,
   getWorseLockedBombSubType,
   getWorseLockedCardType,
@@ -124,7 +124,6 @@ import {
   isHeartSubTypeUnlocked,
   isKeySubTypeUnlocked,
   isOtherUnlockKindUnlocked,
-  isPillEffectUnlocked,
   isRoomTypeUnlocked,
   isSackSubTypeUnlocked,
   isSlotVariantUnlocked,
@@ -134,11 +133,7 @@ import {
   getCharacterUnlockOrder,
   getNumCollectibleTypesInPlaythrough,
   getNumTrinketTypesInPlaythrough,
-  isCardTypeInPlaythrough,
-  isCollectibleTypeInPlaythrough,
   isHardcoreMode,
-  isPillEffectInPlaythrough,
-  isTrinketTypeInPlaythrough,
 } from "./v";
 
 export const FIRST_UNLOCK_COLLECTIBLES = [
@@ -1069,7 +1064,7 @@ function getSwappedUnlockCollectible(
   }
 
   if (isAtLeastHalfCollectiblesUnlocked()) {
-    const unlocks = getLockedNonCollectiblesNonTrinkets();
+    const unlocks = getUncompletedNonCollectiblesNonTrinkets();
     if (unlocks.length > 0) {
       return getRandomArrayElement(unlocks, seed);
     }
@@ -1532,7 +1527,7 @@ function getSwappedUnlockTrinket(
   }
 
   if (isAtLeastHalfTrinketsUnlocked()) {
-    const unlocks = getLockedNonCollectiblesNonTrinkets();
+    const unlocks = getUncompletedNonCollectiblesNonTrinkets();
     if (unlocks.length > 0) {
       return getRandomArrayElement(unlocks, seed);
     }
@@ -2069,15 +2064,14 @@ function swapAnyRoomUnlock(seed: Seed) {
  * Thus, we want to hardcode this to only consistent of active items with no other conditions.
  */
 function getRandomActiveCollectibleUnlock(seed: Seed): CollectibleUnlock {
-  const lockedCollectibleTypes = UNLOCKABLE_COLLECTIBLE_TYPES.filter(
-    (collectibleType) => !isCollectibleTypeUnlocked(collectibleType, false),
+  const lockedCollectibleTypes = getLockedCollectibleTypes();
+
+  const collectibleTypesWithNoLogic = lockedCollectibleTypes.filter(
+    (collectibleType) =>
+      SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS.get(collectibleType) === undefined,
   );
 
-  const lockedCollectibleTypesInPlaythrough = lockedCollectibleTypes.filter(
-    (collectibleType) => isCollectibleTypeInPlaythrough(collectibleType),
-  );
-
-  const activeCollectibleTypes = lockedCollectibleTypesInPlaythrough.filter(
+  const activeCollectibleTypes = collectibleTypesWithNoLogic.filter(
     (collectibleType) => isActiveCollectible(collectibleType),
   );
 
@@ -2089,30 +2083,21 @@ function getRandomActiveCollectibleUnlock(seed: Seed): CollectibleUnlock {
     ? activeCollectibleTypesQuality0
     : activeCollectibleTypes;
 
-  const collectibleTypesWithNoLogic = collectibleTypes.filter(
-    (collectibleType) =>
-      SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS.get(collectibleType) === undefined,
-  );
-
-  const collectibleType = getRandomArrayElement(
-    collectibleTypesWithNoLogic,
-    seed,
-  );
+  const collectibleType = getRandomArrayElement(collectibleTypes, seed);
 
   return getUnlock(UnlockType.COLLECTIBLE, collectibleType);
 }
 
 /** This function copies the logic from the `getRandomActiveCollectibleUnlock` function. */
 function getRandomFamiliarCollectibleUnlock(seed: Seed): CollectibleUnlock {
-  const lockedCollectibleTypes = UNLOCKABLE_COLLECTIBLE_TYPES.filter(
-    (collectibleType) => !isCollectibleTypeUnlocked(collectibleType, false),
+  const lockedCollectibleTypes = getLockedCollectibleTypes();
+
+  const collectibleTypesWithNoLogic = lockedCollectibleTypes.filter(
+    (collectibleType) =>
+      SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS.get(collectibleType) === undefined,
   );
 
-  const lockedCollectibleTypesInPlaythrough = lockedCollectibleTypes.filter(
-    (collectibleType) => isCollectibleTypeInPlaythrough(collectibleType),
-  );
-
-  const familiarCollectibleTypes = lockedCollectibleTypesInPlaythrough.filter(
+  const familiarCollectibleTypes = collectibleTypesWithNoLogic.filter(
     (collectibleType) => isFamiliarCollectible(collectibleType),
   );
 
@@ -2124,43 +2109,28 @@ function getRandomFamiliarCollectibleUnlock(seed: Seed): CollectibleUnlock {
     ? familiarCollectibleTypesQuality0
     : familiarCollectibleTypes;
 
-  const collectibleTypesWithNoLogic = collectibleTypes.filter(
-    (collectibleType) =>
-      SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS.get(collectibleType) === undefined,
-  );
-
-  const collectibleType = getRandomArrayElement(
-    collectibleTypesWithNoLogic,
-    seed,
-  );
+  const collectibleType = getRandomArrayElement(collectibleTypes, seed);
 
   return getUnlock(UnlockType.COLLECTIBLE, collectibleType);
 }
 
 function getRandomTrinketUnlock(seed: Seed): TrinketUnlock {
-  const lockedTrinketTypes = UNLOCKABLE_TRINKET_TYPES.filter(
-    (trinketType) => !isTrinketTypeUnlocked(trinketType, false),
-  );
+  const lockedTrinketTypes = getLockedTrinketTypes();
 
-  const lockedTrinketTypesInPlaythrough = lockedTrinketTypes.filter(
-    (trinketType) => isTrinketTypeInPlaythrough(trinketType),
-  );
-
-  const lockedTrinketTypesInPlaythroughQuality0 =
-    lockedTrinketTypesInPlaythrough.filter(
-      (trinketType) => TRINKET_QUALITIES[trinketType] === 0,
-    );
-
-  const trinketTypes = isHardcoreMode()
-    ? lockedTrinketTypesInPlaythroughQuality0
-    : lockedTrinketTypesInPlaythrough;
-
-  const trinketTypesWithNoLogic = trinketTypes.filter(
+  const trinketTypesWithNoLogic = lockedTrinketTypes.filter(
     (trinketType) =>
       SWAPPED_UNLOCK_TRINKET_FUNCTIONS.get(trinketType) === undefined,
   );
 
-  const trinketType = getRandomArrayElement(trinketTypesWithNoLogic, seed);
+  const trinketTypesQuality0 = trinketTypesWithNoLogic.filter(
+    (trinketType) => TRINKET_QUALITIES[trinketType] === 0,
+  );
+
+  const trinketTypes = isHardcoreMode()
+    ? trinketTypesQuality0
+    : trinketTypesWithNoLogic;
+
+  const trinketType = getRandomArrayElement(trinketTypes, seed);
 
   return {
     type: UnlockType.TRINKET,
@@ -2169,28 +2139,19 @@ function getRandomTrinketUnlock(seed: Seed): TrinketUnlock {
 }
 
 function getRandomCardTypeUnlock(seed: Seed): CardUnlock {
-  const lockedCardTypes = UNLOCKABLE_CARD_TYPES.filter(
-    (cardType) => !isCardTypeUnlocked(cardType, false),
-  );
+  const lockedCardTypes = getLockedCardTypes();
 
-  const lockedCardTypesInPlaythrough = lockedCardTypes.filter((cardType) =>
-    isCardTypeInPlaythrough(cardType),
-  );
-
-  const lockedCardTypesInPlaythroughQuality0 =
-    lockedCardTypesInPlaythrough.filter(
-      (cardType) => CARD_QUALITIES[cardType] === 0,
-    );
-
-  const cardTypes = isHardcoreMode()
-    ? lockedCardTypesInPlaythroughQuality0
-    : lockedCardTypesInPlaythrough;
-
-  const cardTypesWithNoLogic = cardTypes.filter(
+  const cardTypesWithNoLogic = lockedCardTypes.filter(
     (cardType) => SWAPPED_UNLOCK_CARD_FUNCTIONS.get(cardType) === undefined,
   );
 
-  const cardType = getRandomArrayElement(cardTypesWithNoLogic, seed);
+  const cardTypesQuality0 = cardTypesWithNoLogic.filter(
+    (cardType) => CARD_QUALITIES[cardType] === 0,
+  );
+
+  const cardTypes = isHardcoreMode() ? cardTypesQuality0 : cardTypesWithNoLogic;
+
+  const cardType = getRandomArrayElement(cardTypes, seed);
 
   return {
     type: UnlockType.CARD,
@@ -2199,15 +2160,13 @@ function getRandomCardTypeUnlock(seed: Seed): CardUnlock {
 }
 
 function getRandomRuneUnlock(seed: Seed): CardUnlock {
-  const lockedCardTypes = UNLOCKABLE_CARD_TYPES.filter(
-    (cardType) => !isCardTypeUnlocked(cardType, false),
+  const lockedCardTypes = getLockedCardTypes();
+
+  const cardTypesWithNoLogic = lockedCardTypes.filter(
+    (cardType) => SWAPPED_UNLOCK_CARD_FUNCTIONS.get(cardType) === undefined,
   );
 
-  const lockedCardTypesInPlaythrough = lockedCardTypes.filter((cardType) =>
-    isCardTypeInPlaythrough(cardType),
-  );
-
-  const runeCardTypes = lockedCardTypesInPlaythrough.filter((cardType) =>
+  const runeCardTypes = cardTypesWithNoLogic.filter((cardType) =>
     isRune(cardType),
   );
 
@@ -2217,11 +2176,7 @@ function getRandomRuneUnlock(seed: Seed): CardUnlock {
 
   const cardTypes = isHardcoreMode() ? runeCardTypesQuality0 : runeCardTypes;
 
-  const cardTypesWithNoLogic = cardTypes.filter(
-    (cardType) => SWAPPED_UNLOCK_CARD_FUNCTIONS.get(cardType) === undefined,
-  );
-
-  const cardType = getRandomArrayElement(cardTypesWithNoLogic, seed);
+  const cardType = getRandomArrayElement(cardTypes, seed);
 
   return {
     type: UnlockType.CARD,
@@ -2230,29 +2185,22 @@ function getRandomRuneUnlock(seed: Seed): CardUnlock {
 }
 
 function getRandomPillEffectUnlock(seed: Seed): PillEffectUnlock {
-  const lockedPillEffects = UNLOCKABLE_PILL_EFFECTS.filter(
-    (pillEffect) => !isPillEffectUnlocked(pillEffect, false),
-  );
+  const lockedPillEffects = getLockedPillEffects();
 
-  const lockedPillEffectsInPlaythrough = lockedPillEffects.filter(
-    (pillEffect) => isPillEffectInPlaythrough(pillEffect),
-  );
-
-  const lockedPillEffectsInPlaythroughQuality0 =
-    lockedPillEffectsInPlaythrough.filter(
-      (pillEffect) => PILL_EFFECT_QUALITIES[pillEffect] === 0,
-    );
-
-  const pillEffects = isHardcoreMode()
-    ? lockedPillEffectsInPlaythroughQuality0
-    : lockedPillEffectsInPlaythrough;
-
-  const pillEffectsWithNoLogic = pillEffects.filter(
+  const pillEffectsWithNoLogic = lockedPillEffects.filter(
     (pillEffect) =>
       SWAPPED_UNLOCK_PILL_EFFECT_FUNCTIONS.get(pillEffect) === undefined,
   );
 
-  const pillEffect = getRandomArrayElement(pillEffectsWithNoLogic, seed);
+  const pillEffectsQuality0 = pillEffectsWithNoLogic.filter(
+    (pillEffect) => PILL_EFFECT_QUALITIES[pillEffect] === 0,
+  );
+
+  const pillEffects = isHardcoreMode()
+    ? pillEffectsQuality0
+    : pillEffectsWithNoLogic;
+
+  const pillEffect = getRandomArrayElement(pillEffects, seed);
 
   return {
     type: UnlockType.PILL_EFFECT,
@@ -2261,8 +2209,15 @@ function getRandomPillEffectUnlock(seed: Seed): PillEffectUnlock {
 }
 
 function getRandomChestUnlock(seed: Seed): ChestUnlock {
+  const lockedChestPickupVariants = getLockedChestPickupVariants();
+
+  const chestPickupVariantsWithNoLogic = lockedChestPickupVariants.filter(
+    (pickupVariant) =>
+      SWAPPED_UNLOCK_CHEST_FUNCTIONS.get(pickupVariant) === undefined,
+  );
+
   const pickupVariant = getRandomArrayElement(
-    UNLOCKABLE_CHEST_PICKUP_VARIANTS,
+    chestPickupVariantsWithNoLogic,
     seed,
   );
 
