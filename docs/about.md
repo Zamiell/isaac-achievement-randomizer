@@ -148,15 +148,17 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
 
 ### Characters
 
-- Each character is guaranteed to unlock another random character from defeating It Lives.
+- Each character is guaranteed to unlock another random character from defeating Mom.
 - The following characters are considered to be "hard" and are guaranteed to be in the second half of characters unlocked:
   - Blue Baby (#4)
   - Eve (#5)
   - Lost (#10)
+  - Keeper (#14)
   - Tainted Judas (#24)
   - Tainted Blue Baby (#25)
   - Tainted Lazarus (#29)
   - Tainted Lost (#31)
+  - Tainted Keeper (#33)
   - Tainted Apollyon (#34)
   - Tainted Forgotten (#35)
   - Tainted Bethany (#36)
@@ -165,8 +167,8 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
 ### Areas
 
 - 6 area unlocks are not randomized and always are unlocked from specific objectives:
-  - Womb (by defeating Mom on Isaac)
-  - Cathedral (by defeating It Lives on the final randomized character)
+  - Womb (by defeating Mom on the final randomized character)
+  - Cathedral (by defeating It Lives on Isaac)
   - Sheol (by defeating Isaac on Isaac)
   - The Chest (by defeating Satan on Isaac)
   - Dark Room (by defeating Blue Baby on Isaac)

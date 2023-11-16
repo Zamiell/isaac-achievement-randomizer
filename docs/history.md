@@ -3,6 +3,11 @@
 <!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.12.0_ - November 15th, 2023
+
+- Characters are now unlocked from killing Mom (instead of It Lives).
+- Keeper and Tainted Keeper are now considered to be hard characters.
+
 ### _v0.11.0_ - November 15th, 2023
 
 - Wooden Spoon, Wire Coat Hanger, and Cat-O-Nine-Tails are now automatically unlocked on casual mode.

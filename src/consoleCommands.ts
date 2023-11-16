@@ -189,7 +189,7 @@ function startRandomizerCommand(params: string) {
 
   if (!isValidSituationForStartingRandomizer()) {
     print(
-      "You must be on a hard mode run and not inside a challenge in order to start the randomizer.",
+      "You must not be inside a challenge in order to start the randomizer.",
     );
     return;
   }

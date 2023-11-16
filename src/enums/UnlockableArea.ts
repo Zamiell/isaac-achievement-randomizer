@@ -19,8 +19,8 @@ export enum UnlockableArea {
 }
 
 export const STATIC_UNLOCKABLE_AREAS = [
-  UnlockableArea.WOMB, // By defeating Mom.
-  UnlockableArea.CATHEDRAL, // By defeating It Lives (on every character).
+  UnlockableArea.WOMB, // By defeating Mom (on every character).
+  UnlockableArea.CATHEDRAL, // By defeating It Lives.
   UnlockableArea.SHEOL, // By defeating Isaac.
   UnlockableArea.CHEST, // By defeating Satan.
   UnlockableArea.DARK_ROOM, // By defeating Blue Baby.

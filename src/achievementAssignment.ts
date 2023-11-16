@@ -161,7 +161,7 @@ export function getAchievementsForRNG(rng: RNG): {
     unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
   }
 
-  // Each character is guaranteed to unlock from beating It Lives.
+  // Each character is guaranteed to unlock from beating Mom.
   let lastUnlockedCharacter = STARTING_CHARACTER;
   for (const character of characterUnlockOrder) {
     const unlock = getUnlock(UnlockType.CHARACTER, character);
@@ -171,7 +171,7 @@ export function getAchievementsForRNG(rng: RNG): {
     const objective = getObjective(
       ObjectiveType.CHARACTER,
       lastUnlockedCharacter,
-      CharacterObjectiveKind.IT_LIVES,
+      CharacterObjectiveKind.MOM,
       Difficulty.NORMAL,
     );
     const objectiveID = getObjectiveID(objective);
@@ -186,49 +186,53 @@ export function getAchievementsForRNG(rng: RNG): {
   // Next, do all of the unlocks except for trinkets.
   for (const unlockID of unlockIDs) {
     const unlock = getUnlockFromID(unlockID);
-    if (unlock.type !== UnlockType.TRINKET) {
-      // Core stat collectibles start out unlocked in casual mode.
-      if (
-        !isHardcoreMode() &&
-        unlock.type === UnlockType.COLLECTIBLE &&
-        includes(CORE_STAT_COLLECTIBLES, unlock.collectibleType)
-      ) {
-        continue;
-      }
-
-      if (isBannedUnlock(unlock)) {
-        continue;
-      }
-
-      const objectiveID = getRandomArrayElementAndRemove(objectiveIDs, rng);
-      objectiveIDToUnlockIDMap.set(objectiveID, unlockID);
-      unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
+    if (unlock.type === UnlockType.TRINKET) {
+      continue;
     }
+
+    if (isBannedUnlock(unlock)) {
+      continue;
+    }
+
+    // Core stat collectibles start out unlocked in casual mode.
+    if (
+      !isHardcoreMode() &&
+      unlock.type === UnlockType.COLLECTIBLE &&
+      includes(CORE_STAT_COLLECTIBLES, unlock.collectibleType)
+    ) {
+      continue;
+    }
+
+    const objectiveID = getRandomArrayElementAndRemove(objectiveIDs, rng);
+    objectiveIDToUnlockIDMap.set(objectiveID, unlockID);
+    unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
   }
 
   // Finally, do the trinkets last, since they are the least important unlock, and there might not
   // be enough objectives to unlock everything.
   for (const unlockID of unlockIDs) {
     const unlock = getUnlockFromID(unlockID);
-    if (unlock.type === UnlockType.TRINKET) {
-      if (isBannedUnlock(unlock)) {
-        continue;
-      }
-
-      // In some cases, the amount of unlocks may exceed the amount of objectives.
-      if (objectiveIDs.length === 0) {
-        if (DEBUG) {
-          const unlockText = getUnlockText(unlock).join(" - ");
-          log(`Skipping assignment of unlock: ${unlockText}`);
-        }
-
-        continue;
-      }
-
-      const objectiveID = getRandomArrayElementAndRemove(objectiveIDs, rng);
-      objectiveIDToUnlockIDMap.set(objectiveID, unlockID);
-      unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
+    if (unlock.type !== UnlockType.TRINKET) {
+      continue;
     }
+
+    if (isBannedUnlock(unlock)) {
+      continue;
+    }
+
+    // In some cases, the amount of unlocks may exceed the amount of objectives.
+    if (objectiveIDs.length === 0) {
+      if (DEBUG) {
+        const unlockText = getUnlockText(unlock).join(" - ");
+        log(`Skipping assignment of unlock: ${unlockText}`);
+      }
+
+      continue;
+    }
+
+    const objectiveID = getRandomArrayElementAndRemove(objectiveIDs, rng);
+    objectiveIDToUnlockIDMap.set(objectiveID, unlockID);
+    unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
   }
 
   return {
@@ -268,7 +272,7 @@ function getObjectiveFromUnlockableArea(
   unlockableArea: (typeof STATIC_UNLOCKABLE_AREAS)[number],
   characterUnlockOrder: readonly PlayerType[],
 ): Readonly<Objective> {
-  if (unlockableArea === UnlockableArea.CATHEDRAL) {
+  if (unlockableArea === UnlockableArea.WOMB) {
     const finalCharacter = characterUnlockOrder.at(-1);
     assertDefined(
       finalCharacter,
@@ -277,7 +281,7 @@ function getObjectiveFromUnlockableArea(
     return getObjective(
       ObjectiveType.CHARACTER,
       finalCharacter,
-      CharacterObjectiveKind.IT_LIVES,
+      CharacterObjectiveKind.MOM,
       Difficulty.NORMAL,
     );
   }
