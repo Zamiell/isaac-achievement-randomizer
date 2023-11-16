@@ -6,6 +6,7 @@ on: [push, pull_request]
 
 permissions:
   pages: write
+  id-token: write
 
 # @template-customization-end
 
