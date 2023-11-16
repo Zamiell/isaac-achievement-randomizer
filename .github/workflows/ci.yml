@@ -2,8 +2,12 @@ name: CI
 
 on: [push, pull_request]
 
+# @template-customization-start
+
 permissions:
   pages: write
+
+# @template-customization-end
 
 jobs:
   build:
