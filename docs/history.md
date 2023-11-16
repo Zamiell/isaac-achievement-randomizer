@@ -3,6 +3,10 @@
 <!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.13.0_ - November 15th, 2023
+
+- Jacob & Esau is now considered to be a hard character.
+
 ### _v0.12.0_ - November 15th, 2023
 
 - Characters are now unlocked from killing Mom (instead of It Lives).

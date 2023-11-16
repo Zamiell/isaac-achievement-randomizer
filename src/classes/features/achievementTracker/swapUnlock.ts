@@ -849,7 +849,7 @@ const SWAPPED_UNLOCK_COLLECTIBLE_FUNCTIONS = new ReadonlyMap<
   [
     CollectibleType.BOOSTER_PACK,
     (seed) =>
-      getNumCardsUnlocked(false) >= 10
+      getNumCardsUnlocked(false) >= 4 // Chosen because there are only 4 quality 0 cards.
         ? undefined
         : getRandomCardTypeUnlock(seed),
   ],
@@ -1651,7 +1651,7 @@ const SWAPPED_UNLOCK_CARD_FUNCTIONS = new ReadonlyMap<
   [
     CardType.ANCIENT_RECALL,
     (seed) =>
-      getNumCardsUnlocked(false) >= 10
+      getNumCardsUnlocked(false) >= 4 // Chosen because there are only 4 quality 0 cards.
         ? undefined
         : getRandomCardTypeUnlock(seed),
   ],

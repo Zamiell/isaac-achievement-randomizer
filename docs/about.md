@@ -149,11 +149,12 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
 ### Characters
 
 - Each character is guaranteed to unlock another random character from defeating Mom.
-- The following characters are considered to be "hard" and are guaranteed to be in the second half of characters unlocked:
+- The following characters are considered to be "hard" and are guaranteed to not be one of the first ones unlocked:
   - Blue Baby (#4)
   - Eve (#5)
   - Lost (#10)
   - Keeper (#14)
+  - Jacob & Esau (#19)
   - Tainted Judas (#24)
   - Tainted Blue Baby (#25)
   - Tainted Lazarus (#29)

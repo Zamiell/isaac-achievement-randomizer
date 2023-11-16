@@ -21,6 +21,7 @@ export const HARD_CHARACTERS = [
   PlayerType.EVE, // 5
   PlayerType.LOST, // 10
   PlayerType.KEEPER, // 14
+  PlayerType.JACOB, // 19
   PlayerType.JUDAS_B, // 24
   PlayerType.BLUE_BABY_B, // 25
   PlayerType.LAZARUS_B, // 29

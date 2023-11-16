@@ -246,26 +246,30 @@ export function getAchievementsForRNG(rng: RNG): {
 function getRandomCharacterUnlockOrder(rng: RNG): readonly PlayerType[] {
   let unlockableCharacters = copyArray(UNLOCKABLE_CHARACTERS);
 
+  let numAttempts = 0;
   do {
     unlockableCharacters = shuffleArray(unlockableCharacters, rng);
+    numAttempts++;
   } while (!isValidUnlockableCharacterOrder(unlockableCharacters));
+
+  log(`Generated a random character order in ${numAttempts} attempts.`);
 
   return unlockableCharacters;
 }
 
 function isValidUnlockableCharacterOrder(characters: PlayerType[]): boolean {
   return HARD_CHARACTERS.every((character) =>
-    inSecondHalfOfArray(character, characters),
+    inSecondPartOfArray(character, characters),
   );
 }
 
-function inSecondHalfOfArray<T>(element: T, array: T[]): boolean {
+function inSecondPartOfArray<T>(element: T, array: T[]): boolean {
   const index = array.indexOf(element);
   if (index === -1) {
     return false;
   }
 
-  return index > (array.length - 1) / 2;
+  return index > (array.length - 1) * 0.4; // 0.5 takes too many attempts.
 }
 
 function getObjectiveFromUnlockableArea(
