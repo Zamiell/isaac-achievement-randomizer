@@ -106,6 +106,7 @@ export function main(): void {
   initDeadSeaScrolls();
   initModFeatures(mod, MOD_FEATURES);
   initConsoleCommands();
+  mod.saveDataManagerLoad();
 }
 
 function welcomeBanner() {

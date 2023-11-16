@@ -28,6 +28,20 @@ jobs:
       - uses: ./.github/workflows/setup
       - run: npm run lint
 
+  deploy:
+    if: "needs.pr-check.outputs.number != 'null'"
+    needs: [build, lint]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/workflows/setup
+
+      - name: Deploy to GitHub pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./website
+
   # @template-customization-start
   publish:
     runs-on: ubuntu-latest

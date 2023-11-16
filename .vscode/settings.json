@@ -100,4 +100,11 @@
     "editor.formatOnSave": true,
     "editor.tabSize": 2,
   },
+  // @template-customization-start
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+  },
+  // @template-customization-end
 }

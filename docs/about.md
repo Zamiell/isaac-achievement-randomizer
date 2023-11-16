@@ -149,7 +149,7 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
 ### Characters
 
 - Each character is guaranteed to unlock another random character from defeating Mom.
-- The following characters are considered to be "hard" and are guaranteed to not be one of the first ones unlocked:
+- The following characters are considered to be "hard" and are guaranteed to not be unlocked early on:
   - Blue Baby (#4)
   - Eve (#5)
   - Lost (#10)
