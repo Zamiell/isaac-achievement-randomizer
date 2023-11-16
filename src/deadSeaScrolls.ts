@@ -218,7 +218,7 @@ export function initDeadSeaScrolls(): void {
         } else {
           menu.buttons = [
             {
-              str: "you must be not inside",
+              str: "you must not be inside",
             },
             {
               str: "a challenge in order to",
