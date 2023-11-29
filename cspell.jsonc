@@ -8,9 +8,11 @@
   "useGitignore": true,
   "ignorePaths": [
     "*.anm2",
+    "*.mp3",
     "*.ogg",
     "*.pyc",
     "*.stb",
+    "*.svg",
     "*.wav",
     ".git/**",
     ".yarn/**",
@@ -22,10 +24,14 @@
     "package-lock.json",
     "pnpm-lock.yaml",
     "yarn.lock",
+    // @template-customization-start
+    "main.js",
+    // @template-customization-end
   ],
   "words": [
     "AGDQ",
     "BOMBDROP",
+    "Bulma",
     "camelcased",
     "cloc",
     "crownoflight",
@@ -43,6 +49,7 @@
     "lokiis",
     "Moucheron",
     "noobs",
+    "outfile",
     "peaceiris",
     "pycache",
     "Quipet",

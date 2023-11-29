@@ -1,0 +1,41 @@
+@font-face {
+  font-family: "Mona Sans";
+  src:
+    url("Mona-Sans.woff2") format("woff2 supports variations"),
+    url("Mona-Sans.woff2") format("woff2-variations");
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+}
+
+html {
+  font-family: "Mona Sans";
+  font-size: 14px;
+}
+
+a:hover {
+  color: blue;
+}
+
+.half-spacing {
+  margin-bottom: 0.5em;
+}
+
+#choose-save-file {
+  display: none;
+}
+
+#choose-save-file-label {
+  margin-bottom: 1rem;
+}
+
+#choose-save-file-error {
+  display: none;
+}
+
+#choose-save-file-error-article {
+  margin-top: 1em;
+}
+
+#save-file-stats {
+  display: none;
+}

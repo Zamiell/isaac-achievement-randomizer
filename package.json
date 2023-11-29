@@ -13,6 +13,7 @@
   "type": "module",
   "scripts": {
     "build": "tstl",
+    "build-website": "esbuild ./website/src/main.ts --bundle --outfile=./website/static/main.js",
     "cloc": "cloc ./src --include-lang=TypeScript",
     "lint": "tsx ./scripts/lint.ts",
     "nuke": "isaacscript nuke",
@@ -21,19 +22,22 @@
     "update": "isaacscript update"
   },
   "dependencies": {
-    "isaac-typescript-definitions": "^39.0.2",
-    "isaacscript-common": "^80.1.0"
+    "isaac-typescript-definitions": "^39.0.5",
+    "isaacscript-common": "^80.2.5",
+    "isaacscript-common-ts": "^11.6.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "cloc": "^1.98.0-cloc",
-    "isaacscript": "^3.19.3",
-    "isaacscript-common-node": "^1.2.0",
-    "isaacscript-lint": "^6.4.0",
+    "esbuild": "^0.19.8",
+    "isaacscript": "^3.27.0",
+    "isaacscript-common-node": "^1.4.0",
+    "isaacscript-lint": "^6.4.1",
     "isaacscript-spell": "^1.10.0",
     "isaacscript-tsconfig": "^5.0.0",
-    "tsx": "^4.1.2",
-    "typescript": "^5.2.2",
-    "typescript-to-lua": "^1.21.0"
+    "tsx": "^4.6.0",
+    "typescript": "^5.3.2",
+    "typescript-to-lua": "^1.22.0"
   },
   "packageManager": "yarn@4.0.2"
 }

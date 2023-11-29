@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Isaac Save Viewer</title>
+    <link rel="shortcut icon" type="image/jpg" href="favicon.ico" />
+
+    <!-- Bulma -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+
+    <!-- Source Sans Pro -->
+    <link
+      rel="preload"
+      href="Mona-Sans.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <script src="main.js"></script>
+  </head>
+
+  <body>
+    <section class="section">
+      <div class="container">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-half">
+            <img src="shuffle-icon.png" />
+            <h1 class="title">Save Viewer</h1>
+            <p class="subtitle">
+              A tool to track completion status for the <br />
+              <a
+                href="https://steamcommunity.com/sharedfiles/filedetails/?id=3050399093"
+                >Achievement Randomizer</a
+              >
+              mod
+            </p>
+          </div>
+        </div>
+
+        <hr />
+
+        <div
+          id="choose-save-file-column"
+          class="columns is-centered has-text-centered"
+        >
+          <div class="column">
+            <input id="choose-save-file" type="file" accept=".dat" />
+            <label
+              for="choose-save-file"
+              id="choose-save-file-label"
+              class="button is-warning"
+            >
+              Select save file
+            </label>
+            <p>Hint: The default location is:</p>
+            <p>
+              <code
+                >C:\Program Files (x86)\Steam\steamapps\common\The Binding of
+                Isaac Rebirth\data\isaac-achievement-randomizer\save1.dat</code
+              >
+            </p>
+            <div class="half-spacing"></div>
+            <div id="choose-save-file-error">
+              <article
+                id="choose-save-file-error-article"
+                class="message is-danger"
+              >
+                <div
+                  id="choose-save-file-error-text"
+                  class="message-body"
+                ></div>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <div id="save-file-stats" class="columns is-centered">
+          <div class="column">
+            <div class="level">
+              <div class="level-left">
+                <div class="level-item">
+                  <h2 class="title is-4">Stats</h2>
+                </div>
+                <div class="level-item">
+                  <p>[<a id="stats-toggle" href="#">Hide</a>]</p>
+                </div>
+              </div>
+            </div>
+
+            <section id="stats-section">
+              <div class="content">
+                <ul>
+                  <li>Playthrough seed: <span id="seed"></span></li>
+                  <li>Mode: <span id="randomizerMode"></span></li>
+                  <li>Objectives: <span id="header-objectives"></span></li>
+                  <li>Total time: <span id="header-total-time"></span></li>
+                  <li>
+                    Completed runs: <span id="stats.numCompletedRuns"></span>
+                  </li>
+                  <li>Deaths/resets: <span id="stats.numDeaths"></span></li>
+                  <li>
+                    Current streak: <span id="stats.currentStreak"></span>
+                  </li>
+                  <li>Best streak: <span id="stats.bestStreak"></span></li>
+                </ul>
+              </div>
+            </section>
+
+            <br /><br />
+
+            <div class="level">
+              <div class="level-left">
+                <div class="level-item">
+                  <h2 class="title is-4">
+                    Objectives (<span id="objectives-gotten"></span> /
+                    <span id="objectives-total"></span>)
+                  </h2>
+                </div>
+                <div class="level-item">
+                  <p>[<a id="achievements-toggle" href="#">Hide</a>]</p>
+                </div>
+              </div>
+            </div>
+
+            <section id="objectives-section">
+              <table id="objectives-table" class="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>In-Game Description</th>
+                    <th>Unlock Description</th>
+                  </tr>
+                </thead>
+                <tbody id="achievements-table-tbody"></tbody>
+              </table>
+
+              <p id="achievements-completed">n/a</p>
+            </section>
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-half is-size-7">
+            <p>Written by <a href="https://www.twitch.tv/zamiell">Zamiel</a></p>
+            <p>
+              <a href="https://github.com/Zamiell/isaac-achievement-randomizer"
+                >Source code</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

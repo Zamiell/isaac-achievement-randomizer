@@ -19,3 +19,7 @@ customStages/**/*.xml
 
 # XML files created by the animation editor
 mod/resources/**/*.anm2
+
+# @template-customization-start
+website/static/main.js
+# @template-customization-end

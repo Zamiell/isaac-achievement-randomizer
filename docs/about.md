@@ -41,7 +41,7 @@
 We do not want to randomize the vanilla achievements. This is for several reasons:
 
 1. [Other mods](https://steamcommunity.com/sharedfiles/filedetails/?id=2838967057) have already done that.
-1. Most vanilla achievements are arbitrary tasks and are not very fun to play, like `Charged Penny - Donate to Battery Bums until they pay out with an item 5 times`. (If you are not lucky enough to get this achievement during your playthrough, the most consistent strategy is to reset as Tainted Keeper in Greed Mode until you see a Battery Bum in the shop. This is "busywork" and is not skill-based in any way.)
+1. Most vanilla achievements are arbitrary tasks and are not very fun to play, like `Marbles - Use 5 Gulp pills in one run`.
 1. In vanilla, some items are arbitrary unlocked from the start, and other items are not. It would be fun if every single item in the game was unlockable. And not just every collectible, but also soul hearts, locked chests, and so on.
 
 Thus, this mod takes a completely different approach. We want each objective to be fairly non-arbitrary. And we want to unlock as many things as possible.
