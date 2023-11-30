@@ -11,17 +11,15 @@ Achievement Randomizer is a mod for [_The Binding of Isaac: Repentance_](https:/
 
 <br>
 
-## Credits
-
-The mod was designed by Zamiel and [Gamonymous](https://github.com/Rchardon), with some help from [Moucheron Quipet](https://www.twitch.tv/moucheronquipet).
-
-It is written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacScript](https://isaacscript.github.io/) framework.
-
-<br>
-
 ## Discord
 
 For questions about playing the mod, or reporting bugs, contact us in the [Isaac Streaking Discord server](https://discord.gg/GwhUeQjHTF). (Discord is a voice and text chat application that allows anyone to create a hosted server. We use one such server as the primary hub of communication for Isaac streaking.)
+
+<br>
+
+## Website
+
+You can use a [dedicated website](https://zamiell.github.io/isaac-achievement-randomizer/) to view the status of your randomizer save file. Currently, the website does not work properly and is under development.
 
 <br>
 
@@ -58,3 +56,13 @@ Achievement Randomizer is open source and anyone can help contribute to make the
   - `yarn install`
 - Run IsaacScript, which will compile the mod and copy it to your "mods" folder:
   - `npx isaacscript`
+
+<br>
+
+## Credits
+
+The mod was designed by Zamiel and [Gamonymous](https://github.com/Rchardon), with some help from [Moucheron Quipet](https://www.twitch.tv/moucheronquipet).
+
+It is written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacScript](https://isaacscript.github.io/) framework.
+
+<br>
