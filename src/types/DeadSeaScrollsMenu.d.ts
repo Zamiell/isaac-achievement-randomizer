@@ -21,14 +21,14 @@ interface DeadSeaScrollsMenuSettings {
 
 interface DeadSeaScrollsPalette {
   Name: string;
-  [1]: [r: int, g: int, b: int];
-  [2]: [r: int, g: int, b: int];
-  [3]: [r: int, g: int, b: int];
+  [1]: readonly [r: int, g: int, b: int];
+  [2]: readonly [r: int, g: int, b: int];
+  [3]: readonly [r: int, g: int, b: int];
 }
 
 interface DeadSeaScrollsSubMenu {
   title: string;
-  buttons?: DeadSeaScrollsButton[];
+  buttons?: readonly DeadSeaScrollsButton[];
   noCursor?: boolean;
   scroller?: boolean;
   fSize?: int;

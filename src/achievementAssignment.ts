@@ -257,13 +257,15 @@ function getRandomCharacterUnlockOrder(rng: RNG): readonly PlayerType[] {
   return unlockableCharacters;
 }
 
-function isValidUnlockableCharacterOrder(characters: PlayerType[]): boolean {
+function isValidUnlockableCharacterOrder(
+  characters: readonly PlayerType[],
+): boolean {
   return HARD_CHARACTERS.every((character) =>
     inSecondPartOfArray(character, characters),
   );
 }
 
-function inSecondPartOfArray<T>(element: T, array: T[]): boolean {
+function inSecondPartOfArray<T>(element: T, array: readonly T[]): boolean {
   const index = array.indexOf(element);
   if (index === -1) {
     return false;

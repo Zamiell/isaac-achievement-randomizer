@@ -42,7 +42,7 @@ export const ALL_OBJECTIVES: readonly Objective[] = (() => {
 
 export function getAllCharacterObjectives(
   character: PlayerType,
-): CharacterObjective[] {
+): readonly CharacterObjective[] {
   const characterObjectives: CharacterObjective[] = [];
 
   for (const kind of CHARACTER_OBJECTIVE_KINDS) {

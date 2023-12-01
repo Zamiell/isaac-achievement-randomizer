@@ -108,7 +108,7 @@ function isUnlocked(unlock: Unlock, forRun: boolean): boolean {
 function getCompletedUnlockTypes(
   unlockType: UnlockType,
   forRun: boolean,
-): int[] {
+): readonly int[] {
   const completedUnlockIDsSet = forRun
     ? v.persistent.completedUnlockIDsForRun
     : v.persistent.completedUnlockIDs;
@@ -127,7 +127,7 @@ function getCompletedUnlockTypes(
   return completedUnlocksOfType.map(mapFunc);
 }
 
-function getUncompletedUnlockTypes(unlockType: UnlockType): int[] {
+function getUncompletedUnlockTypes(unlockType: UnlockType): readonly int[] {
   const uncompletedUnlockIDs = [...v.persistent.uncompletedUnlockIDs];
 
   const uncompletedUnlocks = uncompletedUnlockIDs.map((unlockID) =>
@@ -269,7 +269,7 @@ function getNumUnlockTypeUnlocked(
   return numUnlockedTypes;
 }
 
-export function getUncompletedNonCollectiblesNonTrinkets(): UnlockID[] {
+export function getUncompletedNonCollectiblesNonTrinkets(): readonly UnlockID[] {
   const unlocks: Unlock[] = [];
 
   for (const unlockID of v.persistent.uncompletedUnlockIDs) {

@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "isaac-typescript-definitions": "^39.0.5",
-    "isaacscript-common": "^80.2.5",
+    "isaacscript-common": "^81.0.5",
     "isaacscript-common-ts": "^11.6.0",
     "zod": "^3.22.4"
   },
@@ -32,7 +32,7 @@
     "esbuild": "^0.19.8",
     "isaacscript": "^3.29.0",
     "isaacscript-common-node": "^1.4.0",
-    "isaacscript-lint": "^6.4.1",
+    "isaacscript-lint": "^6.8.0",
     "isaacscript-spell": "^1.11.0",
     "isaacscript-tsconfig": "^5.0.0",
     "tsx": "^4.6.1",

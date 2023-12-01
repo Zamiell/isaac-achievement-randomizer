@@ -132,7 +132,7 @@ export function getObjectiveFromID(objectiveID: ObjectiveID): Objective {
   return constructor(arg1, -1, -1);
 }
 
-export function getObjectiveText(objective: Objective): string[] {
+export function getObjectiveText(objective: Objective): readonly string[] {
   switch (objective.type) {
     case ObjectiveType.CHARACTER: {
       const characterName = getCharacterName(objective.character);

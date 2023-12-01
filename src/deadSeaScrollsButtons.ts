@@ -103,7 +103,7 @@ export const MENU_PAGE_SIZE = 25;
 // Miscellaneous
 // -------------
 
-export function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
+export function getRecentAchievementsButtons(): readonly DeadSeaScrollsButton[] {
   const achievementHistory = getAchievementHistory().toReversed();
 
   if (achievementHistory.length === 0) {
@@ -182,7 +182,7 @@ export function getRecentAchievementsButtons(): DeadSeaScrollsButton[] {
 // Objective buttons
 // -----------------
 
-export function getCharacterObjectiveButtons(): DeadSeaScrollsButton[] {
+export function getCharacterObjectiveButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const character of PLAYABLE_CHARACTERS) {
@@ -200,7 +200,7 @@ export function getCharacterObjectiveButtons(): DeadSeaScrollsButton[] {
 
 export function getSpecificCharacterObjectiveButtons(
   character: PlayerType,
-): DeadSeaScrollsButton[] {
+): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const kind of CHARACTER_OBJECTIVE_KINDS) {
@@ -246,7 +246,7 @@ export function getSpecificCharacterObjectiveButtons(
   return buttons;
 }
 
-export function getChallengeObjectiveButtons(): DeadSeaScrollsButton[] {
+export function getChallengeObjectiveButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   // We can use `UNLOCKABLE_CHALLENGES.length` here because the only banned challenge is the final
@@ -271,7 +271,7 @@ export function getChallengeObjectiveButtons(): DeadSeaScrollsButton[] {
 export function getSpecificChallengeObjectiveButtons(
   min: int,
   max: int,
-): DeadSeaScrollsButton[] {
+): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const challenge of UNLOCKABLE_CHALLENGES) {
@@ -310,7 +310,7 @@ export function getSpecificChallengeObjectiveButtons(
 // Unlock buttons
 // --------------
 
-export function getCharacterUnlockButtons(): DeadSeaScrollsButton[] {
+export function getCharacterUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const character of UNLOCKABLE_CHARACTERS) {
@@ -335,7 +335,7 @@ export function getCharacterUnlockButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
-export function getAreaUnlockButtons(): DeadSeaScrollsButton[] {
+export function getAreaUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const unlockableArea of UNLOCKABLE_AREAS) {
@@ -360,7 +360,7 @@ export function getAreaUnlockButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
-export function getRoomUnlockButtons(): DeadSeaScrollsButton[] {
+export function getRoomUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const roomType of UNLOCKABLE_ROOM_TYPES) {
@@ -385,7 +385,7 @@ export function getRoomUnlockButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
-export function getChallengeUnlockButtons(): DeadSeaScrollsButton[] {
+export function getChallengeUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   // We can use `UNLOCKABLE_CHALLENGES.length` here because the only banned challenge is the final
@@ -405,7 +405,7 @@ export function getChallengeUnlockButtons(): DeadSeaScrollsButton[] {
 export function getSpecificChallengeUnlockButtons(
   min: int,
   max: int,
-): DeadSeaScrollsButton[] {
+): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const challenge of UNLOCKABLE_CHALLENGES) {
@@ -435,7 +435,7 @@ export function getSpecificChallengeUnlockButtons(
   return buttons;
 }
 
-export function getCollectibleUnlockButtons(): DeadSeaScrollsButton[] {
+export function getCollectibleUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   const chunks = splitNumber(LAST_VANILLA_COLLECTIBLE_TYPE, MENU_PAGE_SIZE);
@@ -453,7 +453,7 @@ export function getCollectibleUnlockButtons(): DeadSeaScrollsButton[] {
 export function getSpecificCollectibleUnlockButtons(
   min: int,
   max: int,
-): DeadSeaScrollsButton[] {
+): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const collectibleType of UNLOCKABLE_COLLECTIBLE_TYPES) {
@@ -486,7 +486,7 @@ export function getSpecificCollectibleUnlockButtons(
   return buttons;
 }
 
-export function getTrinketUnlockButtons(): DeadSeaScrollsButton[] {
+export function getTrinketUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   const chunks = splitNumber(LAST_VANILLA_TRINKET_TYPE, MENU_PAGE_SIZE);
@@ -504,7 +504,7 @@ export function getTrinketUnlockButtons(): DeadSeaScrollsButton[] {
 export function getSpecificTrinketUnlockButtons(
   min: int,
   max: int,
-): DeadSeaScrollsButton[] {
+): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const trinketType of UNLOCKABLE_TRINKET_TYPES) {
@@ -537,7 +537,7 @@ export function getSpecificTrinketUnlockButtons(
   return buttons;
 }
 
-export function getCardUnlockButtons(): DeadSeaScrollsButton[] {
+export function getCardUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   const chunks = splitNumber(LAST_VANILLA_CARD_TYPE, MENU_PAGE_SIZE);
@@ -555,7 +555,7 @@ export function getCardUnlockButtons(): DeadSeaScrollsButton[] {
 export function getSpecificCardUnlockButtons(
   min: int,
   max: int,
-): DeadSeaScrollsButton[] {
+): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const cardType of UNLOCKABLE_CARD_TYPES) {
@@ -588,7 +588,7 @@ export function getSpecificCardUnlockButtons(
   return buttons;
 }
 
-export function getPillEffectUnlockButtons(): DeadSeaScrollsButton[] {
+export function getPillEffectUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   // Pill effects start at 0.
@@ -607,7 +607,7 @@ export function getPillEffectUnlockButtons(): DeadSeaScrollsButton[] {
 export function getSpecificPillEffectUnlockButtons(
   min: int,
   max: int,
-): DeadSeaScrollsButton[] {
+): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const pillEffect of UNLOCKABLE_PILL_EFFECTS) {
@@ -641,7 +641,7 @@ export function getSpecificPillEffectUnlockButtons(
   return buttons;
 }
 
-export function getHeartUnlockButtons(): DeadSeaScrollsButton[] {
+export function getHeartUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const heartSubType of UNLOCKABLE_HEART_SUB_TYPES) {
@@ -666,7 +666,7 @@ export function getHeartUnlockButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
-export function getCoinUnlockButtons(): DeadSeaScrollsButton[] {
+export function getCoinUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const coinSubType of UNLOCKABLE_COIN_SUB_TYPES) {
@@ -691,7 +691,7 @@ export function getCoinUnlockButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
-export function getBombUnlockButtons(): DeadSeaScrollsButton[] {
+export function getBombUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const bombSubType of UNLOCKABLE_BOMB_SUB_TYPES) {
@@ -716,7 +716,7 @@ export function getBombUnlockButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
-export function getKeyUnlockButtons(): DeadSeaScrollsButton[] {
+export function getKeyUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const keySubType of UNLOCKABLE_KEY_SUB_TYPES) {
@@ -741,7 +741,7 @@ export function getKeyUnlockButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
-export function getBatteryUnlockButtons(): DeadSeaScrollsButton[] {
+export function getBatteryUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const batterySubType of UNLOCKABLE_BATTERY_SUB_TYPES) {
@@ -766,7 +766,7 @@ export function getBatteryUnlockButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
-export function getSackUnlockButtons(): DeadSeaScrollsButton[] {
+export function getSackUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const sackSubType of UNLOCKABLE_SACK_SUB_TYPES) {
@@ -791,7 +791,7 @@ export function getSackUnlockButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
-export function getChestUnlockButtons(): DeadSeaScrollsButton[] {
+export function getChestUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const pickupVariant of UNLOCKABLE_CHEST_PICKUP_VARIANTS) {
@@ -816,7 +816,7 @@ export function getChestUnlockButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
-export function getSlotUnlockButtons(): DeadSeaScrollsButton[] {
+export function getSlotUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const slotVariant of UNLOCKABLE_SLOT_VARIANTS) {
@@ -841,7 +841,7 @@ export function getSlotUnlockButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
-export function getGridEntityUnlockButtons(): DeadSeaScrollsButton[] {
+export function getGridEntityUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const gridEntityType of UNLOCKABLE_GRID_ENTITY_TYPES) {
@@ -866,7 +866,7 @@ export function getGridEntityUnlockButtons(): DeadSeaScrollsButton[] {
   return buttons;
 }
 
-export function getOtherUnlockButtons(): DeadSeaScrollsButton[] {
+export function getOtherUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
   for (const otherUnlockKind of OTHER_UNLOCK_KINDS) {

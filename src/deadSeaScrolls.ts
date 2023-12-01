@@ -1221,7 +1221,7 @@ export function initDeadSeaScrolls(): void {
   for (const [key, nameRaw] of UNBAN_KEY_TO_NAME) {
     const name = nameRaw.toLowerCase();
 
-    cheatSettingsButtons.push(
+    (cheatSettingsButtons as DeadSeaScrollsButton[]).push(
       {
         str: `unban ${name}`,
         choices: DSS_CHOICES,
