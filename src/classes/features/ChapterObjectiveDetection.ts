@@ -86,7 +86,7 @@ export class ChapterObjectiveDetection extends RandomizerModFeature {
   @CallbackCustom(ModCallbackCustom.POST_HOLY_MANTLE_REMOVED)
   postHolyMantleRemoved(player: EntityPlayer): void {
     if (onRepentanceStage()) {
-      return undefined;
+      return;
     }
 
     if (!isFirstPlayer(player)) {
