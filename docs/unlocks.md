@@ -43,10 +43,11 @@ The following room types start out locked:
 - Bedrooms (#18, #19) (unlocks before the first heart)
 - Black Markets (#22)
 
-## Challenges (44)
+## Challenges (43)
 
 All challenges start off locked, with the following exceptions:
 
+- Cantripped! (#43) (since Tainted Cain is banned)
 - DELETE THIS (#45) (since TMTRAINER is banned)
 
 ## Collectibles (700)
@@ -148,4 +149,4 @@ The following other things start out locked:
 
 ## Total Unlocks
 
-There are 32 + 12 + 16 + 44 + 700 + 185 + 95 + 50 + (11 + 6 + 2 + 3 + 4 + 2 + 10) + 15 + 8 + 4 = 1199 unlocks in total.
+There are 32 + 12 + 16 + 43 + 700 + 185 + 95 + 50 + (11 + 6 + 2 + 3 + 4 + 2 + 10) + 15 + 8 + 4 = 1198 unlocks in total.
