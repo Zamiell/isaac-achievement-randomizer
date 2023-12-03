@@ -6,6 +6,7 @@
 ### _v0.14.0_ - December 4th, 2023
 
 - There is now an objective for killing each non-story boss.
+- Fixed the bug where the Cantripped challenge was not banned. (It should be banned since Tainted Cain is banned.) (Thanks Andrew)
 
 ### _v0.13.0_ - November 15th, 2023
 
