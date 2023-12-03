@@ -3,6 +3,10 @@
 <!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.14.0_ - December 4th, 2023
+
+- There is now an objective for killing each non-story boss.
+
 ### _v0.13.0_ - November 15th, 2023
 
 - Jacob & Esau is now considered to be a hard character.

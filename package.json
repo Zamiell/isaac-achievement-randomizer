@@ -32,7 +32,7 @@
     "esbuild": "^0.19.8",
     "isaacscript": "^3.29.0",
     "isaacscript-common-node": "^1.4.0",
-    "isaacscript-lint": "^6.9.1",
+    "isaacscript-lint": "^6.11.0",
     "isaacscript-spell": "^1.11.0",
     "isaacscript-tsconfig": "^5.0.0",
     "tsx": "^4.6.2",

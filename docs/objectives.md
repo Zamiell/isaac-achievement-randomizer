@@ -35,6 +35,7 @@ Each character objective must be completed on both normal mode and hard mode.
 
 There is one unlock for completing each challenge, with the following exceptions:
 
+- Cantripped! (#43) (since Tainted Cain is banned)
 - DELETE THIS (#45) (since TMTRAINER is banned)
 
 ## Total Objectives

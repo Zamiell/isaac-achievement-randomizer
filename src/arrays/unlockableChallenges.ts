@@ -3,6 +3,7 @@ import { ReadonlySet } from "isaacscript-common";
 import { CHALLENGES } from "../cachedEnums";
 
 export const BANNED_CHALLENGES = new ReadonlySet<Challenge>([
+  Challenge.CANTRIPPED, // 43
   Challenge.DELETE_THIS, // 45
 ]);
 
