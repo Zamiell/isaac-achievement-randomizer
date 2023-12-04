@@ -49,10 +49,10 @@ import { UNLOCKABLE_ROOM_TYPES } from "./arrays/unlockableRoomTypes";
 import { UNLOCKABLE_SLOT_VARIANTS } from "./arrays/unlockableSlotVariants";
 import { UNLOCKABLE_TRINKET_TYPES } from "./arrays/unlockableTrinketTypes";
 import {
-  CHARACTER_OBJECTIVE_KINDS,
-  OTHER_UNLOCK_KINDS,
-  UNLOCKABLE_AREAS,
-} from "./cachedEnums";
+  CHARACTER_OBJECTIVE_KIND_VALUES,
+  OTHER_UNLOCK_KIND_VALUES,
+  UNLOCKABLE_AREA_VALUES,
+} from "./cachedEnumValues";
 import { canGetToCharacterObjective } from "./classes/features/AchievementRandomizer";
 import {
   isAllCharacterObjectivesCompleted,
@@ -203,7 +203,7 @@ export function getSpecificCharacterObjectiveButtons(
 ): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const kind of CHARACTER_OBJECTIVE_KINDS) {
+  for (const kind of CHARACTER_OBJECTIVE_KIND_VALUES) {
     for (const difficulty of DIFFICULTIES) {
       const difficultyText =
         difficulty === Difficulty.NORMAL ? "(normal)" : "(hard)";
@@ -338,7 +338,7 @@ export function getCharacterUnlockButtons(): readonly DeadSeaScrollsButton[] {
 export function getAreaUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const unlockableArea of UNLOCKABLE_AREAS) {
+  for (const unlockableArea of UNLOCKABLE_AREA_VALUES) {
     const areaName = getAreaName(unlockableArea).toLowerCase();
     const completed = isAreaUnlocked(unlockableArea, false);
     const completedText = getCompletedText(completed);
@@ -869,7 +869,7 @@ export function getGridEntityUnlockButtons(): readonly DeadSeaScrollsButton[] {
 export function getOtherUnlockButtons(): readonly DeadSeaScrollsButton[] {
   const buttons: DeadSeaScrollsButton[] = [];
 
-  for (const otherUnlockKind of OTHER_UNLOCK_KINDS) {
+  for (const otherUnlockKind of OTHER_UNLOCK_KIND_VALUES) {
     const otherUnlockName =
       getOtherUnlockName(otherUnlockKind)[1].toLowerCase();
     const completed = isOtherUnlockKindUnlocked(otherUnlockKind, false);

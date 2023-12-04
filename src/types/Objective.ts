@@ -1,12 +1,18 @@
-import type { Challenge, PlayerType } from "isaac-typescript-definitions";
+import type {
+  BossID,
+  Challenge,
+  PlayerType,
+} from "isaac-typescript-definitions";
 import { Difficulty } from "isaac-typescript-definitions";
 import type { CompositionTypeSatisfiesEnum } from "isaacscript-common";
 import {
+  ReadonlySet,
   assertDefined,
+  getBossName,
   getChallengeName,
   getCharacterName,
 } from "isaacscript-common";
-import { OBJECTIVE_TYPES_SET } from "../cachedEnums";
+import { OBJECTIVE_TYPE_VALUES } from "../cachedEnumValues";
 import {
   CharacterObjectiveKind,
   getCharacterObjectiveKindName,
@@ -21,14 +27,21 @@ export interface CharacterObjective {
   difficulty: Difficulty.NORMAL | Difficulty.HARD;
 }
 
+export interface BossObjective {
+  type: ObjectiveType.BOSS;
+  bossID: BossID;
+}
+
 export interface ChallengeObjective {
   type: ObjectiveType.CHALLENGE;
   challenge: Challenge;
 }
 
-export type Objective = CharacterObjective | ChallengeObjective;
+export type Objective = CharacterObjective | BossObjective | ChallengeObjective;
 
 type _Test = CompositionTypeSatisfiesEnum<Objective, ObjectiveType>;
+
+const OBJECTIVE_TYPES_SET = new ReadonlySet(OBJECTIVE_TYPE_VALUES);
 
 const OBJECTIVE_TYPE_TO_OBJECTIVE_CONSTRUCTOR = {
   [ObjectiveType.CHARACTER]: (arg1, arg2, arg3) => ({
@@ -36,6 +49,10 @@ const OBJECTIVE_TYPE_TO_OBJECTIVE_CONSTRUCTOR = {
     character: arg1,
     kind: arg2,
     difficulty: arg3,
+  }),
+  [ObjectiveType.BOSS]: (arg1) => ({
+    type: ObjectiveType.BOSS,
+    bossID: arg1,
   }),
   [ObjectiveType.CHALLENGE]: (arg1) => ({
     type: ObjectiveType.CHALLENGE,
@@ -143,6 +160,11 @@ export function getObjectiveText(objective: Objective): readonly string[] {
       return objective.kind < CharacterObjectiveKind.NO_HIT_BASEMENT
         ? ["Defeated", kindName, "on", characterName, difficultyText]
         : ["No damage on", kindName, "on", characterName, difficultyText];
+    }
+
+    case ObjectiveType.BOSS: {
+      const bossName = getBossName(objective.bossID);
+      return ["Defeated boss:", bossName];
     }
 
     case ObjectiveType.CHALLENGE: {

@@ -1,8 +1,8 @@
 import {
-  OTHER_UNLOCK_KINDS,
-  UNLOCKABLE_AREAS,
-  UNLOCK_TYPES,
-} from "../cachedEnums";
+  OTHER_UNLOCK_KIND_VALUES,
+  UNLOCKABLE_AREA_VALUES,
+  UNLOCK_TYPE_VALUES,
+} from "../cachedEnumValues";
 import { UnlockType } from "../enums/UnlockType";
 import type { Unlock } from "../types/Unlock";
 import type { UnlockID } from "../types/UnlockID";
@@ -29,7 +29,7 @@ import { UNLOCKABLE_TRINKET_TYPES } from "./unlockableTrinketTypes";
 export const ALL_UNLOCKS: readonly Unlock[] = (() => {
   const unlocks: Unlock[] = [];
 
-  for (const unlockType of UNLOCK_TYPES) {
+  for (const unlockType of UNLOCK_TYPE_VALUES) {
     switch (unlockType) {
       case UnlockType.CHARACTER: {
         for (const character of UNLOCKABLE_CHARACTERS) {
@@ -44,7 +44,7 @@ export const ALL_UNLOCKS: readonly Unlock[] = (() => {
       }
 
       case UnlockType.AREA: {
-        for (const unlockableArea of UNLOCKABLE_AREAS) {
+        for (const unlockableArea of UNLOCKABLE_AREA_VALUES) {
           const unlock: Unlock = {
             type: UnlockType.AREA,
             unlockableArea,
@@ -236,7 +236,7 @@ export const ALL_UNLOCKS: readonly Unlock[] = (() => {
       }
 
       case UnlockType.OTHER: {
-        for (const otherUnlockKind of OTHER_UNLOCK_KINDS) {
+        for (const otherUnlockKind of OTHER_UNLOCK_KIND_VALUES) {
           const unlock: Unlock = {
             type: UnlockType.OTHER,
             kind: otherUnlockKind,

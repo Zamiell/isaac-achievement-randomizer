@@ -1,7 +1,7 @@
 import { log } from "isaacscript-common";
 import { ALL_OBJECTIVES } from "./arrays/allObjectives";
 import { ALL_UNLOCKS } from "./arrays/allUnlocks";
-import { OBJECTIVE_TYPES, UNLOCK_TYPES } from "./cachedEnums";
+import { OBJECTIVE_TYPE_VALUES, UNLOCK_TYPE_VALUES } from "./cachedEnumValues";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { UnlockType } from "./enums/UnlockType";
 import type { Objective } from "./types/Objective";
@@ -26,7 +26,7 @@ export function validateObjectivesUnlocksMatch(): void {
 export function logObjectives(objectives: readonly Objective[]): void {
   log(`Logging all objectives (${objectives.length}):`);
 
-  for (const objectiveType of OBJECTIVE_TYPES) {
+  for (const objectiveType of OBJECTIVE_TYPE_VALUES) {
     const thisTypeObjectives = objectives.filter(
       (objective) => objective.type === objectiveType,
     );
@@ -37,7 +37,7 @@ export function logObjectives(objectives: readonly Objective[]): void {
 export function logUnlocks(unlocks: readonly Unlock[]): void {
   log(`Logging all unlocks (${unlocks.length}):`);
 
-  for (const unlockType of UNLOCK_TYPES) {
+  for (const unlockType of UNLOCK_TYPE_VALUES) {
     const thisTypeUnlocks = unlocks.filter(
       (unlock) => unlock.type === unlockType,
     );

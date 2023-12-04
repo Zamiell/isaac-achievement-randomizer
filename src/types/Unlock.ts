@@ -18,6 +18,7 @@ import type {
 } from "isaac-typescript-definitions";
 import type { CompositionTypeSatisfiesEnum } from "isaacscript-common";
 import {
+  ReadonlySet,
   assertDefined,
   getBatteryName,
   getBombName,
@@ -37,7 +38,7 @@ import {
 } from "isaacscript-common";
 import type { UNLOCKABLE_GRID_ENTITY_TYPES } from "../arrays/unlockableGridEntityTypes";
 import { getGridEntityName } from "../arrays/unlockableGridEntityTypes";
-import { UNLOCK_TYPES_SET } from "../cachedEnums";
+import { UNLOCK_TYPE_VALUES } from "../cachedEnumValues";
 import type { OtherUnlockKind } from "../enums/OtherUnlockKind";
 import { getOtherUnlockName } from "../enums/OtherUnlockKind";
 import { UnlockType } from "../enums/UnlockType";
@@ -156,6 +157,8 @@ export type Unlock =
   | OtherUnlock;
 
 type _Test = CompositionTypeSatisfiesEnum<Unlock, UnlockType>;
+
+const UNLOCK_TYPES_SET = new ReadonlySet(UNLOCK_TYPE_VALUES);
 
 const UNLOCK_TYPE_TO_UNLOCK_CONSTRUCTOR = {
   [UnlockType.CHARACTER]: (arg) => ({

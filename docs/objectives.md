@@ -31,6 +31,10 @@ Each character objective must be completed on both normal mode and hard mode.
 
 > Tip: By default, completing an objective on hard mode will not complete the corresponding normal mode objective. This is intended because accomplishing one objective should only result in one unlock. If you think this is unfair, you can turn on the "double unlocks" setting in the menu.
 
+## Boss-Based Objectives (?)
+
+There is one unlock for killing each non-story boss.
+
 ## Challenge-Based Objectives (43)
 
 There is one unlock for completing each challenge, with the following exceptions:

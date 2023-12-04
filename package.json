@@ -22,8 +22,8 @@
     "update": "isaacscript update"
   },
   "dependencies": {
-    "isaac-typescript-definitions": "^39.0.5",
-    "isaacscript-common": "^81.0.5",
+    "isaac-typescript-definitions": "^39.1.0",
+    "isaacscript-common": "^82.0.1",
     "isaacscript-common-ts": "^11.6.0",
     "zod": "^3.22.4"
   },

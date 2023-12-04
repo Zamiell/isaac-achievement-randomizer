@@ -36,7 +36,7 @@ import {
 import { version } from "../package.json";
 import { ALL_OBJECTIVES } from "./arrays/allObjectives";
 import { ALL_UNLOCKS } from "./arrays/allUnlocks";
-import { RANDOMIZER_MODES } from "./cachedEnums";
+import { RANDOMIZER_MODE_VALUES } from "./cachedEnumValues";
 import {
   endRandomizer,
   isValidSituationForStartingRandomizer,
@@ -168,7 +168,7 @@ function startRandomizerCommand(params: string) {
   }
 
   if (!isEnumValue(randomizerMode, RandomizerMode)) {
-    const quoted = RANDOMIZER_MODES.map((mode) => `"${mode}"`);
+    const quoted = RANDOMIZER_MODE_VALUES.map((mode) => `"${mode}"`);
     const allQuoted = quoted.join(" or ");
     print(`The mode must be either ${allQuoted}.`);
     return;

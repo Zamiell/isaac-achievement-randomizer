@@ -1,8 +1,10 @@
+import type { BossID } from "isaac-typescript-definitions";
 import {
   CardType,
   CollectibleType,
   ModCallback,
   PlayerType,
+  StageID,
 } from "isaac-typescript-definitions";
 import {
   Callback,
@@ -12,6 +14,8 @@ import {
   clearChallenge,
   fonts,
   game,
+  getBossName,
+  getBossStageIDs,
   getCharacterName,
   getRandomSeed,
   getScreenBottomRightPos,
@@ -31,6 +35,7 @@ import {
 import { version } from "../../../package.json";
 import { getAchievementsForRNG } from "../../achievementAssignment";
 import { ALL_OBJECTIVES } from "../../arrays/allObjectives";
+import { BOSS_ID_VALUES } from "../../cachedEnumValues";
 import { DEBUG, STARTING_CHARACTER } from "../../constants";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
@@ -40,6 +45,7 @@ import {
   getUnlockableAreaFromCharacterObjectiveKind,
 } from "../../enums/UnlockableArea";
 import type {
+  BossObjective,
   ChallengeObjective,
   CharacterObjective,
   Objective,
@@ -279,6 +285,7 @@ export function endRandomizer(): void {
 
 export const OBJECTIVE_ACCESS_FUNCTIONS = {
   [ObjectiveType.CHARACTER]: characterObjectiveFunc,
+  [ObjectiveType.BOSS]: bossObjectiveFunc,
   [ObjectiveType.CHALLENGE]: challengeObjectiveFunc,
 } as const satisfies Record<ObjectiveType, (objective: Objective) => boolean>;
 
@@ -344,9 +351,75 @@ export function canGetToCharacterObjective(
   }
 }
 
+function bossObjectiveFunc(objective: Objective): boolean {
+  const bossObjective = objective as BossObjective;
+  return canGetToBoss(bossObjective.bossID, false);
+}
+
 function challengeObjectiveFunc(objective: Objective): boolean {
   const challengeObjective = objective as ChallengeObjective;
   return isChallengeUnlocked(challengeObjective.challenge, false);
+}
+
+function canGetToBoss(bossID: BossID, forRun: boolean): boolean {
+  const stageIDs = getBossStageIDs(bossID);
+
+  for (const stageID of stageIDs) {
+    if (canGetToStageID(stageID, forRun)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+const STAGE_ID_ACCESS_FUNCTIONS = {
+  [StageID.SPECIAL_ROOMS]: undefined, // 0
+  [StageID.BASEMENT]: undefined, // 1
+  [StageID.CELLAR]: undefined, // 2
+  [StageID.BURNING_BASEMENT]: undefined, // 3
+  [StageID.CAVES]: undefined, // 4
+  [StageID.CATACOMBS]: undefined, // 5
+  [StageID.FLOODED_CAVES]: undefined, // 6
+  [StageID.DEPTHS]: undefined, // 7
+  [StageID.NECROPOLIS]: undefined, // 8
+  [StageID.DANK_DEPTHS]: undefined, // 9
+  [StageID.WOMB]: UnlockableArea.WOMB, // 10
+  [StageID.UTERO]: UnlockableArea.WOMB, // 11
+  [StageID.SCARRED_WOMB]: UnlockableArea.WOMB, // 12
+  [StageID.BLUE_WOMB]: UnlockableArea.BLUE_WOMB, // 13
+  [StageID.SHEOL]: UnlockableArea.SHEOL, // 14
+  [StageID.CATHEDRAL]: UnlockableArea.CATHEDRAL, // 15
+  [StageID.DARK_ROOM]: UnlockableArea.DARK_ROOM, // 16
+  [StageID.CHEST]: UnlockableArea.CHEST, // 17
+  [StageID.SPECIAL_ROOMS_GREED_MODE]: UnlockableArea.GREED_MODE, // 18
+  [StageID.BASEMENT_GREED_MODE]: UnlockableArea.GREED_MODE, // 19
+  [StageID.CAVES_GREED_MODE]: UnlockableArea.GREED_MODE, // 20
+  [StageID.DEPTHS_GREED_MODE]: UnlockableArea.GREED_MODE, // 21
+  [StageID.WOMB_GREED_MODE]: UnlockableArea.GREED_MODE, // 22
+  [StageID.SHEOL_GREED_MODE]: UnlockableArea.GREED_MODE, // 23
+  [StageID.SHOP_GREED_MODE]: UnlockableArea.GREED_MODE, // 24
+  [StageID.ULTRA_GREED_GREED_MODE]: UnlockableArea.GREED_MODE, // 25
+  [StageID.VOID]: UnlockableArea.VOID, // 26
+  [StageID.DOWNPOUR]: UnlockableArea.REPENTANCE_FLOORS, // 27
+  [StageID.DROSS]: UnlockableArea.REPENTANCE_FLOORS, // 28
+  [StageID.MINES]: UnlockableArea.REPENTANCE_FLOORS, // 29
+  [StageID.ASHPIT]: UnlockableArea.REPENTANCE_FLOORS, // 30
+  [StageID.MAUSOLEUM]: UnlockableArea.REPENTANCE_FLOORS, // 31
+  [StageID.GEHENNA]: UnlockableArea.REPENTANCE_FLOORS, // 32
+  [StageID.CORPSE]: UnlockableArea.REPENTANCE_FLOORS, // 33
+  [StageID.MORTIS]: UnlockableArea.REPENTANCE_FLOORS, // 34
+  [StageID.HOME]: UnlockableArea.ASCENT, // 35
+  [StageID.BACKWARDS]: UnlockableArea.ASCENT, // 36
+} as const satisfies Record<StageID, UnlockableArea | undefined>;
+
+function canGetToStageID(stageID: StageID, forRun: boolean): boolean {
+  const unlockableArea = STAGE_ID_ACCESS_FUNCTIONS[stageID];
+  if (unlockableArea === undefined) {
+    return true;
+  }
+
+  return isAreaUnlocked(unlockableArea, forRun);
 }
 
 /** @returns Whether completing one or more objectives was successful. */
@@ -404,4 +477,14 @@ function logMissingObjectives() {
 function logMissingObjective(i: number, objective: Objective) {
   const objectiveText = getObjectiveText(objective).join(" ");
   log(`- Missing objective #${i} - ${objectiveText}`);
+}
+
+for (const bossID of BOSS_ID_VALUES) {
+  const stageIDs = getBossStageIDs(bossID);
+  if (stageIDs.size === 0) {
+    const bossName = getBossName(bossID);
+    Isaac.DebugString(
+      `GETTING HERE - Boss ${bossName} (${bossID}) is unreachable.`,
+    );
+  }
 }

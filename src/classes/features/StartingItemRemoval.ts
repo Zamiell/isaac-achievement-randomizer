@@ -32,7 +32,10 @@ import {
   setPlayerHealth,
   sfxManager,
 } from "isaacscript-common";
-import { POCKET_ITEM_SLOTS, TRINKET_SLOTS } from "../../cachedEnums";
+import {
+  POCKET_ITEM_SLOT_VALUES,
+  TRINKET_SLOT_VALUES,
+} from "../../cachedEnumValues";
 import { OtherUnlockKind } from "../../enums/OtherUnlockKind";
 import { mod } from "../../mod";
 import { RandomizerModFeature } from "../RandomizerModFeature";
@@ -81,7 +84,7 @@ export class StartingItemRemoval extends RandomizerModFeature {
       }
     }
 
-    for (const trinketSlot of TRINKET_SLOTS) {
+    for (const trinketSlot of TRINKET_SLOT_VALUES) {
       const trinketType = player.GetTrinket(trinketSlot);
       if (
         trinketType !== TrinketType.NULL &&
@@ -94,7 +97,7 @@ export class StartingItemRemoval extends RandomizerModFeature {
       }
     }
 
-    for (const pocketItemSlot of POCKET_ITEM_SLOTS) {
+    for (const pocketItemSlot of POCKET_ITEM_SLOT_VALUES) {
       const pillColor = player.GetPill(pocketItemSlot);
       if (
         pillColor !== PillColor.NULL &&
