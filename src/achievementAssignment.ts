@@ -5,7 +5,6 @@ import {
   assertDefined,
   copyArray,
   getRandomArrayElementAndRemove,
-  includes,
   log,
   shuffleArray,
 } from "isaacscript-common";
@@ -16,7 +15,6 @@ import {
   UNLOCKABLE_CHARACTERS,
 } from "./arrays/unlockableCharacters";
 import { CORE_STAT_COLLECTIBLES } from "./arrays/unlockableCollectibleTypes";
-import { isHardcoreMode } from "./classes/features/achievementTracker/v";
 import {
   isCardTypeBannedForNewPlaythrough,
   isCollectibleTypeBannedForNewPlaythrough,
@@ -129,19 +127,17 @@ export function getAchievementsForRNG(rng: RNG): {
 
   // We want the three basic stat up collectibles to not ever be swapped with some other important
   // unlock, so we statically assign them to specific objectives.
-  if (isHardcoreMode()) {
-    for (const collectibleType of CORE_STAT_COLLECTIBLES) {
-      const unlock = getUnlock(UnlockType.COLLECTIBLE, collectibleType);
-      const unlockID = getUnlockID(unlock);
-      arrayRemoveInPlace(unlockIDs, unlockID);
+  for (const collectibleType of CORE_STAT_COLLECTIBLES) {
+    const unlock = getUnlock(UnlockType.COLLECTIBLE, collectibleType);
+    const unlockID = getUnlockID(unlock);
+    arrayRemoveInPlace(unlockIDs, unlockID);
 
-      const objective = CORE_STAT_COLLECTIBLE_TO_OBJECTIVE[collectibleType];
-      const objectiveID = getObjectiveID(objective);
-      arrayRemoveInPlace(objectiveIDs, objectiveID);
+    const objective = CORE_STAT_COLLECTIBLE_TO_OBJECTIVE[collectibleType];
+    const objectiveID = getObjectiveID(objective);
+    arrayRemoveInPlace(objectiveIDs, objectiveID);
 
-      objectiveIDToUnlockIDMap.set(objectiveID, unlockID);
-      unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
-    }
+    objectiveIDToUnlockIDMap.set(objectiveID, unlockID);
+    unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
   }
 
   // Some areas are non-randomized, meaning that they are paired to specific objectives.
@@ -191,15 +187,6 @@ export function getAchievementsForRNG(rng: RNG): {
     }
 
     if (isBannedUnlock(unlock)) {
-      continue;
-    }
-
-    // Core stat collectibles start out unlocked in casual mode.
-    if (
-      !isHardcoreMode() &&
-      unlock.type === UnlockType.COLLECTIBLE &&
-      includes(CORE_STAT_COLLECTIBLES, unlock.collectibleType)
-    ) {
       continue;
     }
 

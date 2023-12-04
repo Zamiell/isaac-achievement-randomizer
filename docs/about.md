@@ -177,11 +177,10 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
 
 ### Collectibles
 
-- In casual mode, the following stat collectibles will start out unlocked:
+- The following stat collectibles will always be the first things unlocked (besides hard-coded areas):
   - Wooden Spoon (#27)
   - Wire Coat Hanger (#32)
   - Cat-O-Nine-Tails (#165)
-- In hardcore/nightmare mode, these stat collectibles will always be the first things unlocked (besides hard-coded areas).
 
 ### Miscellaneous
 

@@ -1,7 +1,7 @@
 TODO:
 
 - add boss achievements
-  - 962716e22d02c2593cdc5a721625e62fd0960d2b
+  - https://github.com/Zamiell/isaac-achievement-randomizer/commit/962716e22d02c2593cdc5a721625e62fd0960d2b
 - website - see all current unlocks after uploading save file
 - emulate vanilla pill pool
 

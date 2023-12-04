@@ -27,7 +27,6 @@ import {
   getCollectibleQuality,
   getPillEffectType,
   getRandomArrayElement,
-  includes,
   isActiveCollectible,
   isCard,
   isFamiliarCollectible,
@@ -38,10 +37,7 @@ import {
 import { UNLOCKABLE_CARD_TYPES_SET } from "../../../arrays/unlockableCardTypes";
 import { UNLOCKABLE_CHALLENGES_SET } from "../../../arrays/unlockableChallenges";
 import { UNLOCKABLE_CHARACTERS_SET } from "../../../arrays/unlockableCharacters";
-import {
-  CORE_STAT_COLLECTIBLES,
-  UNLOCKABLE_COLLECTIBLE_TYPES_SET,
-} from "../../../arrays/unlockableCollectibleTypes";
+import { UNLOCKABLE_COLLECTIBLE_TYPES_SET } from "../../../arrays/unlockableCollectibleTypes";
 import { UNLOCKABLE_GRID_ENTITY_TYPES_SET } from "../../../arrays/unlockableGridEntityTypes";
 import {
   UNLOCKABLE_BATTERY_SUB_TYPES,
@@ -79,7 +75,7 @@ import {
 } from "../../../types/Unlock";
 import type { UnlockID } from "../../../types/UnlockID";
 import { getUnlockID } from "../../../types/UnlockID";
-import { isHardcoreMode, v } from "./v";
+import { v } from "./v";
 
 /** For hardcore & nightmare mode. */
 const QUALITY_THRESHOLD_PERCENT = 0.333;
@@ -365,10 +361,6 @@ export function isCollectibleTypeUnlocked(
   forRun: boolean,
 ): boolean {
   if (!UNLOCKABLE_COLLECTIBLE_TYPES_SET.has(collectibleType)) {
-    return true;
-  }
-
-  if (!isHardcoreMode() && includes(CORE_STAT_COLLECTIBLES, collectibleType)) {
     return true;
   }
 
