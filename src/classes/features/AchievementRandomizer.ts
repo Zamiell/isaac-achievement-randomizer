@@ -14,7 +14,6 @@ import {
   clearChallenge,
   fonts,
   game,
-  getBossName,
   getBossStageIDs,
   getCharacterName,
   getRandomSeed,
@@ -35,7 +34,6 @@ import {
 import { version } from "../../../package.json";
 import { getAchievementsForRNG } from "../../achievementAssignment";
 import { ALL_OBJECTIVES } from "../../arrays/allObjectives";
-import { BOSS_ID_VALUES } from "../../cachedEnumValues";
 import { DEBUG, STARTING_CHARACTER } from "../../constants";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
@@ -356,11 +354,6 @@ function bossObjectiveFunc(objective: Objective): boolean {
   return canGetToBoss(bossObjective.bossID, false);
 }
 
-function challengeObjectiveFunc(objective: Objective): boolean {
-  const challengeObjective = objective as ChallengeObjective;
-  return isChallengeUnlocked(challengeObjective.challenge, false);
-}
-
 function canGetToBoss(bossID: BossID, forRun: boolean): boolean {
   const stageIDs = getBossStageIDs(bossID);
 
@@ -422,6 +415,11 @@ function canGetToStageID(stageID: StageID, forRun: boolean): boolean {
   return isAreaUnlocked(unlockableArea, forRun);
 }
 
+function challengeObjectiveFunc(objective: Objective): boolean {
+  const challengeObjective = objective as ChallengeObjective;
+  return isChallengeUnlocked(challengeObjective.challenge, false);
+}
+
 /** @returns Whether completing one or more objectives was successful. */
 function tryCompleteUncompletedObjectives(): boolean {
   let accomplishedObjective = false;
@@ -477,14 +475,4 @@ function logMissingObjectives() {
 function logMissingObjective(i: number, objective: Objective) {
   const objectiveText = getObjectiveText(objective).join(" ");
   log(`- Missing objective #${i} - ${objectiveText}`);
-}
-
-for (const bossID of BOSS_ID_VALUES) {
-  const stageIDs = getBossStageIDs(bossID);
-  if (stageIDs.size === 0) {
-    const bossName = getBossName(bossID);
-    Isaac.DebugString(
-      `GETTING HERE - Boss ${bossName} (${bossID}) is unreachable.`,
-    );
-  }
 }
