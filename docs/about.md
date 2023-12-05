@@ -185,11 +185,11 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
 ### Miscellaneous
 
 - Unlocking new things will never apply to the current run and will only apply to subsequent runs.
-  - For example, if you unlock Wooden Spoon on the first run by doing the no-hit objective on Basement 1, you will still get Breakfast as the boss collectible after defeating the Basement 2 boss.
+  - For example, if you unlock Wooden Spoon on the first run by defeating Monstro on Basement 1, you will still get Breakfast as the boss collectible after defeating the Basement 2 boss.
 - Once 50% of collectibles are unlocked, further collectible unlocks will be swapped with any remaining non-collectible and non-trinket unlocks.
 - Once 50% of trinkets are unlocked, further trinket unlocks will be swapped with any remaining non-collectible and non-trinket unlocks.
 - Besides the previously outlined exceptions, there is no logic that makes things unlock in a particular order. However, certain specific unlocks will be swapped to ensure that unlocked things are not "useless", [as described in the casual mode section](#1-casual-mode-full-random).
-- Since there are more unlocks than objectives, a completed randomizer playthrough will not be able to unlock everything. Thus, trinkets are arbitrarily selected to be the "least impactful" unlock, and are paired last. Thus, a completed randomizer playthrough will not have N trinkets unlocked, where N is total unlock count minus total objective count.
+- Since there are more objectives than unlocks, a completed randomizer playthrough will unlock everything before completing every objective.
 
 <br>
 

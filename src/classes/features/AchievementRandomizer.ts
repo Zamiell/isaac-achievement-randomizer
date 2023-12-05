@@ -49,7 +49,6 @@ import type {
   Objective,
 } from "../../types/Objective";
 import { getObjectiveText } from "../../types/Objective";
-import { validateObjectivesUnlocksMatch } from "../../validate";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { preForcedRestart, resetStats } from "./StatsTracker";
 import { addObjective } from "./achievementTracker/addObjective";
@@ -242,9 +241,6 @@ export function startRandomizer(
   if (seed === undefined) {
     seed = getRandomSeed();
   }
-
-  // First, verify that the amount of objectives and the amount of unlocks match.
-  validateObjectivesUnlocksMatch();
 
   v.persistent.seed = seed;
   log(`Set new randomizer seed: ${v.persistent.seed}`);
