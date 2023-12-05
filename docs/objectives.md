@@ -31,9 +31,13 @@ Each character objective must be completed on both normal mode and hard mode.
 
 > Tip: By default, completing an objective on hard mode will not complete the corresponding normal mode objective. This is intended because accomplishing one objective should only result in one unlock. If you think this is unfair, you can turn on the "double unlocks" setting in the menu.
 
-## Boss-Based Objectives (84)
+## Boss-Based Objectives (81)
 
-There is one unlock for killing each non-story boss.
+There is one unlock for killing each non-story boss, with the following exceptions:
+
+- Gish (#19) (is too rare in Repentance)
+- C.H.A.D. (#21) (is too rare in Repentance)
+- Triachnid (#42) (is too rare in Repentance)
 
 ## Challenge-Based Objectives (43)
 
@@ -45,4 +49,4 @@ There is one unlock for completing each challenge, with the following exceptions
 ## Total Objectives
 
 - There are 17 x 33 x 2 = 1122 character objectives in total.
-- There are 1122 + 84 + 43 = 1249 objectives in total.
+- There are 1122 + 81 + 43 = 1246 objectives in total.

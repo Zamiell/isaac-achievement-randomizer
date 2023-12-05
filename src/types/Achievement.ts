@@ -3,5 +3,5 @@ import type { UnlockID } from "./UnlockID";
 
 export interface Achievement {
   objectiveID: ObjectiveID;
-  unlockID: UnlockID;
+  unlockID: UnlockID | undefined;
 }

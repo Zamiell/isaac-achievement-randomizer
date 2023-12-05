@@ -1,10 +1,16 @@
 import type {
+  BossID,
   Challenge,
   Difficulty,
   PlayerType,
+  StageID,
 } from "isaac-typescript-definitions";
-import { iRange } from "isaacscript-common";
+import { getBossIDsForStageID, iRange } from "isaacscript-common";
 import { getAllCharacterObjectives } from "../../../arrays/allObjectives";
+import {
+  BOSS_OBJECTIVE_BOSS_IDS,
+  BOSS_OBJECTIVE_BOSS_IDS_SET,
+} from "../../../arrays/bosses";
 import {
   UNLOCKABLE_CHALLENGES,
   UNLOCKABLE_CHALLENGES_SET,
@@ -56,6 +62,34 @@ export function isCharacterObjectiveCompleted(
     kind,
     difficulty,
   );
+  return isObjectiveCompleted(objective);
+}
+
+// -------------------------------
+// Objective - Boss functions
+// -------------------------------
+
+export function isAllBossObjectivesCompleted(): boolean {
+  return BOSS_OBJECTIVE_BOSS_IDS.every((challenge) =>
+    isBossObjectiveCompleted(challenge),
+  );
+}
+
+export function isBossObjectivesCompletedForStageID(stageID: StageID): boolean {
+  const bossIDs = getBossIDsForStageID(stageID);
+  if (bossIDs === undefined) {
+    return true;
+  }
+
+  return bossIDs.every((bossID) => isBossObjectiveCompleted(bossID));
+}
+
+export function isBossObjectiveCompleted(bossID: BossID): boolean {
+  if (!BOSS_OBJECTIVE_BOSS_IDS_SET.has(bossID)) {
+    return true;
+  }
+
+  const objective = getObjective(ObjectiveType.BOSS, bossID);
   return isObjectiveCompleted(objective);
 }
 

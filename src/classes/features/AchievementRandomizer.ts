@@ -350,7 +350,7 @@ function bossObjectiveFunc(objective: Objective): boolean {
   return canGetToBoss(bossObjective.bossID, false);
 }
 
-function canGetToBoss(bossID: BossID, forRun: boolean): boolean {
+export function canGetToBoss(bossID: BossID, forRun: boolean): boolean {
   const stageIDs = getBossStageIDs(bossID);
 
   for (const stageID of stageIDs) {
@@ -381,14 +381,8 @@ const STAGE_ID_ACCESS_FUNCTIONS = {
   [StageID.CATHEDRAL]: UnlockableArea.CATHEDRAL, // 15
   [StageID.DARK_ROOM]: UnlockableArea.DARK_ROOM, // 16
   [StageID.CHEST]: UnlockableArea.CHEST, // 17
-  [StageID.SPECIAL_ROOMS_GREED_MODE]: UnlockableArea.GREED_MODE, // 18
-  [StageID.BASEMENT_GREED_MODE]: UnlockableArea.GREED_MODE, // 19
-  [StageID.CAVES_GREED_MODE]: UnlockableArea.GREED_MODE, // 20
-  [StageID.DEPTHS_GREED_MODE]: UnlockableArea.GREED_MODE, // 21
-  [StageID.WOMB_GREED_MODE]: UnlockableArea.GREED_MODE, // 22
-  [StageID.SHEOL_GREED_MODE]: UnlockableArea.GREED_MODE, // 23
-  [StageID.SHOP_GREED_MODE]: UnlockableArea.GREED_MODE, // 24
-  [StageID.ULTRA_GREED_GREED_MODE]: UnlockableArea.GREED_MODE, // 25
+  [StageID.SHOP]: UnlockableArea.GREED_MODE, // 24
+  [StageID.ULTRA_GREED]: UnlockableArea.GREED_MODE, // 25
   [StageID.VOID]: UnlockableArea.VOID, // 26
   [StageID.DOWNPOUR]: UnlockableArea.REPENTANCE_FLOORS, // 27
   [StageID.DROSS]: UnlockableArea.REPENTANCE_FLOORS, // 28

@@ -28,6 +28,7 @@ import {
   hasUsedMods,
 } from "./classes/features/StatsTracker";
 import {
+  isAllBossObjectivesCompleted,
   isAllChallengeObjectivesCompleted,
   isAllCharactersObjectivesCompleted,
 } from "./classes/features/achievementTracker/completedObjectives";
@@ -45,6 +46,7 @@ import {
   getAreaUnlockButtons,
   getBatteryUnlockButtons,
   getBombUnlockButtons,
+  getBossObjectiveButtons,
   getCardUnlockButtons,
   getChallengeObjectiveButtons,
   getChallengeUnlockButtons,
@@ -400,6 +402,10 @@ export function initDeadSeaScrolls(): void {
           dest: "characterObjectives",
         },
         {
+          str: `${getCompletedText(isAllBossObjectivesCompleted())} - bosses`,
+          dest: "bossObjectives",
+        },
+        {
           str: `${getCompletedText(
             isAllChallengeObjectivesCompleted(),
           )} - challenges`,
@@ -414,6 +420,15 @@ export function initDeadSeaScrolls(): void {
 
       generate: (menu) => {
         menu.buttons = getCharacterObjectiveButtons();
+      },
+    },
+
+    bossObjectives: {
+      title: "boss todo",
+      fSize: 2,
+
+      generate: (menu) => {
+        menu.buttons = getBossObjectiveButtons();
       },
     },
 

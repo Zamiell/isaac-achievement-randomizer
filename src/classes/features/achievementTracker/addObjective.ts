@@ -1,5 +1,5 @@
 import { Difficulty } from "isaac-typescript-definitions";
-import { assertDefined, log, onAnyChallenge } from "isaacscript-common";
+import { log, onAnyChallenge } from "isaacscript-common";
 import { isDoubleUnlocksEnabled } from "../../../config";
 import { DEBUG } from "../../../constants";
 import { ObjectiveType } from "../../../enums/ObjectiveType";
@@ -49,44 +49,50 @@ export function addObjective(objective: Objective, emulating = false): void {
   }
 
   const objectiveID = getObjectiveID(objective);
+  v.persistent.completedObjectiveIDs.add(objectiveID);
 
   const unlockID = v.persistent.objectiveIDToUnlockIDMap.get(objectiveID);
-  assertDefined(
-    unlockID,
-    `Failed to get the unlock ID corresponding to objective ID: ${objectiveID}`,
-  );
 
-  const potentiallySwappedUnlockID = checkSwapProblematicAchievement(
-    unlockID,
-    objectiveID,
-    seed,
-    emulating,
-  );
+  let unlockIDToUse: UnlockID | undefined;
+  if (unlockID === undefined) {
+    // An objective may not have a corresponding unlock.
+    unlockIDToUse = undefined;
+  } else {
+    unlockIDToUse = checkSwapProblematicAchievement(
+      unlockID,
+      objectiveID,
+      seed,
+      emulating,
+    );
 
-  v.persistent.completedObjectiveIDs.add(objectiveID);
-  v.persistent.completedUnlockIDs.add(potentiallySwappedUnlockID);
-  v.persistent.uncompletedUnlockIDs.delete(potentiallySwappedUnlockID);
+    v.persistent.completedUnlockIDs.add(unlockIDToUse);
+    v.persistent.uncompletedUnlockIDs.delete(unlockIDToUse);
+  }
 
   const achievement: Achievement = {
     objectiveID,
-    unlockID: potentiallySwappedUnlockID,
+    unlockID: unlockIDToUse,
   };
   const runNum = getPlaythroughNumCompletedRuns() + 1;
   const achievementTuple = [runNum, achievement] as const;
   v.persistent.achievementHistory.push(achievementTuple);
 
   if (DEBUG || !emulating) {
-    const objectiveText = getObjectiveText(objective).join(" ");
-    const unlock = getUnlockFromID(potentiallySwappedUnlockID);
-    const unlockText = getUnlockText(unlock).join(" - ");
-
     log("Got achievement:");
+    const objectiveText = getObjectiveText(objective).join(" ");
     log(`- Objective: ${objectiveText}`);
-    log(`- Unlock: ${unlockText}`);
+    if (unlockIDToUse === undefined) {
+      log("- Unlock: n/a");
+    } else {
+      const unlock = getUnlockFromID(unlockIDToUse);
+      const unlockText = getUnlockText(unlock).join(" - ");
+      log(`- Unlock: ${unlockText}`);
+    }
   }
 
   if (!emulating) {
-    const unlock = getUnlockFromID(potentiallySwappedUnlockID);
+    const unlock =
+      unlockIDToUse === undefined ? undefined : getUnlockFromID(unlockIDToUse);
     showNewUnlock(unlock);
     writeStatsToFile();
   }

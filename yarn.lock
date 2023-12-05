@@ -4449,13 +4449,13 @@ __metadata:
   dependencies:
     cloc: "npm:^1.98.0-cloc"
     esbuild: "npm:^0.19.8"
-    isaac-typescript-definitions: "npm:^39.1.0"
+    isaac-typescript-definitions: "npm:^40.0.0"
     isaacscript: "npm:^3.29.0"
-    isaacscript-common: "npm:^82.0.1"
+    isaacscript-common: "npm:^83.1.0"
     isaacscript-common-node: "npm:^1.4.0"
     isaacscript-common-ts: "npm:^11.6.0"
     isaacscript-lint: "npm:^6.11.0"
-    isaacscript-spell: "npm:^1.11.0"
+    isaacscript-spell: "npm:^1.12.0"
     isaacscript-tsconfig: "npm:^5.0.0"
     tsx: "npm:^4.6.2"
     typescript: "npm:^5.3.2"
@@ -4464,12 +4464,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"isaac-typescript-definitions@npm:^39.1.0":
-  version: 39.1.0
-  resolution: "isaac-typescript-definitions@npm:39.1.0"
+"isaac-typescript-definitions@npm:^40.0.0":
+  version: 40.0.0
+  resolution: "isaac-typescript-definitions@npm:40.0.0"
   dependencies:
     lua-types: "npm:^2.13.1"
-  checksum: 53d72ad23f85c32a88bf57d9f356380301688e21cecc73e464d528ebe14e41656bf1e02ff921272fd5f5fb2e6bded2c7fb95a761ec23b3f8d8a084b0b0abedf9
+  checksum: b7a305d4301a189adef34d9d410e7b3968c0452e1e7509d88e7255f6bfd519fad091b9c00df486c67e968141320ab93fbd20efc7c3659a39612d050c448ac157
   languageName: node
   linkType: hard
 
@@ -4521,12 +4521,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common@npm:^82.0.1":
-  version: 82.0.1
-  resolution: "isaacscript-common@npm:82.0.1"
+"isaacscript-common@npm:^83.1.0":
+  version: 83.1.0
+  resolution: "isaacscript-common@npm:83.1.0"
   dependencies:
-    isaac-typescript-definitions: "npm:^39.1.0"
-  checksum: e820381582f2f506fe7a8febf869ca0fafdd6d01294dc01d02f088e3ce09d337fd509079b0433851db4ba8e013658f2b080030b9991d9f145beb3ad8c3b2279e
+    isaac-typescript-definitions: "npm:^40.0.0"
+  checksum: 150fb36a124a6e57029a5d48465d6b8a7e555c972b477cde8dd85ef74104093c8498dd55df597b25e6800ad9c7228fc36cb74e8cd2cf7305e1a6460bb1b94f0e
   languageName: node
   linkType: hard
 
@@ -4562,10 +4562,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-spell@npm:^1.11.0":
-  version: 1.11.0
-  resolution: "isaacscript-spell@npm:1.11.0"
-  checksum: a1fdb2800eafad0c36c1024fa6e1d843905c6cada81c271ca07c26198a17090b12b2594a01f67f3459ffc228353055c3f9a891ba99d00a5732277ef9d26c5f1e
+"isaacscript-spell@npm:^1.12.0":
+  version: 1.12.0
+  resolution: "isaacscript-spell@npm:1.12.0"
+  checksum: f66deca4c951a9400e252b542703ef24ad204912c1ade25b6c45953c07f5d0ecc831a08af9fbcfecf8aba403903f7b37e25775dd134e9a8d136719f450447f33
   languageName: node
   linkType: hard
 

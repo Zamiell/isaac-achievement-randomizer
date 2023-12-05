@@ -1,12 +1,15 @@
-import type { PlayerType } from "isaac-typescript-definitions";
+import type { PlayerType, StageID } from "isaac-typescript-definitions";
 import { Difficulty } from "isaac-typescript-definitions";
 import {
   LAST_VANILLA_CARD_TYPE,
   LAST_VANILLA_COLLECTIBLE_TYPE,
   LAST_VANILLA_PILL_EFFECT,
   LAST_VANILLA_TRINKET_TYPE,
+  assertDefined,
   getBatteryName,
   getBombName,
+  getBossIDsForStageID,
+  getBossName,
   getCardName,
   getChallengeName,
   getCharacterName,
@@ -19,11 +22,13 @@ import {
   getRoomTypeName,
   getSackName,
   getSlotName,
+  getStageIDName,
   getTrinketName,
   iRange,
   isOdd,
   splitNumber,
 } from "isaacscript-common";
+import { STAGE_IDS_FOR_BOSS_OBJECTIVES } from "./arrays/bosses";
 import { UNLOCKABLE_CARD_TYPES } from "./arrays/unlockableCardTypes";
 import { UNLOCKABLE_CHALLENGES } from "./arrays/unlockableChallenges";
 import {
@@ -53,9 +58,14 @@ import {
   OTHER_UNLOCK_KIND_VALUES,
   UNLOCKABLE_AREA_VALUES,
 } from "./cachedEnumValues";
-import { canGetToCharacterObjective } from "./classes/features/AchievementRandomizer";
+import {
+  canGetToBoss,
+  canGetToCharacterObjective,
+} from "./classes/features/AchievementRandomizer";
 import {
   isAllCharacterObjectivesCompleted,
+  isBossObjectiveCompleted,
+  isBossObjectivesCompletedForStageID,
   isChallengeObjectiveCompleted,
   isChallengeRangeObjectivesCompleted,
   isCharacterObjectiveCompleted,
@@ -139,7 +149,7 @@ export function getRecentAchievementsButtons(): readonly DeadSeaScrollsButton[] 
         str: "",
       },
       {
-        str: `run num. ${runNum}`,
+        str: `run number: ${runNum}`,
       },
       {
         str: "",
@@ -157,22 +167,86 @@ export function getRecentAchievementsButtons(): readonly DeadSeaScrollsButton[] 
       str: "",
     });
 
-    const unlock = getUnlockFromID(unlockID);
-    const unlockText = getUnlockText(unlock);
-
-    for (const [j, line] of unlockText.entries()) {
-      const str =
-        j === 0 ? `unlocked ${line.toLowerCase()}:` : line.toLowerCase();
-
+    if (unlockID === undefined) {
       buttons.push({
-        str,
-        clr: isOdd(j) ? 3 : 0,
+        str: "unlocked nothing.",
       });
+    } else {
+      const unlock = getUnlockFromID(unlockID);
+      const unlockText = getUnlockText(unlock);
+
+      for (const [j, line] of unlockText.entries()) {
+        const str =
+          j === 0 ? `unlocked ${line.toLowerCase()}:` : line.toLowerCase();
+
+        buttons.push({
+          str,
+          clr: isOdd(j) ? 3 : 0,
+        });
+      }
     }
 
     buttons.push({
       str: "",
     });
+  }
+
+  return buttons;
+}
+
+// ------------
+// Boss buttons
+// ------------
+
+export function getBossObjectiveButtons(): readonly DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  for (const stageID of STAGE_IDS_FOR_BOSS_OBJECTIVES) {
+    const stageIDCompleted = isBossObjectivesCompletedForStageID(stageID);
+    const completedText = getCompletedText(stageIDCompleted);
+    const stageIDName = getStageIDName(stageID);
+    buttons.push({
+      str: `${completedText} - ${stageIDName}`,
+      dest: `bossObjectives${stageID}`,
+    });
+  }
+
+  return buttons;
+}
+
+export function getSpecificBossObjectiveButtons(
+  stageID: StageID,
+): readonly DeadSeaScrollsButton[] {
+  const buttons: DeadSeaScrollsButton[] = [];
+
+  const bossIDs = getBossIDsForStageID(stageID);
+  assertDefined(
+    bossIDs,
+    `Failed to get the boss IDs corresponding to stage ID: ${stageID}`,
+  );
+
+  for (const bossID of bossIDs) {
+    const bossName = getBossName(bossID).toLowerCase();
+    const completed = isBossObjectiveCompleted(bossID);
+    const completedText = getCompletedText(completed);
+
+    buttons.push(
+      {
+        str: `${bossID} - ${bossName}`,
+      },
+      {
+        str: completedText,
+        clr: completed ? 0 : 3,
+      },
+      {
+        str: "(inaccessible)",
+        fSize: 1,
+        displayIf: () => !canGetToBoss(bossID, false),
+      },
+      {
+        str: "",
+      },
+    );
   }
 
   return buttons;

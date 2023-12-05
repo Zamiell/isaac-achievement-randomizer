@@ -9,7 +9,7 @@ import type { CharacterObjective, Objective } from "../types/Objective";
 import { getObjective } from "../types/Objective";
 import type { ObjectiveID } from "../types/ObjectiveID";
 import { getObjectiveID } from "../types/ObjectiveID";
-import { NON_STORY_BOSSES } from "./bosses";
+import { BOSS_OBJECTIVE_BOSS_IDS } from "./bosses";
 import { UNLOCKABLE_CHALLENGES } from "./unlockableChallenges";
 import { PLAYABLE_CHARACTERS } from "./unlockableCharacters";
 
@@ -28,7 +28,7 @@ export const ALL_OBJECTIVES: readonly Objective[] = (() => {
       }
 
       case ObjectiveType.BOSS: {
-        for (const bossID of NON_STORY_BOSSES) {
+        for (const bossID of BOSS_OBJECTIVE_BOSS_IDS) {
           const objective: Objective = {
             type: ObjectiveType.BOSS,
             bossID,
