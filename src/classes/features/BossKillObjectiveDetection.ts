@@ -15,6 +15,7 @@ import {
   inBeastRoom,
   inMegaSatanRoom,
   inRoomType,
+  isStoryBossID,
   onStage,
 } from "isaacscript-common";
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
@@ -118,18 +119,23 @@ function preSpawnClearAwardNonGreedMode(
         }
       }
 
-      const kindBoss = BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND.get(bossID);
-      if (kindBoss === undefined) {
-        return;
-      }
+      if (isStoryBossID(bossID)) {
+        const kindBoss = BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND.get(bossID);
+        if (kindBoss === undefined) {
+          return;
+        }
 
-      const objective = getObjective(
-        ObjectiveType.CHARACTER,
-        character,
-        kindBoss,
-        difficulty,
-      );
-      addObjective(objective);
+        const objective = getObjective(
+          ObjectiveType.CHARACTER,
+          character,
+          kindBoss,
+          difficulty,
+        );
+        addObjective(objective);
+      } else {
+        const objective = getObjective(ObjectiveType.BOSS, bossID);
+        addObjective(objective);
+      }
 
       break;
     }

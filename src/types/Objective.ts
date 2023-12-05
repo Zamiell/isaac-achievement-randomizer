@@ -70,6 +70,10 @@ export function getObjective(
   difficulty: Difficulty.NORMAL | Difficulty.HARD,
 ): Readonly<CharacterObjective>;
 export function getObjective(
+  type: ObjectiveType.BOSS,
+  bossID: BossID,
+): Readonly<BossObjective>;
+export function getObjective(
   type: ObjectiveType.CHALLENGE,
   challenge: Challenge,
 ): Readonly<ChallengeObjective>;

@@ -2,6 +2,8 @@
 
 ## Characters (32)
 
+<!-- There are 34 vanilla characters. -->
+
 - The first character unlocked will always be Isaac. All other characters start off locked.
 - Tainted Cain is not unlockable / not included in the randomizer since Bag of Crafting does not respect item pools.
 
@@ -45,16 +47,20 @@ The following room types start out locked:
 
 ## Challenges (43)
 
+<!-- There are 45 vanilla challenges. -->
+
 All challenges start off locked, with the following exceptions:
 
 - Cantripped! (#43) (since Tainted Cain is banned)
 - DELETE THIS (#45) (since TMTRAINER is banned)
 
-## Collectibles (700)
+## Collectibles (700) <!-- 706 w/ banned collectibles -->
+
+<!-- There are 721 vanilla collectible types. -->
 
 Every collectible in the game is locked, with the following exceptions:
 
-- Quest collectibles (except for the ones relating to the unlockable areas above):
+- <!-- 7 + 4 = 11 --> Quest collectibles (except for the ones relating to the unlockable areas above): <!-- 238 + 239 + 327 + 328 -->
   - Broken Shovel (#550)
   - Broken Shovel (#551)
   - Mom's Shovel (#552)
@@ -62,12 +68,12 @@ Every collectible in the game is locked, with the following exceptions:
   - Knife Piece 2 (#627)
   - Dogma (#633)
   - Dad's Note (#668)
-- Special non-obtainable collectibles:
+- <!-- 4 --> Special non-obtainable collectibles:
   - Book of Belial Birthright (#59)
   - Broken Glass Cannon (#474)
   - Damocles Passive (#656)
   - Recall (#714)
-- Banned collectibles (since they would potentially trivialize difficult objectives):
+- <!-- 6 --> Banned collectibles (since they would potentially trivialize difficult objectives):
   - Eden's Blessing (#381)
   - Plan C (#475)
   - Clicker (#482)
@@ -81,7 +87,9 @@ Also note that:
 - Even if Judas' Shadow (#311) is unlocked, it is removed from pools until all of the Judas objectives are completed.
 - Even if Lazarus Rags (#332) is unlocked, it is removed from pools until all of the Lazarus objectives are completed.
 
-## Trinkets (185)
+## Trinkets (185) <!-- 188 w/ banned trinkets -->
+
+<!-- There are 188 vanilla collectible types. -->
 
 Every trinket in the game is locked, with the following exceptions:
 
@@ -97,7 +105,9 @@ Also note that:
 - Even if Mysterious Paper (#21) or Missing Poster (#23) are unlocked, they are removed from pools until all of The Lost objectives are completed.
 - Even if Broken Ankh (#28) is unlocked, it is removed from pools until all of the Blue Baby objectives are completed.
 
-## Cards & Runes (95)
+## Cards & Runes (95) <!-- 96 w/ banned cards -->
+
+<!-- There are 97 vanilla card types. -->
 
 Every card/rune in the game is locked, with the following exceptions:
 
@@ -107,6 +117,8 @@ Every card/rune in the game is locked, with the following exceptions:
 If no cards/runes are unlocked, they will be converted to pennies.
 
 ## Pill Effects (50)
+
+<!-- There are 50 vanilla pill effects. -->
 
 Every pill effect in the game is locked. If no pill effects are unlocked, pills will be converted to pennies.
 
@@ -149,4 +161,5 @@ The following other things start out locked:
 
 ## Total Unlocks
 
-There are 32 + 12 + 16 + 43 + 700 + 185 + 95 + 50 + (11 + 6 + 2 + 3 + 4 + 2 + 10) + 15 + 8 + 4 = 1198 unlocks in total.
+There are 32 + 12 + 16 + 43 + 706 + 188 + 96 + 50 + (11 + 6 + 2 + 3 + 4 + 2 + 10) + 15 + 8 + 4 = 1208 unlocks in total.
+(With 10 banned items <!-- 6 + 3 + 1 -->, there are 1198 unlocks in total.)

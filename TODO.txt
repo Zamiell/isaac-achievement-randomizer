@@ -1,7 +1,6 @@
 TODO:
 
-- add boss achievements
-  - https://github.com/Zamiell/isaac-achievement-randomizer/commit/962716e22d02c2593cdc5a721625e62fd0960d2b
+- dead sea scrolls for bosses
 - website - see all current unlocks after uploading save file
 - emulate vanilla pill pool
 
@@ -9,7 +8,6 @@ TODO:
 
 OTHER POTENTIAL UNLOCKS:
 
-- split bedrooms
 - reward plates
 - blue fire / purple fire
 - champions that drop items - https://bindingofisaacrebirth.fandom.com/wiki/Monsters#Champions

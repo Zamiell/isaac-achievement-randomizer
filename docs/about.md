@@ -329,16 +329,14 @@ The format of the JSON file is minified (i.e. all whitespace is removed), which 
 
 Once it is beautified, you can see that the top level keys correspond to various mod features, with the most important ones being "AchievementTracker" and "StatsTracker".
 
-### How do I manually change an unlock inside of my save file?
+For example, if you want to change an unlock, you will need to edit values in the following fields:
 
-See [the previous section](#how-do-i-change-the-data-inside-of-my-save-file) for how to edit the save file.
-
-Your unlocks are contained within the `completedUnlockIDs` array. This is an array containing `UnlockID` strings. For example, the unlock string for Magdalene is "0.1":
-
-- The 0 represents the [`UnlockType`](https://github.com/Zamiell/isaac-achievement-randomizer/blob/main/src/enums/UnlockType.ts). Specifically, 0 is the first value, so it refers to `UnlockType.CHARACTER`.
-- The 1 represents the [character number for Magdalene](https://isaacscript.github.io/isaac-typescript-definitions/enums/PlayerType/).
-
-Thus, if we wanted to change our Magdalene unlock to a Cain unlock, we could change the value of "0.1" to "0.2".
+- `objectiveIDToUnlockIDMap`
+- `unlockIDToObjectiveIDMap`
+- `completedObjectiveIDs`
+- `completedUnlockIDs`
+- `uncompletedUnlockIDs`
+- `achievementHistory`
 
 ### Is this mod compatible with other mods that add items and achievements?
 
