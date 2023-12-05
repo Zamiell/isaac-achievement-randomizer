@@ -18,12 +18,12 @@ Each character will unlock something upon defeating/completing the following:
 12. Mother
 13. The Beast
 
-Additionally, each character will unlock something upon full-clearing the following floors without getting hit:
+Additionally, each character will unlock something upon full-clearing each chapter without getting hit:
 
-1. Basement 1 + Basement 2
-2. Caves 1 + Caves 2
-3. Depths 1 + Depths 2
-4. Womb 1 + Womb 2
+1. Basement (floor 1 + floor 2)
+2. Caves (floor 3 + floor 4)
+3. Depths (floor 5 + floor 6)
+4. Womb (floor 7 + floor 8)
 
 > Tip: A Crown of Light icon will appear next to the coin count UI when the "no hit" objective has not yet been accomplished for the particular character and chapter combination.
 

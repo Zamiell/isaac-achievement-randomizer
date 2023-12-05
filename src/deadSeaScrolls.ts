@@ -6,10 +6,12 @@ import {
   ReadonlyMap,
   assertDefined,
   getCharacterName,
+  getStageIDName,
   splitNumber,
 } from "isaacscript-common";
 import { version } from "../package.json";
 import { ALL_OBJECTIVES } from "./arrays/allObjectives";
+import { STAGE_IDS_FOR_BOSS_OBJECTIVES } from "./arrays/bosses";
 import { UNLOCKABLE_CHALLENGES } from "./arrays/unlockableChallenges";
 import { PLAYABLE_CHARACTERS } from "./arrays/unlockableCharacters";
 import {
@@ -65,6 +67,7 @@ import {
   getRoomUnlockButtons,
   getSackUnlockButtons,
   getSlotUnlockButtons,
+  getSpecificBossObjectiveButtons,
   getSpecificCardUnlockButtons,
   getSpecificChallengeObjectiveButtons,
   getSpecificChallengeUnlockButtons,
@@ -1110,6 +1113,22 @@ export function initDeadSeaScrolls(): void {
 
       generate: (menu) => {
         menu.buttons = getSpecificCharacterObjectiveButtons(character);
+      },
+    };
+  }
+
+  // Fill in the "bossObjectivesN" menus.
+  for (const stageID of STAGE_IDS_FOR_BOSS_OBJECTIVES) {
+    const stageIDName = getStageIDName(stageID).toLowerCase();
+
+    directory[`bossObjectives${stageID}`] = {
+      title: stageIDName,
+      noCursor: true,
+      scroller: true,
+      fSize: 2,
+
+      generate: (menu) => {
+        menu.buttons = getSpecificBossObjectiveButtons(stageID);
       },
     };
   }
