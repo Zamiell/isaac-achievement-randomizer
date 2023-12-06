@@ -13,6 +13,7 @@
 - Chapter objectives are now completed as soon as the final room is cleared (instead of having to go to the next floor).
 - Fixed the bug where the Cantripped challenge was not banned. (It should be banned since Tainted Cain is banned.) (Thanks Andrew)
 - Fixed the bug where Eden collectible selection did not work properly during certain circumstances. (Thanks Kirbyster)
+- Fixed the bug where the chapter objective detection did not work properly on floors with Curse of the Labyrinth. (Thanks Andrew)
 
 ### _v0.13.0_ - November 15th, 2023
 

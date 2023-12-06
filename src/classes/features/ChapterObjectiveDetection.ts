@@ -2,6 +2,7 @@ import type { DamageFlag } from "isaac-typescript-definitions";
 import {
   Difficulty,
   Dimension,
+  LevelCurse,
   LevelStage,
   ModCallback,
   RoomType,
@@ -11,7 +12,9 @@ import {
   CallbackCustom,
   ModCallbackCustom,
   ReadonlyMap,
+  asLevelStage,
   game,
+  hasCurse,
   inDimension,
   inGrid,
   isAllRoomsClear,
@@ -125,6 +128,11 @@ function checkAllRoomsClear() {
     !onRepentanceStage()
   ) {
     v.run.fullClearedStages.add(stage);
+
+    if (hasCurse(LevelCurse.LABYRINTH)) {
+      const nextStage = asLevelStage(stage + 1);
+      v.run.fullClearedStages.add(nextStage);
+    }
   }
 }
 

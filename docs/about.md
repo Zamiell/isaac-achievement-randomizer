@@ -381,3 +381,7 @@ The mod was designed by Zamiel and [Gamonymous](https://github.com/Rchardon), wi
 ### What programming language is the mod written in?
 
 It is written in [TypeScript](https://www.typescriptlang.org/) using the [IsaacScript](https://isaacscript.github.io/) framework.
+
+### Are there any bugs in the mod?
+
+See the [known bugs](bigs.md) page.
