@@ -98,8 +98,15 @@ export class ChapterObjectiveDetection extends RandomizerModFeature {
     v.run.tookHitStages.add(stage);
   }
 
-  @CallbackCustom(ModCallbackCustom.POST_NEW_LEVEL_REORDERED)
-  postNewLevelReordered(): void {
+  /**
+   * If the final room explored on a floor is empty, then it will not get set to being cleared until
+   * the player enters it, and then the `PRE_SPAWN_CLEAR_AWARD` callback will never be fired. Thus,
+   * we have to also check on every room enter.
+   */
+  @CallbackCustom(ModCallbackCustom.POST_NEW_ROOM_REORDERED)
+  postNewRoomReordered(): void {
+    checkAllRoomsClear();
+
     this.checkChapterCompleted(
       LevelStage.BASEMENT_1,
       LevelStage.BASEMENT_2,
@@ -150,16 +157,6 @@ export class ChapterObjectiveDetection extends RandomizerModFeature {
       addObjective(objective);
     }
   }
-
-  /**
-   * If the final room explored on a floor is empty, then it will not get set to being cleared until
-   * the player enters it, and then the `PRE_SPAWN_CLEAR_AWARD` callback will never be fired. Thus,
-   * we have to also check on every room enter.
-   */
-  @CallbackCustom(ModCallbackCustom.POST_NEW_ROOM_REORDERED)
-  postNewRoomReordered(): void {
-    checkAllRoomsClear();
-  }
 }
 
 export function chapterObjectiveDetectionPreSpawnClearAward(): void {
@@ -167,14 +164,16 @@ export function chapterObjectiveDetectionPreSpawnClearAward(): void {
 }
 
 function checkAllRoomsClear() {
+  const level = game.GetLevel();
+  const stage = level.GetStage();
+
   if (
+    !v.run.fullClearedStages.has(stage) &&
     isAllRoomsClear(ROOM_TYPES_FOR_FULL_CLEAR) &&
     inGrid() &&
     inDimension(Dimension.MAIN) &&
     !onRepentanceStage()
   ) {
-    const level = game.GetLevel();
-    const stage = level.GetStage();
     v.run.fullClearedStages.add(stage);
   }
 }
