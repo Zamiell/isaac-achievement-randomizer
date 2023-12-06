@@ -167,23 +167,17 @@ export function getRecentAchievementsButtons(): readonly DeadSeaScrollsButton[] 
       str: "",
     });
 
-    if (unlockID === undefined) {
+    const unlock = getUnlockFromID(unlockID);
+    const unlockText = getUnlockText(unlock);
+
+    for (const [j, line] of unlockText.entries()) {
+      const str =
+        j === 0 ? `unlocked ${line.toLowerCase()}:` : line.toLowerCase();
+
       buttons.push({
-        str: "unlocked nothing.",
+        str,
+        clr: isOdd(j) ? 3 : 0,
       });
-    } else {
-      const unlock = getUnlockFromID(unlockID);
-      const unlockText = getUnlockText(unlock);
-
-      for (const [j, line] of unlockText.entries()) {
-        const str =
-          j === 0 ? `unlocked ${line.toLowerCase()}:` : line.toLowerCase();
-
-        buttons.push({
-          str,
-          clr: isOdd(j) ? 3 : 0,
-        });
-      }
     }
 
     buttons.push({
