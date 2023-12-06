@@ -12,7 +12,6 @@ import {
   ModCallbackCustom,
   ReadonlyMap,
   game,
-  getEffectiveStage,
   inDimension,
   inGrid,
   isAllRoomsClear,
@@ -105,62 +104,13 @@ export class ChapterObjectiveDetection extends RandomizerModFeature {
    */
   @CallbackCustom(ModCallbackCustom.POST_NEW_ROOM_REORDERED)
   postNewRoomReordered(): void {
-    checkAllRoomsClear();
-
-    this.checkChapterCompleted(
-      LevelStage.BASEMENT_1,
-      LevelStage.BASEMENT_2,
-      CharacterObjectiveKind.NO_HIT_BASEMENT,
-    );
-    this.checkChapterCompleted(
-      LevelStage.CAVES_1,
-      LevelStage.CAVES_2,
-      CharacterObjectiveKind.NO_HIT_CAVES,
-    );
-    this.checkChapterCompleted(
-      LevelStage.DEPTHS_1,
-      LevelStage.DEPTHS_2,
-      CharacterObjectiveKind.NO_HIT_DEPTHS,
-    );
-    this.checkChapterCompleted(
-      LevelStage.WOMB_1,
-      LevelStage.WOMB_2,
-      CharacterObjectiveKind.NO_HIT_WOMB,
-    );
-  }
-
-  checkChapterCompleted(
-    stage1: LevelStage,
-    stage2: LevelStage,
-    kind: CharacterObjectiveKind,
-  ): void {
-    const player = Isaac.GetPlayer();
-    const character = getAdjustedCharacterForObjective(player);
-    const effectiveStage = getEffectiveStage();
-
-    if (
-      effectiveStage > stage2 &&
-      !v.run.tookHitStages.has(stage1) &&
-      !v.run.tookHitStages.has(stage2) &&
-      v.run.fullClearedStages.has(stage1) &&
-      v.run.fullClearedStages.has(stage2) &&
-      (game.Difficulty === Difficulty.NORMAL ||
-        game.Difficulty === Difficulty.HARD) &&
-      !onAnyChallenge()
-    ) {
-      const objective = getObjective(
-        ObjectiveType.CHARACTER,
-        character,
-        kind,
-        game.Difficulty,
-      );
-      addObjective(objective);
-    }
+    chapterObjectiveDetectionPreSpawnClearAward();
   }
 }
 
 export function chapterObjectiveDetectionPreSpawnClearAward(): void {
   checkAllRoomsClear();
+  checkAllChapterCompleted();
 }
 
 function checkAllRoomsClear() {
@@ -175,6 +125,56 @@ function checkAllRoomsClear() {
     !onRepentanceStage()
   ) {
     v.run.fullClearedStages.add(stage);
+  }
+}
+
+function checkAllChapterCompleted() {
+  checkChapterCompleted(
+    LevelStage.BASEMENT_1,
+    LevelStage.BASEMENT_2,
+    CharacterObjectiveKind.NO_HIT_BASEMENT,
+  );
+  checkChapterCompleted(
+    LevelStage.CAVES_1,
+    LevelStage.CAVES_2,
+    CharacterObjectiveKind.NO_HIT_CAVES,
+  );
+  checkChapterCompleted(
+    LevelStage.DEPTHS_1,
+    LevelStage.DEPTHS_2,
+    CharacterObjectiveKind.NO_HIT_DEPTHS,
+  );
+  checkChapterCompleted(
+    LevelStage.WOMB_1,
+    LevelStage.WOMB_2,
+    CharacterObjectiveKind.NO_HIT_WOMB,
+  );
+}
+
+function checkChapterCompleted(
+  stage1: LevelStage,
+  stage2: LevelStage,
+  kind: CharacterObjectiveKind,
+) {
+  const player = Isaac.GetPlayer();
+  const character = getAdjustedCharacterForObjective(player);
+
+  if (
+    !v.run.tookHitStages.has(stage1) &&
+    !v.run.tookHitStages.has(stage2) &&
+    v.run.fullClearedStages.has(stage1) &&
+    v.run.fullClearedStages.has(stage2) &&
+    (game.Difficulty === Difficulty.NORMAL ||
+      game.Difficulty === Difficulty.HARD) &&
+    !onAnyChallenge()
+  ) {
+    const objective = getObjective(
+      ObjectiveType.CHARACTER,
+      character,
+      kind,
+      game.Difficulty,
+    );
+    addObjective(objective);
   }
 }
 

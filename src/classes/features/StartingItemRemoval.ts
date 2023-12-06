@@ -168,25 +168,23 @@ export class StartingItemRemoval extends RandomizerModFeature {
     const rng = newRNG(startSeed);
 
     const activeCollectibleTypes = getUnlockedEdenActiveCollectibleTypes(true);
+    if (activeCollectibleTypes.length > 0) {
+      const activeCollectibleType = getRandomArrayElement(
+        activeCollectibleTypes,
+        rng,
+      );
+      player.AddCollectible(activeCollectibleType);
+    }
+
     const passiveCollectibleTypes =
       getUnlockedEdenPassiveCollectibleTypes(true);
-
-    const passiveCollectibleType = getRandomArrayElement(
-      passiveCollectibleTypes,
-      rng,
-    );
-
-    // If we do not have any active collectibles unlocked, default to giving Eden a second passive
-    // collectible.
-    const activeCollectibleType =
-      activeCollectibleTypes.length === 0
-        ? getRandomArrayElement(passiveCollectibleTypes, rng, [
-            passiveCollectibleType,
-          ])
-        : getRandomArrayElement(activeCollectibleTypes, rng);
-
-    player.AddCollectible(activeCollectibleType);
-    player.AddCollectible(passiveCollectibleType);
+    if (passiveCollectibleTypes.length > 0) {
+      const passiveCollectibleType = getRandomArrayElement(
+        passiveCollectibleTypes,
+        rng,
+      );
+      player.AddCollectible(passiveCollectibleType);
+    }
   }
 
   addBackasswardsRandomCollectibles(player: EntityPlayer): void {

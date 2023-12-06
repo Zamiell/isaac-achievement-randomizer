@@ -1,6 +1,6 @@
 # Achievement Randomizer Version History
 
-<!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Neonomi,sanstheazmo,slvn -->
+<!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Kirbyster,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
 ### _v0.14.0_ - December 4th, 2023
@@ -12,6 +12,7 @@
 - Wooden Spoon, Wire Coat Hanger, and Cat-O-Nine-Tails are no longer automatically unlocked on casual mode.
 - Chapter objectives are now completed as soon as the final room is cleared (instead of having to go to the next floor).
 - Fixed the bug where the Cantripped challenge was not banned. (It should be banned since Tainted Cain is banned.) (Thanks Andrew)
+- Fixed the bug where Eden collectible selection did not work properly during certain circumstances. (Thanks Kirbyster)
 
 ### _v0.13.0_ - November 15th, 2023
 
