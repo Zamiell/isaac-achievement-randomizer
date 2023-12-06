@@ -35,7 +35,7 @@ import { version } from "../../../package.json";
 import { getAchievementsForRNG } from "../../achievementAssignment";
 import { ALL_OBJECTIVES } from "../../arrays/allObjectives";
 import { DEBUG, STARTING_CHARACTER } from "../../constants";
-import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
+import type { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import type { RandomizerMode } from "../../enums/RandomizerMode";
 import {
@@ -49,6 +49,7 @@ import type {
   Objective,
 } from "../../types/Objective";
 import { getObjectiveText } from "../../types/Objective";
+import { validateObjectivesUnlocksMatch } from "../../validate";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { preForcedRestart, resetStats } from "./StatsTracker";
 import { addObjective } from "./achievementTracker/addObjective";
@@ -242,6 +243,9 @@ export function startRandomizer(
     seed = getRandomSeed();
   }
 
+  // First, verify that the amount of objectives and the amount of unlocks match.
+  validateObjectivesUnlocksMatch();
+
   v.persistent.seed = seed;
   log(`Set new randomizer seed: ${v.persistent.seed}`);
 
@@ -327,22 +331,10 @@ export function canGetToCharacterObjective(
     return false;
   }
 
-  // Handle special cases that require two or more unlockable areas.
-  switch (kind) {
-    case CharacterObjectiveKind.DELIRIUM: {
-      return (
-        isAreaUnlocked(UnlockableArea.BLUE_WOMB, forRun) &&
-        isAreaUnlocked(UnlockableArea.VOID, forRun)
-      );
-    }
-
-    default: {
-      const unlockableArea = getUnlockableAreaFromCharacterObjectiveKind(kind);
-      return unlockableArea === undefined
-        ? true
-        : isAreaUnlocked(unlockableArea, forRun);
-    }
-  }
+  const unlockableArea = getUnlockableAreaFromCharacterObjectiveKind(kind);
+  return unlockableArea === undefined
+    ? true
+    : isAreaUnlocked(unlockableArea, forRun);
 }
 
 function bossObjectiveFunc(objective: Objective): boolean {
@@ -383,7 +375,7 @@ const STAGE_ID_ACCESS_FUNCTIONS = {
   [StageID.CHEST]: UnlockableArea.CHEST, // 17
   [StageID.SHOP]: UnlockableArea.GREED_MODE, // 24
   [StageID.ULTRA_GREED]: UnlockableArea.GREED_MODE, // 25
-  [StageID.VOID]: UnlockableArea.VOID, // 26
+  [StageID.VOID]: undefined, // 26
   [StageID.DOWNPOUR]: UnlockableArea.REPENTANCE_FLOORS, // 27
   [StageID.DROSS]: UnlockableArea.REPENTANCE_FLOORS, // 28
   [StageID.MINES]: UnlockableArea.REPENTANCE_FLOORS, // 29

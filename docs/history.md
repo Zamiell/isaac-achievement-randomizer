@@ -8,6 +8,7 @@
 - There is now an objective for killing each non-story boss.
 - Wooden Spoon, Wire Coat Hanger, and Cat-O-Nine-Tails are no longer automatically unlocked on casual mode.
 - Fixed the bug where the Cantripped challenge was not banned. (It should be banned since Tainted Cain is banned.) (Thanks Andrew)
+- !Delirium
 
 ### _v0.13.0_ - November 15th, 2023
 

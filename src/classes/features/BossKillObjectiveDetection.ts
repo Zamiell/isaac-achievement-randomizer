@@ -38,9 +38,9 @@ const BOSS_ID_TO_CHARACTER_OBJECTIVE_KIND = new ReadonlyMap<
   [BossID.MEGA_SATAN, CharacterObjectiveKind.MEGA_SATAN],
   // There is no boss ID for the Boss Rush (it has a separate room type).
   [BossID.HUSH, CharacterObjectiveKind.HUSH],
-  [BossID.DELIRIUM, CharacterObjectiveKind.DELIRIUM],
   [BossID.MOTHER, CharacterObjectiveKind.MOTHER],
   // There is no boss ID for The Beast (it does not have its own boss room).
+  [BossID.ULTRA_GREED, CharacterObjectiveKind.ULTRA_GREED],
   [BossID.ULTRA_GREEDIER, CharacterObjectiveKind.ULTRA_GREED],
 ]);
 

@@ -12,7 +12,6 @@ export enum UnlockableArea {
   MEGA_SATAN,
   BOSS_RUSH,
   BLUE_WOMB,
-  VOID,
   REPENTANCE_FLOORS,
   ASCENT,
   GREED_MODE,
@@ -38,10 +37,7 @@ const STORY_BOSS_TO_UNLOCKABLE_AREA = {
   [BossID.MEGA_SATAN]: UnlockableArea.MEGA_SATAN, // 55
   [BossID.ULTRA_GREED]: UnlockableArea.GREED_MODE, // 62
   [BossID.HUSH]: UnlockableArea.BLUE_WOMB, // 63
-
-  // Note that Delirium actually requires both Blue Womb and The Void, so this value is misleading.
-  [BossID.DELIRIUM]: UnlockableArea.VOID, // 70
-
+  [BossID.DELIRIUM]: undefined, // 70
   [BossID.ULTRA_GREEDIER]: UnlockableArea.GREED_MODE, // 71
   [BossID.MOTHER]: UnlockableArea.REPENTANCE_FLOORS, // 88
   [BossID.MAUSOLEUM_MOM]: UnlockableArea.REPENTANCE_FLOORS, // 89
@@ -66,10 +62,6 @@ const CHARACTER_OBJECTIVE_KIND_TO_UNLOCKABLE_AREA = {
   [CharacterObjectiveKind.MEGA_SATAN]: UnlockableArea.MEGA_SATAN,
   [CharacterObjectiveKind.BOSS_RUSH]: UnlockableArea.BOSS_RUSH,
   [CharacterObjectiveKind.HUSH]: UnlockableArea.BLUE_WOMB,
-
-  // Note that Delirium actually requires both Blue Womb and The Void, so this value is misleading.
-  [CharacterObjectiveKind.DELIRIUM]: UnlockableArea.VOID,
-
   [CharacterObjectiveKind.MOTHER]: UnlockableArea.REPENTANCE_FLOORS,
   [CharacterObjectiveKind.BEAST]: UnlockableArea.ASCENT,
   [CharacterObjectiveKind.ULTRA_GREED]: UnlockableArea.GREED_MODE,
@@ -94,7 +86,6 @@ const UNLOCKABLE_AREA_NAMES = {
   [UnlockableArea.MEGA_SATAN]: "Mega Satan",
   [UnlockableArea.BOSS_RUSH]: "Boss Rush",
   [UnlockableArea.BLUE_WOMB]: "Blue Womb",
-  [UnlockableArea.VOID]: "The Void",
   [UnlockableArea.REPENTANCE_FLOORS]: "Repentance Floors",
   [UnlockableArea.ASCENT]: "The Ascent",
   [UnlockableArea.GREED_MODE]: "Greed Mode",

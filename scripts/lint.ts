@@ -28,7 +28,7 @@ await lintScript(async () => {
 
     // @template-customization-start
 
-    // Check for base file updates.
+    // Check for template file updates.
     $`isaacscript check`,
 
     // @template-customization-end

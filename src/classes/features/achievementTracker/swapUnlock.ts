@@ -239,13 +239,6 @@ const SWAPPED_UNLOCK_AREA_FUNCTIONS = new ReadonlyMap<
   (seed: Seed) => Unlock | undefined
 >([
   [
-    UnlockableArea.VOID,
-    () =>
-      isAreaUnlocked(UnlockableArea.BLUE_WOMB, false)
-        ? undefined
-        : getUnlock(UnlockType.AREA, UnlockableArea.BLUE_WOMB),
-  ],
-  [
     UnlockableArea.ASCENT,
     () =>
       isCardTypeUnlocked(CardType.FOOL, false)

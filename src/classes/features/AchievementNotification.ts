@@ -122,16 +122,11 @@ export class AchievementNotification extends RandomizerModFeature {
   }
 }
 
-export function showNewUnlock(unlock: Unlock | undefined): void {
-  let text: string;
-  if (unlock === undefined) {
-    text = "You have unlocked nothing!";
-  } else {
-    const unlockText = getUnlockText(unlock);
-    text = `You have unlocked a new ${unlockText[0]}:\n${unlockText[1]}`;
-  }
-
-  v.run.queuedTexts.push(text);
+export function showNewUnlock(unlock: Unlock): void {
+  const unlockText = getUnlockText(unlock);
+  v.run.queuedTexts.push(
+    `You have unlocked a new ${unlockText[0]}:\n${unlockText[1]}`,
+  );
   sfxManager.Play(SoundEffectCustom.GOLDEN_WALNUT);
 }
 
@@ -139,18 +134,15 @@ export function showNewAchievement(achievement: Achievement): void {
   const { objectiveID, unlockID } = achievement;
   const objective = getObjectiveFromID(objectiveID);
   const objectiveText = getObjectiveText(objective).join(" ");
+  const unlock = getUnlockFromID(unlockID);
+  const unlockText = getUnlockText(unlock);
 
-  let text = `It is said that if you\n${uncapitalizeFirstLetter(
-    objectiveText,
-  )},\nyou will unlock `;
-
-  if (unlockID === undefined) {
-    text += "nothing.";
-  } else {
-    const unlock = getUnlockFromID(unlockID);
-    const unlockText = getUnlockText(unlock);
-    text += `a new ${unlockText[0]}:\n${unlockText[1]}`;
-  }
-
+  const lines = [
+    "It is said that if you",
+    `${uncapitalizeFirstLetter(objectiveText)},`,
+    `you will unlock a new ${unlockText[0]}:`,
+    `${unlockText[1]}`,
+  ];
+  const text = lines.join("\n");
   v.run.queuedTexts.push(text);
 }

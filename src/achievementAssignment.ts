@@ -20,7 +20,7 @@ import {
   isCollectibleTypeBannedForNewPlaythrough,
   isTrinketTypeBannedForNewPlaythrough,
 } from "./config";
-import { STARTING_CHARACTER } from "./constants";
+import { DEBUG, STARTING_CHARACTER } from "./constants";
 import { CharacterObjectiveKind } from "./enums/CharacterObjectiveKind";
 import { ObjectiveType } from "./enums/ObjectiveType";
 import { UnlockType } from "./enums/UnlockType";
@@ -33,7 +33,7 @@ import { getObjective } from "./types/Objective";
 import type { ObjectiveID } from "./types/ObjectiveID";
 import { getObjectiveID } from "./types/ObjectiveID";
 import type { Unlock } from "./types/Unlock";
-import { getUnlock, getUnlockFromID } from "./types/Unlock";
+import { getUnlock, getUnlockFromID, getUnlockText } from "./types/Unlock";
 import type { UnlockID } from "./types/UnlockID";
 import { getUnlockID } from "./types/UnlockID";
 
@@ -179,10 +179,41 @@ export function getAchievementsForRNG(rng: RNG): {
     lastUnlockedCharacter = character;
   }
 
-  // Next, do the rest of the unlocks.
+  // Next, do all of the unlocks except for trinkets.
   for (const unlockID of unlockIDs) {
     const unlock = getUnlockFromID(unlockID);
+    if (unlock.type === UnlockType.TRINKET) {
+      continue;
+    }
+
     if (isBannedUnlock(unlock)) {
+      continue;
+    }
+
+    const objectiveID = getRandomArrayElementAndRemove(objectiveIDs, rng);
+    objectiveIDToUnlockIDMap.set(objectiveID, unlockID);
+    unlockIDToObjectiveIDMap.set(unlockID, objectiveID);
+  }
+
+  // Finally, do the trinkets last, since they are the least important unlock, and there might not
+  // be enough objectives to unlock everything.
+  for (const unlockID of unlockIDs) {
+    const unlock = getUnlockFromID(unlockID);
+    if (unlock.type !== UnlockType.TRINKET) {
+      continue;
+    }
+
+    if (isBannedUnlock(unlock)) {
+      continue;
+    }
+
+    // In some cases, the amount of unlocks may exceed the amount of objectives.
+    if (objectiveIDs.length === 0) {
+      if (DEBUG) {
+        const unlockText = getUnlockText(unlock).join(" - ");
+        log(`Skipping assignment of unlock: ${unlockText}`);
+      }
+
       continue;
     }
 

@@ -225,7 +225,7 @@ There are thousands of rooms in the game, but many players have already seen the
 
 #### Void Portal Deletion <!-- RemoveVoidPortals -->
 
-The mod deletes all Void Portals outside of the Blue Womb. This is both a balance change (since it slightly increases the difficulty of Delirium) and a quality of life fix (since players can no longer accidentally enter a Void Portal and lose their streak).
+The mod deletes all Void Portals outside of the Blue Womb. Since Delirium is not part of the randomizer, this is a quality of life fix (since players can no longer accidentally enter a Void Portal and lose their streak).
 
 #### Glitched Item Removal <!-- RemoveGlitchedCollectibles -->
 

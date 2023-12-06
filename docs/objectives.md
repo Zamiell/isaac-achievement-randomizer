@@ -14,16 +14,17 @@ Each character will unlock something upon defeating/completing the following:
 8. Boss Rush
 9. Hush
 10. Ultra Greed
-11. Delirium
-12. Mother
-13. The Beast
+11. Mother
+12. The Beast
+
+(Delirium is not included since the design of the boss is considered by the player-base to be extremely sub-par.)
 
 Additionally, each character will unlock something upon full-clearing each chapter without getting hit:
 
-1. Basement (floor 1 + floor 2)
-2. Caves (floor 3 + floor 4)
-3. Depths (floor 5 + floor 6)
-4. Womb (floor 7 + floor 8)
+1. Basement (floor 1 + floor 2) <!-- 13 -->
+2. Caves (floor 3 + floor 4) <!-- 14 -->
+3. Depths (floor 5 + floor 6) <!-- 15 -->
+4. Womb (floor 7 + floor 8) <!-- 16 -->
 
 > Tip: A Crown of Light icon will appear next to the coin count UI when the "no hit" objective has not yet been accomplished for the particular character and chapter combination.
 
@@ -48,5 +49,5 @@ There is one unlock for completing each challenge, with the following exceptions
 
 ## Total Objectives
 
-- There are 17 x 33 x 2 = 1122 character objectives in total.
-- There are 1122 + 81 + 43 = 1246 objectives in total.
+- There are 16 x 33 x 2 = 1056 character objectives in total.
+- There are 1056 + 81 + 43 = 1180 objectives in total.

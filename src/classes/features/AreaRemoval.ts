@@ -10,7 +10,6 @@ import {
   ModCallback,
   PickupVariant,
   RoomType,
-  TrapdoorVariant,
 } from "isaac-typescript-definitions";
 import {
   Callback,
@@ -25,7 +24,6 @@ import {
   getEffects,
   getMegaSatanDoor,
   getRepentanceDoor,
-  getVoidDoor,
   hasCurse,
   inCrawlSpaceWithBlackMarketEntrance,
   inRoomType,
@@ -36,7 +34,6 @@ import {
   removeAllSpikes,
   removeAllTrapdoors,
   removeDoor,
-  removeGridEntity,
   spawnGridEntity,
   spawnPickup,
 } from "isaacscript-common";
@@ -202,17 +199,6 @@ export class AreaRemoval extends RandomizerModFeature {
     }
   }
 
-  @CallbackCustom(
-    ModCallbackCustom.POST_GRID_ENTITY_UPDATE,
-    GridEntityType.TRAPDOOR,
-    TrapdoorVariant.VOID_PORTAL,
-  )
-  postGridEntityUpdateVoidPortal(gridEntity: GridEntity): void {
-    if (!isAreaUnlocked(UnlockableArea.VOID, true)) {
-      removeGridEntity(gridEntity, false);
-    }
-  }
-
   @CallbackCustom(ModCallbackCustom.POST_NEW_ROOM_REORDERED)
   postNewRoomReordered(): void {
     this.checkPathDoors();
@@ -223,7 +209,6 @@ export class AreaRemoval extends RandomizerModFeature {
   checkPathDoors(): void {
     this.checkRepentanceDoor();
     this.checkBlueWombDoor();
-    this.checkVoidDoor();
     this.checkMegaSatanDoor();
     this.checkBossRushDoor();
   }
@@ -257,17 +242,6 @@ export class AreaRemoval extends RandomizerModFeature {
 
     if (!isAreaUnlocked(UnlockableArea.BLUE_WOMB, true)) {
       this.removeDoorAndSmoke(blueWombDoor);
-    }
-  }
-
-  checkVoidDoor(): void {
-    const voidDoor = getVoidDoor();
-    if (voidDoor === undefined) {
-      return;
-    }
-
-    if (!isAreaUnlocked(UnlockableArea.VOID, true)) {
-      this.removeDoorAndSmoke(voidDoor);
     }
   }
 
