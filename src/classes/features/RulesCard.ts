@@ -35,7 +35,7 @@ export class RulesCard extends RandomizerModFeature {
   }
 }
 
-export function showRandomAchievement(): void {
+function showRandomAchievement() {
   const reachableUncompletedAchievements =
     getReachableUncompletedAchievements();
   const achievement = getRandomArrayElement(
