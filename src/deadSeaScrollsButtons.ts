@@ -198,7 +198,7 @@ export function getBossObjectiveButtons(): readonly DeadSeaScrollsButton[] {
   for (const stageID of STAGE_IDS_FOR_BOSS_OBJECTIVES) {
     const stageIDCompleted = isBossObjectivesCompletedForStageID(stageID);
     const completedText = getCompletedText(stageIDCompleted);
-    const stageIDName = getStageIDName(stageID);
+    const stageIDName = getStageIDName(stageID).toLowerCase();
     buttons.push({
       str: `${completedText} - ${stageIDName}`,
       dest: `bossObjectives${stageID}`,
