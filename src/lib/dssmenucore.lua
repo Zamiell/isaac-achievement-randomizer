@@ -1,6 +1,3 @@
--- TODO:
--- - queue save when values change
-
 ---A user may have two or more mods that each use Dead Sea Scrolls, with each mod running their own
 ---version of "dssmenucore.lua". Thus, in order to not conflict with other versions of itself, Dead
 ---Sea Scrolls will defer control to whichever version currently exists with the highest version
@@ -53,16 +50,16 @@ local dssmenucore = {}
 
 local function tableToString(o)
     if type(o) == 'table' then
-       local s = '{ '
-       for k,v in pairs(o) do
-          if type(k) ~= 'number' then k = '"'..k..'"' end
-          s = s .. '['..k..'] = ' .. tableToString(v) .. ','
-       end
-       return s .. '} '
+        local s = '{ '
+        for k,v in pairs(o) do
+            if type(k) ~= 'number' then k = '"'..k..'"' end
+            s = s .. '['..k..'] = ' .. tableToString(v) .. ','
+        end
+        return s .. '} '
     else
-       return tostring(o)
+        return tostring(o)
     end
- end
+end
 
 ---The function to initialize the Dead Sea Scrolls library, which will create a `DeadSeaScrollsMenu`
 ---global variable if it does not already exist.
@@ -2667,10 +2664,11 @@ function dssmenucore.init(DSSModName, v)
         })
 
         function DSSMenu.GetPaletteSetting()
-            return 1
+            return v.MenuPalette
         end
 
         function DSSMenu.SavePaletteSetting(var)
+            v.MenuPalette = var
         end
 
         function DSSMenu.GetPalette()
@@ -2682,48 +2680,57 @@ function dssmenucore.init(DSSModName, v)
         end
 
         function DSSMenu.SaveHudOffsetSetting(var)
+            -- Do nothing since HUD offset should be handled by the vanilla setting.
         end
 
         function DSSMenu.GetGamepadToggleSetting()
-            return 1
+            return v.ControllerToggle
         end
 
         function DSSMenu.SaveGamepadToggleSetting(var)
+            v.ControllerToggle = var
         end
 
         function DSSMenu.GetMenuKeybindSetting()
-            return Keyboard.KEY_C
+            return v.MenuKeybind
         end
 
         function DSSMenu.SaveMenuKeybindSetting(var)
+            v.MenuKeybind = var
         end
 
         function DSSMenu.GetMenuHintSetting()
-            return 1
+            return v.MenuHint
         end
 
         function DSSMenu.SaveMenuHintSetting(var)
+            v.MenuHint = var
         end
 
         function DSSMenu.GetMenuBuzzerSetting()
-            return 1
+            return v.MenuBuzzer
         end
 
         function DSSMenu.SaveMenuBuzzerSetting(var)
+            v.MenuBuzzer = var
         end
 
         function DSSMenu.GetMenusNotified()
+            -- TODO
             return {}
         end
 
         function DSSMenu.SaveMenusNotified(var)
+            -- TODO
         end
 
         function DSSMenu.GetMenusPoppedUp()
+            -- TODO
             return {}
         end
 
         function DSSMenu.SaveMenusPoppedUp(var)
+            -- TODO
         end
 
         DSSMenu.MenuSprites = nil
