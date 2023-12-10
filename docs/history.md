@@ -3,6 +3,10 @@
 <!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Kirbyster,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.14.1_ - December 10th, 2023
+
+- Fixed the bug where 'M was not gated behind the same unlocks that Red Key was. (Thanks Andrew)
+
 ### _v0.14.0_ - December 10th, 2023
 
 - Objectives have been reworked:

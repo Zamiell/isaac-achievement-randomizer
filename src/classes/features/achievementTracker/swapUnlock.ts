@@ -1382,6 +1382,9 @@ const SWAPPED_UNLOCK_TRINKET_FUNCTIONS = new ReadonlyMap<
         : getUnlock(UnlockType.HEART, HeartSubType.HALF_SOUL),
   ],
 
+  // 138
+  [TrinketType.M, swapAnyRoomUnlock], // 'M can give Red Key.
+
   // 141
   [
     TrinketType.FORGOTTEN_LULLABY,

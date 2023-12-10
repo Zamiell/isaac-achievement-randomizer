@@ -8,4 +8,4 @@ export const DEBUG = false as boolean;
 export const STARTING_CHARACTER = PlayerType.ISAAC;
 export const DIFFICULTIES = [Difficulty.NORMAL, Difficulty.HARD] as const;
 
-export const LAST_VERSION_WITH_ACHIEVEMENT_CHANGES = "0.10.0";
+export const LAST_VERSION_WITH_ACHIEVEMENT_CHANGES = "0.14.0";
