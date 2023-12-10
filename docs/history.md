@@ -3,7 +3,7 @@
 <!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Kirbyster,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
-### _v0.14.0_ - December 4th, 2023
+### _v0.14.0_ - December 10th, 2023
 
 - Objectives have been reworked:
   - There is now an objective for killing each non-story boss.
@@ -14,6 +14,7 @@
 - Fixed the bug where the Cantripped challenge was not banned. (It should be banned since Tainted Cain is banned.) (Thanks Andrew)
 - Fixed the bug where Eden collectible selection did not work properly during certain circumstances. (Thanks Kirbyster)
 - Fixed the bug where the chapter objective detection did not work properly on floors with Curse of the Labyrinth. (Thanks Andrew)
+- Fixed the bug where Dead Sea Scrolls settings were not being saved properly. (Thanks CorvusOnStream)
 
 ### _v0.13.0_ - November 15th, 2023
 
