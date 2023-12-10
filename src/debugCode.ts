@@ -1,7 +1,6 @@
 import {
   log,
   logAndPrint,
-  logCollectibleTypes,
   setLogFunctionsGlobal,
   setTracebackFunctionsGlobal,
 } from "isaacscript-common";
@@ -10,8 +9,6 @@ import { mod } from "./mod";
 /** Currently, F3 is set to execute this function. (`IS_DEV` must be set to true.) */
 function debugCode(_params?: string) {
   // Add code here.
-  const player = Isaac.GetPlayer();
-  logCollectibleTypes(mod.getEdenStartingCollectibles(player));
 }
 
 /** Hotkey 1 is bound to F3. */

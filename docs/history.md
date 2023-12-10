@@ -3,6 +3,10 @@
 <!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Kirbyster,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.14.2_ - December 10th, 2023
+
+- Fixed the bug where Eden could start a run with a phantom Red Stew damage bonus. (Thanks Kirbyster)
+
 ### _v0.14.1_ - December 10th, 2023
 
 - Fixed the bug where 'M was not gated behind the same unlocks that Red Key was. (Thanks Andrew)
