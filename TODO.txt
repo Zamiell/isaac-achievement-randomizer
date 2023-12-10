@@ -1,7 +1,5 @@
 TODO:
 
-- add boss specific buttons
-- swap objective if undefined
 - website - see all current unlocks after uploading save file
 - emulate vanilla pill pool
 

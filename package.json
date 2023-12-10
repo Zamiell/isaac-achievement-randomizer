@@ -23,14 +23,14 @@
   },
   "dependencies": {
     "isaac-typescript-definitions": "^40.0.1",
-    "isaacscript-common": "^83.4.1",
+    "isaacscript-common": "^83.5.0",
     "isaacscript-common-ts": "^11.6.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "cloc": "^1.98.0-cloc",
     "esbuild": "^0.19.9",
-    "isaacscript": "^3.30.0",
+    "isaacscript": "^3.31.0",
     "isaacscript-common-node": "^1.4.0",
     "isaacscript-lint": "^6.11.0",
     "isaacscript-spell": "^1.12.0",

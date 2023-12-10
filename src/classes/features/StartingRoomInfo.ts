@@ -6,6 +6,7 @@ import {
   capitalizeFirstLetter,
   fonts,
   game,
+  getDoors,
   inStartingRoom,
   newReadonlyVector,
   newSprite,
@@ -76,6 +77,12 @@ export class StartingRoomInfo extends RandomizerModFeature {
     }
 
     if (hasErrors()) {
+      return;
+    }
+
+    const doors = getDoors();
+    const door = doors[0];
+    if (door !== undefined && !door.IsOpen()) {
       return;
     }
 

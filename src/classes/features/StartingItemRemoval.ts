@@ -6,7 +6,6 @@ import {
   PillColor,
   PillEffect,
   PlayerType,
-  SoundEffect,
   TrinketType,
 } from "isaac-typescript-definitions";
 import {
@@ -30,7 +29,7 @@ import {
   removeAllTears,
   repeat,
   setPlayerHealth,
-  sfxManager,
+  stopAllSoundEffects,
 } from "isaacscript-common";
 import {
   POCKET_ITEM_SLOT_VALUES,
@@ -147,8 +146,12 @@ export class StartingItemRemoval extends RandomizerModFeature {
     removeAllFamiliars();
     removeAllEffects(EffectVariant.BLOOD_EXPLOSION); // 2
     removeAllEffects(EffectVariant.POOF_1); // 15
-    sfxManager.Stop(SoundEffect.MEAT_JUMPS); // 72
-    sfxManager.Stop(SoundEffect.TEARS_FIRE); // 153
+
+    // Some sound effects won't play until a frame later.
+    stopAllSoundEffects();
+    mod.runNextRenderFrame(() => {
+      stopAllSoundEffects();
+    });
 
     // Some collectibles will add health.
     const startingHealth = mod.getEdenStartingHealth(player);

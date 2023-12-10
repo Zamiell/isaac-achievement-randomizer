@@ -4450,8 +4450,8 @@ __metadata:
     cloc: "npm:^1.98.0-cloc"
     esbuild: "npm:^0.19.9"
     isaac-typescript-definitions: "npm:^40.0.1"
-    isaacscript: "npm:^3.30.0"
-    isaacscript-common: "npm:^83.4.1"
+    isaacscript: "npm:^3.31.0"
+    isaacscript-common: "npm:^83.5.0"
     isaacscript-common-node: "npm:^1.4.0"
     isaacscript-common-ts: "npm:^11.6.0"
     isaacscript-lint: "npm:^6.11.0"
@@ -4521,12 +4521,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common@npm:^83.4.1":
-  version: 83.4.1
-  resolution: "isaacscript-common@npm:83.4.1"
+"isaacscript-common@npm:^83.5.0":
+  version: 83.5.0
+  resolution: "isaacscript-common@npm:83.5.0"
   dependencies:
     isaac-typescript-definitions: "npm:^40.0.1"
-  checksum: 26a19b0d8b68ff75a5185623c5706591f3535a9631d520b726e962a04e45bdd4719f4d622c4aa65497ece8240c76d0426452a3d74c561ffcfa0b338ff1cc0d5b
+  checksum: 05abfee7603392944e10df32b4677f47bcfea8361bebbbd6b421a34754773953d4b55c8cd26cd0735b1372009899ec9a2b8c8cf20e87c146bfb2165550175a15
   languageName: node
   linkType: hard
 
@@ -4579,9 +4579,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript@npm:^3.30.0":
-  version: 3.30.0
-  resolution: "isaacscript@npm:3.30.0"
+"isaacscript@npm:^3.31.0":
+  version: 3.31.0
+  resolution: "isaacscript@npm:3.31.0"
   dependencies:
     "@commander-js/extra-typings": "npm:^11.1.0"
     "@zamiell/sync-directory": "npm:^6.0.5"
@@ -4606,7 +4606,7 @@ __metadata:
       optional: true
   bin:
     isaacscript: dist/main.js
-  checksum: bb2891d4af4b7a415e3b9b9c01d4cda56a54a19738e2308123b749e0f302f6d858e2c860fd7b1f8dcb0022cc35dc6d5d545051175d785f3658175eb49d79f096
+  checksum: 5c7b83016e2758589363bba80b033405ed1bc178901782aca788d090b10040532b0e840cf97cb31ac9adb9a48c1bc7bb48505f3c6c7b5134c32d12722a4b6f64
   languageName: node
   linkType: hard
 

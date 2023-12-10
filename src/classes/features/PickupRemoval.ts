@@ -53,7 +53,6 @@ import { UNLOCKABLE_CHEST_PICKUP_VARIANTS } from "../../arrays/unlockablePickupT
 import { UNLOCKABLE_TRINKET_TYPES } from "../../arrays/unlockableTrinketTypes";
 import { MOD_NAME } from "../../constants";
 import { OtherUnlockKind } from "../../enums/OtherUnlockKind";
-import { isItemPoolsDepleted } from "../../utils";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { isAllCharacterObjectivesCompleted } from "./achievementTracker/completedObjectives";
 import {
@@ -207,10 +206,8 @@ export class PickupRemoval extends RandomizerModFeature {
   postPickupInitCollectible(pickup: EntityPickup): void {
     const collectible = pickup as EntityPickupCollectible;
 
-    if (
-      collectible.SubType === CollectibleType.BREAKFAST &&
-      isItemPoolsDepleted()
-    ) {
+    // Return early if this is Breakfast to prevent infinite loops.
+    if (collectible.SubType === CollectibleType.BREAKFAST) {
       return;
     }
 

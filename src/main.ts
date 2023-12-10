@@ -17,6 +17,7 @@ import { ChapterObjectiveDetection } from "./classes/features/ChapterObjectiveDe
 import { CheckErrors } from "./classes/features/CheckErrors";
 import { ChillRoom } from "./classes/features/ChillRoom";
 import { DrawControls } from "./classes/features/DrawControls";
+import { EdenRedStew } from "./classes/features/EdenRedStew";
 import { FixVanillaBugs } from "./classes/features/FixVanillaBugs";
 import { ForceSeeds } from "./classes/features/ForceSeeds";
 import { GridEntityRemoval } from "./classes/features/GridEntityRemoval";
@@ -60,6 +61,7 @@ const MOD_FEATURES = [
   CheckErrors,
   ChillRoom,
   DrawControls,
+  EdenRedStew,
   FixVanillaBugs,
   ForceSeeds,
   GridEntityRemoval,

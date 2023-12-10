@@ -1,11 +1,5 @@
+import { PlayerType, SoundEffect } from "isaac-typescript-definitions";
 import {
-  CollectibleType,
-  ItemPoolType,
-  PlayerType,
-  SoundEffect,
-} from "isaac-typescript-definitions";
-import {
-  game,
   getPlayerHealth,
   setPlayerHealth,
   sfxManager,
@@ -50,16 +44,4 @@ export function preventSaveAndQuit(): void {
       futurePlayer.StopExtraAnimation();
     });
   });
-}
-
-export function isItemPoolsDepleted(): boolean {
-  const itemPool = game.GetItemPool();
-  const collectibleType = itemPool.GetCollectible(
-    ItemPoolType.TREASURE,
-    false,
-    undefined,
-    CollectibleType.KEY_PIECE_1,
-  );
-
-  return collectibleType === CollectibleType.KEY_PIECE_1;
 }
