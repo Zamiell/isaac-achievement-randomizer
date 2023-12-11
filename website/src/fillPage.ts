@@ -1,12 +1,12 @@
 import { objectKeysToSet } from "isaacscript-common-ts";
 import { ALL_OBJECTIVES } from "../../src/arrays/allObjectives";
-import { hideSelectSaveFileArea } from "./selectSaveFileSubroutines";
 import type { SaveFile } from "./types/SaveFile";
-import { getElement, setElement, show, toggle } from "./utils";
+import { getElement, hide, setElement, show, toggle } from "./utils";
 
 const SAVE_FILE_STATS_ID = "save-file-stats";
 const HIDE_TEXT = "Hide";
 const SHOW_TEXT = "Show";
+const CHOOSE_SAVE_FILE_COLUMN_ID = "choose-save-file-column";
 
 export function fillPage(saveFile: SaveFile): void {
   const completedObjectiveIDs = objectKeysToSet(
@@ -34,6 +34,11 @@ export function fillPage(saveFile: SaveFile): void {
   hideSelectSaveFileArea();
   const saveFileStats = getElement(SAVE_FILE_STATS_ID);
   show(saveFileStats);
+}
+
+function hideSelectSaveFileArea() {
+  const saveFileArea = getElement(CHOOSE_SAVE_FILE_COLUMN_ID);
+  hide(saveFileArea);
 }
 
 function initToggleForSection(prefix: string) {

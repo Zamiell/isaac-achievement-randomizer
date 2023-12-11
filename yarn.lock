@@ -4449,11 +4449,11 @@ __metadata:
   dependencies:
     cloc: "npm:^1.98.0-cloc"
     esbuild: "npm:^0.19.9"
-    isaac-typescript-definitions: "npm:^40.0.1"
+    isaac-typescript-definitions: "npm:^40.0.2"
     isaacscript: "npm:^3.31.0"
-    isaacscript-common: "npm:^83.5.0"
+    isaacscript-common: "npm:^84.0.1"
     isaacscript-common-node: "npm:^1.4.0"
-    isaacscript-common-ts: "npm:^11.6.0"
+    isaacscript-common-ts: "npm:^12.0.0"
     isaacscript-lint: "npm:^6.11.0"
     isaacscript-spell: "npm:^1.12.0"
     isaacscript-tsconfig: "npm:^5.0.0"
@@ -4464,12 +4464,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"isaac-typescript-definitions@npm:^40.0.1":
-  version: 40.0.1
-  resolution: "isaac-typescript-definitions@npm:40.0.1"
+"isaac-typescript-definitions@npm:^40.0.2":
+  version: 40.0.2
+  resolution: "isaac-typescript-definitions@npm:40.0.2"
   dependencies:
     lua-types: "npm:^2.13.1"
-  checksum: a899f7fcc073bc350209af0062e5452c2c19b2ede4e4c5840b922b3ea01f464203cb2372faf04e47ac623c3e4a158b9c6d6202f335f4b1faf6e8be2a8a606187
+  checksum: 5a64da657021414f89f67daf1b8d61d0469a9daa15dfbda6343b10b224fc9d56e390f5758dc204a6311f23d5f3948f500ddb7ee2a7821e94c54be529e66861e4
   languageName: node
   linkType: hard
 
@@ -4521,12 +4521,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common@npm:^83.5.0":
-  version: 83.5.0
-  resolution: "isaacscript-common@npm:83.5.0"
+"isaacscript-common-ts@npm:^12.0.0":
+  version: 12.0.0
+  resolution: "isaacscript-common-ts@npm:12.0.0"
+  checksum: db84ace77884574f6f0df254d126a1919e0e8c1ee2d6943cb2295ee060ef4b618dc876bda7d4134ef122eacb7155a2e3731148115c8a82c86e9a2264f72b7b3d
+  languageName: node
+  linkType: hard
+
+"isaacscript-common@npm:^84.0.1":
+  version: 84.0.1
+  resolution: "isaacscript-common@npm:84.0.1"
   dependencies:
-    isaac-typescript-definitions: "npm:^40.0.1"
-  checksum: 05abfee7603392944e10df32b4677f47bcfea8361bebbbd6b421a34754773953d4b55c8cd26cd0735b1372009899ec9a2b8c8cf20e87c146bfb2165550175a15
+    isaac-typescript-definitions: "npm:^40.0.2"
+  checksum: 719a686d66281ec92edc288ae732a26bf6b6b2ff49346655a86c6e1913341cd955ccdd465016d8c89311ecb596adf0cdaf9eb1a8159750029f9cee8baf0afa9c
   languageName: node
   linkType: hard
 
