@@ -1417,6 +1417,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/source-map-support@npm:^0":
+  version: 0.5.10
+  resolution: "@types/source-map-support@npm:0.5.10"
+  dependencies:
+    source-map: "npm:^0.6.0"
+  checksum: 48aacf32e1b5a4301407123fb69001b6a79386860d19c756a76ef3b034f71375a843846fa2af2d2461a765411dfbbcb21069b0935761b3c81f8b722b1d9d581f
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/eslint-plugin@npm:^6.13.1":
   version: 6.13.1
   resolution: "@typescript-eslint/eslint-plugin@npm:6.13.1"
@@ -4447,11 +4456,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "isaac-achievement-randomizer@workspace:."
   dependencies:
+    "@types/source-map-support": "npm:^0"
     cloc: "npm:^1.98.0-cloc"
     esbuild: "npm:^0.19.9"
+    isaac-lua-polyfill: "npm:^1.1.1"
     isaac-typescript-definitions: "npm:^40.0.2"
     isaacscript: "npm:^3.31.0"
-    isaacscript-common: "npm:^84.0.1"
+    isaacscript-common: "npm:^84.2.5"
     isaacscript-common-node: "npm:^1.4.0"
     isaacscript-common-ts: "npm:^12.0.0"
     isaacscript-lint: "npm:^6.11.0"
@@ -4463,6 +4474,16 @@ __metadata:
     zod: "npm:^3.22.4"
   languageName: unknown
   linkType: soft
+
+"isaac-lua-polyfill@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "isaac-lua-polyfill@npm:1.1.1"
+  dependencies:
+    isaac-typescript-definitions: "npm:^40.0.2"
+    isaacscript-common-ts: "npm:^12.0.0"
+  checksum: 7ccebf8756021f7092af032318d645db7c5a81fc438182821bc9bd8bf9ba385bc24c43617a0f5a0f3c41099fc990a49359dd8edc613ce25919fede27b279c347
+  languageName: node
+  linkType: hard
 
 "isaac-typescript-definitions@npm:^40.0.2":
   version: 40.0.2
@@ -4528,12 +4549,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common@npm:^84.0.1":
-  version: 84.0.1
-  resolution: "isaacscript-common@npm:84.0.1"
+"isaacscript-common@npm:^84.2.5":
+  version: 84.2.5
+  resolution: "isaacscript-common@npm:84.2.5"
   dependencies:
     isaac-typescript-definitions: "npm:^40.0.2"
-  checksum: 719a686d66281ec92edc288ae732a26bf6b6b2ff49346655a86c6e1913341cd955ccdd465016d8c89311ecb596adf0cdaf9eb1a8159750029f9cee8baf0afa9c
+  checksum: 5b143d1ca78d36446a280981bc0ee6c000caa903b439554c4984e5c25467dc9e2e2ed70d7ef86eca52bfc7d821c76766d656223e1aac3be3fa6f126d5ad7d98e
   languageName: node
   linkType: hard
 

@@ -13,21 +13,24 @@
   "type": "module",
   "scripts": {
     "build": "tstl",
-    "build-website": "esbuild ./website/src/main.ts --bundle --outfile=./website/static/main.js",
+    "build-website": "esbuild ./website/src/main.ts --bundle --outfile=./website/static/main.js --sourcemap",
     "cloc": "cloc ./src --include-lang=TypeScript",
     "lint": "tsx ./scripts/lint.ts",
     "nuke": "isaacscript nuke",
     "publish": "isaacscript publish",
     "start": "isaacscript monitor",
-    "update": "isaacscript update"
+    "update": "isaacscript update",
+    "watch": "esbuild ./website/src/main.ts --bundle --outfile=./website/static/main.js --sourcemap --watch"
   },
   "dependencies": {
+    "isaac-lua-polyfill": "^1.1.1",
     "isaac-typescript-definitions": "^40.0.2",
-    "isaacscript-common": "^84.0.1",
+    "isaacscript-common": "^84.2.5",
     "isaacscript-common-ts": "^12.0.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/source-map-support": "^0",
     "cloc": "^1.98.0-cloc",
     "esbuild": "^0.19.9",
     "isaacscript": "^3.31.0",

@@ -1,3 +1,7 @@
+// Since the polyfill needs to be imported for side-effects, we import it first.
+// eslint-disable-next-line import/no-unassigned-import
+import "isaac-lua-polyfill";
+
 import { isObject } from "isaacscript-common-ts";
 import { fillPage } from "./fillPage";
 import { SAVE_FILE_SCHEMA } from "./types/SaveFile";
@@ -53,7 +57,7 @@ async function readFile(file: File): Promise<void> {
   }
 }
 
-function selectSaveFileError(error: unknown): void {
+function selectSaveFileError(error: unknown) {
   const errorElement = getElement(CHOOSE_SAVE_FILE_ERROR_ID);
   show(errorElement);
   const errorTextElement = getElement(CHOOSE_SAVE_FILE_ERROR_TEXT_ID);
