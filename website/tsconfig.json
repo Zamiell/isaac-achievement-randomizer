@@ -5,10 +5,5 @@
   // https://github.com/IsaacScript/isaacscript/blob/main/packages/isaacscript-tsconfig/tsconfig.browser.json
   "extends": "isaacscript-tsconfig/tsconfig.browser.json",
 
-  "compilerOptions": {
-    // Needed in order to make "source-map-support" work properly.
-    "sourceMap": true,
-  },
-
   "include": ["./src/**/*.ts"],
 }
