@@ -22,6 +22,11 @@ export function getAdjustedCharacterForObjective(
       return PlayerType.JUDAS;
     }
 
+    // 38
+    case PlayerType.LAZARUS_2_B: {
+      return PlayerType.LAZARUS_2;
+    }
+
     default: {
       return character;
     }
