@@ -4461,7 +4461,7 @@ __metadata:
     esbuild: "npm:^0.19.9"
     isaac-lua-polyfill: "npm:^1.1.1"
     isaac-typescript-definitions: "npm:^40.0.2"
-    isaacscript: "npm:^3.31.0"
+    isaacscript: "npm:^3.32.1"
     isaacscript-common: "npm:^84.2.5"
     isaacscript-common-node: "npm:^1.4.0"
     isaacscript-common-ts: "npm:^12.0.0"
@@ -4607,9 +4607,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript@npm:^3.31.0":
-  version: 3.31.0
-  resolution: "isaacscript@npm:3.31.0"
+"isaacscript@npm:^3.32.1":
+  version: 3.32.1
+  resolution: "isaacscript@npm:3.32.1"
   dependencies:
     "@commander-js/extra-typings": "npm:^11.1.0"
     "@zamiell/sync-directory": "npm:^6.0.5"
@@ -4618,7 +4618,7 @@ __metadata:
     commander: "npm:^11.1.0"
     figlet: "npm:^1.7.0"
     isaacscript-common-node: "npm:^1.4.0"
-    isaacscript-common-ts: "npm:^11.6.0"
+    isaacscript-common-ts: "npm:^12.0.0"
     jsonc-parser: "npm:^3.2.0"
     klaw-sync: "npm:^6.0.0"
     moment: "npm:^2.29.4"
@@ -4634,7 +4634,7 @@ __metadata:
       optional: true
   bin:
     isaacscript: dist/main.js
-  checksum: 5c7b83016e2758589363bba80b033405ed1bc178901782aca788d090b10040532b0e840cf97cb31ac9adb9a48c1bc7bb48505f3c6c7b5134c32d12722a4b6f64
+  checksum: 0bc1ed552a3f56ddeac64b2bb146ae2b6456cbe2e3110ab49a5276117ebbbe5af511ac489682dfa14bf844795b13f9620d764de268425a100fbac5350152b824
   languageName: node
   linkType: hard
 

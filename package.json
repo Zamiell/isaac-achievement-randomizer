@@ -33,7 +33,7 @@
     "@types/source-map-support": "^0",
     "cloc": "^1.98.0-cloc",
     "esbuild": "^0.19.9",
-    "isaacscript": "^3.31.0",
+    "isaacscript": "^3.32.1",
     "isaacscript-common-node": "^1.4.0",
     "isaacscript-lint": "^6.11.0",
     "isaacscript-spell": "^1.12.0",

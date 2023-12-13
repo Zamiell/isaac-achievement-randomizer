@@ -62,7 +62,7 @@
   "typescript.tsserver.experimental.enableProjectDiagnostics": true,
 
   // Automatically run the formatter when certain files are saved.
-  "[javascript]": {
+  "[javascript][typescript][javascriptreact][typescriptreact]": {
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "explicit",
     },
@@ -70,49 +70,9 @@
     "editor.formatOnSave": true,
     "editor.tabSize": 2,
   },
-  "[typescript]": {
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit",
-    },
+  "[css][html][json][jsonc][markdown][postcss][yaml][xml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.tabSize": 2,
   },
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.tabSize": 2,
-  },
-  "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.tabSize": 2,
-  },
-  "[yaml]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.tabSize": 2,
-  },
-  "[xml]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.tabSize": 2,
-  },
-  "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.tabSize": 2,
-  },
-  // @template-customization-start
-  "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.tabSize": 2,
-  },
-  "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.tabSize": 2,
-  },
-  // @template-customization-end
 }
