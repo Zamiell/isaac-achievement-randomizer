@@ -3,6 +3,10 @@
 <!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Kirbyster,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.14.4_ - December 14th, 2023
+
+- Fixed the bug where Forgotten objectives would not work under certain conditions. (Thanks Erbear)
+
 ### _v0.14.3_ - December 13th, 2023
 
 - Fixed the bug where Tainted Lazarus objectives would not work under certain conditions. (Thanks Andrew)

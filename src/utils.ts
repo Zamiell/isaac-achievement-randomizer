@@ -22,9 +22,24 @@ export function getAdjustedCharacterForObjective(
       return PlayerType.JUDAS;
     }
 
+    // 17
+    case PlayerType.SOUL: {
+      return PlayerType.FORGOTTEN;
+    }
+
     // 38
     case PlayerType.LAZARUS_2_B: {
       return PlayerType.LAZARUS_2;
+    }
+
+    // 39
+    case PlayerType.JACOB_2_B: {
+      return PlayerType.JACOB_B;
+    }
+
+    // 40
+    case PlayerType.SOUL_B: {
+      return PlayerType.FORGOTTEN_B;
     }
 
     default: {
