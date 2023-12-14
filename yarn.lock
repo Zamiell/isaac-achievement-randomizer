@@ -4600,7 +4600,7 @@ __metadata:
     isaac-lua-polyfill: "npm:^1.1.1"
     isaac-typescript-definitions: "npm:^40.0.2"
     isaacscript: "npm:^3.33.0"
-    isaacscript-common: "npm:^84.2.5"
+    isaacscript-common: "npm:^84.3.1"
     isaacscript-common-node: "npm:^1.4.0"
     isaacscript-common-ts: "npm:^12.0.0"
     isaacscript-lint: "npm:^6.11.1"
@@ -4687,12 +4687,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isaacscript-common@npm:^84.2.5":
-  version: 84.2.5
-  resolution: "isaacscript-common@npm:84.2.5"
+"isaacscript-common@npm:^84.3.1":
+  version: 84.3.1
+  resolution: "isaacscript-common@npm:84.3.1"
   dependencies:
     isaac-typescript-definitions: "npm:^40.0.2"
-  checksum: 5b143d1ca78d36446a280981bc0ee6c000caa903b439554c4984e5c25467dc9e2e2ed70d7ef86eca52bfc7d821c76766d656223e1aac3be3fa6f126d5ad7d98e
+  checksum: c3a773646ef3db1032d0cc0e46904c2152d935d2524f3d90008bd2277a71063f1d18d44fbc9fc4e0a78e75430df5ca7b3d35a897131c9358e0ed9b25d5b83bfc
   languageName: node
   linkType: hard
 

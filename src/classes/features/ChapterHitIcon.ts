@@ -10,9 +10,9 @@ import {
   anyPlayerIs,
   game,
   getHUDOffsetVector,
+  getMainCharacter,
   newSprite,
 } from "isaacscript-common";
-import { getAdjustedCharacterForObjective } from "../../utils";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import {
   getCharacterObjectiveKindNoHit,
@@ -30,7 +30,8 @@ export class ChapterHitIcon extends RandomizerModFeature {
   @Callback(ModCallback.POST_RENDER)
   postRender(): void {
     const player = Isaac.GetPlayer();
-    const character = getAdjustedCharacterForObjective(player);
+    const character = player.GetPlayerType();
+    const mainCharacter = getMainCharacter(character);
 
     const kindNoHit = getCharacterObjectiveKindNoHit();
     if (kindNoHit === undefined) {
@@ -44,7 +45,9 @@ export class ChapterHitIcon extends RandomizerModFeature {
       return;
     }
 
-    if (isCharacterObjectiveCompleted(character, kindNoHit, game.Difficulty)) {
+    if (
+      isCharacterObjectiveCompleted(mainCharacter, kindNoHit, game.Difficulty)
+    ) {
       return;
     }
 

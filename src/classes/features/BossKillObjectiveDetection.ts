@@ -11,6 +11,7 @@ import {
   ReadonlyMap,
   game,
   getBossID,
+  getMainCharacter,
   getRoomListIndex,
   inBeastRoom,
   inMegaSatanRoom,
@@ -21,7 +22,6 @@ import {
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import { getObjective } from "../../types/Objective";
-import { getAdjustedCharacterForObjective } from "../../utils";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { addObjective } from "./achievementTracker/addObjective";
 
@@ -56,18 +56,19 @@ export class BossKillObjectiveDetection extends RandomizerModFeature {
 
 export function bossObjectiveDetectionPreSpawnClearAward(): void {
   const player = Isaac.GetPlayer();
-  const character = getAdjustedCharacterForObjective(player);
+  const character = player.GetPlayerType();
+  const mainCharacter = getMainCharacter(character);
 
   switch (game.Difficulty) {
     case Difficulty.NORMAL:
     case Difficulty.HARD: {
-      preSpawnClearAwardNonGreedMode(character, game.Difficulty);
+      preSpawnClearAwardNonGreedMode(mainCharacter, game.Difficulty);
       break;
     }
 
     case Difficulty.GREED:
     case Difficulty.GREEDIER: {
-      preSpawnClearAwardGreedMode(character, game.Difficulty);
+      preSpawnClearAwardGreedMode(mainCharacter, game.Difficulty);
       break;
     }
   }

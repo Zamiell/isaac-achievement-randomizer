@@ -14,6 +14,7 @@ import {
   ReadonlyMap,
   asLevelStage,
   game,
+  getMainCharacter,
   hasCurse,
   inDimension,
   inGrid,
@@ -26,7 +27,6 @@ import {
 import { CharacterObjectiveKind } from "../../enums/CharacterObjectiveKind";
 import { ObjectiveType } from "../../enums/ObjectiveType";
 import { getObjective } from "../../types/Objective";
-import { getAdjustedCharacterForObjective } from "../../utils";
 import { RandomizerModFeature } from "../RandomizerModFeature";
 import { addObjective } from "./achievementTracker/addObjective";
 
@@ -165,7 +165,8 @@ function checkChapterCompleted(
   kind: CharacterObjectiveKind,
 ) {
   const player = Isaac.GetPlayer();
-  const character = getAdjustedCharacterForObjective(player);
+  const character = player.GetPlayerType();
+  const mainCharacter = getMainCharacter(character);
 
   if (
     !v.run.tookHitStages.has(stage1) &&
@@ -178,7 +179,7 @@ function checkChapterCompleted(
   ) {
     const objective = getObjective(
       ObjectiveType.CHARACTER,
-      character,
+      mainCharacter,
       kind,
       game.Difficulty,
     );

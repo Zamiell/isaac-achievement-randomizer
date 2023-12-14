@@ -26,6 +26,7 @@ import {
   getChallengeName,
   getCharacterName,
   getCollectibleName,
+  getMainCharacter,
   getMapPartialMatch,
   getPillEffectName,
   getRoomTypeName,
@@ -74,7 +75,6 @@ import { RandomizerMode } from "./enums/RandomizerMode";
 import { UnlockableArea, getAreaName } from "./enums/UnlockableArea";
 import { mod } from "./mod";
 import { getObjective } from "./types/Objective";
-import { getAdjustedCharacterForObjective } from "./utils";
 import { logObjectives, logUnlocks } from "./validate";
 
 export const MIN_SEED = 1;
@@ -128,11 +128,12 @@ function objectiveChapter(_params: string) {
   }
 
   const player = Isaac.GetPlayer();
-  const character = getAdjustedCharacterForObjective(player);
+  const character = player.GetPlayerType();
+  const mainCharacter = getMainCharacter(character);
 
   const objective = getObjective(
     ObjectiveType.CHARACTER,
-    character,
+    mainCharacter,
     kind,
     game.Difficulty,
   );
