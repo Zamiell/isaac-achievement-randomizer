@@ -269,6 +269,10 @@ function dssmenucore.init(DSSModName, v)
     end
 
     local function SafeKeyboardTriggered(key, controllerIndex)
+        if key == nil or key < 0 then
+            return false
+        end
+
         return Input.IsButtonTriggered(key, controllerIndex)
             and not Input.IsButtonTriggered(key % 32, controllerIndex)
     end
@@ -442,7 +446,7 @@ function dssmenucore.init(DSSModName, v)
                 or (gamepadToggleSetting == 5 and Input.IsButtonTriggered(14, index))
                 or (gamepadToggleSetting == 6 and Input.IsButtonPressed(12, index) and Input.IsButtonTriggered(14, index))
 
-            if baseKey ~= -1 then
+            if baseKey ~= nil and baseKey >= 0 then
                 menu.toggle = menu.toggle or AnyKeyboardTriggered(baseKey, index)
             end
 
