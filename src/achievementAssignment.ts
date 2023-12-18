@@ -80,6 +80,13 @@ const UNLOCKABLE_AREA_TO_OBJECTIVE = {
     CharacterObjectiveKind.LAMB,
     Difficulty.NORMAL,
   ),
+
+  [UnlockableArea.MEGA_SATAN]: getObjective(
+    ObjectiveType.CHARACTER,
+    STARTING_CHARACTER,
+    CharacterObjectiveKind.MOTHER,
+    Difficulty.NORMAL,
+  ),
 } as const satisfies Record<
   (typeof STATIC_UNLOCKABLE_AREAS)[number],
   Objective

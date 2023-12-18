@@ -24,6 +24,7 @@ export const STATIC_UNLOCKABLE_AREAS = [
   UnlockableArea.CHEST, // By defeating Satan.
   UnlockableArea.DARK_ROOM, // By defeating Blue Baby.
   UnlockableArea.REPENTANCE_FLOORS, // By defeating The Lamb.
+  UnlockableArea.MEGA_SATAN, // By defeating Mother.
 ] as const;
 
 const STORY_BOSS_TO_UNLOCKABLE_AREA = {

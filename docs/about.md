@@ -167,13 +167,14 @@ Nightmare mode is the same as hardcore mode, but also has the following effects:
 
 ### Areas
 
-- 6 area unlocks are not randomized and always are unlocked from specific objectives:
+- 7 area unlocks are not randomized and always are unlocked from specific objectives:
   - Womb (by defeating Mom on the final randomized character)
   - Cathedral (by defeating It Lives on Isaac)
   - Sheol (by defeating Isaac on Isaac)
   - The Chest (by defeating Satan on Isaac)
   - Dark Room (by defeating Blue Baby on Isaac)
   - Repentance floors (by defeating The Lamb on Isaac)
+  - Mega Satan (by defeating Mother on Isaac)
 
 ### Collectibles
 
