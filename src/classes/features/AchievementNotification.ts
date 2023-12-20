@@ -141,7 +141,7 @@ export function showNewAchievement(achievement: Achievement): void {
     "It is said that if you",
     `${uncapitalizeFirstLetter(objectiveText)},`,
     `you will unlock a new ${unlockText[0]}:`,
-    `${unlockText[1]}`,
+    unlockText[1],
   ];
   const text = lines.join("\n");
   v.run.queuedTexts.push(text);
