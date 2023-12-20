@@ -17,8 +17,8 @@
 
 ## Beta Warning ⚠️
 
-- The mod is currently in beta, so it is not recommended that you play it. If you want to test the beta version, then expect bugs, oversights, broken save files, uncompletable seeds, and so on.
-- [Backup your save file](#how-do-i-backuprestoreedit-my-randomizer-save-file) after every run.
+- The mod is currently in beta. This means that there might be bugs!
+- It is a good idea to [backup your save file](#how-do-i-backuprestoreedit-my-randomizer-save-file) after every run.
 - Report any bugs that you encounter in [the Isaac Streaking Discord server](https://discord.gg/GwhUeQjHTF).
 
 <br>

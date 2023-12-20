@@ -10,7 +10,6 @@ import type {
 import {
   CallbackCustom,
   ModCallbackCustom,
-  assertDefined,
   copySet,
   getCardName,
   getChallengeName,
@@ -22,12 +21,10 @@ import {
   log,
   logError,
 } from "isaacscript-common";
-import { ALL_OBJECTIVES } from "../../arrays/allObjectives";
 import { UnlockType } from "../../enums/UnlockType";
 import type { UnlockableArea } from "../../enums/UnlockableArea";
 import { getAreaName } from "../../enums/UnlockableArea";
 import { getObjectiveFromID, getObjectiveText } from "../../types/Objective";
-import { getObjectiveID } from "../../types/ObjectiveID";
 import { getUnlock, getUnlockFromID, getUnlockText } from "../../types/Unlock";
 import { getUnlockID } from "../../types/UnlockID";
 import { RandomizerModFeature } from "../RandomizerModFeature";
@@ -194,14 +191,9 @@ export function logSpoilerLog(): void {
   log(`Spoiler log for randomizer seed: ${v.persistent.seed}`, false);
   log(line, false);
 
-  for (const [i, objective] of ALL_OBJECTIVES.entries()) {
-    const objectiveID = getObjectiveID(objective);
-    const unlockID = v.persistent.objectiveIDToUnlockIDMap.get(objectiveID);
-    assertDefined(
-      unlockID,
-      `Failed to get the unlock ID corresponding to objective ID: ${objectiveID}`,
-    );
-
+  let i = 0;
+  for (const [objectiveID, unlockID] of v.persistent.objectiveIDToUnlockIDMap) {
+    const objective = getObjectiveFromID(objectiveID);
     const completed = isObjectiveCompleted(objective);
     const completedText = completed ? "[C]" : "[X]";
     const objectiveText = getObjectiveText(objective).join(" ");
@@ -209,6 +201,7 @@ export function logSpoilerLog(): void {
     const unlockText = getUnlockText(unlock).join(" - ");
 
     log(`${i + 1}) ${completedText} ${objectiveText} --> ${unlockText}`, false);
+    i++;
   }
 
   log(line, false);

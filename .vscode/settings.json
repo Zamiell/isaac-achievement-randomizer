@@ -32,6 +32,8 @@
     "LICENSE": true,
     // @template-customization-start
     "mod/main.lua": true,
+    "website/static/main.js": true,
+    "website/static/main.js.map": true,
     // @template-customization-end
   },
 

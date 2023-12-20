@@ -3,6 +3,10 @@
 <!-- cspell:ignore antizoubilamaka,Cran,Erbear,grihapro,Kirbyster,Neonomi,sanstheazmo,slvn -->
 <!-- markdownlint-disable MD001 -->
 
+### _v0.14.5_ - December 20th, 2023
+
+- Fixed the bug where killing the rare bosses would generate an error. (Thanks Erbear)
+
 ### _v0.14.5_ - December 18th, 2023
 
 - Mega Satan is now always unlocked by defeating Mother on Isaac.

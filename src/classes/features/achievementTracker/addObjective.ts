@@ -1,5 +1,5 @@
 import { Difficulty } from "isaac-typescript-definitions";
-import { assertDefined, log, onAnyChallenge } from "isaacscript-common";
+import { log, onAnyChallenge } from "isaacscript-common";
 import { isDoubleUnlocksEnabled } from "../../../config";
 import { DEBUG } from "../../../constants";
 import { ObjectiveType } from "../../../enums/ObjectiveType";
@@ -49,14 +49,14 @@ export function addObjective(objective: Objective, emulating = false): void {
   }
 
   const objectiveID = getObjectiveID(objective);
-  v.persistent.completedObjectiveIDs.add(objectiveID);
-
   const originalUnlockID =
     v.persistent.objectiveIDToUnlockIDMap.get(objectiveID);
-  assertDefined(
-    originalUnlockID,
-    `Failed to get the unlock ID corresponding to objective ID: ${objectiveID}`,
-  );
+
+  // First, check to see if this randomizer includes the objective. (For example, we might get here
+  // from killing C.H.A.D., which is a rare boss that is not included in the boss objectives.)
+  if (originalUnlockID === undefined) {
+    return;
+  }
 
   const unlockID = checkSwapProblematicAchievement(
     originalUnlockID,
@@ -65,6 +65,7 @@ export function addObjective(objective: Objective, emulating = false): void {
     emulating,
   );
 
+  v.persistent.completedObjectiveIDs.add(objectiveID);
   v.persistent.completedUnlockIDs.add(unlockID);
   v.persistent.uncompletedUnlockIDs.delete(unlockID);
 
