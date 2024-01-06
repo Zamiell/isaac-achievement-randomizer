@@ -104,7 +104,7 @@ export class CheckErrors extends ModFeature {
       );
     } else if (v.run.otherModsEnabled) {
       this.drawErrorText(
-        `You have illegal mods enabled.\n\nMake sure that ${MOD_NAME} is the only mod enabled in your mod list and then completely close and re-open the game.`,
+        `You have illegal mods enabled.\n\nMake sure that ${MOD_NAME} is the only mod enabled in your mod list and then completely close and re-open the game. Alternatively, if you want to cheat, then you can enable illegal mods in the settings.`,
       );
     } else if (v.run.hasEasterEggs) {
       this.drawErrorText(
